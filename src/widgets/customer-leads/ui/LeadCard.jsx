@@ -70,9 +70,9 @@ export function LeadCard({ lead }) {
                <Stack
                   direction='row'
                   spacing={1}
-                  flexWrap='wrap'
                   useFlexGap
                   sx={{
+                     flexWrap: 'wrap',
                      justifyContent: {
                         xs: 'flex-start',
                         sm: 'flex-end',
