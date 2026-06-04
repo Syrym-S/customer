@@ -42,7 +42,14 @@ export function LeadDetailsHeader({ lead }) {
                </Typography>
             </Box>
 
-            <Stack direction='row' spacing={1} flexWrap='wrap' useFlexGap>
+            <Stack
+               direction='row'
+               spacing={1}
+               sx={{
+                  flexWrap: 'wrap',
+               }}
+               useFlexGap
+            >
                <Chip
                   label={`Лид #${lead.num || '—'}`}
                   color='primary'

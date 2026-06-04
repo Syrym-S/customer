@@ -46,13 +46,9 @@ export function buildLeadRoutePayload(lead) {
    }
 
    return {
-      from: {
-         lat: from.lat,
-         lng: from.lng,
-      },
-      to: {
-         lat: to.lat,
-         lng: to.lng,
-      },
+      from_lat: from.lat,
+      from_lon: from.lng,
+      to_lat: to.lat,
+      to_lon: to.lng,
    };
 }
