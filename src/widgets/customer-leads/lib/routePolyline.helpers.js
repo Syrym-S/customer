@@ -23,32 +23,110 @@ export function getEncodedPolylineFromRoute(route) {
    );
 }
 
-function hasCoordinate(value) {
-   return value !== null && value !== undefined;
+function hasValue(value) {
+   return value !== null && value !== undefined && value !== '';
+}
+
+function normalizeText(value) {
+   return String(value ?? '').trim();
+}
+
+function getCoordinate(point, keys) {
+   for (const key of keys) {
+      if (!hasValue(point?.[key])) {
+         continue;
+      }
+
+      const coordinate = Number(point[key]);
+
+      if (!Number.isNaN(coordinate)) {
+         return coordinate;
+      }
+   }
+
+   return null;
+}
+
+function buildLocationText(location) {
+   if (!location) {
+      return '';
+   }
+
+   if (typeof location === 'string') {
+      return normalizeText(location);
+   }
+
+   return Object.values(location)
+      .filter((value) => {
+         if (!hasValue(value)) {
+            return false;
+         }
+
+         if (typeof value === 'object') {
+            return false;
+         }
+
+         return normalizeText(value) !== '';
+      })
+      .map(normalizeText)
+      .join(', ');
 }
 
 export function buildLeadRoutePayload(lead) {
-   const from = lead?.raw?.route?.from;
-   const to = lead?.raw?.route?.to;
-
-   if (
-      !hasCoordinate(from?.lat) ||
-      !hasCoordinate(from?.lng) ||
-      !hasCoordinate(to?.lat) ||
-      !hasCoordinate(to?.lng)
-   ) {
-      console.warn('Не хватает координат для генерации маршрута:', {
-         from,
-         to,
-      });
+   if (!lead?.id) {
+      console.warn('Не хватает id лида для генерации маршрута:', lead);
 
       return null;
    }
 
+   const route = lead?.raw?.route;
+
+   const from = route?.from;
+   const to = route?.to;
+
+   const fromLat = getCoordinate(from, ['lat', 'latitude', 'from_lat']);
+   const fromLon = getCoordinate(from, ['lng', 'lon', 'longitude', 'from_lon']);
+   const toLat = getCoordinate(to, ['lat', 'latitude', 'to_lat']);
+   const toLon = getCoordinate(to, ['lng', 'lon', 'longitude', 'to_lon']);
+
+   const hasCoordinates =
+      hasValue(fromLat) &&
+      hasValue(fromLon) &&
+      hasValue(toLat) &&
+      hasValue(toLon);
+
+   if (hasCoordinates) {
+      return {
+         id: lead.id,
+         from_lat: fromLat,
+         from_lon: fromLon,
+         to_lat: toLat,
+         to_lon: toLon,
+      };
+   }
+
+   const fromText =
+      buildLocationText(from) || normalizeText(lead?.from_location);
+
+   const toText = buildLocationText(to) || normalizeText(lead?.to_location);
+
+   if (!fromText || !toText) {
+      console.warn('Не хватает данных для генерации маршрута:', {
+         lead_id: lead.id,
+         from,
+         to,
+         from_location: lead?.from_location,
+         to_location: lead?.to_location,
+      });
+
+      return {
+         lead_id: lead.id,
+      };
+   }
+
    return {
-      from_lat: from.lat,
-      from_lon: from.lng,
-      to_lat: to.lat,
-      to_lon: to.lng,
+      lead_id: lead.id,
+      from: fromText,
+      to: toText,
    };
 }

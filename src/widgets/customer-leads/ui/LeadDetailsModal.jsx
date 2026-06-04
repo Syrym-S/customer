@@ -108,9 +108,6 @@ export function LeadDetailsModal() {
             const response = await fetchCustomerLeadById(openLead.id);
             const mappedLead = mapLeadDetailsResponseFromApi(response);
 
-            console.log('mapped lead details:', mappedLead);
-            console.log('mapped lead raw route:', mappedLead?.raw?.route);
-
             if (!isCancelled) {
                setLeadDetails(mappedLead);
             }
@@ -162,15 +159,11 @@ export function LeadDetailsModal() {
 
             const payload = buildLeadRoutePayload(leadDetails);
 
-            console.log('route generation payload:', payload);
-
             if (!payload) {
                return;
             }
 
             const generatedRoute = await generateRoute(payload);
-
-            console.log('generated route:', generatedRoute);
 
             if (isCancelled || !generatedRoute) {
                return;
