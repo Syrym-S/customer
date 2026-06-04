@@ -1,23 +1,15 @@
-import { useState } from 'react';
+import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material';
 
-import { Box, Stack } from '@mui/material';
-
+import { useLeadsContext } from '../model/useLeadsContext';
 import { LeadCard } from './LeadCard';
-import { LeadsPagination } from './LeadsPagination';
 import { LeadDetailsModal } from './LeadDetailsModal';
-import { mockLeads } from '../model/leads.mock';
-
-const ITEMS_PER_PAGE = 4;
+import { LeadsPagination } from './LeadsPagination';
 
 export function LeadsListContent() {
-   const [page, setPage] = useState(1);
+   const { leads, page, setPage, perPage, count, isLoading, error } =
+      useLeadsContext();
 
-   const pagesCount = Math.ceil(mockLeads.length / ITEMS_PER_PAGE);
-
-   const startIndex = (page - 1) * ITEMS_PER_PAGE;
-   const endIndex = startIndex + ITEMS_PER_PAGE;
-
-   const currentLeads = mockLeads.slice(startIndex, endIndex);
+   const pagesCount = Math.max(1, Math.ceil(count / perPage));
 
    const handlePageChange = (_, value) => {
       setPage(value);
@@ -31,17 +23,51 @@ export function LeadsListContent() {
             mt: 4,
          }}
       >
-         <Stack spacing={2}>
-            {currentLeads.map((lead) => (
-               <LeadCard key={lead.id} lead={lead} />
-            ))}
-         </Stack>
+         {isLoading && (
+            <Box
+               sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  py: 4,
+               }}
+            >
+               <CircularProgress />
+            </Box>
+         )}
 
-         <LeadsPagination
-            page={page}
-            count={pagesCount}
-            onChange={handlePageChange}
-         />
+         {error && (
+            <Alert severity='error' sx={{ mb: 2 }}>
+               {error}
+            </Alert>
+         )}
+
+         {!isLoading && !error && leads.length === 0 && (
+            <Typography
+               color='text.secondary'
+               sx={{
+                  py: 4,
+                  textAlign: 'center',
+               }}
+            >
+               Лиды не найдены
+            </Typography>
+         )}
+
+         {!isLoading && !error && leads.length > 0 && (
+            <>
+               <Stack spacing={2}>
+                  {leads.map((lead) => (
+                     <LeadCard key={lead.id} lead={lead} />
+                  ))}
+               </Stack>
+
+               <LeadsPagination
+                  page={page}
+                  count={pagesCount}
+                  onChange={handlePageChange}
+               />
+            </>
+         )}
 
          <LeadDetailsModal />
       </Box>

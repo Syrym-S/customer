@@ -14,6 +14,10 @@ export function LeadCard({ lead }) {
       setOpenLead(lead);
    }
 
+   function hasValue(value) {
+      return value !== null && value !== undefined && value !== '';
+   }
+
    return (
       <Box
          onClick={handleOpenLead}
@@ -231,13 +235,24 @@ export function LeadCard({ lead }) {
                   gap: 1,
                }}
             >
-               <InfoBadge label='Вес' value={`${lead.cargo.weight_kg} кг`} />
+               <InfoBadge
+                  label='Вес'
+                  value={
+                     hasValue(lead.cargo.weight_kg)
+                        ? `${lead.cargo.weight_kg} кг`
+                        : 'Не указано'
+                  }
+               />
 
-               <InfoBadge label='Тип' value={lead.cargo.type} />
+               <InfoBadge label='Тип' value={lead.cargo.type || 'Не указано'} />
 
                <InfoBadge
                   label='Цена'
-                  value={`${lead.summ} ${lead.currency}`}
+                  value={
+                     hasValue(lead.summ)
+                        ? `${lead.summ} ${lead.currency}`
+                        : 'Не указано'
+                  }
                   accent
                   sx={{
                      gridColumn: {
@@ -292,8 +307,8 @@ function InfoBadge({ label, value, accent = false, sx = {} }) {
 
 LeadCard.propTypes = {
    lead: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      num: PropTypes.number,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      num: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       status: PropTypes.string.isRequired,
       from_location: PropTypes.string.isRequired,
       to_location: PropTypes.string.isRequired,

@@ -16,6 +16,18 @@ const baseLead = {
    from_location: ' Казахстан, Павлодарская обл ',
    gsm: false,
    customer: 'AKE Plast (АКЕ Пласт) ТОО',
+
+   route: {
+      from: {
+         lat: 52.2873,
+         lng: 76.9674,
+      },
+      to: {
+         lat: 51.1694,
+         lng: 71.4491,
+      },
+   },
+
    cargo: {
       description: 'Груз заявки #33249585 Не указан',
       context: null,

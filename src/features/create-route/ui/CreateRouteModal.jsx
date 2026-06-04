@@ -5,17 +5,17 @@ import { useForm, useWatch } from 'react-hook-form';
 import { CreateRouteActions } from './create-route-modal/CreateRouteActions';
 import { CreateRouteStepTabs } from './create-route-modal/CreateRouteStepTabs';
 import { CreateRouteHeader } from './create-route-modal/CreateRouteHeader';
-import { CustomerStep } from './create-route-modal/steps/CustomerStep';
+import { ForwarderStep } from './create-route-modal/steps/ForwarderStep';
 import { CargoStep } from './create-route-modal/steps/CargoStep';
 import { ConfirmStep } from './create-route-modal/steps/ConfirmStep';
 import { RouteStep } from './create-route-modal/steps/RouteStep';
 
-const steps = ['Маршрут', 'Заказчик', 'Груз', 'Проверка'];
+const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Проверка'];
 
 const initialForm = {
-   customer: 'AKE Plast (АКЕ Пласт) ТОО',
-   contactName: 'Suleimenov Syrym',
-   phone: '+7 777 777 77 77',
+   // customer: 'AKE Plast (АКЕ Пласт) ТОО',
+   // contactName: 'Suleimenov Syrym',
+   // phone: '+7 777 777 77 77',
 
    fromLocation: '',
    fromLat: '',
@@ -29,18 +29,19 @@ const initialForm = {
 
    cargoType: 'Не указан',
    weightKg: '1200',
-   cargoLengthCm: '',
-   cargoWidthCm: '',
-   cargoHeightCm: '',
+   cargoLengthCm: '50',
+   cargoWidthCm: '50',
+   cargoHeightCm: '70',
    price: '250000',
    currency: 'KZT',
    vat: true,
    comment: '',
+
+   forwarderId: '',
 };
 
 const stepFields = [
    ['fromLocation', 'toLocation', 'loadingDate'],
-   ['customer', 'contactName', 'phone'],
    [
       'cargoType',
       'weightKg',
@@ -50,6 +51,7 @@ const stepFields = [
       'price',
       'currency',
    ],
+   ['forwarderId'],
 ];
 
 export function CreateRouteModal({ open, onClose }) {
@@ -131,7 +133,29 @@ export function CreateRouteModal({ open, onClose }) {
    }
 
    function handleCreateRoute(data) {
-      console.log('create route:', data);
+      const payload = {
+         fromLocation: data.fromLocation,
+         fromLat: data.fromLat,
+         fromLng: data.fromLng,
+         toLocation: data.toLocation,
+         toLat: data.toLat,
+         toLng: data.toLng,
+         loadingDate: data.loadingDate,
+
+         cargoType: data.cargoType,
+         weightKg: data.weightKg,
+         cargoLengthCm: data.cargoLengthCm,
+         cargoWidthCm: data.cargoWidthCm,
+         cargoHeightCm: data.cargoHeightCm,
+         price: data.price,
+         currency: data.currency,
+         vat: data.vat,
+         comment: data.comment,
+
+         forwarderId: data.forwarderId,
+      };
+
+      console.log('create route payload:', payload);
       handleClose();
    }
 
@@ -148,11 +172,11 @@ export function CreateRouteModal({ open, onClose }) {
       }
 
       if (activeStep === 1) {
-         return <CustomerStep control={control} errors={errors} />;
+         return <CargoStep control={control} errors={errors} />;
       }
 
       if (activeStep === 2) {
-         return <CargoStep control={control} errors={errors} />;
+         return <ForwarderStep control={control} errors={errors} />;
       }
 
       return <ConfirmStep form={formValues} />;
