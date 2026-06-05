@@ -2,6 +2,7 @@ import { Box, Dialog, DialogContent } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
+import { mapCreateLeadFormToApi } from '../model/createLead.adapter';
 import { CreateRouteActions } from './create-route-modal/CreateRouteActions';
 import { CreateRouteStepTabs } from './create-route-modal/CreateRouteStepTabs';
 import { CreateRouteHeader } from './create-route-modal/CreateRouteHeader';
@@ -9,6 +10,9 @@ import { ForwarderStep } from './create-route-modal/steps/ForwarderStep';
 import { CargoStep } from './create-route-modal/steps/CargoStep';
 import { ConfirmStep } from './create-route-modal/steps/ConfirmStep';
 import { RouteStep } from './create-route-modal/steps/RouteStep';
+import { useLeadsContext } from '../../../widgets/customer-leads/model/useLeadsContext';
+import { createLead } from '../api/createLead.repository';
+import { CreateLeadResultModal } from './create-route-modal/components/CreateLeadResultModal';
 
 const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Проверка'];
 
@@ -69,6 +73,15 @@ export function CreateRouteModal({ open, onClose }) {
       mode: 'onChange',
       reValidateMode: 'onChange',
    });
+   const { reloadLeads } = useLeadsContext();
+
+   const [isSubmitting, setIsSubmitting] = useState(false);
+   const [resultModal, setResultModal] = useState({
+      open: false,
+      type: null,
+      title: '',
+      message: '',
+   });
 
    const formValues = useWatch({ control });
 
@@ -125,6 +138,14 @@ export function CreateRouteModal({ open, onClose }) {
       setActiveStep(targetStep);
    }
 
+   async function handleSubmitClick() {
+      if (!isLastStep) {
+         return;
+      }
+
+      await handleSubmit(handleCreateRoute)();
+   }
+
    function handleClose() {
       setActiveStep(0);
       setMaxAvailableStep(0);
@@ -132,31 +153,37 @@ export function CreateRouteModal({ open, onClose }) {
       onClose();
    }
 
-   function handleCreateRoute(data) {
-      const payload = {
-         fromLocation: data.fromLocation,
-         fromLat: data.fromLat,
-         fromLng: data.fromLng,
-         toLocation: data.toLocation,
-         toLat: data.toLat,
-         toLng: data.toLng,
-         loadingDate: data.loadingDate,
+   async function handleCreateRoute(data) {
+      try {
+         setIsSubmitting(true);
 
-         cargoType: data.cargoType,
-         weightKg: data.weightKg,
-         cargoLengthCm: data.cargoLengthCm,
-         cargoWidthCm: data.cargoWidthCm,
-         cargoHeightCm: data.cargoHeightCm,
-         price: data.price,
-         currency: data.currency,
-         vat: data.vat,
-         comment: data.comment,
+         const payload = mapCreateLeadFormToApi(data);
 
-         forwarderId: data.forwarderId,
-      };
+         const response = await createLead(payload);
 
-      console.log('create route payload:', payload);
-      handleClose();
+         await reloadLeads();
+
+         handleClose();
+
+         setResultModal({
+            open: true,
+            type: 'success',
+            title: 'Перевозка создана',
+            message: `Лид успешно создан${response?.id ? `: ${response.id}` : ''}`,
+         });
+      } catch (error) {
+         setResultModal({
+            open: true,
+            type: 'error',
+            title: 'Ошибка создания',
+            message:
+               error.response?.data?.message ||
+               error.message ||
+               'Не удалось создать перевозку',
+         });
+      } finally {
+         setIsSubmitting(false);
+      }
    }
 
    function renderStepContent() {
@@ -189,49 +216,72 @@ export function CreateRouteModal({ open, onClose }) {
    }
 
    return (
-      <Dialog
-         open={open}
-         onClose={handleClose}
-         fullWidth
-         maxWidth='md'
-         slotProps={{
-            paper: {
-               sx: {
-                  borderRadius: 4,
-               },
-            },
-         }}
-      >
-         <CreateRouteHeader activeStep={activeStep} stepsCount={steps.length} />
-
-         <DialogContent sx={{ px: 3 }}>
-            <CreateRouteStepTabs
-               steps={steps}
-               activeStep={activeStep}
-               maxAvailableStep={maxAvailableStep}
-               hasStepErrors={hasStepErrors}
-               onStepClick={handleStepClick}
-            />
-
-            <Box
-               sx={{
-                  minHeight: 360,
-               }}
-            >
-               {renderStepContent()}
-            </Box>
-         </DialogContent>
-
-         <CreateRouteActions
-            isFirstStep={isFirstStep}
-            isLastStep={isLastStep}
-            hasCurrentStepErrors={hasCurrentStepErrors}
+      <>
+         <Dialog
+            open={open}
             onClose={handleClose}
-            onBack={handleBack}
-            onNext={handleNext}
-            onCreate={handleSubmit(handleCreateRoute)}
+            fullWidth
+            maxWidth='md'
+            slotProps={{
+               paper: {
+                  sx: {
+                     borderRadius: 4,
+                  },
+               },
+            }}
+         >
+            <Box component='div'>
+               <CreateRouteHeader
+                  activeStep={activeStep}
+                  stepsCount={steps.length}
+               />
+
+               <DialogContent sx={{ px: 3 }}>
+                  <CreateRouteStepTabs
+                     steps={steps}
+                     activeStep={activeStep}
+                     maxAvailableStep={maxAvailableStep}
+                     hasStepErrors={hasStepErrors}
+                     onStepClick={handleStepClick}
+                  />
+
+                  <Box
+                     sx={{
+                        minHeight: 360,
+                     }}
+                  >
+                     {renderStepContent()}
+                  </Box>
+               </DialogContent>
+
+               <CreateRouteActions
+                  isFirstStep={isFirstStep}
+                  isLastStep={isLastStep}
+                  hasCurrentStepErrors={hasCurrentStepErrors}
+                  isSubmitting={isSubmitting}
+                  onClose={handleClose}
+                  onBack={handleBack}
+                  onNext={handleNext}
+                  onSubmit={handleSubmitClick}
+               />
+            </Box>
+         </Dialog>
+
+         <CreateLeadResultModal
+            open={resultModal.open}
+            type={resultModal.type}
+            title={resultModal.title}
+            message={resultModal.message}
+            onClose={() =>
+               setResultModal({
+                  open: false,
+                  type: null,
+                  title: '',
+                  message: '',
+               })
+            }
          />
-      </Dialog>
+      </>
    );
 }
 

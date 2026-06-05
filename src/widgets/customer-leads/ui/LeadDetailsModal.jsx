@@ -15,6 +15,7 @@ import {
    buildLeadRoutePayload,
    decodeRoutePolyline,
    getEncodedPolylineFromRoute,
+   getRoutesFromGeneratedRoute,
 } from '../lib/routePolyline.helpers';
 import { generateRoute } from '../api/lead-route.repository';
 import { fetchCustomerLeadById } from '../api/leads.repository';
@@ -169,10 +170,28 @@ export function LeadDetailsModal() {
                return;
             }
 
-            const encodedPolyline = getEncodedPolylineFromRoute(generatedRoute);
+            const routes = getRoutesFromGeneratedRoute(generatedRoute);
+            const mainRoute = routes[0];
+
+            if (!mainRoute) {
+               console.warn('Маршруты не найдены в response:', generatedRoute);
+               return;
+            }
+
+            const encodedPolyline = getEncodedPolylineFromRoute(mainRoute);
             const decodedPoints = decodeRoutePolyline(encodedPolyline);
 
-            setRoute(generatedRoute);
+            if (!decodedPoints.length) {
+               console.warn('Polyline не декодировался:', {
+                  generatedRoute,
+                  mainRoute,
+                  encodedPolyline,
+               });
+
+               return;
+            }
+
+            setRoute(mainRoute);
             setRoutePoints(decodedPoints);
          } finally {
             if (!isCancelled) {

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { fetchCustomerLeads } from '../api/leads.repository';
 import { mapLeadsResponseFromApi } from './lead.adapter';
@@ -18,27 +18,27 @@ export function LeadsProvider({ children }) {
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
 
-   useEffect(() => {
-      async function loadLeads() {
-         try {
-            setIsLoading(true);
-            setError(null);
+   const loadLeads = useCallback(async () => {
+      try {
+         setIsLoading(true);
+         setError(null);
 
-            const response = await fetchCustomerLeads({ page, perPage });
-            const mappedResponse = mapLeadsResponseFromApi(response);
+         const response = await fetchCustomerLeads({ page, perPage });
+         const mappedResponse = mapLeadsResponseFromApi(response);
 
-            setLeads(mappedResponse.leads);
-            setCount(mappedResponse.count);
-            setPerPage(mappedResponse.perPage);
-         } catch (requestError) {
-            setError(requestError.message);
-         } finally {
-            setIsLoading(false);
-         }
+         setLeads(mappedResponse.leads);
+         setCount(mappedResponse.count);
+         setPerPage(mappedResponse.perPage);
+      } catch (requestError) {
+         setError(requestError.message || 'Не удалось загрузить лиды');
+      } finally {
+         setIsLoading(false);
       }
-
-      loadLeads();
    }, [page, perPage]);
+
+   useEffect(() => {
+      loadLeads();
+   }, [loadLeads]);
 
    const value = useMemo(
       () => ({
@@ -54,8 +54,10 @@ export function LeadsProvider({ children }) {
 
          isLoading,
          error,
+
+         reloadLeads: loadLeads,
       }),
-      [leads, openLead, page, perPage, count, isLoading, error],
+      [leads, openLead, page, perPage, count, isLoading, error, loadLeads],
    );
 
    return (

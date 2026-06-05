@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
    MapContainer,
    TileLayer,
@@ -5,6 +6,7 @@ import {
    Popup,
    useMapEvents,
    Polyline,
+   useMap,
 } from 'react-leaflet';
 import PropTypes from 'prop-types';
 
@@ -27,6 +29,15 @@ export function CustomerMapView({
             height: '100%',
          }}
       >
+         <MapResizeHandler
+            center={center}
+            zoom={zoom}
+            markersCount={markers.length}
+            routePointsCount={routePoints.length}
+         />
+
+         <FitRouteBounds routePoints={routePoints} />
+
          <MapClickHandler onMapClick={onMapClick} />
 
          <TileLayer
@@ -38,8 +49,8 @@ export function CustomerMapView({
             <Polyline
                positions={routePoints}
                pathOptions={{
-                  weight: 4,
-                  opacity: 0.8,
+                  weight: 5,
+                  opacity: 0.9,
                }}
             />
          )}
@@ -73,6 +84,58 @@ export function CustomerMapView({
    );
 }
 
+function MapResizeHandler({ center, zoom, markersCount, routePointsCount }) {
+   const map = useMap();
+
+   useEffect(() => {
+      const invalidate = () => {
+         map.invalidateSize();
+      };
+
+      const firstTimeoutId = setTimeout(invalidate, 0);
+      const secondTimeoutId = setTimeout(invalidate, 250);
+      const thirdTimeoutId = setTimeout(invalidate, 600);
+
+      return () => {
+         clearTimeout(firstTimeoutId);
+         clearTimeout(secondTimeoutId);
+         clearTimeout(thirdTimeoutId);
+      };
+   }, [map, center, zoom, markersCount, routePointsCount]);
+
+   useEffect(() => {
+      const container = map.getContainer();
+
+      const resizeObserver = new ResizeObserver(() => {
+         map.invalidateSize();
+      });
+
+      resizeObserver.observe(container);
+
+      return () => {
+         resizeObserver.disconnect();
+      };
+   }, [map]);
+
+   return null;
+}
+
+function FitRouteBounds({ routePoints }) {
+   const map = useMap();
+
+   useEffect(() => {
+      if (!routePoints || routePoints.length < 2) {
+         return;
+      }
+
+      map.fitBounds(routePoints, {
+         padding: [32, 32],
+      });
+   }, [map, routePoints]);
+
+   return null;
+}
+
 function MapClickHandler({ onMapClick }) {
    useMapEvents({
       click(event) {
@@ -95,6 +158,17 @@ CustomerMapView.propTypes = {
    handleMarkerClick: PropTypes.func.isRequired,
    onMapClick: PropTypes.func,
    onMarkerDragEnd: PropTypes.func,
+};
+
+MapResizeHandler.propTypes = {
+   center: PropTypes.array.isRequired,
+   zoom: PropTypes.number.isRequired,
+   markersCount: PropTypes.number.isRequired,
+   routePointsCount: PropTypes.number.isRequired,
+};
+
+FitRouteBounds.propTypes = {
+   routePoints: PropTypes.array,
 };
 
 MapClickHandler.propTypes = {

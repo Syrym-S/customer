@@ -5,10 +5,11 @@ export function CreateRouteActions({
    isFirstStep,
    isLastStep,
    hasCurrentStepErrors,
+   isSubmitting,
    onClose,
    onBack,
    onNext,
-   onCreate,
+   onSubmit,
 }) {
    return (
       <DialogActions
@@ -19,18 +20,36 @@ export function CreateRouteActions({
             justifyContent: 'space-between',
          }}
       >
-         <Button onClick={onClose}>Отмена</Button>
+         <Button type='button' onClick={onClose} disabled={isSubmitting}>
+            Отмена
+         </Button>
 
          <Box sx={{ display: 'flex', gap: 1 }}>
-            {!isFirstStep && <Button onClick={onBack}>Назад</Button>}
+            {!isFirstStep && (
+               <Button type='button' onClick={onBack} disabled={isSubmitting}>
+                  Назад
+               </Button>
+            )}
 
-            <Button
-               variant='contained'
-               disabled={!isLastStep && hasCurrentStepErrors}
-               onClick={isLastStep ? onCreate : onNext}
-            >
-               {isLastStep ? 'Создать маршрут' : 'Дальше'}
-            </Button>
+            {isLastStep ? (
+               <Button
+                  type='button'
+                  variant='contained'
+                  disabled={isSubmitting || hasCurrentStepErrors}
+                  onClick={onSubmit}
+               >
+                  {isSubmitting ? 'Создание...' : 'Создать маршрут'}
+               </Button>
+            ) : (
+               <Button
+                  type='button'
+                  variant='contained'
+                  disabled={hasCurrentStepErrors || isSubmitting}
+                  onClick={onNext}
+               >
+                  Дальше
+               </Button>
+            )}
          </Box>
       </DialogActions>
    );
@@ -40,8 +59,8 @@ CreateRouteActions.propTypes = {
    isFirstStep: PropTypes.bool.isRequired,
    isLastStep: PropTypes.bool.isRequired,
    hasCurrentStepErrors: PropTypes.bool.isRequired,
+   isSubmitting: PropTypes.bool.isRequired,
    onClose: PropTypes.func.isRequired,
    onBack: PropTypes.func.isRequired,
    onNext: PropTypes.func.isRequired,
-   onCreate: PropTypes.func.isRequired,
 };

@@ -36,6 +36,7 @@ export function LeadDetailsMap({
                xs: 220,
                sm: 280,
             },
+            minHeight: 220,
             border: '1px solid',
             borderColor: 'divider',
             borderRadius: 3,
@@ -83,6 +84,6 @@ LeadDetailsMap.propTypes = {
       from_location: PropTypes.string,
       to_location: PropTypes.string,
    }).isRequired,
-   routePoints: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+   routePoints: PropTypes.array,
    isRouteLoading: PropTypes.bool,
 };

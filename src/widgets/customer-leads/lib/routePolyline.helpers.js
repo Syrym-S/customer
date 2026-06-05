@@ -14,6 +14,22 @@ export function decodeRoutePolyline(encodedPolyline) {
    }
 }
 
+export function getRoutesFromGeneratedRoute(generatedRoute) {
+   if (Array.isArray(generatedRoute?.routes)) {
+      return generatedRoute.routes;
+   }
+
+   if (generatedRoute?.data && Array.isArray(generatedRoute.data.routes)) {
+      return generatedRoute.data.routes;
+   }
+
+   if (generatedRoute?.polyline || generatedRoute?.encodedPolyline) {
+      return [generatedRoute];
+   }
+
+   return [];
+}
+
 export function getEncodedPolylineFromRoute(route) {
    return (
       route?.polyline?.encodedPolyline ||
@@ -98,6 +114,7 @@ export function buildLeadRoutePayload(lead) {
    if (hasCoordinates) {
       return {
          id: lead.id,
+         lead_id: lead.id,
          from_lat: fromLat,
          from_lon: fromLon,
          to_lat: toLat,
@@ -112,6 +129,7 @@ export function buildLeadRoutePayload(lead) {
 
    if (!fromText || !toText) {
       console.warn('Не хватает данных для генерации маршрута:', {
+         id: lead.id,
          lead_id: lead.id,
          from,
          to,
@@ -120,11 +138,13 @@ export function buildLeadRoutePayload(lead) {
       });
 
       return {
+         id: lead.id,
          lead_id: lead.id,
       };
    }
 
    return {
+      id: lead.id,
       lead_id: lead.id,
       from: fromText,
       to: toText,
