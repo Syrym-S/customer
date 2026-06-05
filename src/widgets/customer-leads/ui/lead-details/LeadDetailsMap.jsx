@@ -27,7 +27,7 @@ export function LeadDetailsMap({
               description: lead.to_location || 'Не указано',
            },
         ]
-      : map.markers;
+      : [];
 
    return (
       <Box
@@ -67,7 +67,7 @@ export function LeadDetailsMap({
             zoom={hasRoutePoints ? 7 : map.zoom}
             markers={routeMarkers}
             route={route}
-            routePoints={hasRoutePoints ? routePoints : map.routePoints}
+            routePoints={hasRoutePoints ? routePoints : []}
             handleMarkerClick={map.handleMarkerClick}
          />
       </Box>
