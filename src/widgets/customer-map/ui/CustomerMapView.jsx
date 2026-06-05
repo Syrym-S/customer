@@ -17,6 +17,7 @@ export function CustomerMapView({
    markers,
    routePoints = [],
    routes = [],
+   route = null,
    handleMarkerClick,
    onMapClick,
    onMarkerDragEnd,
@@ -118,7 +119,27 @@ export function CustomerMapView({
                   weight: 5,
                   opacity: 0.9,
                }}
-            />
+            >
+               <Tooltip sticky>
+                  <div>
+                     <b>{route?.description || 'Маршрут'}</b>
+
+                     {route?.distanceMeters && (
+                        <>
+                           <br />
+                           {(route.distanceMeters / 1000).toFixed(1)} км
+                        </>
+                     )}
+
+                     {route?.duration && (
+                        <>
+                           <br />
+                           {Math.round(parseInt(route.duration, 10) / 60)} мин
+                        </>
+                     )}
+                  </div>
+               </Tooltip>
+            </Polyline>
          )}
 
          {markers.map((marker) => (
@@ -225,6 +246,7 @@ CustomerMapView.propTypes = {
    zoom: PropTypes.number.isRequired,
    markers: PropTypes.array.isRequired,
    routePoints: PropTypes.array,
+   route: PropTypes.object,
    routes: PropTypes.array,
    handleMarkerClick: PropTypes.func.isRequired,
    onMapClick: PropTypes.func,

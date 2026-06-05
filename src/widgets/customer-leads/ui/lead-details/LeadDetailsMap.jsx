@@ -6,6 +6,7 @@ import { CustomerMapView } from '../../../customer-map/ui/CustomerMapView';
 export function LeadDetailsMap({
    map,
    lead,
+   route,
    routePoints = [],
    isRouteLoading = false,
 }) {
@@ -65,6 +66,7 @@ export function LeadDetailsMap({
             center={hasRoutePoints ? routePoints[0] : map.center}
             zoom={hasRoutePoints ? 7 : map.zoom}
             markers={routeMarkers}
+            route={route}
             routePoints={hasRoutePoints ? routePoints : map.routePoints}
             handleMarkerClick={map.handleMarkerClick}
          />
@@ -84,6 +86,7 @@ LeadDetailsMap.propTypes = {
       from_location: PropTypes.string,
       to_location: PropTypes.string,
    }).isRequired,
+   route: PropTypes.object,
    routePoints: PropTypes.array,
    isRouteLoading: PropTypes.bool,
 };
