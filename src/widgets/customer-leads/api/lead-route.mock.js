@@ -19,12 +19,17 @@ export async function generateRouteMock(payload) {
    const fromPoint = getMockPoint(payload, 'from') ?? [52.2873, 76.9674];
    const toPoint = getMockPoint(payload, 'to') ?? [51.1694, 71.4491];
 
-   const points = [fromPoint, [51.9, 74.8], toPoint];
+   const middlePoint = [
+      (fromPoint[0] + toPoint[0]) / 2,
+      (fromPoint[1] + toPoint[1]) / 2,
+   ];
+
+   const points = [fromPoint, middlePoint, toPoint];
 
    const encodedPolyline = polyline.encode(points);
 
    return {
-      description: 'Павлодар → Астана',
+      description: 'Тестовый маршрут',
       distanceMeters: 450000,
       duration: 21600,
       polyline: {

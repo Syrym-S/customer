@@ -5,7 +5,7 @@ import { fetchCustomerLeads } from '../api/leads.repository';
 import { mapLeadsResponseFromApi } from './lead.adapter';
 import { LeadsContext } from './LeadsContext';
 
-const DEFAULT_PER_PAGE = 4;
+const DEFAULT_PER_PAGE = 10;
 
 export function LeadsProvider({ children }) {
    const [leads, setLeads] = useState([]);
@@ -36,6 +36,18 @@ export function LeadsProvider({ children }) {
       }
    }, [page, perPage]);
 
+   const prependLead = useCallback(
+      (lead) => {
+         if (!lead) {
+            return;
+         }
+
+         setLeads((prevLeads) => [lead, ...prevLeads].slice(0, perPage));
+         setCount((prevCount) => prevCount + 1);
+      },
+      [perPage],
+   );
+
    useEffect(() => {
       loadLeads();
    }, [loadLeads]);
@@ -56,8 +68,19 @@ export function LeadsProvider({ children }) {
          error,
 
          reloadLeads: loadLeads,
+         prependLead,
       }),
-      [leads, openLead, page, perPage, count, isLoading, error, loadLeads],
+      [
+         leads,
+         openLead,
+         page,
+         perPage,
+         count,
+         isLoading,
+         error,
+         loadLeads,
+         prependLead,
+      ],
    );
 
    return (

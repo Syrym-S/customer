@@ -2,7 +2,10 @@ import { Box, Dialog, DialogContent } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { mapCreateLeadFormToApi } from '../model/createLead.adapter';
+import {
+   mapCreatedLeadToUi,
+   mapCreateLeadFormToApi,
+} from '../model/createLead.adapter';
 import { CreateRouteActions } from './create-route-modal/CreateRouteActions';
 import { CreateRouteStepTabs } from './create-route-modal/CreateRouteStepTabs';
 import { CreateRouteHeader } from './create-route-modal/CreateRouteHeader';
@@ -73,7 +76,7 @@ export function CreateRouteModal({ open, onClose }) {
       mode: 'onChange',
       reValidateMode: 'onChange',
    });
-   const { reloadLeads } = useLeadsContext();
+   const { prependLead } = useLeadsContext();
 
    const [isSubmitting, setIsSubmitting] = useState(false);
    const [resultModal, setResultModal] = useState({
@@ -161,7 +164,9 @@ export function CreateRouteModal({ open, onClose }) {
 
          const response = await createLead(payload);
 
-         await reloadLeads();
+         const createdLead = mapCreatedLeadToUi(data, response);
+
+         prependLead(createdLead);
 
          handleClose();
 

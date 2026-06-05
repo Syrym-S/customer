@@ -7,6 +7,7 @@ import {
    useMapEvents,
    Polyline,
    useMap,
+   Tooltip,
 } from 'react-leaflet';
 import PropTypes from 'prop-types';
 
@@ -15,10 +16,16 @@ export function CustomerMapView({
    zoom,
    markers,
    routePoints = [],
+   routes = [],
    handleMarkerClick,
    onMapClick,
    onMarkerDragEnd,
 }) {
+   const routesPointsCount = routes.reduce(
+      (count, route) => count + (route.points?.length || 0),
+      0,
+   );
+
    return (
       <MapContainer
          center={center}
@@ -33,10 +40,10 @@ export function CustomerMapView({
             center={center}
             zoom={zoom}
             markersCount={markers.length}
-            routePointsCount={routePoints.length}
+            routePointsCount={routePoints.length + routesPointsCount}
          />
 
-         <FitRouteBounds routePoints={routePoints} />
+         <FitRouteBounds routePoints={routePoints} routes={routes} />
 
          <MapClickHandler onMapClick={onMapClick} />
 
@@ -44,6 +51,41 @@ export function CustomerMapView({
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
          />
+
+         {routes.map((mapRoute, index) => {
+            if (!mapRoute.points || mapRoute.points.length < 2) {
+               return null;
+            }
+
+            return (
+               <Polyline
+                  key={mapRoute.id}
+                  positions={mapRoute.points}
+                  pathOptions={{
+                     weight: index === 0 ? 5 : 4,
+                     opacity: index === 0 ? 0.9 : 0.65,
+                  }}
+               >
+                  <Tooltip sticky>
+                     <div>
+                        <b>Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}</b>
+                        <br />
+                        {mapRoute.lead?.from_location} →{' '}
+                        {mapRoute.lead?.to_location}
+                        {mapRoute.route?.distanceMeters && (
+                           <>
+                              <br />
+                              {(mapRoute.route.distanceMeters / 1000).toFixed(
+                                 1,
+                              )}{' '}
+                              км
+                           </>
+                        )}
+                     </div>
+                  </Tooltip>
+               </Polyline>
+            );
+         })}
 
          {routePoints.length >= 2 && (
             <Polyline
@@ -120,18 +162,22 @@ function MapResizeHandler({ center, zoom, markersCount, routePointsCount }) {
    return null;
 }
 
-function FitRouteBounds({ routePoints }) {
+function FitRouteBounds({ routePoints, routes }) {
    const map = useMap();
 
    useEffect(() => {
-      if (!routePoints || routePoints.length < 2) {
+      const routesPoints = routes.flatMap((route) => route.points || []);
+
+      const points = routesPoints.length >= 2 ? routesPoints : routePoints;
+
+      if (!points || points.length < 2) {
          return;
       }
 
-      map.fitBounds(routePoints, {
+      map.fitBounds(points, {
          padding: [32, 32],
       });
-   }, [map, routePoints]);
+   }, [map, routePoints, routes]);
 
    return null;
 }
@@ -155,6 +201,7 @@ CustomerMapView.propTypes = {
    zoom: PropTypes.number.isRequired,
    markers: PropTypes.array.isRequired,
    routePoints: PropTypes.array,
+   routes: PropTypes.array,
    handleMarkerClick: PropTypes.func.isRequired,
    onMapClick: PropTypes.func,
    onMarkerDragEnd: PropTypes.func,
@@ -169,6 +216,7 @@ MapResizeHandler.propTypes = {
 
 FitRouteBounds.propTypes = {
    routePoints: PropTypes.array,
+   routes: PropTypes.array,
 };
 
 MapClickHandler.propTypes = {

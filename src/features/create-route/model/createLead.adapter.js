@@ -70,3 +70,72 @@ export function mapCreateLeadFormToApi(form) {
 
    return payload;
 }
+
+export function mapCreatedLeadToUi(form, response) {
+   const id = response?.id ?? `created-lead-${Date.now()}`;
+
+   return {
+      id,
+      num: response?.num ?? id,
+
+      customer:
+         response?.customer?.name ||
+         response?.customer ||
+         response?.creator?.name ||
+         'Текущий заказчик',
+
+      from_location: form.fromLocation || 'Не указано',
+      to_location: form.toLocation || 'Не указано',
+
+      summ: Number(form.price) || 0,
+      currency: form.currency || 'KZT',
+
+      status: response?.status || 'new',
+
+      transportation_price: null,
+      vat: form.vat ? 'с НДС' : 'без НДС',
+      gsm: false,
+      created_at: response?.created_at ?? null,
+      updated_at: null,
+
+      cargo: {
+         name: form.cargoType || 'Не указан',
+         description: form.comment || '',
+         context: null,
+         weight_kg: Number(form.weightKg) || 0,
+         type: form.cargoType || 'Не указан',
+         volume_cm: null,
+         width_cm: Number(form.cargoWidthCm) || null,
+         height_cm: Number(form.cargoHeightCm) || null,
+         length_cm: Number(form.cargoLengthCm) || null,
+      },
+
+      driver: 'Не назначен',
+
+      creator: null,
+      person: null,
+      files: [],
+      agreement: null,
+      geows: null,
+
+      type_of_loading: 'Не указан',
+      type_of_packaging: 'Не указан',
+      type_of_composition: 'Не указан',
+      type_of_transport: 'Не указан',
+      gos_number: null,
+
+      raw: {
+         ...response,
+         route: {
+            from: {
+               lat: form.fromLat ? Number(form.fromLat) : null,
+               lng: form.fromLng ? Number(form.fromLng) : null,
+            },
+            to: {
+               lat: form.toLat ? Number(form.toLat) : null,
+               lng: form.toLng ? Number(form.toLng) : null,
+            },
+         },
+      },
+   };
+}

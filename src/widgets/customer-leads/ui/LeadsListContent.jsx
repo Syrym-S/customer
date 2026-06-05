@@ -60,7 +60,6 @@ export function LeadsListContent() {
                      <LeadCard key={lead.id} lead={lead} />
                   ))}
                </Stack>
-
                <LeadsPagination
                   page={page}
                   count={pagesCount}
