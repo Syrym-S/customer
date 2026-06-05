@@ -63,4 +63,5 @@ CreateRouteActions.propTypes = {
    onClose: PropTypes.func.isRequired,
    onBack: PropTypes.func.isRequired,
    onNext: PropTypes.func.isRequired,
+   onSubmit: PropTypes.func.isRequired,
 };
