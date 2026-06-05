@@ -1,3 +1,46 @@
+function mapForwarderFromLead(apiLead) {
+   const forwarder =
+      apiLead.forwarder ||
+      apiLead.forwarder_data ||
+      apiLead.expeditor ||
+      apiLead.expediter ||
+      null;
+
+   return {
+      id: forwarder?.id ?? apiLead.forwarder_id ?? null,
+
+      fullName:
+         forwarder?.fullName ??
+         forwarder?.full_name ??
+         forwarder?.fio ??
+         forwarder?.name ??
+         apiLead.forwarder_name ??
+         'Не указан',
+
+      companyName:
+         forwarder?.companyName ??
+         forwarder?.company_name ??
+         forwarder?.company?.name ??
+         forwarder?.organization?.name ??
+         apiLead.forwarder_company_name ??
+         '',
+
+      companyBin:
+         forwarder?.companyBin ??
+         forwarder?.company_bin ??
+         forwarder?.company?.bin ??
+         forwarder?.organization?.bin ??
+         apiLead.forwarder_company_bin ??
+         '',
+
+      phone:
+         forwarder?.phone ??
+         forwarder?.phone_number ??
+         apiLead.forwarder_phone ??
+         '',
+   };
+}
+
 export function mapLeadFromApi(apiLead) {
    return {
       id: apiLead.id,
@@ -8,6 +51,8 @@ export function mapLeadFromApi(apiLead) {
          apiLead.customer ||
          apiLead.creator?.name ||
          'Без заказчика',
+
+      forwarder: mapForwarderFromLead(apiLead),
 
       from_location:
          apiLead.from_location ||

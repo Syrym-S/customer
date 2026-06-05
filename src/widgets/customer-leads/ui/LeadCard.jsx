@@ -18,6 +18,9 @@ export function LeadCard({ lead }) {
       return value !== null && value !== undefined && value !== '';
    }
 
+   const forwarderLabel =
+      lead.forwarder?.companyName || lead.forwarder?.fullName || 'Не указан';
+
    return (
       <Box
          onClick={handleOpenLead}
@@ -54,7 +57,7 @@ export function LeadCard({ lead }) {
                      color='text.secondary'
                      sx={{ mb: 0.75 }}
                   >
-                     Заказчик
+                     Экспедитор
                   </Typography>
 
                   <Typography
@@ -67,7 +70,7 @@ export function LeadCard({ lead }) {
                         fontWeight: 500,
                      }}
                   >
-                     {lead.customer}
+                     {forwarderLabel}
                   </Typography>
                </Box>
 
@@ -312,9 +315,15 @@ LeadCard.propTypes = {
       status: PropTypes.string.isRequired,
       from_location: PropTypes.string.isRequired,
       to_location: PropTypes.string.isRequired,
-      customer: PropTypes.string.isRequired,
       summ: PropTypes.number.isRequired,
       currency: PropTypes.string.isRequired,
+      forwarder: PropTypes.shape({
+         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+         fullName: PropTypes.string,
+         companyName: PropTypes.string,
+         companyBin: PropTypes.string,
+         phone: PropTypes.string,
+      }),
       cargo: PropTypes.shape({
          weight_kg: PropTypes.number.isRequired,
          type: PropTypes.string.isRequired,

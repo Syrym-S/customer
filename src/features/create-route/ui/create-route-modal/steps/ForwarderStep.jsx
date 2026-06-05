@@ -14,7 +14,7 @@ import { searchForwarders } from '../../../api/forwarders.repository';
 import { InfoBadge } from '../components/InfoBadge';
 import { StepSection } from '../components/StepSection';
 
-export function ForwarderStep({ control, errors }) {
+export function ForwarderStep({ control, errors, setValue }) {
    const selectedForwarderId = useWatch({
       control,
       name: 'forwarderId',
@@ -123,6 +123,13 @@ export function ForwarderStep({ control, errors }) {
 
                         setSelectedForwarder(lastSelectedForwarder);
                         field.onChange(lastSelectedForwarder?.id ?? '');
+
+                        setValue('forwarder', lastSelectedForwarder, {
+                           shouldDirty: true,
+                           shouldTouch: true,
+                           shouldValidate: false,
+                        });
+
                         setInputValue('');
                      }}
                      renderValue={(tagValue, getItemProps) =>
@@ -253,6 +260,7 @@ export function ForwarderStep({ control, errors }) {
 }
 
 ForwarderStep.propTypes = {
+   setValue: PropTypes.func.isRequired,
    control: PropTypes.object.isRequired,
    errors: PropTypes.object.isRequired,
 };

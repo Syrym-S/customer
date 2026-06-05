@@ -45,6 +45,7 @@ const initialForm = {
    comment: '',
 
    forwarderId: '',
+   forwarder: null,
 };
 
 const stepFields = [
@@ -208,7 +209,13 @@ export function CreateRouteModal({ open, onClose }) {
       }
 
       if (activeStep === 2) {
-         return <ForwarderStep control={control} errors={errors} />;
+         return (
+            <ForwarderStep
+               control={control}
+               errors={errors}
+               setValue={setValue}
+            />
+         );
       }
 
       return <ConfirmStep form={formValues} />;

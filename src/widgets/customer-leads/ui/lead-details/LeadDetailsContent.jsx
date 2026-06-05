@@ -5,6 +5,7 @@ import { LeadCargoSection } from './sections/LeadCargoSection';
 import { LeadCustomerSection } from './sections/LeadCustomerSection';
 import { LeadDriverSection } from './sections/LeadDriverSection';
 import { LeadRouteSection } from './sections/LeadRouteSection';
+import { LeadForwarderSection } from './sections/LeadForwarderSection';
 
 export function LeadDetailsContent({
    lead,
@@ -14,13 +15,6 @@ export function LeadDetailsContent({
 }) {
    return (
       <Stack spacing={2}>
-         <LeadCustomerSection
-            lead={lead}
-            isEditing={isEditing}
-            editForm={editForm}
-            onEditChange={onEditChange}
-         />
-
          <LeadRouteSection
             lead={lead}
             isEditing={isEditing}
@@ -34,6 +28,8 @@ export function LeadDetailsContent({
             editForm={editForm}
             onEditChange={onEditChange}
          />
+
+         <LeadForwarderSection lead={lead} />
 
          <LeadDriverSection
             lead={lead}

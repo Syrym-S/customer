@@ -84,6 +84,14 @@ export function mapCreatedLeadToUi(form, response) {
          response?.creator?.name ||
          'Текущий заказчик',
 
+      forwarder: form.forwarder ?? {
+         id: form.forwarderId || null,
+         fullName: 'Не указан',
+         companyName: '',
+         companyBin: '',
+         phone: '',
+      },
+
       from_location: form.fromLocation || 'Не указано',
       to_location: form.toLocation || 'Не указано',
 
