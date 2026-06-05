@@ -20,11 +20,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { logoutApi } from '../../../shared/api/auth.api';
 
 export function Header() {
    const [isBurgerOpen, setIsBurgerOpen] = useState(false);
    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
    const [profileAnchorEl, setProfileAnchorEl] = useState(null);
+   const [isLogoutLoading, setIsLogoutLoading] = useState(false);
+   const [logoutError, setLogoutError] = useState(null);
 
    const location = useLocation();
    const navigate = useNavigate();
@@ -41,15 +44,35 @@ export function Header() {
 
    function handleOpenLogoutModal() {
       setProfileAnchorEl(null);
+      setLogoutError(null);
       setIsLogoutModalOpen(true);
    }
 
-   function handleConfirmLogout() {
-      setIsLogoutModalOpen(false);
-      console.log('logout');
+   async function handleConfirmLogout() {
+      try {
+         setIsLogoutLoading(true);
+         setLogoutError(null);
+
+         await logoutApi();
+
+         window.location.href = '/login';
+      } catch (error) {
+         setLogoutError(
+            error.response?.data?.message ||
+               error.message ||
+               'Не удалось выйти из аккаунта',
+         );
+      } finally {
+         setIsLogoutLoading(false);
+      }
    }
 
    function handleCloseLogoutModal() {
+      if (isLogoutLoading) {
+         return;
+      }
+
+      setLogoutError(null);
       setIsLogoutModalOpen(false);
    }
 
@@ -175,17 +198,29 @@ export function Header() {
                <DialogContentText>
                   Вы уверены, что хотите выйти?
                </DialogContentText>
+
+               {logoutError && (
+                  <DialogContentText color='error' sx={{ mt: 2 }}>
+                     {logoutError}
+                  </DialogContentText>
+               )}
             </DialogContent>
 
             <DialogActions sx={{ px: 3, pb: 2 }}>
-               <Button onClick={handleCloseLogoutModal}>Отмена</Button>
+               <Button
+                  onClick={handleCloseLogoutModal}
+                  disabled={isLogoutLoading}
+               >
+                  Отмена
+               </Button>
 
                <Button
                   color='error'
                   variant='contained'
                   onClick={handleConfirmLogout}
+                  disabled={isLogoutLoading}
                >
-                  Выйти
+                  {isLogoutLoading ? 'Выход...' : 'Выйти'}
                </Button>
             </DialogActions>
          </Dialog>

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import {
    MapContainer,
    TileLayer,
@@ -57,33 +57,57 @@ export function CustomerMapView({
                return null;
             }
 
+            const startPoint = mapRoute.points[0];
+            const endPoint = mapRoute.points[mapRoute.points.length - 1];
+
             return (
-               <Polyline
-                  key={mapRoute.id}
-                  positions={mapRoute.points}
-                  pathOptions={{
-                     weight: index === 0 ? 5 : 4,
-                     opacity: index === 0 ? 0.9 : 0.65,
-                  }}
-               >
-                  <Tooltip sticky>
-                     <div>
-                        <b>Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}</b>
+               <Fragment key={mapRoute.id}>
+                  <Polyline
+                     positions={mapRoute.points}
+                     pathOptions={{
+                        weight: index === 0 ? 5 : 4,
+                        opacity: index === 0 ? 0.9 : 0.65,
+                     }}
+                  >
+                     <Tooltip sticky>
+                        <div>
+                           <b>Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}</b>
+                           <br />
+                           {mapRoute.lead?.from_location} →{' '}
+                           {mapRoute.lead?.to_location}
+                           {mapRoute.route?.distanceMeters && (
+                              <>
+                                 <br />
+                                 {(
+                                    mapRoute.route.distanceMeters / 1000
+                                 ).toFixed(1)}{' '}
+                                 км
+                              </>
+                           )}
+                        </div>
+                     </Tooltip>
+                  </Polyline>
+
+                  <Marker position={startPoint}>
+                     <Popup>
+                        <strong>Точка А</strong>
                         <br />
-                        {mapRoute.lead?.from_location} →{' '}
-                        {mapRoute.lead?.to_location}
-                        {mapRoute.route?.distanceMeters && (
-                           <>
-                              <br />
-                              {(mapRoute.route.distanceMeters / 1000).toFixed(
-                                 1,
-                              )}{' '}
-                              км
-                           </>
-                        )}
-                     </div>
-                  </Tooltip>
-               </Polyline>
+                        Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}
+                        <br />
+                        {mapRoute.lead?.from_location || 'Откуда не указано'}
+                     </Popup>
+                  </Marker>
+
+                  <Marker position={endPoint}>
+                     <Popup>
+                        <strong>Точка Б</strong>
+                        <br />
+                        Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}
+                        <br />
+                        {mapRoute.lead?.to_location || 'Куда не указано'}
+                     </Popup>
+                  </Marker>
+               </Fragment>
             );
          })}
 
