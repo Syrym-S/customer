@@ -1,7 +1,7 @@
 import { Box, Button, DialogActions } from '@mui/material';
 import PropTypes from 'prop-types';
 
-export function CreateRouteActions({
+export function CreateLeadActions({
    isFirstStep,
    isLastStep,
    hasCurrentStepErrors,
@@ -55,7 +55,7 @@ export function CreateRouteActions({
    );
 }
 
-CreateRouteActions.propTypes = {
+CreateLeadActions.propTypes = {
    isFirstStep: PropTypes.bool.isRequired,
    isLastStep: PropTypes.bool.isRequired,
    hasCurrentStepErrors: PropTypes.bool.isRequired,

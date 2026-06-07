@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { CreateRouteButton } from '../../../features/create-route';
+import { CreateLeadButton } from '../../../features/create-lead';
 
 export function CustomerToolbar() {
    return (
@@ -12,7 +12,7 @@ export function CustomerToolbar() {
             gap: 2,
          }}
       >
-         <CreateRouteButton />
+         <CreateLeadButton />
       </Box>
    );
 }

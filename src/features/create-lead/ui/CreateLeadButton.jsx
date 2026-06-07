@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
-import { CreateRouteModal } from './CreateRouteModal';
+import { CreateLeadModal } from './CreateLeadModal';
 import { useState } from 'react';
 
-export function CreateRouteButton() {
+export function CreateLeadButton() {
    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
    const handleOpenCreateModal = () => setIsCreateModalOpen(true);
@@ -15,7 +15,7 @@ export function CreateRouteButton() {
             Создать
          </Button>
 
-         <CreateRouteModal
+         <CreateLeadModal
             open={isCreateModalOpen}
             onClose={handleCloseCreateModal}
          />
