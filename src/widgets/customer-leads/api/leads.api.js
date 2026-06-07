@@ -16,3 +16,12 @@ export async function fetchCustomerLeadByIdApi(leadId) {
 
    return response.data;
 }
+
+export async function updateCustomerLeadApi(leadId, payload) {
+   const response = await apiClient.post(
+      `/customer/v1/leads/${leadId}/update`,
+      payload,
+   );
+
+   return response.data;
+}

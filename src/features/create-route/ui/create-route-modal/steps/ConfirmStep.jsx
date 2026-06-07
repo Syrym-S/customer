@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 
 import { InfoBadge } from '../components/InfoBadge';
 import { StepSection } from '../components/StepSection';
-import { forwardersMock } from '../../../model/forwarders.mock';
 
 export function ConfirmStep({ form }) {
-   const selectedForwarder = forwardersMock.find(
-      (forwarder) => forwarder.id === form.forwarderId,
-   );
+   const selectedForwarder = form.forwarder;
+
    return (
       <Box sx={{ display: 'grid', gap: 2 }}>
          <StepSection title='Проверьте данные'>

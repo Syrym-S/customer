@@ -5,6 +5,7 @@ import { useCustomerMap } from '../../customer-map/model/useCustomerMap';
 import { useEffect, useState } from 'react';
 import {
    createLeadEditForm,
+   mapLeadEditFormToApi,
    normalizeNumber,
 } from '../model/leadEditForm.helpers';
 import { LeadDetailsMap } from './lead-details/LeadDetailsMap';
@@ -18,7 +19,10 @@ import {
    getRoutesFromGeneratedRoute,
 } from '../lib/routePolyline.helpers';
 import { generateRoute } from '../api/lead-route.repository';
-import { fetchCustomerLeadById } from '../api/leads.repository';
+import {
+   fetchCustomerLeadById,
+   updateCustomerLead,
+} from '../api/leads.repository';
 import { mapLeadDetailsResponseFromApi } from '../model/lead.adapter';
 import { LeadDetailsHeader } from './lead-details/LeadDetailsHeader';
 
@@ -35,6 +39,8 @@ export function LeadDetailsModal() {
    const [isRouteLoading, setIsRouteLoading] = useState(false);
 
    const [isEditing, setIsEditing] = useState(false);
+   const [isSavingEdit, setIsSavingEdit] = useState(false);
+   const [saveEditError, setSaveEditError] = useState(null);
    const [editForm, setEditForm] = useState(() => createLeadEditForm(null));
 
    const currentLead = leadDetails ?? openLead;
@@ -46,6 +52,7 @@ export function LeadDetailsModal() {
       setRoute(null);
       setRoutePoints([]);
       setIsEditing(false);
+      setSaveEditError(null);
    }
 
    function handleEditChange(event) {
@@ -66,31 +73,48 @@ export function LeadDetailsModal() {
       setIsEditing(false);
    }
 
-   function handleSaveEdit() {
-      if (!currentLead) {
+   async function handleSaveEdit() {
+      if (!currentLead?.id) {
          return;
       }
 
-      const updatedLead = {
-         ...currentLead,
-         customer: editForm.customer,
-         from_location: editForm.from_location,
-         to_location: editForm.to_location,
-         summ: normalizeNumber(editForm.summ),
-         currency: editForm.currency,
-         vat: editForm.vat,
-         driver: editForm.driver,
-         cargo: {
-            ...currentLead.cargo,
-            type: editForm.cargoType,
-            weight_kg: normalizeNumber(editForm.weight_kg),
-            description: editForm.cargoDescription,
-         },
-      };
+      try {
+         setIsSavingEdit(true);
+         setSaveEditError(null);
 
-      setOpenLead(updatedLead);
-      setLeadDetails(updatedLead);
-      setIsEditing(false);
+         const payload = mapLeadEditFormToApi(editForm);
+
+         await updateCustomerLead(currentLead.id, payload);
+
+         const updatedLead = {
+            ...currentLead,
+            from_location: editForm.from_location,
+            to_location: editForm.to_location,
+            summ: normalizeNumber(editForm.summ),
+            currency: editForm.currency,
+            vat: editForm.vat,
+            cargo: {
+               ...currentLead.cargo,
+               type: editForm.cargoType,
+               name: editForm.cargoType,
+               weight_kg: normalizeNumber(editForm.weight_kg),
+               description: editForm.cargoDescription,
+               context: editForm.cargoDescription,
+            },
+         };
+
+         setOpenLead(updatedLead);
+         setLeadDetails(updatedLead);
+         setIsEditing(false);
+      } catch (error) {
+         setSaveEditError(
+            error.response?.data?.message ||
+               error.message ||
+               'Не удалось обновить лид',
+         );
+      } finally {
+         setIsSavingEdit(false);
+      }
    }
 
    useEffect(() => {
@@ -108,10 +132,6 @@ export function LeadDetailsModal() {
 
             const response = await fetchCustomerLeadById(openLead.id);
             const mappedLead = mapLeadDetailsResponseFromApi(response);
-
-            if (!isCancelled) {
-               setLeadDetails(mappedLead);
-            }
 
             if (!isCancelled) {
                setLeadDetails(mappedLead);
@@ -240,6 +260,12 @@ export function LeadDetailsModal() {
                </Alert>
             )}
 
+            {saveEditError && (
+               <Alert severity='error' sx={{ mb: 2 }}>
+                  {saveEditError}
+               </Alert>
+            )}
+
             <LeadDetailsMap
                map={map}
                lead={currentLead}
@@ -264,6 +290,7 @@ export function LeadDetailsModal() {
 
          <LeadDetailsActions
             isEditing={isEditing}
+            isSaving={isSavingEdit}
             onSave={handleSaveEdit}
             onClose={handleClose}
          />
