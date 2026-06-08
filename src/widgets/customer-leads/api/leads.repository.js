@@ -1,3 +1,4 @@
+import { apiClient } from '../../../shared/api/apiClient';
 import { API_MODE, isMockApi } from '../../../shared/config/api.config';
 import { fetchCustomerLeadByIdApi, fetchCustomerLeadsApi } from './leads.api';
 import {
@@ -21,4 +22,27 @@ export function fetchCustomerLeadById(leadId) {
    }
 
    return fetchCustomerLeadByIdApi(leadId);
+}
+
+export async function updateCustomerLeadApi(leadId, payload) {
+   const response = await apiClient.post(
+      `/customer/v1/leads/${leadId}/update`,
+      payload,
+   );
+
+   return response.data;
+}
+
+export async function updateCustomerLead(leadId, payload) {
+   if (isMockApi) {
+      return {
+         message: 'Lead updated',
+         data: {
+            id: leadId,
+            ...payload,
+         },
+      };
+   }
+
+   return updateCustomerLeadApi(leadId, payload);
 }

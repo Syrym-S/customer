@@ -130,6 +130,11 @@ export function ForwarderStep({ control, errors, setValue }) {
                            shouldValidate: false,
                         });
 
+                        console.log(
+                           'selected forwarder:',
+                           lastSelectedForwarder,
+                        );
+
                         setInputValue('');
                      }}
                      renderValue={(tagValue, getItemProps) =>

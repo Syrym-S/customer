@@ -6,16 +6,16 @@ import {
    mapCreatedLeadToUi,
    mapCreateLeadFormToApi,
 } from '../model/createLead.adapter';
-import { CreateRouteActions } from './create-route-modal/CreateRouteActions';
-import { CreateRouteStepTabs } from './create-route-modal/CreateRouteStepTabs';
-import { CreateRouteHeader } from './create-route-modal/CreateRouteHeader';
-import { ForwarderStep } from './create-route-modal/steps/ForwarderStep';
-import { CargoStep } from './create-route-modal/steps/CargoStep';
-import { ConfirmStep } from './create-route-modal/steps/ConfirmStep';
-import { RouteStep } from './create-route-modal/steps/RouteStep';
+import { CreateLeadActions } from './create-lead-modal/CreateLeadActions';
+import { CreateLeadStepTabs } from './create-lead-modal/CreateLeadStepTabs';
+import { CreateLeadHeader } from './create-lead-modal/CreateLeadHeader';
+import { ForwarderStep } from './create-lead-modal/steps/ForwarderStep';
+import { CargoStep } from './create-lead-modal/steps/CargoStep';
+import { ConfirmStep } from './create-lead-modal/steps/ConfirmStep';
+import { RouteStep } from './create-lead-modal/steps/RouteStep';
+import { CreateLeadResultModal } from './create-lead-modal/components/CreateLeadResultModal';
 import { useLeadsContext } from '../../../widgets/customer-leads/model/useLeadsContext';
 import { createLead } from '../api/createLead.repository';
-import { CreateLeadResultModal } from './create-route-modal/components/CreateLeadResultModal';
 
 const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Проверка'];
 
@@ -62,7 +62,7 @@ const stepFields = [
    ['forwarderId'],
 ];
 
-export function CreateRouteModal({ open, onClose }) {
+export function CreateLeadModal({ open, onClose }) {
    const [activeStep, setActiveStep] = useState(0);
    const [maxAvailableStep, setMaxAvailableStep] = useState(0);
    const {
@@ -147,7 +147,7 @@ export function CreateRouteModal({ open, onClose }) {
          return;
       }
 
-      await handleSubmit(handleCreateRoute)();
+      await handleSubmit(handleCreateLead)();
    }
 
    function handleClose() {
@@ -157,7 +157,7 @@ export function CreateRouteModal({ open, onClose }) {
       onClose();
    }
 
-   async function handleCreateRoute(data) {
+   async function handleCreateLead(data) {
       try {
          setIsSubmitting(true);
 
@@ -243,13 +243,13 @@ export function CreateRouteModal({ open, onClose }) {
             }}
          >
             <Box component='div'>
-               <CreateRouteHeader
+               <CreateLeadHeader
                   activeStep={activeStep}
                   stepsCount={steps.length}
                />
 
                <DialogContent sx={{ px: 3 }}>
-                  <CreateRouteStepTabs
+                  <CreateLeadStepTabs
                      steps={steps}
                      activeStep={activeStep}
                      maxAvailableStep={maxAvailableStep}
@@ -266,7 +266,7 @@ export function CreateRouteModal({ open, onClose }) {
                   </Box>
                </DialogContent>
 
-               <CreateRouteActions
+               <CreateLeadActions
                   isFirstStep={isFirstStep}
                   isLastStep={isLastStep}
                   hasCurrentStepErrors={hasCurrentStepErrors}
@@ -297,7 +297,7 @@ export function CreateRouteModal({ open, onClose }) {
    );
 }
 
-CreateRouteModal.propTypes = {
+CreateLeadModal.propTypes = {
    open: PropTypes.bool.isRequired,
    onClose: PropTypes.func.isRequired,
 };

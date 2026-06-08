@@ -1,7 +1,7 @@
 import { Box, Chip, DialogTitle, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
-export function CreateRouteHeader({ activeStep, stepsCount }) {
+export function CreateLeadHeader({ activeStep, stepsCount }) {
    return (
       <DialogTitle
          sx={{
@@ -58,7 +58,7 @@ export function CreateRouteHeader({ activeStep, stepsCount }) {
    );
 }
 
-CreateRouteHeader.propTypes = {
+CreateLeadHeader.propTypes = {
    activeStep: PropTypes.number.isRequired,
    stepsCount: PropTypes.number.isRequired,
 };
