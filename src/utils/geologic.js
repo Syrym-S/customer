@@ -7,10 +7,9 @@ import {
 import { bindGeoWS, connectGeoWS, requestGeoPoints } from './geows';
 
 function getGeoWsConfig() {
-   const { root, ws } = window.GeoWS_Config || {};
+   const { ws } = window.GeoWS_Config || {};
 
    return {
-      rootUrl: root,
       wsUrl: ws,
    };
 }
@@ -20,9 +19,9 @@ function getErrorMessage(error, fallbackMessage) {
 }
 
 export function isGeoWsConfigured() {
-   const { wsUrl, userId, rootUrl } = getGeoWsConfig();
+   const { wsUrl } = getGeoWsConfig();
 
-   return Boolean(wsUrl && userId && rootUrl);
+   return Boolean(wsUrl);
 }
 
 function extractGeoToken(response) {
@@ -142,11 +141,10 @@ export function openLeadGeoConnection({
 
    async function start() {
       try {
-         const { wsUrl, rootUrl } = getGeoWsConfig();
+         const { wsUrl } = getGeoWsConfig();
 
-         if (!rootUrl || !wsUrl) {
+         if (!wsUrl) {
             notifyWarning('GeoWS config is not available', {
-               rootUrl,
                wsUrl,
             });
 
