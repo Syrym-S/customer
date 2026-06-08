@@ -2,11 +2,10 @@ import { Alert, Dialog, DialogContent, Typography } from '@mui/material';
 
 import { useLeadsContext } from '../model/useLeadsContext';
 import { useCustomerMap } from '../../customer-map/model/useCustomerMap';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
    createLeadEditForm,
    mapLeadEditFormToApi,
-   normalizeNumber,
 } from '../model/leadEditForm.helpers';
 import { LeadDetailsMap } from './lead-details/LeadDetailsMap';
 import { LeadDetailsEditActions } from './lead-details/LeadDetailsEditActions';
@@ -25,6 +24,10 @@ import {
 } from '../api/leads.repository';
 import { mapLeadDetailsResponseFromApi } from '../model/lead.adapter';
 import { LeadDetailsHeader } from './lead-details/LeadDetailsHeader';
+import {
+   isGeoWsConfigured,
+   openLeadGeoConnection,
+} from '../../../utils/geologic';
 
 export function LeadDetailsModal() {
    const map = useCustomerMap();
@@ -43,6 +46,8 @@ export function LeadDetailsModal() {
    const [saveEditError, setSaveEditError] = useState(null);
    const [editForm, setEditForm] = useState(() => createLeadEditForm(null));
 
+   const geoConnectionRef = useRef(null);
+
    const currentLead = leadDetails ?? openLead;
 
    function handleClose() {
@@ -55,8 +60,17 @@ export function LeadDetailsModal() {
       setSaveEditError(null);
    }
 
-   function handleEditChange(event) {
-      const { name, value } = event.target;
+   function handleEditChange(eventOrName, maybeValue) {
+      if (typeof eventOrName === 'string') {
+         setEditForm((prevForm) => ({
+            ...prevForm,
+            [eventOrName]: maybeValue,
+         }));
+
+         return;
+      }
+
+      const { name, value } = eventOrName.target;
 
       setEditForm((prevForm) => ({
          ...prevForm,
@@ -74,7 +88,15 @@ export function LeadDetailsModal() {
    }
 
    async function handleSaveEdit() {
-      if (!currentLead?.id) {
+      if (!currentLead || isSavingEdit) {
+         return;
+      }
+
+      const payload = mapLeadEditFormToApi(editForm, currentLead);
+
+      if (Object.keys(payload).length === 0) {
+         setIsEditing(false);
+         setSaveEditError(null);
          return;
       }
 
@@ -82,35 +104,24 @@ export function LeadDetailsModal() {
          setIsSavingEdit(true);
          setSaveEditError(null);
 
-         const payload = mapLeadEditFormToApi(editForm);
-
          await updateCustomerLead(currentLead.id, payload);
 
-         const updatedLead = {
-            ...currentLead,
-            from_location: editForm.from_location,
-            to_location: editForm.to_location,
-            summ: normalizeNumber(editForm.summ),
-            currency: editForm.currency,
-            vat: editForm.vat,
-            cargo: {
-               ...currentLead.cargo,
-               type: editForm.cargoType,
-               name: editForm.cargoType,
-               weight_kg: normalizeNumber(editForm.weight_kg),
-               description: editForm.cargoDescription,
-               context: editForm.cargoDescription,
-            },
-         };
+         const response = await fetchCustomerLeadById(currentLead.id);
+         const mappedLead = mapLeadDetailsResponseFromApi(response);
 
-         setOpenLead(updatedLead);
-         setLeadDetails(updatedLead);
+         if (!mappedLead) {
+            throw new Error('Не удалось получить обновленные данные лида');
+         }
+
+         setOpenLead(mappedLead);
+         setLeadDetails(mappedLead);
+         setEditForm(createLeadEditForm(mappedLead));
          setIsEditing(false);
       } catch (error) {
          setSaveEditError(
             error.response?.data?.message ||
                error.message ||
-               'Не удалось обновить лид',
+               'Не удалось сохранить изменения',
          );
       } finally {
          setIsSavingEdit(false);
@@ -226,6 +237,56 @@ export function LeadDetailsModal() {
          isCancelled = true;
       };
    }, [leadDetails]);
+
+   useEffect(() => {
+      geoConnectionRef.current?.close();
+      geoConnectionRef.current = null;
+
+      if (!openLead?.id) return;
+
+      if (!isGeoWsConfigured()) {
+         console.info('GeoWS is not configured for this environment');
+         return;
+      }
+
+      const connection = openLeadGeoConnection({
+         leadId: openLead.id,
+
+         onOpen: () => {
+            console.log('Lead GeoWS opened:', openLead.id);
+         },
+
+         onClose: () => {
+            console.log('Lead GeoWS closed:', openLead.id);
+         },
+
+         onError: (error) => {
+            console.error('Lead GeoWS error:', error);
+         },
+
+         onAuthFailed: (payload) => {
+            console.error('Lead GeoWS auth failed:', payload);
+         },
+
+         onPoints: (points, payload) => {
+            console.log('Lead GeoWS points:', points, payload);
+         },
+
+         onMessage: (payload) => {
+            console.log('Lead GeoWS message:', payload);
+         },
+      });
+
+      geoConnectionRef.current = connection;
+
+      return () => {
+         connection.close();
+
+         if (geoConnectionRef.current === connection) {
+            geoConnectionRef.current = null;
+         }
+      };
+   }, [openLead?.id]);
 
    if (!openLead || !currentLead) {
       return null;

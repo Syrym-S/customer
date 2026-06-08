@@ -13,7 +13,9 @@ function mapForwarderFromLead(apiLead) {
          forwarder?.fullName ??
          forwarder?.full_name ??
          forwarder?.fio ??
-         forwarder?.name ??
+         forwarder?.contact_person ??
+         forwarder?.contactPerson ??
+         forwarder?.person?.name ??
          apiLead.forwarder_name ??
          'Не указан',
 
@@ -22,6 +24,7 @@ function mapForwarderFromLead(apiLead) {
          forwarder?.company_name ??
          forwarder?.company?.name ??
          forwarder?.organization?.name ??
+         forwarder?.bin ??
          apiLead.forwarder_company_name ??
          '',
 
@@ -30,12 +33,15 @@ function mapForwarderFromLead(apiLead) {
          forwarder?.company_bin ??
          forwarder?.company?.bin ??
          forwarder?.organization?.bin ??
+         forwarder?.name ??
          apiLead.forwarder_company_bin ??
          '',
 
       phone:
          forwarder?.phone ??
+         forwarder?.phoneNumber ??
          forwarder?.phone_number ??
+         forwarder?.tel ??
          apiLead.forwarder_phone ??
          '',
    };
@@ -79,8 +85,21 @@ export function mapLeadFromApi(apiLead) {
 
       cargo: {
          name: apiLead.cargo?.name ?? '',
-         description: apiLead.cargo?.description ?? '',
-         context: apiLead.cargo?.context ?? null,
+
+         description:
+            apiLead.cargo?.context ??
+            apiLead.cargo?.comment ??
+            apiLead.cargo?.description ??
+            '',
+
+         context:
+            apiLead.cargo?.context ??
+            apiLead.cargo?.comment ??
+            apiLead.cargo?.description ??
+            '',
+
+         rawDescription: apiLead.cargo?.description ?? '',
+
          weight_kg: apiLead.cargo?.weight_kg ?? null,
          type: apiLead.cargo?.type ?? 'Не указан',
          volume_cm: apiLead.cargo?.volume_cm ?? null,

@@ -19,7 +19,7 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
                gap: 1.5,
                flexWrap: {
                   xs: 'wrap',
-                  sm: 'nowrap',
+                  md: 'nowrap',
                },
             }}
          >
@@ -48,7 +48,7 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
                sx={{
                   display: {
                      xs: 'none',
-                     sm: 'flex',
+                     md: 'flex',
                   },
                   alignItems: 'center',
                   justifyContent: 'center',

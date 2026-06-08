@@ -7,125 +7,250 @@ export function createLeadEditForm(lead) {
          fromLng: '',
          toLat: '',
          toLng: '',
+
+         cargoName: '',
          cargoType: '',
          weight_kg: '',
          cargoLengthCm: '',
          cargoWidthCm: '',
          cargoHeightCm: '',
+         cargoDescription: '',
+
          summ: '',
          currency: '',
          vat: '',
          loadingDate: '',
-         cargoDescription: '',
+
          driver: '',
          forwarder: '',
+         forwarderData: null,
       };
    }
 
    return {
       from_location: lead.from_location?.trim() || '',
       to_location: lead.to_location?.trim() || '',
+
       fromLat: lead.raw?.route?.from?.lat ?? '',
       fromLng: lead.raw?.route?.from?.lng ?? '',
       toLat: lead.raw?.route?.to?.lat ?? '',
       toLng: lead.raw?.route?.to?.lng ?? '',
+
+      cargoName: lead.cargo?.name ?? '',
       cargoType: lead.cargo?.type || '',
-      weight_kg: lead.cargo?.weight_kg || '',
-      cargoLengthCm: lead.cargo?.length_cm || '',
-      cargoWidthCm: lead.cargo?.width_cm || '',
-      cargoHeightCm: lead.cargo?.height_cm || '',
-      summ: lead.summ || '',
+      weight_kg: lead.cargo?.weight_kg ?? '',
+      cargoLengthCm: lead.cargo?.length_cm ?? '',
+      cargoWidthCm: lead.cargo?.width_cm ?? '',
+      cargoHeightCm: lead.cargo?.height_cm ?? '',
+      cargoDescription:
+         lead.cargo?.context ??
+         lead.cargo?.comment ??
+         lead.cargo?.description ??
+         '',
+
+      summ: lead.summ ?? '',
       currency: lead.currency || '',
       vat: lead.vat || '',
       loadingDate: lead.raw?.loading_date || '',
-      cargoDescription: lead.cargo?.description || lead.cargo?.context || '',
-      driver: lead.raw?.driver?.id || lead.driver || '',
+
+      driver: lead.raw?.driver?.id || '',
       forwarder: lead.forwarder?.id || '',
+      forwarderData: lead.forwarder || null,
    };
 }
 
+function normalizeText(value) {
+   return String(value ?? '')
+      .trim()
+      .replace(/\s+/g, ' ');
+}
+
 export function normalizeNumber(value) {
-   if (value === '') {
-      return value;
+   if (value === '' || value === null || value === undefined) {
+      return null;
    }
 
    const numberValue = Number(value);
 
-   return Number.isNaN(numberValue) ? value : numberValue;
+   return Number.isNaN(numberValue) ? null : numberValue;
 }
 
-function hasValue(value) {
-   return value !== null && value !== undefined && value !== '';
+function hasTextChanged(nextValue, prevValue) {
+   return normalizeText(nextValue) !== normalizeText(prevValue);
 }
 
-function normalizeText(value) {
-   return String(value ?? '').trim();
+function hasNumberChanged(nextValue, prevValue) {
+   return normalizeNumber(nextValue) !== normalizeNumber(prevValue);
 }
 
-function addIfHasValue(target, key, value) {
-   if (hasValue(value)) {
-      target[key] = value;
-   }
+function isValidMongoId(value) {
+   return /^[a-f0-9]{24}$/.test(String(value ?? ''));
 }
 
-function addNumberIfHasValue(target, key, value) {
-   if (!hasValue(value)) {
+function addTextIfChanged(payload, key, nextValue, prevValue) {
+   const normalizedNextValue = normalizeText(nextValue);
+
+   if (!normalizedNextValue) {
       return;
    }
 
-   const numberValue = Number(value);
-
-   if (!Number.isNaN(numberValue)) {
-      target[key] = numberValue;
+   if (hasTextChanged(nextValue, prevValue)) {
+      payload[key] = normalizedNextValue;
    }
 }
 
-function isHexId(value) {
-   return /^[a-f0-9]{24}$/.test(String(value ?? '').trim());
+function addNumberIfChanged(payload, key, nextValue, prevValue) {
+   const normalizedNextValue = normalizeNumber(nextValue);
+
+   if (normalizedNextValue === null) {
+      return;
+   }
+
+   if (hasNumberChanged(nextValue, prevValue)) {
+      payload[key] = normalizedNextValue;
+   }
 }
 
-export function mapLeadEditFormToApi(editForm) {
-   const fromLocation = normalizeText(editForm.from_location);
-   const toLocation = normalizeText(editForm.to_location);
-
+export function mapLeadEditFormToApi(editForm, currentLead) {
    const payload = {};
 
-   if (isHexId(editForm.forwarder)) {
-      payload.forwarder = editForm.forwarder;
+   const nextForwarderId = editForm.forwarder;
+   const currentForwarderId = currentLead.forwarder?.id;
+
+   if (
+      isValidMongoId(nextForwarderId) &&
+      nextForwarderId !== currentForwarderId
+   ) {
+      payload.forwarder = nextForwarderId;
    }
 
-   if (isHexId(editForm.driver)) {
-      payload.driver = editForm.driver;
+   const nextDriverId = editForm.driver;
+   const currentDriverId = currentLead.raw?.driver?.id;
+
+   if (isValidMongoId(nextDriverId) && nextDriverId !== currentDriverId) {
+      payload.driver = nextDriverId;
    }
 
-   if (fromLocation) {
-      payload.from_city = fromLocation;
-      payload.from_address = fromLocation;
+   // ВАЖНО:
+   // Не отправляем одно и то же значение одновременно в city и address.
+   // Иначе backend склеивает дубли при каждом update.
+   addTextIfChanged(
+      payload,
+      'from_city',
+      editForm.from_location,
+      currentLead.from_location,
+   );
+
+   addTextIfChanged(
+      payload,
+      'to_city',
+      editForm.to_location,
+      currentLead.to_location,
+   );
+
+   addNumberIfChanged(
+      payload,
+      'from_lat',
+      editForm.fromLat,
+      currentLead.raw?.route?.from?.lat,
+   );
+   addNumberIfChanged(
+      payload,
+      'from_lon',
+      editForm.fromLng,
+      currentLead.raw?.route?.from?.lng,
+   );
+   addNumberIfChanged(
+      payload,
+      'to_lat',
+      editForm.toLat,
+      currentLead.raw?.route?.to?.lat,
+   );
+   addNumberIfChanged(
+      payload,
+      'to_lon',
+      editForm.toLng,
+      currentLead.raw?.route?.to?.lng,
+   );
+
+   addNumberIfChanged(payload, 'price', editForm.summ, currentLead.summ);
+   addTextIfChanged(
+      payload,
+      'currency',
+      editForm.currency,
+      currentLead.currency,
+   );
+   addTextIfChanged(payload, 'vat', editForm.vat, currentLead.vat);
+   addTextIfChanged(
+      payload,
+      'loading_date',
+      editForm.loadingDate,
+      currentLead.raw?.loading_date,
+   );
+
+   const cargoTypeChanged = hasTextChanged(
+      editForm.cargoType,
+      currentLead.cargo?.type,
+   );
+
+   const cargoWeightChanged = hasNumberChanged(
+      editForm.weight_kg,
+      currentLead.cargo?.weight_kg,
+   );
+
+   const cargoLengthChanged = hasNumberChanged(
+      editForm.cargoLengthCm,
+      currentLead.cargo?.length_cm,
+   );
+
+   const cargoWidthChanged = hasNumberChanged(
+      editForm.cargoWidthCm,
+      currentLead.cargo?.width_cm,
+   );
+
+   const cargoHeightChanged = hasNumberChanged(
+      editForm.cargoHeightCm,
+      currentLead.cargo?.height_cm,
+   );
+
+   const cargoDescriptionChanged = hasTextChanged(
+      editForm.cargoDescription,
+      currentLead.cargo?.context || currentLead.cargo?.description,
+   );
+
+   const hasCargoChanges =
+      cargoTypeChanged ||
+      cargoWeightChanged ||
+      cargoLengthChanged ||
+      cargoWidthChanged ||
+      cargoHeightChanged ||
+      cargoDescriptionChanged;
+
+   if (hasCargoChanges) {
+      const cargoType = normalizeText(editForm.cargoType) || 'Не указан';
+
+      payload.cargo_name = cargoType;
+      payload.cargo_type = cargoType;
+
+      addPositiveIntegerValue(payload, 'cargo_weight', editForm.weight_kg);
+      addPositiveIntegerValue(payload, 'cargo_length', editForm.cargoLengthCm);
+      addPositiveIntegerValue(payload, 'cargo_width', editForm.cargoWidthCm);
+      addPositiveIntegerValue(payload, 'cargo_height', editForm.cargoHeightCm);
+
+      if (cargoDescriptionChanged) {
+         payload.comment = normalizeText(editForm.cargoDescription);
+      }
    }
-
-   if (toLocation) {
-      payload.to_city = toLocation;
-      payload.to_address = toLocation;
-   }
-
-   addNumberIfHasValue(payload, 'from_lat', editForm.fromLat);
-   addNumberIfHasValue(payload, 'from_lon', editForm.fromLng);
-   addNumberIfHasValue(payload, 'to_lat', editForm.toLat);
-   addNumberIfHasValue(payload, 'to_lon', editForm.toLng);
-
-   addIfHasValue(payload, 'cargo_name', editForm.cargoType);
-   addIfHasValue(payload, 'cargo_type', editForm.cargoType);
-   addNumberIfHasValue(payload, 'cargo_weight', editForm.weight_kg);
-   addNumberIfHasValue(payload, 'cargo_length', editForm.cargoLengthCm);
-   addNumberIfHasValue(payload, 'cargo_width', editForm.cargoWidthCm);
-   addNumberIfHasValue(payload, 'cargo_height', editForm.cargoHeightCm);
-
-   addNumberIfHasValue(payload, 'price', editForm.summ);
-   addIfHasValue(payload, 'currency', editForm.currency);
-   addIfHasValue(payload, 'vat', editForm.vat);
-   addIfHasValue(payload, 'loading_date', editForm.loadingDate);
-
-   addIfHasValue(payload, 'comment', normalizeText(editForm.cargoDescription));
 
    return payload;
+}
+
+function addPositiveIntegerValue(payload, key, value) {
+   const normalizedValue = normalizeNumber(value);
+
+   if (normalizedValue === null || normalizedValue <= 0) {
+      return;
+   }
+
+   payload[key] = Math.round(normalizedValue);
 }

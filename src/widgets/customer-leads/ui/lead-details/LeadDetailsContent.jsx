@@ -2,7 +2,6 @@ import { Stack } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import { LeadCargoSection } from './sections/LeadCargoSection';
-import { LeadCustomerSection } from './sections/LeadCustomerSection';
 import { LeadDriverSection } from './sections/LeadDriverSection';
 import { LeadRouteSection } from './sections/LeadRouteSection';
 import { LeadForwarderSection } from './sections/LeadForwarderSection';
@@ -29,7 +28,12 @@ export function LeadDetailsContent({
             onEditChange={onEditChange}
          />
 
-         <LeadForwarderSection lead={lead} />
+         <LeadForwarderSection
+            lead={lead}
+            isEditing={isEditing}
+            editForm={editForm}
+            onEditChange={onEditChange}
+         />
 
          <LeadDriverSection
             lead={lead}
