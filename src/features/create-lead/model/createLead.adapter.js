@@ -71,6 +71,16 @@ export function mapCreateLeadFormToApi(form) {
    return payload;
 }
 
+export function mapCreateLeadDocumentsToApiDocuments(form) {
+   return (form.documents || [])
+      .filter((document) => document.file)
+      .map((document) => ({
+         name: document.name || document.fileName || 'Документ',
+         context: document.context || '',
+         file: document.file,
+      }));
+}
+
 export function mapCreatedLeadToUi(form, response) {
    const id = response?.id ?? `created-lead-${Date.now()}`;
 

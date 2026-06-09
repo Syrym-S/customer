@@ -1,3 +1,5 @@
+import { leadDocumentsMock } from './leadDocuments.mock';
+
 function mapForwarderFromLead(apiLead) {
    const forwarder =
       apiLead.forwarder ||
@@ -45,6 +47,27 @@ function mapForwarderFromLead(apiLead) {
          apiLead.forwarder_phone ??
          '',
    };
+}
+
+function mapLeadFileFromApi(apiFile, index) {
+   return {
+      id: apiFile.id ?? apiFile._id ?? `file-${index}`,
+      name: apiFile.name ?? apiFile.title ?? apiFile.file_name ?? 'Документ',
+      context: apiFile.context ?? apiFile.description ?? '',
+      fileName: apiFile.fileName ?? apiFile.file_name ?? apiFile.name ?? 'file',
+      fileUrl: apiFile.url ?? apiFile.file_url ?? apiFile.href ?? '#',
+      fileType: apiFile.type ?? apiFile.mime_type ?? '',
+      createdAt: apiFile.created_at ?? null,
+      raw: apiFile,
+   };
+}
+
+function mapLeadDocumentsFromApi(apiLead) {
+   if (Array.isArray(apiLead.files) && apiLead.files.length > 0) {
+      return apiLead.files.map(mapLeadFileFromApi);
+   }
+
+   return leadDocumentsMock;
 }
 
 export function mapLeadFromApi(apiLead) {
@@ -113,6 +136,7 @@ export function mapLeadFromApi(apiLead) {
       creator: apiLead.creator ?? null,
       person: apiLead.person ?? null,
       files: apiLead.files ?? [],
+      documents: mapLeadDocumentsFromApi(apiLead),
       agreement: apiLead.agreement ?? null,
       geows: apiLead.geows ?? null,
 

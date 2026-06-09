@@ -76,6 +76,27 @@ export function ConfirmStep({ form }) {
                />
             </Box>
          </StepSection>
+
+         <StepSection title='Документы'>
+            {form.documents?.length ? (
+               <Box
+                  sx={{
+                     display: 'grid',
+                     gap: 1,
+                  }}
+               >
+                  {form.documents.map((document) => (
+                     <InfoBadge
+                        key={document.id}
+                        label={document.name || 'Документ'}
+                        value={document.fileName || 'Файл'}
+                     />
+                  ))}
+               </Box>
+            ) : (
+               <InfoBadge label='Документы' value='Не добавлены' />
+            )}
+         </StepSection>
       </Box>
    );
 }

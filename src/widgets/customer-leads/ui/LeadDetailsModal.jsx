@@ -41,6 +41,8 @@ export function LeadDetailsModal() {
    const [routePoints, setRoutePoints] = useState([]);
    const [isRouteLoading, setIsRouteLoading] = useState(false);
 
+   const [documents, setDocuments] = useState([]);
+
    const [isEditing, setIsEditing] = useState(false);
    const [isSavingEdit, setIsSavingEdit] = useState(false);
    const [saveEditError, setSaveEditError] = useState(null);
@@ -50,6 +52,27 @@ export function LeadDetailsModal() {
 
    const currentLead = leadDetails ?? openLead;
 
+   function handleAddDocument({ name, context, file }) {
+      const document = {
+         id: `local-doc-${Date.now()}`,
+         name: name || file.name,
+         context: context || '',
+         fileName: file.name,
+         fileUrl: URL.createObjectURL(file),
+         fileType: file.type,
+         createdAt: new Date().toISOString(),
+         file,
+      };
+
+      setDocuments((prevDocuments) => [document, ...prevDocuments]);
+   }
+
+   function handleDeleteDocument(documentId) {
+      setDocuments((prevDocuments) =>
+         prevDocuments.filter((document) => document.id !== documentId),
+      );
+   }
+
    function handleClose() {
       setOpenLead(null);
       setLeadDetails(null);
@@ -58,6 +81,7 @@ export function LeadDetailsModal() {
       setRoutePoints([]);
       setIsEditing(false);
       setSaveEditError(null);
+      setDocuments([]);
    }
 
    function handleEditChange(eventOrName, maybeValue) {
@@ -171,6 +195,7 @@ export function LeadDetailsModal() {
       }
 
       setEditForm(createLeadEditForm(currentLead));
+      setDocuments(currentLead.documents || []);
       setIsEditing(false);
    }, [currentLead]);
 
@@ -346,6 +371,9 @@ export function LeadDetailsModal() {
                isEditing={isEditing}
                editForm={editForm}
                onEditChange={handleEditChange}
+               documents={documents}
+               onAddDocument={handleAddDocument}
+               onDeleteDocument={handleDeleteDocument}
             />
          </DialogContent>
 

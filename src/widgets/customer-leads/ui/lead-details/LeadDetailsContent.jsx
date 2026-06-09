@@ -5,12 +5,16 @@ import { LeadCargoSection } from './sections/LeadCargoSection';
 import { LeadDriverSection } from './sections/LeadDriverSection';
 import { LeadRouteSection } from './sections/LeadRouteSection';
 import { LeadForwarderSection } from './sections/LeadForwarderSection';
+import { LeadDocumentsSection } from './sections/LeadDocumentsSection';
 
 export function LeadDetailsContent({
    lead,
    isEditing,
    editForm,
    onEditChange,
+   documents = [],
+   onAddDocument,
+   onDeleteDocument,
 }) {
    return (
       <Stack spacing={2}>
@@ -41,6 +45,12 @@ export function LeadDetailsContent({
             editForm={editForm}
             onEditChange={onEditChange}
          />
+
+         <LeadDocumentsSection
+            documents={documents}
+            onAddDocument={onAddDocument}
+            onDeleteDocument={onDeleteDocument}
+         />
       </Stack>
    );
 }
@@ -50,4 +60,18 @@ LeadDetailsContent.propTypes = {
    isEditing: PropTypes.bool.isRequired,
    editForm: PropTypes.object.isRequired,
    onEditChange: PropTypes.func.isRequired,
+
+   documents: PropTypes.arrayOf(
+      PropTypes.shape({
+         id: PropTypes.string.isRequired,
+         name: PropTypes.string,
+         context: PropTypes.string,
+         fileName: PropTypes.string,
+         fileUrl: PropTypes.string,
+         fileType: PropTypes.string,
+         createdAt: PropTypes.string,
+      }),
+   ).isRequired,
+   onAddDocument: PropTypes.func.isRequired,
+   onDeleteDocument: PropTypes.func.isRequired,
 };

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
    mapCreatedLeadToUi,
+   mapCreateLeadDocumentsToApiDocuments,
    mapCreateLeadFormToApi,
 } from '../model/createLead.adapter';
 import { CreateLeadActions } from './create-lead-modal/CreateLeadActions';
@@ -16,8 +17,9 @@ import { RouteStep } from './create-lead-modal/steps/RouteStep';
 import { CreateLeadResultModal } from './create-lead-modal/components/CreateLeadResultModal';
 import { useLeadsContext } from '../../../widgets/customer-leads/model/useLeadsContext';
 import { createLead } from '../api/createLead.repository';
+import { DocumentsStep } from './create-lead-modal/steps/DocumentsStep';
 
-const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Проверка'];
+const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Документы', 'Проверка'];
 
 const initialForm = {
    // customer: 'AKE Plast (АКЕ Пласт) ТОО',
@@ -46,6 +48,8 @@ const initialForm = {
 
    forwarderId: '',
    forwarder: null,
+
+   documents: [],
 };
 
 const stepFields = [
@@ -60,6 +64,7 @@ const stepFields = [
       'currency',
    ],
    ['forwarderId'],
+   [],
 ];
 
 export function CreateLeadModal({ open, onClose }) {
@@ -160,17 +165,26 @@ export function CreateLeadModal({ open, onClose }) {
    async function handleCreateLead(data) {
       try {
          setIsSubmitting(true);
+         const documents = mapCreateLeadDocumentsToApiDocuments(data);
+
+         console.log('Create lead documents:', documents);
+         console.table(
+            documents.map((document) => ({
+               name: document.name,
+               context: document.context,
+               fileName: document.file?.name,
+               fileType: document.file?.type,
+               fileSize: document.file?.size,
+               isFile: document.file instanceof File,
+            })),
+         );
 
          const payload = mapCreateLeadFormToApi(data);
-
          const response = await createLead(payload);
-
          const createdLead = mapCreatedLeadToUi(data, response);
 
          prependLead(createdLead);
-
          handleClose();
-
          setResultModal({
             open: true,
             type: 'success',
@@ -216,6 +230,10 @@ export function CreateLeadModal({ open, onClose }) {
                setValue={setValue}
             />
          );
+      }
+
+      if (activeStep === 3) {
+         return <DocumentsStep form={formValues} setValue={setValue} />;
       }
 
       return <ConfirmStep form={formValues} />;

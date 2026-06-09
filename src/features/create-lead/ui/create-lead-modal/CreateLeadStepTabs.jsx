@@ -15,9 +15,15 @@ export function CreateLeadStepTabs({
             display: 'grid',
             gridTemplateColumns: {
                xs: '1fr 1fr',
-               sm: 'repeat(4, 1fr)',
+               sm: `repeat(${steps.length}, minmax(0, 1fr))`,
             },
-            gap: 1,
+            '@media (max-width: 670px)': {
+               gridTemplateColumns: '1fr 1fr',
+            },
+            gap: {
+               xs: 1,
+               sm: 0.75,
+            },
          }}
       >
          {steps.map((step, index) => {
