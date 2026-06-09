@@ -8,9 +8,17 @@ export function LeadDetailsMap({
    lead,
    route,
    routePoints = [],
+   geoPoints = [],
+   geoCurrentPoint = null,
    isRouteLoading = false,
 }) {
    const hasRoutePoints = routePoints.length >= 2;
+   const hasGeoPoints = geoPoints.length > 0;
+
+   const geoRoutePoints = geoPoints.map((point) => [
+      point.latitude,
+      point.longitude,
+   ]);
 
    const routeMarkers = hasRoutePoints
       ? [
@@ -28,6 +36,27 @@ export function LeadDetailsMap({
            },
         ]
       : [];
+
+   const geoMarkers = geoCurrentPoint
+      ? [
+           {
+              id: 'geo-current-point',
+              position: [geoCurrentPoint.latitude, geoCurrentPoint.longitude],
+              title: 'Текущая позиция',
+              description: geoCurrentPoint.recordedAt
+                 ? `Последнее обновление: ${geoCurrentPoint.recordedAt}`
+                 : 'Координаты получены через WebSocket',
+           },
+        ]
+      : [];
+
+   const markers = [...routeMarkers, ...geoMarkers];
+
+   const mapCenter = hasGeoPoints
+      ? geoRoutePoints[geoRoutePoints.length - 1]
+      : hasRoutePoints
+        ? routePoints[0]
+        : map.center;
 
    return (
       <Box
@@ -63,11 +92,12 @@ export function LeadDetailsMap({
          )}
 
          <CustomerMapView
-            center={hasRoutePoints ? routePoints[0] : map.center}
-            zoom={hasRoutePoints ? 7 : map.zoom}
-            markers={routeMarkers}
+            center={mapCenter}
+            zoom={hasGeoPoints ? 13 : hasRoutePoints ? 7 : map.zoom}
+            markers={markers}
             route={route}
             routePoints={hasRoutePoints ? routePoints : []}
+            geoRoutePoints={hasGeoPoints ? geoRoutePoints : []}
             handleMarkerClick={map.handleMarkerClick}
          />
       </Box>
@@ -88,5 +118,21 @@ LeadDetailsMap.propTypes = {
    }).isRequired,
    route: PropTypes.object,
    routePoints: PropTypes.array,
+   geoPoints: PropTypes.arrayOf(
+      PropTypes.shape({
+         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+         latitude: PropTypes.number.isRequired,
+         longitude: PropTypes.number.isRequired,
+         altitude: PropTypes.number,
+         recordedAt: PropTypes.string,
+      }),
+   ),
+   geoCurrentPoint: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      latitude: PropTypes.number.isRequired,
+      longitude: PropTypes.number.isRequired,
+      altitude: PropTypes.number,
+      recordedAt: PropTypes.string,
+   }),
    isRouteLoading: PropTypes.bool,
 };

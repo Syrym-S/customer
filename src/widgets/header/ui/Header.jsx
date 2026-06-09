@@ -42,6 +42,11 @@ export function Header() {
       setIsBurgerOpen(false);
    }
 
+   function handleNavigateProfile() {
+      setProfileAnchorEl(null);
+      handleNavigate('/profile');
+   }
+
    function handleOpenLogoutModal() {
       setProfileAnchorEl(null);
       setLogoutError(null);
@@ -182,9 +187,7 @@ export function Header() {
             open={isProfileMenuOpen}
             onClose={() => setProfileAnchorEl(null)}
          >
-            <MenuItem onClick={() => handleNavigate('/profile')}>
-               Профиль
-            </MenuItem>
+            <MenuItem onClick={handleNavigateProfile}>Профиль</MenuItem>
 
             <MenuItem>Настройки</MenuItem>
 

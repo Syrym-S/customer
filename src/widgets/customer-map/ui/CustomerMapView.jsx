@@ -16,6 +16,7 @@ export function CustomerMapView({
    zoom,
    markers,
    routePoints = [],
+   geoRoutePoints = [],
    routes = [],
    route = null,
    handleMarkerClick,
@@ -41,10 +42,16 @@ export function CustomerMapView({
             center={center}
             zoom={zoom}
             markersCount={markers.length}
-            routePointsCount={routePoints.length + routesPointsCount}
+            routePointsCount={
+               routePoints.length + geoRoutePoints.length + routesPointsCount
+            }
          />
 
-         <FitRouteBounds routePoints={routePoints} routes={routes} />
+         <FitRouteBounds
+            routePoints={routePoints}
+            geoRoutePoints={geoRoutePoints}
+            routes={routes}
+         />
 
          <MapClickHandler onMapClick={onMapClick} />
 
@@ -142,6 +149,25 @@ export function CustomerMapView({
             </Polyline>
          )}
 
+         {geoRoutePoints.length >= 2 && (
+            <Polyline
+               positions={geoRoutePoints}
+               pathOptions={{
+                  weight: 4,
+                  opacity: 0.95,
+                  dashArray: '8 8',
+               }}
+            >
+               <Tooltip sticky>
+                  <div>
+                     <b>Фактический путь</b>
+                     <br />
+                     Точек: {geoRoutePoints.length}
+                  </div>
+               </Tooltip>
+            </Polyline>
+         )}
+
          {markers.map((marker) => (
             <Marker
                key={marker.id}
@@ -207,13 +233,13 @@ function MapResizeHandler({ center, zoom, markersCount, routePointsCount }) {
    return null;
 }
 
-function FitRouteBounds({ routePoints, routes }) {
+function FitRouteBounds({ routePoints, geoRoutePoints, routes }) {
    const map = useMap();
 
    useEffect(() => {
       const routesPoints = routes.flatMap((route) => route.points || []);
 
-      const points = routesPoints.length >= 2 ? routesPoints : routePoints;
+      const points = [...routesPoints, ...routePoints, ...geoRoutePoints];
 
       if (!points || points.length < 2) {
          return;
@@ -222,7 +248,7 @@ function FitRouteBounds({ routePoints, routes }) {
       map.fitBounds(points, {
          padding: [32, 32],
       });
-   }, [map, routePoints, routes]);
+   }, [map, routePoints, geoRoutePoints, routes]);
 
    return null;
 }
@@ -246,6 +272,7 @@ CustomerMapView.propTypes = {
    zoom: PropTypes.number.isRequired,
    markers: PropTypes.array.isRequired,
    routePoints: PropTypes.array,
+   geoRoutePoints: PropTypes.array,
    route: PropTypes.object,
    routes: PropTypes.array,
    handleMarkerClick: PropTypes.func.isRequired,
@@ -262,6 +289,7 @@ MapResizeHandler.propTypes = {
 
 FitRouteBounds.propTypes = {
    routePoints: PropTypes.array,
+   geoRoutePoints: PropTypes.array,
    routes: PropTypes.array,
 };
 

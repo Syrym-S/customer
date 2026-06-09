@@ -16,6 +16,15 @@
  * @param {number|string} params.userId - wp current user id
  * @returns {WebSocket}
  */
+
+export const GEO_WS_MESSAGE_TYPES = {
+   ADMIN: 'admin',
+   READ: 'read',
+   ADD: 'add',
+   GET_POINTS: 'get_points',
+   ERROR: 'error',
+};
+
 export function connectGeoWS({ wsUrl, token }) {
    if (!wsUrl) throw new Error('WS URL not configured');
    if (!token) throw new Error('Session token missing');
@@ -23,8 +32,7 @@ export function connectGeoWS({ wsUrl, token }) {
    const url = new URL(wsUrl);
    url.searchParams.set('token', token);
 
-   const ws = new WebSocket(url.toString());
-   return ws;
+   return new WebSocket(url.toString());
 }
 
 /**
@@ -44,9 +52,9 @@ export function bindGeoWS(ws, handlers = {}) {
       console.log('WS error:', e);
    };
 
-   ws.onclose = () => {
-      onClose?.();
-      console.log('WS closed');
+   ws.onclose = (e) => {
+      onClose?.(e);
+      console.log('WS closed:', e);
    };
 
    ws.onmessage = (event) => {
@@ -54,40 +62,74 @@ export function bindGeoWS(ws, handlers = {}) {
 
       try {
          payload = JSON.parse(event.data);
-      } catch (e) {
-         return e.error;
+      } catch (error) {
+         onError?.(error);
+         console.log('WS parse error:', error);
+         return;
       }
+
       console.log('WS message:', payload);
 
       onMessage?.(payload);
 
       // auth failed на сервере
-      if (payload?.type === 'error') {
-         if (String(payload?.message).toLowerCase().includes('auth failed')) {
+      if (payload?.type === GEO_WS_MESSAGE_TYPES.ERROR) {
+         const message = String(payload?.message || '').toLowerCase();
+
+         if (message.includes('auth failed')) {
             onAuthFailed?.(payload);
          }
+
+         return;
       }
 
-      // точки
-      if (payload?.type === 'get_points') {
-         onPoints?.(payload?.data ?? []);
+      if (payload?.type === GEO_WS_MESSAGE_TYPES.GET_POINTS) {
+         onPoints?.(payload?.data ?? [], payload);
       }
    };
 }
 
+function sendGeoWSMessage(ws, payload) {
+   if (!ws || ws.readyState !== WebSocket.OPEN) {
+      console.warn('WS send skipped:', {
+         payload,
+         readyState: ws?.readyState,
+      });
+
+      return false;
+   }
+
+   console.log('WS send:', payload);
+
+   ws.send(JSON.stringify(payload));
+
+   return true;
+}
+
 /**
- * Запросить точки с сервера
- * Сервер роутит по `type` в data
+ * Получить все точки сеанса разово.
+ */
+export function requestGeoAdminPoints(ws) {
+   return sendGeoWSMessage(ws, {
+      type: GEO_WS_MESSAGE_TYPES.ADMIN,
+   });
+}
+
+/**
+ * Получить новые точки инкрементально.
+ * Сервер вернет точки с id > последнего полученного.
+ */
+export function requestGeoIncrementalPoints(ws) {
+   return sendGeoWSMessage(ws, {
+      type: GEO_WS_MESSAGE_TYPES.READ,
+   });
+}
+
+/**
+ * По умолчанию запрашиваем все точки.
  */
 export function requestGeoPoints(ws) {
-   if (!ws || ws.readyState !== WebSocket.OPEN) return;
-
-   // type должен совпасть с $connection->type
-   ws.send(
-      JSON.stringify({
-         type: 'admin', //
-      }),
-   );
+   return requestGeoAdminPoints(ws);
 }
 
 export function getBrowserLocation(options = {}) {
@@ -115,17 +157,23 @@ export function getBrowserLocation(options = {}) {
 }
 
 export function sendGeoPoint(ws, point) {
-   if (!ws || ws.readyState !== WebSocket.OPEN) return;
+   return sendGeoWSMessage(ws, {
+      type: GEO_WS_MESSAGE_TYPES.ADD,
+      point: {
+         latitude: point.latitude,
+         longitude: point.longitude,
+         altitude: point.altitude ?? 0,
+      },
+   });
+}
 
-   ws.send(
-      JSON.stringify({
-         type: 'admin',
-         action: 'record_geo_point',
-         point: {
-            latitude: point.latitude,
-            longitude: point.longitude,
-            altitude: point.altitude ?? 0,
-         },
-      }),
-   );
+export function sendGeoPoints(ws, points) {
+   return sendGeoWSMessage(ws, {
+      type: GEO_WS_MESSAGE_TYPES.ADD,
+      points: points.map((point) => ({
+         latitude: point.latitude,
+         longitude: point.longitude,
+         altitude: point.altitude ?? 0,
+      })),
+   });
 }

@@ -62,6 +62,93 @@ function extractGeoPoints(response) {
    return [];
 }
 
+function normalizeNumber(value) {
+   if (value === null || value === undefined || value === '') {
+      return null;
+   }
+
+   const numberValue = Number(value);
+
+   return Number.isNaN(numberValue) ? null : numberValue;
+}
+
+function normalizeGeoPoint(point, index) {
+   const latitude = normalizeNumber(
+      point?.latitude ?? point?.lat ?? point?.coords?.latitude,
+   );
+
+   const longitude = normalizeNumber(
+      point?.longitude ?? point?.lng ?? point?.lon ?? point?.coords?.longitude,
+   );
+
+   if (latitude === null || longitude === null) {
+      return null;
+   }
+
+   return {
+      id: point?.id ?? point?._id ?? `${latitude}-${longitude}-${index}`,
+      latitude,
+      longitude,
+      altitude: normalizeNumber(point?.altitude ?? point?.alt) ?? 0,
+      recordedAt:
+         point?.recorded_at ??
+         point?.recordedAt ??
+         point?.created_at ??
+         point?.timestamp ??
+         null,
+      raw: point,
+   };
+}
+
+export function normalizeGeoPoints(points) {
+   return (points || [])
+      .map(normalizeGeoPoint)
+      .filter(Boolean)
+      .sort((firstPoint, secondPoint) => {
+         if (firstPoint.id !== null && secondPoint.id !== null) {
+            return Number(firstPoint.id) - Number(secondPoint.id);
+         }
+
+         if (firstPoint.recordedAt && secondPoint.recordedAt) {
+            return (
+               new Date(firstPoint.recordedAt) -
+               new Date(secondPoint.recordedAt)
+            );
+         }
+
+         return 0;
+      });
+}
+
+export function mergeGeoPointsById(prevPoints, nextPoints) {
+   const pointsMap = new Map();
+
+   [...prevPoints, ...nextPoints].forEach((point) => {
+      pointsMap.set(String(point.id), point);
+   });
+
+   return Array.from(pointsMap.values()).sort((firstPoint, secondPoint) => {
+      const firstId = Number(firstPoint.id);
+      const secondId = Number(secondPoint.id);
+
+      if (!Number.isNaN(firstId) && !Number.isNaN(secondId)) {
+         return firstId - secondId;
+      }
+
+      if (firstPoint.recordedAt && secondPoint.recordedAt) {
+         return (
+            new Date(firstPoint.recordedAt) - new Date(secondPoint.recordedAt)
+         );
+      }
+
+      return 0;
+   });
+}
+
+export function geoPointToLatLng(point) {
+   return [point.latitude, point.longitude];
+}
+
 function isFalsyGeoResponse(response) {
    return (
       !response ||
@@ -113,15 +200,22 @@ function handleGeoWsPayload(payload, handlers = {}) {
       payload.type === 'get_points' ||
       payload.type === 'record_geo_point'
    ) {
-      const points = extractGeoPoints(payload);
+      const rawPoints = extractGeoPoints(payload);
+      const normalizedPoints = normalizeGeoPoints(rawPoints);
 
-      if (!points.length) {
-         notifyWarning('GeoWS response does not contain points', payload);
+      if (!rawPoints.length) {
+         console.log('[GeoWS points] empty list', payload);
+         onPoints?.([], payload);
          return;
       }
 
-      console.log('[GeoWS points]', points);
-      onPoints?.(points, payload);
+      if (!normalizedPoints.length) {
+         notifyWarning('GeoWS response does not contain valid points', payload);
+         return;
+      }
+
+      console.log('[GeoWS normalized points]', normalizedPoints);
+      onPoints?.(normalizedPoints, payload);
    }
 }
 
@@ -196,16 +290,6 @@ export function openLeadGeoConnection({
             onAuthFailed: (payload) => {
                notifyError('GeoWS authorization failed', payload);
                onAuthFailed?.(payload);
-            },
-
-            onPoints: (points) => {
-               if (!points?.length) {
-                  notifyWarning('GeoWS returned empty points list');
-                  return;
-               }
-
-               console.log('[GeoWS get_points]', points);
-               onPoints?.(points);
             },
 
             onMessage: (payload) => {

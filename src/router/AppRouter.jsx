@@ -2,6 +2,7 @@ import { Navigate, useRoutes } from 'react-router-dom';
 
 import { AppLayout } from '../widgets/app-layout';
 import { CustomerPage } from '../pages/customer';
+import { ProfilePage } from '../pages/profile/ui/ProfilePage';
 
 export const AppRouter = () => {
    const routes = useRoutes([
@@ -16,6 +17,10 @@ export const AppRouter = () => {
             {
                path: 'customer',
                element: <CustomerPage />,
+            },
+            {
+               path: 'profile',
+               element: <ProfilePage />,
             },
          ],
       },

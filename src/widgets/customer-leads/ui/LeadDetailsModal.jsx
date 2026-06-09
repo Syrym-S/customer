@@ -26,6 +26,7 @@ import { mapLeadDetailsResponseFromApi } from '../model/lead.adapter';
 import { LeadDetailsHeader } from './lead-details/LeadDetailsHeader';
 import {
    isGeoWsConfigured,
+   mergeGeoPointsById,
    openLeadGeoConnection,
 } from '../../../utils/geologic';
 
@@ -40,6 +41,9 @@ export function LeadDetailsModal() {
    const [route, setRoute] = useState(null);
    const [routePoints, setRoutePoints] = useState([]);
    const [isRouteLoading, setIsRouteLoading] = useState(false);
+
+   const [geoPoints, setGeoPoints] = useState([]);
+   const [geoCurrentPoint, setGeoCurrentPoint] = useState(null);
 
    const [documents, setDocuments] = useState([]);
 
@@ -79,6 +83,8 @@ export function LeadDetailsModal() {
       setLeadDetailsError(null);
       setRoute(null);
       setRoutePoints([]);
+      setGeoPoints([]);
+      setGeoCurrentPoint(null);
       setIsEditing(false);
       setSaveEditError(null);
       setDocuments([]);
@@ -267,6 +273,9 @@ export function LeadDetailsModal() {
       geoConnectionRef.current?.close();
       geoConnectionRef.current = null;
 
+      setGeoPoints([]);
+      setGeoCurrentPoint(null);
+
       if (!openLead?.id) return;
 
       if (!isGeoWsConfigured()) {
@@ -295,6 +304,16 @@ export function LeadDetailsModal() {
 
          onPoints: (points, payload) => {
             console.log('Lead GeoWS points:', points, payload);
+            if (!points?.length) {
+               return;
+            }
+
+            setGeoPoints((prevPoints) => {
+               const nextPoints = mergeGeoPointsById(prevPoints, points);
+               setGeoCurrentPoint(nextPoints.at(-1) ?? null);
+
+               return nextPoints;
+            });
          },
 
          onMessage: (payload) => {
@@ -357,6 +376,8 @@ export function LeadDetailsModal() {
                lead={currentLead}
                route={route}
                routePoints={routePoints}
+               geoPoints={geoPoints}
+               geoCurrentPoint={geoCurrentPoint}
                isRouteLoading={isRouteLoading}
             />
 
