@@ -21,12 +21,12 @@ import {
    fetchCustomerProfile,
    updateCustomerProfile,
 } from '../../../features/profile-edit/profile.api';
+import { notifySuccess } from '../../../shared/model/notifications.store';
 
 export function ProfilePage() {
    const [form, setForm] = useState(initialProfileForm);
    const [errors, setErrors] = useState({});
    const [isSaving, setIsSaving] = useState(false);
-   const [successMessage, setSuccessMessage] = useState('');
    const [submitError, setSubmitError] = useState('');
    const [initialLoadedForm, setInitialLoadedForm] =
       useState(initialProfileForm);
@@ -46,7 +46,6 @@ export function ProfilePage() {
          [name]: '',
       }));
 
-      setSuccessMessage('');
       setSubmitError('');
    }
 
@@ -71,7 +70,6 @@ export function ProfilePage() {
       try {
          setIsSaving(true);
          setSubmitError('');
-         setSuccessMessage('');
 
          await updateCustomerProfile(payload);
 
@@ -84,7 +82,8 @@ export function ProfilePage() {
 
          setInitialLoadedForm(nextInitialForm);
          setForm(nextInitialForm);
-         setSuccessMessage('Профиль успешно обновлен');
+
+         notifySuccess('Профиль успешно обновлен');
       } catch (error) {
          setSubmitError(
             error.response?.data?.message ||
@@ -113,7 +112,6 @@ export function ProfilePage() {
                setInitialLoadedForm(mappedProfile);
                setErrors({});
                setSubmitError('');
-               setSuccessMessage('');
             }
          } catch (error) {
             if (!isCancelled) {
@@ -161,16 +159,8 @@ export function ProfilePage() {
                   </Typography>
                </Box>
 
-               {isProfileLoading && (
-                  <Alert severity='info'>Загружаем данные профиля...</Alert>
-               )}
-
                {profileLoadError && (
                   <Alert severity='error'>{profileLoadError}</Alert>
-               )}
-
-               {successMessage && (
-                  <Alert severity='success'>{successMessage}</Alert>
                )}
 
                {submitError && <Alert severity='error'>{submitError}</Alert>}
@@ -287,14 +277,29 @@ export function ProfilePage() {
                   <Typography fontWeight={600}>Смена пароля</Typography>
 
                   <TextField
-                     name='currentPassword'
+                     name='profileCurrentPassword'
                      label='Текущий пароль'
                      type='password'
                      value={form.currentPassword}
-                     onChange={handleChange}
+                     onChange={(event) => {
+                        handleChange({
+                           target: {
+                              name: 'currentPassword',
+                              value: event.target.value,
+                           },
+                        });
+                     }}
                      error={Boolean(errors.currentPassword)}
                      helperText={errors.currentPassword}
                      fullWidth
+                     autoComplete='new-password'
+                     inputProps={{
+                        autoComplete: 'new-password',
+                        readOnly: true,
+                        onFocus: (event) => {
+                           event.target.removeAttribute('readonly');
+                        },
+                     }}
                   />
 
                   <TextField
@@ -306,6 +311,10 @@ export function ProfilePage() {
                      error={Boolean(errors.newPassword)}
                      helperText={errors.newPassword}
                      fullWidth
+                     autoComplete='new-password'
+                     inputProps={{
+                        autoComplete: 'new-password',
+                     }}
                   />
 
                   <TextField
@@ -317,6 +326,10 @@ export function ProfilePage() {
                      error={Boolean(errors.newPasswordConfirm)}
                      helperText={errors.newPasswordConfirm}
                      fullWidth
+                     autoComplete='new-password'
+                     inputProps={{
+                        autoComplete: 'new-password',
+                     }}
                   />
                </Stack>
 

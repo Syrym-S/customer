@@ -19,7 +19,7 @@ export const AppRouter = () => {
                element: <CustomerPage />,
             },
             {
-               path: 'profile',
+               path: 'customer/profile',
                element: <ProfilePage />,
             },
          ],

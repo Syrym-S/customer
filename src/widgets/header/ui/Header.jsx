@@ -44,7 +44,7 @@ export function Header() {
 
    function handleNavigateProfile() {
       setProfileAnchorEl(null);
-      handleNavigate('/profile');
+      handleNavigate('/customer/profile');
    }
 
    function handleOpenLogoutModal() {
