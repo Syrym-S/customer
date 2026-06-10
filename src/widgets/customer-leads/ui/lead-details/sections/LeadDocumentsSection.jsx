@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import {
+   Alert,
+   Box,
+   Button,
+   Stack,
+   TextField,
+   Typography,
+} from '@mui/material';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
 
@@ -13,6 +20,9 @@ export function LeadDocumentsSection({
    documents,
    onAddDocument,
    onDeleteDocument,
+   isUploading = false,
+   uploadError = '',
+   deletingDocumentIds = [],
 }) {
    const [selectedDocument, setSelectedDocument] = useState(null);
    const [selectedFileName, setSelectedFileName] = useState('');
@@ -23,24 +33,25 @@ export function LeadDocumentsSection({
       setSelectedFileName(file?.name || '');
    }
 
-   function handleSubmit(event) {
+   async function handleSubmit(event) {
       event.preventDefault();
 
+      const form = event.currentTarget;
       const formData = new FormData(event.currentTarget);
       const file = formData.get('file');
 
-      if (!file || !file.name) {
+      if (!file || !file.name || isUploading) {
          return;
       }
 
-      onAddDocument({
+      await onAddDocument({
          name: formData.get('name'),
          context: formData.get('context'),
          file,
       });
 
       setSelectedFileName('');
-      event.currentTarget.reset();
+      form.reset();
    }
 
    return (
@@ -92,6 +103,7 @@ export function LeadDocumentsSection({
                         name='file'
                         type='file'
                         hidden
+                        accept='.pdf,.xls,.xlsx,.jpg,.jpeg,.png,.mp4,.mpeg,.mov,.avi,.mkv,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpeg,image/png,video/mp4,video/mpeg,video/quicktime,video/x-msvideo,video/x-matroska'
                         onChange={handleFileChange}
                      />
                   </Button>
@@ -121,6 +133,7 @@ export function LeadDocumentsSection({
                <Button
                   type='submit'
                   variant='contained'
+                  disabled={isUploading}
                   sx={{
                      gridColumn: {
                         xs: '1',
@@ -129,9 +142,11 @@ export function LeadDocumentsSection({
                      justifySelf: 'flex-start',
                   }}
                >
-                  Добавить документ
+                  {isUploading ? 'Добавление...' : 'Добавить документ'}
                </Button>
             </Box>
+
+            {uploadError && <Alert severity='error'>{uploadError}</Alert>}
 
             {documents.length === 0 ? (
                <Typography color='text.secondary' fontSize={14}>
@@ -145,6 +160,7 @@ export function LeadDocumentsSection({
                         document={document}
                         onOpen={setSelectedDocument}
                         onDelete={onDeleteDocument}
+                        isDeleting={deletingDocumentIds.includes(document.id)}
                      />
                   ))}
                </Stack>
@@ -172,4 +188,9 @@ LeadDocumentsSection.propTypes = {
    ).isRequired,
    onAddDocument: PropTypes.func.isRequired,
    onDeleteDocument: PropTypes.func.isRequired,
+   isUploading: PropTypes.bool,
+   uploadError: PropTypes.string,
+   deletingDocumentIds: PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   ),
 };

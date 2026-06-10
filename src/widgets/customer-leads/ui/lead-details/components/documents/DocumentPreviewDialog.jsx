@@ -52,14 +52,23 @@ export function DocumentPreviewDialog({ document, onClose }) {
 
          <DialogActions sx={{ px: 3, pb: 2 }}>
             {document?.fileUrl && document.fileUrl !== '#' && (
-               <Button
-                  component='a'
-                  href={document.fileUrl}
-                  target='_blank'
-                  rel='noreferrer'
-               >
-                  Открыть в новой вкладке
-               </Button>
+               <>
+                  <Button
+                     component='a'
+                     href={document.fileUrl}
+                     target='_blank'
+                     rel='noreferrer'
+                  >
+                     Открыть в новой вкладке
+                  </Button>
+                  <Button
+                     component='a'
+                     href={document.fileUrl}
+                     download={document.fileName || document.name || true}
+                  >
+                     Скачать
+                  </Button>
+               </>
             )}
 
             <Button onClick={onClose}>Закрыть</Button>

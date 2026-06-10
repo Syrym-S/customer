@@ -24,6 +24,19 @@ function isImageDocument(document) {
    );
 }
 
+function isVideoDocument(document) {
+   const fileType = document?.fileType || '';
+   const fileName = document?.fileName?.toLowerCase() || '';
+
+   return (
+      fileType.startsWith('video/') ||
+      fileName.endsWith('.mp4') ||
+      fileName.endsWith('.webm') ||
+      fileName.endsWith('.mov') ||
+      fileName.endsWith('.avi')
+   );
+}
+
 function hasPreviewUrl(document) {
    return Boolean(document?.fileUrl && document.fileUrl !== '#');
 }
@@ -92,6 +105,32 @@ export function DocumentPreview({ document }) {
                   maxWidth: '100%',
                   height: 'auto',
                   display: 'block',
+               }}
+            />
+         </Box>
+      );
+   }
+
+   if (isVideoDocument(document)) {
+      return (
+         <Box
+            sx={{
+               maxHeight: '75vh',
+               border: '1px solid',
+               borderColor: 'divider',
+               borderRadius: 2,
+               overflow: 'hidden',
+               backgroundColor: 'common.black',
+            }}
+         >
+            <Box
+               component='video'
+               src={document.fileUrl}
+               controls
+               sx={{
+                  display: 'block',
+                  width: '100%',
+                  maxHeight: '75vh',
                }}
             />
          </Box>

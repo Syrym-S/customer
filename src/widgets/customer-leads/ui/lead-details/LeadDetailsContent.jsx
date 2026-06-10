@@ -15,6 +15,9 @@ export function LeadDetailsContent({
    documents = [],
    onAddDocument,
    onDeleteDocument,
+   isDocumentUploading = false,
+   documentUploadError = '',
+   deletingDocumentIds = [],
 }) {
    return (
       <Stack spacing={2}>
@@ -50,6 +53,9 @@ export function LeadDetailsContent({
             documents={documents}
             onAddDocument={onAddDocument}
             onDeleteDocument={onDeleteDocument}
+            isUploading={isDocumentUploading}
+            uploadError={documentUploadError}
+            deletingDocumentIds={deletingDocumentIds}
          />
       </Stack>
    );
@@ -74,4 +80,9 @@ LeadDetailsContent.propTypes = {
    ).isRequired,
    onAddDocument: PropTypes.func.isRequired,
    onDeleteDocument: PropTypes.func.isRequired,
+   isDocumentUploading: PropTypes.bool,
+   documentUploadError: PropTypes.string,
+   deletingDocumentIds: PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   ),
 };

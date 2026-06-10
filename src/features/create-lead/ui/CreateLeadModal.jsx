@@ -18,6 +18,7 @@ import { CreateLeadResultModal } from './create-lead-modal/components/CreateLead
 import { useLeadsContext } from '../../../widgets/customer-leads/model/useLeadsContext';
 import { createLead } from '../api/createLead.repository';
 import { DocumentsStep } from './create-lead-modal/steps/DocumentsStep';
+import { uploadLeadDocument } from '../../../widgets/customer-leads/api/lead-documents.api';
 
 const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Документы', 'Проверка'];
 
@@ -66,6 +67,32 @@ const stepFields = [
    ['forwarderId'],
    [],
 ];
+
+function getCreatedLeadId(response) {
+   return (
+      response?.data?.id ||
+      response?.data?.lead_id ||
+      response?.id ||
+      response?.lead_id ||
+      response?.result?.id ||
+      null
+   );
+}
+
+async function uploadCreateLeadDocuments(leadId, documents = []) {
+   if (!leadId || !documents.length) {
+      return;
+   }
+
+   const documentsWithFiles = documents.filter((document) => document.file);
+
+   for (const document of documentsWithFiles) {
+      await uploadLeadDocument(leadId, {
+         file: document.file,
+         context: document.context || document.name || '',
+      });
+   }
+}
 
 export function CreateLeadModal({ open, onClose }) {
    const [activeStep, setActiveStep] = useState(0);
@@ -165,31 +192,39 @@ export function CreateLeadModal({ open, onClose }) {
    async function handleCreateLead(data) {
       try {
          setIsSubmitting(true);
+
          const documents = mapCreateLeadDocumentsToApiDocuments(data);
-
-         console.log('Create lead documents:', documents);
-         console.table(
-            documents.map((document) => ({
-               name: document.name,
-               context: document.context,
-               fileName: document.file?.name,
-               fileType: document.file?.type,
-               fileSize: document.file?.size,
-               isFile: document.file instanceof File,
-            })),
-         );
-
          const payload = mapCreateLeadFormToApi(data);
          const response = await createLead(payload);
+
+         const createdLeadId = getCreatedLeadId(response);
+
+         let documentsUploadFailed = false;
+
+         if (documents.length > 0 && createdLeadId) {
+            try {
+               await uploadCreateLeadDocuments(createdLeadId, documents);
+            } catch (documentError) {
+               documentsUploadFailed = true;
+               console.error(
+                  'Create lead documents upload failed:',
+                  documentError,
+               );
+            }
+         }
+
          const createdLead = mapCreatedLeadToUi(data, response);
 
          prependLead(createdLead);
          handleClose();
+
          setResultModal({
             open: true,
-            type: 'success',
+            type: documentsUploadFailed ? 'warning' : 'success',
             title: 'Перевозка создана',
-            message: `Лид успешно создан${response?.id ? `: ${response.id}` : ''}`,
+            message: documentsUploadFailed
+               ? 'Лид создан, но часть документов не загрузилась'
+               : `Лид успешно создан${createdLeadId ? `: ${createdLeadId}` : ''}`,
          });
       } catch (error) {
          setResultModal({

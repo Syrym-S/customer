@@ -4,7 +4,12 @@ import { Box, IconButton, Typography } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 
-export function LeadDocumentCard({ document, onOpen, onDelete }) {
+export function LeadDocumentCard({
+   document,
+   onOpen,
+   onDelete,
+   isDeleting = false,
+}) {
    return (
       <Box
          component='button'
@@ -100,13 +105,16 @@ export function LeadDocumentCard({ document, onOpen, onDelete }) {
                event.stopPropagation();
             }}
          >
-            <IconButton
-               size='small'
-               color='error'
-               onClick={() => onDelete(document.id)}
-            >
-               <DeleteOutlineOutlinedIcon fontSize='small' />
-            </IconButton>
+            {(!document.source || document.source === 'customer') && (
+               <IconButton
+                  size='small'
+                  color='error'
+                  disabled={isDeleting}
+                  onClick={() => onDelete(document.id)}
+               >
+                  <DeleteOutlineOutlinedIcon fontSize='small' />
+               </IconButton>
+            )}
          </Box>
       </Box>
    );
@@ -120,7 +128,9 @@ LeadDocumentCard.propTypes = {
       fileName: PropTypes.string,
       fileUrl: PropTypes.string,
       fileType: PropTypes.string,
+      source: PropTypes.string,
    }).isRequired,
    onOpen: PropTypes.func.isRequired,
    onDelete: PropTypes.func.isRequired,
+   isDeleting: PropTypes.bool,
 };

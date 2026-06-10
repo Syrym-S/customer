@@ -1,4 +1,6 @@
-import { leadDocumentsMock } from './leadDocuments.mock';
+function isBinLike(value) {
+   return /^\d{12}$/.test(String(value ?? '').trim());
+}
 
 function mapForwarderFromLead(apiLead) {
    const forwarder =
@@ -7,6 +9,25 @@ function mapForwarderFromLead(apiLead) {
       apiLead.expeditor ||
       apiLead.expediter ||
       null;
+
+   const rawCompanyName =
+      forwarder?.companyName ??
+      forwarder?.company_name ??
+      forwarder?.company?.name ??
+      forwarder?.organization?.name ??
+      apiLead.forwarder_company_name ??
+      '';
+
+   const rawCompanyBin =
+      forwarder?.companyBin ??
+      forwarder?.company_bin ??
+      forwarder?.company?.bin ??
+      forwarder?.organization?.bin ??
+      apiLead.forwarder_company_bin ??
+      '';
+
+   const fallbackName = forwarder?.name ?? '';
+   const fallbackBin = forwarder?.bin ?? '';
 
    return {
       id: forwarder?.id ?? apiLead.forwarder_id ?? null,
@@ -22,21 +43,15 @@ function mapForwarderFromLead(apiLead) {
          'Не указан',
 
       companyName:
-         forwarder?.companyName ??
-         forwarder?.company_name ??
-         forwarder?.company?.name ??
-         forwarder?.organization?.name ??
-         forwarder?.bin ??
-         apiLead.forwarder_company_name ??
+         rawCompanyName ||
+         (!isBinLike(fallbackName) ? fallbackName : '') ||
+         (!isBinLike(fallbackBin) ? fallbackBin : '') ||
          '',
 
       companyBin:
-         forwarder?.companyBin ??
-         forwarder?.company_bin ??
-         forwarder?.company?.bin ??
-         forwarder?.organization?.bin ??
-         forwarder?.name ??
-         apiLead.forwarder_company_bin ??
+         rawCompanyBin ||
+         (isBinLike(fallbackBin) ? fallbackBin : '') ||
+         (isBinLike(fallbackName) ? fallbackName : '') ||
          '',
 
       phone:
@@ -50,24 +65,47 @@ function mapForwarderFromLead(apiLead) {
 }
 
 function mapLeadFileFromApi(apiFile, index) {
+   const fileName =
+      apiFile.name ??
+      apiFile.fileName ??
+      apiFile.file_name ??
+      `file-${index + 1}`;
+
    return {
-      id: apiFile.id ?? apiFile._id ?? `file-${index}`,
-      name: apiFile.name ?? apiFile.title ?? apiFile.file_name ?? 'Документ',
-      context: apiFile.context ?? apiFile.description ?? '',
-      fileName: apiFile.fileName ?? apiFile.file_name ?? apiFile.name ?? 'file',
-      fileUrl: apiFile.url ?? apiFile.file_url ?? apiFile.href ?? '#',
+      id: apiFile.path ?? apiFile.url ?? apiFile.id ?? `file-${index}`,
+      name: apiFile.name ?? fileName ?? 'Документ',
+      context: apiFile.context ?? '',
+      fileName,
+      fileUrl: apiFile.url ?? apiFile.path ?? '#',
       fileType: apiFile.type ?? apiFile.mime_type ?? '',
       createdAt: apiFile.created_at ?? null,
+      path: apiFile.path ?? '',
+      source: apiFile.source ?? 'customer',
       raw: apiFile,
    };
 }
 
+export function mapLeadDocumentsResponseFromApi(response) {
+   const files = Array.isArray(response)
+      ? response
+      : (response?.files ?? response?.data?.files ?? []);
+
+   return Array.isArray(files) ? files.map(mapLeadFileFromApi) : [];
+}
+
 function mapLeadDocumentsFromApi(apiLead) {
-   if (Array.isArray(apiLead.files) && apiLead.files.length > 0) {
-      return apiLead.files.map(mapLeadFileFromApi);
+   const files =
+      apiLead.files ??
+      apiLead.documents ??
+      apiLead.docs ??
+      apiLead.attachments ??
+      [];
+
+   if (!Array.isArray(files)) {
+      return [];
    }
 
-   return leadDocumentsMock;
+   return files.map(mapLeadFileFromApi);
 }
 
 export function mapLeadFromApi(apiLead) {

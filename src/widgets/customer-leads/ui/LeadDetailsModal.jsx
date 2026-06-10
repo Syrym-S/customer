@@ -22,13 +22,21 @@ import {
    fetchCustomerLeadById,
    updateCustomerLead,
 } from '../api/leads.repository';
-import { mapLeadDetailsResponseFromApi } from '../model/lead.adapter';
+import {
+   mapLeadDetailsResponseFromApi,
+   mapLeadDocumentsResponseFromApi,
+} from '../model/lead.adapter';
 import { LeadDetailsHeader } from './lead-details/LeadDetailsHeader';
 import {
    isGeoWsConfigured,
    mergeGeoPointsById,
    openLeadGeoConnection,
 } from '../../../utils/geologic';
+import {
+   deleteLeadDocument,
+   fetchLeadDocuments,
+   uploadLeadDocument,
+} from '../api/lead-documents.api';
 
 export function LeadDetailsModal() {
    const map = useCustomerMap();
@@ -46,6 +54,9 @@ export function LeadDetailsModal() {
    const [geoCurrentPoint, setGeoCurrentPoint] = useState(null);
 
    const [documents, setDocuments] = useState([]);
+   const [isDocumentUploading, setIsDocumentUploading] = useState(false);
+   const [documentUploadError, setDocumentUploadError] = useState('');
+   const [deletingDocumentIds, setDeletingDocumentIds] = useState([]);
 
    const [isEditing, setIsEditing] = useState(false);
    const [isSavingEdit, setIsSavingEdit] = useState(false);
@@ -55,27 +66,6 @@ export function LeadDetailsModal() {
    const geoConnectionRef = useRef(null);
 
    const currentLead = leadDetails ?? openLead;
-
-   function handleAddDocument({ name, context, file }) {
-      const document = {
-         id: `local-doc-${Date.now()}`,
-         name: name || file.name,
-         context: context || '',
-         fileName: file.name,
-         fileUrl: URL.createObjectURL(file),
-         fileType: file.type,
-         createdAt: new Date().toISOString(),
-         file,
-      };
-
-      setDocuments((prevDocuments) => [document, ...prevDocuments]);
-   }
-
-   function handleDeleteDocument(documentId) {
-      setDocuments((prevDocuments) =>
-         prevDocuments.filter((document) => document.id !== documentId),
-      );
-   }
 
    function handleClose() {
       setOpenLead(null);
@@ -88,6 +78,9 @@ export function LeadDetailsModal() {
       setIsEditing(false);
       setSaveEditError(null);
       setDocuments([]);
+      setIsDocumentUploading(false);
+      setDocumentUploadError('');
+      setDeletingDocumentIds([]);
    }
 
    function handleEditChange(eventOrName, maybeValue) {
@@ -115,6 +108,69 @@ export function LeadDetailsModal() {
    function handleCancelEdit() {
       setEditForm(createLeadEditForm(currentLead));
       setIsEditing(false);
+   }
+
+   async function handleAddDocument({ context, file }) {
+      if (!currentLead?.id || !file) {
+         return;
+      }
+
+      try {
+         setIsDocumentUploading(true);
+         setDocumentUploadError('');
+
+         await uploadLeadDocument(currentLead.id, {
+            file,
+            context,
+         });
+
+         await reloadLeadDocuments(currentLead.id);
+      } catch (error) {
+         setDocumentUploadError(
+            error.response?.data?.message ||
+               error.message ||
+               'Не удалось загрузить документ',
+         );
+      } finally {
+         setIsDocumentUploading(false);
+      }
+   }
+
+   async function handleDeleteDocument(documentId) {
+      if (!currentLead?.id) {
+         return;
+      }
+
+      const document = documents.find((item) => item.id === documentId);
+
+      if (!document?.path) {
+         setDocumentUploadError('Не удалось определить файл для удаления');
+         return;
+      }
+
+      if (document.source && document.source !== 'customer') {
+         setDocumentUploadError('Можно удалить только файлы заказчика');
+         return;
+      }
+
+      try {
+         setDocumentUploadError('');
+         setDeletingDocumentIds((prevIds) => [...prevIds, documentId]);
+
+         await deleteLeadDocument(currentLead.id, document.path);
+
+         await reloadLeadDocuments(currentLead.id);
+      } catch (error) {
+         setDocumentUploadError(
+            error.response?.data?.message ||
+               error.message ||
+               'Не удалось удалить документ',
+         );
+      } finally {
+         setDeletingDocumentIds((prevIds) =>
+            prevIds.filter((id) => id !== documentId),
+         );
+      }
    }
 
    async function handleSaveEdit() {
@@ -157,6 +213,51 @@ export function LeadDetailsModal() {
          setIsSavingEdit(false);
       }
    }
+
+   async function reloadLeadDocuments(leadId) {
+      const response = await fetchLeadDocuments(leadId);
+      const mappedDocuments = mapLeadDocumentsResponseFromApi(response);
+
+      setDocuments(mappedDocuments);
+   }
+
+   useEffect(() => {
+      if (!currentLead?.id) {
+         setDocuments([]);
+         return;
+      }
+
+      let isCancelled = false;
+
+      async function loadDocuments() {
+         try {
+            setDocuments([]);
+            setDocumentUploadError('');
+
+            const response = await fetchLeadDocuments(currentLead.id);
+            const mappedDocuments = mapLeadDocumentsResponseFromApi(response);
+
+            if (!isCancelled) {
+               setDocuments(mappedDocuments);
+            }
+         } catch (error) {
+            if (!isCancelled) {
+               setDocuments([]);
+               setDocumentUploadError(
+                  error.response?.data?.message ||
+                     error.message ||
+                     'Не удалось загрузить документы',
+               );
+            }
+         }
+      }
+
+      loadDocuments();
+
+      return () => {
+         isCancelled = true;
+      };
+   }, [currentLead?.id]);
 
    useEffect(() => {
       if (!openLead?.id) {
@@ -201,7 +302,6 @@ export function LeadDetailsModal() {
       }
 
       setEditForm(createLeadEditForm(currentLead));
-      setDocuments(currentLead.documents || []);
       setIsEditing(false);
    }, [currentLead]);
 
@@ -382,6 +482,9 @@ export function LeadDetailsModal() {
                documents={documents}
                onAddDocument={handleAddDocument}
                onDeleteDocument={handleDeleteDocument}
+               isDocumentUploading={isDocumentUploading}
+               documentUploadError={documentUploadError}
+               deletingDocumentIds={deletingDocumentIds}
             />
          </DialogContent>
 

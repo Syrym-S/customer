@@ -124,6 +124,7 @@ export function DocumentsStep({ form, setValue }) {
                            name='file'
                            type='file'
                            hidden
+                           accept='.pdf,.xls,.xlsx,.jpg,.jpeg,.png,.mp4,.mpeg,.mov,.avi,.mkv,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/jpeg,image/png,video/mp4,video/mpeg,video/quicktime,video/x-msvideo,video/x-matroska'
                            onChange={handleFileChange}
                         />
                      </Button>
