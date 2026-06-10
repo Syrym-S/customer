@@ -1,13 +1,18 @@
 import PropTypes from 'prop-types';
 
 import {
+   Box,
    Button,
    Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
+   IconButton,
+   Tooltip,
    Typography,
 } from '@mui/material';
+import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 
 import { DocumentPreview } from './DocumentPreview';
 
@@ -50,26 +55,42 @@ export function DocumentPreviewDialog({ document, onClose }) {
             <DocumentPreview document={document} />
          </DialogContent>
 
-         <DialogActions sx={{ px: 3, pb: 2 }}>
-            {document?.fileUrl && document.fileUrl !== '#' && (
-               <>
-                  <Button
-                     component='a'
-                     href={document.fileUrl}
-                     target='_blank'
-                     rel='noreferrer'
-                  >
-                     Открыть в новой вкладке
-                  </Button>
-                  <Button
-                     component='a'
-                     href={document.fileUrl}
-                     download={document.fileName || document.name || true}
-                  >
-                     Скачать
-                  </Button>
-               </>
-            )}
+         <DialogActions
+            sx={{
+               px: 3,
+               pb: 2,
+               gap: 1,
+               justifyContent: 'space-between',
+            }}
+         >
+            <Box sx={{ display: 'flex', gap: 1 }}>
+               {document?.fileUrl && document.fileUrl !== '#' && (
+                  <>
+                     <Tooltip title='Открыть в новой вкладке'>
+                        <IconButton
+                           component='a'
+                           href={document.fileUrl}
+                           target='_blank'
+                           rel='noreferrer'
+                           aria-label='Открыть в новой вкладке'
+                        >
+                           <OpenInNewOutlinedIcon />
+                        </IconButton>
+                     </Tooltip>
+
+                     <Tooltip title='Скачать'>
+                        <IconButton
+                           component='a'
+                           href={document.fileUrl}
+                           download={document.fileName || document.name || true}
+                           aria-label='Скачать'
+                        >
+                           <DownloadOutlinedIcon />
+                        </IconButton>
+                     </Tooltip>
+                  </>
+               )}
+            </Box>
 
             <Button onClick={onClose}>Закрыть</Button>
          </DialogActions>
