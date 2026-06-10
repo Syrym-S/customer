@@ -9,6 +9,8 @@ import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import { DetailSection } from '../components/DetailSection';
 import { RoutePoint } from '../components/RoutePoint';
 
+import { normalizeLocationValue } from '../../../model/leadEditForm.helpers';
+
 export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
    return (
       <DetailSection icon={<RouteOutlinedIcon />} title='Маршрут'>
@@ -39,7 +41,7 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
             ) : (
                <RoutePoint
                   label='Откуда'
-                  value={lead.from_location.trim()}
+                  value={normalizeLocationValue(lead.from_location)}
                   icon={<TripOriginIcon />}
                />
             )}
@@ -79,7 +81,7 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
             ) : (
                <RoutePoint
                   label='Куда'
-                  value={lead.to_location.trim()}
+                  value={normalizeLocationValue(lead.to_location)}
                   icon={<LocationOnOutlinedIcon />}
                />
             )}

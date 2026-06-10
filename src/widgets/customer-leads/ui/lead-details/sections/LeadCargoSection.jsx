@@ -1,4 +1,4 @@
-import { Box, TextField } from '@mui/material';
+import { Box, MenuItem, Stack, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
@@ -23,12 +23,18 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
             {isEditing ? (
                <TextField
                   name='cargoType'
-                  label='Тип'
-                  value={editForm.cargoType}
+                  label='Тип груза'
+                  value={editForm.cargoType || 'Не указан'}
                   onChange={onEditChange}
                   fullWidth
                   size='small'
-               />
+                  select
+               >
+                  <MenuItem value='Не указан'>Не указан</MenuItem>
+                  <MenuItem value='Паллеты'>Паллеты</MenuItem>
+                  <MenuItem value='Коробки'>Коробки</MenuItem>
+                  <MenuItem value='Оборудование'>Оборудование</MenuItem>
+               </TextField>
             ) : (
                <InfoBadge label='Тип' value={lead.cargo.type} />
             )}
@@ -47,14 +53,36 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
             )}
 
             {isEditing ? (
-               <TextField
-                  name='summ'
-                  label='Цена'
-                  value={editForm.summ}
-                  onChange={onEditChange}
-                  fullWidth
-                  size='small'
-               />
+               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+                  <TextField
+                     name='summ'
+                     label='Цена'
+                     value={editForm.summ}
+                     onChange={onEditChange}
+                     fullWidth
+                     size='small'
+                  />
+
+                  <TextField
+                     name='currency'
+                     label='Валюта'
+                     value={editForm.currency || 'KZT'}
+                     onChange={onEditChange}
+                     select
+                     size='small'
+                     sx={{
+                        minWidth: {
+                           xs: '100%',
+                           sm: 120,
+                        },
+                     }}
+                  >
+                     <MenuItem value='KZT'>KZT</MenuItem>
+                     <MenuItem value='USD'>USD</MenuItem>
+                     <MenuItem value='EUR'>EUR</MenuItem>
+                     <MenuItem value='RUB'>RUB</MenuItem>
+                  </TextField>
+               </Stack>
             ) : (
                <InfoBadge
                   label='Цена'
@@ -67,11 +95,15 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
                <TextField
                   name='vat'
                   label='НДС'
-                  value={editForm.vat}
+                  value={editForm.vat || 'без НДС'}
                   onChange={onEditChange}
                   fullWidth
                   size='small'
-               />
+                  select
+               >
+                  <MenuItem value='с НДС'>с НДС</MenuItem>
+                  <MenuItem value='без НДС'>без НДС</MenuItem>
+               </TextField>
             ) : (
                <InfoBadge label='НДС' value={lead.vat} />
             )}

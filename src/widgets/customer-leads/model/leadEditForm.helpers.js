@@ -9,7 +9,7 @@ export function createLeadEditForm(lead) {
          toLng: '',
 
          cargoName: '',
-         cargoType: '',
+         cargoType: 'Не указан',
          weight_kg: '',
          cargoLengthCm: '',
          cargoWidthCm: '',
@@ -17,8 +17,8 @@ export function createLeadEditForm(lead) {
          cargoDescription: '',
 
          summ: '',
-         currency: '',
-         vat: '',
+         currency: 'KZT',
+         vat: 'без НДС',
          loadingDate: '',
 
          driver: '',
@@ -28,8 +28,8 @@ export function createLeadEditForm(lead) {
    }
 
    return {
-      from_location: lead.from_location?.trim() || '',
-      to_location: lead.to_location?.trim() || '',
+      from_location: normalizeLocationValue(lead.from_location),
+      to_location: normalizeLocationValue(lead.to_location),
 
       fromLat: lead.raw?.route?.from?.lat ?? '',
       fromLng: lead.raw?.route?.from?.lng ?? '',
@@ -37,7 +37,7 @@ export function createLeadEditForm(lead) {
       toLng: lead.raw?.route?.to?.lng ?? '',
 
       cargoName: lead.cargo?.name ?? '',
-      cargoType: lead.cargo?.type || '',
+      cargoType: lead.cargo?.type || 'Не указан',
       weight_kg: lead.cargo?.weight_kg ?? '',
       cargoLengthCm: lead.cargo?.length_cm ?? '',
       cargoWidthCm: lead.cargo?.width_cm ?? '',
@@ -49,8 +49,8 @@ export function createLeadEditForm(lead) {
          '',
 
       summ: lead.summ ?? '',
-      currency: lead.currency || '',
-      vat: lead.vat || '',
+      currency: normalizeCurrency(lead.currency),
+      vat: lead.vat || 'без НДС',
       loadingDate: lead.raw?.loading_date || '',
 
       driver: lead.raw?.driver?.id || '',
@@ -60,9 +60,63 @@ export function createLeadEditForm(lead) {
 }
 
 function normalizeText(value) {
-   return String(value ?? '')
-      .trim()
-      .replace(/\s+/g, ' ');
+   if (value === null || value === undefined) {
+      return '';
+   }
+
+   if (typeof value === 'object') {
+      return normalizeLocationValue(value).replace(/\s+/g, ' ');
+   }
+
+   return String(value).trim().replace(/\s+/g, ' ');
+}
+
+export function normalizeLocationValue(value) {
+   if (value === null || value === undefined) {
+      return '';
+   }
+
+   if (typeof value === 'string') {
+      return value.trim();
+   }
+
+   if (typeof value === 'number') {
+      return String(value);
+   }
+
+   if (typeof value === 'object') {
+      const preferredKeys = [
+         'city',
+         'address',
+         'name',
+         'title',
+         'label',
+         'value',
+         'fullAddress',
+         'formatted_address',
+         'location',
+      ];
+
+      for (const key of preferredKeys) {
+         if (typeof value[key] === 'string' && value[key].trim()) {
+            return value[key].trim();
+         }
+      }
+
+      return Object.values(value)
+         .filter((item) => typeof item === 'string' && item.trim())
+         .join(', ');
+   }
+
+   return '';
+}
+
+const CURRENCIES = ['KZT', 'USD', 'EUR', 'RUB'];
+
+function normalizeCurrency(value) {
+   const currency = normalizeText(value).toUpperCase();
+
+   return CURRENCIES.includes(currency) ? currency : 'KZT';
 }
 
 export function normalizeNumber(value) {
@@ -174,12 +228,14 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
    );
 
    addNumberIfChanged(payload, 'price', editForm.summ, currentLead.summ);
-   addTextIfChanged(
-      payload,
-      'currency',
-      editForm.currency,
-      currentLead.currency,
-   );
+
+   const nextCurrency = normalizeCurrency(editForm.currency);
+   const prevCurrency = normalizeCurrency(currentLead.currency);
+
+   if (nextCurrency !== prevCurrency) {
+      payload.currency = nextCurrency;
+   }
+
    addTextIfChanged(payload, 'vat', editForm.vat, currentLead.vat);
    addTextIfChanged(
       payload,

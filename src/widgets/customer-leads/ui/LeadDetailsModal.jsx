@@ -286,14 +286,6 @@ export function LeadDetailsModal() {
       const connection = openLeadGeoConnection({
          leadId: openLead.id,
 
-         onOpen: () => {
-            console.log('Lead GeoWS opened:', openLead.id);
-         },
-
-         onClose: () => {
-            console.log('Lead GeoWS closed:', openLead.id);
-         },
-
          onError: (error) => {
             console.error('Lead GeoWS error:', error);
          },
@@ -302,8 +294,7 @@ export function LeadDetailsModal() {
             console.error('Lead GeoWS auth failed:', payload);
          },
 
-         onPoints: (points, payload) => {
-            console.log('Lead GeoWS points:', points, payload);
+         onPoints: (points) => {
             if (!points?.length) {
                return;
             }
@@ -314,10 +305,6 @@ export function LeadDetailsModal() {
 
                return nextPoints;
             });
-         },
-
-         onMessage: (payload) => {
-            console.log('Lead GeoWS message:', payload);
          },
       });
 

@@ -6,6 +6,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 
 import { useLeadsContext } from '../model/useLeadsContext';
+import { normalizeLocationValue } from '../model/leadEditForm.helpers';
 
 export function LeadCard({ lead }) {
    const { setOpenLead } = useLeadsContext();
@@ -160,7 +161,7 @@ export function LeadCard({ lead }) {
                            lineHeight: 1.35,
                         }}
                      >
-                        {lead.from_location.trim()}
+                        {normalizeLocationValue(lead.from_location)}
                      </Typography>
                   </Box>
                </Box>
@@ -222,7 +223,7 @@ export function LeadCard({ lead }) {
                            lineHeight: 1.35,
                         }}
                      >
-                        {lead.to_location.trim()}
+                        {normalizeLocationValue(lead.to_location)}
                      </Typography>
                   </Box>
                </Box>

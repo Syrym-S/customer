@@ -1,5 +1,5 @@
 import { apiClient } from '../../../shared/api/apiClient';
-import { API_MODE, isMockApi } from '../../../shared/config/api.config';
+import { isMockApi } from '../../../shared/config/api.config';
 import { fetchCustomerLeadByIdApi, fetchCustomerLeadsApi } from './leads.api';
 import {
    fetchCustomerLeadByIdMock,
@@ -15,8 +15,6 @@ export function fetchCustomerLeads(params) {
 }
 
 export function fetchCustomerLeadById(leadId) {
-   console.log('fetch lead item:', leadId, 'mode:', API_MODE);
-
    if (isMockApi) {
       return fetchCustomerLeadByIdMock(leadId);
    }

@@ -10,6 +10,15 @@ import {
    Tooltip,
 } from 'react-leaflet';
 import PropTypes from 'prop-types';
+import L from 'leaflet';
+
+const driverIcon = L.divIcon({
+   className: 'driver-marker',
+   html: '<div class="driver-marker__icon">🚚</div>',
+   iconSize: [38, 38],
+   iconAnchor: [19, 19],
+   popupAnchor: [0, -18],
+});
 
 export function CustomerMapView({
    center,
@@ -168,31 +177,37 @@ export function CustomerMapView({
             </Polyline>
          )}
 
-         {markers.map((marker) => (
-            <Marker
-               key={marker.id}
-               position={marker.position}
-               draggable={Boolean(marker.draggable)}
-               eventHandlers={{
-                  click: () => handleMarkerClick(marker),
-                  dragend: (event) => {
-                     if (!onMarkerDragEnd) {
-                        return;
-                     }
+         {markers.map((marker) => {
+            const markerProps =
+               marker.id === 'geo-current-point' ? { icon: driverIcon } : {};
 
-                     const position = event.target.getLatLng();
+            return (
+               <Marker
+                  key={marker.id}
+                  position={marker.position}
+                  draggable={Boolean(marker.draggable)}
+                  {...markerProps}
+                  eventHandlers={{
+                     click: () => handleMarkerClick?.(marker),
+                     dragend: (event) => {
+                        if (!onMarkerDragEnd) {
+                           return;
+                        }
 
-                     onMarkerDragEnd(marker, position);
-                  },
-               }}
-            >
-               <Popup>
-                  <strong>{marker.title}</strong>
-                  <br />
-                  {marker.description}
-               </Popup>
-            </Marker>
-         ))}
+                        const position = event.target.getLatLng();
+
+                        onMarkerDragEnd(marker, position);
+                     },
+                  }}
+               >
+                  <Popup>
+                     <strong>{marker.title}</strong>
+                     <br />
+                     {marker.description}
+                  </Popup>
+               </Marker>
+            );
+         })}
       </MapContainer>
    );
 }

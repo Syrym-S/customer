@@ -42,7 +42,7 @@ export function LeadDetailsMap({
            {
               id: 'geo-current-point',
               position: [geoCurrentPoint.latitude, geoCurrentPoint.longitude],
-              title: 'Текущая позиция',
+              title: 'Текущая позиция водителя',
               description: geoCurrentPoint.recordedAt
                  ? `Последнее обновление: ${geoCurrentPoint.recordedAt}`
                  : 'Координаты получены через WebSocket',
@@ -52,10 +52,10 @@ export function LeadDetailsMap({
 
    const markers = [...routeMarkers, ...geoMarkers];
 
-   const mapCenter = hasGeoPoints
-      ? geoRoutePoints[geoRoutePoints.length - 1]
-      : hasRoutePoints
-        ? routePoints[0]
+   const mapCenter = hasRoutePoints
+      ? routePoints[0]
+      : hasGeoPoints
+        ? geoRoutePoints[geoRoutePoints.length - 1]
         : map.center;
 
    return (
@@ -93,7 +93,7 @@ export function LeadDetailsMap({
 
          <CustomerMapView
             center={mapCenter}
-            zoom={hasGeoPoints ? 13 : hasRoutePoints ? 7 : map.zoom}
+            zoom={hasRoutePoints ? 7 : hasGeoPoints ? 13 : map.zoom}
             markers={markers}
             route={route}
             routePoints={hasRoutePoints ? routePoints : []}

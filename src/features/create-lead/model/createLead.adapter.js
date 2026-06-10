@@ -40,12 +40,10 @@ export function mapCreateLeadFormToApi(form) {
       from_country: 'Казахстан',
       from_region: '',
       from_city: fromLocation,
-      from_address: fromLocation,
 
       to_country: 'Казахстан',
       to_region: '',
       to_city: toLocation,
-      to_address: toLocation,
 
       cargo_name: form.cargoType || 'Не указан',
       cargo_type: form.cargoType || 'Не указан',

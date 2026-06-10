@@ -2,11 +2,16 @@
  * WebSocket client for GeoWS
  *
  * Сервер ожидает query:
- *  - token (session key)
+ *  - token: final WS token from /geows/v1/token
+ *  - user_id: current WordPress user id
  *
- * Сообщения:
- *  - запрос точек: { type: "admin", action: "get_points" }
- *  - входящие: { type: "get_points", data: [...] }
+ * Режим read:
+ *  - frontend отправляет {}
+ *  - backend возвращает { type: "get_points", data: [...] }
+ *
+ * Режим admin:
+ *  - frontend ничего не отправляет
+ *  - backend push-ит { type: "get_points", data: [...] }
  */
 
 /**
@@ -25,12 +30,23 @@ export const GEO_WS_MESSAGE_TYPES = {
    ERROR: 'error',
 };
 
-export function connectGeoWS({ wsUrl, token }) {
+const IS_GEO_WS_DEBUG = false;
+
+export function debugGeoWS(...args) {
+   if (IS_GEO_WS_DEBUG) {
+      console.log(...args);
+   }
+}
+
+export function connectGeoWS({ wsUrl, token, userId }) {
    if (!wsUrl) throw new Error('WS URL not configured');
-   if (!token) throw new Error('Session token missing');
+   if (!token) throw new Error('WS token missing');
+   if (!userId) throw new Error('GeoWS user_id missing');
 
    const url = new URL(wsUrl);
+
    url.searchParams.set('token', token);
+   url.searchParams.set('user_id', userId);
 
    return new WebSocket(url.toString());
 }
@@ -39,8 +55,7 @@ export function connectGeoWS({ wsUrl, token }) {
  * Подписка на события WS
  */
 export function bindGeoWS(ws, handlers = {}) {
-   const { onOpen, onClose, onError, onAuthFailed, onPoints, onMessage } =
-      handlers;
+   const { onOpen, onClose, onError, onAuthFailed, onMessage } = handlers;
 
    ws.onopen = () => {
       onOpen?.();
@@ -68,24 +83,26 @@ export function bindGeoWS(ws, handlers = {}) {
          return;
       }
 
-      console.log('WS message:', payload);
-
-      onMessage?.(payload);
+      debugGeoWS('WS message:', payload);
 
       // auth failed на сервере
       if (payload?.type === GEO_WS_MESSAGE_TYPES.ERROR) {
          const message = String(payload?.message || '').toLowerCase();
 
-         if (message.includes('auth failed')) {
+         if (
+            message.includes('auth failed') ||
+            message.includes('invalid') ||
+            message.includes('token')
+         ) {
             onAuthFailed?.(payload);
+            return;
          }
 
+         onMessage?.(payload);
          return;
       }
 
-      if (payload?.type === GEO_WS_MESSAGE_TYPES.GET_POINTS) {
-         onPoints?.(payload?.data ?? [], payload);
-      }
+      onMessage?.(payload);
    };
 }
 
@@ -99,7 +116,7 @@ function sendGeoWSMessage(ws, payload) {
       return false;
    }
 
-   console.log('WS send:', payload);
+   debugGeoWS('WS send:', payload);
 
    ws.send(JSON.stringify(payload));
 
@@ -109,10 +126,10 @@ function sendGeoWSMessage(ws, payload) {
 /**
  * Получить все точки сеанса разово.
  */
-export function requestGeoAdminPoints(ws) {
-   return sendGeoWSMessage(ws, {
-      type: GEO_WS_MESSAGE_TYPES.ADMIN,
-   });
+export function requestGeoAdminPoints() {
+   console.log('GeoWS admin mode does not require request message');
+
+   return true;
 }
 
 /**
@@ -120,16 +137,14 @@ export function requestGeoAdminPoints(ws) {
  * Сервер вернет точки с id > последнего полученного.
  */
 export function requestGeoIncrementalPoints(ws) {
-   return sendGeoWSMessage(ws, {
-      type: GEO_WS_MESSAGE_TYPES.READ,
-   });
+   return sendGeoWSMessage(ws, {});
 }
 
 /**
  * По умолчанию запрашиваем все точки.
  */
 export function requestGeoPoints(ws) {
-   return requestGeoAdminPoints(ws);
+   return requestGeoIncrementalPoints(ws);
 }
 
 export function getBrowserLocation(options = {}) {
@@ -158,7 +173,6 @@ export function getBrowserLocation(options = {}) {
 
 export function sendGeoPoint(ws, point) {
    return sendGeoWSMessage(ws, {
-      type: GEO_WS_MESSAGE_TYPES.ADD,
       point: {
          latitude: point.latitude,
          longitude: point.longitude,
@@ -169,7 +183,6 @@ export function sendGeoPoint(ws, point) {
 
 export function sendGeoPoints(ws, points) {
    return sendGeoWSMessage(ws, {
-      type: GEO_WS_MESSAGE_TYPES.ADD,
       points: points.map((point) => ({
          latitude: point.latitude,
          longitude: point.longitude,

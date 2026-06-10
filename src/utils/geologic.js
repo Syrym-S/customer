@@ -4,13 +4,25 @@ import {
    notifySuccess,
    notifyWarning,
 } from '../shared/model/notifications.store';
-import { bindGeoWS, connectGeoWS, requestGeoPoints } from './geows';
+import { bindGeoWS, connectGeoWS, debugGeoWS, requestGeoPoints } from './geows';
 
 function getGeoWsConfig() {
-   const { ws } = window.GeoWS_Config || {};
+   const geoConfig = window.GeoWS_Config || {};
+   const appData = window.APP_DATA || {};
 
    return {
-      wsUrl: ws,
+      wsUrl: geoConfig.ws || geoConfig.wsUrl,
+      userId:
+         appData.user_id ||
+         appData.userId ||
+         geoConfig.user_id ||
+         geoConfig.currentUserId ||
+         geoConfig.current_user_id ||
+         geoConfig.wpUserId ||
+         geoConfig.wp_user_id ||
+         window.wpApiSettings?.userId ||
+         window.wpApiSettings?.user_id ||
+         null,
    };
 }
 
@@ -22,16 +34,6 @@ export function isGeoWsConfigured() {
    const { wsUrl } = getGeoWsConfig();
 
    return Boolean(wsUrl);
-}
-
-function extractGeoToken(response) {
-   return (
-      response?.token ||
-      response?.data?.token ||
-      response?.session ||
-      response?.data?.session ||
-      null
-   );
 }
 
 function extractGeoPoints(response) {
@@ -158,22 +160,30 @@ function isFalsyGeoResponse(response) {
    );
 }
 
-async function fetchLeadGeoSession(leadId, { signal } = {}) {
+async function fetchLeadGeoWsToken(leadId, type = 'read', { signal } = {}) {
    if (!leadId) {
       throw new Error('Lead ID is missing');
    }
 
-   const response = await apiClient.get('/geows/v1/get', {
-      params: {
+   const response = await apiClient.post(
+      '/geows/v1/token',
+      {
          lead_id: leadId,
+         type,
       },
-      signal,
-   });
+      {
+         signal,
+      },
+   );
 
    const data = response.data;
 
    if (isFalsyGeoResponse(data)) {
-      throw new Error(data?.message || 'GeoWS returned empty response');
+      throw new Error(data?.message || 'GeoWS token endpoint returned error');
+   }
+
+   if (!data?.token) {
+      throw new Error('GeoWS token was not returned');
    }
 
    return data;
@@ -204,7 +214,7 @@ function handleGeoWsPayload(payload, handlers = {}) {
       const normalizedPoints = normalizeGeoPoints(rawPoints);
 
       if (!rawPoints.length) {
-         console.log('[GeoWS points] empty list', payload);
+         debugGeoWS('[GeoWS points] empty list', payload);
          onPoints?.([], payload);
          return;
       }
@@ -221,6 +231,7 @@ function handleGeoWsPayload(payload, handlers = {}) {
 
 export function openLeadGeoConnection({
    leadId,
+   mode = 'read',
    onOpen,
    onClose,
    onError,
@@ -232,10 +243,18 @@ export function openLeadGeoConnection({
 
    let ws = null;
    let isClosed = false;
+   let pollTimerId = null;
+
+   function stopPolling() {
+      if (pollTimerId) {
+         clearInterval(pollTimerId);
+         pollTimerId = null;
+      }
+   }
 
    async function start() {
       try {
-         const { wsUrl } = getGeoWsConfig();
+         const { wsUrl, userId } = getGeoWsConfig();
 
          if (!wsUrl) {
             notifyWarning('GeoWS config is not available', {
@@ -245,21 +264,22 @@ export function openLeadGeoConnection({
             return;
          }
 
-         const geoSessionResponse = await fetchLeadGeoSession(leadId, {
+         if (!userId) {
+            throw new Error('GeoWS user_id is not available');
+         }
+
+         const tokenResponse = await fetchLeadGeoWsToken(leadId, mode, {
             signal: abortController.signal,
          });
 
          if (isClosed) return;
 
-         const token = extractGeoToken(geoSessionResponse);
-
-         if (!token) {
-            throw new Error('GeoWS token missing');
-         }
+         const wsToken = tokenResponse.token;
 
          ws = connectGeoWS({
             wsUrl,
-            token,
+            token: wsToken,
+            userId,
          });
 
          bindGeoWS(ws, {
@@ -269,20 +289,28 @@ export function openLeadGeoConnection({
                   return;
                }
 
-               requestGeoPoints(ws);
+               if (mode === 'read') {
+                  requestGeoPoints(ws);
+                  pollTimerId = setInterval(() => {
+                     requestGeoPoints(ws);
+                  }, 5000);
+               }
 
                notifySuccess('GeoWS connection opened', {
                   leadId,
+                  mode,
                });
 
                onOpen?.();
             },
 
             onClose: (event) => {
+               stopPolling();
                onClose?.(event);
             },
 
             onError: (event) => {
+               stopPolling();
                notifyError('GeoWS connection error', event);
                onError?.(event);
             },
@@ -324,6 +352,7 @@ export function openLeadGeoConnection({
       close() {
          isClosed = true;
          abortController.abort();
+         stopPolling();
 
          if (
             ws &&
