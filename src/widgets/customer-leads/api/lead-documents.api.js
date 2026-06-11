@@ -6,10 +6,11 @@ export async function fetchLeadDocuments(leadId) {
    return response.data;
 }
 
-export async function uploadLeadDocument(leadId, { file, context }) {
+export async function uploadLeadDocument(leadId, { file, name, context }) {
    const formData = new FormData();
 
    formData.append('file', file);
+   formData.append('name', name || file.name);
    formData.append('context', context || '');
 
    const response = await apiClient.post(

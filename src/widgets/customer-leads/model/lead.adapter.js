@@ -2,6 +2,15 @@ function isBinLike(value) {
    return /^\d{12}$/.test(String(value ?? '').trim());
 }
 
+function getFileNameFromPath(value) {
+   if (!value) return '';
+
+   const cleanValue = String(value).split('?')[0].split('#')[0];
+   const parts = cleanValue.split('/');
+
+   return decodeURIComponent(parts[parts.length - 1] || '');
+}
+
 function mapForwarderFromLead(apiLead) {
    const forwarder =
       apiLead.forwarder ||
@@ -65,15 +74,23 @@ function mapForwarderFromLead(apiLead) {
 }
 
 function mapLeadFileFromApi(apiFile, index) {
+   const fileNameFromUrl = getFileNameFromPath(apiFile.url);
+   const fileNameFromPath = getFileNameFromPath(apiFile.path);
+
    const fileName =
-      apiFile.name ??
-      apiFile.fileName ??
-      apiFile.file_name ??
+      apiFile.file_name ||
+      apiFile.fileName ||
+      apiFile.original_name ||
+      apiFile.originalName ||
+      apiFile.filename ||
+      apiFile.original_filename ||
+      fileNameFromUrl ||
+      fileNameFromPath ||
       `file-${index + 1}`;
 
    return {
       id: apiFile.path ?? apiFile.url ?? apiFile.id ?? `file-${index}`,
-      name: apiFile.name ?? fileName ?? 'Документ',
+      name: apiFile.name ?? apiFile.title ?? 'Документ',
       context: apiFile.context ?? '',
       fileName,
       fileUrl: apiFile.url ?? apiFile.path ?? '#',

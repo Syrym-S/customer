@@ -110,7 +110,7 @@ export function LeadDetailsModal() {
       setIsEditing(false);
    }
 
-   async function handleAddDocument({ context, file }) {
+   async function handleAddDocument({ name, context, file }) {
       if (!currentLead?.id || !file) {
          return;
       }
@@ -121,6 +121,7 @@ export function LeadDetailsModal() {
 
          await uploadLeadDocument(currentLead.id, {
             file,
+            name,
             context,
          });
 
