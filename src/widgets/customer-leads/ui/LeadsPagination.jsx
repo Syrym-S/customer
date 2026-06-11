@@ -4,6 +4,7 @@ import { Box, Pagination, useMediaQuery } from '@mui/material';
 
 export function LeadsPagination({ page, count, onChange }) {
    const isSmallMobile = useMediaQuery('(max-width:375px)');
+
    return (
       <Box
          sx={{

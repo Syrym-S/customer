@@ -34,6 +34,7 @@ export function Header() {
 
    const isProfileMenuOpen = Boolean(profileAnchorEl);
    const isCustomerPage = location.pathname === '/customer';
+   const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
 
    function handleNavigate(path) {
       if (location.pathname === path) return;
@@ -115,8 +116,19 @@ export function Header() {
                <Button
                   variant='outlined'
                   onClick={(event) => setProfileAnchorEl(event.currentTarget)}
+                  sx={{
+                     maxWidth: {
+                        xs: 160,
+                        sm: 240,
+                     },
+                     textTransform: 'none',
+                     overflow: 'hidden',
+                     textOverflow: 'ellipsis',
+                     whiteSpace: 'nowrap',
+                  }}
+                  title={userEmail}
                >
-                  User
+                  {userEmail}
                </Button>
             </Box>
          </Container>

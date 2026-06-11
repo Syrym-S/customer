@@ -11,6 +11,7 @@ import {
 } from 'react-leaflet';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
+import { normalizeLocationValue } from '../../customer-leads/model/leadEditForm.helpers';
 
 const driverIcon = L.divIcon({
    className: 'driver-marker',
@@ -19,6 +20,10 @@ const driverIcon = L.divIcon({
    iconAnchor: [19, 19],
    popupAnchor: [0, -18],
 });
+
+function formatMapLocation(value, fallback) {
+   return normalizeLocationValue(value) || fallback;
+}
 
 export function CustomerMapView({
    center,
@@ -77,6 +82,16 @@ export function CustomerMapView({
             const startPoint = mapRoute.points[0];
             const endPoint = mapRoute.points[mapRoute.points.length - 1];
 
+            const fromLocation = formatMapLocation(
+               mapRoute.lead?.from_location,
+               'Откуда не указано',
+            );
+
+            const toLocation = formatMapLocation(
+               mapRoute.lead?.to_location,
+               'Куда не указано',
+            );
+
             return (
                <Fragment key={mapRoute.id}>
                   <Polyline
@@ -90,8 +105,7 @@ export function CustomerMapView({
                         <div>
                            <b>Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}</b>
                            <br />
-                           {mapRoute.lead?.from_location} →{' '}
-                           {mapRoute.lead?.to_location}
+                           {fromLocation} → {toLocation}
                            {mapRoute.route?.distanceMeters && (
                               <>
                                  <br />
@@ -111,7 +125,7 @@ export function CustomerMapView({
                         <br />
                         Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}
                         <br />
-                        {mapRoute.lead?.from_location || 'Откуда не указано'}
+                        {fromLocation}
                      </Popup>
                   </Marker>
 
@@ -121,7 +135,7 @@ export function CustomerMapView({
                         <br />
                         Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}
                         <br />
-                        {mapRoute.lead?.to_location || 'Куда не указано'}
+                        {toLocation}
                      </Popup>
                   </Marker>
                </Fragment>
@@ -138,7 +152,7 @@ export function CustomerMapView({
             >
                <Tooltip sticky>
                   <div>
-                     <b>{route?.description || 'Маршрут'}</b>
+                     <b>Маршрут</b>
 
                      {route?.distanceMeters && (
                         <>
