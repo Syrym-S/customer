@@ -53,7 +53,7 @@ export function createLeadEditForm(lead) {
       vat: lead.vat || 'без НДС',
       loadingDate: lead.raw?.loading_date || '',
 
-      driver: lead.raw?.driver?.id || '',
+      driver: lead.raw?.driver?.id || lead.driver?.id || '',
       forwarder: lead.forwarder?.id || '',
       forwarderData: lead.forwarder || null,
    };
@@ -109,6 +109,46 @@ export function normalizeLocationValue(value) {
    }
 
    return '';
+}
+
+export function normalizePersonValue(value) {
+   if (value === null || value === undefined) {
+      return 'Не указан';
+   }
+
+   if (typeof value === 'string') {
+      return value.trim() || 'Не указан';
+   }
+
+   if (typeof value === 'number') {
+      return String(value);
+   }
+
+   if (typeof value === 'object') {
+      const fio = value.fio || value.fullName || value.name;
+      const phone = value.phone;
+      const id = value.id;
+
+      if (fio && phone) {
+         return `${fio} · ${phone}`;
+      }
+
+      if (fio) {
+         return fio;
+      }
+
+      if (phone) {
+         return phone;
+      }
+
+      if (id) {
+         return id;
+      }
+
+      return 'Не указан';
+   }
+
+   return 'Не указан';
 }
 
 const CURRENCIES = ['KZT', 'USD', 'EUR', 'RUB'];

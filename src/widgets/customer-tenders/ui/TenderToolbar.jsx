@@ -1,0 +1,20 @@
+import { Box } from '@mui/material';
+import { CreateTenderButton } from './CreateTenderButton';
+
+export function TenderToolbar() {
+   return (
+      <Box
+         sx={{
+            maxWidth: 640,
+            mx: 'auto',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            gap: 2,
+            mb: 3,
+         }}
+      >
+         <CreateTenderButton />
+      </Box>
+   );
+}

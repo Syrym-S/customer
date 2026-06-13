@@ -1,9 +1,9 @@
 import { apiClient } from '../../../shared/api/apiClient';
 import { mapForwardersResponseFromApi } from '../model/forwarders.adapter';
 
-function isBin(value) {
-   return /^\d+$/.test(String(value ?? '').trim());
-}
+// function isBin(value) {
+//    return /^\d+$/.test(String(value ?? '').trim());
+// }
 
 export async function searchForwardersApi(query) {
    const normalizedQuery = String(query ?? '').trim();
@@ -14,9 +14,7 @@ export async function searchForwardersApi(query) {
 
    const response = await apiClient.get('/customer/v1/search/forwarders', {
       params: {
-         ...(isBin(normalizedQuery)
-            ? { bin: normalizedQuery }
-            : { company_name: normalizedQuery }),
+         q: normalizedQuery,
       },
    });
 

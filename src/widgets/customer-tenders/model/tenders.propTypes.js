@@ -1,0 +1,86 @@
+import PropTypes from 'prop-types';
+
+export const sxPropType = PropTypes.oneOfType([
+   PropTypes.object,
+   PropTypes.array,
+   PropTypes.func,
+]);
+
+export const locationPropType = PropTypes.oneOfType([
+   PropTypes.string,
+   PropTypes.shape({
+      country: PropTypes.string,
+      region: PropTypes.string,
+      city: PropTypes.string,
+      address: PropTypes.string,
+      lat: PropTypes.number,
+      lon: PropTypes.number,
+   }),
+]);
+
+export const cargoPropType = PropTypes.shape({
+   name: PropTypes.string,
+   description: PropTypes.string,
+   type: PropTypes.string,
+   weight_kg: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   width_cm: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   height_cm: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   length_cm: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+});
+
+export const participantPropType = PropTypes.shape({
+   type: PropTypes.string,
+   date: PropTypes.string,
+   participant_id: PropTypes.string,
+   name: PropTypes.string,
+});
+
+export const betPropType = PropTypes.shape({
+   amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   status: PropTypes.oneOf(['new', 'winning', 'loss', 'closed']),
+   comment: PropTypes.string,
+   currency: PropTypes.string,
+   participant_id: PropTypes.string,
+   participant_name: PropTypes.string,
+});
+
+export const leadPropType = PropTypes.shape({
+   id: PropTypes.string,
+   num: PropTypes.string,
+   status: PropTypes.string,
+   summ: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   currency: PropTypes.string,
+   vat: PropTypes.string,
+   from_location: locationPropType,
+   to_location: locationPropType,
+   cargo: cargoPropType,
+});
+
+export const tenderPropType = PropTypes.shape({
+   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   status: PropTypes.oneOf(['new', 'active', 'closed', 'cancelled']),
+   type: PropTypes.string,
+   publication_type: PropTypes.oneOf(['public', 'private']),
+   planningType: PropTypes.string,
+   public_date_time: PropTypes.string,
+   endDateTime: PropTypes.string,
+   end_date_time: PropTypes.string,
+   max_participants: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   participants_count: PropTypes.number,
+   bets_count: PropTypes.number,
+
+   from_location: locationPropType,
+   to_location: locationPropType,
+   from_point: PropTypes.arrayOf(PropTypes.number),
+   to_point: PropTypes.arrayOf(PropTypes.number),
+
+   cargo: cargoPropType,
+   lead: leadPropType,
+
+   summ: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   currency: PropTypes.string,
+   vat: PropTypes.string,
+
+   participants: PropTypes.arrayOf(participantPropType),
+   bets: PropTypes.arrayOf(betPropType),
+});

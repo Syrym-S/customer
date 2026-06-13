@@ -34,6 +34,7 @@ export function Header() {
 
    const isProfileMenuOpen = Boolean(profileAnchorEl);
    const isCustomerPage = location.pathname === '/customer';
+   const isTenderPage = location.pathname === '/customer/tenders';
    const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
 
    function handleNavigate(path) {
@@ -186,6 +187,29 @@ export function Header() {
                                  ? 'primary.main'
                                  : 'text.primary',
                               fontWeight: isCustomerPage ? 600 : 400,
+                           },
+                        }}
+                     />
+                  </ListItemButton>
+                  <ListItemButton
+                     selected={isTenderPage}
+                     onClick={() => {
+                        if (isTenderPage) {
+                           handleCloseBurger();
+                           return;
+                        }
+
+                        handleNavigate('/customer/tenders');
+                     }}
+                  >
+                     <ListItemText
+                        primary='Tenders'
+                        primaryTypographyProps={{
+                           sx: {
+                              color: isTenderPage
+                                 ? 'primary.main'
+                                 : 'text.primary',
+                              fontWeight: isTenderPage ? 600 : 400,
                            },
                         }}
                      />

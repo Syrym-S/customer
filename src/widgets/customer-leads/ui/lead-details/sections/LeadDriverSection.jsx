@@ -5,6 +5,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 
 import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
+import { normalizePersonValue } from '../../../model/leadEditForm.helpers';
 
 export function LeadDriverSection({ lead, isEditing, editForm, onEditChange }) {
    return (
@@ -19,7 +20,11 @@ export function LeadDriverSection({ lead, isEditing, editForm, onEditChange }) {
                size='small'
             />
          ) : (
-            <InfoBadge label='ФИО' value={lead.driver} fullWidth />
+            <InfoBadge
+               label='ФИО'
+               value={normalizePersonValue(lead.driver)}
+               fullWidth
+            />
          )}
       </DetailSection>
    );
