@@ -13,13 +13,13 @@ import PropTypes from 'prop-types';
 import { sxPropType, tenderPropType } from '../model/tenders.propTypes';
 
 export function TenderCard({ tender }) {
-   const { setOpenTender } = useTendersContext();
+   const { openTenderDetails } = useTendersContext();
 
    const shouldShowTimeLeft =
       tender.status !== 'closed' && tender.status !== 'cancelled';
 
    function handleOpenTender() {
-      setOpenTender(tender);
+      openTenderDetails(tender);
    }
 
    return (

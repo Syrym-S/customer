@@ -31,7 +31,13 @@ function formatDateTime(value) {
    });
 }
 
-export function TenderParticipantsSection({ participants, maxParticipants }) {
+export function TenderParticipantsSection({
+   participants,
+   maxParticipants,
+   tenderStatus,
+   isActionLoading = false,
+   onDeleteParticipant,
+}) {
    const [isExpanded, setIsExpanded] = useState(false);
 
    const hasHiddenItems = participants.length > INITIAL_VISIBLE_COUNT;
@@ -69,57 +75,86 @@ export function TenderParticipantsSection({ participants, maxParticipants }) {
                   pr: isExpanded && participants.length > 6 ? 0.5 : 0,
                }}
             >
-               {visibleParticipants.map((participant) => (
-                  <Box
-                     key={participant.participant_id}
-                     sx={{
-                        p: 1.5,
-                        border: '1px solid',
-                        borderColor: 'divider',
-                        borderRadius: 2,
-                        backgroundColor: 'grey.50',
-                     }}
-                  >
-                     <Stack
-                        direction='row'
-                        justifyContent='space-between'
-                        alignItems='flex-start'
-                        spacing={1}
-                        useFlexGap
-                        sx={{ flexWrap: 'wrap' }}
+               {visibleParticipants.map((participant) => {
+                  const canDeleteParticipant =
+                     tenderStatus !== 'closed' && tenderStatus !== 'cancelled';
+
+                  return (
+                     <Box
+                        key={participant.participant_id}
+                        sx={{
+                           p: 1.5,
+                           border: '1px solid',
+                           borderColor: 'divider',
+                           borderRadius: 2,
+                           backgroundColor: 'grey.50',
+                        }}
                      >
-                        <Box>
-                           <Typography fontWeight={600} sx={{ fontSize: 14 }}>
-                              {participant.name ||
-                                 participant.participant_id ||
-                                 'Участник'}
-                           </Typography>
+                        <Stack
+                           direction='row'
+                           justifyContent='space-between'
+                           alignItems='flex-start'
+                           spacing={1}
+                           useFlexGap
+                           sx={{ flexWrap: 'wrap' }}
+                        >
+                           <Box>
+                              <Typography
+                                 fontWeight={600}
+                                 sx={{ fontSize: 14 }}
+                              >
+                                 {participant.name ||
+                                    participant.participant_id ||
+                                    'Участник'}
+                              </Typography>
 
-                           <Typography
-                              color='text.secondary'
-                              sx={{ fontSize: 12, mt: 0.5 }}
-                           >
-                              Добавлен: {formatDateTime(participant.date)}
-                           </Typography>
-                        </Box>
+                              <Typography
+                                 color='text.secondary'
+                                 sx={{ fontSize: 12, mt: 0.5 }}
+                              >
+                                 Добавлен: {formatDateTime(participant.date)}
+                              </Typography>
+                           </Box>
 
-                        <Chip
-                           label={
-                              participantTypeLabels[participant.type] ||
-                              participant.type ||
-                              'Не указано'
-                           }
-                           size='small'
-                           sx={{
-                              borderRadius: 999,
-                              fontWeight: 500,
-                              backgroundColor: 'grey.100',
-                              color: 'text.secondary',
-                           }}
-                        />
-                     </Stack>
-                  </Box>
-               ))}
+                           <Chip
+                              label={
+                                 participantTypeLabels[participant.type] ||
+                                 participant.type ||
+                                 'Не указано'
+                              }
+                              size='small'
+                              sx={{
+                                 borderRadius: 999,
+                                 fontWeight: 500,
+                                 backgroundColor: 'grey.100',
+                                 color: 'text.secondary',
+                              }}
+                           />
+
+                           {canDeleteParticipant && (
+                              <Button
+                                 size='small'
+                                 color='error'
+                                 variant='text'
+                                 disabled={isActionLoading}
+                                 onClick={() =>
+                                    onDeleteParticipant?.(
+                                       participant.participant_id,
+                                    )
+                                 }
+                                 sx={{
+                                    minWidth: 'auto',
+                                    px: 1,
+                                    textTransform: 'none',
+                                 }}
+                              >
+                                 Удалить
+                              </Button>
+                           )}
+                        </Stack>
+                     </Box>
+                  );
+               })}
 
                {hasHiddenItems && (
                   <Button

@@ -15,11 +15,6 @@ const publicationTypeLabels = {
    private: 'Не публичный',
 };
 
-const planningTypeLabels = {
-   planned: 'Планируемый',
-   unplanned: 'Не планируемый',
-};
-
 export function TenderInfoSection({ tender }) {
    return (
       <TenderDetailSection
@@ -46,11 +41,6 @@ export function TenderInfoSection({ tender }) {
                value={
                   publicationTypeLabels[tender.publication_type] || 'Не указано'
                }
-            />
-
-            <TenderInfoBadge
-               label='Тип тендера'
-               value={planningTypeLabels[tender.planningType] || 'Не указано'}
             />
 
             <TenderInfoBadge

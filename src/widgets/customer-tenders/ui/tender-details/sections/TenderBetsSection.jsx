@@ -26,7 +26,12 @@ function formatMoney(amount, currency = 'KZT') {
    return `${Number(amount).toLocaleString('ru-RU')} ${currency}`;
 }
 
-export function TenderBetsSection({ bets, onAcceptWinner }) {
+export function TenderBetsSection({
+   bets,
+   tenderStatus,
+   isActionLoading = false,
+   onAcceptWinner,
+}) {
    const [isExpanded, setIsExpanded] = useState(false);
    const [confirmBet, setConfirmBet] = useState(null);
 
@@ -90,7 +95,10 @@ export function TenderBetsSection({ bets, onAcceptWinner }) {
                >
                   {visibleBets.map(({ bet, index }) => {
                      const isCancelledBet = bet.status === 'closed';
-                     const canAcceptBet = bet.status === 'new';
+                     const canAcceptBet =
+                        bet.status === 'new' &&
+                        tenderStatus !== 'closed' &&
+                        tenderStatus !== 'cancelled';
 
                      return (
                         <Box
@@ -171,6 +179,7 @@ export function TenderBetsSection({ bets, onAcceptWinner }) {
                                     <Button
                                        variant='contained'
                                        size='small'
+                                       disabled={isActionLoading}
                                        onClick={() =>
                                           handleOpenConfirm(bet, index)
                                        }
@@ -295,8 +304,9 @@ export function TenderBetsSection({ bets, onAcceptWinner }) {
                   variant='contained'
                   color='success'
                   onClick={handleConfirmWinner}
+                  disabled={isActionLoading}
                >
-                  Подтвердить выбор
+                  {isActionLoading ? 'Выбираем...' : 'Подтвердить выбор'}
                </Button>
             </DialogActions>
          </Dialog>
