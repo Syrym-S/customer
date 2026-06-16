@@ -56,9 +56,9 @@ export async function deleteCustomerTender(tenderId) {
    return response.data;
 }
 
-export async function deleteTenderParticipant(tenderId, participantId) {
+export async function deleteTenderParticipant(tenderId, participantIndex) {
    const response = await apiClient.delete(
-      `/customer/v1/tender/${tenderId}/participant/${participantId}`,
+      `/customer/v1/tender/${tenderId}/participant/${participantIndex}`,
    );
 
    return response.data;

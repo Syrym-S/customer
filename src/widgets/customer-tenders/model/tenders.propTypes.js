@@ -44,6 +44,22 @@ export const betPropType = PropTypes.shape({
    participant_name: PropTypes.string,
 });
 
+export const tenderEditFormPropType = PropTypes.shape({
+   endDateTime: PropTypes.string,
+   publicationType: PropTypes.oneOf(['public', 'private']),
+   maxParticipants: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+
+   from_location: PropTypes.string,
+   to_location: PropTypes.string,
+
+   cargoType: PropTypes.string,
+   weight_kg: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   summ: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   currency: PropTypes.string,
+   vat: PropTypes.string,
+   cargoDescription: PropTypes.string,
+});
+
 export const leadPropType = PropTypes.shape({
    id: PropTypes.string,
    num: PropTypes.string,

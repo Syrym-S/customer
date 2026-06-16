@@ -9,11 +9,7 @@ import {
    DialogActions,
    DialogContent,
    DialogTitle,
-   FormControl,
    FormControlLabel,
-   InputLabel,
-   MenuItem,
-   Select,
    Stack,
    TextField,
    Typography,
@@ -434,7 +430,6 @@ export function CreateTenderModal({ open, onClose }) {
                               event.target.value,
                            )
                         }
-                        helperText='0 — без лимита'
                         slotProps={{
                            htmlInput: {
                               min: 0,
@@ -467,17 +462,19 @@ export function CreateTenderModal({ open, onClose }) {
                         options={forwarderOptions}
                         loading={isForwardersLoading}
                         filterOptions={(items) => items}
-                        getOptionLabel={(option) => option?.fullName ?? ''}
+                        getOptionLabel={(option) =>
+                           option?.fullName || option?.companyName || ''
+                        }
                         isOptionEqualToValue={(option, value) =>
                            option?.id === value?.id
                         }
+                        filterSelectedOptions
                         noOptionsText={
                            forwarderInputValue.trim().length < 2
                               ? 'Введите минимум 2 символа'
                               : 'Экспедитор не найден'
                         }
                         loadingText='Поиск экспедиторов...'
-                        filterSelectedOptions
                         onInputChange={(_, newInputValue, reason) => {
                            if (reason === 'reset') {
                               return;

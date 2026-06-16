@@ -1,5 +1,9 @@
-import { Box, Button, Stack } from '@mui/material';
-import { tenderPropType } from '../../model/tenders.propTypes';
+import { Box, Stack } from '@mui/material';
+import {
+   tenderPropType,
+   tenderEditFormPropType,
+} from '../../model/tenders.propTypes';
+import PropTypes from 'prop-types';
 
 import { TenderInfoSection } from './sections/TenderInfoSection';
 import { TenderParticipantsSection } from './sections/TenderParticipantsSection';
@@ -10,11 +14,12 @@ import { TenderDocumentsSection } from './sections/TenderDocumentsSection';
 export function TenderDetailsContent({
    tender,
    isActionLoading = false,
+   isEditing = false,
+   editForm,
+   onEditChange,
    onAcceptWinner,
-   onCancelTender,
-   onDeleteTender,
    onDeleteParticipant,
-   onStartTender,
+   onAddParticipants,
 }) {
    const documents = tender.lead?.documents || tender.lead?.files || [];
 
@@ -22,48 +27,14 @@ export function TenderDetailsContent({
       <Stack spacing={2}>
          <TenderTransportSection tender={tender} />
 
-         <TenderInfoSection tender={tender} />
+         <TenderInfoSection
+            tender={tender}
+            isEditing={isEditing}
+            editForm={editForm}
+            onEditChange={onEditChange}
+         />
 
          <TenderDocumentsSection documents={documents} />
-
-         <Box
-            sx={{
-               display: 'flex',
-               justifyContent: 'flex-end',
-               gap: 1,
-               flexWrap: 'wrap',
-            }}
-         >
-            {tender.status === 'new' && (
-               <Button
-                  color='success'
-                  variant='contained'
-                  onClick={onStartTender}
-                  disabled={isActionLoading}
-               >
-                  Запустить тендер
-               </Button>
-            )}
-            {tender.status !== 'closed' && tender.status !== 'cancelled' && (
-               <Button
-                  color='warning'
-                  variant='outlined'
-                  onClick={onCancelTender}
-                  disabled={isActionLoading}
-               >
-                  Отменить тендер
-               </Button>
-            )}
-
-            <Button
-               color='error'
-               variant='outlined'
-               onClick={onDeleteTender}
-               disabled={isActionLoading}
-            >
-               Удалить тендер
-            </Button>
-         </Box>
 
          <Box
             sx={{
@@ -82,13 +53,14 @@ export function TenderDetailsContent({
                tenderStatus={tender.status}
                isActionLoading={isActionLoading}
                onDeleteParticipant={onDeleteParticipant}
+               onAddParticipants={onAddParticipants}
             />
 
             <TenderBetsSection
                bets={tender.bets || []}
-               tenderStatus={tender.status}
-               isActionLoading={isActionLoading}
                onAcceptWinner={onAcceptWinner}
+               isActionLoading={isActionLoading}
+               tenderStatus={tender.status}
             />
          </Box>
       </Stack>
@@ -97,4 +69,11 @@ export function TenderDetailsContent({
 
 TenderDetailsContent.propTypes = {
    tender: tenderPropType.isRequired,
+   isActionLoading: PropTypes.bool,
+   isEditing: PropTypes.bool,
+   editForm: tenderEditFormPropType,
+   onEditChange: PropTypes.func,
+   onAcceptWinner: PropTypes.func,
+   onDeleteParticipant: PropTypes.func,
+   onAddParticipants: PropTypes.func,
 };

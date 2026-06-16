@@ -1,10 +1,8 @@
 import {
    Alert,
    Box,
-   Button,
    CircularProgress,
    Dialog,
-   DialogActions,
    DialogContent,
 } from '@mui/material';
 
@@ -22,6 +20,11 @@ import {
    getRoutesFromGeneratedRoute,
 } from '../../customer-leads/lib/routePolyline.helpers';
 import { generateRoute } from '../../customer-leads/api/lead-route.repository';
+import {
+   createTenderEditForm,
+   mapTenderEditFormToApi,
+} from '../model/tenderEditFrom.helpers';
+import { TenderDetailsActions } from './tender-details/TenderDetailsActions';
 
 export function TenderDetailsModal() {
    const map = useCustomerMap();
@@ -35,9 +38,14 @@ export function TenderDetailsModal() {
       deleteTender,
       removeParticipant,
       startTender,
+      updateTender,
+      addParticipantsToTender,
    } = useTendersContext();
 
    const [isEditing, setIsEditing] = useState(false);
+   const [isSavingEdit, setIsSavingEdit] = useState(false);
+   const [saveEditError, setSaveEditError] = useState(null);
+   const [editForm, setEditForm] = useState(() => createTenderEditForm(null));
 
    const [route, setRoute] = useState(null);
    const [routePoints, setRoutePoints] = useState([]);
@@ -49,6 +57,8 @@ export function TenderDetailsModal() {
    function handleClose() {
       closeTenderDetails();
       setIsEditing(false);
+      setSaveEditError(null);
+      setEditForm(createTenderEditForm(null));
       setRoute(null);
       setRoutePoints([]);
       setActionError('');
@@ -59,7 +69,27 @@ export function TenderDetailsModal() {
    }
 
    function handleCancelEdit() {
+      setEditForm(createTenderEditForm(openTender));
       setIsEditing(false);
+      setSaveEditError(null);
+   }
+
+   function handleEditChange(eventOrName, maybeValue) {
+      if (typeof eventOrName === 'string') {
+         setEditForm((prevForm) => ({
+            ...prevForm,
+            [eventOrName]: maybeValue,
+         }));
+
+         return;
+      }
+
+      const { name, value } = eventOrName.target;
+
+      setEditForm((prevForm) => ({
+         ...prevForm,
+         [name]: value,
+      }));
    }
 
    async function handleStartTender() {
@@ -93,19 +123,23 @@ export function TenderDetailsModal() {
          setActionError('');
 
          await acceptBet(openTender.id, betIndex);
+
+         return true;
       } catch (error) {
          setActionError(
             error.response?.data?.message ||
                error.message ||
                'Не удалось выбрать победителя',
          );
+
+         return false;
       } finally {
          setIsActionLoading(false);
       }
    }
 
    async function handleCancelTender() {
-      if (!openTender.id) {
+      if (!openTender?.id) {
          return;
       }
 
@@ -144,8 +178,12 @@ export function TenderDetailsModal() {
       }
    }
 
-   async function handleDeleteParticipant(participantId) {
-      if (!openTender?.id || !participantId) {
+   async function handleDeleteParticipant(participantIndex) {
+      if (
+         !openTender?.id ||
+         participantIndex === null ||
+         participantIndex === undefined
+      ) {
          return;
       }
 
@@ -153,7 +191,7 @@ export function TenderDetailsModal() {
          setIsActionLoading(true);
          setActionError('');
 
-         await removeParticipant(openTender.id, participantId);
+         await removeParticipant(openTender.id, participantIndex);
       } catch (error) {
          setActionError(
             error.response?.data?.message ||
@@ -165,17 +203,64 @@ export function TenderDetailsModal() {
       }
    }
 
-   // function handleSaveEdit() {
-   //    setIsEditing(false);
-   // }
+   async function handleAddParticipants(forwarders) {
+      if (
+         !openTender?.id ||
+         !Array.isArray(forwarders) ||
+         forwarders.length === 0
+      ) {
+         return;
+      }
 
-   // function buildMockTenderRoutePoints(tender) {
-   //    if (!tender?.from_point || !tender?.to_point) {
-   //       return [];
-   //    }
+      try {
+         setIsActionLoading(true);
+         setActionError('');
 
-   //    return [tender.from_point, tender.to_point];
-   // }
+         await addParticipantsToTender(
+            openTender.id,
+            forwarders.map((forwarder) => forwarder.id),
+         );
+      } catch (error) {
+         setActionError(
+            error.response?.data?.message ||
+               error.message ||
+               'Не удалось добавить участников',
+         );
+      } finally {
+         setIsActionLoading(false);
+      }
+   }
+
+   async function handleSaveEdit() {
+      if (!openTender?.id || isSavingEdit) {
+         return;
+      }
+
+      const payload = mapTenderEditFormToApi(editForm, openTender);
+
+      if (Object.keys(payload).length === 0) {
+         setIsEditing(false);
+         setSaveEditError(null);
+         return;
+      }
+
+      try {
+         setIsSavingEdit(true);
+         setSaveEditError(null);
+
+         await updateTender(openTender.id, payload);
+
+         setIsEditing(false);
+      } catch (error) {
+         setSaveEditError(
+            error.response?.data?.message ||
+               error.message ||
+               'Не удалось сохранить изменения тендера',
+         );
+      } finally {
+         setIsSavingEdit(false);
+      }
+   }
 
    useEffect(() => {
       let isMounted = true;
@@ -213,7 +298,7 @@ export function TenderDetailsModal() {
 
             setRoute(mainRoute || null);
             setRoutePoints(decodedPoints || []);
-         } catch (error) {
+         } catch {
             if (!isMounted) {
                return;
             }
@@ -234,11 +319,21 @@ export function TenderDetailsModal() {
       };
    }, [openTender]);
 
+   useEffect(() => {
+      if (!openTender) {
+         return;
+      }
+
+      setEditForm(createTenderEditForm(openTender));
+      setIsEditing(false);
+      setSaveEditError(null);
+   }, [openTender]);
+
    if (!openTender) {
       return null;
    }
 
-   const leadForMap = openTender.lead || openTender;
+   const leadForMap = openTender.lead;
 
    return (
       <Dialog
@@ -257,6 +352,12 @@ export function TenderDetailsModal() {
          <TenderDetailsHeader tender={openTender} />
 
          <DialogContent sx={{ px: 3 }}>
+            {saveEditError && (
+               <Alert severity='error' sx={{ mb: 2 }}>
+                  {saveEditError}
+               </Alert>
+            )}
+
             {detailsError && (
                <Alert severity='error' sx={{ mb: 2 }}>
                   {detailsError}
@@ -281,15 +382,17 @@ export function TenderDetailsModal() {
                </Box>
             ) : (
                <>
-                  <LeadDetailsMap
-                     map={map}
-                     lead={leadForMap}
-                     route={route}
-                     routePoints={routePoints}
-                     geoPoints={[]}
-                     geoCurrentPoint={null}
-                     isRouteLoading={isRouteLoading}
-                  />
+                  {leadForMap && (
+                     <LeadDetailsMap
+                        map={map}
+                        lead={leadForMap}
+                        route={route}
+                        routePoints={routePoints}
+                        geoPoints={[]}
+                        geoCurrentPoint={null}
+                        isRouteLoading={isRouteLoading}
+                     />
+                  )}
 
                   <TenderDetailsEditActions
                      isEditing={isEditing}
@@ -300,25 +403,28 @@ export function TenderDetailsModal() {
                   <TenderDetailsContent
                      tender={openTender}
                      isActionLoading={isActionLoading}
+                     isEditing={isEditing}
+                     editForm={editForm}
+                     onEditChange={handleEditChange}
                      onAcceptWinner={handleAcceptWinner}
-                     onCancelTender={handleCancelTender}
-                     onDeleteTender={handleDeleteTender}
                      onDeleteParticipant={handleDeleteParticipant}
-                     onStartTender={handleStartTender}
+                     onAddParticipants={handleAddParticipants}
                   />
                </>
             )}
          </DialogContent>
 
-         <DialogActions sx={{ px: 3, pb: 2 }}>
-            {/* {isEditing && (
-               <Button variant='contained' onClick={handleSaveEdit}>
-                  Сохранить
-               </Button>
-            )} */}
-
-            <Button onClick={handleClose}>Закрыть</Button>
-         </DialogActions>
+         <TenderDetailsActions
+            tender={openTender}
+            isEditing={isEditing}
+            isSaving={isSavingEdit}
+            isActionLoading={isActionLoading}
+            onSave={handleSaveEdit}
+            onClose={handleClose}
+            onStartTender={handleStartTender}
+            onCancelTender={handleCancelTender}
+            onDeleteTender={handleDeleteTender}
+         />
       </Dialog>
    );
 }

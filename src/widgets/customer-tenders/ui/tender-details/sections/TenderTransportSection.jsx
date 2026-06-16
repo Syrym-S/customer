@@ -1,116 +1,112 @@
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import RouteOutlinedIcon from '@mui/icons-material/RouteOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 
-import { hasValue } from '../../../model/tender.helpers';
 import { TenderDetailSection } from './TenderDetailSection';
 import { TenderInfoBadge } from './TenderInfoBadge';
 
 import PropTypes from 'prop-types';
 import { tenderPropType } from '../../../model/tenders.propTypes';
+import { normalizeLocationValue } from '../../../model/tenderEditFrom.helpers';
 
 export function TenderTransportSection({ tender }) {
-   return (
-      <TenderDetailSection
-         icon={<LocalShippingOutlinedIcon />}
-         title='Данные перевозки'
-      >
-         <Box
-            sx={{
-               display: 'flex',
-               alignItems: 'stretch',
-               gap: 1.5,
-               flexWrap: {
-                  xs: 'wrap',
-                  md: 'nowrap',
-               },
-               mb: 1,
-            }}
-         >
-            <RoutePoint
-               label='Откуда'
-               value={tender.from_location}
-               icon={<TripOriginIcon />}
-            />
+   const lead = tender.lead || {};
+   const cargo = lead.cargo || {};
 
+   return (
+      <Stack spacing={2}>
+         <TenderDetailSection icon={<RouteOutlinedIcon />} title='Маршрут'>
             <Box
                sx={{
-                  display: {
-                     xs: 'none',
-                     md: 'flex',
+                  display: 'flex',
+                  alignItems: 'stretch',
+                  gap: 1.5,
+                  flexWrap: {
+                     xs: 'wrap',
+                     md: 'nowrap',
                   },
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  px: 0.5,
                }}
             >
-               <ArrowRightAltRoundedIcon
-                  sx={{
-                     color: 'text.secondary',
-                     fontSize: 28,
-                  }}
-               />
-            </Box>
-
-            <RoutePoint
-               label='Куда'
-               value={tender.to_location}
-               icon={<LocationOnOutlinedIcon />}
-            />
-         </Box>
-
-         <Box
-            sx={{
-               display: 'grid',
-               gridTemplateColumns: {
-                  xs: '1fr 1fr',
-                  md: 'repeat(4, 1fr)',
-               },
-               gap: 1,
-            }}
-         >
-            <TenderInfoBadge
-               label='Вес'
-               value={
-                  hasValue(tender.cargo?.weight_kg)
-                     ? `${tender.cargo.weight_kg} кг`
-                     : 'Не указано'
-               }
-            />
-
-            <TenderInfoBadge
-               label='Тип'
-               value={tender.cargo?.type || 'Не указан'}
-            />
-
-            <TenderInfoBadge
-               label='Цена'
-               value={
-                  hasValue(tender.summ)
-                     ? `${tender.summ} ${tender.currency}`
-                     : 'Не указано'
-               }
-               accent
-               sx={{
-                  gridColumn: {
-                     xs: '1 / -1',
-                     md: 'auto',
-                  },
-               }}
-            />
-
-            <TenderInfoBadge label='НДС' value={tender.vat || 'Не указано'} />
-
-            <Box sx={{ gridColumn: '1 / -1' }}>
                <TenderInfoBadge
-                  label='Описание'
-                  value={tender.cargo?.description || 'Не указано'}
+                  label='Откуда'
+                  value={normalizeLocationValue(lead.from_location)}
+                  icon={<TripOriginIcon />}
+                  fullWidth
+               />
+
+               <Box
+                  sx={{
+                     display: {
+                        xs: 'none',
+                        md: 'flex',
+                     },
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                     px: 0.5,
+                  }}
+               >
+                  <ArrowRightAltRoundedIcon
+                     sx={{
+                        color: 'text.secondary',
+                        fontSize: 28,
+                     }}
+                  />
+               </Box>
+
+               <TenderInfoBadge
+                  label='Куда'
+                  value={normalizeLocationValue(lead.to_location)}
+                  icon={<LocationOnOutlinedIcon />}
+                  fullWidth
                />
             </Box>
-         </Box>
-      </TenderDetailSection>
+         </TenderDetailSection>
+
+         <TenderDetailSection icon={<Inventory2OutlinedIcon />} title='Груз'>
+            <Box
+               sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                     xs: '1fr',
+                     sm: 'repeat(2, 1fr)',
+                     md: 'repeat(4, 1fr)',
+                  },
+                  gap: 1,
+               }}
+            >
+               <TenderInfoBadge label='Тип' value={cargo.type} />
+
+               <TenderInfoBadge
+                  label='Вес'
+                  value={
+                     cargo.weight_kg ? `${cargo.weight_kg} кг` : 'Не указан'
+                  }
+               />
+
+               <TenderInfoBadge
+                  label='Цена'
+                  value={
+                     lead.summ
+                        ? `${lead.summ} ${lead.currency || 'KZT'}`
+                        : 'Не указана'
+                  }
+                  accent
+               />
+
+               <TenderInfoBadge label='НДС' value={lead.vat || 'Не указан'} />
+            </Box>
+
+            <TenderInfoBadge
+               label='Описание'
+               value={cargo.description || 'Не указано'}
+               fullWidth
+               sx={{ mt: 1 }}
+            />
+         </TenderDetailSection>
+      </Stack>
    );
 }
 

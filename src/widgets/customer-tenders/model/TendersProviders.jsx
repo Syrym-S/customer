@@ -20,14 +20,16 @@ import {
    mapTendersListFromApi,
 } from './tender.adapter';
 
+const DEFAULT_PER_PAGE = 2;
+
 export function TendersProvider({ children }) {
    const [tenders, setTenders] = useState([]);
    const [openTender, setOpenTender] = useState(null);
 
    const [page, setPage] = useState(1);
-   const [limit, setLimit] = useState(10);
+   const [perPage, setPerPage] = useState(DEFAULT_PER_PAGE);
    const [status, setStatus] = useState('all');
-   const [total, setTotal] = useState(0);
+   const [count, setCount] = useState(0);
 
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState('');
@@ -40,31 +42,26 @@ export function TendersProvider({ children }) {
          setIsLoading(true);
          setError('');
 
-         const response = await fetchCustomerTenders({ page, limit, status });
+         const response = await fetchCustomerTenders({
+            page,
+            limit: perPage,
+            status,
+         });
          const mappedResponse = mapTendersListFromApi(response);
 
          setTenders(mappedResponse.tenders);
-         setTotal(mappedResponse.total);
+         setCount(mappedResponse.count);
+         setPerPage(mappedResponse.perPage);
       } catch (error) {
          setError(
             error.response?.data?.message ||
                error.message ||
                'Не удалось загрузить тендеры',
          );
-         setTenders([]);
-         setTotal(0);
       } finally {
          setIsLoading(false);
       }
-   }, [page, limit, status]);
-
-   const createTender = useCallback(async (payload) => {
-      return createCustomerTender(payload);
-   }, []);
-
-   const addParticipant = useCallback(async (tenderId, participantId) => {
-      return addTenderParticipant(tenderId, participantId);
-   }, []);
+   }, [page, perPage, status]);
 
    const loadTenderDetailsWithFiles = useCallback(async (tenderId) => {
       const tender = await fetchCustomerTenderById(tenderId);
@@ -98,6 +95,48 @@ export function TendersProvider({ children }) {
          };
       }
    }, []);
+
+   const refreshTenderDetails = useCallback(
+      async (tenderId) => {
+         const response = await loadTenderDetailsWithFiles(tenderId);
+         const mappedTender = mapTenderFromApi(response);
+
+         setOpenTender(mappedTender);
+
+         return mappedTender;
+      },
+      [loadTenderDetailsWithFiles],
+   );
+
+   const createTender = useCallback(async (payload) => {
+      return createCustomerTender(payload);
+   }, []);
+
+   const addParticipant = useCallback(async (tenderId, participantId) => {
+      return addTenderParticipant(tenderId, participantId);
+   }, []);
+
+   const addParticipantsToTender = useCallback(
+      async (tenderId, participantIds) => {
+         const uniqueParticipantIds = [...new Set(participantIds)].filter(
+            Boolean,
+         );
+
+         if (!tenderId || uniqueParticipantIds.length === 0) {
+            return;
+         }
+
+         await Promise.all(
+            uniqueParticipantIds.map((participantId) =>
+               addTenderParticipant(tenderId, participantId),
+            ),
+         );
+
+         await refreshTenderDetails(tenderId);
+         await loadTenders();
+      },
+      [refreshTenderDetails, loadTenders],
+   );
 
    const openTenderDetails = useCallback(
       async (tender) => {
@@ -154,18 +193,6 @@ export function TendersProvider({ children }) {
       [loadTenders],
    );
 
-   const refreshTenderDetails = useCallback(
-      async (tenderId) => {
-         const response = await loadTenderDetailsWithFiles(tenderId);
-         const mappedTender = mapTenderFromApi(response);
-
-         setOpenTender(mappedTender);
-
-         return mappedTender;
-      },
-      [loadTenderDetailsWithFiles],
-   );
-
    const startTender = useCallback(
       async (tenderId) => {
          await startCustomerTender(tenderId);
@@ -194,8 +221,8 @@ export function TendersProvider({ children }) {
    );
 
    const removeParticipant = useCallback(
-      async (tenderId, participantId) => {
-         await deleteTenderParticipant(tenderId, participantId);
+      async (tenderId, participantIndex) => {
+         await deleteTenderParticipant(tenderId, participantIndex);
          await refreshTenderDetails(tenderId);
          await loadTenders();
       },
@@ -216,17 +243,18 @@ export function TendersProvider({ children }) {
 
          page,
          setPage,
-         limit,
-         setLimit,
+         perPage,
+         setPerPage,
          status,
          setStatus,
-         total,
+         count,
 
          isLoading,
          error,
 
          createTender,
          addParticipant,
+         addParticipantsToTender,
          acceptBet,
          removeParticipant,
 
@@ -250,9 +278,9 @@ export function TendersProvider({ children }) {
          openTenderDetails,
          closeTenderDetails,
          page,
-         limit,
+         perPage,
          status,
-         total,
+         count,
          isLoading,
          error,
          startTender,
@@ -264,6 +292,7 @@ export function TendersProvider({ children }) {
          cancelTender,
          createTender,
          addParticipant,
+         addParticipantsToTender,
          acceptBet,
          refreshTenderDetails,
          removeParticipant,

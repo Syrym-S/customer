@@ -63,13 +63,19 @@ export function TenderBetsSection({
       setConfirmBet(null);
    }
 
-   function handleConfirmWinner() {
-      if (!confirmBet) {
+   async function handleConfirmWinner() {
+      if (!confirmBet || isActionLoading) {
          return;
       }
 
-      onAcceptWinner?.(confirmBet.betIndex, confirmBet.bet);
-      setConfirmBet(null);
+      const isSuccess = await onAcceptWinner?.(
+         confirmBet.betIndex,
+         confirmBet.bet,
+      );
+
+      if (isSuccess !== false) {
+         setConfirmBet(null);
+      }
    }
 
    return (
@@ -306,7 +312,7 @@ export function TenderBetsSection({
                   onClick={handleConfirmWinner}
                   disabled={isActionLoading}
                >
-                  {isActionLoading ? 'Выбираем...' : 'Подтвердить выбор'}
+                  {isActionLoading ? 'Выбор...' : 'Подтвердить выбор'}
                </Button>
             </DialogActions>
          </Dialog>
@@ -317,4 +323,6 @@ export function TenderBetsSection({
 TenderBetsSection.propTypes = {
    bets: PropTypes.arrayOf(betPropType).isRequired,
    onAcceptWinner: PropTypes.func,
+   tenderStatus: PropTypes.string,
+   isActionLoading: PropTypes.bool,
 };

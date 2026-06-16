@@ -1,5 +1,5 @@
-import { Box, Button } from '@mui/material';
-import PropTypes from 'prop-types';
+import { Box, Button } from "@mui/material";
+import PropTypes from "prop-types";
 
 export function TenderDetailsEditActions({
    isEditing,
@@ -9,17 +9,16 @@ export function TenderDetailsEditActions({
    return (
       <Box
          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 1,
             mb: 2,
          }}
       >
          {isEditing ? (
-            <Button variant='outlined' onClick={onCancelEdit}>
-               Отмена
-            </Button>
+            <Button onClick={onCancelEdit}>Отмена</Button>
          ) : (
-            <Button variant='outlined' onClick={onStartEdit}>
+            <Button variant="outlined" onClick={onStartEdit}>
                Изменить
             </Button>
          )}

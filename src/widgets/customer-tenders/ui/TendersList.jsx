@@ -1,8 +1,9 @@
-import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material';
+import { Alert, Box, CircularProgress, Stack, Typography } from "@mui/material";
 
-import { TenderCard } from './TenderCard';
-import { TenderDetailsModal } from './TenderDetailsModal';
-import { useTendersContext } from '../model/useTendersContext';
+import { TenderCard } from "./TenderCard";
+import { TenderDetailsModal } from "./TenderDetailsModal";
+import { useTendersContext } from "../model/useTendersContext";
+import { TendersPagination } from "./TendersPagination";
 
 // const mockTendersById = {
 //    1001: {
@@ -119,23 +120,25 @@ import { useTendersContext } from '../model/useTendersContext';
 // };
 
 export function TendersList() {
-   const { tenders, isLoading, error } = useTendersContext();
+   const { tenders, page, setPage, perPage, count, isLoading, error } =
+      useTendersContext();
 
-   // const tenders = Object.entries(mockTendersById).map(([id, tender]) => ({
-   //    id,
-   //    ...tender,
-   // }));
+   const pagesCount = Math.max(1, Math.ceil(count / perPage));
+
+   function handlePageChange(_, value) {
+      setPage(value);
+   }
 
    return (
       <Box
          sx={{
             maxWidth: 640,
-            mx: 'auto',
+            mx: "auto",
             mt: 4,
          }}
       >
          {error && (
-            <Alert severity='error' sx={{ mb: 2 }}>
+            <Alert severity="error" sx={{ mb: 2 }}>
                {error}
             </Alert>
          )}
@@ -143,9 +146,9 @@ export function TendersList() {
          {isLoading && (
             <Box
                sx={{
-                  py: 5,
-                  display: 'flex',
-                  justifyContent: 'center',
+                  py: 4,
+                  display: "flex",
+                  justifyContent: "center",
                }}
             >
                <CircularProgress size={32} />
@@ -154,10 +157,10 @@ export function TendersList() {
 
          {!isLoading && !error && tenders.length === 0 && (
             <Typography
-               color='text.secondary'
+               color="text.secondary"
                sx={{
                   py: 4,
-                  textAlign: 'center',
+                  textAlign: "center",
                }}
             >
                Тендеры не найдены
@@ -165,11 +168,18 @@ export function TendersList() {
          )}
 
          {!isLoading && !error && tenders.length > 0 && (
-            <Stack spacing={2}>
-               {tenders.map((tender) => (
-                  <TenderCard key={tender.id} tender={tender} />
-               ))}
-            </Stack>
+            <>
+               <Stack spacing={2}>
+                  {tenders.map((tender) => (
+                     <TenderCard key={tender.id} tender={tender} />
+                  ))}
+               </Stack>
+               <TendersPagination
+                  page={page}
+                  count={pagesCount}
+                  onChange={handlePageChange}
+               />
+            </>
          )}
 
          <TenderDetailsModal />
