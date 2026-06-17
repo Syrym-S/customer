@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
@@ -16,7 +17,8 @@ import {
    Typography,
 } from '@mui/material';
 
-import { TenderDetailSection } from './TenderDetailSection';
+import { TenderDetailsSection } from './TenderDetailsSection';
+import { tenderDocumentPropType } from '../../../model/tenders.prop-types';
 
 function isPdfDocument(document) {
    const fileType = document?.fileType || '';
@@ -351,7 +353,7 @@ export function TenderDocumentsSection({ documents = [] }) {
    const [selectedDocument, setSelectedDocument] = useState(null);
 
    return (
-      <TenderDetailSection
+      <TenderDetailsSection
          icon={<DescriptionOutlinedIcon />}
          title='Документы лида'
       >
@@ -375,6 +377,28 @@ export function TenderDocumentsSection({ documents = [] }) {
             document={selectedDocument}
             onClose={() => setSelectedDocument(null)}
          />
-      </TenderDetailSection>
+      </TenderDetailsSection>
    );
 }
+
+TenderDocumentPreview.propTypes = {
+   document: tenderDocumentPropType.isRequired,
+};
+
+PreviewFallback.propTypes = {
+   text: PropTypes.string.isRequired,
+};
+
+TenderDocumentPreviewDialog.propTypes = {
+   document: tenderDocumentPropType,
+   onClose: PropTypes.func.isRequired,
+};
+
+TenderDocumentCard.propTypes = {
+   document: tenderDocumentPropType.isRequired,
+   onOpen: PropTypes.func.isRequired,
+};
+
+TenderDocumentsSection.propTypes = {
+   documents: PropTypes.arrayOf(tenderDocumentPropType),
+};

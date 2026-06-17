@@ -1,12 +1,12 @@
 import { Box, MenuItem, TextField } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-import { TenderDetailSection } from './TenderDetailSection';
+import { TenderDetailsSection } from './TenderDetailsSection';
 import { TenderInfoBadge } from './TenderInfoBadge';
 import {
    tenderEditFormPropType,
    tenderPropType,
-} from '../../../model/tenders.propTypes';
+} from '../../../model/tenders.prop-types';
 import PropTypes from 'prop-types';
 
 const tenderTypeLabels = {
@@ -26,7 +26,7 @@ export function TenderInfoSection({
    onEditChange,
 }) {
    return (
-      <TenderDetailSection
+      <TenderDetailsSection
          icon={<InfoOutlinedIcon />}
          title='Информация о тендере'
       >
@@ -130,7 +130,7 @@ export function TenderInfoSection({
                <TenderInfoBadge label='Ставок' value={tender.bets_count ?? 0} />
             </Box>
          )}
-      </TenderDetailSection>
+      </TenderDetailsSection>
    );
 }
 

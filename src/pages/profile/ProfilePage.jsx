@@ -16,12 +16,12 @@ import {
    mapProfileFormToChangedApi,
    mapProfileFromApi,
    validateProfileForm,
-} from '../../../features/profile-edit/profileForm.helpers';
+} from '../../features/profile-edit/profile-form.helpers';
 import {
    fetchCustomerProfile,
    updateCustomerProfile,
-} from '../../../features/profile-edit/profile.api';
-import { notifySuccess } from '../../../shared/model/notifications.store';
+} from '../../features/profile-edit/profile.api';
+import { notifySuccess } from '../../shared/model/notifications.store';
 
 export function ProfilePage() {
    const [form, setForm] = useState(initialProfileForm);

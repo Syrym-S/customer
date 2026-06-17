@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
-export function TenderDetailSection({
+export function TenderDetailsSection({
    icon,
    title,
    subtitle,
@@ -80,7 +80,7 @@ export function TenderDetailSection({
    );
 }
 
-TenderDetailSection.propTypes = {
+TenderDetailsSection.propTypes = {
    icon: PropTypes.node.isRequired,
    title: PropTypes.string.isRequired,
    subtitle: PropTypes.node,

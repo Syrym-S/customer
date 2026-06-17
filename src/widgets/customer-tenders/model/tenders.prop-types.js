@@ -60,9 +60,22 @@ export const tenderEditFormPropType = PropTypes.shape({
    cargoDescription: PropTypes.string,
 });
 
+export const tenderDocumentPropType = PropTypes.shape({
+   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   name: PropTypes.string,
+   context: PropTypes.string,
+   fileName: PropTypes.string,
+   fileUrl: PropTypes.string,
+   fileType: PropTypes.string,
+   createdAt: PropTypes.string,
+   path: PropTypes.string,
+   source: PropTypes.string,
+   raw: PropTypes.object,
+});
+
 export const leadPropType = PropTypes.shape({
    id: PropTypes.string,
-   num: PropTypes.string,
+   num: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
    status: PropTypes.string,
    summ: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
    currency: PropTypes.string,
@@ -70,6 +83,8 @@ export const leadPropType = PropTypes.shape({
    from_location: locationPropType,
    to_location: locationPropType,
    cargo: cargoPropType,
+   documents: PropTypes.arrayOf(tenderDocumentPropType),
+   files: PropTypes.arrayOf(tenderDocumentPropType),
 });
 
 export const tenderPropType = PropTypes.shape({

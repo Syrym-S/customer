@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
    createLeadEditForm,
    mapLeadEditFormToApi,
-} from '../model/leadEditForm.helpers';
+} from '../model/lead-edit-form.helpers';
 import { LeadDetailsMap } from './lead-details/LeadDetailsMap';
 import { LeadDetailsEditActions } from './lead-details/LeadDetailsEditActions';
 import { LeadDetailsContent } from './lead-details/LeadDetailsContent';
@@ -16,7 +16,7 @@ import {
    decodeRoutePolyline,
    getEncodedPolylineFromRoute,
    getRoutesFromGeneratedRoute,
-} from '../lib/routePolyline.helpers';
+} from '../lib/route-polyline.helpers';
 import { generateRoute } from '../api/lead-route.repository';
 import {
    fetchCustomerLeadById,

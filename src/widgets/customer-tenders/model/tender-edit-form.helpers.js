@@ -147,12 +147,12 @@ export function mapTenderEditFormToApi(editForm, currentTender) {
    }
 
    const nextMaxParticipants =
-      nextPublicationType === 'private'
-         ? normalizeNumber(editForm.maxParticipants) || 0
+      nextPublicationType === 'public'
+         ? (normalizeNumber(editForm.maxParticipants) ?? 0)
          : 0;
 
    const currentMaxParticipants =
-      normalizeNumber(currentTender.max_participants) || 0;
+      normalizeNumber(currentTender.max_participants) ?? 0;
 
    if (nextMaxParticipants !== currentMaxParticipants) {
       payload.max_participants = nextMaxParticipants;

@@ -6,7 +6,7 @@ import {
    getRouteMarkers,
    getRoutePoints,
    hasPoint,
-} from '../lib/routeMap.helpers';
+} from '../lib/route-map.helpers';
 
 const setValueOptions = {
    shouldDirty: true,

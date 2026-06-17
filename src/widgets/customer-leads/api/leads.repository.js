@@ -1,4 +1,4 @@
-import { apiClient } from '../../../shared/api/apiClient';
+import { apiClient } from '../../../shared/api/api-client';
 import { isMockApi } from '../../../shared/config/api.config';
 import { fetchCustomerLeadByIdApi, fetchCustomerLeadsApi } from './leads.api';
 import {

@@ -1,5 +1,5 @@
 import { Box, Container } from '@mui/material';
-import { TenderToolbar } from '../../widgets/customer-tenders/ui/TenderToolbar';
+import { TendersToolbar } from '../../widgets/customer-tenders/ui/TendersToolbar';
 import { TendersList } from '../../widgets/customer-tenders/ui/TendersList';
 import { TendersProvider } from '../../widgets/customer-tenders/model/TendersProviders';
 
@@ -19,7 +19,7 @@ export function TenderPage() {
                   py: 3,
                }}
             >
-               <TenderToolbar />
+               <TendersToolbar />
                <TendersList />
             </Box>
          </Container>

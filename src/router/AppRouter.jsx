@@ -1,8 +1,8 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 
-import { AppLayout } from '../widgets/app-layout';
-import { CustomerPage } from '../pages/customer';
-import { ProfilePage } from '../pages/profile/ui/ProfilePage';
+import { AppLayout } from '../widgets/app-layout/AppLayout';
+import { CustomerPage } from '../pages/customer/CustomerPage';
+import { ProfilePage } from '../pages/profile/ProfilePage';
 import { TenderPage } from '../pages/tender/TenderPage';
 
 export const AppRouter = () => {

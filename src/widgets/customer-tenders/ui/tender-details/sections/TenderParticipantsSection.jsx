@@ -13,9 +13,9 @@ import {
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import PropTypes from 'prop-types';
-import { participantPropType } from '../../../model/tenders.propTypes';
+import { participantPropType } from '../../../model/tenders.prop-types';
 
-import { TenderDetailSection } from './TenderDetailSection';
+import { TenderDetailsSection } from './TenderDetailsSection';
 import { searchForwardersApi } from '../../../../../features/create-lead/api/forwarders.api';
 
 const INITIAL_VISIBLE_COUNT = 3;
@@ -105,11 +105,12 @@ export function TenderParticipantsSection({
       });
    }, [forwarders, selectedForwarders, existingParticipantIds]);
 
+   const normalizedMaxParticipants = Number(maxParticipants) || 0;
+
    const canAddParticipants =
       !isTenderClosed &&
-      (!maxParticipants ||
-         maxParticipants === 0 ||
-         participants.length < maxParticipants);
+      (normalizedMaxParticipants === 0 ||
+         participants.length < normalizedMaxParticipants);
 
    function handleToggleExpanded() {
       setIsExpanded((prev) => !prev);
@@ -189,7 +190,7 @@ export function TenderParticipantsSection({
    }, [isAdding, inputValue]);
 
    return (
-      <TenderDetailSection
+      <TenderDetailsSection
          icon={<GroupsOutlinedIcon />}
          title='Участники'
          subtitle={`${participants.length} участник(ов)`}
@@ -482,7 +483,7 @@ export function TenderParticipantsSection({
                </Stack>
             )}
          </Stack>
-      </TenderDetailSection>
+      </TenderDetailsSection>
    );
 }
 

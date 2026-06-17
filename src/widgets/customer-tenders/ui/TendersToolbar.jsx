@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { CreateTenderButton } from './CreateTenderButton';
 
-export function TenderToolbar() {
+export function TendersToolbar() {
    return (
       <Box
          sx={{

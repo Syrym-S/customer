@@ -13,8 +13,8 @@ import {
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import PropTypes from 'prop-types';
 
-import { TenderDetailSection } from './TenderDetailSection';
-import { betPropType } from '../../../model/tenders.propTypes';
+import { TenderDetailsSection } from './TenderDetailsSection';
+import { betPropType } from '../../../model/tenders.prop-types';
 
 const INITIAL_VISIBLE_COUNT = 3;
 
@@ -80,7 +80,7 @@ export function TenderBetsSection({
 
    return (
       <>
-         <TenderDetailSection
+         <TenderDetailsSection
             icon={<PaidOutlinedIcon />}
             title='Ставки'
             subtitle={`${bets.length}`}
@@ -239,7 +239,7 @@ export function TenderBetsSection({
                   )}
                </Stack>
             )}
-         </TenderDetailSection>
+         </TenderDetailsSection>
 
          <Dialog
             open={Boolean(confirmBet)}

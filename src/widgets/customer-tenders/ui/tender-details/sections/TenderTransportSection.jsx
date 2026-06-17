@@ -5,12 +5,12 @@ import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import RouteOutlinedIcon from '@mui/icons-material/RouteOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 
-import { TenderDetailSection } from './TenderDetailSection';
+import { TenderDetailsSection } from './TenderDetailsSection';
 import { TenderInfoBadge } from './TenderInfoBadge';
 
 import PropTypes from 'prop-types';
-import { tenderPropType } from '../../../model/tenders.propTypes';
-import { normalizeLocationValue } from '../../../model/tenderEditFrom.helpers';
+import { tenderPropType } from '../../../model/tenders.prop-types';
+import { normalizeLocationValue } from '../../../model/tender-edit-form.helpers';
 
 export function TenderTransportSection({ tender }) {
    const lead = tender.lead || {};
@@ -18,7 +18,7 @@ export function TenderTransportSection({ tender }) {
 
    return (
       <Stack spacing={2}>
-         <TenderDetailSection icon={<RouteOutlinedIcon />} title='Маршрут'>
+         <TenderDetailsSection icon={<RouteOutlinedIcon />} title='Маршрут'>
             <Box
                sx={{
                   display: 'flex',
@@ -63,9 +63,9 @@ export function TenderTransportSection({ tender }) {
                   fullWidth
                />
             </Box>
-         </TenderDetailSection>
+         </TenderDetailsSection>
 
-         <TenderDetailSection icon={<Inventory2OutlinedIcon />} title='Груз'>
+         <TenderDetailsSection icon={<Inventory2OutlinedIcon />} title='Груз'>
             <Box
                sx={{
                   display: 'grid',
@@ -105,7 +105,7 @@ export function TenderTransportSection({ tender }) {
                fullWidth
                sx={{ mt: 1 }}
             />
-         </TenderDetailSection>
+         </TenderDetailsSection>
       </Stack>
    );
 }

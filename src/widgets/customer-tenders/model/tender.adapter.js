@@ -1,13 +1,13 @@
 function formatTenderLocation(location) {
    if (!location) {
-      return "";
+      return '';
    }
 
-   if (typeof location === "string") {
+   if (typeof location === 'string') {
       return location.trim();
    }
 
-   if (typeof location !== "object") {
+   if (typeof location !== 'object') {
       return String(location);
    }
 
@@ -19,7 +19,7 @@ function formatTenderLocation(location) {
    ].filter(Boolean);
 
    if (parts.length) {
-      return parts.join(", ");
+      return parts.join(', ');
    }
 
    const lat = location.lat ?? location.latitude;
@@ -29,7 +29,7 @@ function formatTenderLocation(location) {
       return `${lat}, ${lon}`;
    }
 
-   return "";
+   return '';
 }
 
 function mapTenderLeadFromApi(lead) {
@@ -57,29 +57,29 @@ export function mapTenderFromApi(tender) {
 
    return {
       id: tender.id,
-      status: tender.status || "new",
-      type: tender.type || "forwarder",
-      publication_type: tender.publication_type || "public",
+      status: tender.status || 'new',
+      type: tender.type || 'forwarder',
+      publication_type: tender.publication_type || 'public',
 
-      public_date_time: tender.public_date_time || "",
-      end_date_time: tender.end_date_time || "",
-      endDateTime: tender.end_date_time || "",
+      public_date_time: tender.public_date_time || '',
+      end_date_time: tender.end_date_time || '',
+      endDateTime: tender.end_date_time || '',
 
       max_participants: tender.max_participants ?? 0,
-      lead_id: tender.lead_id || lead?.id || "",
+      lead_id: tender.lead_id || lead?.id || '',
 
       participants_count: tender.participants_count ?? 0,
       bets_count: tender.bets_count ?? 0,
 
       lead,
 
-      from_location: lead?.from_location || "",
-      to_location: lead?.to_location || "",
+      from_location: lead?.from_location || '',
+      to_location: lead?.to_location || '',
 
       cargo: lead?.cargo || null,
       summ: lead?.summ ?? null,
-      currency: lead?.currency || "KZT",
-      vat: lead?.vat || "",
+      currency: lead?.currency || 'KZT',
+      vat: lead?.vat || '',
 
       participants: Array.isArray(tender.participants)
          ? tender.participants
@@ -100,16 +100,44 @@ export function mapTendersListFromApi(response) {
    };
 }
 
+function getShortLeadId(id) {
+   if (!id) {
+      return '';
+   }
+
+   return String(id).slice(-6);
+}
+
 export function mapTenderLeadSearchItemFromApi(item) {
+   const from = item.from || '';
+   const to = item.to || '';
+   const cargo = item.cargo || 'Груз не указан';
+   const shortId = getShortLeadId(item.id);
+
+   const title =
+      from && to
+         ? `${from} → ${to}`
+         : to
+           ? `Куда: ${to}`
+           : from
+             ? `Откуда: ${from}`
+             : `Лид #${shortId || item.id}`;
+
    return {
       id: item.id,
-      status: item.status || "",
-      forwarder: item.forwarder || "",
-      to: item.to || "",
-      cargo: item.cargo || "",
+      status: item.status || '',
+      forwarder: item.forwarder || '',
+      from,
+      to,
+      cargo,
       price: item.price ?? null,
-      createdAt: item.created_at || "",
-      label: [item.cargo, item.to, item.forwarder].filter(Boolean).join(" • "),
+      createdAt: item.created_at || '',
+
+      title,
+      label: title,
+      subtitle: [cargo, item.forwarder ? `Экспедитор: ${item.forwarder}` : '']
+         .filter(Boolean)
+         .join(' • '),
    };
 }
 
@@ -125,19 +153,19 @@ export function mapTenderLeadsSearchFromApi(response) {
 }
 
 function getFileNameFromPath(path) {
-   if (!path || typeof path !== "string") {
-      return "";
+   if (!path || typeof path !== 'string') {
+      return '';
    }
 
-   const cleanPath = path.split("?")[0];
-   const parts = cleanPath.split("/");
+   const cleanPath = path.split('?')[0];
+   const parts = cleanPath.split('/');
 
-   return parts[parts.length - 1] || "";
+   return parts[parts.length - 1] || '';
 }
 
 function mapTenderLeadFileFromApi(apiFile, index) {
-   const sourceUrl = apiFile.fileUrl || apiFile.url || "";
-   const sourcePath = apiFile.path || "";
+   const sourceUrl = apiFile.fileUrl || apiFile.url || '';
+   const sourcePath = apiFile.path || '';
 
    const fileNameFromUrl = getFileNameFromPath(sourceUrl);
    const fileNameFromPath = getFileNameFromPath(sourcePath);
@@ -161,14 +189,14 @@ function mapTenderLeadFileFromApi(apiFile, index) {
          apiFile.fileUrl ||
          apiFile.url ||
          `file-${index}`,
-      name: apiFile.name || apiFile.title || fileName || "Документ",
-      context: apiFile.context || "",
+      name: apiFile.name || apiFile.title || fileName || 'Документ',
+      context: apiFile.context || '',
       fileName,
-      fileUrl: sourceUrl || sourcePath || "#",
-      fileType: apiFile.fileType || apiFile.type || apiFile.mime_type || "",
+      fileUrl: sourceUrl || sourcePath || '#',
+      fileType: apiFile.fileType || apiFile.type || apiFile.mime_type || '',
       createdAt: apiFile.createdAt || apiFile.created_at || null,
       path: sourcePath,
-      source: apiFile.source || "customer",
+      source: apiFile.source || 'customer',
       raw: apiFile.raw || apiFile,
    };
 }

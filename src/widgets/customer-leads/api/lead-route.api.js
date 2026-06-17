@@ -1,4 +1,4 @@
-import { apiClient } from '../../../shared/api/apiClient';
+import { apiClient } from '../../../shared/api/api-client';
 
 export async function generateRouteApi(payload) {
    try {

@@ -6,7 +6,7 @@ import {
    decodeRoutePolyline,
    getEncodedPolylineFromRoute,
    getRoutesFromGeneratedRoute,
-} from '../../customer-leads/lib/routePolyline.helpers';
+} from '../../customer-leads/lib/route-polyline.helpers';
 
 function mapGeneratedRouteToMapRoute(lead, generatedRoute) {
    const routes = getRoutesFromGeneratedRoute(generatedRoute);

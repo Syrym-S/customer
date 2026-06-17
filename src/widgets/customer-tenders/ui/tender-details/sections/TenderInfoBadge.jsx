@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import { sxPropType } from '../../../model/tenders.propTypes';
+import { sxPropType } from '../../../model/tenders.prop-types';
 
 export function TenderInfoBadge({ label, value, accent = false, sx = {} }) {
    return (

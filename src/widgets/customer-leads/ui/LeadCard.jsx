@@ -6,7 +6,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 
 import { useLeadsContext } from '../model/useLeadsContext';
-import { normalizeLocationValue } from '../model/leadEditForm.helpers';
+import { normalizeLocationValue } from '../model/lead-edit-form.helpers';
 
 export function LeadCard({ lead }) {
    const { setOpenLead } = useLeadsContext();

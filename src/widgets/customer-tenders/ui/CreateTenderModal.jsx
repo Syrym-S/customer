@@ -44,6 +44,10 @@ function formatMoney(value) {
    return `${Number(value).toLocaleString('ru-RU')} KZT`;
 }
 
+function getLeadOptionLabel(option) {
+   return option?.label || option?.title || option?.id || '';
+}
+
 export function CreateTenderModal({ open, onClose }) {
    const { createTender, addParticipant, reloadTenders, startTender } =
       useTendersContext();
@@ -186,6 +190,12 @@ export function CreateTenderModal({ open, onClose }) {
    useEffect(() => {
       const query = leadInputValue.trim();
 
+      if (selectedLead && query === getLeadOptionLabel(selectedLead)) {
+         setLeads([]);
+         setLeadsSearchError('');
+         return;
+      }
+
       if (query.length < 2) {
          setLeads([]);
          setLeadsSearchError('');
@@ -228,7 +238,7 @@ export function CreateTenderModal({ open, onClose }) {
          isCancelled = true;
          clearTimeout(timeoutId);
       };
-   }, [leadInputValue]);
+   }, [leadInputValue, selectedLead]);
 
    useEffect(() => {
       if (form.isPublic) {
@@ -294,9 +304,7 @@ export function CreateTenderModal({ open, onClose }) {
                      options={leadOptions}
                      loading={isLeadsLoading}
                      filterOptions={(items) => items}
-                     getOptionLabel={(option) =>
-                        option?.label || option?.id || ''
-                     }
+                     getOptionLabel={getLeadOptionLabel}
                      isOptionEqualToValue={(option, value) =>
                         option?.id === value?.id
                      }
@@ -308,14 +316,30 @@ export function CreateTenderModal({ open, onClose }) {
                      loadingText='Поиск лидов...'
                      onInputChange={(_, newInputValue, reason) => {
                         if (reason === 'reset') {
+                           setLeadInputValue(newInputValue);
+                           return;
+                        }
+
+                        if (reason === 'clear') {
+                           setSelectedLead(null);
+                           setLeadInputValue('');
                            return;
                         }
 
                         setLeadInputValue(newInputValue);
+
+                        if (
+                           selectedLead &&
+                           newInputValue !== getLeadOptionLabel(selectedLead)
+                        ) {
+                           setSelectedLead(null);
+                        }
                      }}
                      onChange={(_, newValue) => {
                         setSelectedLead(newValue);
-                        setLeadInputValue('');
+                        setLeadInputValue(
+                           newValue ? getLeadOptionLabel(newValue) : '',
+                        );
                      }}
                      renderOption={(optionProps, option) => {
                         const { key, ...listItemProps } = optionProps;
@@ -334,15 +358,26 @@ export function CreateTenderModal({ open, onClose }) {
                               }}
                            >
                               <Typography fontWeight={700}>
-                                 {option.cargo || 'Груз не указан'}
+                                 {option.title ||
+                                    option.label ||
+                                    `Лид #${option.id}`}
                               </Typography>
 
                               <Typography
                                  color='text.secondary'
                                  sx={{ fontSize: 13 }}
                               >
-                                 Куда: {option.to || 'Не указано'}
+                                 Груз: {option.cargo || 'Не указан'}
                               </Typography>
+
+                              {option.forwarder && (
+                                 <Typography
+                                    color='text.secondary'
+                                    sx={{ fontSize: 13 }}
+                                 >
+                                    Экспедитор: {option.forwarder}
+                                 </Typography>
+                              )}
 
                               <Box
                                  sx={{

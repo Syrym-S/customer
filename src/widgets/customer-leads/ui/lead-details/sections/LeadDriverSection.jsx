@@ -5,7 +5,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 
 import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
-import { normalizePersonValue } from '../../../model/leadEditForm.helpers';
+import { normalizePersonValue } from '../../../model/lead-edit-form.helpers';
 
 export function LeadDriverSection({ lead, isEditing, editForm, onEditChange }) {
    return (

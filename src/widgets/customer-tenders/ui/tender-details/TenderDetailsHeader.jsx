@@ -1,6 +1,6 @@
 import { Box, Chip, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import { tenderPropType } from '../../model/tenders.propTypes';
+import { tenderPropType } from '../../model/tenders.prop-types';
 
 import {
    getTimeLeft,

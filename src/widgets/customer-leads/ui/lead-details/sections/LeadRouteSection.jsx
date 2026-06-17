@@ -9,7 +9,7 @@ import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import { DetailSection } from '../components/DetailSection';
 import { RoutePoint } from '../components/RoutePoint';
 
-import { normalizeLocationValue } from '../../../model/leadEditForm.helpers';
+import { normalizeLocationValue } from '../../../model/lead-edit-form.helpers';
 
 export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
    return (

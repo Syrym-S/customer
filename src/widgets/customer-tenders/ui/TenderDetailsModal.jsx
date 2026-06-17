@@ -18,12 +18,12 @@ import {
    decodeRoutePolyline,
    getEncodedPolylineFromRoute,
    getRoutesFromGeneratedRoute,
-} from '../../customer-leads/lib/routePolyline.helpers';
+} from '../../customer-leads/lib/route-polyline.helpers';
 import { generateRoute } from '../../customer-leads/api/lead-route.repository';
 import {
    createTenderEditForm,
    mapTenderEditFormToApi,
-} from '../model/tenderEditFrom.helpers';
+} from '../model/tender-edit-form.helpers';
 import { TenderDetailsActions } from './tender-details/TenderDetailsActions';
 
 export function TenderDetailsModal() {

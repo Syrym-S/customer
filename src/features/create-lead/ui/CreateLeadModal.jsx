@@ -6,7 +6,7 @@ import {
    mapCreatedLeadToUi,
    mapCreateLeadDocumentsToApiDocuments,
    mapCreateLeadFormToApi,
-} from '../model/createLead.adapter';
+} from '../model/create-lead.adapter';
 import { CreateLeadActions } from './create-lead-modal/CreateLeadActions';
 import { CreateLeadStepTabs } from './create-lead-modal/CreateLeadStepTabs';
 import { CreateLeadHeader } from './create-lead-modal/CreateLeadHeader';
@@ -16,7 +16,7 @@ import { ConfirmStep } from './create-lead-modal/steps/ConfirmStep';
 import { RouteStep } from './create-lead-modal/steps/RouteStep';
 import { CreateLeadResultModal } from './create-lead-modal/components/CreateLeadResultModal';
 import { useLeadsContext } from '../../../widgets/customer-leads/model/useLeadsContext';
-import { createLead } from '../api/createLead.repository';
+import { createLead } from '../api/create-lead.repository';
 import { DocumentsStep } from './create-lead-modal/steps/DocumentsStep';
 import { uploadLeadDocument } from '../../../widgets/customer-leads/api/lead-documents.api';
 

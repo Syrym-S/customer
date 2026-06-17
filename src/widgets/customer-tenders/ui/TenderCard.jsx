@@ -10,10 +10,12 @@ import {
 } from '../model/tender.helpers';
 import { useTendersContext } from '../model/useTendersContext';
 import PropTypes from 'prop-types';
-import { sxPropType, tenderPropType } from '../model/tenders.propTypes';
+import { sxPropType, tenderPropType } from '../model/tenders.prop-types';
 
 export function TenderCard({ tender }) {
    const { openTenderDetails } = useTendersContext();
+
+   const isCancelled = tender.status === 'cancelled';
 
    const shouldShowTimeLeft =
       tender.status !== 'closed' && tender.status !== 'cancelled';
@@ -36,15 +38,18 @@ export function TenderCard({ tender }) {
          sx={{
             p: 3,
             border: '2px solid',
-            borderColor: 'divider',
+            borderColor: isCancelled ? 'grey.300' : 'divider',
             borderRadius: 4,
-            backgroundColor: 'background.paper',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+            backgroundColor: isCancelled ? 'grey.100' : 'background.paper',
+            boxShadow: isCancelled ? 'none' : '0 2px 8px rgba(0, 0, 0, 0.06)',
             transition: '0.2s ease',
             cursor: 'pointer',
+            opacity: isCancelled ? 0.82 : 1,
             '&:hover': {
-               borderColor: 'primary.light',
-               boxShadow: '0 8px 24px rgba(33, 150, 243, 0.12)',
+               borderColor: isCancelled ? 'grey.400' : 'primary.light',
+               boxShadow: isCancelled
+                  ? '0 4px 12px rgba(0, 0, 0, 0.06)'
+                  : '0 8px 24px rgba(33, 150, 243, 0.12)',
             },
          }}
       >
@@ -133,7 +138,7 @@ export function TenderCard({ tender }) {
                      border: '1px solid',
                      borderColor: 'divider',
                      borderRadius: 2,
-                     backgroundColor: 'grey.50',
+                     backgroundColor: isCancelled ? 'grey.200' : 'grey.50',
                      display: 'flex',
                      flexDirection: 'column',
                      justifyContent: 'flex-start',
@@ -195,7 +200,7 @@ export function TenderCard({ tender }) {
                      border: '1px solid',
                      borderColor: 'divider',
                      borderRadius: 2,
-                     backgroundColor: 'grey.50',
+                     backgroundColor: isCancelled ? 'grey.200' : 'grey.50',
                      display: 'flex',
                      flexDirection: 'column',
                      justifyContent: 'flex-start',
@@ -247,11 +252,13 @@ export function TenderCard({ tender }) {
                         ? `${tender.cargo.weight_kg} кг`
                         : 'Не указано'
                   }
+                  muted={isCancelled}
                />
 
                <InfoBadge
                   label='Тип'
                   value={tender.cargo?.type || 'Не указан'}
+                  muted={isCancelled}
                />
 
                <InfoBadge
@@ -262,6 +269,7 @@ export function TenderCard({ tender }) {
                         : 'Не указано'
                   }
                   accent
+                  muted={isCancelled}
                />
             </Box>
          </Stack>
@@ -308,16 +316,16 @@ function TimeLeftBadge({ value }) {
    );
 }
 
-function InfoBadge({ label, value, accent = false, sx = {} }) {
+function InfoBadge({ label, value, accent = false, muted = false, sx = {} }) {
    return (
       <Box
          sx={{
             px: 1.5,
             py: 1,
             border: '1px solid',
-            borderColor: 'divider',
+            borderColor: muted ? 'grey.300' : 'divider',
             borderRadius: 2,
-            backgroundColor: 'grey.50',
+            backgroundColor: muted ? 'grey.200' : 'grey.50',
             minWidth: 0,
             ...sx,
          }}
@@ -337,7 +345,11 @@ function InfoBadge({ label, value, accent = false, sx = {} }) {
             sx={{
                fontSize: 14,
                lineHeight: 1.3,
-               color: accent ? 'primary.main' : 'text.primary',
+               color: muted
+                  ? 'text.secondary'
+                  : accent
+                    ? 'primary.main'
+                    : 'text.primary',
             }}
          >
             {value || 'Не указано'}
@@ -354,6 +366,7 @@ InfoBadge.propTypes = {
    label: PropTypes.string.isRequired,
    value: PropTypes.node,
    accent: PropTypes.bool,
+   muted: PropTypes.bool,
    sx: sxPropType,
 };
 

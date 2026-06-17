@@ -11,7 +11,7 @@ import {
 } from 'react-leaflet';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
-import { normalizeLocationValue } from '../../customer-leads/model/leadEditForm.helpers';
+import { normalizeLocationValue } from '../../customer-leads/model/lead-edit-form.helpers';
 
 const driverIcon = L.divIcon({
    className: 'driver-marker',

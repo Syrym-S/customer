@@ -2,7 +2,7 @@ import { Box, Stack } from '@mui/material';
 import {
    tenderPropType,
    tenderEditFormPropType,
-} from '../../model/tenders.propTypes';
+} from '../../model/tenders.prop-types';
 import PropTypes from 'prop-types';
 
 import { TenderInfoSection } from './sections/TenderInfoSection';
