@@ -261,7 +261,7 @@ export function TenderCard({ tender }) {
                   muted={isCancelled}
                />
 
-               <InfoBadge
+               {/* <InfoBadge
                   label='Цена'
                   value={
                      hasValue(tender.summ)
@@ -270,7 +270,7 @@ export function TenderCard({ tender }) {
                   }
                   accent
                   muted={isCancelled}
-               />
+               /> */}
             </Box>
          </Stack>
       </Box>

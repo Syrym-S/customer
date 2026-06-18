@@ -90,7 +90,6 @@ export function ForwarderStep({ control, errors, setValue }) {
          <Controller
             name='forwarderId'
             control={control}
-            rules={{ required: 'Выберите экспедитора' }}
             render={({ field }) => (
                <Stack spacing={2}>
                   <Autocomplete
@@ -129,11 +128,6 @@ export function ForwarderStep({ control, errors, setValue }) {
                            shouldTouch: true,
                            shouldValidate: false,
                         });
-
-                        console.log(
-                           'selected forwarder:',
-                           lastSelectedForwarder,
-                        );
 
                         setInputValue('');
                      }}
@@ -218,7 +212,9 @@ export function ForwarderStep({ control, errors, setValue }) {
                               Boolean(searchError)
                            }
                            helperText={
-                              errors.forwarderId?.message || searchError
+                              errors.forwarderId?.message ||
+                              searchError ||
+                              'Можно пропустить этот шаг и создать лид без экспедитора'
                            }
                         />
                      )}

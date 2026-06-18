@@ -35,8 +35,6 @@ export function mapCreateLeadFormToApi(form) {
    const toLocation = normalizeText(form.toLocation);
 
    const payload = {
-      forwarder: form.forwarderId,
-
       from_country: 'Казахстан',
       from_region: '',
       from_city: fromLocation,
@@ -50,6 +48,8 @@ export function mapCreateLeadFormToApi(form) {
       currency: form.currency || 'KZT',
       vat: form.vat ? 'с НДС' : 'без НДС',
    };
+
+   addIfHasValue(payload, 'forwarder', form.forwarderId);
 
    addIfHasValue(payload, 'loading_date', form.loadingDate);
    addIfHasValue(payload, 'comment', normalizeText(form.comment));

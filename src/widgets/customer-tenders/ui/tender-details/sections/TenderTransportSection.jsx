@@ -1,14 +1,14 @@
 import { Box, Stack } from '@mui/material';
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import RouteOutlinedIcon from '@mui/icons-material/RouteOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 
 import { TenderDetailsSection } from './TenderDetailsSection';
 import { TenderInfoBadge } from './TenderInfoBadge';
+import { RoutePoint } from '../../../../customer-leads/ui/lead-details/components/RoutePoint';
 
-import PropTypes from 'prop-types';
 import { tenderPropType } from '../../../model/tenders.prop-types';
 import { normalizeLocationValue } from '../../../model/tender-edit-form.helpers';
 
@@ -30,11 +30,10 @@ export function TenderTransportSection({ tender }) {
                   },
                }}
             >
-               <TenderInfoBadge
+               <RoutePoint
                   label='Откуда'
                   value={normalizeLocationValue(lead.from_location)}
                   icon={<TripOriginIcon />}
-                  fullWidth
                />
 
                <Box
@@ -56,23 +55,25 @@ export function TenderTransportSection({ tender }) {
                   />
                </Box>
 
-               <TenderInfoBadge
+               <RoutePoint
                   label='Куда'
                   value={normalizeLocationValue(lead.to_location)}
                   icon={<LocationOnOutlinedIcon />}
-                  fullWidth
                />
             </Box>
          </TenderDetailsSection>
 
-         <TenderDetailsSection icon={<Inventory2OutlinedIcon />} title='Груз'>
+         <TenderDetailsSection
+            icon={<LocalShippingOutlinedIcon />}
+            title='Груз'
+         >
             <Box
                sx={{
                   display: 'grid',
                   gridTemplateColumns: {
-                     xs: '1fr',
+                     xs: '1fr 1fr',
                      sm: 'repeat(2, 1fr)',
-                     md: 'repeat(4, 1fr)',
+                     md: 'repeat(3, 1fr)',
                   },
                   gap: 1,
                }}
@@ -84,16 +85,6 @@ export function TenderTransportSection({ tender }) {
                   value={
                      cargo.weight_kg ? `${cargo.weight_kg} кг` : 'Не указан'
                   }
-               />
-
-               <TenderInfoBadge
-                  label='Цена'
-                  value={
-                     lead.summ
-                        ? `${lead.summ} ${lead.currency || 'KZT'}`
-                        : 'Не указана'
-                  }
-                  accent
                />
 
                <TenderInfoBadge label='НДС' value={lead.vat || 'Не указан'} />
@@ -110,67 +101,6 @@ export function TenderTransportSection({ tender }) {
    );
 }
 
-function RoutePoint({ label, value, icon }) {
-   return (
-      <Box
-         sx={{
-            flex: 1,
-            minWidth: 220,
-            minHeight: 86,
-            p: 1.5,
-            border: '1px solid',
-            borderColor: 'divider',
-            borderRadius: 2,
-            backgroundColor: 'grey.50',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-         }}
-      >
-         <Box
-            sx={{
-               fontSize: 12,
-               lineHeight: 1.2,
-               color: 'text.secondary',
-               mb: 0.75,
-            }}
-         >
-            {label}
-         </Box>
-
-         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Box
-               sx={{
-                  display: 'flex',
-                  color: 'primary.main',
-                  '& svg': {
-                     fontSize: 18,
-                  },
-               }}
-            >
-               {icon}
-            </Box>
-
-            <Box
-               sx={{
-                  fontSize: 14,
-                  lineHeight: 1.35,
-                  fontWeight: 500,
-               }}
-            >
-               {value || 'Не указано'}
-            </Box>
-         </Box>
-      </Box>
-   );
-}
-
 TenderTransportSection.propTypes = {
    tender: tenderPropType.isRequired,
-};
-
-RoutePoint.propTypes = {
-   label: PropTypes.string.isRequired,
-   value: PropTypes.node,
-   icon: PropTypes.node.isRequired,
 };

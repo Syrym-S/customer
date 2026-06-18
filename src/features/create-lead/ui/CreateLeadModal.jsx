@@ -64,7 +64,7 @@ const stepFields = [
       'price',
       'currency',
    ],
-   ['forwarderId'],
+   [],
    [],
 ];
 

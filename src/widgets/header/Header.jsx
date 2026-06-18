@@ -72,29 +72,65 @@ export function Header() {
    const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
 
    function handleOpenNotifications(event) {
-      setNotificationsAnchorEl(event.currentTarget);
+      const anchorElement = event.currentTarget;
+
+      anchorElement.blur();
+      setNotificationsAnchorEl(anchorElement);
    }
 
    function handleCloseNotifications() {
+      blurActiveElement();
       setNotificationsAnchorEl(null);
    }
 
    function handleNavigate(path) {
-      if (location.pathname === path) return;
+      if (location.pathname === path) {
+         handleCloseBurger();
+         return;
+      }
 
       navigate(path);
-      setIsBurgerOpen(false);
+      handleCloseBurger();
    }
 
    function handleNavigateProfile() {
-      setProfileAnchorEl(null);
+      handleCloseProfileMenu();
       handleNavigate('/customer/profile');
    }
 
-   function handleOpenLogoutModal() {
+   function handleOpenProfileMenu(event) {
+      const anchorElement = event.currentTarget;
+
+      anchorElement.blur();
+      setProfileAnchorEl(anchorElement);
+   }
+
+   function handleCloseProfileMenu() {
+      blurActiveElement();
       setProfileAnchorEl(null);
+   }
+
+   function handleOpenBurger(event) {
+      event.currentTarget.blur();
+
+      requestAnimationFrame(() => {
+         setIsBurgerOpen(true);
+      });
+   }
+
+   function handleOpenLogoutModal() {
+      handleCloseProfileMenu();
       setLogoutError(null);
-      setIsLogoutModalOpen(true);
+
+      requestAnimationFrame(() => {
+         setIsLogoutModalOpen(true);
+      });
+   }
+
+   function blurActiveElement() {
+      if (document.activeElement instanceof HTMLElement) {
+         document.activeElement.blur();
+      }
    }
 
    async function handleConfirmLogout() {
@@ -121,11 +157,13 @@ export function Header() {
          return;
       }
 
+      blurActiveElement();
       setLogoutError(null);
       setIsLogoutModalOpen(false);
    }
 
    function handleCloseBurger() {
+      blurActiveElement();
       setIsBurgerOpen(false);
    }
 
@@ -150,7 +188,7 @@ export function Header() {
                   justifyContent: 'space-between',
                }}
             >
-               <IconButton onClick={() => setIsBurgerOpen(true)}>
+               <IconButton onClick={handleOpenBurger}>
                   <MenuIcon />
                </IconButton>
 
@@ -180,9 +218,7 @@ export function Header() {
 
                   <Button
                      variant='outlined'
-                     onClick={(event) =>
-                        setProfileAnchorEl(event.currentTarget)
-                     }
+                     onClick={handleOpenProfileMenu}
                      sx={{
                         maxWidth: {
                            xs: 160,
@@ -402,7 +438,7 @@ export function Header() {
          <Menu
             anchorEl={profileAnchorEl}
             open={isProfileMenuOpen}
-            onClose={() => setProfileAnchorEl(null)}
+            onClose={handleCloseProfileMenu}
          >
             <MenuItem onClick={handleNavigateProfile}>Профиль</MenuItem>
 
