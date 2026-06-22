@@ -1,34 +1,51 @@
 export function formatCoordinatesLabel(lat, lng) {
-   return `Координаты: ${lat}, ${lng}`;
+    return `Координаты: ${lat}, ${lng}`;
+}
+
+function normalizeText(value) {
+    return String(value ?? '').trim();
+}
+
+function getUniqueParts(parts) {
+    return [...new Set(parts.map(normalizeText).filter(Boolean))];
 }
 
 export function formatNominatimAddress(data) {
-   const address = data?.address;
+    const address = data?.address || {};
 
-   if (!address) {
-      return data?.display_name || 'Адрес не найден';
-   }
+    const country = normalizeText(address.country);
 
-   const city =
-      address.city ||
-      address.town ||
-      address.village ||
-      address.municipality ||
-      address.county;
+    const region = normalizeText(
+        address.city_district ||
+            address.state_district ||
+            address.county ||
+            address.state ||
+            address.region,
+    );
 
-   const region =
-      address.state ||
-      address.region ||
-      address.state_district ||
-      address.county;
+    const city = normalizeText(
+        address.city ||
+            address.town ||
+            address.village ||
+            address.municipality ||
+            address.county ||
+            address.state_district,
+    );
 
-   const country = address.country;
+    const fullAddress = normalizeText(data?.display_name);
 
-   const parts = [city, region, country].filter(Boolean);
+    const compactAddress = getUniqueParts([
+        city,
+        region,
+        address.state,
+        country,
+    ]).join(', ');
 
-   if (parts.length === 0) {
-      return data?.display_name || 'Адрес не найден';
-   }
-
-   return [...new Set(parts)].join(', ');
+    return {
+        country,
+        region,
+        city,
+        address: fullAddress || compactAddress || 'Адрес не найден',
+        label: compactAddress || fullAddress || 'Адрес не найден',
+    };
 }

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
-   mapCreatedLeadToUi,
-   mapCreateLeadDocumentsToApiDocuments,
-   mapCreateLeadFormToApi,
+    mapCreatedLeadToUi,
+    mapCreateLeadDocumentsToApiDocuments,
+    mapCreateLeadFormToApi,
 } from '../model/create-lead.adapter';
 import { CreateLeadActions } from './create-lead-modal/CreateLeadActions';
 import { CreateLeadStepTabs } from './create-lead-modal/CreateLeadStepTabs';
@@ -22,335 +22,355 @@ import { uploadLeadDocument } from '../../../widgets/customer-leads/api/lead-doc
 
 const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Документы', 'Проверка'];
 
-const initialForm = {
-   // customer: 'AKE Plast (АКЕ Пласт) ТОО',
-   // contactName: 'Suleimenov Syrym',
-   // phone: '+7 777 777 77 77',
+function getTodayDateInputValue() {
+    const date = new Date();
 
-   fromLocation: '',
-   fromLat: '',
-   fromLng: '',
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
 
-   toLocation: '',
-   toLat: '',
-   toLng: '',
+    return `${year}-${month}-${day}`;
+}
 
-   loadingDate: '2026-06-10',
+function createInitialLocation() {
+    return {
+        country: '',
+        region: '',
+        city: '',
+        address: '',
+    };
+}
 
-   cargoType: 'Не указан',
-   weightKg: '1200',
-   cargoLengthCm: '50',
-   cargoWidthCm: '50',
-   cargoHeightCm: '70',
-   price: '250000',
-   currency: 'KZT',
-   vat: true,
-   comment: '',
+function createInitialForm() {
+    return {
+        fromLocation: '',
+        fromLat: '',
+        fromLng: '',
+        from_location: createInitialLocation(),
 
-   forwarderId: '',
-   forwarder: null,
+        toLocation: '',
+        toLat: '',
+        toLng: '',
+        to_location: createInitialLocation(),
 
-   documents: [],
-};
+        loadingDate: getTodayDateInputValue(),
+
+        cargoType: 'Не указан',
+        weightKg: '1200',
+        cargoLengthCm: '50',
+        cargoWidthCm: '50',
+        cargoHeightCm: '70',
+        price: '250000',
+        currency: 'KZT',
+        vat: true,
+        comment: '',
+
+        forwarderId: '',
+        forwarder: null,
+
+        documents: [],
+    };
+}
 
 const stepFields = [
-   ['fromLocation', 'toLocation', 'loadingDate'],
-   [
-      'cargoType',
-      'weightKg',
-      'cargoLengthCm',
-      'cargoWidthCm',
-      'cargoHeightCm',
-      'price',
-      'currency',
-   ],
-   [],
-   [],
+    ['fromLocation', 'toLocation', 'loadingDate'],
+    [
+        'cargoType',
+        'weightKg',
+        'cargoLengthCm',
+        'cargoWidthCm',
+        'cargoHeightCm',
+        'price',
+        'currency',
+    ],
+    [],
+    [],
 ];
 
 function getCreatedLeadId(response) {
-   return (
-      response?.data?.id ||
-      response?.data?.lead_id ||
-      response?.id ||
-      response?.lead_id ||
-      response?.result?.id ||
-      null
-   );
+    return (
+        response?.data?.id ||
+        response?.data?.lead_id ||
+        response?.id ||
+        response?.lead_id ||
+        response?.result?.id ||
+        null
+    );
 }
 
 async function uploadCreateLeadDocuments(leadId, documents = []) {
-   if (!leadId || !documents.length) {
-      return;
-   }
+    if (!leadId || !documents.length) {
+        return;
+    }
 
-   const documentsWithFiles = documents.filter((document) => document.file);
+    const documentsWithFiles = documents.filter((document) => document.file);
 
-   for (const document of documentsWithFiles) {
-      await uploadLeadDocument(leadId, {
-         file: document.file,
-         context: document.context || document.name || '',
-      });
-   }
+    for (const document of documentsWithFiles) {
+        await uploadLeadDocument(leadId, {
+            file: document.file,
+            context: document.context || document.name || '',
+        });
+    }
 }
 
 export function CreateLeadModal({ open, onClose }) {
-   const [activeStep, setActiveStep] = useState(0);
-   const [maxAvailableStep, setMaxAvailableStep] = useState(0);
-   const {
-      control,
-      handleSubmit,
-      reset,
-      trigger,
-      setValue,
-      formState: { errors },
-   } = useForm({
-      defaultValues: initialForm,
-      mode: 'onChange',
-      reValidateMode: 'onChange',
-   });
-   const { prependLead } = useLeadsContext();
+    const [activeStep, setActiveStep] = useState(0);
+    const [maxAvailableStep, setMaxAvailableStep] = useState(0);
+    const {
+        control,
+        handleSubmit,
+        reset,
+        trigger,
+        setValue,
+        formState: { errors },
+    } = useForm({
+        defaultValues: createInitialForm(),
+        mode: 'onChange',
+        reValidateMode: 'onChange',
+    });
+    const { prependLead } = useLeadsContext();
 
-   const [isSubmitting, setIsSubmitting] = useState(false);
-   const [resultModal, setResultModal] = useState({
-      open: false,
-      type: null,
-      title: '',
-      message: '',
-   });
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [resultModal, setResultModal] = useState({
+        open: false,
+        type: null,
+        title: '',
+        message: '',
+    });
 
-   const formValues = useWatch({ control });
+    const formValues = useWatch({ control });
 
-   const isFirstStep = activeStep === 0;
-   const isLastStep = activeStep === steps.length - 1;
+    const isFirstStep = activeStep === 0;
+    const isLastStep = activeStep === steps.length - 1;
 
-   const currentStepFields = stepFields[activeStep] || [];
+    const currentStepFields = stepFields[activeStep] || [];
 
-   const hasCurrentStepErrors = currentStepFields.some((fieldName) =>
-      Boolean(errors[fieldName]),
-   );
+    const hasCurrentStepErrors = currentStepFields.some((fieldName) =>
+        Boolean(errors[fieldName]),
+    );
 
-   function handleBack() {
-      setActiveStep((prevStep) => prevStep - 1);
-   }
+    function handleBack() {
+        setActiveStep((prevStep) => prevStep - 1);
+    }
 
-   async function handleNext() {
-      const fields = stepFields[activeStep] || [];
+    async function handleNext() {
+        const fields = stepFields[activeStep] || [];
 
-      const isStepValid = await trigger(fields);
+        const isStepValid = await trigger(fields);
 
-      if (!isStepValid) {
-         return;
-      }
+        if (!isStepValid) {
+            return;
+        }
 
-      const nextStep = activeStep + 1;
+        const nextStep = activeStep + 1;
 
-      setMaxAvailableStep((prevStep) => Math.max(prevStep, nextStep));
-      setActiveStep(nextStep);
-   }
+        setMaxAvailableStep((prevStep) => Math.max(prevStep, nextStep));
+        setActiveStep(nextStep);
+    }
 
-   async function handleStepClick(targetStep) {
-      if (targetStep === activeStep) {
-         return;
-      }
+    async function handleStepClick(targetStep) {
+        if (targetStep === activeStep) {
+            return;
+        }
 
-      if (targetStep < activeStep) {
-         setActiveStep(targetStep);
-         return;
-      }
+        if (targetStep < activeStep) {
+            setActiveStep(targetStep);
+            return;
+        }
 
-      if (targetStep > maxAvailableStep) {
-         return;
-      }
+        if (targetStep > maxAvailableStep) {
+            return;
+        }
 
-      const fields = stepFields[activeStep] || [];
+        const fields = stepFields[activeStep] || [];
 
-      const isStepValid = await trigger(fields);
+        const isStepValid = await trigger(fields);
 
-      if (!isStepValid) {
-         return;
-      }
+        if (!isStepValid) {
+            return;
+        }
 
-      setActiveStep(targetStep);
-   }
+        setActiveStep(targetStep);
+    }
 
-   async function handleSubmitClick() {
-      if (!isLastStep) {
-         return;
-      }
+    async function handleSubmitClick() {
+        if (!isLastStep) {
+            return;
+        }
 
-      await handleSubmit(handleCreateLead)();
-   }
+        await handleSubmit(handleCreateLead)();
+    }
 
-   function handleClose() {
-      setActiveStep(0);
-      setMaxAvailableStep(0);
-      reset(initialForm);
-      onClose();
-   }
+    function handleClose() {
+        setActiveStep(0);
+        setMaxAvailableStep(0);
+        reset(createInitialForm());
+        onClose();
+    }
 
-   async function handleCreateLead(data) {
-      try {
-         setIsSubmitting(true);
+    async function handleCreateLead(data) {
+        try {
+            setIsSubmitting(true);
 
-         const documents = mapCreateLeadDocumentsToApiDocuments(data);
-         const payload = mapCreateLeadFormToApi(data);
-         const response = await createLead(payload);
+            const documents = mapCreateLeadDocumentsToApiDocuments(data);
+            const payload = mapCreateLeadFormToApi(data);
+            console.log('create lead payload:', payload);
+            const response = await createLead(payload);
 
-         const createdLeadId = getCreatedLeadId(response);
+            const createdLeadId = getCreatedLeadId(response);
 
-         let documentsUploadFailed = false;
+            let documentsUploadFailed = false;
 
-         if (documents.length > 0 && createdLeadId) {
-            try {
-               await uploadCreateLeadDocuments(createdLeadId, documents);
-            } catch (documentError) {
-               documentsUploadFailed = true;
-               console.error(
-                  'Create lead documents upload failed:',
-                  documentError,
-               );
+            if (documents.length > 0 && createdLeadId) {
+                try {
+                    await uploadCreateLeadDocuments(createdLeadId, documents);
+                } catch (documentError) {
+                    documentsUploadFailed = true;
+                    console.error(
+                        'Create lead documents upload failed:',
+                        documentError,
+                    );
+                }
             }
-         }
 
-         const createdLead = mapCreatedLeadToUi(data, response);
+            const createdLead = mapCreatedLeadToUi(data, response);
 
-         prependLead(createdLead);
-         handleClose();
+            prependLead(createdLead);
+            handleClose();
 
-         setResultModal({
-            open: true,
-            type: documentsUploadFailed ? 'warning' : 'success',
-            title: 'Перевозка создана',
-            message: documentsUploadFailed
-               ? 'Лид создан, но часть документов не загрузилась'
-               : `Лид успешно создан${createdLeadId ? `: ${createdLeadId}` : ''}`,
-         });
-      } catch (error) {
-         setResultModal({
-            open: true,
-            type: 'error',
-            title: 'Ошибка создания',
-            message:
-               error.response?.data?.message ||
-               error.message ||
-               'Не удалось создать перевозку',
-         });
-      } finally {
-         setIsSubmitting(false);
-      }
-   }
+            setResultModal({
+                open: true,
+                type: documentsUploadFailed ? 'warning' : 'success',
+                title: 'Перевозка создана',
+                message: documentsUploadFailed
+                    ? 'Лид создан, но часть документов не загрузилась'
+                    : `Лид успешно создан${createdLeadId ? `: ${createdLeadId}` : ''}`,
+            });
+        } catch (error) {
+            setResultModal({
+                open: true,
+                type: 'error',
+                title: 'Ошибка создания',
+                message:
+                    error.response?.data?.message ||
+                    error.message ||
+                    'Не удалось создать перевозку',
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
 
-   function renderStepContent() {
-      if (activeStep === 0) {
-         return (
-            <RouteStep
-               control={control}
-               errors={errors}
-               form={formValues}
-               setValue={setValue}
+    function renderStepContent() {
+        if (activeStep === 0) {
+            return (
+                <RouteStep
+                    control={control}
+                    errors={errors}
+                    form={formValues}
+                    setValue={setValue}
+                />
+            );
+        }
+
+        if (activeStep === 1) {
+            return <CargoStep control={control} errors={errors} />;
+        }
+
+        if (activeStep === 2) {
+            return (
+                <ForwarderStep
+                    control={control}
+                    errors={errors}
+                    setValue={setValue}
+                />
+            );
+        }
+
+        if (activeStep === 3) {
+            return <DocumentsStep form={formValues} setValue={setValue} />;
+        }
+
+        return <ConfirmStep form={formValues} />;
+    }
+
+    function hasStepErrors(stepIndex) {
+        const fields = stepFields[stepIndex] || [];
+
+        return fields.some((fieldName) => Boolean(errors[fieldName]));
+    }
+
+    return (
+        <>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                fullWidth
+                maxWidth='md'
+                slotProps={{
+                    paper: {
+                        sx: {
+                            borderRadius: 4,
+                        },
+                    },
+                }}
+            >
+                <Box component='div'>
+                    <CreateLeadHeader
+                        activeStep={activeStep}
+                        stepsCount={steps.length}
+                    />
+
+                    <DialogContent sx={{ px: 3 }}>
+                        <CreateLeadStepTabs
+                            steps={steps}
+                            activeStep={activeStep}
+                            maxAvailableStep={maxAvailableStep}
+                            hasStepErrors={hasStepErrors}
+                            onStepClick={handleStepClick}
+                        />
+
+                        <Box
+                            sx={{
+                                minHeight: 360,
+                            }}
+                        >
+                            {renderStepContent()}
+                        </Box>
+                    </DialogContent>
+
+                    <CreateLeadActions
+                        isFirstStep={isFirstStep}
+                        isLastStep={isLastStep}
+                        hasCurrentStepErrors={hasCurrentStepErrors}
+                        isSubmitting={isSubmitting}
+                        onClose={handleClose}
+                        onBack={handleBack}
+                        onNext={handleNext}
+                        onSubmit={handleSubmitClick}
+                    />
+                </Box>
+            </Dialog>
+
+            <CreateLeadResultModal
+                open={resultModal.open}
+                type={resultModal.type}
+                title={resultModal.title}
+                message={resultModal.message}
+                onClose={() =>
+                    setResultModal({
+                        open: false,
+                        type: null,
+                        title: '',
+                        message: '',
+                    })
+                }
             />
-         );
-      }
-
-      if (activeStep === 1) {
-         return <CargoStep control={control} errors={errors} />;
-      }
-
-      if (activeStep === 2) {
-         return (
-            <ForwarderStep
-               control={control}
-               errors={errors}
-               setValue={setValue}
-            />
-         );
-      }
-
-      if (activeStep === 3) {
-         return <DocumentsStep form={formValues} setValue={setValue} />;
-      }
-
-      return <ConfirmStep form={formValues} />;
-   }
-
-   function hasStepErrors(stepIndex) {
-      const fields = stepFields[stepIndex] || [];
-
-      return fields.some((fieldName) => Boolean(errors[fieldName]));
-   }
-
-   return (
-      <>
-         <Dialog
-            open={open}
-            onClose={handleClose}
-            fullWidth
-            maxWidth='md'
-            slotProps={{
-               paper: {
-                  sx: {
-                     borderRadius: 4,
-                  },
-               },
-            }}
-         >
-            <Box component='div'>
-               <CreateLeadHeader
-                  activeStep={activeStep}
-                  stepsCount={steps.length}
-               />
-
-               <DialogContent sx={{ px: 3 }}>
-                  <CreateLeadStepTabs
-                     steps={steps}
-                     activeStep={activeStep}
-                     maxAvailableStep={maxAvailableStep}
-                     hasStepErrors={hasStepErrors}
-                     onStepClick={handleStepClick}
-                  />
-
-                  <Box
-                     sx={{
-                        minHeight: 360,
-                     }}
-                  >
-                     {renderStepContent()}
-                  </Box>
-               </DialogContent>
-
-               <CreateLeadActions
-                  isFirstStep={isFirstStep}
-                  isLastStep={isLastStep}
-                  hasCurrentStepErrors={hasCurrentStepErrors}
-                  isSubmitting={isSubmitting}
-                  onClose={handleClose}
-                  onBack={handleBack}
-                  onNext={handleNext}
-                  onSubmit={handleSubmitClick}
-               />
-            </Box>
-         </Dialog>
-
-         <CreateLeadResultModal
-            open={resultModal.open}
-            type={resultModal.type}
-            title={resultModal.title}
-            message={resultModal.message}
-            onClose={() =>
-               setResultModal({
-                  open: false,
-                  type: null,
-                  title: '',
-                  message: '',
-               })
-            }
-         />
-      </>
-   );
+        </>
+    );
 }
 
 CreateLeadModal.propTypes = {
-   open: PropTypes.bool.isRequired,
-   onClose: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
 };
