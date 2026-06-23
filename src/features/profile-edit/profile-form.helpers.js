@@ -10,6 +10,9 @@ export const initialProfileForm = {
     personEmail: '',
     personIin: '',
 
+    documentNumber: '',
+    issueCountry: '',
+
     currentPassword: '',
     newPassword: '',
     newPasswordConfirm: '',
@@ -47,6 +50,9 @@ export function mapProfileFromApi(profile) {
         personEmail: profile?.personEmail || '',
         personIin: profile?.personIin || '',
 
+        documentNumber: profile?.document_number || profile?.documentNumber ||  profile?.personDocumentNumber || '',
+        issueCountry: profile?.issue_country || profile?.issueCountry || profile?.personIssueCountry || '',
+
         currentPassword: '',
         newPassword: '',
         newPasswordConfirm: '',
@@ -61,6 +67,8 @@ export function mapProfileFormToApi(form) {
     addIfNotEmpty(payload, 'bankName', form.bankName);
     addIfNotEmpty(payload, 'personFio', form.personFio);
     addIfNotEmpty(payload, 'personPhone', form.personPhone);
+    addIfNotEmpty(payload, 'document_number', form.documentNumber);
+    addIfNotEmpty(payload, 'issue_country', form.issueCountry);
 
     const bin = onlyDigits(form.bin);
     const personIin = onlyDigits(form.personIin);
@@ -118,6 +126,20 @@ export function mapProfileFormToChangedApi(form, initialForm) {
         }
     });
 
+    const nextDocumentNumber = normalizeProfileValue(form.documentNumber);
+    const prevDocumentNumber = normalizeProfileValue(initialForm?.documentNumber);
+
+    if (nextDocumentNumber && nextDocumentNumber !== prevDocumentNumber) {
+        payload.personDocumentNumber = nextDocumentNumber;
+    }
+
+    const nextIssueCountry = normalizeProfileValue(form.issueCountry);
+    const prevIssueCountry = normalizeProfileValue(initialForm?.issueCountry);
+
+    if (nextIssueCountry && nextIssueCountry !== prevIssueCountry) {
+        payload.personIssueCountry = nextIssueCountry;
+    }
+
     const nextBin = normalizeDigitsValue(form.bin);
     const prevBin = normalizeDigitsValue(initialForm?.bin);
 
@@ -156,6 +178,8 @@ export function validateProfileForm(form) {
     const bankName = normalizeText(form.bankName);
     const personEmail = normalizeText(form.personEmail);
     const personIin = onlyDigits(form.personIin);
+    const documentNumber = normalizeText(form.documentNumber);
+    const issueCountry = normalizeText(form.issueCountry);
 
     const currentPassword = String(form.currentPassword ?? '').trim();
     const newPassword = String(form.newPassword ?? '').trim();
@@ -197,6 +221,14 @@ export function validateProfileForm(form) {
 
     if (personIin && !/^\d{12}$/.test(personIin)) {
         errors.personIin = 'ИИН должен содержать 12 цифр';
+    }
+
+    if (documentNumber && documentNumber.length > 50) {
+        errors.documentNumber = 'Не больше 50 символов';
+    }
+
+    if (issueCountry && issueCountry.length > 100) {
+        errors.issueCountry = 'Не больше 100 символов';
     }
 
     if (wantsPasswordChange) {

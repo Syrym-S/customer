@@ -335,6 +335,30 @@ export function ProfilePage() {
                         />
                     </Stack>
 
+                    <Stack spacing={2}>
+                        <Typography fontWeight={600}>Документ</Typography>
+
+                        <TextField
+                            name='documentNumber'
+                            label='Номер документа'
+                            value={form.documentNumber}
+                            onChange={handleChange}
+                            error={Boolean(errors.documentNumber)}
+                            helperText={errors.documentNumber}
+                            fullWidth
+                        />
+
+                        <TextField
+                            name='issueCountry'
+                            label='Страна выдачи'
+                            value={form.issueCountry}
+                            onChange={handleChange}
+                            error={Boolean(errors.issueCountry)}
+                            helperText={errors.issueCountry}
+                            fullWidth
+                        />
+                    </Stack>
+
                     <Box>
                         <Button
                             type='submit'

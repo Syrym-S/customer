@@ -4,6 +4,7 @@ import { AppLayout } from '../widgets/app-layout/AppLayout';
 import { CustomerPage } from '../pages/customer/CustomerPage';
 import { ProfilePage } from '../pages/profile/ProfilePage';
 import { TenderPage } from '../pages/tender/TenderPage';
+import { FactoringsPage } from '../pages/factorings/FactoringsPage';
 
 export const AppRouter = () => {
    const routes = useRoutes([
@@ -26,6 +27,10 @@ export const AppRouter = () => {
             {
                path: 'customer/tenders',
                element: <TenderPage />,
+            },
+             {
+               path: 'customer/factorings',
+               element: <FactoringsPage />,
             },
          ],
       },
