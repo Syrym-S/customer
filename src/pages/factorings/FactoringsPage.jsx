@@ -23,7 +23,7 @@ import {
     createCustomerFactoring,
     fetchCustomerFactoringByIndex,
     fetchCustomerFactorings,
-} from './api/factorings.api';
+} from '../../widgets/customer-factorings/api/factorings.api';
 import {
     formatDate,
     formatMoney,
@@ -33,9 +33,9 @@ import {
     getForwarderName,
     getVerificationColor,
     getVerificationLabel,
-} from './helpers/factorings.helpers';
-import { FactoringDetailsDialog } from './components/FactoringDetailsDialog';
-import { CreateFactoringModal } from './components/CreateFactoringModal';
+} from '../../widgets/customer-factorings/model/factorings.helpers';
+import { FactoringDetailsModal } from '../../widgets/customer-factorings/ui/FactoringDetailsModal';
+import { CreateFactoringModal } from '../../widgets/customer-factorings/ui/CreateFactoringModal';
 
 const PER_PAGE = 10;
 
@@ -259,7 +259,6 @@ export function FactoringsPage() {
                                         <TableRow>
                                             <TableCell>№</TableCell>
                                             <TableCell>Дата</TableCell>
-                                            <TableCell>Статус</TableCell>
                                             <TableCell>Экспедитор</TableCell>
                                             <TableCell>
                                                 Дебиторская сумма
@@ -269,6 +268,9 @@ export function FactoringsPage() {
                                             </TableCell>
                                             <TableCell>Ставка</TableCell>
                                             <TableCell>Подтверждение</TableCell>
+                                            <TableCell align='right'>
+                                                Статус
+                                            </TableCell>
                                             <TableCell align='right'>
                                                 Действия
                                             </TableCell>
@@ -297,6 +299,14 @@ export function FactoringsPage() {
                                                 <TableRow
                                                     key={factoring.index}
                                                     hover
+                                                    onClick={() =>
+                                                        handleOpenDetails(
+                                                            factoring,
+                                                        )
+                                                    }
+                                                    sx={{
+                                                        cursor: 'pointer',
+                                                    }}
                                                 >
                                                     <TableCell>
                                                         {factoring.index}
@@ -306,18 +316,6 @@ export function FactoringsPage() {
                                                         {formatDate(
                                                             factoring.created_at,
                                                         )}
-                                                    </TableCell>
-
-                                                    <TableCell>
-                                                        <Chip
-                                                            size='small'
-                                                            label={getFactoringStatusLabel(
-                                                                factoring.status,
-                                                            )}
-                                                            color={getFactoringStatusColor(
-                                                                factoring.status,
-                                                            )}
-                                                        />
                                                     </TableCell>
 
                                                     <TableCell>
@@ -376,14 +374,29 @@ export function FactoringsPage() {
                                                     </TableCell>
 
                                                     <TableCell align='right'>
+                                                        <Chip
+                                                            size='small'
+                                                            label={getFactoringStatusLabel(
+                                                                factoring.status,
+                                                            )}
+                                                            color={getFactoringStatusColor(
+                                                                factoring.status,
+                                                            )}
+                                                        />
+                                                    </TableCell>
+
+                                                    <TableCell align='right'>
                                                         <Button
                                                             size='small'
                                                             variant='outlined'
-                                                            onClick={() =>
+                                                            onClick={(
+                                                                event,
+                                                            ) => {
+                                                                event.stopPropagation();
                                                                 handleOpenDetails(
                                                                     factoring,
-                                                                )
-                                                            }
+                                                                );
+                                                            }}
                                                         >
                                                             Подробнее
                                                         </Button>
@@ -416,7 +429,7 @@ export function FactoringsPage() {
                 </Paper>
             </Stack>
 
-            <FactoringDetailsDialog
+            <FactoringDetailsModal
                 open={isDetailsOpen}
                 factoring={selectedFactoring}
                 loading={isDetailsLoading}

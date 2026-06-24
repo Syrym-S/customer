@@ -69,6 +69,7 @@ export function Header() {
    const isProfileMenuOpen = Boolean(profileAnchorEl);
    const isCustomerPage = location.pathname === '/customer';
    const isTenderPage = location.pathname === '/customer/tenders';
+   const isFactoringsPage = location.pathname === '/customer/factorings';
    const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
 
    function handleOpenNotifications(event) {
@@ -313,6 +314,29 @@ export function Header() {
                                  ? 'primary.main'
                                  : 'text.primary',
                               fontWeight: isTenderPage ? 600 : 400,
+                           },
+                        }}
+                     />
+                  </ListItemButton>
+                  <ListItemButton
+                     selected={isFactoringsPage}
+                     onClick={() => {
+                        if (isFactoringsPage) {
+                           handleCloseBurger();
+                           return;
+                        }
+
+                        handleNavigate('/customer/factorings');
+                     }}
+                  >
+                     <ListItemText
+                        primary='Factorings'
+                        primaryTypographyProps={{
+                           sx: {
+                              color: isFactoringsPage
+                                 ? 'primary.main'
+                                 : 'text.primary',
+                              fontWeight: isFactoringsPage ? 600 : 400,
                            },
                         }}
                      />

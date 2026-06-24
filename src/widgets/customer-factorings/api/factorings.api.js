@@ -35,3 +35,19 @@ export async function acceptCustomerFactoring(factoringIndex) {
 
     return response.data;
 }
+
+export async function searchFinishedCustomerLeadsApi({
+    q = '',
+    page = 1,
+    perPage = 10,
+} = {}) {
+    const response = await apiClient.get('/customer/v1/leads/history/search', {
+        params: {
+            q,
+            page,
+            per_page: perPage,
+        },
+    });
+
+    return response.data;
+}

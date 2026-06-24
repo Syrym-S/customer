@@ -20,8 +20,13 @@ import {
     initialCreateFactoringForm,
     mapCreateFactoringFormToApi,
     validateCreateFactoringForm,
-} from '../helpers/create-factoring.helpers';
-import { searchTenderLeadsApi } from '../../../widgets/customer-tenders/api/tender.api';
+} from '../model/create-factoring.helpers';
+import {
+    formatMoney,
+    isFinishedLead,
+    normalizeLeadsResponse,
+} from '../model/factorings.helpers';
+import { searchFinishedCustomerLeadsApi } from '../api/factorings.api';
 
 const currencies = ['KZT', 'USD', 'EUR', 'RUB'];
 
@@ -131,14 +136,17 @@ export function CreateFactoringModal({
                 setIsLeadsLoading(true);
                 setLeadsSearchError('');
 
-                const response = await searchTenderLeadsApi({
+                const response = await searchFinishedCustomerLeadsApi({
                     q: query,
                     page: 1,
                     perPage: 10,
                 });
 
+                const finishedLeads =
+                    normalizeLeadsResponse(response).filter(isFinishedLead);
+
                 if (!isCancelled) {
-                    setLeads(response.results || []);
+                    setLeads(finishedLeads);
                 }
             } catch (searchError) {
                 if (!isCancelled) {
@@ -199,7 +207,7 @@ export function CreateFactoringModal({
                             noOptionsText={
                                 leadInputValue.trim().length < 2
                                     ? 'Введите минимум 2 символа'
-                                    : 'Лиды не найдены'
+                                    : 'Завершённые лиды не найдены'
                             }
                             loadingText='Поиск лидов...'
                             onInputChange={(_, newInputValue, reason) => {

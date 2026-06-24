@@ -6,6 +6,30 @@ export function formatMoney(amount, currency = 'KZT') {
     return `${Number(amount).toLocaleString('ru-RU')} ${currency || 'KZT'}`;
 }
 
+export function normalizeLeadsResponse(response) {
+    if (Array.isArray(response)) {
+        return response;
+    }
+
+    if (Array.isArray(response?.data)) {
+        return response.data;
+    }
+
+    if (Array.isArray(response?.results)) {
+        return response.results;
+    }
+
+    if (Array.isArray(response?.items)) {
+        return response.items;
+    }
+
+    return [];
+}
+
+export function isFinishedLead(lead) {
+    return String(lead?.status || '').toLowerCase() === 'finished';
+}
+
 export function formatPercent(value) {
     if (value === null || value === undefined || value === '') {
         return 'Не указано';
@@ -19,10 +43,28 @@ export function formatDate(value) {
         return 'Не указано';
     }
 
-    const date = new Date(value);
+    let dateValue = value;
+
+    if (typeof value === 'object') {
+        dateValue =
+            value.date ||
+            value.datetime ||
+            value.value ||
+            value.created_at ||
+            '';
+
+        if (!dateValue) {
+            return 'Не указано';
+        }
+    }
+
+    const normalizedDateValue =
+        typeof dateValue === 'string' ? dateValue.replace(' ', 'T') : dateValue;
+
+    const date = new Date(normalizedDateValue);
 
     if (Number.isNaN(date.getTime())) {
-        return value;
+        return String(dateValue || 'Не указано');
     }
 
     return date.toLocaleString('ru-RU', {
