@@ -58,7 +58,6 @@ function hasPreviewUrl(document) {
 }
 
 function TenderDocumentPreview({ document }) {
-   console.log('preview document:', document);
    if (!document) {
       return null;
    }

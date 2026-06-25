@@ -13,7 +13,7 @@ export function FactoringParticipantsSection({ factoring }) {
         <DetailSection
             icon={<BusinessOutlinedIcon />}
             title='Участники'
-            subtitle='Заказчик и экспедитор по факторингу'
+            subtitle='Фактор и экспедитор по факторингу'
         >
             <Box
                 sx={{
@@ -35,7 +35,7 @@ export function FactoringParticipantsSection({ factoring }) {
                     }}
                 >
                     <Typography fontWeight={700} sx={{ mb: 1 }}>
-                        Заказчик
+                        Фактор
                     </Typography>
 
                     <Box
@@ -49,13 +49,23 @@ export function FactoringParticipantsSection({ factoring }) {
                         }}
                     >
                         <InfoBadge
-                            label='Название / ФИО'
-                            value={getCustomerName(factoring.customer)}
+                            label='Компания'
+                            value={factoring.factor?.company_name || '—'}
                         />
 
                         <InfoBadge
                             label='БИН'
-                            value={factoring.customer?.bin || '—'}
+                            value={factoring.factor?.bin || '—'}
+                        />
+
+                        <InfoBadge
+                            label='ФИО'
+                            value={factoring.factor?.fio || '—'}
+                        />
+
+                        <InfoBadge
+                            label='Телефон'
+                            value={factoring.factor?.phone || '—'}
                         />
                     </Box>
                 </Box>
@@ -85,12 +95,22 @@ export function FactoringParticipantsSection({ factoring }) {
                     >
                         <InfoBadge
                             label='Компания'
-                            value={getForwarderName(factoring.forwarder)}
+                            value={factoring.forwarder?.company_name || '—'}
                         />
 
                         <InfoBadge
                             label='БИН'
-                            value={factoring.forwarder?.company_bin || '—'}
+                            value={factoring.forwarder?.bin || '—'}
+                        />
+
+                        <InfoBadge
+                            label='ФИО'
+                            value={factoring.forwarder?.fio || '—'}
+                        />
+
+                        <InfoBadge
+                            label='Телефон'
+                            value={factoring.forwarder?.phone || '—'}
                         />
                     </Box>
                 </Box>

@@ -27,15 +27,13 @@ import {
 import {
     formatDate,
     formatMoney,
-    formatPercent,
     getFactoringStatusColor,
     getFactoringStatusLabel,
-    getForwarderName,
     getVerificationColor,
     getVerificationLabel,
 } from '../../widgets/customer-factorings/model/factorings.helpers';
 import { FactoringDetailsModal } from '../../widgets/customer-factorings/ui/FactoringDetailsModal';
-import { CreateFactoringModal } from '../../widgets/customer-factorings/ui/CreateFactoringModal';
+import { CreateFactoringModal } from '../../widgets/customer-factorings/ui/CreateFactoringModal/CreateFactoringModal';
 
 const PER_PAGE = 10;
 
@@ -259,6 +257,7 @@ export function FactoringsPage() {
                                         <TableRow>
                                             <TableCell>№</TableCell>
                                             <TableCell>Дата</TableCell>
+                                            <TableCell>Фактор</TableCell>
                                             <TableCell>Экспедитор</TableCell>
                                             <TableCell>
                                                 Дебиторская сумма
@@ -266,8 +265,7 @@ export function FactoringsPage() {
                                             <TableCell>
                                                 Кредитная сумма
                                             </TableCell>
-                                            <TableCell>Ставка</TableCell>
-                                            <TableCell>Подтверждение</TableCell>
+                                            <TableCell>Подтверждения</TableCell>
                                             <TableCell align='right'>
                                                 Статус
                                             </TableCell>
@@ -323,9 +321,34 @@ export function FactoringsPage() {
                                                             <Typography
                                                                 fontSize={14}
                                                             >
-                                                                {getForwarderName(
-                                                                    factoring.forwarder,
-                                                                )}
+                                                                {factoring
+                                                                    .factor
+                                                                    ?.company_name ||
+                                                                    '—'}
+                                                            </Typography>
+
+                                                            <Typography
+                                                                fontSize={12}
+                                                                color='text.secondary'
+                                                            >
+                                                                БИН:{' '}
+                                                                {factoring
+                                                                    .factor
+                                                                    ?.bin ||
+                                                                    '—'}
+                                                            </Typography>
+                                                        </Stack>
+                                                    </TableCell>
+
+                                                    <TableCell>
+                                                        <Stack spacing={0.5}>
+                                                            <Typography
+                                                                fontSize={14}
+                                                            >
+                                                                {factoring
+                                                                    .forwarder
+                                                                    ?.company_name ||
+                                                                    '—'}
                                                             </Typography>
 
                                                             <Typography
@@ -335,9 +358,25 @@ export function FactoringsPage() {
                                                                 БИН:{' '}
                                                                 {factoring
                                                                     .forwarder
-                                                                    ?.company_bin ||
+                                                                    ?.bin ||
                                                                     '—'}
                                                             </Typography>
+
+                                                            {factoring.forwarder
+                                                                ?.fio && (
+                                                                <Typography
+                                                                    fontSize={
+                                                                        12
+                                                                    }
+                                                                    color='text.secondary'
+                                                                >
+                                                                    {
+                                                                        factoring
+                                                                            .forwarder
+                                                                            .fio
+                                                                    }
+                                                                </Typography>
+                                                            )}
                                                         </Stack>
                                                     </TableCell>
 
@@ -356,21 +395,41 @@ export function FactoringsPage() {
                                                     </TableCell>
 
                                                     <TableCell>
-                                                        {formatPercent(
-                                                            factoring.proc_factor,
-                                                        )}
-                                                    </TableCell>
+                                                        <Stack
+                                                            spacing={0.75}
+                                                            alignItems='flex-start'
+                                                        >
+                                                            <Chip
+                                                                size='small'
+                                                                label={`Вы: ${getVerificationLabel(
+                                                                    factoring.verified_customer,
+                                                                )}`}
+                                                                color={getVerificationColor(
+                                                                    factoring.verified_customer,
+                                                                )}
+                                                                sx={{
+                                                                    borderRadius: 999,
+                                                                }}
+                                                            />
 
-                                                    <TableCell>
-                                                        <Chip
-                                                            size='small'
-                                                            label={getVerificationLabel(
-                                                                factoring.verified_customer,
-                                                            )}
-                                                            color={getVerificationColor(
-                                                                factoring.verified_customer,
-                                                            )}
-                                                        />
+                                                            <Chip
+                                                                size='small'
+                                                                label={`Экспедитор: ${getVerificationLabel(
+                                                                    factoring.verified_forwarder,
+                                                                )}`}
+                                                                color={getVerificationColor(
+                                                                    factoring.verified_forwarder,
+                                                                )}
+                                                                variant={
+                                                                    factoring.verified_forwarder
+                                                                        ? 'filled'
+                                                                        : 'outlined'
+                                                                }
+                                                                sx={{
+                                                                    borderRadius: 999,
+                                                                }}
+                                                            />
+                                                        </Stack>
                                                     </TableCell>
 
                                                     <TableCell align='right'>
@@ -382,6 +441,9 @@ export function FactoringsPage() {
                                                             color={getFactoringStatusColor(
                                                                 factoring.status,
                                                             )}
+                                                            sx={{
+                                                                borderRadius: 999,
+                                                            }}
                                                         />
                                                     </TableCell>
 

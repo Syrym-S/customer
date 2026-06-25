@@ -245,8 +245,6 @@ export function CreateTenderModal({ open, onClose }) {
 
             const createdTender = await createTender(payload);
 
-            console.log('created tender:', createdTender);
-
             if (!isPublicTender) {
                 await Promise.all(
                     selectedForwarders.map((forwarder) =>

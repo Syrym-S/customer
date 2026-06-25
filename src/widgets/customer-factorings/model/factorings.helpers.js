@@ -78,11 +78,11 @@ export function formatDate(value) {
 
 export function getFactoringStatusLabel(status) {
     const labels = {
-        new: 'Новая',
-        pending: 'В обработке',
-        approved: 'Одобрена',
-        rejected: 'Отклонена',
-        completed: 'Завершена',
+        new: 'Новый',
+        verified_participant: 'Один участник подтвердил',
+        await_paid: 'Ожидает оплаты',
+        finished: 'Завершён',
+        cancelled: 'Отменён',
     };
 
     return labels[status] || status || 'Не указано';
@@ -91,10 +91,10 @@ export function getFactoringStatusLabel(status) {
 export function getFactoringStatusColor(status) {
     const colors = {
         new: 'info',
-        pending: 'warning',
-        approved: 'success',
-        rejected: 'error',
-        completed: 'success',
+        verified_participant: 'warning',
+        await_paid: 'primary',
+        finished: 'success',
+        cancelled: 'error',
     };
 
     return colors[status] || 'default';

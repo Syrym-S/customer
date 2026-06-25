@@ -51,3 +51,30 @@ export async function searchFinishedCustomerLeadsApi({
 
     return response.data;
 }
+
+export async function searchFactorsApi({
+    q = '',
+    page = 1,
+    perPage = 10,
+} = {}) {
+    const response = await apiClient.get('/customer/v1/factors/search', {
+        params: {
+            q,
+            page,
+            per_page: perPage,
+        },
+    });
+
+    return response.data;
+}
+
+export async function fetchFactorsApi({ page = 1, perPage = 10 } = {}) {
+    const response = await apiClient.get('/customer/v1/factors', {
+        params: {
+            page,
+            per_page: perPage,
+        },
+    });
+
+    return response.data;
+}
