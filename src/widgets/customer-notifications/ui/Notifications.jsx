@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     Alert,
     Badge,
@@ -12,22 +12,40 @@ import {
     Typography,
 } from '@mui/material';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import { formatNotificationDate, getNotificationCreatedAt, getNotificationDescription, getNotificationId, getNotificationTitle, isNotificationUnread, normalizeNotificationDetailsResponse, normalizeNotificationsResponse } from '../model/notifications.helpers';
-import { fetchCustomerNotificationByIdApi, fetchCustomerNotificationsApi } from '../api/notifications.api';
+import {
+    formatNotificationDate,
+    getNotificationCreatedAt,
+    getNotificationDescription,
+    getNotificationId,
+    getNotificationTitle,
+    isNotificationUnread,
+    normalizeNotificationDetailsResponse,
+    normalizeNotificationsResponse,
+} from '../model/notifications.helpers';
+import {
+    fetchCustomerNotificationByIdApi,
+    fetchCustomerNotificationsApi,
+} from '../api/notifications.api';
 import { NotificationDetailsModal } from './NotificationDetailsModal';
+import {
+    isNotificationWsConfigured,
+    openNotificationWsConnection,
+} from '../lib/open-notification-ws-connection';
+import { publishNotificationDomainEvent } from '../../../shared/model/notification-domain-events';
 
 export function Notifications() {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const [notifications, setNotifications] = useState([]);
-    const [isNotificationsLoading, setIsNotificationsLoading] =
-        useState(false);
+    const [isNotificationsLoading, setIsNotificationsLoading] = useState(false);
     const [notificationsError, setNotificationsError] = useState('');
 
     const [selectedNotification, setSelectedNotification] = useState(null);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isDetailsLoading, setIsDetailsLoading] = useState(false);
     const [detailsError, setDetailsError] = useState('');
+
+    const notificationWsConnectionRef = useRef(null);
 
     const isMenuOpen = Boolean(anchorEl);
 
@@ -151,6 +169,79 @@ export function Notifications() {
 
         return () => {
             isCancelled = true;
+        };
+    }, []);
+
+    useEffect(() => {
+        notificationWsConnectionRef.current?.close();
+        notificationWsConnectionRef.current = null;
+
+        if (!isNotificationWsConfigured()) {
+            console.info(
+                'NotificationWS is not configured for this environment',
+            );
+            return;
+        }
+
+        const connection = openNotificationWsConnection({
+            onOpen: () => {
+                console.info('NotificationWS opened');
+            },
+
+            onClose: (event) => {
+                console.info('NotificationWS closed', event);
+            },
+
+            onError: (error) => {
+                console.error('NotificationWS error', error);
+            },
+
+            onAuthFailed: (payload) => {
+                console.error('NotificationWS auth failed', payload);
+            },
+
+            onNotification: (notification) => {
+                setNotifications((prevNotifications) => {
+                    const notificationId = getNotificationId(notification);
+
+                    if (
+                        notificationId &&
+                        prevNotifications.some(
+                            (item) =>
+                                getNotificationId(item) === notificationId,
+                        )
+                    ) {
+                        return prevNotifications.map((item) =>
+                            getNotificationId(item) === notificationId
+                                ? {
+                                      ...item,
+                                      ...notification,
+                                  }
+                                : item,
+                        );
+                    }
+
+                    return [
+                        {
+                            is_viewed: false,
+                            ...notification,
+                        },
+                        ...prevNotifications,
+                    ];
+                });
+
+                publishNotificationDomainEvent(notification);
+            },
+        });
+
+        notificationWsConnectionRef.current = connection;
+
+        return () => {
+            connection.close();
+
+            if (notificationWsConnectionRef.current === connection) {
+                notificationWsConnectionRef.current = null;
+            }
         };
     }, []);
 

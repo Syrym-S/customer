@@ -62,10 +62,6 @@ export function getNotificationCreatedAt(notification) {
     return notification?.created_at || '';
 }
 
-export function getNotificationType(notification) {
-    return notification?.type || notification?.queue || '';
-}
-
 export function getNotificationLink(notification) {
     return notification?.link || '';
 }

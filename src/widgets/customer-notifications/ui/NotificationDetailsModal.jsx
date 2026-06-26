@@ -2,7 +2,6 @@ import {
     Alert,
     Box,
     Button,
-    Chip,
     CircularProgress,
     Dialog,
     DialogActions,
@@ -10,7 +9,8 @@ import {
     DialogTitle,
     Typography,
 } from '@mui/material';
-import { formatNotificationDate, getNotificationCreatedAt, getNotificationDescription, getNotificationLink, getNotificationTitle, getNotificationType } from '../model/notifications.helpers';
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
+import { formatNotificationDate, getNotificationCreatedAt, getNotificationDescription, getNotificationLink, getNotificationTitle } from '../model/notifications.helpers';
 
 export function NotificationDetailsModal({
     open,
@@ -110,42 +110,43 @@ export function NotificationDetailsModal({
                             mt: 2,
                         }}
                     >
-                        {getNotificationType(notification) && (
-                            <Chip
-                                size='small'
-                                label={getNotificationType(notification)}
-                                sx={{
-                                    borderRadius: 999,
-                                }}
-                            />
-                        )}
-
-                        {notification.queue && (
-                            <Chip
-                                size='small'
-                                label={`Очередь: ${notification.queue}`}
-                                variant='outlined'
-                                sx={{
-                                    borderRadius: 999,
-                                }}
-                            />
-                        )}
                     </Box>
 
                     {getNotificationLink(notification) && (
-                        <Button
-                            variant='outlined'
-                            sx={{ mt: 2 }}
-                            onClick={() => {
-                                window.open(
-                                    getNotificationLink(notification),
-                                    '_blank',
-                                    'noopener,noreferrer',
-                                );
-                            }}
-                        >
-                            Открыть связанный объект
-                        </Button>
+                        <Box sx={{ mt: 2 }}>
+                            <Typography
+                                component='button'
+                                type='button'
+                                onClick={() => {
+                                    window.open(
+                                        getNotificationLink(notification),
+                                        '_blank',
+                                        'noopener,noreferrer',
+                                    );
+                                }}
+                                sx={{
+                                    p: 0,
+                                    border: 0,
+                                    background: 'none',
+                                    cursor: 'pointer',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: 0.5,
+                                    color: 'primary.main',
+                                    fontSize: 14,
+                                    fontWeight: 600,
+                                    fontFamily: 'inherit',
+                                    textDecoration: 'none',
+
+                                    '&:hover': {
+                                        textDecoration: 'underline',
+                                    },
+                                }}
+                            >
+                                Перейти
+                                <OpenInNewOutlinedIcon sx={{ fontSize: 16 }} />
+                            </Typography>
+                        </Box>
                     )}
                 </Box>
             )}

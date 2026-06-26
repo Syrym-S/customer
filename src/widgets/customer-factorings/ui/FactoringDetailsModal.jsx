@@ -13,6 +13,7 @@ import { FactoringFinanceSection } from './factorings-details/sections/Factoring
 import { FactoringParticipantsSection } from './factorings-details/sections/FactoringParticipantsSection';
 import { FactoringVerificationSection } from './factorings-details/sections/FactoringVerificationSection';
 import { FactoringDetailsActions } from './factorings-details/FactoringDetailsActions';
+import { FactoringPartiesRequisitesSection } from './factorings-details/sections/FactoringPartiesRequisitesSection';
 
 export function FactoringDetailsModal({
     open,
@@ -77,6 +78,10 @@ export function FactoringDetailsModal({
                         <FactoringParticipantsSection factoring={factoring} />
 
                         <FactoringVerificationSection factoring={factoring} />
+
+                        <FactoringPartiesRequisitesSection
+                            factoring={factoring}
+                        />
                     </Stack>
                 )}
             </DialogContent>
