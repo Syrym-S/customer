@@ -62,6 +62,7 @@ export function Header() {
    const isCustomerPage = location.pathname === '/customer';
    const isTenderPage = location.pathname === '/customer/tenders';
    const isFactoringsPage = location.pathname === '/customer/factorings';
+   const isForwardersPage = location.pathname === '/customer/forwarders';
    const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
 
    function handleNavigate(path) {
@@ -305,6 +306,29 @@ export function Header() {
                                  ? 'primary.main'
                                  : 'text.primary',
                               fontWeight: isFactoringsPage ? 600 : 400,
+                           },
+                        }}
+                     />
+                  </ListItemButton>
+                  <ListItemButton
+                     selected={isForwardersPage}
+                     onClick={() => {
+                        if (isForwardersPage) {
+                           handleCloseBurger();
+                           return;
+                        }
+
+                        handleNavigate('/customer/forwarders');
+                     }}
+                  >
+                     <ListItemText
+                        primary='Forwarders'
+                        primaryTypographyProps={{
+                           sx: {
+                              color: isForwardersPage
+                                 ? 'primary.main'
+                                 : 'text.primary',
+                              fontWeight: isForwardersPage ? 600 : 400,
                            },
                         }}
                      />

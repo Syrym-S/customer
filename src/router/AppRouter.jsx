@@ -5,6 +5,7 @@ import { CustomerPage } from '../pages/customer/CustomerPage';
 import { ProfilePage } from '../pages/profile/ProfilePage';
 import { TenderPage } from '../pages/tender/TenderPage';
 import { FactoringsPage } from '../pages/factorings/FactoringsPage';
+import { ForwardersPage } from '../pages/forwarders/ForwardersPage';
 
 export const AppRouter = () => {
    const routes = useRoutes([
@@ -31,6 +32,10 @@ export const AppRouter = () => {
              {
                path: 'customer/factorings',
                element: <FactoringsPage />,
+            },
+            {
+               path: 'customer/forwarders',
+               element: <ForwardersPage />,
             },
          ],
       },

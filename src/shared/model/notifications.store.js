@@ -1,11 +1,15 @@
 import { create } from 'zustand';
 
+export const REALTIME_NOTIFICATION_TOAST_OPEN_EVENT =
+   'realtime-notification-toast:open';
+
 function createNotificationId() {
    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 function logNotification(notification) {
    const logPayload = {
+      title: notification.title,
       message: notification.message,
       meta: notification.meta,
    };
@@ -20,18 +24,26 @@ function logNotification(notification) {
       return;
    }
 
-   console.log('[notification:success]', logPayload);
+   console.log(`[notification:${notification.type}]`, logPayload);
 }
 
 export const useNotificationsStore = create((set) => ({
    notifications: [],
 
-   addNotification: ({ type = 'success', message, meta = null }) => {
+   addNotification: ({
+      type = 'success',
+      title = '',
+      message,
+      meta = null,
+      autoCloseMs = 5000,
+   }) => {
       const notification = {
          id: createNotificationId(),
          type,
+         title,
          message,
          meta,
+         autoCloseMs,
          createdAt: Date.now(),
       };
 
@@ -78,5 +90,22 @@ export function notifySuccess(message, meta) {
       type: 'success',
       message,
       meta,
+   });
+}
+
+export function notifyRealtimeNotification(notification) {
+   if (!notification?.message && !notification?.theme) {
+      return null;
+   }
+
+   return useNotificationsStore.getState().addNotification({
+      type: 'info',
+      title: notification.theme || 'Новое уведомление',
+      message: notification.message || 'У вас новое уведомление',
+      autoCloseMs: 8000,
+      meta: {
+         source: 'realtime-notification',
+         notification,
+      },
    });
 }

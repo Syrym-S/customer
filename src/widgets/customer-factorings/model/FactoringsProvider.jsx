@@ -3,12 +3,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
     acceptCustomerFactoring,
-    createCustomerFactoring,
     fetchCustomerFactoringByIndex,
     fetchCustomerFactorings,
 } from '../api/factorings.api';
 
 import { FactoringsContext } from './FactoringsContext';
+import { fetchCustomerLeadById } from '../../customer-leads/api/leads.repository';
 
 const DEFAULT_PER_PAGE = 10;
 
@@ -27,15 +27,18 @@ export function FactoringsProvider({ children }) {
     const [isDetailsLoading, setIsDetailsLoading] = useState(false);
     const [detailsError, setDetailsError] = useState('');
 
-    const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const [isCreating, setIsCreating] = useState(false);
-    const [createError, setCreateError] = useState('');
-    const [createSuccess, setCreateSuccess] = useState('');
-
     const [isAccepting, setIsAccepting] = useState(false);
     const [acceptError, setAcceptError] = useState('');
 
     const pageCount = Math.max(1, Math.ceil(total / perPage));
+
+    function getFactoringLeadId(factoring) {
+        return factoring?.lead_id || factoring?.leadId || factoring?.lead?.id || '';
+    }
+
+    function unwrapLeadResponse(response) {
+        return response?.data || response?.result || response?.lead || response;
+    }
 
     const loadFactorings = useCallback(
         async (nextPage = page) => {
@@ -84,7 +87,26 @@ export function FactoringsProvider({ children }) {
                 factoring.index,
             );
 
-            setSelectedFactoring(details);
+            const leadId = getFactoringLeadId(details);
+
+            if (!leadId) {
+                setSelectedFactoring(details);
+                return;
+            }
+
+            try {
+                const leadResponse = await fetchCustomerLeadById(leadId);
+                const lead = unwrapLeadResponse(leadResponse);
+
+                setSelectedFactoring({
+                    ...details,
+                    lead,
+                });
+            } catch (leadError) {
+                console.error('[factoring lead load error]', leadError);
+
+                setSelectedFactoring(details);
+            }
         } catch (error) {
             setDetailsError(
                 error.response?.data?.message ||
@@ -104,48 +126,6 @@ export function FactoringsProvider({ children }) {
         setAcceptError('');
     }, []);
 
-    const openCreateModal = useCallback(() => {
-        setIsCreateOpen(true);
-        setCreateError('');
-        setCreateSuccess('');
-    }, []);
-
-    const closeCreateModal = useCallback(() => {
-        if (isCreating) {
-            return;
-        }
-
-        setIsCreateOpen(false);
-        setCreateError('');
-    }, [isCreating]);
-
-    const createFactoring = useCallback(
-        async (payload) => {
-            try {
-                setIsCreating(true);
-                setCreateError('');
-                setCreateSuccess('');
-
-                await createCustomerFactoring(payload);
-
-                setIsCreateOpen(false);
-                setCreateSuccess('Факторинг успешно создан');
-
-                await loadFactorings(1);
-            } catch (error) {
-                setCreateError(
-                    error.response?.data?.message ||
-                        error.response?.data?.error ||
-                        error.message ||
-                        'Не удалось создать факторинг',
-                );
-            } finally {
-                setIsCreating(false);
-            }
-        },
-        [loadFactorings],
-    );
-
     const acceptFactoring = useCallback(async () => {
         if (!selectedFactoring?.index && selectedFactoring?.index !== 0) {
             return;
@@ -161,7 +141,10 @@ export function FactoringsProvider({ children }) {
                 selectedFactoring.index,
             );
 
-            setSelectedFactoring(updatedFactoring);
+            setSelectedFactoring({
+                ...updatedFactoring,
+                lead: selectedFactoring.lead,
+            });
             await loadFactorings(page);
         } catch (error) {
             setAcceptError(
@@ -200,11 +183,6 @@ export function FactoringsProvider({ children }) {
             isDetailsLoading,
             detailsError,
 
-            isCreateOpen,
-            isCreating,
-            createError,
-            createSuccess,
-
             isAccepting,
             acceptError,
 
@@ -213,9 +191,6 @@ export function FactoringsProvider({ children }) {
             openFactoringDetails,
             closeFactoringDetails,
 
-            openCreateModal,
-            closeCreateModal,
-            createFactoring,
             acceptFactoring,
         }),
         [
@@ -230,18 +205,11 @@ export function FactoringsProvider({ children }) {
             isDetailsOpen,
             isDetailsLoading,
             detailsError,
-            isCreateOpen,
-            isCreating,
-            createError,
-            createSuccess,
             isAccepting,
             acceptError,
             loadFactorings,
             openFactoringDetails,
             closeFactoringDetails,
-            openCreateModal,
-            closeCreateModal,
-            createFactoring,
             acceptFactoring,
         ],
     );

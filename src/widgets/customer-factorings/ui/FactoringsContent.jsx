@@ -33,7 +33,6 @@ import {
 } from '../model/factorings.helpers';
 import { FactoringCardsList } from './FactoringCardsList';
 import { FactoringDetailsModal } from './FactoringDetailsModal';
-import { CreateFactoringModal } from './CreateFactoringModal/CreateFactoringModal';
 
 const FACTORINGS_VIEW_MODES = {
     TABLE: 'table',
@@ -56,9 +55,6 @@ export function FactoringsContent() {
         isDetailsLoading,
         detailsError,
 
-        isCreateOpen,
-        isCreating,
-        createError,
         createSuccess,
 
         isAccepting,
@@ -68,8 +64,6 @@ export function FactoringsContent() {
         closeFactoringDetails,
 
         openCreateModal,
-        closeCreateModal,
-        createFactoring,
         acceptFactoring,
     } = useFactoringsContext();
 
@@ -166,18 +160,10 @@ export function FactoringsContent() {
                                 <GridViewRoundedIcon fontSize='small' />
                             </ToggleButton>
                         </ToggleButtonGroup>
-
-                        <Button variant='contained' onClick={openCreateModal}>
-                            Создать факторинг
-                        </Button>
                     </Stack>
                 </Box>
 
                 {loadError && <Alert severity='error'>{loadError}</Alert>}
-
-                {createSuccess && (
-                    <Alert severity='success'>{createSuccess}</Alert>
-                )}
 
                 <Paper
                     sx={{
@@ -476,14 +462,6 @@ export function FactoringsContent() {
                 acceptError={acceptError}
                 onClose={closeFactoringDetails}
                 onAccept={acceptFactoring}
-            />
-
-            <CreateFactoringModal
-                open={isCreateOpen}
-                loading={isCreating}
-                error={createError}
-                onClose={closeCreateModal}
-                onSubmit={createFactoring}
             />
         </Container>
     );

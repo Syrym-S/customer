@@ -1,16 +1,54 @@
+import { useEffect } from 'react';
+
 import { Alert, Box, IconButton, Typography } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-import { useNotificationsStore } from '../model/notifications.store';
+import { REALTIME_NOTIFICATION_TOAST_OPEN_EVENT, useNotificationsStore } from '../model/notifications.store';
 
 const notificationTitleMap = {
    error: 'Ошибка',
    warning: 'Предупреждение',
    success: 'Успешно',
+   info: 'Уведомление',
 };
 
 export function NotificationsColumn() {
    const { notifications, removeNotification } = useNotificationsStore();
+
+   useEffect(() => {
+      const timeoutIds = notifications
+         .filter((notification) => notification.autoCloseMs > 0)
+         .map((notification) =>
+            window.setTimeout(() => {
+               removeNotification(notification.id);
+            }, notification.autoCloseMs),
+         );
+
+      return () => {
+         timeoutIds.forEach((timeoutId) => {
+            window.clearTimeout(timeoutId);
+         });
+      };
+   }, [notifications, removeNotification]);
+
+   function handleNotificationClick(notification) {
+      const realtimeNotification = notification.meta?.notification;
+
+      if (notification.meta?.source !== 'realtime-notification') {
+         return;
+      }
+
+      window.dispatchEvent(
+         new CustomEvent(REALTIME_NOTIFICATION_TOAST_OPEN_EVENT, {
+            detail: {
+               notification: realtimeNotification,
+            },
+         }),
+      );
+
+      removeNotification(notification.id);
+   }
+
 
    if (notifications.length === 0) {
       return null;
@@ -41,49 +79,61 @@ export function NotificationsColumn() {
             pointerEvents: 'none',
          }}
       >
-         {notifications.map((notification) => (
-            <Alert
-               key={notification.id}
-               severity={notification.type}
-               variant='filled'
-               action={
-                  <IconButton
-                     size='small'
-                     color='inherit'
-                     onClick={() => removeNotification(notification.id)}
-                  >
-                     <CloseRoundedIcon fontSize='small' />
-                  </IconButton>
-               }
-               sx={{
-                  width: '100%',
-                  borderRadius: 3,
-                  boxShadow: '0 12px 32px rgba(0, 0, 0, 0.22)',
-                  alignItems: 'flex-start',
-                  pointerEvents: 'auto',
-               }}
-            >
-               <Typography
-                  sx={{
-                     fontSize: 13,
-                     fontWeight: 700,
-                     lineHeight: 1.3,
-                     mb: 0.25,
-                  }}
-               >
-                  {notificationTitleMap[notification.type] || 'Сообщение'}
-               </Typography>
+         {notifications.map((notification) => {
+             const isClickable =
+               notification.meta?.source === 'realtime-notification';
 
-               <Typography
+            return (
+               <Alert
+                  key={notification.id}
+                  severity={notification.type}
+                  variant='filled'
+                  onClick={() => handleNotificationClick(notification)}
+                  action={
+                     <IconButton
+                        size='small'
+                        color='inherit'
+                        onClick={(event) => {
+                           event.stopPropagation();
+                           removeNotification(notification.id);
+                        }}
+                     >
+                        <CloseRoundedIcon fontSize='small' />
+                     </IconButton>
+                  }
                   sx={{
-                     fontSize: 13,
-                     lineHeight: 1.4,
+                     width: '100%',
+                     borderRadius: 3,
+                     boxShadow: '0 12px 32px rgba(0, 0, 0, 0.22)',
+                     alignItems: 'flex-start',
+                     pointerEvents: 'auto',
+                     cursor: isClickable ? 'pointer' : 'default',
                   }}
                >
-                  {notification.message}
-               </Typography>
-            </Alert>
-         ))}
+                  <Typography
+                     sx={{
+                        fontSize: 13,
+                        fontWeight: 700,
+                        lineHeight: 1.3,
+                        mb: 0.25,
+                     }}
+                  >
+                     {notification.title ||
+                        notificationTitleMap[notification.type] ||
+                        'Сообщение'}
+                  </Typography>
+
+                  <Typography
+                     sx={{
+                        fontSize: 13,
+                        lineHeight: 1.4,
+                     }}
+                  >
+                     {notification.message}
+                  </Typography>
+               </Alert>
+            );
+         })}
       </Box>
    );
 }
