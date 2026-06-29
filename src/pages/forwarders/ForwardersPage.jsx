@@ -9,6 +9,8 @@ import {
     Pagination,
     Stack,
     TextField,
+    ToggleButton,
+    ToggleButtonGroup,
     Typography,
 } from '@mui/material';
 
@@ -23,8 +25,16 @@ import {
     getForwarderId,
     normalizeForwardersListResponse,
 } from '../../widgets/customer-forwarders/model/forwarders.helpers';
+import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import { ForwardersTable } from '../../widgets/customer-forwarders/ui/ForwardersTable';
 import { ForwarderDetailsModal } from '../../widgets/customer-forwarders/ui/ForwardersDetailsModal';
+import { ForwardersCardsList } from '../../widgets/customer-forwarders/ui/ForwardersCardsList';
+
+const FORWARDERS_VIEW_MODES = {
+    TABLE: 'table',
+    CARDS: 'cards',
+};
 
 export function ForwardersPage() {
     const [forwarders, setForwarders] = useState([]);
@@ -42,8 +52,17 @@ export function ForwardersPage() {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isDetailsLoading, setIsDetailsLoading] = useState(false);
     const [detailsError, setDetailsError] = useState('');
+    const [viewMode, setViewMode] = useState(FORWARDERS_VIEW_MODES.CARDS);
 
     const isSearchMode = Boolean(debouncedSearch.trim());
+
+    function handleViewModeChange(_, nextViewMode) {
+        if (!nextViewMode) {
+            return;
+        }
+
+        setViewMode(nextViewMode);
+    }
 
     const pageCount = useMemo(
         () => Math.max(1, Math.ceil(total / FORWARDERS_PER_PAGE)),
@@ -153,15 +172,66 @@ export function ForwardersPage() {
     return (
         <Container maxWidth='lg' sx={{ py: 3 }}>
             <Stack spacing={3}>
-                <Box>
-                    <Typography variant='h6' fontWeight={600}>
-                        Экспедиторы
-                    </Typography>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        gap: 2,
+                        alignItems: {
+                            xs: 'flex-start',
+                            sm: 'center',
+                        },
+                        flexDirection: {
+                            xs: 'column',
+                            sm: 'row',
+                        },
+                    }}
+                >
+                    <Box>
+                        <Typography variant='h6' fontWeight={600}>
+                            Экспедиторы
+                        </Typography>
 
-                    <Typography color='text.secondary' fontSize={14}>
-                        Полный список экспедиторов с поиском по компании,
-                        представителю, БИН или телефону
-                    </Typography>
+                        <Typography color='text.secondary' fontSize={14}>
+                            Полный список экспедиторов с поиском по компании,
+                            представителю, БИН или телефону
+                        </Typography>
+                    </Box>
+
+                    <ToggleButtonGroup
+                        value={viewMode}
+                        exclusive
+                        onChange={handleViewModeChange}
+                        size='small'
+                        color='primary'
+                        aria-label='Переключение отображения экспедиторов'
+                        sx={{
+                            alignSelf: {
+                                xs: 'stretch',
+                                sm: 'auto',
+                            },
+                            '& .MuiToggleButton-root': {
+                                px: 1.5,
+                                minWidth: 40,
+                            },
+                        }}
+                    >
+                        <ToggleButton
+                            value={FORWARDERS_VIEW_MODES.TABLE}
+                            aria-label='Показать таблицей'
+                            title='Таблица'
+                        >
+                            <ViewListRoundedIcon fontSize='small' />
+                        </ToggleButton>
+
+                        <ToggleButton
+                            value={FORWARDERS_VIEW_MODES.CARDS}
+                            aria-label='Показать карточками'
+                            title='Карточки'
+                        >
+                            <GridViewRoundedIcon fontSize='small' />
+                        </ToggleButton>
+                    </ToggleButtonGroup>
                 </Box>
 
                 <TextField
@@ -191,8 +261,13 @@ export function ForwardersPage() {
                     >
                         <CircularProgress />
                     </Box>
-                ) : (
+                ) : viewMode === FORWARDERS_VIEW_MODES.TABLE ? (
                     <ForwardersTable
+                        forwarders={forwarders}
+                        onOpenDetails={handleOpenDetails}
+                    />
+                ) : (
+                    <ForwardersCardsList
                         forwarders={forwarders}
                         onOpenDetails={handleOpenDetails}
                     />

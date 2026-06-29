@@ -55,19 +55,16 @@ export function FactoringsContent() {
         isDetailsLoading,
         detailsError,
 
-        createSuccess,
-
         isAccepting,
         acceptError,
 
         openFactoringDetails,
         closeFactoringDetails,
 
-        openCreateModal,
         acceptFactoring,
     } = useFactoringsContext();
 
-    const [viewMode, setViewMode] = useState(FACTORINGS_VIEW_MODES.TABLE);
+    const [viewMode, setViewMode] = useState(FACTORINGS_VIEW_MODES.CARDS);
 
     function handleViewModeChange(_, nextViewMode) {
         if (!nextViewMode) {
