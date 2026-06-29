@@ -104,12 +104,58 @@ export function ForwarderDetailsModal({
             onClose={loading ? undefined : onClose}
             fullWidth
             maxWidth='sm'
+            slotProps={{
+                paper: {
+                    sx: {
+                        m: {
+                            xs: 1,
+                            sm: 2,
+                        },
+                        width: {
+                            xs: 'calc(100% - 16px)',
+                            sm: 'calc(100% - 64px)',
+                        },
+                        borderRadius: {
+                            xs: 2,
+                            sm: 3,
+                        },
+                        overflowX: 'hidden',
+                    },
+                },
+            }}
         >
-            <DialogTitle>
+            <DialogTitle
+                sx={{
+                    px: {
+                        xs: 1.5,
+                        sm: 3,
+                    },
+                    pt: {
+                        xs: 2,
+                        sm: 3,
+                    },
+                    pb: {
+                        xs: 1,
+                        sm: 1.5,
+                    },
+                }}
+            >
                 <Typography fontWeight={700}>Детали экспедитора</Typography>
             </DialogTitle>
 
-            <DialogContent>
+            <DialogContent
+                sx={{
+                    px: {
+                        xs: 1.5,
+                        sm: 3,
+                    },
+                    py: {
+                        xs: 1,
+                        sm: 2,
+                    },
+                    overflowX: 'hidden',
+                }}
+            >
                 {loading && (
                     <Box
                         sx={{
@@ -131,7 +177,10 @@ export function ForwarderDetailsModal({
                 {!loading && forwarder && (
                     <Box
                         sx={{
-                            p: 2,
+                            p: {
+                                xs: 1,
+                                sm: 2,
+                            },
                             border: '1px solid',
                             borderColor: 'divider',
                             borderRadius: 3,
@@ -153,7 +202,18 @@ export function ForwarderDetailsModal({
                 )}
             </DialogContent>
 
-            <DialogActions sx={{ px: 3, pb: 2 }}>
+            <DialogActions
+                sx={{
+                    px: {
+                        xs: 1.5,
+                        sm: 3,
+                    },
+                    pb: {
+                        xs: 1.5,
+                        sm: 2,
+                    },
+                }}
+            >
                 <Button onClick={onClose} disabled={loading}>
                     Закрыть
                 </Button>
