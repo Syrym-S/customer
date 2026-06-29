@@ -22,6 +22,7 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logoutApi } from '../../shared/api/auth.api';
 import { Notifications } from '../customer-notifications/ui/Notifications';
+import { getCompactEmail } from '../../shared/helpers/helpers';
 
 // const mockNotifications = [
 //    {
@@ -54,16 +55,16 @@ export function Header() {
    const [isLogoutLoading, setIsLogoutLoading] = useState(false);
    const [logoutError, setLogoutError] = useState(null);
 
-  
    const location = useLocation();
    const navigate = useNavigate();
 
    const isProfileMenuOpen = Boolean(profileAnchorEl);
-   const isCustomerPage = location.pathname === '/customer';
+   const isLeadsPage = location.pathname === '/customer';
    const isTenderPage = location.pathname === '/customer/tenders';
    const isFactoringsPage = location.pathname === '/customer/factorings';
    const isForwardersPage = location.pathname === '/customer/forwarders';
    const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
+   const userEmailLabel = getCompactEmail(userEmail);
 
    function handleNavigate(path) {
       if (location.pathname === path) {
@@ -114,7 +115,7 @@ export function Header() {
          document.activeElement.blur();
       }
    }
-   
+
    function handleCloseLogoutModal() {
       if (isLogoutLoading) {
          return;
@@ -182,6 +183,8 @@ export function Header() {
                      alignItems: 'center',
                      gap: 1,
                      minWidth: 0,
+                     flexShrink: 1,
+                     ml: 'auto',
                   }}
                >
                   <Notifications />
@@ -189,19 +192,43 @@ export function Header() {
                   <Button
                      variant='outlined'
                      onClick={handleOpenProfileMenu}
+                     title={userEmail}
+                     aria-label={`Профиль пользователя ${userEmail}`}
                      sx={{
+                        minWidth: 0,
                         maxWidth: {
-                           xs: 160,
-                           sm: 240,
+                           xs: 112,
+                           sm: 200,
+                           md: 260,
+                        },
+                        px: {
+                           xs: 1,
+                           sm: 1.5,
                         },
                         textTransform: 'none',
                         overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
+                        flexShrink: 1,
                      }}
-                     title={userEmail}
                   >
-                     {userEmail}
+                     <Typography
+                        component='span'
+                        noWrap
+                        sx={{
+                           display: 'block',
+                           minWidth: 0,
+                           maxWidth: '100%',
+                           overflow: 'hidden',
+                           textOverflow: 'ellipsis',
+                           whiteSpace: 'nowrap',
+                           fontSize: {
+                              xs: 12,
+                              sm: 14,
+                           },
+                           lineHeight: 1.4,
+                        }}
+                     >
+                        {userEmailLabel}
+                     </Typography>
                   </Button>
                </Box>
             </Box>
@@ -242,9 +269,9 @@ export function Header() {
 
                <List>
                   <ListItemButton
-                     selected={isCustomerPage}
+                     selected={isLeadsPage}
                      onClick={() => {
-                        if (isCustomerPage) {
+                        if (isLeadsPage) {
                            handleCloseBurger();
                            return;
                         }
@@ -253,13 +280,13 @@ export function Header() {
                      }}
                   >
                      <ListItemText
-                        primary='Customer'
+                        primary='Leads'
                         primaryTypographyProps={{
                            sx: {
-                              color: isCustomerPage
+                              color: isLeadsPage
                                  ? 'primary.main'
                                  : 'text.primary',
-                              fontWeight: isCustomerPage ? 600 : 400,
+                              fontWeight: isLeadsPage ? 600 : 400,
                            },
                         }}
                      />

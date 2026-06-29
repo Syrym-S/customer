@@ -347,7 +347,16 @@ export function TenderDetailsModal() {
         >
             <TenderDetailsHeader tender={openTender} />
 
-            <DialogContent sx={{ px: 3 }}>
+            <DialogContent
+                sx={{
+                    px: {
+                        xs: 1.5,
+                        sm: 2,
+                        md: 3,
+                    },
+                    overflowX: 'hidden',
+                }}
+            >
                 {saveEditError && (
                     <Alert severity='error' sx={{ mb: 2 }}>
                         {saveEditError}

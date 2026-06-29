@@ -321,7 +321,15 @@ export function CreateLeadModal({ open, onClose }) {
                         stepsCount={steps.length}
                     />
 
-                    <DialogContent sx={{ px: 3 }}>
+                    <DialogContent
+                        sx={{
+                            px: {
+                                xs: 1.5,
+                                sm: 2,
+                                md: 3,
+                            },
+                        }}
+                    >
                         <CreateLeadStepTabs
                             steps={steps}
                             activeStep={activeStep}

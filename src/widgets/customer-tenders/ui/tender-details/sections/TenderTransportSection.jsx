@@ -16,6 +16,9 @@ export function TenderTransportSection({ tender }) {
    const lead = tender.lead || {};
    const cargo = lead.cargo || {};
 
+   const fromLocation = tender.from_location || lead.from_location;
+   const toLocation = tender.to_location || lead.to_location;
+
    return (
       <Stack spacing={2}>
          <TenderDetailsSection icon={<RouteOutlinedIcon />} title='Маршрут'>
@@ -23,16 +26,21 @@ export function TenderTransportSection({ tender }) {
                sx={{
                   display: 'flex',
                   alignItems: 'stretch',
-                  gap: 1.5,
-                  flexWrap: {
-                     xs: 'wrap',
-                     md: 'nowrap',
+                  gap: {
+                     xs: 1,
+                     sm: 1.5,
                   },
+                  flexDirection: {
+                     xs: 'column',
+                     md: 'row',
+                  },
+                  minWidth: 0,
+                  width: '100%',
                }}
             >
                <RoutePoint
                   label='Откуда'
-                  value={normalizeLocationValue(lead.from_location)}
+                  value={normalizeLocationValue(fromLocation)}
                   icon={<TripOriginIcon />}
                />
 
@@ -57,7 +65,7 @@ export function TenderTransportSection({ tender }) {
 
                <RoutePoint
                   label='Куда'
-                  value={normalizeLocationValue(lead.to_location)}
+                  value={normalizeLocationValue(toLocation)}
                   icon={<LocationOnOutlinedIcon />}
                />
             </Box>

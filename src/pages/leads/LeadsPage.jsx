@@ -4,7 +4,7 @@ import { CustomerToolbar } from '../../widgets/customer-toolbar/CustomerToolbar'
 import { LeadsList } from '../../widgets/customer-leads/ui/LeadsList';
 import { LeadsProvider } from '../../widgets/customer-leads/model/LeadsProvider';
 
-export function CustomerPage() {
+export function LeadsPage() {
    return (
       <LeadsProvider>
          <Container maxWidth={false}>

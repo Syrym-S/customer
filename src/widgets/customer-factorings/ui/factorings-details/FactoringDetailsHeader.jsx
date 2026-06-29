@@ -8,8 +8,14 @@ export function FactoringDetailsHeader({ factoring }) {
     return (
         <DialogTitle
             sx={{
-                px: 3,
-                pt: 3,
+                px: {
+                    xs: 2,
+                    sm: 3,
+                },
+                pt: {
+                    xs: 2,
+                    sm: 3,
+                },
                 pb: 1.5,
             }}
         >
@@ -17,9 +23,16 @@ export function FactoringDetailsHeader({ factoring }) {
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'flex-start',
+                    alignItems: {
+                        xs: 'stretch',
+                        sm: 'flex-start',
+                    },
                     gap: 2,
-                    flexWrap: 'wrap',
+                    flexDirection: {
+                        xs: 'column',
+                        sm: 'row',
+                    },
+                    minWidth: 0,
                 }}
             >
                 <Box>
@@ -38,10 +51,27 @@ export function FactoringDetailsHeader({ factoring }) {
                 </Box>
                 {factoring && (
                     <Stack
-                        direction='row'
+                        direction={{
+                            xs: 'column',
+                            sm: 'row',
+                        }}
                         spacing={1}
                         useFlexGap
-                        flexWrap='wrap'
+                        flexWrap={{
+                            xs: 'nowrap',
+                            sm: 'wrap',
+                        }}
+                        sx={{
+                            width: {
+                                xs: '100%',
+                                sm: 'auto',
+                            },
+                            alignItems: {
+                                xs: 'flex-start',
+                                sm: 'center',
+                            },
+                            minWidth: 0,
+                        }}
                     >
                         <Chip
                             label={`Факторинг #${factoring?.index ?? '—'}`}

@@ -1,7 +1,7 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 
 import { AppLayout } from '../widgets/app-layout/AppLayout';
-import { CustomerPage } from '../pages/customer/CustomerPage';
+import { LeadsPage } from '../pages/leads/LeadsPage';
 import { ProfilePage } from '../pages/profile/ProfilePage';
 import { TenderPage } from '../pages/tender/TenderPage';
 import { FactoringsPage } from '../pages/factorings/FactoringsPage';
@@ -19,7 +19,7 @@ export const AppRouter = () => {
             },
             {
                path: 'customer',
-               element: <CustomerPage />,
+               element: <LeadsPage />,
             },
             {
                path: 'customer/profile',
@@ -29,7 +29,7 @@ export const AppRouter = () => {
                path: 'customer/tenders',
                element: <TenderPage />,
             },
-             {
+            {
                path: 'customer/factorings',
                element: <FactoringsPage />,
             },
