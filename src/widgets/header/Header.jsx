@@ -1,4 +1,5 @@
 import {
+   Avatar,
    Box,
    Button,
    Container,
@@ -18,35 +19,13 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logoutApi } from '../../shared/api/auth.api';
 import { Notifications } from '../customer-notifications/ui/Notifications';
 import { getCompactEmail } from '../../shared/helpers/helpers';
-
-// const mockNotifications = [
-//    {
-//       id: 1,
-//       title: 'Создан новый тендер',
-//       description: 'Тендер по маршруту Алматы → Астана успешно создан',
-//       time: '2 мин назад',
-//       isUnread: true,
-//    },
-//    {
-//       id: 2,
-//       title: 'Новая ставка',
-//       description: 'Экспедитор оставил ставку по активному тендеру',
-//       time: '15 мин назад',
-//       isUnread: true,
-//    },
-//    {
-//       id: 3,
-//       title: 'Статус лида обновлён',
-//       description: 'Водитель начал движение по маршруту',
-//       time: '1 час назад',
-//       isUnread: false,
-//    },
-// ];
+import { PROFILE_PHOTO_UPDATED_EVENT } from '../customer-profile/model/profile-photo.helpers';
+import { fetchCustomerProfile } from '../../features/profile-edit/profile.api';
 
 export function Header() {
    const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -65,6 +44,7 @@ export function Header() {
    const isForwardersPage = location.pathname === '/customer/forwarders';
    const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
    const userEmailLabel = getCompactEmail(userEmail);
+   const [profilePhoto, setProfilePhoto] = useState('');
 
    function handleNavigate(path) {
       if (location.pathname === path) {
@@ -138,7 +118,7 @@ export function Header() {
 
          await logoutApi();
 
-         window.location.href = '/login';
+         window.location.href = '/auth';
       } catch (error) {
          setLogoutError(
             error.response?.data?.message ||
@@ -149,6 +129,44 @@ export function Header() {
          setIsLogoutLoading(false);
       }
    }
+
+   useEffect(() => {
+      let isCancelled = false;
+
+      async function loadProfileAvatar() {
+         try {
+            const profile = await fetchCustomerProfile();
+
+            if (!isCancelled) {
+               setProfilePhoto(profile?.avatar || '');
+            }
+         } catch {
+            if (!isCancelled) {
+               setProfilePhoto('');
+            }
+         }
+      }
+
+      function handleProfilePhotoUpdated(event) {
+         setProfilePhoto(event.detail?.photoUrl || '');
+      }
+
+      loadProfileAvatar();
+
+      window.addEventListener(
+         PROFILE_PHOTO_UPDATED_EVENT,
+         handleProfilePhotoUpdated,
+      );
+
+      return () => {
+         isCancelled = true;
+
+         window.removeEventListener(
+            PROFILE_PHOTO_UPDATED_EVENT,
+            handleProfilePhotoUpdated,
+         );
+      };
+   }, []);
 
    return (
       <Box
@@ -197,19 +215,36 @@ export function Header() {
                      sx={{
                         minWidth: 0,
                         maxWidth: {
-                           xs: 112,
-                           sm: 200,
-                           md: 260,
+                           xs: 140,
+                           sm: 220,
+                           md: 280,
                         },
                         px: {
-                           xs: 1,
-                           sm: 1.5,
+                           xs: 0.75,
+                           sm: 1.25,
                         },
                         textTransform: 'none',
                         overflow: 'hidden',
                         flexShrink: 1,
+                        gap: 0.75,
                      }}
                   >
+                     <Avatar
+                        src={profilePhoto || undefined}
+                        sx={{
+                           width: {
+                              xs: 24,
+                              sm: 28,
+                           },
+                           height: {
+                              xs: 24,
+                              sm: 28,
+                           },
+                           fontSize: 13,
+                           flexShrink: 0,
+                        }}
+                     />
+
                      <Typography
                         component='span'
                         noWrap

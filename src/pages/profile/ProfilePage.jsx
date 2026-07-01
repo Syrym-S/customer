@@ -20,8 +20,16 @@ import {
 import {
     fetchCustomerProfile,
     updateCustomerProfile,
+    uploadCustomerAvatar,
+    deleteCustomerAvatar,
 } from '../../features/profile-edit/profile.api';
 import { notifySuccess } from '../../shared/model/notifications.store';
+import {
+    getAvatarFromUploadResponse,
+    notifyProfilePhotoUpdated,
+} from '../../widgets/customer-profile/model/profile-photo.helpers';
+import { ProfilePhotoUploader } from '../../widgets/customer-profile/ui/ProfilePhotoUploader';
+import { EmailVerificationStatus } from '../../widgets/customer-verification/ui/EmailVerificationStatus';
 
 export function ProfilePage() {
     const [form, setForm] = useState(initialProfileForm);
@@ -32,6 +40,12 @@ export function ProfilePage() {
         useState(initialProfileForm);
     const [isProfileLoading, setIsProfileLoading] = useState(false);
     const [profileLoadError, setProfileLoadError] = useState('');
+    const [profilePhoto, setProfilePhoto] = useState('');
+    const [initialProfilePhoto, setInitialProfilePhoto] = useState('');
+    const [profilePhotoFile, setProfilePhotoFile] = useState(null);
+    const [profilePhotoError, setProfilePhotoError] = useState('');
+    const [shouldDeleteProfilePhoto, setShouldDeleteProfilePhoto] =
+        useState(false);
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -60,9 +74,17 @@ export function ProfilePage() {
             return;
         }
 
+        if (profilePhotoError) {
+            return;
+        }
+
         const payload = mapProfileFormToChangedApi(form, initialLoadedForm);
 
-        if (Object.keys(payload).length === 0) {
+        const hasProfileChanges = Object.keys(payload).length > 0;
+        const hasPhotoUpload = Boolean(profilePhotoFile);
+        const hasPhotoDelete = shouldDeleteProfilePhoto;
+
+        if (!hasProfileChanges && !hasPhotoUpload && !hasPhotoDelete) {
             setSubmitError('Нет изменений для сохранения');
             return;
         }
@@ -71,7 +93,31 @@ export function ProfilePage() {
             setIsSaving(true);
             setSubmitError('');
 
-            await updateCustomerProfile(payload);
+            if (hasProfileChanges) {
+                await updateCustomerProfile(payload);
+            }
+
+            let nextAvatar = profilePhoto;
+
+            if (hasPhotoDelete) {
+                await deleteCustomerAvatar();
+
+                nextAvatar = '';
+
+                notifyProfilePhotoUpdated('');
+            }
+
+            if (hasPhotoUpload) {
+                const uploadResponse =
+                    await uploadCustomerAvatar(profilePhotoFile);
+                const updatedProfile = await fetchCustomerProfile();
+
+                nextAvatar =
+                    updatedProfile?.avatar ||
+                    getAvatarFromUploadResponse(uploadResponse, profilePhoto);
+
+                notifyProfilePhotoUpdated(nextAvatar);
+            }
 
             const nextInitialForm = {
                 ...form,
@@ -81,12 +127,17 @@ export function ProfilePage() {
             };
 
             setInitialLoadedForm(nextInitialForm);
+            setInitialProfilePhoto(nextAvatar);
+            setProfilePhoto(nextAvatar);
+            setProfilePhotoFile(null);
+            setShouldDeleteProfilePhoto(false);
             setForm(nextInitialForm);
 
             notifySuccess('Профиль успешно обновлен');
         } catch (error) {
             setSubmitError(
                 error.response?.data?.message ||
+                    error.response?.data?.error ||
                     error.message ||
                     'Не удалось обновить профиль',
             );
@@ -107,9 +158,17 @@ export function ProfilePage() {
 
                 if (!isCancelled) {
                     const mappedProfile = mapProfileFromApi(profile);
+                    const avatar = profile?.avatar || '';
 
                     setForm(mappedProfile);
                     setInitialLoadedForm(mappedProfile);
+
+                    setProfilePhoto(avatar);
+                    setInitialProfilePhoto(avatar);
+                    setProfilePhotoFile(null);
+                    setProfilePhotoError('');
+                    setShouldDeleteProfilePhoto(false);
+
                     setErrors({});
                     setSubmitError('');
                 }
@@ -166,6 +225,29 @@ export function ProfilePage() {
                     {submitError && (
                         <Alert severity='error'>{submitError}</Alert>
                     )}
+
+                    <EmailVerificationStatus />
+
+                    <ProfilePhotoUploader
+                        value={profilePhoto}
+                        error={profilePhotoError}
+                        disabled={isSaving || isProfileLoading}
+                        onChange={(nextPhoto, file) => {
+                            setProfilePhoto(nextPhoto);
+                            setProfilePhotoFile(file);
+                            setShouldDeleteProfilePhoto(false);
+                            setProfilePhotoError('');
+                            setSubmitError('');
+                        }}
+                        onRemove={() => {
+                            setProfilePhoto('');
+                            setProfilePhotoFile(null);
+                            setShouldDeleteProfilePhoto(true);
+                            setProfilePhotoError('');
+                            setSubmitError('');
+                        }}
+                        onError={setProfilePhotoError}
+                    />
 
                     <Stack spacing={2}>
                         <Typography fontWeight={600}>

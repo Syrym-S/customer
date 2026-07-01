@@ -3,7 +3,11 @@ import { useEffect } from 'react';
 import { Alert, Box, IconButton, Typography } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-import { REALTIME_NOTIFICATION_TOAST_OPEN_EVENT, useNotificationsStore } from '../model/notifications.store';
+import {
+   REALTIME_NOTIFICATION_TOAST_OPEN_EVENT,
+   useNotificationsStore,
+} from '../model/notifications.store';
+import { EMAIL_VERIFICATION_MODAL_OPEN_EVENT } from '../../widgets/customer-verification/model/email-verification.helpers';
 
 const notificationTitleMap = {
    error: 'Ошибка',
@@ -34,6 +38,14 @@ export function NotificationsColumn() {
    function handleNotificationClick(notification) {
       const realtimeNotification = notification.meta?.notification;
 
+      if (notification.meta?.source === 'email-verification') {
+         window.dispatchEvent(
+            new CustomEvent(EMAIL_VERIFICATION_MODAL_OPEN_EVENT),
+         );
+
+         return;
+      }
+
       if (notification.meta?.source !== 'realtime-notification') {
          return;
       }
@@ -48,7 +60,6 @@ export function NotificationsColumn() {
 
       removeNotification(notification.id);
    }
-
 
    if (notifications.length === 0) {
       return null;
@@ -80,8 +91,11 @@ export function NotificationsColumn() {
          }}
       >
          {notifications.map((notification) => {
-             const isClickable =
-               notification.meta?.source === 'realtime-notification';
+            const isClickable =
+               notification.meta?.source === 'realtime-notification' ||
+               notification.meta?.source === 'email-verification';
+            const isEmailVerificationNotification =
+               notification.meta?.source === 'email-verification';
 
             return (
                <Alert
@@ -90,16 +104,18 @@ export function NotificationsColumn() {
                   variant='filled'
                   onClick={() => handleNotificationClick(notification)}
                   action={
-                     <IconButton
-                        size='small'
-                        color='inherit'
-                        onClick={(event) => {
-                           event.stopPropagation();
-                           removeNotification(notification.id);
-                        }}
-                     >
-                        <CloseRoundedIcon fontSize='small' />
-                     </IconButton>
+                     !isEmailVerificationNotification ? (
+                        <IconButton
+                           size='small'
+                           color='inherit'
+                           onClick={(event) => {
+                              event.stopPropagation();
+                              removeNotification(notification.id);
+                           }}
+                        >
+                           <CloseRoundedIcon fontSize='small' />
+                        </IconButton>
+                     ) : null
                   }
                   sx={{
                      width: '100%',

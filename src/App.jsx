@@ -3,6 +3,7 @@ import { AppRouter } from './router/AppRouter';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from './theme/theme';
 import { NotificationsColumn } from './shared/ui/NotificationsColumn';
+import { EmailVerificationWatcher } from './widgets/customer-verification/ui/EmailVerificationWatcher';
 
 function App() {
    return (
@@ -11,6 +12,7 @@ function App() {
          <BrowserRouter>
             <AppRouter />
          </BrowserRouter>
+         <EmailVerificationWatcher />
          <NotificationsColumn />
       </ThemeProvider>
    );
