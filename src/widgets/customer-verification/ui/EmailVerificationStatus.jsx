@@ -85,13 +85,15 @@ export function EmailVerificationStatus() {
             >
                <Typography fontWeight={600}>Статус email</Typography>
 
-               <Typography
-                  color='text.secondary'
-                  fontSize={14}
-                  sx={{ mt: 0.25 }}
-               >
-                  Подтверждение электронной почты аккаунта
-               </Typography>
+               {isVerified === false && (
+                  <Typography
+                     color='text.secondary'
+                     fontSize={14}
+                     sx={{ mt: 0.25 }}
+                  >
+                     Подтверждение электронной почты аккаунта
+                  </Typography>
+               )}
             </Box>
 
             <Stack

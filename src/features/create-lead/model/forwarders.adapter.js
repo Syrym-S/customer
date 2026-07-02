@@ -36,9 +36,11 @@ export function mapForwarderFromApi(apiForwarder) {
             apiForwarder.company_name ??
             apiForwarder.company?.name ??
             apiForwarder.organization?.name ??
+            apiForwarder.name ??
             'Без компании',
 
         companyBin:
+            apiForwarder.bin ??
             apiForwarder.companyBin ??
             apiForwarder.company_bin ??
             apiForwarder.company?.bin ??

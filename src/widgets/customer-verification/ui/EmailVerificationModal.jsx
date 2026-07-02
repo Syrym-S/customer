@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 
 import {
+   Box,
    Alert,
    Button,
    Dialog,
    DialogActions,
    DialogContent,
-   DialogContentText,
    DialogTitle,
    Stack,
    Typography,
 } from '@mui/material';
+import MarkEmailUnreadRoundedIcon from '@mui/icons-material/MarkEmailUnreadRounded';
 
 import { resendEmailVerification } from '../api/email-verification.api';
 
@@ -76,22 +77,73 @@ export function EmailVerificationModal({ open, onClose }) {
    }, [open]);
 
    return (
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth='sm'>
-         <DialogTitle>Подтверждение email</DialogTitle>
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth='xs'>
+         <DialogTitle sx={{ px: 3, pt: 3, pb: 1 }}>
+            <Stack direction='row' spacing={1.75} alignItems='center'>
+               <Box
+                  sx={{
+                     width: 44,
+                     height: 44,
+                     borderRadius: '50%',
+                     display: 'flex',
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                     bgcolor: 'warning.light',
+                     color: 'warning.contrastText',
+                     flexShrink: 0,
+                  }}
+               >
+                  <MarkEmailUnreadRoundedIcon />
+               </Box>
+
+               <Box sx={{ minWidth: 0 }}>
+                  <Typography
+                     variant='h6'
+                     component='div'
+                     sx={{
+                        fontWeight: 500,
+                        fontSize: {
+                           xs: 18,
+                           sm: 20,
+                        },
+                        lineHeight: 1.25,
+                     }}
+                  >
+                     Email не подтверждён
+                  </Typography>
+
+                  <Typography
+                     component='div'
+                     color='text.secondary'
+                     sx={{
+                        mt: 0.5,
+                        fontSize: 13,
+                        lineHeight: 1.4,
+                     }}
+                  >
+                     Подтвердите почту, чтобы завершить настройку аккаунта
+                  </Typography>
+               </Box>
+            </Stack>
+         </DialogTitle>
 
          <DialogContent>
             <Stack spacing={2}>
-               <DialogContentText>
-                  Ваш email ещё не подтверждён. Чтобы завершить настройку
-                  аккаунта, отправьте письмо подтверждения и перейдите по ссылке
-                  из письма.
-               </DialogContentText>
+               <Alert
+                  severity='warning'
+                  variant='outlined'
+                  sx={{
+                     borderRadius: 2,
+                  }}
+               >
+                  Мы отправим письмо со ссылкой подтверждения на вашу почту.
+               </Alert>
 
-               <Typography color='text.secondary' fontSize={14}>
-                  Если письмо не пришло или срок действия ссылки истёк, можно
-                  отправить письмо повторно. Повторная отправка доступна один
-                  раз в минуту.
-               </Typography>
+               {cooldownLeft > 0 && (
+                  <Typography color='text.secondary' fontSize={13}>
+                     Повторная отправка будет доступна через {cooldownLeft} сек.
+                  </Typography>
+               )}
 
                {sendError && <Alert severity='error'>{sendError}</Alert>}
 
@@ -108,11 +160,14 @@ export function EmailVerificationModal({ open, onClose }) {
                variant='contained'
                onClick={handleResendVerification}
                disabled={isSending || cooldownLeft > 0}
+               sx={{
+                  minWidth: 156,
+               }}
             >
                {isSending
                   ? 'Отправка...'
                   : cooldownLeft > 0
-                    ? `Повторно через ${cooldownLeft} сек`
+                    ? `Через ${cooldownLeft} сек`
                     : 'Отправить письмо'}
             </Button>
          </DialogActions>

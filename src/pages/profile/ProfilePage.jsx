@@ -41,7 +41,6 @@ export function ProfilePage() {
     const [isProfileLoading, setIsProfileLoading] = useState(false);
     const [profileLoadError, setProfileLoadError] = useState('');
     const [profilePhoto, setProfilePhoto] = useState('');
-    const [initialProfilePhoto, setInitialProfilePhoto] = useState('');
     const [profilePhotoFile, setProfilePhotoFile] = useState(null);
     const [profilePhotoError, setProfilePhotoError] = useState('');
     const [shouldDeleteProfilePhoto, setShouldDeleteProfilePhoto] =
@@ -127,7 +126,6 @@ export function ProfilePage() {
             };
 
             setInitialLoadedForm(nextInitialForm);
-            setInitialProfilePhoto(nextAvatar);
             setProfilePhoto(nextAvatar);
             setProfilePhotoFile(null);
             setShouldDeleteProfilePhoto(false);
@@ -164,7 +162,6 @@ export function ProfilePage() {
                     setInitialLoadedForm(mappedProfile);
 
                     setProfilePhoto(avatar);
-                    setInitialProfilePhoto(avatar);
                     setProfilePhotoFile(null);
                     setProfilePhotoError('');
                     setShouldDeleteProfilePhoto(false);
@@ -232,6 +229,7 @@ export function ProfilePage() {
                         value={profilePhoto}
                         error={profilePhotoError}
                         disabled={isSaving || isProfileLoading}
+                        isLoading={isProfileLoading}
                         onChange={(nextPhoto, file) => {
                             setProfilePhoto(nextPhoto);
                             setProfilePhotoFile(file);
