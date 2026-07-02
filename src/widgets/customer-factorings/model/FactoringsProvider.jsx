@@ -9,6 +9,10 @@ import {
 
 import { FactoringsContext } from './FactoringsContext';
 import { fetchCustomerLeadById } from '../../customer-leads/api/leads.repository';
+import {
+    notificationDomainEventNames,
+    subscribeToNotificationDomainEvent,
+} from '../../../shared/model/notification-domain-events';
 
 const DEFAULT_PER_PAGE = 10;
 
@@ -33,7 +37,9 @@ export function FactoringsProvider({ children }) {
     const pageCount = Math.max(1, Math.ceil(total / perPage));
 
     function getFactoringLeadId(factoring) {
-        return factoring?.lead_id || factoring?.leadId || factoring?.lead?.id || '';
+        return (
+            factoring?.lead_id || factoring?.leadId || factoring?.lead?.id || ''
+        );
     }
 
     function unwrapLeadResponse(response) {
@@ -41,9 +47,12 @@ export function FactoringsProvider({ children }) {
     }
 
     const loadFactorings = useCallback(
-        async (nextPage = page) => {
+        async (nextPage = page, { withLoader = true } = {}) => {
             try {
-                setIsLoading(true);
+                if (withLoader) {
+                    setIsLoading(true);
+                }
+
                 setLoadError('');
 
                 const response = await fetchCustomerFactorings({
@@ -65,59 +74,69 @@ export function FactoringsProvider({ children }) {
                         'Не удалось загрузить факторинг-покупки',
                 );
             } finally {
-                setIsLoading(false);
+                if (withLoader) {
+                    setIsLoading(false);
+                }
             }
         },
         [page, perPage],
     );
 
-    const openFactoringDetails = useCallback(async (factoring) => {
-        if (!factoring?.index && factoring?.index !== 0) {
-            return;
+    const loadFactoringDetailsWithLead = useCallback(async (factoringIndex) => {
+        const details = await fetchCustomerFactoringByIndex(factoringIndex);
+
+        const leadId = getFactoringLeadId(details);
+
+        if (!leadId) {
+            return details;
         }
 
         try {
-            setIsDetailsOpen(true);
-            setSelectedFactoring(null);
-            setDetailsError('');
-            setAcceptError('');
-            setIsDetailsLoading(true);
+            const leadResponse = await fetchCustomerLeadById(leadId);
+            const lead = unwrapLeadResponse(leadResponse);
 
-            const details = await fetchCustomerFactoringByIndex(
-                factoring.index,
-            );
+            return {
+                ...details,
+                lead,
+            };
+        } catch (leadError) {
+            console.error('[factoring lead load error]', leadError);
 
-            const leadId = getFactoringLeadId(details);
+            return details;
+        }
+    }, []);
 
-            if (!leadId) {
-                setSelectedFactoring(details);
+    const openFactoringDetails = useCallback(
+        async (factoring) => {
+            if (!factoring?.index && factoring?.index !== 0) {
                 return;
             }
 
             try {
-                const leadResponse = await fetchCustomerLeadById(leadId);
-                const lead = unwrapLeadResponse(leadResponse);
+                setIsDetailsOpen(true);
+                setSelectedFactoring(null);
+                setDetailsError('');
+                setAcceptError('');
+                setIsDetailsLoading(true);
 
-                setSelectedFactoring({
-                    ...details,
-                    lead,
-                });
-            } catch (leadError) {
-                console.error('[factoring lead load error]', leadError);
+                const details = await loadFactoringDetailsWithLead(
+                    factoring.index,
+                );
 
                 setSelectedFactoring(details);
+            } catch (error) {
+                setDetailsError(
+                    error.response?.data?.message ||
+                        error.response?.data?.error ||
+                        error.message ||
+                        'Не удалось загрузить детали факторинга',
+                );
+            } finally {
+                setIsDetailsLoading(false);
             }
-        } catch (error) {
-            setDetailsError(
-                error.response?.data?.message ||
-                    error.response?.data?.error ||
-                    error.message ||
-                    'Не удалось загрузить детали факторинга',
-            );
-        } finally {
-            setIsDetailsLoading(false);
-        }
-    }, []);
+        },
+        [loadFactoringDetailsWithLead],
+    );
 
     const closeFactoringDetails = useCallback(() => {
         setIsDetailsOpen(false);
@@ -137,14 +156,12 @@ export function FactoringsProvider({ children }) {
 
             await acceptCustomerFactoring(selectedFactoring.index);
 
-            const updatedFactoring = await fetchCustomerFactoringByIndex(
+            const updatedFactoring = await loadFactoringDetailsWithLead(
                 selectedFactoring.index,
             );
 
-            setSelectedFactoring({
-                ...updatedFactoring,
-                lead: selectedFactoring.lead,
-            });
+            setSelectedFactoring(updatedFactoring);
+
             await loadFactorings(page);
         } catch (error) {
             setAcceptError(
@@ -156,11 +173,43 @@ export function FactoringsProvider({ children }) {
         } finally {
             setIsAccepting(false);
         }
-    }, [selectedFactoring, loadFactorings, page]);
+    }, [selectedFactoring, loadFactorings, loadFactoringDetailsWithLead, page]);
 
     useEffect(() => {
-        loadFactorings(page);
+        loadFactorings(page, { withLoader: true });
     }, [loadFactorings, page]);
+
+    useEffect(() => {
+        return subscribeToNotificationDomainEvent(
+            notificationDomainEventNames.factoringsChanged,
+            () => {
+                loadFactorings(page, { withLoader: false });
+
+                if (
+                    isDetailsOpen &&
+                    selectedFactoring?.index !== undefined &&
+                    selectedFactoring?.index !== null
+                ) {
+                    loadFactoringDetailsWithLead(selectedFactoring.index)
+                        .then((updatedFactoring) => {
+                            setSelectedFactoring(updatedFactoring);
+                        })
+                        .catch((error) => {
+                            console.error(
+                                'Не удалось обновить детали факторинга после уведомления:',
+                                error,
+                            );
+                        });
+                }
+            },
+        );
+    }, [
+        loadFactorings,
+        page,
+        isDetailsOpen,
+        selectedFactoring?.index,
+        loadFactoringDetailsWithLead,
+    ]);
 
     const value = useMemo(
         () => ({

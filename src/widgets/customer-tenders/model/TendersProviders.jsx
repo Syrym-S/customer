@@ -19,6 +19,10 @@ import {
    mapTenderLeadDocumentsResponseFromApi,
    mapTendersListFromApi,
 } from './tender.adapter';
+import {
+   notificationDomainEventNames,
+   subscribeToNotificationDomainEvent,
+} from '../../../shared/model/notification-domain-events';
 
 const DEFAULT_PER_PAGE = 2;
 
@@ -37,31 +41,40 @@ export function TendersProvider({ children }) {
    const [isDetailsLoading, setIsDetailsLoading] = useState(false);
    const [detailsError, setDetailsError] = useState('');
 
-   const loadTenders = useCallback(async () => {
-      try {
-         setIsLoading(true);
-         setError('');
+   const loadTenders = useCallback(
+      async ({ withLoader = true } = {}) => {
+         try {
+            if (withLoader) {
+               setIsLoading(true);
+            }
 
-         const response = await fetchCustomerTenders({
-            page,
-            limit: perPage,
-            status,
-         });
-         const mappedResponse = mapTendersListFromApi(response);
+            setError('');
 
-         setTenders(mappedResponse.tenders);
-         setCount(mappedResponse.count);
-         setPerPage(mappedResponse.perPage);
-      } catch (error) {
-         setError(
-            error.response?.data?.message ||
-               error.message ||
-               'Не удалось загрузить тендеры',
-         );
-      } finally {
-         setIsLoading(false);
-      }
-   }, [page, perPage, status]);
+            const response = await fetchCustomerTenders({
+               page,
+               limit: perPage,
+               status,
+            });
+
+            const mappedResponse = mapTendersListFromApi(response);
+
+            setTenders(mappedResponse.tenders);
+            setCount(mappedResponse.count);
+            setPerPage(mappedResponse.perPage);
+         } catch (error) {
+            setError(
+               error.response?.data?.message ||
+                  error.message ||
+                  'Не удалось загрузить тендеры',
+            );
+         } finally {
+            if (withLoader) {
+               setIsLoading(false);
+            }
+         }
+      },
+      [page, perPage, status],
+   );
 
    const loadTenderDetailsWithFiles = useCallback(async (tenderId) => {
       const tender = await fetchCustomerTenderById(tenderId);
@@ -230,8 +243,26 @@ export function TendersProvider({ children }) {
    );
 
    useEffect(() => {
-      loadTenders();
+      loadTenders({ withLoader: true });
    }, [loadTenders]);
+
+   useEffect(() => {
+      return subscribeToNotificationDomainEvent(
+         notificationDomainEventNames.tendersChanged,
+         () => {
+            loadTenders({ withLoader: false });
+
+            if (openTender?.id) {
+               refreshTenderDetails(openTender.id).catch((error) => {
+                  console.error(
+                     'Не удалось обновить детали тендера после уведомления:',
+                     error,
+                  );
+               });
+            }
+         },
+      );
+   }, [loadTenders, openTender?.id, refreshTenderDetails]);
 
    const value = useMemo(
       () => ({

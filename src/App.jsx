@@ -6,16 +6,16 @@ import { NotificationsColumn } from './shared/ui/NotificationsColumn';
 import { EmailVerificationWatcher } from './widgets/customer-verification/ui/EmailVerificationWatcher';
 
 function App() {
-   return (
-      <ThemeProvider theme={theme}>
-         <CssBaseline />
-         <BrowserRouter>
-            <AppRouter />
-         </BrowserRouter>
-         <EmailVerificationWatcher />
-         <NotificationsColumn />
-      </ThemeProvider>
-   );
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <BrowserRouter>
+                <AppRouter />
+            </BrowserRouter>
+            {/* <EmailVerificationWatcher /> */}
+            <NotificationsColumn />
+        </ThemeProvider>
+    );
 }
 
 export default App;

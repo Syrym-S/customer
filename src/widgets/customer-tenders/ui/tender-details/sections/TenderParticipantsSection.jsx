@@ -212,11 +212,35 @@ export function TenderParticipantsSection({
                         startIcon={<AddOutlinedIcon />}
                         onClick={() => setIsAdding(true)}
                         disabled={isActionLoading}
+                        aria-label='Добавить участника'
+                        title='Добавить участника'
                         sx={{
                             textTransform: 'none',
+                            flexShrink: 0,
+                            whiteSpace: 'nowrap',
+
+                            '@media (max-width: 450px)': {
+                                width: 32,
+                                minWidth: 32,
+                                height: 32,
+                                px: 0,
+
+                                '& .MuiButton-startIcon': {
+                                    m: 0,
+                                },
+                            },
                         }}
                     >
-                        Добавить участника
+                        <Box
+                            component='span'
+                            sx={{
+                                '@media (max-width: 450px)': {
+                                    display: 'none',
+                                },
+                            }}
+                        >
+                            Добавить участника
+                        </Box>
                     </Button>
                 ) : null
             }
@@ -423,17 +447,42 @@ export function TenderParticipantsSection({
                                     }}
                                 >
                                     <Stack
-                                        direction='row'
-                                        justifyContent='space-between'
-                                        alignItems='flex-start'
+                                        direction={{
+                                            xs: 'column',
+                                            sm: 'row',
+                                        }}
+                                        alignItems={{
+                                            xs: 'stretch',
+                                            sm: 'flex-start',
+                                        }}
                                         spacing={1}
-                                        useFlexGap
-                                        sx={{ flexWrap: 'wrap' }}
+                                        sx={{
+                                            width: '100%',
+                                            minWidth: 0,
+
+                                            '@media (min-width: 450px)': {
+                                                flexDirection: 'row',
+                                                alignItems: 'flex-start',
+                                            },
+
+                                            '@media (max-width: 449px)': {
+                                                flexDirection: 'column',
+                                                alignItems: 'stretch',
+                                            },
+                                        }}
                                     >
-                                        <Box>
+                                        <Box
+                                            sx={{
+                                                minWidth: 0,
+                                                flex: 1,
+                                            }}
+                                        >
                                             <Typography
                                                 fontWeight={600}
-                                                sx={{ fontSize: 14 }}
+                                                sx={{
+                                                    fontSize: 14,
+                                                    wordBreak: 'break-word',
+                                                }}
                                             >
                                                 {participant.name ||
                                                     participant.fullName ||
@@ -444,31 +493,35 @@ export function TenderParticipantsSection({
 
                                             <Typography
                                                 color='text.secondary'
-                                                sx={{ fontSize: 12, mt: 0.5 }}
+                                                sx={{
+                                                    fontSize: 12,
+                                                    mt: 0.5,
+                                                }}
                                             >
                                                 Добавлен:{' '}
                                                 {formatDateTime(
                                                     participant.date,
                                                 )}
                                             </Typography>
-                                        </Box>
 
-                                        <Chip
-                                            label={
-                                                participantTypeLabels[
-                                                    participant.type
-                                                ] ||
-                                                participant.type ||
-                                                'Не указано'
-                                            }
-                                            size='small'
-                                            sx={{
-                                                borderRadius: 999,
-                                                fontWeight: 500,
-                                                backgroundColor: 'grey.100',
-                                                color: 'text.secondary',
-                                            }}
-                                        />
+                                            <Chip
+                                                label={
+                                                    participantTypeLabels[
+                                                        participant.type
+                                                    ] ||
+                                                    participant.type ||
+                                                    'Не указано'
+                                                }
+                                                size='small'
+                                                sx={{
+                                                    mt: 1,
+                                                    borderRadius: 999,
+                                                    fontWeight: 500,
+                                                    backgroundColor: 'grey.100',
+                                                    color: 'text.secondary',
+                                                }}
+                                            />
+                                        </Box>
 
                                         {canDeleteParticipant && (
                                             <Button
@@ -488,6 +541,22 @@ export function TenderParticipantsSection({
                                                     minWidth: 'auto',
                                                     px: 1,
                                                     textTransform: 'none',
+                                                    flexShrink: 0,
+
+                                                    '@media (min-width: 450px)':
+                                                        {
+                                                            ml: 'auto',
+                                                            alignSelf:
+                                                                'flex-start',
+                                                        },
+
+                                                    '@media (max-width: 449px)':
+                                                        {
+                                                            mt: 0.5,
+                                                            alignSelf:
+                                                                'flex-start',
+                                                            px: 0,
+                                                        },
                                                 }}
                                             >
                                                 Удалить

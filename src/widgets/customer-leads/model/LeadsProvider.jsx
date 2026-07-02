@@ -4,6 +4,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { fetchCustomerLeads } from '../api/leads.repository';
 import { mapLeadsResponseFromApi } from './lead.adapter';
 import { LeadsContext } from './LeadsContext';
+import {
+   notificationDomainEventNames,
+   subscribeToNotificationDomainEvent,
+} from '../../../shared/model/notification-domain-events';
 
 const DEFAULT_PER_PAGE = 10;
 
@@ -18,23 +22,31 @@ export function LeadsProvider({ children }) {
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
 
-   const loadLeads = useCallback(async () => {
-      try {
-         setIsLoading(true);
-         setError(null);
+   const loadLeads = useCallback(
+      async ({ withLoader = true } = {}) => {
+         try {
+            if (withLoader) {
+               setIsLoading(true);
+            }
 
-         const response = await fetchCustomerLeads({ page, perPage });
-         const mappedResponse = mapLeadsResponseFromApi(response);
+            setError(null);
 
-         setLeads(mappedResponse.leads);
-         setCount(mappedResponse.count);
-         setPerPage(mappedResponse.perPage);
-      } catch (requestError) {
-         setError(requestError.message || 'Не удалось загрузить лиды');
-      } finally {
-         setIsLoading(false);
-      }
-   }, [page, perPage]);
+            const response = await fetchCustomerLeads({ page, perPage });
+            const mappedResponse = mapLeadsResponseFromApi(response);
+
+            setLeads(mappedResponse.leads);
+            setCount(mappedResponse.count);
+            setPerPage(mappedResponse.perPage);
+         } catch (requestError) {
+            setError(requestError.message || 'Не удалось загрузить лиды');
+         } finally {
+            if (withLoader) {
+               setIsLoading(false);
+            }
+         }
+      },
+      [page, perPage],
+   );
 
    const prependLead = useCallback(
       (lead) => {
@@ -49,7 +61,16 @@ export function LeadsProvider({ children }) {
    );
 
    useEffect(() => {
-      loadLeads();
+      loadLeads({ withLoader: true });
+   }, [loadLeads]);
+
+   useEffect(() => {
+      return subscribeToNotificationDomainEvent(
+         notificationDomainEventNames.leadsChanged,
+         () => {
+            loadLeads({ withLoader: false });
+         },
+      );
    }, [loadLeads]);
 
    const value = useMemo(
