@@ -4,6 +4,7 @@ import { CustomerMapView } from './CustomerMapView';
 import { useCustomerMap } from '../model/useCustomerMap';
 import { useLeadsContext } from '../../customer-leads/model/useLeadsContext';
 import { useCustomerPageRoutes } from '../model/useCustomerPageRoutes';
+import { useCustomerPageGeoRoutes } from '../model/useCustomerPageGeoRoutes';
 
 export function CustomerMap() {
    const map = useCustomerMap();
@@ -11,14 +12,36 @@ export function CustomerMap() {
 
    const { routes, isRoutesLoading, routesError } =
       useCustomerPageRoutes(leads);
+   const { geoRoutes, isGeoRoutesLoading, geoRoutesError } =
+      useCustomerPageGeoRoutes(leads);
 
-   const hasRoutes = routes.length > 0;
+   const routeBoundsKey = routes
+      .map((route) => route.id)
+      .filter(Boolean)
+      .sort()
+      .join('|');
+
+   const geoRouteBoundsKey = geoRoutes
+      .map((route) => route.id)
+      .filter(Boolean)
+      .sort()
+      .join('|');
+
+   const leadsBoundsKey = leads
+      .map((lead) => lead.id)
+      .filter(Boolean)
+      .sort()
+      .join('|');
+
+   const fitBoundsKey = routeBoundsKey || geoRouteBoundsKey || leadsBoundsKey;
+
+   const hasRoutes = routes.length > 0 || geoRoutes.length > 0;
 
    return (
       <Box>
-         {routesError && (
+         {(routesError || geoRoutesError) && (
             <Alert severity='warning' sx={{ mb: 2 }}>
-               {routesError}
+               {routesError || geoRoutesError}
             </Alert>
          )}
          <Box
@@ -36,7 +59,7 @@ export function CustomerMap() {
                overflow: 'hidden',
             }}
          >
-            {(isLoading || isRoutesLoading) && (
+            {(isLoading || isRoutesLoading || isGeoRoutesLoading) && (
                <Box
                   sx={{
                      position: 'absolute',
@@ -57,6 +80,8 @@ export function CustomerMap() {
                markers={hasRoutes ? [] : map.markers}
                routePoints={map.routePoints}
                routes={routes}
+               geoRoutes={geoRoutes}
+               fitBoundsKey={fitBoundsKey}
                handleMarkerClick={map.handleMarkerClick}
             />
          </Box>

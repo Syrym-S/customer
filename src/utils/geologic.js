@@ -190,17 +190,21 @@ async function fetchLeadGeoWsToken(leadId, type = 'read', { signal } = {}) {
 }
 
 function handleGeoWsPayload(payload, handlers = {}) {
-   const { onPoints, onMessage } = handlers;
+   const { onPoints, onMessage, silent = false } = handlers;
 
    onMessage?.(payload);
 
    if (!payload) {
-      notifyWarning('GeoWS returned empty message');
+      if (!silent) {
+         notifyWarning('GeoWS returned empty message');
+      }
       return;
    }
 
    if (payload.type === 'error') {
-      notifyError(payload.message || 'GeoWS returned error', payload);
+      if (!silent) {
+         notifyError(payload.message || 'GeoWS returned error', payload);
+      }
       return;
    }
 
@@ -220,7 +224,12 @@ function handleGeoWsPayload(payload, handlers = {}) {
       }
 
       if (!normalizedPoints.length) {
-         notifyWarning('GeoWS response does not contain valid points', payload);
+         if (!silent) {
+            notifyWarning(
+               'GeoWS response does not contain valid points',
+               payload,
+            );
+         }
          return;
       }
 
@@ -232,6 +241,7 @@ function handleGeoWsPayload(payload, handlers = {}) {
 export function openLeadGeoConnection({
    leadId,
    mode = 'read',
+   silent = false,
    onOpen,
    onClose,
    onError,
@@ -257,9 +267,11 @@ export function openLeadGeoConnection({
          const { wsUrl, userId } = getGeoWsConfig();
 
          if (!wsUrl) {
-            notifyWarning('GeoWS config is not available', {
-               wsUrl,
-            });
+            if (!silent) {
+               notifyWarning('GeoWS config is not available', {
+                  wsUrl,
+               });
+            }
 
             return;
          }
@@ -296,10 +308,12 @@ export function openLeadGeoConnection({
                   }, 5000);
                }
 
-               notifySuccess('GeoWS connection opened', {
-                  leadId,
-                  mode,
-               });
+               if (!silent) {
+                  notifySuccess('GeoWS connection opened', {
+                     leadId,
+                     mode,
+                  });
+               }
 
                onOpen?.();
             },
@@ -311,12 +325,16 @@ export function openLeadGeoConnection({
 
             onError: (event) => {
                stopPolling();
-               notifyError('GeoWS connection error', event);
+               if (!silent) {
+                  notifyError('GeoWS connection error', event);
+               }
                onError?.(event);
             },
 
             onAuthFailed: (payload) => {
-               notifyError('GeoWS authorization failed', payload);
+               if (!silent) {
+                  notifyError('GeoWS authorization failed', payload);
+               }
                onAuthFailed?.(payload);
             },
 
@@ -324,6 +342,7 @@ export function openLeadGeoConnection({
                handleGeoWsPayload(payload, {
                   onPoints,
                   onMessage,
+                  silent,
                });
             },
          });
@@ -337,10 +356,12 @@ export function openLeadGeoConnection({
             'Failed to open GeoWS connection',
          );
 
-         notifyError(message, {
-            leadId,
-            error,
-         });
+         if (!silent) {
+            notifyError(message, {
+               leadId,
+               error,
+            });
+         }
 
          onError?.(error);
       }

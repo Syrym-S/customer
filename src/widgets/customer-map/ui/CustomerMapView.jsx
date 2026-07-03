@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import {
    MapContainer,
    TileLayer,
@@ -31,13 +31,20 @@ export function CustomerMapView({
    markers,
    routePoints = [],
    geoRoutePoints = [],
+   geoRoutes = [],
    routes = [],
    route = null,
+   fitBoundsKey = '',
    handleMarkerClick,
    onMapClick,
    onMarkerDragEnd,
 }) {
    const routesPointsCount = routes.reduce(
+      (count, route) => count + (route.points?.length || 0),
+      0,
+   );
+
+   const geoRoutesPointsCount = geoRoutes.reduce(
       (count, route) => count + (route.points?.length || 0),
       0,
    );
@@ -57,7 +64,10 @@ export function CustomerMapView({
             zoom={zoom}
             markersCount={markers.length}
             routePointsCount={
-               routePoints.length + geoRoutePoints.length + routesPointsCount
+               routePoints.length +
+               geoRoutePoints.length +
+               routesPointsCount +
+               geoRoutesPointsCount
             }
          />
 
@@ -65,6 +75,8 @@ export function CustomerMapView({
             routePoints={routePoints}
             geoRoutePoints={geoRoutePoints}
             routes={routes}
+            geoRoutes={geoRoutes}
+            fitBoundsKey={fitBoundsKey}
          />
 
          <MapClickHandler onMapClick={onMapClick} />
@@ -138,6 +150,51 @@ export function CustomerMapView({
                         {toLocation}
                      </Popup>
                   </Marker>
+               </Fragment>
+            );
+         })}
+
+         {geoRoutes.map((geoRoute) => {
+            const points = geoRoute.points || [];
+            const currentPoint = geoRoute.currentPoint;
+
+            if (!points.length) {
+               return null;
+            }
+
+            return (
+               <Fragment key={`geo-${geoRoute.id}`}>
+                  {points.length >= 2 && (
+                     <Polyline
+                        positions={points}
+                        pathOptions={{
+                           weight: 4,
+                           opacity: 0.95,
+                           dashArray: '8 8',
+                        }}
+                     >
+                        <Tooltip sticky>
+                           <div>
+                              <b>
+                                 Фактический путь лида #
+                                 {geoRoute.lead?.num ?? geoRoute.lead?.id}
+                              </b>
+                              <br />
+                              Точек: {points.length}
+                           </div>
+                        </Tooltip>
+                     </Polyline>
+                  )}
+
+                  {currentPoint && (
+                     <Marker position={currentPoint} icon={driverIcon}>
+                        <Popup>
+                           <strong>Текущая позиция водителя</strong>
+                           <br />
+                           Лид #{geoRoute.lead?.num ?? geoRoute.lead?.id}
+                        </Popup>
+                     </Marker>
+                  )}
                </Fragment>
             );
          })}
@@ -262,13 +319,34 @@ function MapResizeHandler({ center, zoom, markersCount, routePointsCount }) {
    return null;
 }
 
-function FitRouteBounds({ routePoints, geoRoutePoints, routes }) {
+function FitRouteBounds({
+   routePoints,
+   geoRoutePoints,
+   routes,
+   geoRoutes,
+   fitBoundsKey,
+}) {
    const map = useMap();
+   const fittedBoundsKeyRef = useRef(null);
 
    useEffect(() => {
-      const routesPoints = routes.flatMap((route) => route.points || []);
+      if (!fitBoundsKey) {
+         return;
+      }
 
-      const points = [...routesPoints, ...routePoints, ...geoRoutePoints];
+      if (fittedBoundsKeyRef.current === fitBoundsKey) {
+         return;
+      }
+
+      const routesPoints = routes.flatMap((route) => route.points || []);
+      const geoRoutesPoints = geoRoutes.flatMap((route) => route.points || []);
+
+      const points = [
+         ...routesPoints,
+         ...geoRoutesPoints,
+         ...routePoints,
+         ...geoRoutePoints,
+      ];
 
       if (!points || points.length < 2) {
          return;
@@ -277,7 +355,9 @@ function FitRouteBounds({ routePoints, geoRoutePoints, routes }) {
       map.fitBounds(points, {
          padding: [32, 32],
       });
-   }, [map, routePoints, geoRoutePoints, routes]);
+
+      fittedBoundsKeyRef.current = fitBoundsKey;
+   }, [map, fitBoundsKey, routePoints, geoRoutePoints, routes, geoRoutes]);
 
    return null;
 }
@@ -302,6 +382,7 @@ CustomerMapView.propTypes = {
    markers: PropTypes.array.isRequired,
    routePoints: PropTypes.array,
    geoRoutePoints: PropTypes.array,
+   geoRoutes: PropTypes.array,
    route: PropTypes.object,
    routes: PropTypes.array,
    handleMarkerClick: PropTypes.func.isRequired,
@@ -320,6 +401,7 @@ FitRouteBounds.propTypes = {
    routePoints: PropTypes.array,
    geoRoutePoints: PropTypes.array,
    routes: PropTypes.array,
+   geoRoutes: PropTypes.array,
 };
 
 MapClickHandler.propTypes = {
