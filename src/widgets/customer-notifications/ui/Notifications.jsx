@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
     Alert,
     Badge,
@@ -52,6 +52,7 @@ export function Notifications() {
 
     const [isNotificationsDrawerOpen, setIsNotificationsDrawerOpen] =
         useState(false);
+    const [notificationsRefreshKey, setNotificationsRefreshKey] = useState(0);
 
     const notificationWsConnectionRef = useRef(null);
 
@@ -115,40 +116,84 @@ export function Notifications() {
         setAnchorEl(null);
     }
 
-    async function handleOpenNotificationDetails(notification) {
-        const notificationId = getNotificationId(notification);
+    const markNotificationAsViewed = useCallback(
+        (notificationId, notificationDetails = null) => {
+            if (!notificationId) {
+                return;
+            }
 
-        if (!notificationId) {
-            return;
-        }
+            setNotifications((prevNotifications) =>
+                prevNotifications.map((notification) => {
+                    const currentNotificationId =
+                        getNotificationId(notification);
 
-        handleCloseMenu();
+                    if (
+                        String(currentNotificationId) !== String(notificationId)
+                    ) {
+                        return notification;
+                    }
 
-        setSelectedNotification(notification);
-        setIsDetailsOpen(true);
-        setDetailsError('');
-
-        try {
-            setIsDetailsLoading(true);
-
-            const response =
-                await fetchCustomerNotificationByIdApi(notificationId);
-
-            const notificationDetails =
-                normalizeNotificationDetailsResponse(response);
-
-            setSelectedNotification(notificationDetails || notification);
-        } catch (error) {
-            setDetailsError(
-                error.response?.data?.message ||
-                    error.response?.data?.error ||
-                    error.message ||
-                    'Не удалось загрузить уведомление',
+                    return {
+                        ...notification,
+                        ...(notificationDetails || {}),
+                        is_viewed: true,
+                    };
+                }),
             );
-        } finally {
-            setIsDetailsLoading(false);
-        }
-    }
+
+            setNotificationsRefreshKey((prev) => prev + 1);
+        },
+        [],
+    );
+
+    const handleOpenNotificationDetails = useCallback(
+        async (notification) => {
+            const notificationId = getNotificationId(notification);
+
+            if (!notificationId) {
+                return;
+            }
+
+            blurActiveElement();
+            setAnchorEl(null);
+
+            setSelectedNotification(notification);
+            setIsDetailsOpen(true);
+            setDetailsError('');
+
+            try {
+                setIsDetailsLoading(true);
+
+                const response =
+                    await fetchCustomerNotificationByIdApi(notificationId);
+
+                const notificationDetails =
+                    normalizeNotificationDetailsResponse(response);
+
+                const nextSelectedNotification = {
+                    ...(notificationDetails || notification),
+                    is_viewed: true,
+                };
+
+                setSelectedNotification(nextSelectedNotification);
+
+                markNotificationAsViewed(
+                    notificationId,
+                    nextSelectedNotification,
+                );
+            } catch (error) {
+                setDetailsError(
+                    error.response?.data?.message ||
+                        error.response?.data?.error ||
+                        error.message ||
+                        'Не удалось загрузить уведомление',
+                );
+            } finally {
+                setIsDetailsLoading(false);
+            }
+        },
+        [markNotificationAsViewed],
+    );
 
     function handleCloseDetails() {
         if (isDetailsLoading) {
@@ -271,11 +316,7 @@ export function Notifications() {
                 return;
             }
 
-            handleCloseMenu();
-            setDetailsError('');
-            setIsDetailsLoading(false);
-            setSelectedNotification(notification);
-            setIsDetailsOpen(true);
+            handleOpenNotificationDetails(notification);
         }
 
         window.addEventListener(
@@ -289,7 +330,7 @@ export function Notifications() {
                 handleOpenRealtimeNotificationToast,
             );
         };
-    }, []);
+    }, [handleOpenNotificationDetails]);
 
     const previewNotifications = notifications.slice(0, 7);
 
@@ -513,7 +554,7 @@ export function Notifications() {
                 open={isNotificationsDrawerOpen}
                 onClose={handleCloseNotificationsDrawer}
                 onOpenNotificationDetails={handleOpenNotificationDetails}
-                refreshKey={notifications.length}
+                refreshKey={`${notifications.length}-${notificationsRefreshKey}`}
             />
 
             <NotificationDetailsModal

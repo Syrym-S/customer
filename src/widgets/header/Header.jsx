@@ -398,7 +398,6 @@ export function Header() {
                </List>
             </Box>
          </Drawer>
-
          <Menu
             anchorEl={profileAnchorEl}
             open={isProfileMenuOpen}

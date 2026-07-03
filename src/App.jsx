@@ -12,7 +12,7 @@ function App() {
             <BrowserRouter>
                 <AppRouter />
             </BrowserRouter>
-            {/* <EmailVerificationWatcher /> */}
+            <EmailVerificationWatcher />
             <NotificationsColumn />
         </ThemeProvider>
     );
