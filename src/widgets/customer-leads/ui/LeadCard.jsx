@@ -20,7 +20,7 @@ export function LeadCard({ lead }) {
    }
 
    const forwarderLabel =
-      lead.forwarder?.companyName || lead.forwarder?.fullName || 'Не указан';
+      lead.forwarder?.fullName || lead.forwarder?.companyName || 'Не указан';
 
    return (
       <Box

@@ -141,10 +141,6 @@ export function useCustomerPageGeoRoutes(leads) {
                         return;
                     }
 
-                    console.log('Customer page GeoWS opened:', {
-                        leadId,
-                    });
-
                     markLeadHandled(leadId, 'opened');
                 },
 

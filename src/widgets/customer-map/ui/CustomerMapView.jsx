@@ -25,6 +25,60 @@ function formatMapLocation(value, fallback) {
    return normalizeLocationValue(value) || fallback;
 }
 
+function formatDriverName(driver) {
+   return (
+      driver?.fio ||
+      driver?.name ||
+      driver?.fullName ||
+      driver?.full_name ||
+      'Водитель не указан'
+   );
+}
+
+function formatDriverPhone(driver) {
+   return driver?.phone || driver?.tel || driver?.telephone || '';
+}
+
+function normalizePhoneHref(phone) {
+   if (!phone) {
+      return '';
+   }
+
+   const normalizedPhone = String(phone).replace(/[^\d+]/g, '');
+
+   if (!normalizedPhone) {
+      return '';
+   }
+
+   return normalizedPhone.startsWith('+')
+      ? normalizedPhone
+      : `+${normalizedPhone}`;
+}
+
+function DriverMapInfo({ driver }) {
+   const driverName = formatDriverName(driver);
+   const driverPhone = formatDriverPhone(driver);
+   const driverPhoneHref = normalizePhoneHref(driverPhone);
+
+   return (
+      <>
+         <br />
+         Водитель: {driverName}
+         {driverPhone && (
+            <>
+               <br />
+               Телефон:{' '}
+               {driverPhoneHref ? (
+                  <a href={`tel:${driverPhoneHref}`}>{driverPhone}</a>
+               ) : (
+                  driverPhone
+               )}
+            </>
+         )}
+      </>
+   );
+}
+
 export function CustomerMapView({
    center,
    zoom,
@@ -36,6 +90,7 @@ export function CustomerMapView({
    route = null,
    fitBoundsKey = '',
    handleMarkerClick,
+   onLeadClick,
    onMapClick,
    onMarkerDragEnd,
 }) {
@@ -112,12 +167,18 @@ export function CustomerMapView({
                         weight: index === 0 ? 5 : 4,
                         opacity: index === 0 ? 0.9 : 0.65,
                      }}
+                     eventHandlers={{
+                        click: () => {
+                           onLeadClick?.(mapRoute.lead);
+                        },
+                     }}
                   >
                      <Tooltip sticky>
                         <div>
                            <b>Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}</b>
                            <br />
                            {fromLocation} → {toLocation}
+                           <DriverMapInfo driver={mapRoute.lead?.driver} />
                            {mapRoute.route?.distanceMeters && (
                               <>
                                  <br />
@@ -172,6 +233,11 @@ export function CustomerMapView({
                            opacity: 0.95,
                            dashArray: '8 8',
                         }}
+                        eventHandlers={{
+                           click: () => {
+                              onLeadClick?.(geoRoute.lead);
+                           },
+                        }}
                      >
                         <Tooltip sticky>
                            <div>
@@ -180,6 +246,17 @@ export function CustomerMapView({
                                  {geoRoute.lead?.num ?? geoRoute.lead?.id}
                               </b>
                               <br />
+                              {formatMapLocation(
+                                 geoRoute.lead?.from_location,
+                                 'Откуда не указано',
+                              )}{' '}
+                              →{' '}
+                              {formatMapLocation(
+                                 geoRoute.lead?.to_location,
+                                 'Куда не указано',
+                              )}
+                              <DriverMapInfo driver={geoRoute.lead?.driver} />
+                              <br />
                               Точек: {points.length}
                            </div>
                         </Tooltip>
@@ -187,11 +264,18 @@ export function CustomerMapView({
                   )}
 
                   {currentPoint && (
-                     <Marker position={currentPoint} icon={driverIcon}>
+                     <Marker
+                        position={currentPoint}
+                        icon={driverIcon}
+                        eventHandlers={{
+                           click: () => {
+                              onLeadClick?.(geoRoute.lead);
+                           },
+                        }}
+                     >
                         <Popup>
                            <strong>Текущая позиция водителя</strong>
                            <br />
-                           Лид #{geoRoute.lead?.num ?? geoRoute.lead?.id}
                         </Popup>
                      </Marker>
                   )}
@@ -388,6 +472,8 @@ CustomerMapView.propTypes = {
    handleMarkerClick: PropTypes.func.isRequired,
    onMapClick: PropTypes.func,
    onMarkerDragEnd: PropTypes.func,
+   fitBoundsKey: PropTypes.string,
+   onLeadClick: PropTypes.func,
 };
 
 MapResizeHandler.propTypes = {
@@ -402,8 +488,22 @@ FitRouteBounds.propTypes = {
    geoRoutePoints: PropTypes.array,
    routes: PropTypes.array,
    geoRoutes: PropTypes.array,
+   fitBoundsKey: PropTypes.string,
 };
 
 MapClickHandler.propTypes = {
    onMapClick: PropTypes.func,
+};
+
+DriverMapInfo.propTypes = {
+   driver: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      fio: PropTypes.string,
+      name: PropTypes.string,
+      fullName: PropTypes.string,
+      full_name: PropTypes.string,
+      phone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      tel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      telephone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   }),
 };

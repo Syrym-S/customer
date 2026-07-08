@@ -233,7 +233,6 @@ function handleGeoWsPayload(payload, handlers = {}) {
          return;
       }
 
-      console.log('[GeoWS normalized points]', normalizedPoints);
       onPoints?.(normalizedPoints, payload);
    }
 }

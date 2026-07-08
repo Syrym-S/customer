@@ -8,7 +8,7 @@ import { useCustomerPageGeoRoutes } from '../model/useCustomerPageGeoRoutes';
 
 export function CustomerMap() {
    const map = useCustomerMap();
-   const { leads, isLoading } = useLeadsContext();
+   const { leads, isLoading, setOpenLead } = useLeadsContext();
 
    const { routes, isRoutesLoading, routesError } =
       useCustomerPageRoutes(leads);
@@ -36,6 +36,14 @@ export function CustomerMap() {
    const fitBoundsKey = routeBoundsKey || geoRouteBoundsKey || leadsBoundsKey;
 
    const hasRoutes = routes.length > 0 || geoRoutes.length > 0;
+
+   function handleLeadRouteClick(lead) {
+      if (!lead) {
+         return;
+      }
+
+      setOpenLead(lead);
+   }
 
    return (
       <Box>
@@ -83,6 +91,7 @@ export function CustomerMap() {
                geoRoutes={geoRoutes}
                fitBoundsKey={fitBoundsKey}
                handleMarkerClick={map.handleMarkerClick}
+               onLeadClick={handleLeadRouteClick}
             />
          </Box>
       </Box>
