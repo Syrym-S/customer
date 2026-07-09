@@ -1,4 +1,4 @@
-import { Alert, Box, CircularProgress } from '@mui/material';
+import { Alert, Box, CircularProgress, Typography } from '@mui/material';
 
 import { CustomerMapView } from './CustomerMapView';
 import { useCustomerMap } from '../model/useCustomerMap';
@@ -36,6 +36,7 @@ export function CustomerMap() {
    const fitBoundsKey = routeBoundsKey || geoRouteBoundsKey || leadsBoundsKey;
 
    const hasRoutes = routes.length > 0 || geoRoutes.length > 0;
+   const isMapLoading = isLoading || isRoutesLoading || isGeoRoutesLoading;
 
    function handleLeadRouteClick(lead) {
       if (!lead) {
@@ -67,21 +68,36 @@ export function CustomerMap() {
                overflow: 'hidden',
             }}
          >
-            {(isLoading || isRoutesLoading || isGeoRoutesLoading) && (
+            {isMapLoading && (
                <Box
                   sx={{
                      position: 'absolute',
                      inset: 0,
-                     zIndex: 10,
+                     zIndex: 1000,
                      display: 'flex',
+                     flexDirection: 'column',
                      alignItems: 'center',
                      justifyContent: 'center',
-                     backgroundColor: 'rgba(255, 255, 255, 0.55)',
+                     gap: 1.5,
+                     backgroundColor: 'rgba(255, 255, 255, 0.72)',
+                     backdropFilter: 'blur(1px)',
+                     pointerEvents: 'auto',
                   }}
                >
                   <CircularProgress size={28} />
+
+                  <Typography
+                     color='text.secondary'
+                     sx={{
+                        fontSize: 13,
+                        fontWeight: 500,
+                     }}
+                  >
+                     Загружаем карту...
+                  </Typography>
                </Box>
             )}
+
             <CustomerMapView
                center={map.center}
                zoom={map.zoom}

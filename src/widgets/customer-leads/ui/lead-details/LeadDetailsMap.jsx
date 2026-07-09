@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
 import { CustomerMapView } from '../../../customer-map/ui/CustomerMapView';
 
@@ -80,14 +80,28 @@ export function LeadDetailsMap({
                sx={{
                   position: 'absolute',
                   inset: 0,
-                  zIndex: 10,
+                  zIndex: 1000,
                   display: 'flex',
+                  flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  backgroundColor: 'rgba(255, 255, 255, 0.55)',
+                  gap: 1.5,
+                  backgroundColor: 'rgba(255, 255, 255, 0.72)',
+                  backdropFilter: 'blur(1px)',
+                  pointerEvents: 'auto',
                }}
             >
                <CircularProgress size={28} />
+
+               <Typography
+                  color='text.secondary'
+                  sx={{
+                     fontSize: 13,
+                     fontWeight: 500,
+                  }}
+               >
+                  Загружаем маршрут...
+               </Typography>
             </Box>
          )}
 

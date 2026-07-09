@@ -42,12 +42,7 @@ export function LeadDetailsContent({
             onEditChange={onEditChange}
          />
 
-         <LeadDriverSection
-            lead={lead}
-            isEditing={isEditing}
-            editForm={editForm}
-            onEditChange={onEditChange}
-         />
+         <LeadDriverSection lead={lead} />
 
          <LeadDocumentsSection
             documents={documents}

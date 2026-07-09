@@ -2,10 +2,13 @@ import { Box, Container } from '@mui/material';
 import { TendersToolbar } from '../../widgets/customer-tenders/ui/TendersToolbar';
 import { TendersList } from '../../widgets/customer-tenders/ui/TendersList';
 import { TendersProvider } from '../../widgets/customer-tenders/model/TendersProviders';
+import { TenderDetailsRouteSync } from '../../widgets/customer-tenders/ui/tender-details/TenderDetailsRouteSync';
 
 export function TenderPage() {
    return (
       <TendersProvider>
+         <TenderDetailsRouteSync />
+
          <Container maxWidth={false}>
             <Box
                sx={{

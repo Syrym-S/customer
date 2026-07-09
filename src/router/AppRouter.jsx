@@ -22,6 +22,10 @@ export const AppRouter = () => {
           element: <LeadsPage />,
         },
         {
+          path: "customer/leads/:leadId",
+          element: <LeadsPage />,
+        },
+        {
           path: "customer/profile",
           element: <ProfilePage />,
         },
@@ -30,7 +34,15 @@ export const AppRouter = () => {
           element: <TenderPage />,
         },
         {
+          path: "customer/tenders/:tenderId",
+          element: <TenderPage />,
+        },
+        {
           path: "customer/factorings",
+          element: <FactoringsPage />,
+        },
+        {
+          path: "customer/factorings/:factoringIndex",
           element: <FactoringsPage />,
         },
         {

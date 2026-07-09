@@ -10,7 +10,14 @@ import {
     Typography,
 } from '@mui/material';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
-import { formatNotificationDate, getNotificationCreatedAt, getNotificationDescription, getNotificationLink, getNotificationTitle } from '../model/notifications.helpers';
+import {
+    formatNotificationDate,
+    getNotificationCreatedAt,
+    getNotificationDescription,
+    getNotificationLink,
+    getNotificationTitle,
+} from '../model/notifications.helpers';
+import { useNavigate } from 'react-router-dom';
 
 export function NotificationDetailsModal({
     open,
@@ -19,6 +26,35 @@ export function NotificationDetailsModal({
     error,
     onClose,
 }) {
+    const navigate = useNavigate();
+
+    function handleOpenNotificationLink() {
+        const link = getNotificationLink(notification);
+
+        if (!link) {
+            return;
+        }
+
+        try {
+            const normalizedLink = String(link).replaceAll('\\/', '/');
+            const url = new URL(normalizedLink, window.location.origin);
+
+            if (
+                url.pathname.startsWith('/customer/leads/') ||
+                url.pathname.startsWith('/customer/tenders/') ||
+                url.pathname.startsWith('/customer/factorings/')
+            ) {
+                onClose?.();
+                navigate(`${url.pathname}${url.search}${url.hash}`);
+                return;
+            }
+
+            window.open(normalizedLink, '_blank', 'noopener,noreferrer');
+        } catch {
+            window.open(link, '_blank', 'noopener,noreferrer');
+        }
+    }
+
     return (
         <Dialog
             open={open}
@@ -83,73 +119,68 @@ export function NotificationDetailsModal({
                 )}
 
                 {!loading && notification && (
-                <Box
-                    sx={{
-                        p: 2,
-                        border: '1px solid',
-                        borderColor: 'divider',
-                        borderRadius: 3,
-                        backgroundColor: 'background.paper',
-                    }}
-                >
-                    <Typography
-                        color='text.secondary'
-                        sx={{
-                            fontSize: 14,
-                            lineHeight: 1.5,
-                        }}
-                    >
-                        {getNotificationDescription(notification)}
-                    </Typography>
-
                     <Box
                         sx={{
-                            display: 'flex',
-                            gap: 1,
-                            flexWrap: 'wrap',
-                            mt: 2,
+                            p: 2,
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            borderRadius: 3,
+                            backgroundColor: 'background.paper',
                         }}
                     >
+                        <Typography
+                            color='text.secondary'
+                            sx={{
+                                fontSize: 14,
+                                lineHeight: 1.5,
+                            }}
+                        >
+                            {getNotificationDescription(notification)}
+                        </Typography>
+
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                gap: 1,
+                                flexWrap: 'wrap',
+                                mt: 2,
+                            }}
+                        ></Box>
+
+                        {getNotificationLink(notification) && (
+                            <Box sx={{ mt: 2 }}>
+                                <Typography
+                                    component='button'
+                                    type='button'
+                                    onClick={handleOpenNotificationLink}
+                                    sx={{
+                                        p: 0,
+                                        border: 0,
+                                        background: 'none',
+                                        cursor: 'pointer',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: 0.5,
+                                        color: 'primary.main',
+                                        fontSize: 14,
+                                        fontWeight: 600,
+                                        fontFamily: 'inherit',
+                                        textDecoration: 'none',
+
+                                        '&:hover': {
+                                            textDecoration: 'underline',
+                                        },
+                                    }}
+                                >
+                                    Перейти
+                                    <OpenInNewOutlinedIcon
+                                        sx={{ fontSize: 16 }}
+                                    />
+                                </Typography>
+                            </Box>
+                        )}
                     </Box>
-
-                    {getNotificationLink(notification) && (
-                        <Box sx={{ mt: 2 }}>
-                            <Typography
-                                component='button'
-                                type='button'
-                                onClick={() => {
-                                    window.open(
-                                        getNotificationLink(notification),
-                                        '_blank',
-                                        'noopener,noreferrer',
-                                    );
-                                }}
-                                sx={{
-                                    p: 0,
-                                    border: 0,
-                                    background: 'none',
-                                    cursor: 'pointer',
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: 0.5,
-                                    color: 'primary.main',
-                                    fontSize: 14,
-                                    fontWeight: 600,
-                                    fontFamily: 'inherit',
-                                    textDecoration: 'none',
-
-                                    '&:hover': {
-                                        textDecoration: 'underline',
-                                    },
-                                }}
-                            >
-                                Перейти
-                                <OpenInNewOutlinedIcon sx={{ fontSize: 16 }} />
-                            </Typography>
-                        </Box>
-                    )}
-                </Box>
-            )}
+                )}
             </DialogContent>
 
             <DialogActions

@@ -1,9 +1,13 @@
 import {
     Alert,
     Box,
+    Button,
     CircularProgress,
     Dialog,
+    DialogActions,
     DialogContent,
+    DialogTitle,
+    Typography,
 } from '@mui/material';
 
 import { useTendersContext } from '../model/useTendersContext';
@@ -25,8 +29,12 @@ import {
     mapTenderEditFormToApi,
 } from '../model/tender-edit-form.helpers';
 import { TenderDetailsActions } from './tender-details/TenderDetailsActions';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export function TenderDetailsModal() {
+    const navigate = useNavigate();
+    const { tenderId } = useParams();
+
     const map = useCustomerMap();
     const {
         openTender,
@@ -54,6 +62,17 @@ export function TenderDetailsModal() {
     const [actionError, setActionError] = useState('');
     const [isActionLoading, setIsActionLoading] = useState(false);
 
+    const isRoutePlaceholder = Boolean(openTender?.isRoutePlaceholder);
+    const shouldShowDetailsLoader =
+        isDetailsLoading || (isRoutePlaceholder && !detailsError);
+
+    const shouldRenderTenderDetails =
+        !shouldShowDetailsLoader && !isRoutePlaceholder;
+
+    const isTenderDetailsRoute =
+        Boolean(tenderId) ||
+        /\/customer\/tenders\/[^/?#]+/.test(window.location.pathname);
+
     function handleClose() {
         closeTenderDetails();
         setIsEditing(false);
@@ -62,6 +81,10 @@ export function TenderDetailsModal() {
         setRoute(null);
         setRoutePoints([]);
         setActionError('');
+
+        if (isTenderDetailsRoute) {
+            navigate('/customer/tenders', { replace: true });
+        }
     }
 
     function handleStartEdit() {
@@ -345,7 +368,32 @@ export function TenderDetailsModal() {
                 },
             }}
         >
-            <TenderDetailsHeader tender={openTender} />
+            {isRoutePlaceholder ? (
+                <DialogTitle sx={{ px: 3, pt: 3, pb: 1.5 }}>
+                    <Typography
+                        sx={{
+                            fontSize: {
+                                xs: '18px',
+                                sm: '20px',
+                            },
+                            fontWeight: 600,
+                            lineHeight: 1.3,
+                        }}
+                    >
+                        Тендер #{openTender?.id}
+                    </Typography>
+
+                    <Typography
+                        variant='body2'
+                        color='text.secondary'
+                        sx={{ mt: 0.5 }}
+                    >
+                        Загружаем детали тендера...
+                    </Typography>
+                </DialogTitle>
+            ) : (
+                <TenderDetailsHeader tender={openTender} />
+            )}
 
             <DialogContent
                 sx={{
@@ -375,61 +423,83 @@ export function TenderDetailsModal() {
                     </Alert>
                 )}
 
-                {isDetailsLoading ? (
+                {shouldShowDetailsLoader ? (
                     <Box
                         sx={{
-                            py: 5,
+                            minHeight: 360,
                             display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
                             justifyContent: 'center',
+                            gap: 2,
                         }}
                     >
                         <CircularProgress size={32} />
+
+                        <Typography color='text.secondary'>
+                            Загружаем детали тендера...
+                        </Typography>
                     </Box>
                 ) : (
-                    <>
-                        {leadForMap && (
-                            <LeadDetailsMap
-                                map={map}
-                                lead={leadForMap}
-                                route={route}
-                                routePoints={routePoints}
-                                geoPoints={[]}
-                                geoCurrentPoint={null}
-                                isRouteLoading={isRouteLoading}
+                    shouldRenderTenderDetails && (
+                        <>
+                            {leadForMap && (
+                                <LeadDetailsMap
+                                    map={map}
+                                    lead={leadForMap}
+                                    route={route}
+                                    routePoints={routePoints}
+                                    geoPoints={[]}
+                                    geoCurrentPoint={null}
+                                    isRouteLoading={isRouteLoading}
+                                />
+                            )}
+
+                            <TenderDetailsEditActions
+                                isEditing={isEditing}
+                                onStartEdit={handleStartEdit}
+                                onCancelEdit={handleCancelEdit}
                             />
-                        )}
 
-                        <TenderDetailsEditActions
-                            isEditing={isEditing}
-                            onStartEdit={handleStartEdit}
-                            onCancelEdit={handleCancelEdit}
-                        />
-
-                        <TenderDetailsContent
-                            tender={openTender}
-                            isActionLoading={isActionLoading}
-                            isEditing={isEditing}
-                            editForm={editForm}
-                            onEditChange={handleEditChange}
-                            onAcceptWinner={handleAcceptWinner}
-                            onDeleteParticipant={handleDeleteParticipant}
-                            onAddParticipants={handleAddParticipants}
-                        />
-                    </>
+                            <TenderDetailsContent
+                                tender={openTender}
+                                isActionLoading={isActionLoading}
+                                isEditing={isEditing}
+                                editForm={editForm}
+                                onEditChange={handleEditChange}
+                                onAcceptWinner={handleAcceptWinner}
+                                onDeleteParticipant={handleDeleteParticipant}
+                                onAddParticipants={handleAddParticipants}
+                            />
+                        </>
+                    )
                 )}
             </DialogContent>
 
-            <TenderDetailsActions
-                tender={openTender}
-                isEditing={isEditing}
-                isSaving={isSavingEdit}
-                isActionLoading={isActionLoading}
-                onSave={handleSaveEdit}
-                onClose={handleClose}
-                onStartTender={handleStartTender}
-                onCancelTender={handleCancelTender}
-                onDeleteTender={handleDeleteTender}
-            />
+            {shouldRenderTenderDetails ? (
+                <TenderDetailsActions
+                    tender={openTender}
+                    isEditing={isEditing}
+                    isSaving={isSavingEdit}
+                    isActionLoading={isActionLoading}
+                    onSave={handleSaveEdit}
+                    onClose={handleClose}
+                    onStartTender={handleStartTender}
+                    onCancelTender={handleCancelTender}
+                    onDeleteTender={handleDeleteTender}
+                />
+            ) : (
+                <DialogActions
+                    sx={{
+                        px: 3,
+                        pb: 3,
+                        pt: 2,
+                        justifyContent: 'flex-end',
+                    }}
+                >
+                    <Button onClick={handleClose}>Закрыть</Button>
+                </DialogActions>
+            )}
         </Dialog>
     );
 }

@@ -1,4 +1,12 @@
-import { Alert, Dialog, DialogContent, Typography } from '@mui/material';
+import {
+   Alert,
+   Box,
+   CircularProgress,
+   Dialog,
+   DialogContent,
+   DialogTitle,
+   Typography,
+} from '@mui/material';
 
 import { useLeadsContext } from '../model/useLeadsContext';
 import { useCustomerMap } from '../../customer-map/model/useCustomerMap';
@@ -37,8 +45,12 @@ import {
    fetchLeadDocuments,
    uploadLeadDocument,
 } from '../api/lead-documents.api';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export function LeadDetailsModal() {
+   const navigate = useNavigate();
+   const { leadId } = useParams();
+
    const map = useCustomerMap();
    const { openLead, setOpenLead } = useLeadsContext();
 
@@ -67,6 +79,19 @@ export function LeadDetailsModal() {
 
    const currentLead = leadDetails ?? openLead;
 
+   const isRoutePlaceholder = Boolean(openLead?.isRoutePlaceholder);
+   const shouldShowRouteLeadLoader =
+      isRoutePlaceholder && !leadDetails && isLeadDetailsLoading;
+
+   const shouldRenderLeadDetails = !isRoutePlaceholder || Boolean(leadDetails);
+
+   const hasRoute = routePoints.length >= 2;
+
+   const isLeadMapLoading =
+      Boolean(currentLead?.id) &&
+      !hasRoute &&
+      (isLeadDetailsLoading || isRouteLoading || !leadDetails);
+
    function handleClose() {
       setOpenLead(null);
       setLeadDetails(null);
@@ -81,6 +106,10 @@ export function LeadDetailsModal() {
       setIsDocumentUploading(false);
       setDocumentUploadError('');
       setDeletingDocumentIds([]);
+
+      if (leadId) {
+         navigate('/customer', { replace: true });
+      }
    }
 
    function handleEditChange(eventOrName, maybeValue) {
@@ -438,10 +467,54 @@ export function LeadDetailsModal() {
             },
          }}
       >
-         <LeadDetailsHeader lead={currentLead} />
+         {shouldRenderLeadDetails ? (
+            <LeadDetailsHeader lead={currentLead} />
+         ) : (
+            <DialogTitle sx={{ px: 3, pt: 3, pb: 1.5 }}>
+               <Typography
+                  sx={{
+                     fontSize: {
+                        xs: '18px',
+                        sm: '20px',
+                     },
+                     fontWeight: 600,
+                     lineHeight: 1.3,
+                  }}
+               >
+                  Лид #{openLead?.id}
+               </Typography>
+
+               <Typography
+                  variant='body2'
+                  color='text.secondary'
+                  sx={{ mt: 0.5 }}
+               >
+                  Загружаем детали лида...
+               </Typography>
+            </DialogTitle>
+         )}
 
          <DialogContent sx={{ px: 3 }}>
-            {isLeadDetailsLoading && (
+            {shouldShowRouteLeadLoader && (
+               <Box
+                  sx={{
+                     minHeight: 360,
+                     display: 'flex',
+                     flexDirection: 'column',
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                     gap: 2,
+                  }}
+               >
+                  <CircularProgress />
+
+                  <Typography color='text.secondary'>
+                     Загружаем детали лида...
+                  </Typography>
+               </Box>
+            )}
+
+            {!shouldShowRouteLeadLoader && isLeadDetailsLoading && (
                <Typography color='text.secondary' sx={{ mb: 2 }}>
                   Загружаем детали лида...
                </Typography>
@@ -459,34 +532,38 @@ export function LeadDetailsModal() {
                </Alert>
             )}
 
-            <LeadDetailsMap
-               map={map}
-               lead={currentLead}
-               route={route}
-               routePoints={routePoints}
-               geoPoints={geoPoints}
-               geoCurrentPoint={geoCurrentPoint}
-               isRouteLoading={isRouteLoading}
-            />
+            {shouldRenderLeadDetails && (
+               <>
+                  <LeadDetailsMap
+                     map={map}
+                     lead={currentLead}
+                     route={route}
+                     routePoints={routePoints}
+                     geoPoints={geoPoints}
+                     geoCurrentPoint={geoCurrentPoint}
+                     isRouteLoading={isLeadMapLoading}
+                  />
 
-            <LeadDetailsEditActions
-               isEditing={isEditing}
-               onStartEdit={handleStartEdit}
-               onCancelEdit={handleCancelEdit}
-            />
+                  <LeadDetailsEditActions
+                     isEditing={isEditing}
+                     onStartEdit={handleStartEdit}
+                     onCancelEdit={handleCancelEdit}
+                  />
 
-            <LeadDetailsContent
-               lead={currentLead}
-               isEditing={isEditing}
-               editForm={editForm}
-               onEditChange={handleEditChange}
-               documents={documents}
-               onAddDocument={handleAddDocument}
-               onDeleteDocument={handleDeleteDocument}
-               isDocumentUploading={isDocumentUploading}
-               documentUploadError={documentUploadError}
-               deletingDocumentIds={deletingDocumentIds}
-            />
+                  <LeadDetailsContent
+                     lead={currentLead}
+                     isEditing={isEditing}
+                     editForm={editForm}
+                     onEditChange={handleEditChange}
+                     documents={documents}
+                     onAddDocument={handleAddDocument}
+                     onDeleteDocument={handleDeleteDocument}
+                     isDocumentUploading={isDocumentUploading}
+                     documentUploadError={documentUploadError}
+                     deletingDocumentIds={deletingDocumentIds}
+                  />
+               </>
+            )}
          </DialogContent>
 
          <LeadDetailsActions
