@@ -27,6 +27,7 @@ import { Notifications } from "../customer-notifications/ui/Notifications";
 import { getCompactEmail } from "../../shared/helpers/helpers";
 import { PROFILE_PHOTO_UPDATED_EVENT } from "../customer-profile/model/profile-photo.helpers";
 import { fetchCustomerProfile } from "../../features/profile-edit/profile.api";
+import { isStaging } from "../../shared/api/api-client";
 
 export function Header() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -119,7 +120,9 @@ export function Header() {
 
       await logoutApi();
 
-      navigate("/auth/login");
+      window.location.replace(
+        isStaging ? "/staging/auth/login" : "/auth/login",
+      );
     } catch (error) {
       setLogoutError(
         error.response?.data?.message ||
