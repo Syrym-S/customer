@@ -17,6 +17,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
+import logoSrc from "../../../assets/logo.png";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
@@ -187,13 +188,43 @@ export function Header() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            position: "relative",
           }}
         >
           <IconButton onClick={handleOpenBurger}>
             <MenuIcon />
           </IconButton>
 
-          <Typography fontWeight={500}>Header</Typography>
+          <Box
+            component="img"
+            src={logoSrc}
+            alt="360 Logistics"
+            sx={{
+              position: {
+                xs: "static",
+                md: "absolute",
+              },
+              left: {
+                md: "50%",
+              },
+              transform: {
+                md: "translateX(-50%)",
+              },
+              height: {
+                xs: 28,
+                sm: 32,
+              },
+              width: "auto",
+              maxWidth: {
+                xs: 130,
+                sm: 170,
+              },
+              objectFit: "contain",
+              display: "block",
+              flexShrink: 0,
+              pointerEvents: "none",
+            }}
+          />
 
           <Box
             sx={{
@@ -227,6 +258,16 @@ export function Header() {
                 overflow: "hidden",
                 flexShrink: 1,
                 gap: 0.75,
+
+                "@media (max-width: 449px)": {
+                  width: 36,
+                  height: 36,
+                  minWidth: 36,
+                  maxWidth: 36,
+                  px: 0,
+                  border: "none",
+                  borderRadius: "50%",
+                },
               }}
             >
               <Avatar
@@ -249,7 +290,10 @@ export function Header() {
                 component="span"
                 noWrap
                 sx={{
-                  display: "block",
+                  display: {
+                    xs: "none",
+                    sm: "block",
+                  },
                   minWidth: 0,
                   maxWidth: "100%",
                   overflow: "hidden",
@@ -260,6 +304,9 @@ export function Header() {
                     sm: 14,
                   },
                   lineHeight: 1.4,
+                  "@media (min-width: 450px)": {
+                    display: "block",
+                  },
                 }}
               >
                 {userEmailLabel}
@@ -292,7 +339,18 @@ export function Header() {
               mb: 2,
             }}
           >
-            <Typography fontWeight={600}>Menu</Typography>
+            <Box
+              component="img"
+              src={logoSrc}
+              alt="360 Logistics"
+              sx={{
+                height: 34,
+                width: "auto",
+                maxWidth: 180,
+                objectFit: "contain",
+                display: "block",
+              }}
+            />
 
             <IconButton onClick={handleCloseBurger} aria-label="Закрыть меню">
               <CloseIcon />
