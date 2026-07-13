@@ -3,7 +3,6 @@ import {
    Box,
    CircularProgress,
    FormControlLabel,
-   MenuItem,
    Switch,
    TextField,
 } from '@mui/material';
@@ -13,11 +12,30 @@ import { Controller } from 'react-hook-form';
 import { StepSection } from '../components/StepSection';
 import { useEffect, useMemo, useState } from 'react';
 import { fetchCustomerCargoTypesApi, searchCustomerCargoTypesApi } from '../../../../../widgets/customer-leads/api/cargo-types.api';
+import { fetchCustomerCurrenciesApi } from '../../../api/currencies.api';
+import { CurrencyAutocomplete } from '../components/CurrencyAutocomplete';
 
 export function CargoStep({ control, errors }) {
    const [cargoTypes, setCargoTypes] = useState([]);
    const [cargoTypesSearch, setCargoTypesSearch] = useState('');
    const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);
+
+   useEffect(() => {
+      async function testCurrenciesRequest() {
+         try {
+            const response = await fetchCustomerCurrenciesApi();
+
+            console.log('test currencies:', response);
+         } catch (error) {
+            console.error(
+               'Не удалось загрузить валюты:',
+               error.response?.data || error,
+            );
+         }
+      }
+
+      testCurrenciesRequest();
+   }, []);
 
    useEffect(() => {
       let isCancelled = false;
@@ -142,29 +160,29 @@ export function CargoStep({ control, errors }) {
                            field.onChange(option?.name || 'Не указан');
                         }}
                         renderInput={(params) => {
-   const inputProps = params.InputProps || {};
+                           const inputProps = params.InputProps || {};
 
-   return (
-      <TextField
-         {...params}
-         label='Тип груза'
-         fullWidth
-         size='small'
-         InputProps={{
-            ...inputProps,
-            endAdornment: (
-               <>
-                  {isCargoTypesLoading && (
-                     <CircularProgress color='inherit' size={18} />
-                  )}
+                           return (
+                              <TextField
+                                 {...params}
+                                 label='Тип груза'
+                                 fullWidth
+                                 size='small'
+                                 InputProps={{
+                                    ...inputProps,
+                                    endAdornment: (
+                                       <>
+                                          {isCargoTypesLoading && (
+                                             <CircularProgress color='inherit' size={18} />
+                                          )}
 
-                  {inputProps.endAdornment}
-               </>
-            ),
-         }}
-      />
-   );
-}}
+                                          {inputProps.endAdornment}
+                                       </>
+                                    ),
+                                 }}
+                              />
+                           );
+                        }}
                      />
                   );
                }}
@@ -289,17 +307,13 @@ export function CargoStep({ control, errors }) {
                name='currency'
                control={control}
                render={({ field }) => (
-                  <TextField
-                     {...field}
-                     select
+                  <CurrencyAutocomplete
+                     value={field.value || 'KZT'}
+                     onChange={field.onChange}
                      label='Валюта'
                      fullWidth
                      size='small'
-                  >
-                     <MenuItem value='KZT'>KZT</MenuItem>
-                     <MenuItem value='USD'>USD</MenuItem>
-                     <MenuItem value='RUB'>RUB</MenuItem>
-                  </TextField>
+                  />
                )}
             />
 

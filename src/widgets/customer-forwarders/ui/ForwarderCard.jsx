@@ -1,5 +1,8 @@
 import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
 import {
+    getForwarderAccount,
+    getForwarderAddress,
+    getForwarderBik,
     getForwarderBin,
     getForwarderCompanyName,
     getForwarderFio,
@@ -15,7 +18,7 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
         <Paper
             elevation={0}
             onClick={() => onOpenDetails(forwarder)}
-            role='button'
+            role="button"
             tabIndex={0}
             sx={{
                 p: {
@@ -84,10 +87,10 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
                     </Box>
 
                     <Chip
-                        label='Экспедитор'
-                        color='primary'
-                        variant='outlined'
-                        size='small'
+                        label="Экспедитор"
+                        color="primary"
+                        variant="outlined"
+                        size="small"
                         sx={{
                             borderRadius: 999,
                             fontWeight: 600,
@@ -106,18 +109,36 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
                         gap: 1,
                     }}
                 >
-                    <InfoBadge label='БИН' value={getForwarderBin(forwarder)} />
+                    <InfoBadge label="БИН" value={getForwarderBin(forwarder)} />
 
-                    <InfoBadge label='ИИН' value={getForwarderIin(forwarder)} />
+                    <InfoBadge label="ИИН" value={getForwarderIin(forwarder)} />
 
                     <InfoBadge
-                        label='Представитель'
+                        label="Представитель"
                         value={getForwarderFio(forwarder)}
                     />
 
                     <InfoBadge
-                        label='Телефон'
+                        label="Телефон"
                         value={getForwarderPhone(forwarder)}
+                    />
+
+                    <InfoBadge label="БИК" value={getForwarderBik(forwarder)} />
+
+                    <InfoBadge
+                        label="Расчетный счет"
+                        value={getForwarderAccount(forwarder)}
+                    />
+
+                    <InfoBadge
+                        label="Адрес компании"
+                        value={getForwarderAddress(forwarder)}
+                        sx={{
+                            gridColumn: {
+                                xs: 'auto',
+                                sm: '1 / -1',
+                            },
+                        }}
                     />
                 </Box>
 
@@ -128,8 +149,8 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
                     }}
                 >
                     <Button
-                        size='small'
-                        variant='outlined'
+                        size="small"
+                        variant="outlined"
                         onClick={(event) => {
                             event.stopPropagation();
                             onOpenDetails(forwarder);
@@ -143,7 +164,7 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
     );
 }
 
-function InfoBadge({ label, value }) {
+function InfoBadge({ label, value, sx, multiline = false }) {
     return (
         <Box
             sx={{
@@ -153,6 +174,7 @@ function InfoBadge({ label, value }) {
                 border: '1px solid',
                 borderColor: 'divider',
                 minWidth: 0,
+                ...sx,
             }}
         >
             <Typography
@@ -172,8 +194,9 @@ function InfoBadge({ label, value }) {
                     fontWeight: 500,
                     lineHeight: 1.35,
                     overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
+                    textOverflow: multiline ? 'clip' : 'ellipsis',
+                    whiteSpace: multiline ? 'normal' : 'nowrap',
+                    overflowWrap: multiline ? 'anywhere' : 'normal',
                 }}
             >
                 {value || '—'}

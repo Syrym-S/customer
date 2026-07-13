@@ -167,12 +167,10 @@ export function normalizePersonValue(value) {
    return 'Не указан';
 }
 
-const CURRENCIES = ['KZT', 'USD', 'EUR', 'RUB'];
-
 function normalizeCurrency(value) {
    const currency = normalizeText(value).toUpperCase();
 
-   return CURRENCIES.includes(currency) ? currency : 'KZT';
+   return currency || 'KZT';
 }
 
 export function normalizeNumber(value) {

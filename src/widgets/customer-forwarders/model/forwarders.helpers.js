@@ -25,7 +25,7 @@ export function getForwarderCompanyName(forwarder) {
 }
 
 export function getForwarderBin(forwarder) {
-    return forwarder?.bin || 'Не указан';
+    return forwarder?.company_bin || 'Не указан';
 }
 
 export function getForwarderIin(forwarder) {
@@ -43,4 +43,16 @@ export function getForwarderFio(forwarder) {
 
 export function getForwarderPhone(forwarder) {
     return forwarder?.phone || 'Не указан';
+}
+
+export function getForwarderAddress(forwarder) {
+    return forwarder?.company_address || 'Не указан';
+}
+
+export function getForwarderBik(forwarder) {
+    return forwarder?.company_bik || 'Не указан';
+}
+
+export function getForwarderAccount(forwarder) {
+    return forwarder?.company_account || 'Не указан';
 }

@@ -1,4 +1,11 @@
-import { Autocomplete, Box, CircularProgress, MenuItem, Stack, TextField } from '@mui/material';
+import {
+   Autocomplete,
+   Box,
+   CircularProgress,
+   MenuItem,
+   Stack,
+   TextField,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
@@ -6,7 +13,11 @@ import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined
 import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
 import { useEffect, useMemo, useState } from 'react';
-import { fetchCustomerCargoTypesApi, searchCustomerCargoTypesApi } from '../../../api/cargo-types.api';
+import {
+   fetchCustomerCargoTypesApi,
+   searchCustomerCargoTypesApi,
+} from '../../../api/cargo-types.api';
+import { CurrencyAutocomplete } from '../../../../../features/create-lead/ui/create-lead-modal/components/CurrencyAutocomplete';
 
 export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
    const [cargoTypes, setCargoTypes] = useState([]);
@@ -105,17 +116,22 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
       return Array.from(uniqueMap.values());
    }, [cargoTypes]);
 
-
    return (
-      <DetailSection icon={<LocalShippingOutlinedIcon />} title='Груз'>
+      <DetailSection icon={<LocalShippingOutlinedIcon />} title="Груз">
          <Box
             sx={{
                display: 'grid',
-               gridTemplateColumns: {
-                  xs: '1fr 1fr',
-                  sm: 'repeat(2, 1fr)',
-                  md: 'repeat(4, 1fr)',
-               },
+               gridTemplateColumns: isEditing
+                  ? {
+                       xs: '1fr',
+                       sm: 'repeat(2, minmax(0, 1fr))',
+                       md: 'minmax(180px, 1.3fr) minmax(90px, 0.55fr) minmax(320px, 1.9fr) minmax(105px, 0.65fr)',
+                    }
+                  : {
+                       xs: '1fr 1fr',
+                       sm: 'repeat(2, 1fr)',
+                       md: 'repeat(4, 1fr)',
+                    },
                gap: 1,
             }}
          >
@@ -147,15 +163,18 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
                      return (
                         <TextField
                            {...params}
-                           label='Тип груза'
+                           label="Тип груза"
                            fullWidth
-                           size='small'
+                           size="small"
                            InputProps={{
                               ...inputProps,
                               endAdornment: (
                                  <>
                                     {isCargoTypesLoading && (
-                                       <CircularProgress color='inherit' size={18} />
+                                       <CircularProgress
+                                          color="inherit"
+                                          size={18}
+                                       />
                                     )}
 
                                     {inputProps.endAdornment}
@@ -167,57 +186,68 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
                   }}
                />
             ) : (
-               <InfoBadge label='Тип' value={lead.cargo.type} />
+               <InfoBadge label="Тип" value={lead.cargo.type} />
             )}
-            
 
             {isEditing ? (
                <TextField
-                  name='weight_kg'
-                  label='Вес, кг'
+                  name="weight_kg"
+                  label="Вес, кг"
                   value={editForm.weight_kg}
                   onChange={onEditChange}
                   fullWidth
-                  size='small'
+                  size="small"
+                  sx={{ minWidth: 0 }}
                />
             ) : (
-               <InfoBadge label='Вес' value={`${lead.cargo.weight_kg} кг`} />
+               <InfoBadge label="Вес" value={`${lead.cargo.weight_kg} кг`} />
             )}
 
             {isEditing ? (
-               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+               <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={1}
+                  sx={{
+                     minWidth: 0,
+                     width: '100%',
+                  }}
+               >
                   <TextField
-                     name='summ'
-                     label='Цена'
+                     name="summ"
+                     label="Цена"
                      value={editForm.summ}
                      onChange={onEditChange}
                      fullWidth
-                     size='small'
+                     size="small"
+                     sx={{
+                        minWidth: 0,
+                        flex: '1 1 auto',
+                     }}
                   />
 
-                  <TextField
-                     name='currency'
-                     label='Валюта'
+                  <CurrencyAutocomplete
                      value={editForm.currency || 'KZT'}
-                     onChange={onEditChange}
-                     select
-                     size='small'
+                     onChange={(nextCurrency) => {
+                        onEditChange('currency', nextCurrency);
+                     }}
+                     label="Валюта"
+                     size="small"
                      sx={{
                         minWidth: {
                            xs: '100%',
-                           sm: 120,
+                           sm: 145,
+                           md: 155,
+                        },
+                        flex: {
+                           xs: '1 1 auto',
+                           sm: '0 0 155px',
                         },
                      }}
-                  >
-                     <MenuItem value='KZT'>KZT</MenuItem>
-                     <MenuItem value='USD'>USD</MenuItem>
-                     <MenuItem value='EUR'>EUR</MenuItem>
-                     <MenuItem value='RUB'>RUB</MenuItem>
-                  </TextField>
+                  />
                </Stack>
             ) : (
                <InfoBadge
-                  label='Цена'
+                  label="Цена"
                   value={`${lead.summ} ${lead.currency}`}
                   accent
                />
@@ -225,37 +255,38 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
 
             {isEditing ? (
                <TextField
-                  name='vat'
-                  label='НДС'
+                  name="vat"
+                  label="НДС"
                   value={editForm.vat || 'без НДС'}
                   onChange={onEditChange}
                   fullWidth
-                  size='small'
+                  size="small"
                   select
+                  sx={{ minWidth: 0 }}
                >
-                  <MenuItem value='с НДС'>с НДС</MenuItem>
-                  <MenuItem value='без НДС'>без НДС</MenuItem>
+                  <MenuItem value="с НДС">с НДС</MenuItem>
+                  <MenuItem value="без НДС">без НДС</MenuItem>
                </TextField>
             ) : (
-               <InfoBadge label='НДС' value={lead.vat} />
+               <InfoBadge label="НДС" value={lead.vat} />
             )}
          </Box>
 
          {isEditing ? (
             <TextField
-               name='cargoDescription'
-               label='Описание'
+               name="cargoDescription"
+               label="Описание"
                value={editForm.cargoDescription}
                onChange={onEditChange}
                fullWidth
                multiline
                minRows={3}
-               size='small'
+               size="small"
                sx={{ mt: 1 }}
             />
          ) : (
             <InfoBadge
-               label='Описание'
+               label="Описание"
                value={lead.cargo.description}
                fullWidth
                sx={{ mt: 1 }}

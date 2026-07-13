@@ -2,6 +2,9 @@ import { Box, Paper, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import {
+    getForwarderAccount,
+    getForwarderAddress,
+    getForwarderBik,
     getForwarderBin,
     getForwarderCompanyName,
     getForwarderFio,
@@ -53,13 +56,13 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         {
             field: 'bin',
             headerName: 'БИН',
-            width: 180,
+            width: 160,
             renderCell: ({ row }) => <Box>{getForwarderBin(row)}</Box>,
         },
         {
             field: 'iin',
             headerName: 'ИИН',
-            width: 180,
+            width: 160,
             renderCell: ({ row }) => <Box>{getForwarderIin(row)}</Box>,
         },
         {
@@ -71,8 +74,42 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         {
             field: 'phone',
             headerName: 'Телефон',
-            width: 180,
+            width: 160,
             renderCell: ({ row }) => <Box>{getForwarderPhone(row)}</Box>,
+        },
+        {
+            field: 'bik',
+            headerName: 'БИК',
+            width: 140,
+            renderCell: ({ row }) => <Box>{getForwarderBik(row)}</Box>,
+        },
+        {
+            field: 'account',
+            headerName: 'Расчетный счет',
+            width: 220,
+            renderCell: ({ row }) => <Box>{getForwarderAccount(row)}</Box>,
+        },
+        {
+            field: 'address',
+            headerName: 'Адрес компании',
+            width: 280,
+            renderCell: ({ row }) => {
+                const address = getForwarderAddress(row);
+
+                return (
+                    <Box
+                        title={address}
+                        sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            maxWidth: '100%',
+                        }}
+                    >
+                        {address}
+                    </Box>
+                );
+            },
         },
     ];
 

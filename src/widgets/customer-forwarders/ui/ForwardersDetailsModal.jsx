@@ -16,6 +16,9 @@ import {
 } from '@mui/material';
 
 import {
+    getForwarderAccount,
+    getForwarderAddress,
+    getForwarderBik,
     getForwarderBin,
     getForwarderCompanyName,
     getForwarderFio,
@@ -50,18 +53,22 @@ function ForwarderDataTable({ forwarder }) {
             value: getForwarderPhone(forwarder),
         },
         {
-            label: 'Email',
-            value: forwarder?.email || forwarder?.personEmail,
+            label: 'БИК',
+            value: getForwarderBik(forwarder),
+        },
+        {
+            label: 'Расчетный счет',
+            value: getForwarderAccount(forwarder),
         },
         {
             label: 'Адрес компании',
-            value: forwarder?.companyAddress || forwarder?.company_address,
+            value: getForwarderAddress(forwarder),
         },
     ];
 
     return (
         <TableContainer component={Box}>
-            <Table size='small'>
+            <Table size="small">
                 <TableBody>
                     {rows.map((row) => (
                         <TableRow key={row.label}>
@@ -103,7 +110,7 @@ export function ForwarderDetailsModal({
             open={open}
             onClose={loading ? undefined : onClose}
             fullWidth
-            maxWidth='sm'
+            maxWidth="sm"
             slotProps={{
                 paper: {
                     sx: {
@@ -169,7 +176,7 @@ export function ForwarderDetailsModal({
                 )}
 
                 {error && (
-                    <Alert severity='error' sx={{ mb: 2 }}>
+                    <Alert severity="error" sx={{ mb: 2 }}>
                         {error}
                     </Alert>
                 )}
