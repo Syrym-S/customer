@@ -17,10 +17,11 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useTendersContext } from '../model/useTendersContext';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { searchTenderLeadsApi } from '../api/tender.api';
 import { getCurrentDateTimeForTenderApi } from '../model/tender.helpers';
-import { searchForwardersApi } from '../../../features/create-lead/api/forwarders.api';
+import { fetchForwardersApi } from '../../../features/create-lead/api/forwarders.api';
+import { FORWARDERS_PER_PAGE } from '../../customer-forwarders/model/forwarders.helpers';
 
 function padDatePart(value) {
     return String(value).padStart(2, '0');
@@ -83,6 +84,94 @@ function getLeadOptionLabel(option) {
     return option?.label || option?.title || option?.id || '';
 }
 
+function normalizeForwarderOption(forwarder) {
+    if (!forwarder) {
+        return null;
+    }
+
+    return {
+        id: forwarder.id,
+
+        fullName:
+            forwarder.fullName ||
+            forwarder.full_name ||
+            forwarder.fio ||
+            forwarder.name ||
+            'Без имени',
+
+        iin: forwarder.iin || forwarder.personIin || '',
+
+        companyName:
+            forwarder.companyName ||
+            forwarder.company_name ||
+            forwarder.name ||
+            'Без компании',
+
+        companyBin:
+            forwarder.companyBin ||
+            forwarder.company_bin ||
+            forwarder.bin ||
+            '',
+
+        phone: forwarder.phone || forwarder.tel || '',
+
+        raw: forwarder.raw || forwarder,
+    };
+}
+
+function getForwardersFromResponse(response) {
+    const data = response?.data ?? response;
+
+    if (Array.isArray(data)) {
+        return data;
+    }
+
+    if (Array.isArray(data?.results)) {
+        return data.results;
+    }
+
+    if (Array.isArray(data?.data?.results)) {
+        return data.data.results;
+    }
+
+    if (Array.isArray(data?.data)) {
+        return data.data;
+    }
+
+    return [];
+}
+
+function normalizeForwardersOptions(response) {
+    return getForwardersFromResponse(response)
+        .map(normalizeForwarderOption)
+        .filter((forwarder) => forwarder?.id);
+}
+
+function getForwarderSearchText(forwarder) {
+    return [
+        forwarder.fullName,
+        forwarder.companyName,
+        forwarder.companyBin,
+        forwarder.iin,
+        forwarder.phone,
+    ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+}
+
+function filterForwardersLocally(forwarders, query) {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+        return forwarders;
+    }
+
+    return forwarders.filter((forwarder) =>
+        getForwarderSearchText(forwarder).includes(normalizedQuery),
+    );
+}
+
 export function CreateTenderModal({ open, onClose }) {
     const { createTender, addParticipant, reloadTenders, startTender } =
         useTendersContext();
@@ -99,7 +188,8 @@ export function CreateTenderModal({ open, onClose }) {
 
     const [selectedForwarders, setSelectedForwarders] = useState([]);
     const [forwarderInputValue, setForwarderInputValue] = useState('');
-    const [forwarders, setForwarders] = useState([]);
+    const [allForwarders, setAllForwarders] = useState([]);
+    const [isForwardersLoaded, setIsForwardersLoaded] = useState(false);
     const [isForwardersLoading, setIsForwardersLoading] = useState(false);
     const [forwardersSearchError, setForwardersSearchError] = useState('');
 
@@ -116,6 +206,36 @@ export function CreateTenderModal({ open, onClose }) {
 
         return leads;
     }, [leads, selectedLead]);
+
+    const loadForwarders = useCallback(async () => {
+        if (form.isPublic || isForwardersLoaded || isForwardersLoading) {
+            return;
+        }
+
+        try {
+            setIsForwardersLoading(true);
+            setForwardersSearchError('');
+
+            const response = await fetchForwardersApi({
+                page: 1,
+                perPage: FORWARDERS_PER_PAGE,
+            });
+
+            setAllForwarders(normalizeForwardersOptions(response));
+            setIsForwardersLoaded(true);
+        } catch (error) {
+            setForwardersSearchError(
+                error.response?.data?.message ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    'Не удалось загрузить экспедиторов',
+            );
+
+            setAllForwarders([]);
+        } finally {
+            setIsForwardersLoading(false);
+        }
+    }, [form.isPublic, isForwardersLoaded, isForwardersLoading]);
 
     function handleRequestLeadChange(_, newValue, reason) {
         if (reason === 'clear' || !newValue) {
@@ -163,16 +283,25 @@ export function CreateTenderModal({ open, onClose }) {
     }
 
     const forwarderOptions = useMemo(() => {
+        const normalizedSelectedForwarders = selectedForwarders
+            .map(normalizeForwarderOption)
+            .filter(Boolean);
+
         const selectedIds = new Set(
-            selectedForwarders.map((forwarder) => forwarder.id),
+            normalizedSelectedForwarders.map((forwarder) => forwarder.id),
         );
 
-        const uniqueForwarders = forwarders.filter(
+        const filteredForwarders = filterForwardersLocally(
+            allForwarders,
+            forwarderInputValue,
+        );
+
+        const uniqueForwarders = filteredForwarders.filter(
             (forwarder) => !selectedIds.has(forwarder.id),
         );
 
-        return [...selectedForwarders, ...uniqueForwarders];
-    }, [forwarders, selectedForwarders]);
+        return [...normalizedSelectedForwarders, ...uniqueForwarders];
+    }, [allForwarders, forwarderInputValue, selectedForwarders]);
 
     function handleFieldChange(field, value) {
         setForm((prevForm) => ({
@@ -324,68 +453,29 @@ export function CreateTenderModal({ open, onClose }) {
     }, [leadInputValue, selectedLead]);
 
     useEffect(() => {
-        if (form.isPublic) {
-            setForwarders([]);
-            setForwardersSearchError('');
+        if (!form.isPublic) {
             return;
         }
 
-        const query = forwarderInputValue.trim();
-
-        if (query.length < 2) {
-            setForwarders([]);
-            setForwardersSearchError('');
-            return;
-        }
-
-        let isCancelled = false;
-
-        const timeoutId = setTimeout(async () => {
-            try {
-                setIsForwardersLoading(true);
-                setForwardersSearchError('');
-
-                const result = await searchForwardersApi(query);
-
-                if (!isCancelled) {
-                    setForwarders(result);
-                }
-            } catch (error) {
-                if (!isCancelled) {
-                    setForwarders([]);
-                    setForwardersSearchError(
-                        error.response?.data?.message ||
-                            error.message ||
-                            'Не удалось найти экспедиторов',
-                    );
-                }
-            } finally {
-                if (!isCancelled) {
-                    setIsForwardersLoading(false);
-                }
-            }
-        }, 300);
-
-        return () => {
-            isCancelled = true;
-            clearTimeout(timeoutId);
-        };
-    }, [form.isPublic, forwarderInputValue]);
+        setSelectedForwarders([]);
+        setForwarderInputValue('');
+        setForwardersSearchError('');
+    }, [form.isPublic]);
 
     return (
         <>
-            <Dialog open={open} onClose={onClose} fullWidth maxWidth='sm'>
+            <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
                 <DialogTitle>Создание тендера</DialogTitle>
 
                 <DialogContent>
                     <Box
-                        component='form'
+                        component="form"
                         onSubmit={handleSubmit}
                         sx={{ pt: 1 }}
                     >
                         <Stack spacing={2.5}>
                             {submitError && (
-                                <Alert severity='error'>{submitError}</Alert>
+                                <Alert severity="error">{submitError}</Alert>
                             )}
 
                             <Autocomplete
@@ -403,7 +493,7 @@ export function CreateTenderModal({ open, onClose }) {
                                         ? 'Введите минимум 2 символа'
                                         : 'Лиды не найдены'
                                 }
-                                loadingText='Поиск лидов...'
+                                loadingText="Поиск лидов..."
                                 onInputChange={(_, newInputValue, reason) => {
                                     if (reason === 'reset') {
                                         setLeadInputValue(newInputValue);
@@ -436,7 +526,7 @@ export function CreateTenderModal({ open, onClose }) {
                                     return (
                                         <Box
                                             key={key}
-                                            component='li'
+                                            component="li"
                                             {...listItemProps}
                                             sx={{
                                                 display: 'flex',
@@ -453,7 +543,7 @@ export function CreateTenderModal({ open, onClose }) {
                                             </Typography>
 
                                             <Typography
-                                                color='text.secondary'
+                                                color="text.secondary"
                                                 sx={{ fontSize: 13 }}
                                             >
                                                 Груз:{' '}
@@ -462,7 +552,7 @@ export function CreateTenderModal({ open, onClose }) {
 
                                             {option.forwarder && (
                                                 <Typography
-                                                    color='text.secondary'
+                                                    color="text.secondary"
                                                     sx={{ fontSize: 13 }}
                                                 >
                                                     Экспедитор:{' '}
@@ -480,14 +570,14 @@ export function CreateTenderModal({ open, onClose }) {
                                             >
                                                 {option.status && (
                                                     <Chip
-                                                        size='small'
+                                                        size="small"
                                                         label={option.status}
                                                         sx={{ height: 22 }}
                                                     />
                                                 )}
 
                                                 <Chip
-                                                    size='small'
+                                                    size="small"
                                                     label={formatMoney(
                                                         option.price,
                                                     )}
@@ -500,8 +590,8 @@ export function CreateTenderModal({ open, onClose }) {
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        label='Лид'
-                                        placeholder='Введите город, груз или направление'
+                                        label="Лид"
+                                        placeholder="Введите город, груз или направление"
                                         error={Boolean(leadsSearchError)}
                                         helperText={
                                             leadsSearchError ||
@@ -512,8 +602,8 @@ export function CreateTenderModal({ open, onClose }) {
                             />
 
                             <TextField
-                                label='Дата окончания'
-                                type='datetime-local'
+                                label="Дата окончания"
+                                type="datetime-local"
                                 value={form.endDateTime}
                                 onChange={(event) =>
                                     handleFieldChange(
@@ -550,19 +640,18 @@ export function CreateTenderModal({ open, onClose }) {
                                             if (isPublic) {
                                                 setSelectedForwarders([]);
                                                 setForwarderInputValue('');
-                                                setForwarders([]);
                                                 setForwardersSearchError('');
                                             }
                                         }}
                                     />
                                 }
-                                label='Публичный тендер'
+                                label="Публичный тендер"
                             />
 
                             {form.isPublic && (
                                 <TextField
-                                    label='Максимум участников'
-                                    type='number'
+                                    label="Максимум участников"
+                                    type="number"
                                     value={form.maxParticipants}
                                     onChange={(event) =>
                                         handleFieldChange(
@@ -591,7 +680,7 @@ export function CreateTenderModal({ open, onClose }) {
                                         }
                                     />
                                 }
-                                label='Запустить тендер после создания'
+                                label="Запустить тендер после создания"
                             />
 
                             {!form.isPublic && (
@@ -605,18 +694,21 @@ export function CreateTenderModal({ open, onClose }) {
                                     getOptionLabel={(option) =>
                                         option?.fullName ||
                                         option?.companyName ||
+                                        option?.fio ||
+                                        option?.name ||
                                         ''
                                     }
                                     isOptionEqualToValue={(option, value) =>
                                         option?.id === value?.id
                                     }
                                     filterSelectedOptions
+                                    onOpen={loadForwarders}
                                     noOptionsText={
-                                        forwarderInputValue.trim().length < 2
-                                            ? 'Введите минимум 2 символа'
-                                            : 'Экспедитор не найден'
+                                        isForwardersLoaded
+                                            ? 'Экспедитор не найден'
+                                            : 'Нажмите, чтобы загрузить экспедиторов'
                                     }
-                                    loadingText='Поиск экспедиторов...'
+                                    loadingText="Загружаем экспедиторов..."
                                     onInputChange={(
                                         _,
                                         newInputValue,
@@ -629,7 +721,11 @@ export function CreateTenderModal({ open, onClose }) {
                                         setForwarderInputValue(newInputValue);
                                     }}
                                     onChange={(_, newValue) => {
-                                        setSelectedForwarders(newValue);
+                                        setSelectedForwarders(
+                                            newValue
+                                                .map(normalizeForwarderOption)
+                                                .filter(Boolean),
+                                        );
                                         setForwarderInputValue('');
                                     }}
                                     renderValue={(tagValue, getItemProps) =>
@@ -681,7 +777,7 @@ export function CreateTenderModal({ open, onClose }) {
                                         return (
                                             <Box
                                                 key={key}
-                                                component='li'
+                                                component="li"
                                                 {...listItemProps}
                                                 sx={{
                                                     display: 'flex',
@@ -701,18 +797,19 @@ export function CreateTenderModal({ open, onClose }) {
                                                     </Typography>
 
                                                     <Typography
-                                                        color='text.secondary'
+                                                        color="text.secondary"
                                                         sx={{ fontSize: 12 }}
                                                     >
                                                         {option.phone ||
                                                             option.iin ||
+                                                            option.companyBin ||
                                                             'Контакты не указаны'}
                                                     </Typography>
                                                 </Box>
 
                                                 {option.companyName && (
                                                     <Chip
-                                                        size='small'
+                                                        size="small"
                                                         label={
                                                             option.companyName
                                                         }
@@ -729,12 +826,13 @@ export function CreateTenderModal({ open, onClose }) {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            label='Экспедиторы'
+                                            label="Экспедиторы"
                                             placeholder={
                                                 selectedForwarders.length > 0
                                                     ? ''
                                                     : 'Введите ФИО, ИИН, компанию, БИН или телефон'
                                             }
+                                            onFocus={loadForwarders}
                                             error={Boolean(
                                                 forwardersSearchError,
                                             )}
@@ -755,7 +853,7 @@ export function CreateTenderModal({ open, onClose }) {
                         Отмена
                     </Button>
                     <Button
-                        variant='contained'
+                        variant="contained"
                         onClick={handleSubmit}
                         disabled={isSubmitting}
                     >
@@ -779,20 +877,20 @@ export function CreateTenderModal({ open, onClose }) {
                                     `Лид #${pendingLead.id}`}
                             </Typography>
 
-                            <Typography color='text.secondary' sx={{ mt: 0.5 }}>
+                            <Typography color="text.secondary" sx={{ mt: 0.5 }}>
                                 Груз: {pendingLead.cargo || 'Не указан'}
                             </Typography>
 
                             {pendingLead.forwarder && (
                                 <Typography
-                                    color='text.secondary'
+                                    color="text.secondary"
                                     sx={{ mt: 0.5 }}
                                 >
                                     Экспедитор: {pendingLead.forwarder}
                                 </Typography>
                             )}
 
-                            <Typography color='text.secondary' sx={{ mt: 0.5 }}>
+                            <Typography color="text.secondary" sx={{ mt: 0.5 }}>
                                 Цена: {formatMoney(pendingLead.price)}
                             </Typography>
                         </Box>
@@ -803,7 +901,7 @@ export function CreateTenderModal({ open, onClose }) {
                     <Button onClick={handleCloseLeadConfirm}>Отмена</Button>
 
                     <Button
-                        variant='contained'
+                        variant="contained"
                         onClick={handleConfirmLeadSelection}
                     >
                         Выбрать лид

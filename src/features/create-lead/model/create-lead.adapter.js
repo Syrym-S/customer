@@ -38,9 +38,20 @@ function getLocationPayloadValue(location, field, fallback) {
     return normalizeText(location[field]) || fallback;
 }
 
+function normalizeCargoTypeValue(value) {
+    const normalizedValue = normalizeText(value);
+
+    if (!normalizedValue || normalizedValue === 'Не указан') {
+        return '';
+    }
+
+    return normalizedValue;
+}
+
 export function mapCreateLeadFormToApi(form) {
     const fromLocation = normalizeText(form.fromLocation);
     const toLocation = normalizeText(form.toLocation);
+    const cargoType = normalizeCargoTypeValue(form.cargoType);
 
     const payload = {
         from_country: getLocationPayloadValue(
@@ -73,8 +84,6 @@ export function mapCreateLeadFormToApi(form) {
         to_city: getLocationPayloadValue(form.to_location, 'city', toLocation),
         to_address: form.to_location.address,
 
-        cargo_name: form.cargoType || 'Не указан',
-        cargo_type: form.cargoType || 'Не указан',
         currency: form.currency || 'KZT',
         vat: form.vat ? 'с НДС' : 'без НДС',
     };
@@ -89,6 +98,8 @@ export function mapCreateLeadFormToApi(form) {
     addNumberIfHasValue(payload, 'to_lat', form.toLat);
     addNumberIfHasValue(payload, 'to_lon', form.toLng);
 
+    addIfHasValue(payload, 'cargo_name', cargoType);
+    addIfHasValue(payload, 'cargo_type', cargoType);
     addNumberIfHasValue(payload, 'cargo_weight', form.weightKg);
     addNumberIfHasValue(payload, 'cargo_length', form.cargoLengthCm);
     addNumberIfHasValue(payload, 'cargo_width', form.cargoWidthCm);
@@ -111,6 +122,7 @@ export function mapCreateLeadDocumentsToApiDocuments(form) {
 
 export function mapCreatedLeadToUi(form, response) {
     const id = response?.id ?? `created-lead-${Date.now()}`;
+    const cargoType = normalizeCargoTypeValue(form.cargoType) || 'Не указан';
 
     return {
         id,
@@ -145,11 +157,11 @@ export function mapCreatedLeadToUi(form, response) {
         updated_at: null,
 
         cargo: {
-            name: form.cargoType || 'Не указан',
+            name: cargoType,
             description: form.comment || '',
             context: null,
             weight_kg: Number(form.weightKg) || 0,
-            type: form.cargoType || 'Не указан',
+            type: cargoType,
             volume_cm: null,
             width_cm: Number(form.cargoWidthCm) || null,
             height_cm: Number(form.cargoHeightCm) || null,

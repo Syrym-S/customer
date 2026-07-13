@@ -114,19 +114,20 @@ export function LeadCard({ lead }) {
 
             <Box
                sx={{
-                  display: 'flex',
-                  alignItems: 'stretch',
+                  display: 'grid',
+                  gridTemplateColumns: '1fr',
                   gap: 1.5,
-                  flexWrap: {
-                     xs: 'wrap',
-                     sm: 'nowrap',
+
+                  '@media (min-width: 1100px)': {
+                     gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)',
+                     alignItems: 'stretch',
                   },
                }}
             >
                <Box
                   sx={{
                      flex: 1,
-                     minWidth: 220,
+                     minWidth: 0,
                      minHeight: 86,
                      p: 1.5,
                      border: '1px solid',
@@ -149,7 +150,14 @@ export function LeadCard({ lead }) {
                      Откуда
                   </Typography>
 
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                 <Box
+   sx={{
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: 1,
+      minWidth: 0,
+   }}
+>
                      <TripOriginIcon
                         sx={{ fontSize: 18, color: 'primary.main' }}
                      />
@@ -159,6 +167,9 @@ export function LeadCard({ lead }) {
                         sx={{
                            fontSize: 14,
                            lineHeight: 1.35,
+                           minWidth: 0,
+      overflowWrap: 'anywhere',
+      wordBreak: 'break-word',
                         }}
                      >
                         {normalizeLocationValue(lead.from_location)}
@@ -168,10 +179,12 @@ export function LeadCard({ lead }) {
 
                <Box
                   sx={{
-                     display: {
-                        xs: 'none',
-                        sm: 'flex',
+                     display: 'none',
+
+                     '@media (min-width: 1100px)': {
+                        display: 'flex',
                      },
+
                      alignItems: 'center',
                      justifyContent: 'center',
                      px: 0.5,
@@ -188,7 +201,7 @@ export function LeadCard({ lead }) {
                <Box
                   sx={{
                      flex: 1,
-                     minWidth: 220,
+                     minWidth: 0,
                      minHeight: 96,
                      p: 1.5,
                      border: '1px solid',
@@ -211,7 +224,14 @@ export function LeadCard({ lead }) {
                      Куда
                   </Typography>
 
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box
+   sx={{
+      display: 'flex',
+      alignItems: 'flex-start',
+      gap: 1,
+      minWidth: 0,
+   }}
+>
                      <LocationOnOutlinedIcon
                         sx={{ fontSize: 18, color: 'primary.main' }}
                      />
@@ -221,6 +241,9 @@ export function LeadCard({ lead }) {
                         sx={{
                            fontSize: 14,
                            lineHeight: 1.35,
+                           minWidth: 0,
+      overflowWrap: 'anywhere',
+      wordBreak: 'break-word',
                         }}
                      >
                         {normalizeLocationValue(lead.to_location)}

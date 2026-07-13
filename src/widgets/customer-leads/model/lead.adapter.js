@@ -11,6 +11,29 @@ function getFileNameFromPath(value) {
    return decodeURIComponent(parts[parts.length - 1] || '');
 }
 
+function normalizeCargoTypeValue(value) {
+   if (!value) {
+      return 'Не указан';
+   }
+
+   if (typeof value === 'string') {
+      return value.trim() || 'Не указан';
+   }
+
+   if (typeof value === 'object') {
+      return (
+         value.name ||
+         value.title ||
+         value.label ||
+         value.type ||
+         value.cargo_type ||
+         'Не указан'
+      );
+   }
+
+   return String(value);
+}
+
 function mapForwarderFromLead(apiLead) {
    const forwarder =
       apiLead.forwarder ||
@@ -162,7 +185,12 @@ export function mapLeadFromApi(apiLead) {
       updated_at: apiLead.updated_at ?? null,
 
       cargo: {
-         name: apiLead.cargo?.name ?? '',
+         name: normalizeCargoTypeValue(
+            apiLead.cargo_name ||
+               apiLead.cargo_type ||
+               apiLead.cargo?.name ||
+               apiLead.cargo?.type,
+         ),
 
          description:
             apiLead.cargo?.context ??
@@ -179,7 +207,13 @@ export function mapLeadFromApi(apiLead) {
          rawDescription: apiLead.cargo?.description ?? '',
 
          weight_kg: apiLead.cargo?.weight_kg ?? null,
-         type: apiLead.cargo?.type ?? 'Не указан',
+         type: normalizeCargoTypeValue(
+            apiLead.cargo_type ||
+               apiLead.cargo_name ||
+               apiLead.cargo?.type ||
+               apiLead.cargo?.cargo_type ||
+               apiLead.cargo?.name,
+         ),
          volume_cm: apiLead.cargo?.volume_cm ?? null,
          width_cm: apiLead.cargo?.width_cm ?? null,
          height_cm: apiLead.cargo?.height_cm ?? null,

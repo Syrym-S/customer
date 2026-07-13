@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import {
@@ -11,10 +11,101 @@ import {
     Typography,
 } from '@mui/material';
 
-import { searchForwarders } from '../../../api/forwarders.repository';
 import { InfoBadge } from '../components/InfoBadge';
 import { StepSection } from '../components/StepSection';
-import { fetchForwarderById } from '../../../api/forwarders.api';
+import {
+    fetchForwarderById,
+    fetchForwardersApi,
+} from '../../../api/forwarders.api';
+import { FORWARDERS_PER_PAGE } from '../../../../../widgets/customer-forwarders/model/forwarders.helpers';
+
+function normalizeForwarderOption(forwarder) {
+    if (!forwarder) {
+        return null;
+    }
+
+    return {
+        id: forwarder.id,
+
+        fullName:
+            forwarder.fullName ||
+            forwarder.full_name ||
+            forwarder.fio ||
+            forwarder.name ||
+            'Без имени',
+
+        iin: forwarder.iin || forwarder.personIin || '',
+
+        companyName:
+            forwarder.companyName ||
+            forwarder.company_name ||
+            forwarder.name ||
+            'Без компании',
+
+        companyBin:
+            forwarder.companyBin ||
+            forwarder.company_bin ||
+            forwarder.bin ||
+            '',
+
+        phone: forwarder.phone || forwarder.tel || '',
+
+        raw: forwarder.raw || forwarder,
+    };
+}
+
+function getForwardersFromResponse(response) {
+    const data = response?.data ?? response;
+
+    if (Array.isArray(data)) {
+        return data;
+    }
+
+    if (Array.isArray(data?.results)) {
+        return data.results;
+    }
+
+    if (Array.isArray(data?.data?.results)) {
+        return data.data.results;
+    }
+
+    if (Array.isArray(data?.data)) {
+        return data.data;
+    }
+
+    return [];
+}
+
+function normalizeForwardersOptions(response) {
+    return getForwardersFromResponse(response)
+        .map(normalizeForwarderOption)
+        .filter((forwarder) => forwarder?.id);
+}
+
+function getForwarderSearchText(forwarder) {
+    return [
+        forwarder.fullName,
+        forwarder.companyName,
+        forwarder.companyBin,
+        forwarder.iin,
+        forwarder.phone,
+    ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+}
+
+function filterForwardersLocally(forwarders, query) {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+        return forwarders;
+    }
+
+    return forwarders.filter((forwarder) =>
+        getForwarderSearchText(forwarder).includes(normalizedQuery),
+    );
+}
 
 export function ForwarderStep({ control, errors, setValue }) {
     const selectedForwarderId = useWatch({
@@ -23,12 +114,43 @@ export function ForwarderStep({ control, errors, setValue }) {
     });
 
     const [inputValue, setInputValue] = useState('');
-    const [forwarders, setForwarders] = useState([]);
+    const [allForwarders, setAllForwarders] = useState([]);
+    const [isForwardersLoaded, setIsForwardersLoaded] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
     const [selectedForwarder, setSelectedForwarder] = useState(null);
     const [isDetailsLoading, setIsDetailsLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [searchError, setSearchError] = useState(null);
+
+    const loadForwarders = useCallback(async () => {
+        if (isForwardersLoaded || isLoading) {
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            setSearchError(null);
+
+            const response = await fetchForwardersApi({
+                page: 1,
+                perPage: FORWARDERS_PER_PAGE,
+            });
+
+            setAllForwarders(normalizeForwardersOptions(response));
+            setIsForwardersLoaded(true);
+        } catch (error) {
+            setSearchError(
+                error.response?.data?.message ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    'Не удалось загрузить экспедиторов',
+            );
+
+            setAllForwarders([]);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [isForwardersLoaded, isLoading]);
 
     useEffect(() => {
         if (!selectedForwarderId) {
@@ -37,65 +159,31 @@ export function ForwarderStep({ control, errors, setValue }) {
         }
     }, [selectedForwarderId]);
 
-    useEffect(() => {
-        const query = inputValue.trim();
-
-        if (query.length < 2) {
-            setForwarders(selectedForwarder ? [selectedForwarder] : []);
-            setSearchError(null);
-            return;
-        }
-
-        let isCancelled = false;
-
-        const timeoutId = setTimeout(async () => {
-            try {
-                setIsLoading(true);
-                setSearchError(null);
-
-                const result = await searchForwarders(query);
-
-                if (!isCancelled) {
-                    setForwarders(result);
-                }
-            } catch (error) {
-                if (!isCancelled) {
-                    setSearchError(
-                        error.message || 'Не удалось найти экспедиторов',
-                    );
-                    setForwarders([]);
-                }
-            } finally {
-                if (!isCancelled) {
-                    setIsLoading(false);
-                }
-            }
-        }, 300);
-
-        return () => {
-            isCancelled = true;
-            clearTimeout(timeoutId);
-        };
-    }, [inputValue, selectedForwarder]);
-
     const options = useMemo(() => {
+        const filteredForwarders = filterForwardersLocally(
+            allForwarders,
+            inputValue,
+        );
+
         if (
             selectedOption &&
-            !forwarders.some((forwarder) => forwarder.id === selectedOption.id)
+            !filteredForwarders.some(
+                (forwarder) => forwarder.id === selectedOption.id,
+            )
         ) {
-            return [selectedOption, ...forwarders];
+            return [selectedOption, ...filteredForwarders];
         }
 
-        return forwarders;
-    }, [forwarders, selectedOption]);
+        return filteredForwarders;
+    }, [allForwarders, inputValue, selectedOption]);
 
     return (
         <StepSection
-            title='Выбор экспедитора'
-            description='Найдите и выберите экспедитора, который будет закреплен за маршрутом'
+            title="Выбор экспедитора"
+            description="Найдите и выберите экспедитора, который будет закреплен за маршрутом"
         >
             <Controller
-                name='forwarderId'
+                name="forwarderId"
                 control={control}
                 render={({ field }) => (
                     <Stack spacing={2}>
@@ -106,16 +194,22 @@ export function ForwarderStep({ control, errors, setValue }) {
                             options={options}
                             loading={isLoading || isDetailsLoading}
                             filterOptions={(items) => items}
-                            getOptionLabel={(option) => option?.fullName ?? ''}
+                            getOptionLabel={(option) =>
+                                option?.fullName ||
+                                option?.fio ||
+                                option?.name ||
+                                ''
+                            }
                             isOptionEqualToValue={(option, value) =>
                                 option?.id === value?.id
                             }
+                            onOpen={loadForwarders}
                             noOptionsText={
-                                inputValue.trim().length < 2
-                                    ? 'Введите минимум 2 символа'
-                                    : 'Экспедитор не найден'
+                                isForwardersLoaded
+                                    ? 'Экспедитор не найден'
+                                    : 'Нажмите, чтобы загрузить экспедиторов'
                             }
-                            loadingText='Поиск экспедиторов...'
+                            loadingText="Загружаем экспедиторов..."
                             filterSelectedOptions
                             onInputChange={(_, newInputValue, reason) => {
                                 if (reason === 'reset') {
@@ -247,7 +341,12 @@ export function ForwarderStep({ control, errors, setValue }) {
                                     return (
                                         <Chip
                                             key={key}
-                                            label={option.fullName}
+                                            label={
+                                                option.fullName ||
+                                                option.fio ||
+                                                option.name ||
+                                                'Без имени'
+                                            }
                                             {...itemProps}
                                             sx={{
                                                 maxWidth: '100%',
@@ -279,7 +378,7 @@ export function ForwarderStep({ control, errors, setValue }) {
                                 return (
                                     <Box
                                         key={key}
-                                        component='li'
+                                        component="li"
                                         {...listItemProps}
                                         sx={{
                                             display: 'flex',
@@ -290,12 +389,19 @@ export function ForwarderStep({ control, errors, setValue }) {
                                         }}
                                     >
                                         <Typography fontWeight={700}>
-                                            {option.fullName}
+                                            {option.fullName ||
+                                                option.fio ||
+                                                option.name ||
+                                                'Без имени'}
                                         </Typography>
 
                                         <Chip
-                                            size='small'
-                                            label={option.companyName}
+                                            size="small"
+                                            label={
+                                                option.companyName ||
+                                                option.name ||
+                                                'Без компании'
+                                            }
                                             sx={{
                                                 height: 22,
                                                 fontSize: '0.7rem',
@@ -308,12 +414,13 @@ export function ForwarderStep({ control, errors, setValue }) {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label='Экспедитор'
+                                    label="Экспедитор"
                                     placeholder={
                                         selectedForwarder
                                             ? ''
                                             : 'Введите ФИО, ИИН, компанию, БИН или телефон'
                                     }
+                                    onFocus={loadForwarders}
                                     error={
                                         Boolean(errors.forwarderId) ||
                                         Boolean(searchError)
@@ -340,8 +447,8 @@ export function ForwarderStep({ control, errors, setValue }) {
                             >
                                 <CircularProgress size={18} />
                                 <Typography
-                                    variant='body2'
-                                    color='text.secondary'
+                                    variant="body2"
+                                    color="text.secondary"
                                 >
                                     Загружаем данные экспедитора...
                                 </Typography>
@@ -360,23 +467,23 @@ export function ForwarderStep({ control, errors, setValue }) {
                                 }}
                             >
                                 <InfoBadge
-                                    label='ФИО экспедитора'
+                                    label="ФИО экспедитора"
                                     value={selectedForwarder.fullName}
                                 />
                                 <InfoBadge
-                                    label='ИИН экспедитора'
+                                    label="ИИН экспедитора"
                                     value={selectedForwarder.iin}
                                 />
                                 <InfoBadge
-                                    label='Компания'
+                                    label="Компания"
                                     value={selectedForwarder.companyName}
                                 />
                                 <InfoBadge
-                                    label='БИН компании'
+                                    label="БИН компании"
                                     value={selectedForwarder.companyBin}
                                 />
                                 <InfoBadge
-                                    label='Телефон'
+                                    label="Телефон"
                                     value={selectedForwarder.phone}
                                 />
                             </Box>

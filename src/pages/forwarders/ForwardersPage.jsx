@@ -52,7 +52,7 @@ export function ForwardersPage() {
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
     const [isDetailsLoading, setIsDetailsLoading] = useState(false);
     const [detailsError, setDetailsError] = useState('');
-    const [viewMode, setViewMode] = useState(FORWARDERS_VIEW_MODES.CARDS);
+    const [viewMode, setViewMode] = useState(FORWARDERS_VIEW_MODES.TABLE);
 
     const isSearchMode = Boolean(debouncedSearch.trim());
 
@@ -170,7 +170,7 @@ export function ForwardersPage() {
     }, [loadForwarders]);
 
     return (
-        <Container maxWidth='lg' sx={{ py: 3 }}>
+        <Container maxWidth="lg" sx={{ py: 3 }}>
             <Stack spacing={3}>
                 <Box
                     sx={{
@@ -188,11 +188,11 @@ export function ForwardersPage() {
                     }}
                 >
                     <Box>
-                        <Typography variant='h6' fontWeight={600}>
+                        <Typography variant="h6" fontWeight={600}>
                             Экспедиторы
                         </Typography>
 
-                        <Typography color='text.secondary' fontSize={14}>
+                        <Typography color="text.secondary" fontSize={14}>
                             Полный список экспедиторов с поиском по компании,
                             представителю, БИН или телефону
                         </Typography>
@@ -202,9 +202,9 @@ export function ForwardersPage() {
                         value={viewMode}
                         exclusive
                         onChange={handleViewModeChange}
-                        size='small'
-                        color='primary'
-                        aria-label='Переключение отображения экспедиторов'
+                        size="small"
+                        color="primary"
+                        aria-label="Переключение отображения экспедиторов"
                         sx={{
                             alignSelf: {
                                 xs: 'stretch',
@@ -218,18 +218,18 @@ export function ForwardersPage() {
                     >
                         <ToggleButton
                             value={FORWARDERS_VIEW_MODES.TABLE}
-                            aria-label='Показать таблицей'
-                            title='Таблица'
+                            aria-label="Показать таблицей"
+                            title="Таблица"
                         >
-                            <ViewListRoundedIcon fontSize='small' />
+                            <ViewListRoundedIcon fontSize="small" />
                         </ToggleButton>
 
                         <ToggleButton
                             value={FORWARDERS_VIEW_MODES.CARDS}
-                            aria-label='Показать карточками'
-                            title='Карточки'
+                            aria-label="Показать карточками"
+                            title="Карточки"
                         >
-                            <GridViewRoundedIcon fontSize='small' />
+                            <GridViewRoundedIcon fontSize="small" />
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </Box>
@@ -237,18 +237,18 @@ export function ForwardersPage() {
                 <TextField
                     value={search}
                     onChange={handleSearchChange}
-                    placeholder='Поиск экспедитора'
+                    placeholder="Поиск экспедитора"
                     fullWidth
                     InputProps={{
                         startAdornment: (
-                            <InputAdornment position='start'>
-                                <SearchRoundedIcon color='action' />
+                            <InputAdornment position="start">
+                                <SearchRoundedIcon color="action" />
                             </InputAdornment>
                         ),
                     }}
                 />
 
-                {error && <Alert severity='error'>{error}</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
 
                 {isLoading ? (
                     <Box
@@ -284,8 +284,8 @@ export function ForwardersPage() {
                             page={page}
                             count={pageCount}
                             onChange={handlePageChange}
-                            color='primary'
-                            shape='rounded'
+                            color="primary"
+                            shape="rounded"
                         />
                     </Box>
                 )}

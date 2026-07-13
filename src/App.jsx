@@ -3,7 +3,7 @@ import { AppRouter } from "./router/AppRouter";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "./theme/theme";
 import { NotificationsColumn } from "./shared/ui/NotificationsColumn";
-import { EmailVerificationWatcher } from "./widgets/customer-verification/ui/EmailVerificationWatcher";
+// import { EmailVerificationWatcher } from "./widgets/customer-verification/ui/EmailVerificationWatcher";
 import { isStaging } from "./shared/api/api-client";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
       <BrowserRouter basename={isStaging ? "/staging" : ""}>
         <AppRouter />
       </BrowserRouter>
-      <EmailVerificationWatcher />
+      {/* <EmailVerificationWatcher /> */}
       <NotificationsColumn />
     </ThemeProvider>
   );

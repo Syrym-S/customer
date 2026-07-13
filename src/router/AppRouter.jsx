@@ -42,7 +42,7 @@ export const AppRouter = () => {
           element: <FactoringsPage />,
         },
         {
-          path: "customer/factorings/:factoringIndex",
+          path: "customer/factoring/:factoringIndex",
           element: <FactoringsPage />,
         },
         {

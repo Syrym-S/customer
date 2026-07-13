@@ -36,8 +36,8 @@ export function createLeadEditForm(lead) {
       toLat: lead.raw?.route?.to?.lat ?? '',
       toLng: lead.raw?.route?.to?.lng ?? '',
 
-      cargoName: lead.cargo?.name ?? '',
-      cargoType: lead.cargo?.type || 'Не указан',
+      cargoName: normalizeCargoTypeForUi(lead.cargo?.name),
+      cargoType: normalizeCargoTypeForUi(lead.cargo?.type),
       weight_kg: lead.cargo?.weight_kg ?? '',
       cargoLengthCm: lead.cargo?.length_cm ?? '',
       cargoWidthCm: lead.cargo?.width_cm ?? '',
@@ -69,6 +69,22 @@ function normalizeText(value) {
    }
 
    return String(value).trim().replace(/\s+/g, ' ');
+}
+
+function normalizeCargoTypeForUi(value) {
+   const normalizedValue = normalizeText(value);
+
+   return normalizedValue || 'Не указан';
+}
+
+function normalizeCargoTypeForPayload(value) {
+   const normalizedValue = normalizeText(value);
+
+   if (!normalizedValue || normalizedValue === 'Не указан') {
+      return '';
+   }
+
+   return normalizedValue;
 }
 
 export function normalizeLocationValue(value) {
@@ -284,10 +300,10 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
       currentLead.raw?.loading_date,
    );
 
-   const cargoTypeChanged = hasTextChanged(
-      editForm.cargoType,
-      currentLead.cargo?.type,
-   );
+   const nextCargoType = normalizeCargoTypeForPayload(editForm.cargoType);
+   const currentCargoType = normalizeCargoTypeForPayload(currentLead.cargo?.type);
+
+   const cargoTypeChanged = nextCargoType !== currentCargoType;
 
    const cargoWeightChanged = hasNumberChanged(
       editForm.weight_kg,
@@ -323,10 +339,10 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
       cargoDescriptionChanged;
 
    if (hasCargoChanges) {
-      const cargoType = normalizeText(editForm.cargoType) || 'Не указан';
-
-      payload.cargo_name = cargoType;
-      payload.cargo_type = cargoType;
+      if (cargoTypeChanged) {
+         payload.cargo_name = nextCargoType;
+         payload.cargo_type = nextCargoType;
+      }
 
       addPositiveIntegerValue(payload, 'cargo_weight', editForm.weight_kg);
       addPositiveIntegerValue(payload, 'cargo_length', editForm.cargoLengthCm);

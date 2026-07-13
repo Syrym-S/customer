@@ -1,5 +1,7 @@
 import {
+   Autocomplete,
    Box,
+   CircularProgress,
    FormControlLabel,
    MenuItem,
    Switch,
@@ -9,8 +11,98 @@ import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 
 import { StepSection } from '../components/StepSection';
+import { useEffect, useMemo, useState } from 'react';
+import { fetchCustomerCargoTypesApi, searchCustomerCargoTypesApi } from '../../../../../widgets/customer-leads/api/cargo-types.api';
 
 export function CargoStep({ control, errors }) {
+   const [cargoTypes, setCargoTypes] = useState([]);
+   const [cargoTypesSearch, setCargoTypesSearch] = useState('');
+   const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);
+
+   useEffect(() => {
+      let isCancelled = false;
+
+      async function loadCargoTypes() {
+         try {
+            setIsCargoTypesLoading(true);
+
+            const response = await fetchCustomerCargoTypesApi();
+
+            if (!isCancelled) {
+               setCargoTypes(response);
+            }
+         } catch (error) {
+            console.error('Не удалось загрузить типы груза:', error);
+
+            if (!isCancelled) {
+               setCargoTypes([]);
+            }
+         } finally {
+            if (!isCancelled) {
+               setIsCargoTypesLoading(false);
+            }
+         }
+      }
+
+      loadCargoTypes();
+
+      return () => {
+         isCancelled = true;
+      };
+   }, []);
+
+   useEffect(() => {
+      const search = cargoTypesSearch.trim();
+
+      if (!search) {
+         return undefined;
+      }
+
+      let isCancelled = false;
+
+      const timeoutId = window.setTimeout(async () => {
+         try {
+            setIsCargoTypesLoading(true);
+
+            const response = await searchCustomerCargoTypesApi(search);
+
+            if (!isCancelled) {
+               setCargoTypes(response);
+            }
+         } catch (error) {
+            console.error('Не удалось найти типы груза:', error);
+         } finally {
+            if (!isCancelled) {
+               setIsCargoTypesLoading(false);
+            }
+         }
+      }, 350);
+
+      return () => {
+         isCancelled = true;
+         window.clearTimeout(timeoutId);
+      };
+   }, [cargoTypesSearch]);
+
+   const cargoTypeOptions = useMemo(() => {
+      const defaultOption = {
+         id: '',
+         name: 'Не указан',
+      };
+
+      const uniqueMap = new Map();
+
+      [defaultOption, ...cargoTypes].forEach((item) => {
+         if (!item?.name) {
+            return;
+         }
+
+         uniqueMap.set(String(item.name).toLowerCase(), item);
+      });
+
+      return Array.from(uniqueMap.values());
+   }, [cargoTypes]);
+
    return (
       <StepSection title='Груз и оплата'>
          <Box
@@ -26,20 +118,56 @@ export function CargoStep({ control, errors }) {
             <Controller
                name='cargoType'
                control={control}
-               render={({ field }) => (
-                  <TextField
-                     {...field}
-                     select
-                     label='Тип груза'
-                     fullWidth
-                     size='small'
-                  >
-                     <MenuItem value='Не указан'>Не указан</MenuItem>
-                     <MenuItem value='Паллеты'>Паллеты</MenuItem>
-                     <MenuItem value='Коробки'>Коробки</MenuItem>
-                     <MenuItem value='Оборудование'>Оборудование</MenuItem>
-                  </TextField>
-               )}
+               render={({ field }) => {
+                  const selectedOption =
+                     cargoTypeOptions.find((option) => option.name === field.value) ||
+                     cargoTypeOptions[0];
+
+                  return (
+                     <Autocomplete
+                        options={cargoTypeOptions}
+                        value={selectedOption}
+                        loading={isCargoTypesLoading}
+                        getOptionLabel={(option) => option?.name || ''}
+                        isOptionEqualToValue={(option, value) =>
+                           String(option?.id || option?.name) ===
+                           String(value?.id || value?.name)
+                        }
+                        onInputChange={(_, value, reason) => {
+                           if (reason === 'input') {
+                              setCargoTypesSearch(value);
+                           }
+                        }}
+                        onChange={(_, option) => {
+                           field.onChange(option?.name || 'Не указан');
+                        }}
+                        renderInput={(params) => {
+   const inputProps = params.InputProps || {};
+
+   return (
+      <TextField
+         {...params}
+         label='Тип груза'
+         fullWidth
+         size='small'
+         InputProps={{
+            ...inputProps,
+            endAdornment: (
+               <>
+                  {isCargoTypesLoading && (
+                     <CircularProgress color='inherit' size={18} />
+                  )}
+
+                  {inputProps.endAdornment}
+               </>
+            ),
+         }}
+      />
+   );
+}}
+                     />
+                  );
+               }}
             />
 
             <Controller
