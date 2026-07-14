@@ -12,6 +12,7 @@ import {
     getForwarderIin,
     getForwarderPhone,
 } from '../model/forwarders.helpers';
+import { ForwarderInviteLink } from './ForwarderInviteLink';
 
 export function ForwardersTable({ forwarders, onOpenDetails }) {
     const columns = [
@@ -76,6 +77,16 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             headerName: 'Телефон',
             width: 160,
             renderCell: ({ row }) => <Box>{getForwarderPhone(row)}</Box>,
+        },
+        {
+            field: 'invite_link',
+            headerName: 'Приглашение',
+            width: 170,
+            sortable: false,
+            filterable: false,
+            renderCell: ({ row }) => (
+                <ForwarderInviteLink forwarder={row} compact />
+            ),
         },
         {
             field: 'bik',

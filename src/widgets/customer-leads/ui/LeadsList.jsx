@@ -1,6 +1,15 @@
-import { Alert, Box, CircularProgress, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import {
+   Alert,
+   Box,
+   CircularProgress,
+   Stack,
+   ToggleButton,
+   ToggleButtonGroup,
+   Typography,
+} from '@mui/material';
 import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
+import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
 
 import { useLeadsContext } from '../model/useLeadsContext';
 import { LeadCard } from './LeadCard';
@@ -8,10 +17,12 @@ import { LeadDetailsModal } from './LeadDetailsModal';
 import { LeadsPagination } from './LeadsPagination';
 import { useState } from 'react';
 import { LeadsTable } from './LeadsTable';
+import { LeadsKanbanBoard } from './kanban/LeadsKanbanBoard';
 
 const LEADS_VIEW_MODES = {
    TABLE: 'table',
    CARDS: 'cards',
+   KANBAN: 'kanban',
 };
 
 export function LeadsList() {
@@ -34,7 +45,7 @@ export function LeadsList() {
       setViewMode(nextViewMode);
    }
 
-  return (
+   return (
       <Box
          sx={{
             width: '100%',
@@ -60,11 +71,11 @@ export function LeadsList() {
                }}
             >
                <Box>
-                  <Typography variant='h6' fontWeight={600}>
+                  <Typography variant="h6" fontWeight={600}>
                      Лиды
                   </Typography>
 
-                  <Typography color='text.secondary' fontSize={14}>
+                  <Typography color="text.secondary" fontSize={14}>
                      Список заявок на перевозку
                   </Typography>
                </Box>
@@ -90,9 +101,9 @@ export function LeadsList() {
                      value={viewMode}
                      exclusive
                      onChange={handleViewModeChange}
-                     size='small'
-                     color='primary'
-                     aria-label='Переключение отображения лидов'
+                     size="small"
+                     color="primary"
+                     aria-label="Переключение отображения лидов"
                      sx={{
                         alignSelf: {
                            xs: 'stretch',
@@ -106,24 +117,32 @@ export function LeadsList() {
                   >
                      <ToggleButton
                         value={LEADS_VIEW_MODES.TABLE}
-                        aria-label='Показать таблицей'
-                        title='Таблица'
+                        aria-label="Показать таблицей"
+                        title="Таблица"
                      >
-                        <ViewListRoundedIcon fontSize='small' />
+                        <ViewListRoundedIcon fontSize="small" />
                      </ToggleButton>
 
                      <ToggleButton
                         value={LEADS_VIEW_MODES.CARDS}
-                        aria-label='Показать карточками'
-                        title='Карточки'
+                        aria-label="Показать карточками"
+                        title="Карточки"
                      >
-                        <GridViewRoundedIcon fontSize='small' />
+                        <GridViewRoundedIcon fontSize="small" />
+                     </ToggleButton>
+
+                     <ToggleButton
+                        value={LEADS_VIEW_MODES.KANBAN}
+                        aria-label="Показать канбаном"
+                        title="Канбан"
+                     >
+                        <ViewKanbanRoundedIcon fontSize="small" />
                      </ToggleButton>
                   </ToggleButtonGroup>
                </Stack>
             </Box>
 
-            {error && <Alert severity='error'>{error}</Alert>}
+            {error && <Alert severity="error">{error}</Alert>}
 
             <Box
                sx={{
@@ -146,38 +165,42 @@ export function LeadsList() {
                   <>
                      {viewMode === LEADS_VIEW_MODES.TABLE ? (
                         <LeadsTable leads={leads} />
-                     ) : leads.length === 0 ? (
-                        <Box
-                           sx={{
-                              py: 4,
-                              textAlign: 'center',
-                           }}
-                        >
-                           <Typography color='text.secondary'>
-                              Лиды не найдены
-                           </Typography>
-                        </Box>
-                     ) : (
-                        <Box sx={{ p: 2 }}>
-                           <Stack
-                              spacing={2}
+                     ) : viewMode === LEADS_VIEW_MODES.CARDS ? (
+                        leads.length === 0 ? (
+                           <Box
                               sx={{
-                                 maxWidth: 720,
-                                 mx: 'auto',
+                                 py: 4,
+                                 textAlign: 'center',
                               }}
                            >
-                              {leads.map((lead) => (
-                                 <LeadCard key={lead.id} lead={lead} />
-                              ))}
-                           </Stack>
-                        </Box>
+                              <Typography color="text.secondary">
+                                 Лиды не найдены
+                              </Typography>
+                           </Box>
+                        ) : (
+                           <Box sx={{ p: 2 }}>
+                              <Stack
+                                 spacing={2}
+                                 sx={{
+                                    maxWidth: 720,
+                                    mx: 'auto',
+                                 }}
+                              >
+                                 {leads.map((lead) => (
+                                    <LeadCard key={lead.id} lead={lead} />
+                                 ))}
+                              </Stack>
+                           </Box>
+                        )
+                     ) : (
+                        <LeadsKanbanBoard leads={leads} />
                      )}
 
-                        <LeadsPagination
-                           page={page}
-                           count={pagesCount}
-                           onChange={handlePageChange}
-                        />
+                     <LeadsPagination
+                        page={page}
+                        count={pagesCount}
+                        onChange={handlePageChange}
+                     />
                   </>
                )}
             </Box>

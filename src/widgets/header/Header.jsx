@@ -2,7 +2,6 @@ import {
   Avatar,
   Box,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogContent,
@@ -203,7 +202,7 @@ export function Header() {
             }}
           >
             <ListItemText
-              primary="Leads"
+              primary="Лиды"
               primaryTypographyProps={{
                 sx: {
                   color: isLeadsPage ? 'primary.main' : 'text.primary',
@@ -225,7 +224,7 @@ export function Header() {
             }}
           >
             <ListItemText
-              primary="Tenders"
+              primary="Тендеры"
               primaryTypographyProps={{
                 sx: {
                   color: isTenderPage ? 'primary.main' : 'text.primary',
@@ -247,7 +246,7 @@ export function Header() {
             }}
           >
             <ListItemText
-              primary="Factorings"
+              primary="Факторинг"
               primaryTypographyProps={{
                 sx: {
                   color: isFactoringsPage ? 'primary.main' : 'text.primary',
@@ -269,7 +268,7 @@ export function Header() {
             }}
           >
             <ListItemText
-              primary="Forwarders"
+              primary="Экспедиторы"
               primaryTypographyProps={{
                 sx: {
                   color: isForwardersPage ? 'primary.main' : 'text.primary',
@@ -295,16 +294,21 @@ export function Header() {
         backgroundColor: 'background.paper',
       }}
     >
-      <Container maxWidth="xl">
-        <Box
-          sx={{
-            height: 64,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            position: 'relative',
-          }}
-        >
+      <Box
+        sx={{
+          height: 64,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          position: 'relative',
+          width: '100%',
+          px: {
+            xs: 1,
+            sm: 2,
+          },
+          boxSizing: 'border-box',
+        }}
+      >
           <IconButton
             onClick={handleOpenBurger}
             sx={{
@@ -425,8 +429,7 @@ export function Header() {
               </Typography>
             </Button>
           </Box>
-        </Box>
-      </Container>
+      </Box>
 
       <>
         <Drawer

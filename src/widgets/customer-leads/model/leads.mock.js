@@ -401,11 +401,24 @@ const mockRoutes = [
    },
 ];
 
+const mockLeadStatuses = [
+   'new',
+   'add_driver',
+   'start_driver',
+   'loading',
+   'in_progress',
+   'unloading',
+   'finished',
+   'cancelled',
+   'unknown_backend_status',
+];
+
 export const mockLeads = Array.from({ length: 60 }, (_, index) => {
    const mockRoute = mockRoutes[index % mockRoutes.length];
+   const status = mockLeadStatuses[index % mockLeadStatuses.length];
 
    return {
-      status: index % 3 === 0 ? 'new' : index % 3 === 1 ? 'started' : 'bid',
+      status,
       id: `mock-lead-${index + 1}`,
       num: index + 1,
 

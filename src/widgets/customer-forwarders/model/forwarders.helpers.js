@@ -56,3 +56,15 @@ export function getForwarderBik(forwarder) {
 export function getForwarderAccount(forwarder) {
     return forwarder?.company_account || 'Не указан';
 }
+
+export function getForwarderInviteLink(forwarder) {
+    return forwarder?.invite_link || forwarder?.inviteLink || '';
+}
+
+export function getForwarderInviteCode(forwarder) {
+    return forwarder?.invite || '';
+}
+
+export function hasForwarderInviteLink(forwarder) {
+    return Boolean(getForwarderInviteLink(forwarder));
+}

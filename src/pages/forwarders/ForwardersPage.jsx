@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     Alert,
     Box,
+    Button,
     CircularProgress,
     Container,
     InputAdornment,
@@ -16,6 +17,7 @@ import {
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 import {
+    createForwarderApi,
     fetchForwarderById,
     fetchForwardersApi,
     searchForwardersApi,
@@ -30,6 +32,7 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import { ForwardersTable } from '../../widgets/customer-forwarders/ui/ForwardersTable';
 import { ForwarderDetailsModal } from '../../widgets/customer-forwarders/ui/ForwardersDetailsModal';
 import { ForwardersCardsList } from '../../widgets/customer-forwarders/ui/ForwardersCardsList';
+import { CreateForwarderInviteModal } from '../../widgets/customer-forwarders/ui/CreateForwarderInviteModal';
 
 const FORWARDERS_VIEW_MODES = {
     TABLE: 'table',
@@ -53,6 +56,11 @@ export function ForwardersPage() {
     const [isDetailsLoading, setIsDetailsLoading] = useState(false);
     const [detailsError, setDetailsError] = useState('');
     const [viewMode, setViewMode] = useState(FORWARDERS_VIEW_MODES.TABLE);
+
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const [isCreating, setIsCreating] = useState(false);
+    const [createError, setCreateError] = useState('');
+    const [createdInvite, setCreatedInvite] = useState(null);
 
     const isSearchMode = Boolean(debouncedSearch.trim());
 
@@ -154,6 +162,44 @@ export function ForwardersPage() {
         setDetailsError('');
     }
 
+    function handleOpenCreate() {
+        setIsCreateOpen(true);
+        setCreateError('');
+        setCreatedInvite(null);
+    }
+
+    function handleCloseCreate() {
+        if (isCreating) {
+            return;
+        }
+
+        setIsCreateOpen(false);
+        setCreateError('');
+        setCreatedInvite(null);
+    }
+
+    async function handleCreateForwarder(payload) {
+        try {
+            setIsCreating(true);
+            setCreateError('');
+
+            const response = await createForwarderApi(payload);
+
+            setCreatedInvite(response);
+
+            await loadForwarders();
+        } catch (requestError) {
+            setCreateError(
+                requestError.response?.data?.message ||
+                    requestError.response?.data?.error ||
+                    requestError.message ||
+                    'Не удалось создать приглашение',
+            );
+        } finally {
+            setIsCreating(false);
+        }
+    }
+
     useEffect(() => {
         const timeoutId = window.setTimeout(() => {
             setDebouncedSearch(search.trim());
@@ -198,40 +244,62 @@ export function ForwardersPage() {
                         </Typography>
                     </Box>
 
-                    <ToggleButtonGroup
-                        value={viewMode}
-                        exclusive
-                        onChange={handleViewModeChange}
-                        size="small"
-                        color="primary"
-                        aria-label="Переключение отображения экспедиторов"
+                    <Stack
+                        direction={{
+                            xs: 'column',
+                            sm: 'row',
+                        }}
+                        spacing={1}
                         sx={{
-                            alignSelf: {
-                                xs: 'stretch',
+                            width: {
+                                xs: '100%',
                                 sm: 'auto',
                             },
-                            '& .MuiToggleButton-root': {
-                                px: 1.5,
-                                minWidth: 40,
+                            alignItems: {
+                                xs: 'stretch',
+                                sm: 'center',
                             },
                         }}
                     >
-                        <ToggleButton
-                            value={FORWARDERS_VIEW_MODES.TABLE}
-                            aria-label="Показать таблицей"
-                            title="Таблица"
+                        <ToggleButtonGroup
+                            value={viewMode}
+                            exclusive
+                            onChange={handleViewModeChange}
+                            size="small"
+                            color="primary"
+                            aria-label="Переключение отображения экспедиторов"
+                            sx={{
+                                alignSelf: {
+                                    xs: 'stretch',
+                                    sm: 'auto',
+                                },
+                                '& .MuiToggleButton-root': {
+                                    px: 1.5,
+                                    minWidth: 40,
+                                },
+                            }}
                         >
-                            <ViewListRoundedIcon fontSize="small" />
-                        </ToggleButton>
+                            <ToggleButton
+                                value={FORWARDERS_VIEW_MODES.TABLE}
+                                aria-label="Показать таблицей"
+                                title="Таблица"
+                            >
+                                <ViewListRoundedIcon fontSize="small" />
+                            </ToggleButton>
 
-                        <ToggleButton
-                            value={FORWARDERS_VIEW_MODES.CARDS}
-                            aria-label="Показать карточками"
-                            title="Карточки"
-                        >
-                            <GridViewRoundedIcon fontSize="small" />
-                        </ToggleButton>
-                    </ToggleButtonGroup>
+                            <ToggleButton
+                                value={FORWARDERS_VIEW_MODES.CARDS}
+                                aria-label="Показать карточками"
+                                title="Карточки"
+                            >
+                                <GridViewRoundedIcon fontSize="small" />
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+
+                        <Button variant="contained" onClick={handleOpenCreate}>
+                            Пригласить экспедитора
+                        </Button>
+                    </Stack>
                 </Box>
 
                 <TextField
@@ -297,6 +365,15 @@ export function ForwardersPage() {
                 loading={isDetailsLoading}
                 error={detailsError}
                 onClose={handleCloseDetails}
+            />
+
+            <CreateForwarderInviteModal
+                open={isCreateOpen}
+                loading={isCreating}
+                error={createError}
+                createdInvite={createdInvite}
+                onClose={handleCloseCreate}
+                onSubmit={handleCreateForwarder}
             />
         </Container>
     );

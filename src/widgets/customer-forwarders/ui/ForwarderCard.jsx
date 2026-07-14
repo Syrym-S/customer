@@ -10,6 +10,7 @@ import {
     getForwarderIin,
     getForwarderPhone,
 } from '../model/forwarders.helpers';
+import { ForwarderInviteLink } from './ForwarderInviteLink';
 
 export function ForwarderCard({ forwarder, onOpenDetails }) {
     const forwarderId = getForwarderId(forwarder);
@@ -140,6 +141,26 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
                             },
                         }}
                     />
+                </Box>
+
+                <Box
+                    sx={{
+                        pt: 1,
+                        borderTop: '1px solid',
+                        borderColor: 'divider',
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            fontSize: 12,
+                            color: 'text.secondary',
+                            mb: 0.75,
+                        }}
+                    >
+                        Приглашение
+                    </Typography>
+
+                    <ForwarderInviteLink forwarder={forwarder} compact />
                 </Box>
 
                 <Box

@@ -34,3 +34,9 @@ export async function fetchForwardersApi({ page = 1, perPage = 10 } = {}) {
 
     return response.data;
 }
+
+export async function createForwarderApi(payload) {
+    const response = await apiClient.post('/customer/v1/forwarders/create', payload);
+
+    return response?.data ?? response;
+}
