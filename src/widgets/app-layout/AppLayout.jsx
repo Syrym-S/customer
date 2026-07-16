@@ -1,11 +1,12 @@
-import { Box } from '@mui/material';
-import { Outlet } from 'react-router-dom';
-import { Header } from '../header/Header';
-import { CUSTOMER_NAV_WIDTH } from '../../shared/config/constants';
+import { Box } from "@mui/material";
+import { Outlet } from "react-router-dom";
+import { Header } from "../header/Header";
+import { AppBreadcrumbs } from "../../router/AppBreadcrumbs";
+import { CUSTOMER_NAV_WIDTH } from "../../shared/config/constants";
 
 export function AppLayout() {
   return (
-    <Box sx={{ minHeight: '100vh' }}>
+    <Box sx={{ minHeight: "100vh" }}>
       <Header />
 
       <Box
@@ -17,6 +18,8 @@ export function AppLayout() {
           },
         }}
       >
+        <AppBreadcrumbs />
+
         <Outlet />
       </Box>
     </Box>
