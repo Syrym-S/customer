@@ -22,10 +22,23 @@ export function LeadCard({ lead }) {
    const forwarderLabel =
       lead.forwarder?.fullName || lead.forwarder?.companyName || 'Не указан';
 
+   const cargos = Array.isArray(lead.cargos) ? lead.cargos : [];
+
+   const totalWeight = cargos.reduce((sum, cargo) => {
+      const weight = Number(cargo.weight_kg);
+
+      return Number.isNaN(weight) ? sum : sum + weight;
+   }, 0);
+
+   const cargoTypeLabel =
+      cargos.length > 1
+         ? `${cargos[0]?.type || 'Не указано'} + ещё ${cargos.length - 1}`
+         : cargos[0]?.type || 'Не указано';
+
    return (
       <Box
          onClick={handleOpenLead}
-         role='button'
+         role="button"
          tabIndex={0}
          sx={{
             p: 3,
@@ -54,8 +67,8 @@ export function LeadCard({ lead }) {
             >
                <Box>
                   <Typography
-                     variant='body2'
-                     color='text.secondary'
+                     variant="body2"
+                     color="text.secondary"
                      sx={{ mb: 0.75 }}
                   >
                      Экспедитор
@@ -76,7 +89,7 @@ export function LeadCard({ lead }) {
                </Box>
 
                <Stack
-                  direction='row'
+                  direction="row"
                   spacing={1}
                   useFlexGap
                   sx={{
@@ -89,9 +102,9 @@ export function LeadCard({ lead }) {
                >
                   <Chip
                      label={`Лид #${lead.num || '—'}`}
-                     color='primary'
-                     variant='outlined'
-                     size='small'
+                     color="primary"
+                     variant="outlined"
+                     size="small"
                      sx={{
                         borderRadius: 999,
                         fontWeight: 600,
@@ -101,7 +114,7 @@ export function LeadCard({ lead }) {
 
                   <Chip
                      label={lead.status}
-                     size='small'
+                     size="small"
                      sx={{
                         borderRadius: 999,
                         fontWeight: 500,
@@ -140,7 +153,7 @@ export function LeadCard({ lead }) {
                   }}
                >
                   <Typography
-                     variant='caption'
+                     variant="caption"
                      sx={{
                         display: 'block',
                         color: 'text.secondary',
@@ -150,14 +163,14 @@ export function LeadCard({ lead }) {
                      Откуда
                   </Typography>
 
-                 <Box
-   sx={{
-      display: 'flex',
-      alignItems: 'flex-start',
-      gap: 1,
-      minWidth: 0,
-   }}
->
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 1,
+                        minWidth: 0,
+                     }}
+                  >
                      <TripOriginIcon
                         sx={{ fontSize: 18, color: 'primary.main' }}
                      />
@@ -168,8 +181,8 @@ export function LeadCard({ lead }) {
                            fontSize: 14,
                            lineHeight: 1.35,
                            minWidth: 0,
-      overflowWrap: 'anywhere',
-      wordBreak: 'break-word',
+                           overflowWrap: 'anywhere',
+                           wordBreak: 'break-word',
                         }}
                      >
                         {normalizeLocationValue(lead.from_location)}
@@ -214,7 +227,7 @@ export function LeadCard({ lead }) {
                   }}
                >
                   <Typography
-                     variant='caption'
+                     variant="caption"
                      sx={{
                         display: 'block',
                         color: 'text.secondary',
@@ -225,13 +238,13 @@ export function LeadCard({ lead }) {
                   </Typography>
 
                   <Box
-   sx={{
-      display: 'flex',
-      alignItems: 'flex-start',
-      gap: 1,
-      minWidth: 0,
-   }}
->
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 1,
+                        minWidth: 0,
+                     }}
+                  >
                      <LocationOnOutlinedIcon
                         sx={{ fontSize: 18, color: 'primary.main' }}
                      />
@@ -242,8 +255,8 @@ export function LeadCard({ lead }) {
                            fontSize: 14,
                            lineHeight: 1.35,
                            minWidth: 0,
-      overflowWrap: 'anywhere',
-      wordBreak: 'break-word',
+                           overflowWrap: 'anywhere',
+                           wordBreak: 'break-word',
                         }}
                      >
                         {normalizeLocationValue(lead.to_location)}
@@ -263,18 +276,14 @@ export function LeadCard({ lead }) {
                }}
             >
                <InfoBadge
-                  label='Вес'
-                  value={
-                     hasValue(lead.cargo.weight_kg)
-                        ? `${lead.cargo.weight_kg} кг`
-                        : 'Не указано'
-                  }
+                  label="Вес"
+                  value={totalWeight > 0 ? `${totalWeight} кг` : 'Не указано'}
                />
 
-               <InfoBadge label='Тип' value={lead.cargo.type || 'Не указано'} />
+               <InfoBadge label="Тип" value={cargoTypeLabel} />
 
                <InfoBadge
-                  label='Цена'
+                  label="Цена"
                   value={
                      hasValue(lead.summ)
                         ? `${lead.summ} ${lead.currency}`

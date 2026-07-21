@@ -1,4 +1,98 @@
+function createEmptyLeadCargoEditForm() {
+   return {
+      name: '',
+      description: '',
+      weight_kg: '',
+      cargo_price: '',
+      type: 'Не указан',
+      width_cm: '',
+      height_cm: '',
+      length_cm: '',
+   };
+}
+
+function normalizeLeadCargosForEdit(lead) {
+   const sourceCargos = Array.isArray(lead?.cargos) ? lead.cargos : [];
+
+   if (!sourceCargos.length) {
+      return [createEmptyLeadCargoEditForm()];
+   }
+
+   return sourceCargos.map((cargo) => ({
+      name: normalizeText(cargo.name),
+      description: cargo.description ?? cargo.context ?? '',
+      weight_kg: cargo.weight_kg ?? '',
+      cargo_price: cargo.cargo_price ?? '',
+      type: normalizeCargoTypeForUi(cargo.type),
+      width_cm: cargo.width_cm ?? '',
+      height_cm: cargo.height_cm ?? '',
+      length_cm: cargo.length_cm ?? '',
+   }));
+}
+
+function normalizeOptionalNumber(value) {
+   const numberValue = normalizeNumber(value);
+
+   if (numberValue === null) {
+      return null;
+   }
+
+   return numberValue;
+}
+
+function normalizeOptionalInteger(value) {
+   const numberValue = normalizeNumber(value);
+
+   if (numberValue === null) {
+      return null;
+   }
+
+   return Math.round(numberValue);
+}
+
+function normalizeCargoForPayload(cargo = {}) {
+   const type = normalizeCargoTypeForPayload(cargo.type);
+   const name = normalizeText(cargo.name);
+   const description = normalizeText(cargo.description ?? cargo.context);
+
+   return {
+      name: name || type,
+      description: description || null,
+      weight_kg: normalizeOptionalInteger(cargo.weight_kg),
+      cargo_price: normalizeOptionalNumber(cargo.cargo_price),
+      type,
+      width_cm: normalizeOptionalInteger(cargo.width_cm),
+      height_cm: normalizeOptionalInteger(cargo.height_cm),
+      length_cm: normalizeOptionalInteger(cargo.length_cm),
+   };
+}
+
+function normalizeCargosForPayload(cargos) {
+   if (!Array.isArray(cargos)) {
+      return [];
+   }
+
+   return cargos.map(normalizeCargoForPayload).filter((cargo) => {
+      return (
+         cargo.name ||
+         cargo.description ||
+         cargo.weight_kg !== null ||
+         cargo.cargo_price !== null ||
+         cargo.type ||
+         cargo.width_cm !== null ||
+         cargo.height_cm !== null ||
+         cargo.length_cm !== null
+      );
+   });
+}
+
+function areCargosEqual(nextCargos, currentCargos) {
+   return JSON.stringify(nextCargos) === JSON.stringify(currentCargos);
+}
+
 export function createLeadEditForm(lead) {
+   const cargos = normalizeLeadCargosForEdit(lead);
+
    if (!lead) {
       return {
          from_location: '',
@@ -8,13 +102,7 @@ export function createLeadEditForm(lead) {
          toLat: '',
          toLng: '',
 
-         cargoName: '',
-         cargoType: 'Не указан',
-         weight_kg: '',
-         cargoLengthCm: '',
-         cargoWidthCm: '',
-         cargoHeightCm: '',
-         cargoDescription: '',
+         cargos: [createEmptyLeadCargoEditForm()],
 
          summ: '',
          currency: 'KZT',
@@ -36,17 +124,7 @@ export function createLeadEditForm(lead) {
       toLat: lead.raw?.route?.to?.lat ?? '',
       toLng: lead.raw?.route?.to?.lng ?? '',
 
-      cargoName: normalizeCargoTypeForUi(lead.cargo?.name),
-      cargoType: normalizeCargoTypeForUi(lead.cargo?.type),
-      weight_kg: lead.cargo?.weight_kg ?? '',
-      cargoLengthCm: lead.cargo?.length_cm ?? '',
-      cargoWidthCm: lead.cargo?.width_cm ?? '',
-      cargoHeightCm: lead.cargo?.height_cm ?? '',
-      cargoDescription:
-         lead.cargo?.context ??
-         lead.cargo?.comment ??
-         lead.cargo?.description ??
-         '',
+      cargos,
 
       summ: lead.summ ?? '',
       currency: normalizeCurrency(lead.currency),
@@ -298,69 +376,12 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
       currentLead.raw?.loading_date,
    );
 
-   const nextCargoType = normalizeCargoTypeForPayload(editForm.cargoType);
-   const currentCargoType = normalizeCargoTypeForPayload(currentLead.cargo?.type);
+   const nextCargos = normalizeCargosForPayload(editForm.cargos);
+   const currentCargos = normalizeCargosForPayload(currentLead.cargos);
 
-   const cargoTypeChanged = nextCargoType !== currentCargoType;
-
-   const cargoWeightChanged = hasNumberChanged(
-      editForm.weight_kg,
-      currentLead.cargo?.weight_kg,
-   );
-
-   const cargoLengthChanged = hasNumberChanged(
-      editForm.cargoLengthCm,
-      currentLead.cargo?.length_cm,
-   );
-
-   const cargoWidthChanged = hasNumberChanged(
-      editForm.cargoWidthCm,
-      currentLead.cargo?.width_cm,
-   );
-
-   const cargoHeightChanged = hasNumberChanged(
-      editForm.cargoHeightCm,
-      currentLead.cargo?.height_cm,
-   );
-
-   const cargoDescriptionChanged = hasTextChanged(
-      editForm.cargoDescription,
-      currentLead.cargo?.context || currentLead.cargo?.description,
-   );
-
-   const hasCargoChanges =
-      cargoTypeChanged ||
-      cargoWeightChanged ||
-      cargoLengthChanged ||
-      cargoWidthChanged ||
-      cargoHeightChanged ||
-      cargoDescriptionChanged;
-
-   if (hasCargoChanges) {
-      if (cargoTypeChanged) {
-         payload.cargo_name = nextCargoType;
-         payload.cargo_type = nextCargoType;
-      }
-
-      addPositiveIntegerValue(payload, 'cargo_weight', editForm.weight_kg);
-      addPositiveIntegerValue(payload, 'cargo_length', editForm.cargoLengthCm);
-      addPositiveIntegerValue(payload, 'cargo_width', editForm.cargoWidthCm);
-      addPositiveIntegerValue(payload, 'cargo_height', editForm.cargoHeightCm);
-
-      if (cargoDescriptionChanged) {
-         payload.comment = normalizeText(editForm.cargoDescription);
-      }
+   if (!areCargosEqual(nextCargos, currentCargos)) {
+      payload.cargos = nextCargos;
    }
 
    return payload;
-}
-
-function addPositiveIntegerValue(payload, key, value) {
-   const normalizedValue = normalizeNumber(value);
-
-   if (normalizedValue === null || normalizedValue <= 0) {
-      return;
-   }
-
-   payload[key] = Math.round(normalizedValue);
 }

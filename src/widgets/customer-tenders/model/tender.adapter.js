@@ -32,17 +32,46 @@ function formatTenderLocation(location) {
    return '';
 }
 
+function normalizeTenderCargoFromApi(cargo = {}) {
+   const description =
+      cargo.description ?? cargo.context ?? cargo.comment ?? '';
+
+   return {
+      id: cargo.id ?? null,
+      name: cargo.name || cargo.type || 'Не указан',
+      description,
+      context: description,
+      weight_kg: cargo.weight_kg ?? null,
+      cargo_price: cargo.cargo_price ?? null,
+      type: cargo.type || 'Не указан',
+      width_cm: cargo.width_cm ?? null,
+      height_cm: cargo.height_cm ?? null,
+      length_cm: cargo.length_cm ?? null,
+      raw: cargo,
+   };
+}
+
+function mapTenderLeadCargosFromApi(lead) {
+   if (!Array.isArray(lead?.cargos)) {
+      return [];
+   }
+
+   return lead.cargos.map(normalizeTenderCargoFromApi);
+}
+
 function mapTenderLeadFromApi(lead) {
    if (!lead) {
       return null;
    }
 
    const documents = mapTenderLeadDocumentsFromApi(lead);
+   const cargos = mapTenderLeadCargosFromApi(lead);
 
    return {
       ...lead,
       from_location: formatTenderLocation(lead.from_location),
       to_location: formatTenderLocation(lead.to_location),
+      cargos,
       documents,
       files: documents,
    };
@@ -76,7 +105,7 @@ export function mapTenderFromApi(tender) {
       from_location: lead?.from_location || '',
       to_location: lead?.to_location || '',
 
-      cargo: lead?.cargo || null,
+      cargos: lead?.cargos || [],
       summ: lead?.summ ?? null,
       currency: lead?.currency || 'KZT',
       vat: lead?.vat || '',

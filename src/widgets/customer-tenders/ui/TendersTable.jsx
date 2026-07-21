@@ -1,6 +1,10 @@
 import { Box, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useTendersContext } from '../model/useTendersContext';
+import {
+   getTenderCargoTypeLabel,
+   getTenderTotalCargoWeight,
+} from '../model/tender.helpers';
 
 function getLocationLabel(location) {
    if (!location) {
@@ -75,11 +79,21 @@ export function TendersTable({ tenders }) {
          ),
       },
       {
-         field: 'cargo_type',
+         field: 'cargoTypes',
          headerName: 'Тип груза',
-         width: 180,
+         width: 220,
          renderCell: ({ row }) => {
-            return <Box>{row.cargo?.type || row.lead?.cargo?.type || '-'}</Box>;
+            return <Box>{getTenderCargoTypeLabel(row)}</Box>;
+         },
+      },
+      {
+         field: 'cargoTotalWeight',
+         headerName: 'Вес грузов',
+         width: 160,
+         renderCell: ({ row }) => {
+            const totalWeight = getTenderTotalCargoWeight(row);
+
+            return <Box>{totalWeight > 0 ? `${totalWeight} кг` : '-'}</Box>;
          },
       },
       {

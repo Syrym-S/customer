@@ -5,20 +5,48 @@ import {
    FormControlLabel,
    Switch,
    TextField,
+   Button,
+   IconButton,
+   Stack,
+   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import { Controller } from 'react-hook-form';
+import { Controller, useFieldArray } from 'react-hook-form';
 
 import { StepSection } from '../components/StepSection';
 import { useEffect, useMemo, useState } from 'react';
-import { fetchCustomerCargoTypesApi, searchCustomerCargoTypesApi } from '../../../../../widgets/customer-leads/api/cargo-types.api';
+import {
+   fetchCustomerCargoTypesApi,
+   searchCustomerCargoTypesApi,
+} from '../../../../../widgets/customer-leads/api/cargo-types.api';
 import { fetchCustomerCurrenciesApi } from '../../../api/currencies.api';
 import { CurrencyAutocomplete } from '../components/CurrencyAutocomplete';
+
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+
+function createEmptyCargo() {
+   return {
+      name: '',
+      description: '',
+      weight_kg: '',
+      type: 'Не указан',
+      width_cm: '',
+      height_cm: '',
+      length_cm: '',
+      cargo_price: '',
+   };
+}
 
 export function CargoStep({ control, errors }) {
    const [cargoTypes, setCargoTypes] = useState([]);
    const [cargoTypesSearch, setCargoTypesSearch] = useState('');
    const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);
+
+   const { fields, append, remove } = useFieldArray({
+      control,
+      name: 'cargos',
+   });
 
    useEffect(() => {
       async function testCurrenciesRequest() {
@@ -122,240 +150,324 @@ export function CargoStep({ control, errors }) {
    }, [cargoTypes]);
 
    return (
-      <StepSection title='Груз и оплата'>
-         <Box
-            sx={{
-               display: 'grid',
-               gridTemplateColumns: {
-                  xs: '1fr',
-                  sm: '1fr 1fr',
-               },
-               gap: 2,
-            }}
-         >
-            <Controller
-               name='cargoType'
-               control={control}
-               render={({ field }) => {
-                  const selectedOption =
-                     cargoTypeOptions.find((option) => option.name === field.value) ||
-                     cargoTypeOptions[0];
+      <StepSection title="Грузы и оплата">
+         <Stack spacing={2}>
+            {fields.map((fieldItem, index) => {
+               const cargoErrors = errors.cargos?.[index] || {};
 
-                  return (
-                     <Autocomplete
-                        options={cargoTypeOptions}
-                        value={selectedOption}
-                        loading={isCargoTypesLoading}
-                        getOptionLabel={(option) => option?.name || ''}
-                        isOptionEqualToValue={(option, value) =>
-                           String(option?.id || option?.name) ===
-                           String(value?.id || value?.name)
-                        }
-                        onInputChange={(_, value, reason) => {
-                           if (reason === 'input') {
-                              setCargoTypesSearch(value);
-                           }
+               return (
+                  <Box
+                     key={fieldItem.id}
+                     sx={{
+                        p: 2,
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        borderRadius: 3,
+                        backgroundColor: 'grey.50',
+                     }}
+                  >
+                     <Box
+                        sx={{
+                           display: 'flex',
+                           justifyContent: 'space-between',
+                           alignItems: 'center',
+                           gap: 1,
+                           mb: 2,
                         }}
-                        onChange={(_, option) => {
-                           field.onChange(option?.name || 'Не указан');
-                        }}
-                        renderInput={(params) => {
-                           const inputProps = params.InputProps || {};
+                     >
+                        <Typography fontWeight={600}>
+                           Груз #{index + 1}
+                        </Typography>
 
-                           return (
+                        <IconButton
+                           size="small"
+                           color="error"
+                           disabled={fields.length === 1}
+                           onClick={() => remove(index)}
+                        >
+                           <DeleteOutlineRoundedIcon fontSize="small" />
+                        </IconButton>
+                     </Box>
+
+                     <Box
+                        sx={{
+                           display: 'grid',
+                           gridTemplateColumns: {
+                              xs: '1fr',
+                              sm: '1fr 1fr',
+                           },
+                           gap: 2,
+                        }}
+                     >
+                        <Controller
+                           name={`cargos.${index}.name`}
+                           control={control}
+                           rules={{
+                              required: 'Укажите наименование груза',
+                           }}
+                           render={({ field }) => (
                               <TextField
-                                 {...params}
-                                 label='Тип груза'
+                                 {...field}
+                                 label="Наименование груза"
                                  fullWidth
-                                 size='small'
-                                 InputProps={{
-                                    ...inputProps,
-                                    endAdornment: (
-                                       <>
-                                          {isCargoTypesLoading && (
-                                             <CircularProgress color='inherit' size={18} />
-                                          )}
+                                 size="small"
+                                 error={Boolean(cargoErrors.name)}
+                                 helperText={cargoErrors.name?.message}
+                              />
+                           )}
+                        />
 
-                                          {inputProps.endAdornment}
-                                       </>
-                                    ),
+                        <Controller
+                           name={`cargos.${index}.type`}
+                           control={control}
+                           render={({ field }) => {
+                              const selectedOption =
+                                 cargoTypeOptions.find(
+                                    (option) => option.name === field.value,
+                                 ) || cargoTypeOptions[0];
+
+                              return (
+                                 <Autocomplete
+                                    options={cargoTypeOptions}
+                                    value={selectedOption}
+                                    loading={isCargoTypesLoading}
+                                    getOptionLabel={(option) =>
+                                       option?.name || ''
+                                    }
+                                    isOptionEqualToValue={(option, value) =>
+                                       String(option?.id || option?.name) ===
+                                       String(value?.id || value?.name)
+                                    }
+                                    onInputChange={(_, value, reason) => {
+                                       if (reason === 'input') {
+                                          setCargoTypesSearch(value);
+                                       }
+                                    }}
+                                    onChange={(_, option) => {
+                                       field.onChange(
+                                          option?.name || 'Не указан',
+                                       );
+                                    }}
+                                    renderInput={(params) => {
+                                       const inputProps =
+                                          params.InputProps || {};
+
+                                       return (
+                                          <TextField
+                                             {...params}
+                                             label="Тип груза"
+                                             fullWidth
+                                             size="small"
+                                             InputProps={{
+                                                ...inputProps,
+                                                endAdornment: (
+                                                   <>
+                                                      {isCargoTypesLoading && (
+                                                         <CircularProgress
+                                                            color="inherit"
+                                                            size={18}
+                                                         />
+                                                      )}
+
+                                                      {inputProps.endAdornment}
+                                                   </>
+                                                ),
+                                             }}
+                                          />
+                                       );
+                                    }}
+                                 />
+                              );
+                           }}
+                        />
+
+                        <Controller
+                           name={`cargos.${index}.weight_kg`}
+                           control={control}
+                           rules={{
+                              required: 'Укажите вес',
+                              validate: (value) =>
+                                 Number(value) > 0 ||
+                                 'Вес должен быть больше 0',
+                           }}
+                           render={({ field }) => (
+                              <TextField
+                                 {...field}
+                                 label="Вес, кг"
+                                 fullWidth
+                                 size="small"
+                                 error={Boolean(cargoErrors.weight_kg)}
+                                 helperText={cargoErrors.weight_kg?.message}
+                              />
+                           )}
+                        />
+
+                        <Controller
+                           name={`cargos.${index}.cargo_price`}
+                           control={control}
+                           render={({ field }) => (
+                              <TextField
+                                 {...field}
+                                 label="Цена груза"
+                                 fullWidth
+                                 size="small"
+                              />
+                           )}
+                        />
+
+                        <Box
+                           sx={{
+                              display: 'grid',
+                              gridTemplateColumns: {
+                                 xs: '1fr',
+                                 sm: 'repeat(3, 1fr)',
+                              },
+                              gap: 2,
+                              gridColumn: {
+                                 xs: 'auto',
+                                 sm: '1 / -1',
+                              },
+                           }}
+                        >
+                           <Controller
+                              name={`cargos.${index}.length_cm`}
+                              control={control}
+                              render={({ field }) => (
+                                 <TextField
+                                    {...field}
+                                    label="Длина, см"
+                                    fullWidth
+                                    size="small"
+                                 />
+                              )}
+                           />
+
+                           <Controller
+                              name={`cargos.${index}.width_cm`}
+                              control={control}
+                              render={({ field }) => (
+                                 <TextField
+                                    {...field}
+                                    label="Ширина, см"
+                                    fullWidth
+                                    size="small"
+                                 />
+                              )}
+                           />
+
+                           <Controller
+                              name={`cargos.${index}.height_cm`}
+                              control={control}
+                              render={({ field }) => (
+                                 <TextField
+                                    {...field}
+                                    label="Высота, см"
+                                    fullWidth
+                                    size="small"
+                                 />
+                              )}
+                           />
+                        </Box>
+
+                        <Controller
+                           name={`cargos.${index}.description`}
+                           control={control}
+                           render={({ field }) => (
+                              <TextField
+                                 {...field}
+                                 label="Описание груза"
+                                 fullWidth
+                                 multiline
+                                 minRows={2}
+                                 size="small"
+                                 sx={{
+                                    gridColumn: {
+                                       xs: 'auto',
+                                       sm: '1 / -1',
+                                    },
                                  }}
                               />
-                           );
-                        }}
-                     />
-                  );
-               }}
-            />
+                           )}
+                        />
+                     </Box>
+                  </Box>
+               );
+            })}
 
-            <Controller
-               name='weightKg'
-               control={control}
-               rules={{
-                  required: 'Укажите вес',
-                  validate: (value) =>
-                     Number(value) > 0 || 'Вес должен быть больше 0',
-               }}
-               render={({ field }) => (
-                  <TextField
-                     {...field}
-                     label='Вес, кг'
-                     fullWidth
-                     size='small'
-                     error={Boolean(errors.weightKg)}
-                     helperText={errors.weightKg?.message}
-                  />
-               )}
-            />
+            <Button
+               type="button"
+               variant="outlined"
+               startIcon={<AddRoundedIcon />}
+               onClick={() => append(createEmptyCargo())}
+               sx={{ alignSelf: 'flex-start' }}
+            >
+               Добавить груз
+            </Button>
 
             <Box
                sx={{
-                  gridColumn: {
-                     xs: 'auto',
-                     sm: '1 / -1',
-                  },
                   display: 'grid',
                   gridTemplateColumns: {
                      xs: '1fr',
-                     sm: 'repeat(3, 1fr)',
+                     sm: '1fr 1fr',
                   },
                   gap: 2,
                }}
             >
                <Controller
-                  name='cargoLengthCm'
+                  name="price"
                   control={control}
                   rules={{
-                     required: 'Укажите длину',
+                     required: 'Укажите цену',
                      validate: (value) =>
-                        Number(value) > 0 || 'Длина должна быть больше 0',
+                        Number(value) >= 0 ||
+                        'Цена не может быть отрицательной',
                   }}
                   render={({ field }) => (
                      <TextField
                         {...field}
-                        label='Длина, см'
+                        label="Цена"
                         fullWidth
-                        size='small'
-                        error={Boolean(errors.cargoLengthCm)}
-                        helperText={errors.cargoLengthCm?.message}
+                        size="small"
+                        error={Boolean(errors.price)}
+                        helperText={errors.price?.message}
                      />
                   )}
                />
 
                <Controller
-                  name='cargoWidthCm'
+                  name="currency"
                   control={control}
-                  rules={{
-                     required: 'Укажите ширину',
-                     validate: (value) =>
-                        Number(value) > 0 || 'Ширина должна быть больше 0',
-                  }}
                   render={({ field }) => (
-                     <TextField
-                        {...field}
-                        label='Ширина, см'
+                     <CurrencyAutocomplete
+                        value={field.value || 'KZT'}
+                        onChange={field.onChange}
+                        label="Валюта"
                         fullWidth
-                        size='small'
-                        error={Boolean(errors.cargoWidthCm)}
-                        helperText={errors.cargoWidthCm?.message}
+                        size="small"
                      />
                   )}
                />
 
                <Controller
-                  name='cargoHeightCm'
+                  name="vat"
                   control={control}
-                  rules={{
-                     required: 'Укажите высоту',
-                     validate: (value) =>
-                        Number(value) > 0 || 'Высота должна быть больше 0',
-                  }}
                   render={({ field }) => (
-                     <TextField
-                        {...field}
-                        label='Высота, см'
-                        fullWidth
-                        size='small'
-                        error={Boolean(errors.cargoHeightCm)}
-                        helperText={errors.cargoHeightCm?.message}
+                     <FormControlLabel
+                        control={
+                           <Switch
+                              checked={field.value}
+                              onChange={(event) =>
+                                 field.onChange(event.target.checked)
+                              }
+                           />
+                        }
+                        label="С НДС"
                      />
                   )}
                />
             </Box>
-
-            <Controller
-               name='price'
-               control={control}
-               rules={{
-                  required: 'Укажите цену',
-                  validate: (value) =>
-                     Number(value) >= 0 || 'Цена не может быть отрицательной',
-               }}
-               render={({ field }) => (
-                  <TextField
-                     {...field}
-                     label='Цена'
-                     fullWidth
-                     size='small'
-                     error={Boolean(errors.price)}
-                     helperText={errors.price?.message}
-                  />
-               )}
-            />
-
-            <Controller
-               name='currency'
-               control={control}
-               render={({ field }) => (
-                  <CurrencyAutocomplete
-                     value={field.value || 'KZT'}
-                     onChange={field.onChange}
-                     label='Валюта'
-                     fullWidth
-                     size='small'
-                  />
-               )}
-            />
-
-            <Controller
-               name='vat'
-               control={control}
-               render={({ field }) => (
-                  <FormControlLabel
-                     control={
-                        <Switch
-                           checked={field.value}
-                           onChange={(event) =>
-                              field.onChange(event.target.checked)
-                           }
-                        />
-                     }
-                     label='С НДС'
-                  />
-               )}
-            />
-
-            <Controller
-               name='comment'
-               control={control}
-               render={({ field }) => (
-                  <TextField
-                     {...field}
-                     label='Комментарий'
-                     fullWidth
-                     multiline
-                     minRows={3}
-                     size='small'
-                     sx={{
-                        gridColumn: {
-                           xs: 'auto',
-                           sm: '1 / -1',
-                        },
-                     }}
-                  />
-               )}
-            />
-         </Box>
+         </Stack>
       </StepSection>
    );
 }

@@ -48,10 +48,58 @@ function normalizeCargoTypeValue(value) {
     return normalizedValue;
 }
 
+function mapFormCargoToApiCargo(cargo = {}) {
+    const type = normalizeCargoTypeValue(cargo.type ?? cargo.cargoType);
+    const name = normalizeText(cargo.name ?? cargo.cargoName);
+    const description = normalizeText(
+        cargo.description ?? cargo.comment ?? cargo.context,
+    );
+
+    const payload = {};
+
+    addIfHasValue(payload, 'name', name || type);
+    addIfHasValue(payload, 'description', description || null);
+
+    addNumberIfHasValue(payload, 'weight_kg', cargo.weight_kg);
+    addNumberIfHasValue(payload, 'cargo_price', cargo.cargo_price);
+    addIfHasValue(payload, 'type', type);
+    addNumberIfHasValue(payload, 'width_cm', cargo.width_cm);
+    addNumberIfHasValue(payload, 'height_cm', cargo.height_cm);
+    addNumberIfHasValue(payload, 'length_cm', cargo.length_cm);
+
+    return payload;
+}
+
+function getNormalizedFormCargos(form) {
+    const sourceCargos = Array.isArray(form.cargos) ? form.cargos : [];
+
+    return sourceCargos
+        .map(mapFormCargoToApiCargo)
+        .filter((cargo) =>
+            Object.values(cargo).some((value) => hasValue(value)),
+        );
+}
+
+function mapApiCargoToUiCargo(cargo) {
+    const type = normalizeCargoTypeValue(cargo.type) || 'Не указан';
+    const name = normalizeText(cargo.name) || type;
+
+    return {
+        name,
+        description: cargo.description || '',
+        context: cargo.description || '',
+        weight_kg: cargo.weight_kg ?? 0,
+        type,
+        volume_cm: null,
+        width_cm: cargo.width_cm ?? null,
+        height_cm: cargo.height_cm ?? null,
+        length_cm: cargo.length_cm ?? null,
+    };
+}
+
 export function mapCreateLeadFormToApi(form) {
     const fromLocation = normalizeText(form.fromLocation);
     const toLocation = normalizeText(form.toLocation);
-    const cargoType = normalizeCargoTypeValue(form.cargoType);
 
     const payload = {
         from_country: getLocationPayloadValue(
@@ -98,12 +146,11 @@ export function mapCreateLeadFormToApi(form) {
     addNumberIfHasValue(payload, 'to_lat', form.toLat);
     addNumberIfHasValue(payload, 'to_lon', form.toLng);
 
-    addIfHasValue(payload, 'cargo_name', cargoType);
-    addIfHasValue(payload, 'cargo_type', cargoType);
-    addNumberIfHasValue(payload, 'cargo_weight', form.weightKg);
-    addNumberIfHasValue(payload, 'cargo_length', form.cargoLengthCm);
-    addNumberIfHasValue(payload, 'cargo_width', form.cargoWidthCm);
-    addNumberIfHasValue(payload, 'cargo_height', form.cargoHeightCm);
+    const cargos = getNormalizedFormCargos(form);
+
+    if (cargos.length) {
+        payload.cargos = cargos;
+    }
 
     addNumberIfHasValue(payload, 'price', form.price);
 
@@ -121,17 +168,36 @@ export function mapCreateLeadDocumentsToApiDocuments(form) {
 }
 
 export function mapCreatedLeadToUi(form, response) {
-    const id = response?.id ?? `created-lead-${Date.now()}`;
-    const cargoType = normalizeCargoTypeValue(form.cargoType) || 'Не указан';
+    const responseData = response?.data ?? response ?? {};
+    const id =
+        responseData?.id ??
+        responseData?.lead_id ??
+        `created-lead-${Date.now()}`;
+
+    const cargos = getNormalizedFormCargos(form).map(mapApiCargoToUiCargo);
+
+    const fallbackCargo = {
+        name: 'Не указан',
+        description: '',
+        context: '',
+        weight_kg: 0,
+        type: 'Не указан',
+        volume_cm: null,
+        width_cm: null,
+        height_cm: null,
+        length_cm: null,
+    };
+
+    const firstCargo = cargos[0] ?? fallbackCargo;
 
     return {
         id,
-        num: response?.num ?? id,
+        num: responseData?.num ?? id,
 
         customer:
-            response?.customer?.name ||
-            response?.customer ||
-            response?.creator?.name ||
+            responseData?.customer?.name ||
+            responseData?.customer ||
+            responseData?.creator?.name ||
             'Текущий заказчик',
 
         forwarder: form.forwarder ?? {
@@ -148,25 +214,16 @@ export function mapCreatedLeadToUi(form, response) {
         summ: Number(form.price) || 0,
         currency: form.currency || 'KZT',
 
-        status: response?.status || 'new',
+        status: responseData?.status || 'new',
 
         transportation_price: null,
         vat: form.vat ? 'с НДС' : 'без НДС',
         gsm: false,
-        created_at: response?.created_at ?? null,
+        created_at: responseData?.created_at ?? null,
         updated_at: null,
 
-        cargo: {
-            name: cargoType,
-            description: form.comment || '',
-            context: null,
-            weight_kg: Number(form.weightKg) || 0,
-            type: cargoType,
-            volume_cm: null,
-            width_cm: Number(form.cargoWidthCm) || null,
-            height_cm: Number(form.cargoHeightCm) || null,
-            length_cm: Number(form.cargoLengthCm) || null,
-        },
+        cargo: firstCargo,
+        cargos,
 
         driver: 'Не назначен',
 
@@ -183,7 +240,9 @@ export function mapCreatedLeadToUi(form, response) {
         gos_number: null,
 
         raw: {
-            ...response,
+            ...responseData,
+            cargos,
+            cargo: firstCargo,
             route: {
                 from: {
                     lat: form.fromLat ? Number(form.fromLat) : null,

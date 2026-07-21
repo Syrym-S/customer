@@ -92,12 +92,11 @@ export function createTenderEditForm(tender) {
          from_location: '',
          to_location: '',
 
-         cargoType: 'Не указан',
-         weight_kg: '',
+         cargos: [],
+
          summ: '',
          currency: 'KZT',
          vat: 'без НДС',
-         cargoDescription: '',
       };
    }
 
@@ -113,16 +112,11 @@ export function createTenderEditForm(tender) {
       from_location: normalizeLocationValue(lead.from_location),
       to_location: normalizeLocationValue(lead.to_location),
 
-      cargoType: lead.cargo?.type || 'Не указан',
-      weight_kg: lead.cargo?.weight_kg ?? '',
+      cargos: Array.isArray(lead.cargos) ? lead.cargos : [],
+
       summ: lead.summ ?? '',
       currency: normalizeCurrency(lead.currency),
       vat: lead.vat || 'без НДС',
-      cargoDescription:
-         lead.cargo?.context ||
-         lead.cargo?.comment ||
-         lead.cargo?.description ||
-         '',
    };
 }
 

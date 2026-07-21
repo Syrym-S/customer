@@ -22,12 +22,7 @@ function normalizeCargoTypeValue(value) {
 
    if (typeof value === 'object') {
       return (
-         value.name ||
-         value.title ||
-         value.label ||
-         value.type ||
-         value.cargo_type ||
-         'Не указан'
+         value.name || value.title || value.label || value.type || 'Не указан'
       );
    }
 
@@ -148,7 +143,56 @@ function mapLeadDocumentsFromApi(apiLead) {
    return files.map(mapLeadFileFromApi);
 }
 
+function normalizeText(value) {
+   if (value === null || value === undefined) {
+      return '';
+   }
+
+   return String(value).trim();
+}
+
+function getCargoDescription(apiCargo) {
+   return apiCargo?.context ?? apiCargo?.comment ?? apiCargo?.description ?? '';
+}
+
+function normalizeCargoFromApi(apiCargo = {}) {
+   const type = normalizeCargoTypeValue(apiCargo.type);
+   const name = normalizeText(apiCargo.name) || type || 'Не указан';
+   const description = getCargoDescription(apiCargo);
+
+   return {
+      id: apiCargo.id ?? null,
+      name,
+      description,
+      context: description,
+      rawDescription: apiCargo.description ?? '',
+
+      weight_kg: apiCargo.weight_kg ?? null,
+      cargo_price: apiCargo.cargo_price ?? null,
+
+      type,
+
+      volume_cm: apiCargo.volume_cm ?? null,
+      width_cm: apiCargo.width_cm ?? null,
+      height_cm: apiCargo.height_cm ?? null,
+      length_cm: apiCargo.length_cm ?? null,
+
+      raw: apiCargo,
+   };
+}
+
+function mapLeadCargosFromApi(apiLead) {
+   if (!Array.isArray(apiLead.cargos)) {
+      return [];
+   }
+
+   return apiLead.cargos.map((cargo) => normalizeCargoFromApi(cargo));
+}
+
 export function mapLeadFromApi(apiLead) {
+   const cargos = mapLeadCargosFromApi(apiLead);
+   const firstCargo = cargos[0];
+
    return {
       id: apiLead.id,
       num: apiLead.num ?? apiLead.id,
@@ -184,41 +228,8 @@ export function mapLeadFromApi(apiLead) {
       created_at: apiLead.created_at ?? null,
       updated_at: apiLead.updated_at ?? null,
 
-      cargo: {
-         name: normalizeCargoTypeValue(
-            apiLead.cargo_name ||
-               apiLead.cargo_type ||
-               apiLead.cargo?.name ||
-               apiLead.cargo?.type,
-         ),
-
-         description:
-            apiLead.cargo?.context ??
-            apiLead.cargo?.comment ??
-            apiLead.cargo?.description ??
-            '',
-
-         context:
-            apiLead.cargo?.context ??
-            apiLead.cargo?.comment ??
-            apiLead.cargo?.description ??
-            '',
-
-         rawDescription: apiLead.cargo?.description ?? '',
-
-         weight_kg: apiLead.cargo?.weight_kg ?? null,
-         type: normalizeCargoTypeValue(
-            apiLead.cargo_type ||
-               apiLead.cargo_name ||
-               apiLead.cargo?.type ||
-               apiLead.cargo?.cargo_type ||
-               apiLead.cargo?.name,
-         ),
-         volume_cm: apiLead.cargo?.volume_cm ?? null,
-         width_cm: apiLead.cargo?.width_cm ?? null,
-         height_cm: apiLead.cargo?.height_cm ?? null,
-         length_cm: apiLead.cargo?.length_cm ?? null,
-      },
+      cargo: firstCargo,
+      cargos,
 
       driver: apiLead.driver ?? 'Не назначен',
 

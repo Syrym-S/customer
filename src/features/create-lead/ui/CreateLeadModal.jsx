@@ -32,6 +32,19 @@ function getTodayDateInputValue() {
     return `${year}-${month}-${day}`;
 }
 
+function createInitialCargo() {
+    return {
+        name: '',
+        description: '',
+        weight_kg: '1200',
+        type: 'Не указан',
+        width_cm: '50',
+        height_cm: '70',
+        length_cm: '50',
+        cargo_price: '',
+    };
+}
+
 function createInitialLocation() {
     return {
         country: '',
@@ -55,11 +68,8 @@ function createInitialForm() {
 
         loadingDate: getTodayDateInputValue(),
 
-        cargoType: 'Не указан',
-        weightKg: '1200',
-        cargoLengthCm: '50',
-        cargoWidthCm: '50',
-        cargoHeightCm: '70',
+        cargos: [createInitialCargo()],
+
         price: '250000',
         currency: 'KZT',
         vat: true,
@@ -74,15 +84,7 @@ function createInitialForm() {
 
 const stepFields = [
     ['fromLocation', 'toLocation', 'loadingDate'],
-    [
-        'cargoType',
-        'weightKg',
-        'cargoLengthCm',
-        'cargoWidthCm',
-        'cargoHeightCm',
-        'price',
-        'currency',
-    ],
+    ['cargos', 'price', 'currency'],
     [],
     [],
 ];
@@ -306,7 +308,7 @@ export function CreateLeadModal({ open, onClose }) {
                 open={open}
                 onClose={handleClose}
                 fullWidth
-                maxWidth='md'
+                maxWidth="md"
                 slotProps={{
                     paper: {
                         sx: {
@@ -315,7 +317,7 @@ export function CreateLeadModal({ open, onClose }) {
                     },
                 }}
             >
-                <Box component='div'>
+                <Box component="div">
                     <CreateLeadHeader
                         activeStep={activeStep}
                         stepsCount={steps.length}

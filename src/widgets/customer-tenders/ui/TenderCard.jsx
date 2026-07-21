@@ -3,8 +3,9 @@ import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import {
+   getTenderCargoTypeLabel,
+   getTenderTotalCargoWeight,
    getTimeLeft,
-   hasValue,
    tenderStatusLabels,
    tenderStatusStyles,
 } from '../model/tender.helpers';
@@ -20,6 +21,9 @@ export function TenderCard({ tender }) {
    const shouldShowTimeLeft =
       tender.status !== 'closed' && tender.status !== 'cancelled';
 
+   const totalCargoWeight = getTenderTotalCargoWeight(tender);
+   const cargoTypeLabel = getTenderCargoTypeLabel(tender);
+
    function handleOpenTender() {
       openTenderDetails(tender);
    }
@@ -33,7 +37,7 @@ export function TenderCard({ tender }) {
                handleOpenTender();
             }
          }}
-         role='button'
+         role="button"
          tabIndex={0}
          sx={{
             p: 3,
@@ -65,8 +69,8 @@ export function TenderCard({ tender }) {
             >
                <Box>
                   <Typography
-                     variant='body2'
-                     color='text.secondary'
+                     variant="body2"
+                     color="text.secondary"
                      sx={{ mb: 0.75 }}
                   >
                      Тендер
@@ -87,7 +91,7 @@ export function TenderCard({ tender }) {
                </Box>
 
                <Stack
-                  direction='row'
+                  direction="row"
                   spacing={1}
                   useFlexGap
                   sx={{
@@ -106,8 +110,8 @@ export function TenderCard({ tender }) {
 
                   <Chip
                      label={tenderStatusLabels[tender.status] || tender.status}
-                     variant='outlined'
-                     size='small'
+                     variant="outlined"
+                     size="small"
                      sx={{
                         borderRadius: 999,
                         fontWeight: 600,
@@ -145,7 +149,7 @@ export function TenderCard({ tender }) {
                   }}
                >
                   <Typography
-                     variant='caption'
+                     variant="caption"
                      sx={{
                         display: 'block',
                         color: 'text.secondary',
@@ -207,7 +211,7 @@ export function TenderCard({ tender }) {
                   }}
                >
                   <Typography
-                     variant='caption'
+                     variant="caption"
                      sx={{
                         display: 'block',
                         color: 'text.secondary',
@@ -246,18 +250,18 @@ export function TenderCard({ tender }) {
                }}
             >
                <InfoBadge
-                  label='Вес'
+                  label="Вес"
                   value={
-                     hasValue(tender.cargo?.weight_kg)
-                        ? `${tender.cargo.weight_kg} кг`
+                     totalCargoWeight > 0
+                        ? `${totalCargoWeight} кг`
                         : 'Не указано'
                   }
                   muted={isCancelled}
                />
 
                <InfoBadge
-                  label='Тип'
-                  value={tender.cargo?.type || 'Не указан'}
+                  label="Тип"
+                  value={cargoTypeLabel}
                   muted={isCancelled}
                />
 
