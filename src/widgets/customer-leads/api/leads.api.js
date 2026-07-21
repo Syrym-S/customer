@@ -25,3 +25,11 @@ export async function updateCustomerLeadApi(leadId, payload) {
 
    return response.data;
 }
+
+export async function deleteLeadCargoApi(leadId, cargoIndex) {
+   const response = await apiClient.delete(
+      `/customer/v1/lead/${leadId}/cargos/${cargoIndex}`,
+   );
+
+   return response.data;
+}

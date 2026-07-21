@@ -1,9 +1,11 @@
-import { Box, Paper } from '@mui/material';
+import { Box, Chip, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useTendersContext } from '../model/useTendersContext';
 import {
    getTenderCargoTypeLabel,
    getTenderTotalCargoWeight,
+   tenderStatusLabels,
+   tenderStatusStyles,
 } from '../model/tender.helpers';
 
 function getLocationLabel(location) {
@@ -30,6 +32,28 @@ function getLeadValue(tender, field) {
    return tender?.lead?.[field] || tender?.[field] || null;
 }
 
+function TenderStatusChip({ status }) {
+   const label = tenderStatusLabels[status] || status || 'Не указан';
+   const styles = tenderStatusStyles[status] || tenderStatusStyles.new;
+
+   return (
+      <Chip
+         label={label}
+         variant="outlined"
+         size="small"
+         sx={{
+            borderRadius: 999,
+            fontWeight: 600,
+            fontSize: {
+               xs: '0.7rem',
+               sm: '0.8rem',
+            },
+            ...styles,
+         }}
+      />
+   );
+}
+
 export function TendersTable({ tenders }) {
    const { openTenderDetails } = useTendersContext();
 
@@ -52,7 +76,10 @@ export function TendersTable({ tenders }) {
       {
          field: 'status',
          headerName: 'Статус',
-         width: 200,
+         width: 180,
+         renderCell: ({ row }) => {
+            return <TenderStatusChip status={row.status} />;
+         },
       },
       {
          field: 'num',

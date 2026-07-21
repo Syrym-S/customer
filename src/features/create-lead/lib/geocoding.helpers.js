@@ -41,11 +41,14 @@ export function formatNominatimAddress(data) {
         country,
     ]).join(', ');
 
+    const displayAddress = fullAddress || compactAddress || 'Адрес не найден';
+
     return {
         country,
         region,
         city,
-        address: fullAddress || compactAddress || 'Адрес не найден',
-        label: compactAddress || fullAddress || 'Адрес не найден',
+        address: displayAddress,
+        label: displayAddress,
+        compactLabel: compactAddress || displayAddress,
     };
 }

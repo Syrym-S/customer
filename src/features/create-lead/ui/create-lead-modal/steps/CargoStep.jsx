@@ -10,6 +10,8 @@ import {
    Stack,
    Typography,
 } from '@mui/material';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import PropTypes from 'prop-types';
 import { Controller, useFieldArray } from 'react-hook-form';
 
@@ -21,9 +23,6 @@ import {
 } from '../../../../../widgets/customer-leads/api/cargo-types.api';
 import { fetchCustomerCurrenciesApi } from '../../../api/currencies.api';
 import { CurrencyAutocomplete } from '../components/CurrencyAutocomplete';
-
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
 function createEmptyCargo() {
    return {
@@ -285,10 +284,20 @@ export function CargoStep({ control, errors }) {
                            name={`cargos.${index}.weight_kg`}
                            control={control}
                            rules={{
-                              required: 'Укажите вес',
-                              validate: (value) =>
-                                 Number(value) > 0 ||
-                                 'Вес должен быть больше 0',
+                              validate: (value) => {
+                                 if (
+                                    value === '' ||
+                                    value === null ||
+                                    value === undefined
+                                 ) {
+                                    return true;
+                                 }
+
+                                 return (
+                                    Number(value) > 0 ||
+                                    'Вес должен быть больше 0'
+                                 );
+                              },
                            }}
                            render={({ field }) => (
                               <TextField
@@ -305,6 +314,22 @@ export function CargoStep({ control, errors }) {
                         <Controller
                            name={`cargos.${index}.cargo_price`}
                            control={control}
+                           rules={{
+                              validate: (value) => {
+                                 if (
+                                    value === '' ||
+                                    value === null ||
+                                    value === undefined
+                                 ) {
+                                    return true;
+                                 }
+
+                                 return (
+                                    Number(value) >= 0 ||
+                                    'Цена груза не может быть отрицательной'
+                                 );
+                              },
+                           }}
                            render={({ field }) => (
                               <TextField
                                  {...field}
@@ -418,15 +443,25 @@ export function CargoStep({ control, errors }) {
                   name="price"
                   control={control}
                   rules={{
-                     required: 'Укажите цену',
-                     validate: (value) =>
-                        Number(value) >= 0 ||
-                        'Цена не может быть отрицательной',
+                     validate: (value) => {
+                        if (
+                           value === '' ||
+                           value === null ||
+                           value === undefined
+                        ) {
+                           return true;
+                        }
+
+                        return (
+                           Number(value) >= 0 ||
+                           'Цена не может быть отрицательной'
+                        );
+                     },
                   }}
                   render={({ field }) => (
                      <TextField
                         {...field}
-                        label="Цена"
+                        label="Цена исполнения"
                         fullWidth
                         size="small"
                         error={Boolean(errors.price)}

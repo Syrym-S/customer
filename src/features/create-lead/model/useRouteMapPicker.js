@@ -48,9 +48,9 @@ export function useRouteMapPicker({ form, setValue }) {
             return;
         }
 
-        setValue(
+       setValue(
             'fromLocation',
-            geocodeResult.label || geocodeResult.address,
+            geocodeResult.address || geocodeResult.label,
             setValueOptions,
         );
         setValue('from_location', geocodeResult, setValueOptions);
@@ -70,7 +70,7 @@ export function useRouteMapPicker({ form, setValue }) {
 
         setValue(
             'toLocation',
-            geocodeResult.label || geocodeResult.address,
+            geocodeResult.address || geocodeResult.label,
             setValueOptions,
         );
         setValue('to_location', geocodeResult, setValueOptions);
@@ -103,7 +103,7 @@ export function useRouteMapPicker({ form, setValue }) {
             region: location.region || '',
             city: location.city || '',
             address: location.address || location.label || '',
-            label: location.label || location.address || '',
+            label: location.address || location.label || '',
         };
 
         if (point === 'from') {

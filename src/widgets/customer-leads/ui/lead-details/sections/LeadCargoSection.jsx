@@ -69,13 +69,22 @@ function getCargoDimensionsDisplay(cargo) {
    return `${length || '—'} × ${width || '—'} × ${height || '—'} см`;
 }
 
-export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
+export function LeadCargoSection({
+   lead,
+   isEditing,
+   editForm,
+   onEditChange,
+   onDeleteCargo,
+   deletingCargoIndex = null,
+}) {
    const [cargoTypes, setCargoTypes] = useState([]);
    const [cargoTypesSearch, setCargoTypesSearch] = useState('');
    const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);
 
    const leadCargos = getLeadCargos(lead);
    const editCargos = getEditCargos(editForm);
+
+   const isForwarderCreatedLead = lead?.created_by === 'forwarder';
 
    useEffect(() => {
       if (!isEditing) {
@@ -448,9 +457,35 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
                               backgroundColor: 'grey.50',
                            }}
                         >
-                           <Typography fontWeight={600} sx={{ mb: 1 }}>
-                              Груз #{index + 1}
-                           </Typography>
+                           <Box
+                              sx={{
+                                 display: 'flex',
+                                 alignItems: 'center',
+                                 justifyContent: 'space-between',
+                                 gap: 1,
+                                 mb: 1,
+                              }}
+                           >
+                              <Typography fontWeight={600}>
+                                 Груз #{index + 1}
+                              </Typography>
+
+                              <IconButton
+                                 size="small"
+                                 color="error"
+                                 disabled={deletingCargoIndex === index}
+                                 onClick={() => onDeleteCargo?.(index)}
+                              >
+                                 {deletingCargoIndex === index ? (
+                                    <CircularProgress
+                                       size={18}
+                                       color="inherit"
+                                    />
+                                 ) : (
+                                    <DeleteOutlineRoundedIcon fontSize="small" />
+                                 )}
+                              </IconButton>
+                           </Box>
 
                            <Box
                               sx={{
@@ -533,10 +568,16 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
                         }}
                      >
                         <TextField
-                           name="summ"
-                           label="Цена"
-                           value={editForm.summ || ''}
+                           name="price"
+                           label="Цена исполнения"
+                           value={editForm.price ?? ''}
                            onChange={onEditChange}
+                           disabled={isForwarderCreatedLead}
+                           helperText={
+                              isForwarderCreatedLead
+                                 ? 'Цена задана экспедитором'
+                                 : ''
+                           }
                            fullWidth
                            size="small"
                            sx={{
@@ -552,6 +593,7 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
                            }}
                            label="Валюта"
                            size="small"
+                           disabled={isForwarderCreatedLead}
                            sx={{
                               minWidth: {
                                  xs: '100%',
@@ -583,10 +625,10 @@ export function LeadCargoSection({ lead, isEditing, editForm, onEditChange }) {
                ) : (
                   <>
                      <InfoBadge
-                        label="Цена"
+                        label="Цена исполнения"
                         value={
-                           hasValue(lead.summ)
-                              ? `${lead.summ} ${lead.currency}`
+                           hasValue(lead.price)
+                              ? `${lead.price} ${lead.currency}`
                               : 'Не указано'
                         }
                         accent
@@ -611,4 +653,6 @@ LeadCargoSection.propTypes = {
    isEditing: PropTypes.bool.isRequired,
    editForm: PropTypes.object.isRequired,
    onEditChange: PropTypes.func.isRequired,
+   onDeleteCargo: PropTypes.func,
+   deletingCargoIndex: PropTypes.number,
 };

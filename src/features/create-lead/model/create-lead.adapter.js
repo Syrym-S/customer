@@ -12,6 +12,16 @@ function toNumber(value) {
     return Number.isNaN(number) ? null : number;
 }
 
+export function normalizeOptionalPrice(value) {
+    if (value === '' || value === null || value === undefined) {
+        return null;
+    }
+
+    const number = Number(value);
+
+    return Number.isNaN(number) ? null : number;
+}
+
 function addIfHasValue(target, key, value) {
     if (hasValue(value)) {
         target[key] = value;
@@ -49,25 +59,22 @@ function normalizeCargoTypeValue(value) {
 }
 
 function mapFormCargoToApiCargo(cargo = {}) {
-    const type = normalizeCargoTypeValue(cargo.type ?? cargo.cargoType);
-    const name = normalizeText(cargo.name ?? cargo.cargoName);
+    const type = normalizeCargoTypeValue(cargo.type);
+    const name = normalizeText(cargo.name);
     const description = normalizeText(
         cargo.description ?? cargo.comment ?? cargo.context,
     );
 
-    const payload = {};
-
-    addIfHasValue(payload, 'name', name || type);
-    addIfHasValue(payload, 'description', description || null);
-
-    addNumberIfHasValue(payload, 'weight_kg', cargo.weight_kg);
-    addNumberIfHasValue(payload, 'cargo_price', cargo.cargo_price);
-    addIfHasValue(payload, 'type', type);
-    addNumberIfHasValue(payload, 'width_cm', cargo.width_cm);
-    addNumberIfHasValue(payload, 'height_cm', cargo.height_cm);
-    addNumberIfHasValue(payload, 'length_cm', cargo.length_cm);
-
-    return payload;
+    return {
+        name,
+        description: description || null,
+        weight_kg: toNumber(cargo.weight_kg),
+        cargo_price: toNumber(cargo.cargo_price),
+        type: type || null,
+        width_cm: toNumber(cargo.width_cm),
+        height_cm: toNumber(cargo.height_cm),
+        length_cm: toNumber(cargo.length_cm),
+    };
 }
 
 function getNormalizedFormCargos(form) {
@@ -75,9 +82,7 @@ function getNormalizedFormCargos(form) {
 
     return sourceCargos
         .map(mapFormCargoToApiCargo)
-        .filter((cargo) =>
-            Object.values(cargo).some((value) => hasValue(value)),
-        );
+        .filter((cargo) => hasValue(cargo.name));
 }
 
 function mapApiCargoToUiCargo(cargo) {
@@ -89,6 +94,7 @@ function mapApiCargoToUiCargo(cargo) {
         description: cargo.description || '',
         context: cargo.description || '',
         weight_kg: cargo.weight_kg ?? 0,
+        cargo_price: cargo.cargo_price ?? null,
         type,
         volume_cm: null,
         width_cm: cargo.width_cm ?? null,
@@ -174,6 +180,8 @@ export function mapCreatedLeadToUi(form, response) {
         responseData?.lead_id ??
         `created-lead-${Date.now()}`;
 
+    const price = normalizeOptionalPrice(form.price);
+
     const cargos = getNormalizedFormCargos(form).map(mapApiCargoToUiCargo);
 
     const fallbackCargo = {
@@ -211,7 +219,8 @@ export function mapCreatedLeadToUi(form, response) {
         from_location: form.fromLocation || 'Не указано',
         to_location: form.toLocation || 'Не указано',
 
-        summ: Number(form.price) || 0,
+        price,
+        summ: price,
         currency: form.currency || 'KZT',
 
         status: responseData?.status || 'new',
@@ -241,6 +250,7 @@ export function mapCreatedLeadToUi(form, response) {
 
         raw: {
             ...responseData,
+            price,
             cargos,
             cargo: firstCargo,
             route: {

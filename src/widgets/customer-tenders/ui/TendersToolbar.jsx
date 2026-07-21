@@ -5,8 +5,7 @@ export function TendersToolbar() {
    return (
       <Box
          sx={{
-            maxWidth: 640,
-            mx: 'auto',
+            width: '100%',
             display: 'flex',
             justifyContent: 'flex-end',
             alignItems: 'center',

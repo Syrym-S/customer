@@ -29,6 +29,20 @@ function normalizeCargoTypeValue(value) {
    return String(value);
 }
 
+function normalizeApiPrice(value) {
+   if (value === '' || value === null || value === undefined) {
+      return null;
+   }
+
+   const number = Number(value);
+
+   if (Number.isNaN(number)) {
+      return null;
+   }
+
+   return number === 0 ? null : number;
+}
+
 function mapForwarderFromLead(apiLead) {
    const forwarder =
       apiLead.forwarder ||
@@ -191,11 +205,14 @@ function mapLeadCargosFromApi(apiLead) {
 
 export function mapLeadFromApi(apiLead) {
    const cargos = mapLeadCargosFromApi(apiLead);
+   const price = normalizeApiPrice(apiLead.price);
    const firstCargo = cargos[0];
 
    return {
       id: apiLead.id,
       num: apiLead.num ?? apiLead.id,
+
+      created_by: apiLead.created_by || '',
 
       customer:
          apiLead.customer?.name ||
@@ -217,7 +234,8 @@ export function mapLeadFromApi(apiLead) {
          apiLead.route?.to?.city ||
          'Не указано',
 
-      summ: apiLead.summ ?? apiLead.price ?? null,
+      price,
+      summ: price,
       currency: apiLead.currency ?? 'KZT',
 
       status: apiLead.status || 'unknown',

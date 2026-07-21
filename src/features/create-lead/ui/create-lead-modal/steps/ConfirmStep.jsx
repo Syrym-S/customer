@@ -13,21 +13,7 @@ function getLocationDisplay(location, fallback) {
 }
 
 function getFormCargos(form) {
-    if (Array.isArray(form.cargos) && form.cargos.length) {
-        return form.cargos;
-    }
-
-    return [
-        {
-            name: form.cargoType,
-            type: form.cargoType,
-            weight_kg: form.weightKg,
-            length_cm: form.cargoLengthCm,
-            width_cm: form.cargoWidthCm,
-            height_cm: form.cargoHeightCm,
-            description: form.comment,
-        },
-    ];
+    return Array.isArray(form.cargos) ? form.cargos : [];
 }
 
 function getDimensionsDisplay(cargo) {
@@ -136,8 +122,12 @@ export function ConfirmStep({ form }) {
                     </Box>
 
                     <InfoBadge
-                        label="Цена"
-                        value={`${form.price} ${form.currency}`}
+                        label="Цена исполнения"
+                        value={
+                            form.price
+                                ? `${form.price} ${form.currency || ''}`.trim()
+                                : 'Не указано'
+                        }
                         accent
                     />
                 </Box>

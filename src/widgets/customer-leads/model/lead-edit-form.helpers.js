@@ -30,41 +30,40 @@ function normalizeLeadCargosForEdit(lead) {
    }));
 }
 
-function normalizeOptionalNumber(value) {
-   const numberValue = normalizeNumber(value);
+function addTextIfHasValue(payload, key, value) {
+   const normalizedValue = normalizeText(value);
 
-   if (numberValue === null) {
-      return null;
+   if (normalizedValue) {
+      payload[key] = normalizedValue;
    }
-
-   return numberValue;
 }
 
-function normalizeOptionalInteger(value) {
-   const numberValue = normalizeNumber(value);
+function addNumberIfHasValue(payload, key, value) {
+   const normalizedValue = normalizeNumber(value);
 
-   if (numberValue === null) {
-      return null;
+   if (normalizedValue !== null) {
+      payload[key] = normalizedValue;
    }
-
-   return Math.round(numberValue);
 }
 
 function normalizeCargoForPayload(cargo = {}) {
-   const type = normalizeCargoTypeForPayload(cargo.type);
+   const payload = {};
+
    const name = normalizeText(cargo.name);
    const description = normalizeText(cargo.description ?? cargo.context);
+   const type = normalizeCargoTypeForPayload(cargo.type);
 
-   return {
-      name: name || type,
-      description: description || null,
-      weight_kg: normalizeOptionalInteger(cargo.weight_kg),
-      cargo_price: normalizeOptionalNumber(cargo.cargo_price),
-      type,
-      width_cm: normalizeOptionalInteger(cargo.width_cm),
-      height_cm: normalizeOptionalInteger(cargo.height_cm),
-      length_cm: normalizeOptionalInteger(cargo.length_cm),
-   };
+   addTextIfHasValue(payload, 'name', name);
+   addTextIfHasValue(payload, 'description', description);
+   addTextIfHasValue(payload, 'type', type);
+
+   addNumberIfHasValue(payload, 'weight_kg', cargo.weight_kg);
+   addNumberIfHasValue(payload, 'cargo_price', cargo.cargo_price);
+   addNumberIfHasValue(payload, 'width_cm', cargo.width_cm);
+   addNumberIfHasValue(payload, 'height_cm', cargo.height_cm);
+   addNumberIfHasValue(payload, 'length_cm', cargo.length_cm);
+
+   return payload;
 }
 
 function normalizeCargosForPayload(cargos) {
@@ -73,16 +72,7 @@ function normalizeCargosForPayload(cargos) {
    }
 
    return cargos.map(normalizeCargoForPayload).filter((cargo) => {
-      return (
-         cargo.name ||
-         cargo.description ||
-         cargo.weight_kg !== null ||
-         cargo.cargo_price !== null ||
-         cargo.type ||
-         cargo.width_cm !== null ||
-         cargo.height_cm !== null ||
-         cargo.length_cm !== null
-      );
+      return Boolean(cargo.name);
    });
 }
 
@@ -104,6 +94,7 @@ export function createLeadEditForm(lead) {
 
          cargos: [createEmptyLeadCargoEditForm()],
 
+         price: '',
          summ: '',
          currency: 'KZT',
          vat: 'без НДС',
@@ -126,7 +117,9 @@ export function createLeadEditForm(lead) {
 
       cargos,
 
-      summ: lead.summ ?? '',
+      price: lead.price ?? '',
+      summ: lead.price ?? '',
+
       currency: normalizeCurrency(lead.currency),
       vat: lead.vat || 'без НДС',
       loadingDate: lead.raw?.loading_date || '',
@@ -180,15 +173,17 @@ export function normalizeLocationValue(value) {
 
    if (typeof value === 'object') {
       const preferredKeys = [
-         'city',
          'address',
+         'fullAddress',
+         'formatted_address',
+         'location',
          'name',
          'title',
          'label',
          'value',
-         'fullAddress',
-         'formatted_address',
-         'location',
+         'city',
+         'region',
+         'country',
       ];
 
       for (const key of preferredKeys) {
@@ -197,9 +192,14 @@ export function normalizeLocationValue(value) {
          }
       }
 
-      return Object.values(value)
-         .filter((item) => typeof item === 'string' && item.trim())
-         .join(', ');
+      const parts = [
+         value.country,
+         value.region,
+         value.city,
+         value.address,
+      ].filter((item) => typeof item === 'string' && item.trim());
+
+      return parts.join(', ');
    }
 
    return '';
@@ -300,6 +300,8 @@ function addNumberIfChanged(payload, key, nextValue, prevValue) {
 export function mapLeadEditFormToApi(editForm, currentLead) {
    const payload = {};
 
+   const isForwarderCreatedLead = currentLead?.created_by === 'forwarder';
+
    const nextForwarderId = editForm.forwarder;
    const currentForwarderId = currentLead.forwarder?.id;
 
@@ -359,12 +361,14 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
       currentLead.raw?.route?.to?.lng,
    );
 
-   addNumberIfChanged(payload, 'price', editForm.summ, currentLead.summ);
+   if (!isForwarderCreatedLead) {
+      addNumberIfChanged(payload, 'price', editForm.price, currentLead.price);
+   }
 
    const nextCurrency = normalizeCurrency(editForm.currency);
    const prevCurrency = normalizeCurrency(currentLead.currency);
 
-   if (nextCurrency !== prevCurrency) {
+   if (!isForwarderCreatedLead && nextCurrency !== prevCurrency) {
       payload.currency = nextCurrency;
    }
 

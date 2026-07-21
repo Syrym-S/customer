@@ -36,11 +36,11 @@ function createInitialCargo() {
     return {
         name: '',
         description: '',
-        weight_kg: '1200',
+        weight_kg: '',
         type: 'Не указан',
-        width_cm: '50',
-        height_cm: '70',
-        length_cm: '50',
+        width_cm: '',
+        height_cm: '',
+        length_cm: '',
         cargo_price: '',
     };
 }
@@ -70,7 +70,7 @@ function createInitialForm() {
 
         cargos: [createInitialCargo()],
 
-        price: '250000',
+        price: '',
         currency: 'KZT',
         vat: true,
         comment: '',

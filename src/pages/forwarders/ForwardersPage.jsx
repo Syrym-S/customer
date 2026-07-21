@@ -218,49 +218,33 @@ export function ForwardersPage() {
     return (
         <Container maxWidth="lg" sx={{ py: 3 }}>
             <Stack spacing={3}>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        gap: 2,
-                        alignItems: {
-                            xs: 'flex-start',
-                            sm: 'center',
-                        },
-                        flexDirection: {
-                            xs: 'column',
-                            sm: 'row',
-                        },
-                    }}
-                >
-                    <Box>
-                        <Typography variant="h6" fontWeight={600}>
-                            Экспедиторы
-                        </Typography>
-
-                        <Typography color="text.secondary" fontSize={14}>
-                            Полный список экспедиторов с поиском по компании,
-                            представителю, БИН или телефону
-                        </Typography>
-                    </Box>
-
-                    <Stack
-                        direction={{
-                            xs: 'column',
-                            sm: 'row',
-                        }}
-                        spacing={1}
+                <Stack spacing={1.5}>
+                    <Box
                         sx={{
-                            width: {
-                                xs: '100%',
-                                sm: 'auto',
-                            },
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            gap: 2,
                             alignItems: {
-                                xs: 'stretch',
+                                xs: 'flex-start',
                                 sm: 'center',
+                            },
+                            flexDirection: {
+                                xs: 'column',
+                                sm: 'row',
                             },
                         }}
                     >
+                        <Box sx={{ minWidth: 0 }}>
+                            <Typography variant="h6" fontWeight={600}>
+                                Экспедиторы
+                            </Typography>
+
+                            <Typography color="text.secondary" fontSize={14}>
+                                Полный список экспедиторов с поиском по
+                                компании, представителю, БИН или телефону
+                            </Typography>
+                        </Box>
+
                         <ToggleButtonGroup
                             value={viewMode}
                             exclusive
@@ -269,9 +253,10 @@ export function ForwardersPage() {
                             color="primary"
                             aria-label="Переключение отображения экспедиторов"
                             sx={{
+                                flexShrink: 0,
                                 alignSelf: {
-                                    xs: 'stretch',
-                                    sm: 'auto',
+                                    xs: 'flex-start',
+                                    sm: 'center',
                                 },
                                 '& .MuiToggleButton-root': {
                                     px: 1.5,
@@ -295,12 +280,18 @@ export function ForwardersPage() {
                                 <GridViewRoundedIcon fontSize="small" />
                             </ToggleButton>
                         </ToggleButtonGroup>
+                    </Box>
 
-                        <Button variant="contained" onClick={handleOpenCreate}>
-                            Пригласить экспедитора
-                        </Button>
-                    </Stack>
-                </Box>
+                    <Button
+                        variant="contained"
+                        onClick={handleOpenCreate}
+                        sx={{
+                            alignSelf: 'flex-start',
+                        }}
+                    >
+                        Пригласить экспедитора
+                    </Button>
+                </Stack>
 
                 <TextField
                     value={search}

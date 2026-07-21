@@ -19,6 +19,7 @@ export function CurrencyAutocomplete({
    value,
    onChange,
    label = 'Валюта',
+   disabled = false,
    size = 'small',
    fullWidth = true,
    sx,
@@ -114,6 +115,7 @@ export function CurrencyAutocomplete({
 
    return (
       <Autocomplete
+         disabled={disabled}
          options={currencyOptions}
          value={selectedOption}
          loading={isLoading}

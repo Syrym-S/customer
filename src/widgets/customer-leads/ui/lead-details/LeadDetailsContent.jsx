@@ -18,6 +18,8 @@ export function LeadDetailsContent({
    isDocumentUploading = false,
    documentUploadError = '',
    deletingDocumentIds = [],
+   onDeleteCargo,
+   deletingCargoIndex = null,
 }) {
    return (
       <Stack spacing={2}>
@@ -33,6 +35,8 @@ export function LeadDetailsContent({
             isEditing={isEditing}
             editForm={editForm}
             onEditChange={onEditChange}
+            onDeleteCargo={onDeleteCargo}
+            deletingCargoIndex={deletingCargoIndex}
          />
 
          <LeadForwarderSection

@@ -46,13 +46,14 @@ import {
    uploadLeadDocument,
 } from '../api/lead-documents.api';
 import { useNavigate, useParams } from 'react-router-dom';
+import { deleteLeadCargoApi } from '../api/leads.api';
 
 export function LeadDetailsModal() {
    const navigate = useNavigate();
    const { leadId } = useParams();
 
    const map = useCustomerMap();
-   const { openLead, setOpenLead } = useLeadsContext();
+   const { openLead, setOpenLead, reloadLeads } = useLeadsContext();
 
    const [leadDetails, setLeadDetails] = useState(null);
    const [isLeadDetailsLoading, setIsLeadDetailsLoading] = useState(false);
@@ -69,6 +70,9 @@ export function LeadDetailsModal() {
    const [isDocumentUploading, setIsDocumentUploading] = useState(false);
    const [documentUploadError, setDocumentUploadError] = useState('');
    const [deletingDocumentIds, setDeletingDocumentIds] = useState([]);
+
+   const [deletingCargoIndex, setDeletingCargoIndex] = useState(null);
+   const [deleteCargoError, setDeleteCargoError] = useState('');
 
    const [isEditing, setIsEditing] = useState(false);
    const [isSavingEdit, setIsSavingEdit] = useState(false);
@@ -106,6 +110,8 @@ export function LeadDetailsModal() {
       setIsDocumentUploading(false);
       setDocumentUploadError('');
       setDeletingDocumentIds([]);
+      setDeletingCargoIndex(null);
+      setDeleteCargoError('');
 
       if (leadId) {
          navigate('/customer', { replace: true });
@@ -200,6 +206,46 @@ export function LeadDetailsModal() {
          setDeletingDocumentIds((prevIds) =>
             prevIds.filter((id) => id !== documentId),
          );
+      }
+   }
+
+   async function handleDeleteCargo(cargoIndex) {
+      if (!currentLead?.id || deletingCargoIndex !== null) {
+         return;
+      }
+
+      const isConfirmed = window.confirm(`Удалить груз #${cargoIndex + 1}?`);
+
+      if (!isConfirmed) {
+         return;
+      }
+
+      try {
+         setDeletingCargoIndex(cargoIndex);
+         setDeleteCargoError('');
+
+         await deleteLeadCargoApi(currentLead.id, cargoIndex);
+
+         const response = await fetchCustomerLeadById(currentLead.id);
+         const mappedLead = mapLeadDetailsResponseFromApi(response);
+
+         if (!mappedLead) {
+            throw new Error('Не удалось получить обновленные данные лида');
+         }
+
+         setOpenLead(mappedLead);
+         setLeadDetails(mappedLead);
+         setEditForm(createLeadEditForm(mappedLead));
+
+         await reloadLeads?.({ withLoader: false });
+      } catch (error) {
+         setDeleteCargoError(
+            error.response?.data?.message ||
+               error.message ||
+               'Не удалось удалить груз',
+         );
+      } finally {
+         setDeletingCargoIndex(null);
       }
    }
 
@@ -458,7 +504,7 @@ export function LeadDetailsModal() {
          open={Boolean(openLead)}
          onClose={handleClose}
          fullWidth
-         maxWidth='md'
+         maxWidth="md"
          slotProps={{
             paper: {
                sx: {
@@ -485,8 +531,8 @@ export function LeadDetailsModal() {
                </Typography>
 
                <Typography
-                  variant='body2'
-                  color='text.secondary'
+                  variant="body2"
+                  color="text.secondary"
                   sx={{ mt: 0.5 }}
                >
                   Загружаем детали лида...
@@ -508,27 +554,33 @@ export function LeadDetailsModal() {
                >
                   <CircularProgress />
 
-                  <Typography color='text.secondary'>
+                  <Typography color="text.secondary">
                      Загружаем детали лида...
                   </Typography>
                </Box>
             )}
 
             {!shouldShowRouteLeadLoader && isLeadDetailsLoading && (
-               <Typography color='text.secondary' sx={{ mb: 2 }}>
+               <Typography color="text.secondary" sx={{ mb: 2 }}>
                   Загружаем детали лида...
                </Typography>
             )}
 
             {leadDetailsError && (
-               <Alert severity='error' sx={{ mb: 2 }}>
+               <Alert severity="error" sx={{ mb: 2 }}>
                   {leadDetailsError}
                </Alert>
             )}
 
             {saveEditError && (
-               <Alert severity='error' sx={{ mb: 2 }}>
+               <Alert severity="error" sx={{ mb: 2 }}>
                   {saveEditError}
+               </Alert>
+            )}
+
+            {deleteCargoError && (
+               <Alert severity="error" sx={{ mb: 2 }}>
+                  {deleteCargoError}
                </Alert>
             )}
 
@@ -561,6 +613,8 @@ export function LeadDetailsModal() {
                      isDocumentUploading={isDocumentUploading}
                      documentUploadError={documentUploadError}
                      deletingDocumentIds={deletingDocumentIds}
+                     onDeleteCargo={handleDeleteCargo}
+                     deletingCargoIndex={deletingCargoIndex}
                   />
                </>
             )}

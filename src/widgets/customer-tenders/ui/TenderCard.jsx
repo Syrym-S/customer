@@ -12,6 +12,21 @@ import {
 import { useTendersContext } from '../model/useTendersContext';
 import PropTypes from 'prop-types';
 import { sxPropType, tenderPropType } from '../model/tenders.prop-types';
+import { normalizeLocationValue } from '../model/tender-edit-form.helpers';
+
+function getShortTenderId(id) {
+   if (!id) {
+      return '—';
+   }
+
+   const value = String(id);
+
+   if (value.length <= 12) {
+      return value;
+   }
+
+   return `${value.slice(0, 4)}...${value.slice(-5)}`;
+}
 
 export function TenderCard({ tender }) {
    const { openTenderDetails } = useTendersContext();
@@ -23,6 +38,14 @@ export function TenderCard({ tender }) {
 
    const totalCargoWeight = getTenderTotalCargoWeight(tender);
    const cargoTypeLabel = getTenderCargoTypeLabel(tender);
+
+   const fromLocationLabel = normalizeLocationValue(tender.from_location);
+   const toLocationLabel = normalizeLocationValue(tender.to_location);
+
+   const fullTenderIdLabel = tender.id ? `#${tender.id}` : '#—';
+   const shortTenderIdLabel = tender.id
+      ? `#${getShortTenderId(tender.id)}`
+      : '#—';
 
    function handleOpenTender() {
       openTenderDetails(tender);
@@ -84,9 +107,32 @@ export function TenderCard({ tender }) {
                            sm: '18px',
                         },
                         fontWeight: 500,
+                        wordBreak: 'break-word',
                      }}
                   >
-                     Тендер #{tender.id || '—'}
+                     <Box
+                        component="span"
+                        sx={{
+                           display: {
+                              xs: 'inline',
+                              md: 'none',
+                           },
+                        }}
+                     >
+                        {shortTenderIdLabel}
+                     </Box>
+
+                     <Box
+                        component="span"
+                        sx={{
+                           display: {
+                              xs: 'none',
+                              md: 'inline',
+                           },
+                        }}
+                     >
+                        {fullTenderIdLabel}
+                     </Box>
                   </Typography>
                </Box>
 
@@ -124,19 +170,20 @@ export function TenderCard({ tender }) {
 
             <Box
                sx={{
-                  display: 'flex',
-                  alignItems: 'stretch',
+                  display: 'grid',
+                  gridTemplateColumns: '1fr',
                   gap: 1.5,
-                  flexWrap: {
-                     xs: 'wrap',
-                     sm: 'nowrap',
+
+                  '@media (min-width: 1100px)': {
+                     gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)',
+                     alignItems: 'stretch',
                   },
                }}
             >
                <Box
                   sx={{
                      flex: 1,
-                     minWidth: 220,
+                     minWidth: 0,
                      minHeight: 86,
                      p: 1.5,
                      border: '1px solid',
@@ -159,7 +206,14 @@ export function TenderCard({ tender }) {
                      Откуда
                   </Typography>
 
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 1,
+                        minWidth: 0,
+                     }}
+                  >
                      <TripOriginIcon
                         sx={{ fontSize: 18, color: 'primary.main' }}
                      />
@@ -169,19 +223,24 @@ export function TenderCard({ tender }) {
                         sx={{
                            fontSize: 14,
                            lineHeight: 1.35,
+                           minWidth: 0,
+                           overflowWrap: 'anywhere',
+                           wordBreak: 'break-word',
                         }}
                      >
-                        {tender.from_location || 'Не указано'}
+                        {fromLocationLabel || 'Не указано'}
                      </Typography>
                   </Box>
                </Box>
 
                <Box
                   sx={{
-                     display: {
-                        xs: 'none',
-                        sm: 'flex',
+                     display: 'none',
+
+                     '@media (min-width: 1100px)': {
+                        display: 'flex',
                      },
+
                      alignItems: 'center',
                      justifyContent: 'center',
                      px: 0.5,
@@ -198,7 +257,7 @@ export function TenderCard({ tender }) {
                <Box
                   sx={{
                      flex: 1,
-                     minWidth: 220,
+                     minWidth: 0,
                      minHeight: 96,
                      p: 1.5,
                      border: '1px solid',
@@ -221,7 +280,14 @@ export function TenderCard({ tender }) {
                      Куда
                   </Typography>
 
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box
+                     sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 1,
+                        minWidth: 0,
+                     }}
+                  >
                      <LocationOnOutlinedIcon
                         sx={{ fontSize: 18, color: 'primary.main' }}
                      />
@@ -231,9 +297,12 @@ export function TenderCard({ tender }) {
                         sx={{
                            fontSize: 14,
                            lineHeight: 1.35,
+                           minWidth: 0,
+                           overflowWrap: 'anywhere',
+                           wordBreak: 'break-word',
                         }}
                      >
-                        {tender.to_location || 'Не указано'}
+                        {toLocationLabel || 'Не указано'}
                      </Typography>
                   </Box>
                </Box>

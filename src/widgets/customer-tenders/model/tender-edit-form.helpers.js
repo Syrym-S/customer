@@ -41,15 +41,17 @@ export function normalizeLocationValue(value) {
 
    if (typeof value === 'object') {
       const preferredKeys = [
-         'city',
          'address',
+         'fullAddress',
+         'formatted_address',
+         'location',
          'name',
          'title',
          'label',
          'value',
-         'fullAddress',
-         'formatted_address',
-         'location',
+         'city',
+         'region',
+         'country',
       ];
 
       for (const key of preferredKeys) {

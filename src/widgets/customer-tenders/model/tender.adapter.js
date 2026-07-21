@@ -11,11 +11,14 @@ function formatTenderLocation(location) {
       return String(location);
    }
 
+   if (location.address) {
+      return String(location.address).trim();
+   }
+
    const parts = [
       location.country,
       location.region,
       location.city,
-      location.address,
    ].filter(Boolean);
 
    if (parts.length) {
