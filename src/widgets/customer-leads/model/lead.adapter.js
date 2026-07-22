@@ -203,8 +203,41 @@ function mapLeadCargosFromApi(apiLead) {
    return apiLead.cargos.map((cargo) => normalizeCargoFromApi(cargo));
 }
 
+function normalizeWaypointFromApi(waypoint = {}, index) {
+   const lat = waypoint.lat ?? waypoint.latitude ?? null;
+   const lon = waypoint.lon ?? waypoint.lng ?? waypoint.longitude ?? null;
+   const address = normalizeText(waypoint.address || waypoint.label);
+
+   return {
+      id: waypoint.id ?? `waypoint-${index}`,
+
+      country: waypoint.country ?? '',
+      region: waypoint.region ?? '',
+      city: waypoint.city ?? '',
+      address,
+      label: address,
+
+      lat,
+      lon,
+      lng: lon,
+
+      raw: waypoint,
+   };
+}
+
+function mapLeadWaypointsFromApi(apiLead) {
+   const waypoints = apiLead.waypoints ?? apiLead.route?.waypoints ?? [];
+
+   if (!Array.isArray(waypoints)) {
+      return [];
+   }
+
+   return waypoints.map(normalizeWaypointFromApi);
+}
+
 export function mapLeadFromApi(apiLead) {
    const cargos = mapLeadCargosFromApi(apiLead);
+   const waypoints = mapLeadWaypointsFromApi(apiLead);
    const price = normalizeApiPrice(apiLead.price);
    const firstCargo = cargos[0];
 
@@ -233,6 +266,8 @@ export function mapLeadFromApi(apiLead) {
          apiLead.route?.to?.address ||
          apiLead.route?.to?.city ||
          'Не указано',
+
+      waypoints,
 
       price,
       summ: price,

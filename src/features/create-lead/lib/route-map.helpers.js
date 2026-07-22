@@ -9,6 +9,10 @@ export function hasPoint(lat, lng) {
    );
 }
 
+function getWaypoints(form) {
+   return Array.isArray(form.waypoints) ? form.waypoints : [];
+}
+
 export function getRouteMarkers(form) {
    const markers = [];
 
@@ -21,6 +25,20 @@ export function getRouteMarkers(form) {
          draggable: true,
       });
    }
+
+   getWaypoints(form).forEach((waypoint, index) => {
+      if (!hasPoint(waypoint.lat, waypoint.lng)) {
+         return;
+      }
+
+      markers.push({
+         id: `waypoint-${index}`,
+         position: [Number(waypoint.lat), Number(waypoint.lng)],
+         title: `Промежуточная точка ${index + 1}`,
+         description: waypoint.location || `Точка ${index + 1}`,
+         draggable: true,
+      });
+   });
 
    if (hasPoint(form.toLat, form.toLng)) {
       markers.push({
@@ -36,15 +54,21 @@ export function getRouteMarkers(form) {
 }
 
 export function getRoutePoints(form) {
-   const hasFromPoint = hasPoint(form.fromLat, form.fromLng);
-   const hasToPoint = hasPoint(form.toLat, form.toLng);
+   const points = [];
 
-   if (!hasFromPoint || !hasToPoint) {
-      return [];
+   if (hasPoint(form.fromLat, form.fromLng)) {
+      points.push([Number(form.fromLat), Number(form.fromLng)]);
    }
 
-   return [
-      [Number(form.fromLat), Number(form.fromLng)],
-      [Number(form.toLat), Number(form.toLng)],
-   ];
+   getWaypoints(form).forEach((waypoint) => {
+      if (hasPoint(waypoint.lat, waypoint.lng)) {
+         points.push([Number(waypoint.lat), Number(waypoint.lng)]);
+      }
+   });
+
+   if (hasPoint(form.toLat, form.toLng)) {
+      points.push([Number(form.toLat), Number(form.toLng)]);
+   }
+
+   return points.length >= 2 ? points : [];
 }

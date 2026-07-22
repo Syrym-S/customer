@@ -13,6 +13,7 @@ import {
     notificationDomainEventNames,
     subscribeToNotificationDomainEvent,
 } from '../../../shared/model/notification-domain-events';
+import { mapLeadDetailsResponseFromApi } from '../../customer-leads/model/lead.adapter';
 
 const DEFAULT_PER_PAGE = 10;
 
@@ -43,7 +44,9 @@ export function FactoringsProvider({ children }) {
     }
 
     function unwrapLeadResponse(response) {
-        return response?.data || response?.result || response?.lead || response;
+        const data = response?.data ?? response;
+
+        return data?.data || data?.result || data?.lead || data;
     }
 
     const loadFactorings = useCallback(
@@ -93,7 +96,17 @@ export function FactoringsProvider({ children }) {
 
         try {
             const leadResponse = await fetchCustomerLeadById(leadId);
-            const lead = unwrapLeadResponse(leadResponse);
+
+            const rawLead = unwrapLeadResponse(leadResponse);
+            const mappedLead = mapLeadDetailsResponseFromApi(leadResponse);
+
+            const lead = mappedLead
+                ? {
+                      ...rawLead,
+                      ...mappedLead,
+                      raw: mappedLead.raw || rawLead,
+                  }
+                : rawLead;
 
             return {
                 ...details,

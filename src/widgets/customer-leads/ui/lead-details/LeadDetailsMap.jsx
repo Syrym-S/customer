@@ -2,6 +2,10 @@ import PropTypes from 'prop-types';
 import { Box, CircularProgress, Typography } from '@mui/material';
 
 import { CustomerMapView } from '../../../customer-map/ui/CustomerMapView';
+import {
+   getLocationDescription,
+   getLocationPosition,
+} from '../../model/lead-details-map.helpers';
 
 export function LeadDetailsMap({
    map,
@@ -20,22 +24,81 @@ export function LeadDetailsMap({
       point.longitude,
    ]);
 
-   const routeMarkers = hasRoutePoints
-      ? [
-           {
-              id: 'route-start',
-              position: routePoints[0],
-              title: 'Откуда',
-              description: lead.from_location || 'Не указано',
-           },
-           {
-              id: 'route-end',
-              position: routePoints[routePoints.length - 1],
-              title: 'Куда',
-              description: lead.to_location || 'Не указано',
-           },
-        ]
-      : [];
+   const waypoints = Array.isArray(lead.waypoints) ? lead.waypoints : [];
+
+   const fromPosition = getLocationPosition(lead.from_location);
+   const toPosition = getLocationPosition(lead.to_location);
+
+   const waypointMarkers = waypoints
+      .map((waypoint, index) => {
+         const position = getLocationPosition(waypoint);
+
+         if (!position) {
+            return null;
+         }
+
+         return {
+            id: `route-waypoint-${index}`,
+            position,
+            title: `Промежуточная точка ${index + 1}`,
+            description: getLocationDescription(
+               waypoint,
+               `Промежуточная точка ${index + 1}`,
+            ),
+         };
+      })
+      .filter(Boolean);
+
+   const routeMarkers =
+      hasRoutePoints || fromPosition || toPosition || waypointMarkers.length
+         ? [
+              fromPosition
+                 ? {
+                      id: 'route-start',
+                      position: fromPosition,
+                      title: 'Откуда',
+                      description: getLocationDescription(
+                         lead.from_location,
+                         'Не указано',
+                      ),
+                   }
+                 : hasRoutePoints
+                   ? {
+                        id: 'route-start',
+                        position: routePoints[0],
+                        title: 'Откуда',
+                        description: getLocationDescription(
+                           lead.from_location,
+                           'Не указано',
+                        ),
+                     }
+                   : null,
+
+              ...waypointMarkers,
+
+              toPosition
+                 ? {
+                      id: 'route-end',
+                      position: toPosition,
+                      title: 'Куда',
+                      description: getLocationDescription(
+                         lead.to_location,
+                         'Не указано',
+                      ),
+                   }
+                 : hasRoutePoints
+                   ? {
+                        id: 'route-end',
+                        position: routePoints[routePoints.length - 1],
+                        title: 'Куда',
+                        description: getLocationDescription(
+                           lead.to_location,
+                           'Не указано',
+                        ),
+                     }
+                   : null,
+           ].filter(Boolean)
+         : [];
 
    const geoMarkers = geoCurrentPoint
       ? [
@@ -52,11 +115,13 @@ export function LeadDetailsMap({
 
    const markers = [...routeMarkers, ...geoMarkers];
 
-   const mapCenter = hasRoutePoints
-      ? routePoints[0]
-      : hasGeoPoints
-        ? geoRoutePoints[geoRoutePoints.length - 1]
-        : map.center;
+   const mapCenter = fromPosition
+      ? fromPosition
+      : hasRoutePoints
+        ? routePoints[0]
+        : hasGeoPoints
+          ? geoRoutePoints[geoRoutePoints.length - 1]
+          : map.center;
 
    return (
       <Box
@@ -94,7 +159,7 @@ export function LeadDetailsMap({
                <CircularProgress size={28} />
 
                <Typography
-                  color='text.secondary'
+                  color="text.secondary"
                   sx={{
                      fontSize: 13,
                      fontWeight: 500,

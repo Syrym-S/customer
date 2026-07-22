@@ -152,6 +152,12 @@ export function mapCreateLeadFormToApi(form) {
     addNumberIfHasValue(payload, 'to_lat', form.toLat);
     addNumberIfHasValue(payload, 'to_lon', form.toLng);
 
+    const waypoints = getNormalizedWaypoints(form);
+
+    if (waypoints.length) {
+        payload.waypoints = waypoints;
+    }
+
     const cargos = getNormalizedFormCargos(form);
 
     if (cargos.length) {
@@ -171,6 +177,32 @@ export function mapCreateLeadDocumentsToApiDocuments(form) {
             context: document.context || '',
             file: document.file,
         }));
+}
+
+function mapWaypointToApi(waypoint = {}) {
+    const locationData = waypoint.location_data || {};
+
+    return {
+        country: normalizeText(locationData.country) || null,
+        region: normalizeText(locationData.region) || null,
+        city: normalizeText(locationData.city) || null,
+        address:
+            normalizeText(locationData.address) ||
+            normalizeText(waypoint.location) ||
+            null,
+        lat: toNumber(waypoint.lat),
+        lon: toNumber(waypoint.lng),
+    };
+}
+
+function getNormalizedWaypoints(form) {
+    if (!Array.isArray(form.waypoints)) {
+        return [];
+    }
+
+    return form.waypoints
+        .map(mapWaypointToApi)
+        .filter((waypoint) => waypoint.lat !== null && waypoint.lon !== null);
 }
 
 export function mapCreatedLeadToUi(form, response) {
@@ -197,6 +229,8 @@ export function mapCreatedLeadToUi(form, response) {
     };
 
     const firstCargo = cargos[0] ?? fallbackCargo;
+
+    const waypoints = getNormalizedWaypoints(form);
 
     return {
         id,
@@ -258,6 +292,10 @@ export function mapCreatedLeadToUi(form, response) {
                     lat: form.fromLat ? Number(form.fromLat) : null,
                     lng: form.fromLng ? Number(form.fromLng) : null,
                 },
+                waypoints: waypoints.map((waypoint) => ({
+                    ...waypoint,
+                    lng: waypoint.lon,
+                })),
                 to: {
                     lat: form.toLat ? Number(form.toLat) : null,
                     lng: form.toLng ? Number(form.toLng) : null,

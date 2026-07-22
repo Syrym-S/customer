@@ -21,6 +21,94 @@ const driverIcon = L.divIcon({
    popupAnchor: [0, -18],
 });
 
+function hasCoordinate(value) {
+   return value !== null && value !== undefined && value !== '';
+}
+
+function getLocationPoint(location) {
+   if (!location || typeof location !== 'object') {
+      return null;
+   }
+
+   const lat = location.lat ?? location.latitude;
+   const lon = location.lon ?? location.lng ?? location.longitude;
+
+   if (!hasCoordinate(lat) || !hasCoordinate(lon)) {
+      return null;
+   }
+
+   return [Number(lat), Number(lon)];
+}
+
+function getLeadWaypoints(lead) {
+   return Array.isArray(lead?.waypoints) ? lead.waypoints : [];
+}
+
+function buildLeadRouteMarkers(lead, routePoints = []) {
+   const markers = [];
+
+   const fromPoint = getLocationPoint(lead?.from_location);
+   const toPoint = getLocationPoint(lead?.to_location);
+
+   if (fromPoint) {
+      markers.push({
+         id: `${lead.id}-route-start`,
+         position: fromPoint,
+         title: 'Точка А',
+         description: formatMapLocation(
+            lead.from_location,
+            'Откуда не указано',
+         ),
+      });
+   } else if (routePoints.length >= 2) {
+      markers.push({
+         id: `${lead.id}-route-start`,
+         position: routePoints[0],
+         title: 'Точка А',
+         description: formatMapLocation(
+            lead?.from_location,
+            'Откуда не указано',
+         ),
+      });
+   }
+
+   getLeadWaypoints(lead).forEach((waypoint, index) => {
+      const point = getLocationPoint(waypoint);
+
+      if (!point) {
+         return;
+      }
+
+      markers.push({
+         id: `${lead.id}-route-waypoint-${index}`,
+         position: point,
+         title: `Промежуточная точка ${index + 1}`,
+         description: formatMapLocation(
+            waypoint,
+            `Промежуточная точка ${index + 1}`,
+         ),
+      });
+   });
+
+   if (toPoint) {
+      markers.push({
+         id: `${lead.id}-route-end`,
+         position: toPoint,
+         title: 'Точка Б',
+         description: formatMapLocation(lead.to_location, 'Куда не указано'),
+      });
+   } else if (routePoints.length >= 2) {
+      markers.push({
+         id: `${lead.id}-route-end`,
+         position: routePoints[routePoints.length - 1],
+         title: 'Точка Б',
+         description: formatMapLocation(lead?.to_location, 'Куда не указано'),
+      });
+   }
+
+   return markers;
+}
+
 function formatMapLocation(value, fallback) {
    return normalizeLocationValue(value) || fallback;
 }
@@ -138,16 +226,13 @@ export function CustomerMapView({
 
          <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
          />
 
          {routes.map((mapRoute, index) => {
             if (!mapRoute.points || mapRoute.points.length < 2) {
                return null;
             }
-
-            const startPoint = mapRoute.points[0];
-            const endPoint = mapRoute.points[mapRoute.points.length - 1];
 
             const fromLocation = formatMapLocation(
                mapRoute.lead?.from_location,
@@ -157,6 +242,11 @@ export function CustomerMapView({
             const toLocation = formatMapLocation(
                mapRoute.lead?.to_location,
                'Куда не указано',
+            );
+
+            const routeMarkers = buildLeadRouteMarkers(
+               mapRoute.lead,
+               mapRoute.points,
             );
 
             return (
@@ -192,25 +282,25 @@ export function CustomerMapView({
                      </Tooltip>
                   </Polyline>
 
-                  <Marker position={startPoint}>
-                     <Popup>
-                        <strong>Точка А</strong>
-                        <br />
-                        Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}
-                        <br />
-                        {fromLocation}
-                     </Popup>
-                  </Marker>
-
-                  <Marker position={endPoint}>
-                     <Popup>
-                        <strong>Точка Б</strong>
-                        <br />
-                        Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}
-                        <br />
-                        {toLocation}
-                     </Popup>
-                  </Marker>
+                  {routeMarkers.map((marker) => (
+                     <Marker
+                        key={marker.id}
+                        position={marker.position}
+                        eventHandlers={{
+                           click: () => {
+                              onLeadClick?.(mapRoute.lead);
+                           },
+                        }}
+                     >
+                        <Popup>
+                           <strong>{marker.title}</strong>
+                           <br />
+                           Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}
+                           <br />
+                           {marker.description}
+                        </Popup>
+                     </Marker>
+                  ))}
                </Fragment>
             );
          })}

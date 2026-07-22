@@ -15,11 +15,9 @@ function formatTenderLocation(location) {
       return String(location.address).trim();
    }
 
-   const parts = [
-      location.country,
-      location.region,
-      location.city,
-   ].filter(Boolean);
+   const parts = [location.country, location.region, location.city].filter(
+      Boolean,
+   );
 
    if (parts.length) {
       return parts.join(', ');
@@ -33,6 +31,76 @@ function formatTenderLocation(location) {
    }
 
    return '';
+}
+
+function normalizeTenderLocationFromApi(location) {
+   if (!location) {
+      return '';
+   }
+
+   if (typeof location === 'string') {
+      const label = location.trim();
+
+      return {
+         country: '',
+         region: '',
+         city: '',
+         address: label,
+         label,
+         lat: null,
+         lon: null,
+         lng: null,
+      };
+   }
+
+   if (typeof location !== 'object') {
+      const label = String(location);
+
+      return {
+         country: '',
+         region: '',
+         city: '',
+         address: label,
+         label,
+         lat: null,
+         lon: null,
+         lng: null,
+      };
+   }
+
+   const lat = location.lat ?? location.latitude ?? null;
+   const lon = location.lon ?? location.lng ?? location.longitude ?? null;
+   const label = formatTenderLocation(location);
+
+   return {
+      ...location,
+      country: location.country ?? '',
+      region: location.region ?? '',
+      city: location.city ?? '',
+      address: location.address || label,
+      label,
+      lat,
+      lon,
+      lng: lon,
+   };
+}
+
+function normalizeTenderWaypointFromApi(waypoint = {}, index) {
+   const normalizedLocation = normalizeTenderLocationFromApi(waypoint);
+
+   return {
+      ...normalizedLocation,
+      id: waypoint.id ?? `waypoint-${index}`,
+      raw: waypoint,
+   };
+}
+
+function normalizeTenderWaypointsFromApi(waypoints) {
+   if (!Array.isArray(waypoints)) {
+      return [];
+   }
+
+   return waypoints.map(normalizeTenderWaypointFromApi);
 }
 
 function normalizeTenderCargoFromApi(cargo = {}) {
@@ -70,10 +138,20 @@ function mapTenderLeadFromApi(lead) {
    const documents = mapTenderLeadDocumentsFromApi(lead);
    const cargos = mapTenderLeadCargosFromApi(lead);
 
+   const fromLocation = normalizeTenderLocationFromApi(lead.from_location);
+   const toLocation = normalizeTenderLocationFromApi(lead.to_location);
+   const waypoints = normalizeTenderWaypointsFromApi(lead.waypoints);
+
    return {
       ...lead,
-      from_location: formatTenderLocation(lead.from_location),
-      to_location: formatTenderLocation(lead.to_location),
+
+      from_location: fromLocation,
+      to_location: toLocation,
+      waypoints,
+
+      fromLocationLabel: formatTenderLocation(fromLocation),
+      toLocationLabel: formatTenderLocation(toLocation),
+
       cargos,
       documents,
       files: documents,
@@ -105,8 +183,9 @@ export function mapTenderFromApi(tender) {
 
       lead,
 
-      from_location: lead?.from_location || '',
-      to_location: lead?.to_location || '',
+      from_location: lead?.fromLocationLabel || '',
+      to_location: lead?.toLocationLabel || '',
+      waypoints: lead?.waypoints || [],
 
       cargos: lead?.cargos || [],
       summ: lead?.summ ?? null,

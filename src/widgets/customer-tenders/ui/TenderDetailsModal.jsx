@@ -11,13 +11,14 @@ import {
 } from '@mui/material';
 
 import { useTendersContext } from '../model/useTendersContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useCustomerMap } from '../../customer-map/model/useCustomerMap';
 import { LeadDetailsMap } from '../../customer-leads/ui/lead-details/LeadDetailsMap';
 import { TenderDetailsContent } from './tender-details/TenderDetailsContent';
 import { TenderDetailsHeader } from './tender-details/TenderDetailsHeader';
 import { TenderDetailsEditActions } from './tender-details/TenderDetailsEditActions';
 import {
+    buildFallbackLeadRoutePoints,
     buildLeadRoutePayload,
     decodeRoutePolyline,
     getEncodedPolylineFromRoute,
@@ -30,6 +31,19 @@ import {
 } from '../model/tender-edit-form.helpers';
 import { TenderDetailsActions } from './tender-details/TenderDetailsActions';
 import { useNavigate, useParams } from 'react-router-dom';
+
+function getTenderRouteKey(lead) {
+    if (!lead?.id) {
+        return '';
+    }
+
+    return JSON.stringify({
+        id: lead.id,
+        from_location: lead.from_location || null,
+        to_location: lead.to_location || null,
+        waypoints: Array.isArray(lead.waypoints) ? lead.waypoints : [],
+    });
+}
 
 export function TenderDetailsModal() {
     const navigate = useNavigate();
@@ -63,15 +77,19 @@ export function TenderDetailsModal() {
     const [isActionLoading, setIsActionLoading] = useState(false);
 
     const isRoutePlaceholder = Boolean(openTender?.isRoutePlaceholder);
-    const shouldShowDetailsLoader =
-        isDetailsLoading || (isRoutePlaceholder && !detailsError);
+    const shouldShowDetailsLoader = isRoutePlaceholder && !detailsError;
 
-    const shouldRenderTenderDetails =
-        !shouldShowDetailsLoader && !isRoutePlaceholder;
+    const shouldRenderTenderDetails = !isRoutePlaceholder;
 
     const isTenderDetailsRoute =
         Boolean(tenderId) ||
         /\/customer\/tenders\/[^/?#]+/.test(window.location.pathname);
+
+    const leadForMap = openTender?.lead || null;
+
+    const tenderRouteKey = useMemo(() => {
+        return getTenderRouteKey(leadForMap);
+    }, [leadForMap]);
 
     function handleClose() {
         closeTenderDetails();
@@ -80,6 +98,7 @@ export function TenderDetailsModal() {
         setEditForm(createTenderEditForm(null));
         setRoute(null);
         setRoutePoints([]);
+        setIsRouteLoading(false);
         setActionError('');
 
         if (isTenderDetailsRoute) {
@@ -285,9 +304,9 @@ export function TenderDetailsModal() {
         let isMounted = true;
 
         async function loadTenderRoute() {
-            const lead = openTender?.lead;
+            const lead = leadForMap;
 
-            if (!openTender?.id || !lead?.id) {
+            if (!tenderRouteKey || !lead?.id) {
                 setRoute(null);
                 setRoutePoints([]);
                 setIsRouteLoading(false);
@@ -296,6 +315,8 @@ export function TenderDetailsModal() {
 
             try {
                 setIsRouteLoading(true);
+                setRoute(null);
+                setRoutePoints([]);
 
                 const payload = buildLeadRoutePayload(lead);
 
@@ -308,22 +329,50 @@ export function TenderDetailsModal() {
                 const generatedRoute = await generateRoute(payload);
                 const routes = getRoutesFromGeneratedRoute(generatedRoute);
                 const mainRoute = routes[0];
-                const encodedPolyline = getEncodedPolylineFromRoute(mainRoute);
-                const decodedPoints = decodeRoutePolyline(encodedPolyline);
 
                 if (!isMounted) {
                     return;
                 }
 
-                setRoute(mainRoute || null);
-                setRoutePoints(decodedPoints || []);
-            } catch {
+                if (!mainRoute) {
+                    console.warn(
+                        'Маршруты тендера не найдены в response:',
+                        generatedRoute,
+                    );
+
+                    setRoute(null);
+                    setRoutePoints(buildFallbackLeadRoutePoints(lead));
+
+                    return;
+                }
+
+                const encodedPolyline = getEncodedPolylineFromRoute(mainRoute);
+                const decodedPoints = decodeRoutePolyline(encodedPolyline);
+
+                if (!decodedPoints.length) {
+                    console.warn('Polyline тендера не декодировался:', {
+                        generatedRoute,
+                        mainRoute,
+                        encodedPolyline,
+                    });
+
+                    setRoute(null);
+                    setRoutePoints(buildFallbackLeadRoutePoints(lead));
+
+                    return;
+                }
+
+                setRoute(mainRoute);
+                setRoutePoints(decodedPoints);
+            } catch (error) {
+                console.error('Не удалось построить маршрут тендера:', error);
+
                 if (!isMounted) {
                     return;
                 }
 
                 setRoute(null);
-                setRoutePoints([]);
+                setRoutePoints(buildFallbackLeadRoutePoints(leadForMap));
             } finally {
                 if (isMounted) {
                     setIsRouteLoading(false);
@@ -336,7 +385,7 @@ export function TenderDetailsModal() {
         return () => {
             isMounted = false;
         };
-    }, [openTender]);
+    }, [tenderRouteKey]);
 
     useEffect(() => {
         if (!openTender) {
@@ -352,14 +401,12 @@ export function TenderDetailsModal() {
         return null;
     }
 
-    const leadForMap = openTender.lead;
-
     return (
         <Dialog
             open={Boolean(openTender)}
             onClose={handleClose}
             fullWidth
-            maxWidth='md'
+            maxWidth="md"
             slotProps={{
                 paper: {
                     sx: {
@@ -384,8 +431,8 @@ export function TenderDetailsModal() {
                     </Typography>
 
                     <Typography
-                        variant='body2'
-                        color='text.secondary'
+                        variant="body2"
+                        color="text.secondary"
                         sx={{ mt: 0.5 }}
                     >
                         Загружаем детали тендера...
@@ -406,19 +453,19 @@ export function TenderDetailsModal() {
                 }}
             >
                 {saveEditError && (
-                    <Alert severity='error' sx={{ mb: 2 }}>
+                    <Alert severity="error" sx={{ mb: 2 }}>
                         {saveEditError}
                     </Alert>
                 )}
 
                 {detailsError && (
-                    <Alert severity='error' sx={{ mb: 2 }}>
+                    <Alert severity="error" sx={{ mb: 2 }}>
                         {detailsError}
                     </Alert>
                 )}
 
                 {actionError && (
-                    <Alert severity='error' sx={{ mb: 2 }}>
+                    <Alert severity="error" sx={{ mb: 2 }}>
                         {actionError}
                     </Alert>
                 )}
@@ -436,7 +483,7 @@ export function TenderDetailsModal() {
                     >
                         <CircularProgress size={32} />
 
-                        <Typography color='text.secondary'>
+                        <Typography color="text.secondary">
                             Загружаем детали тендера...
                         </Typography>
                     </Box>

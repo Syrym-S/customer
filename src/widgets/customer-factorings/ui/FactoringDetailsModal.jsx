@@ -21,6 +21,7 @@ import { FactoringDetailsActions } from './factorings-details/FactoringDetailsAc
 import { FactoringPartiesRequisitesSection } from './factorings-details/sections/FactoringPartiesRequisitesSection';
 import { LeadDetailsMap } from '../../customer-leads/ui/lead-details/LeadDetailsMap';
 import {
+    buildFallbackLeadRoutePoints,
     buildLeadRoutePayload,
     decodeRoutePolyline,
     getEncodedPolylineFromRoute,
@@ -66,22 +67,7 @@ export function FactoringDetailsModal({
         async function loadFactoringRoute() {
             const lead = factoring?.lead;
 
-            console.log('[factoring route debug]', {
-                open,
-                factoring,
-                lead,
-                leadId: lead?.id,
-            });
-
             if (!open || !factoring || !lead?.id) {
-                console.log('[factoring route skipped]', {
-                    reason: 'open/factoring/lead.id missing',
-                    open,
-                    hasFactoring: Boolean(factoring),
-                    hasLead: Boolean(lead),
-                    leadId: lead?.id,
-                });
-
                 setRoute(null);
                 setRoutePoints([]);
                 setIsRouteLoading(false);
@@ -90,46 +76,67 @@ export function FactoringDetailsModal({
 
             try {
                 setIsRouteLoading(true);
+                setRoute(null);
+                setRoutePoints([]);
 
                 const payload = buildLeadRoutePayload(lead);
 
-                console.log('[factoring route payload]', payload);
-
                 if (!payload) {
-                    console.log('[factoring route skipped]', {
-                        reason: 'payload is empty',
-                        lead,
-                    });
-
                     setRoute(null);
                     setRoutePoints([]);
                     return;
                 }
 
                 const generatedRoute = await generateRoute(payload);
-
-                console.log('[factoring generated route]', generatedRoute);
-
                 const routes = getRoutesFromGeneratedRoute(generatedRoute);
                 const mainRoute = routes[0];
-                const encodedPolyline = getEncodedPolylineFromRoute(mainRoute);
-                const decodedPoints = decodeRoutePolyline(encodedPolyline);
 
                 if (!isMounted) {
                     return;
                 }
 
-                setRoute(mainRoute || null);
-                setRoutePoints(decodedPoints || []);
+                if (!mainRoute) {
+                    console.warn(
+                        'Маршруты факторинга не найдены в response:',
+                        generatedRoute,
+                    );
+
+                    setRoute(null);
+                    setRoutePoints(buildFallbackLeadRoutePoints(lead));
+
+                    return;
+                }
+
+                const encodedPolyline = getEncodedPolylineFromRoute(mainRoute);
+                const decodedPoints = decodeRoutePolyline(encodedPolyline);
+
+                if (!decodedPoints.length) {
+                    console.warn('Polyline факторинга не декодировался:', {
+                        generatedRoute,
+                        mainRoute,
+                        encodedPolyline,
+                    });
+
+                    setRoute(null);
+                    setRoutePoints(buildFallbackLeadRoutePoints(lead));
+
+                    return;
+                }
+
+                setRoute(mainRoute);
+                setRoutePoints(decodedPoints);
             } catch (error) {
-                console.error('[factoring route error]', error);
+                console.error(
+                    'Не удалось построить маршрут факторинга:',
+                    error,
+                );
 
                 if (!isMounted) {
                     return;
                 }
 
                 setRoute(null);
-                setRoutePoints([]);
+                setRoutePoints(buildFallbackLeadRoutePoints(factoring?.lead));
             } finally {
                 if (isMounted) {
                     setIsRouteLoading(false);
@@ -159,7 +166,7 @@ export function FactoringDetailsModal({
         <Dialog
             open={open}
             onClose={accepting ? undefined : handleClose}
-            maxWidth='md'
+            maxWidth="md"
             fullWidth
             slotProps={{
                 paper: {
@@ -187,8 +194,8 @@ export function FactoringDetailsModal({
                     </Typography>
 
                     <Typography
-                        variant='body2'
-                        color='text.secondary'
+                        variant="body2"
+                        color="text.secondary"
                         sx={{ mt: 0.5 }}
                     >
                         Загружаем детали факторинга...
@@ -210,20 +217,20 @@ export function FactoringDetailsModal({
                     >
                         <CircularProgress size={32} />
 
-                        <Typography color='text.secondary'>
+                        <Typography color="text.secondary">
                             Загружаем детали факторинга...
                         </Typography>
                     </Box>
                 )}
 
                 {error && (
-                    <Alert severity='error' sx={{ mb: 2 }}>
+                    <Alert severity="error" sx={{ mb: 2 }}>
                         {error}
                     </Alert>
                 )}
 
                 {acceptError && (
-                    <Alert severity='error' sx={{ mb: 2 }}>
+                    <Alert severity="error" sx={{ mb: 2 }}>
                         {acceptError}
                     </Alert>
                 )}

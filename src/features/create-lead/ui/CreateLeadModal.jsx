@@ -66,6 +66,8 @@ function createInitialForm() {
         toLng: '',
         to_location: createInitialLocation(),
 
+        waypoints: [],
+
         loadingDate: getTodayDateInputValue(),
 
         cargos: [createInitialCargo()],

@@ -3,8 +3,10 @@ import {
     Box,
     Button,
     CircularProgress,
+    IconButton,
     TextField,
 } from '@mui/material';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 
@@ -26,6 +28,14 @@ export function RouteStep({ control, errors, form, setValue }) {
     const [isFromSearchLoading, setIsFromSearchLoading] = useState(false);
     const [isToSearchLoading, setIsToSearchLoading] = useState(false);
 
+    const waypoints = Array.isArray(form.waypoints) ? form.waypoints : [];
+
+    const setValueOptions = {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+    };
+
     const {
         activeMapPoint,
         loadingPoints,
@@ -38,6 +48,9 @@ export function RouteStep({ control, errors, form, setValue }) {
         handleClearRoute,
         clearFromPoint,
         clearToPoint,
+        clearWaypointPoint,
+        handleAddWaypoint,
+        handleRemoveWaypoint,
         setSelectedLocationPoint,
     } = useRouteMapPicker({
         form,
@@ -115,7 +128,7 @@ export function RouteStep({ control, errors, form, setValue }) {
     }, [toInputValue, form.toLocation]);
 
     return (
-        <StepSection title='Маршрут'>
+        <StepSection title="Маршрут">
             <Box
                 sx={{
                     display: 'flex',
@@ -134,7 +147,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                     }}
                 >
                     <Button
-                        size='small'
+                        size="small"
                         variant={
                             activeMapPoint === 'from' ? 'contained' : 'outlined'
                         }
@@ -143,8 +156,27 @@ export function RouteStep({ control, errors, form, setValue }) {
                         Откуда
                     </Button>
 
+                    {waypoints.map((_, index) => {
+                        const pointKey = `waypoint-${index}`;
+
+                        return (
+                            <Button
+                                key={pointKey}
+                                size="small"
+                                variant={
+                                    activeMapPoint === pointKey
+                                        ? 'contained'
+                                        : 'outlined'
+                                }
+                                onClick={() => setActiveMapPoint(pointKey)}
+                            >
+                                Точка {index + 1}
+                            </Button>
+                        );
+                    })}
+
                     <Button
-                        size='small'
+                        size="small"
                         variant={
                             activeMapPoint === 'to' ? 'contained' : 'outlined'
                         }
@@ -152,12 +184,20 @@ export function RouteStep({ control, errors, form, setValue }) {
                     >
                         Куда
                     </Button>
+
+                    <Button
+                        size="small"
+                        variant="outlined"
+                        onClick={handleAddWaypoint}
+                    >
+                        + Промежуточная
+                    </Button>
                 </Box>
 
                 <Button
-                    size='small'
-                    color='error'
-                    variant='outlined'
+                    size="small"
+                    color="error"
+                    variant="outlined"
                     onClick={handleClearRoute}
                     disabled={isClearDisabled}
                 >
@@ -200,7 +240,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                 }}
             >
                 <Controller
-                    name='fromLocation'
+                    name="fromLocation"
                     control={control}
                     rules={{
                         required: 'Укажите место отправления',
@@ -267,16 +307,16 @@ export function RouteStep({ control, errors, form, setValue }) {
                                     ? 'Введите минимум 2 символа'
                                     : 'Адрес не найден'
                             }
-                            loadingText='Поиск адреса...'
+                            loadingText="Поиск адреса..."
                             renderInput={(params) => {
                                 const inputProps = params.InputProps || {};
 
                                 return (
                                     <TextField
                                         {...params}
-                                        label='Откуда'
+                                        label="Откуда"
                                         fullWidth
-                                        size='small'
+                                        size="small"
                                         error={Boolean(errors.fromLocation)}
                                         helperText={
                                             errors.fromLocation?.message
@@ -288,7 +328,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                                                     {(isFromSearchLoading ||
                                                         loadingPoints.from) && (
                                                         <CircularProgress
-                                                            color='inherit'
+                                                            color="inherit"
                                                             size={18}
                                                         />
                                                     )}
@@ -304,8 +344,89 @@ export function RouteStep({ control, errors, form, setValue }) {
                     )}
                 />
 
+                {waypoints.map((waypoint, index) => {
+                    const pointKey = `waypoint-${index}`;
+
+                    return (
+                        <Box
+                            key={waypoint.id || pointKey}
+                            sx={{
+                                display: 'flex',
+                                gap: 1,
+                                alignItems: 'flex-start',
+                                gridColumn: {
+                                    xs: 'auto',
+                                    sm: '1 / -1',
+                                },
+                            }}
+                        >
+                            <TextField
+                                label={`Промежуточная точка #${index + 1}`}
+                                value={waypoint.location || ''}
+                                onFocus={() => setActiveMapPoint(pointKey)}
+                                onChange={(event) => {
+                                    setValue(
+                                        `waypoints.${index}.location`,
+                                        event.target.value,
+                                        setValueOptions,
+                                    );
+
+                                    if (waypoint.lat || waypoint.lng) {
+                                        clearWaypointPoint(index);
+                                    }
+                                }}
+                                fullWidth
+                                size="small"
+                                helperText={
+                                    loadingPoints[pointKey]
+                                        ? 'Определяем адрес...'
+                                        : 'Выберите эту точку и кликните по карте'
+                                }
+                                InputProps={{
+                                    endAdornment: loadingPoints[pointKey] ? (
+                                        <CircularProgress
+                                            color="inherit"
+                                            size={18}
+                                        />
+                                    ) : null,
+                                }}
+                            />
+
+                            <Button
+                                size="small"
+                                variant={
+                                    activeMapPoint === pointKey
+                                        ? 'contained'
+                                        : 'outlined'
+                                }
+                                onClick={() => setActiveMapPoint(pointKey)}
+                                sx={{
+                                    whiteSpace: 'nowrap',
+                                    minHeight: 40,
+                                }}
+                            >
+                                На карте
+                            </Button>
+
+                            <IconButton
+                                color="error"
+                                size="small"
+                                onClick={() => handleRemoveWaypoint(index)}
+                                sx={{
+                                    mt: 0.25,
+                                    flexShrink: 0,
+                                }}
+                                aria-label={`Удалить промежуточную точку ${index + 1}`}
+                                title={`Удалить промежуточную точку ${index + 1}`}
+                            >
+                                <DeleteOutlineRoundedIcon fontSize="small" />
+                            </IconButton>
+                        </Box>
+                    );
+                })}
+
                 <Controller
-                    name='toLocation'
+                    name="toLocation"
                     control={control}
                     rules={{
                         required: 'Укажите место назначения',
@@ -369,16 +490,16 @@ export function RouteStep({ control, errors, form, setValue }) {
                                     ? 'Введите минимум 2 символа'
                                     : 'Адрес не найден'
                             }
-                            loadingText='Поиск адреса...'
+                            loadingText="Поиск адреса..."
                             renderInput={(params) => {
                                 const inputProps = params.InputProps || {};
 
                                 return (
                                     <TextField
                                         {...params}
-                                        label='Куда'
+                                        label="Куда"
                                         fullWidth
-                                        size='small'
+                                        size="small"
                                         error={Boolean(errors.toLocation)}
                                         helperText={errors.toLocation?.message}
                                         InputProps={{
@@ -388,7 +509,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                                                     {(isToSearchLoading ||
                                                         loadingPoints.to) && (
                                                         <CircularProgress
-                                                            color='inherit'
+                                                            color="inherit"
                                                             size={18}
                                                         />
                                                     )}
@@ -405,15 +526,15 @@ export function RouteStep({ control, errors, form, setValue }) {
                 />
 
                 <Controller
-                    name='loadingDate'
+                    name="loadingDate"
                     control={control}
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            label='Дата загрузки'
-                            type='date'
+                            label="Дата загрузки"
+                            type="date"
                             fullWidth
-                            size='small'
+                            size="small"
                             slotProps={{
                                 inputLabel: {
                                     shrink: true,

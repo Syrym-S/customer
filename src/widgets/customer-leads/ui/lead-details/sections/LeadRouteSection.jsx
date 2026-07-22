@@ -1,7 +1,6 @@
-import { Box, TextField } from '@mui/material';
+import { Stack } from '@mui/material';
 import PropTypes from 'prop-types';
 
-import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import RouteOutlinedIcon from '@mui/icons-material/RouteOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
@@ -10,82 +9,40 @@ import { DetailSection } from '../components/DetailSection';
 import { RoutePoint } from '../components/RoutePoint';
 
 import { normalizeLocationValue } from '../../../model/lead-edit-form.helpers';
+import { getWaypointLabel } from '../../../model/lead-route.helpers';
+import { LeadRouteEditor } from '../LeadRouteEditor';
 
 export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
+   const waypoints = Array.isArray(lead.waypoints) ? lead.waypoints : [];
+
    return (
-      <DetailSection icon={<RouteOutlinedIcon />} title='Маршрут'>
-         <Box
-            sx={{
-               display: 'flex',
-               alignItems: 'stretch',
-               gap: 1.5,
-               flexWrap: {
-                  xs: 'wrap',
-                  md: 'nowrap',
-               },
-            }}
-         >
-            {isEditing ? (
-               <TextField
-                  name='from_location'
-                  label='Откуда'
-                  value={editForm.from_location}
-                  onChange={onEditChange}
-                  fullWidth
-                  size='small'
-                  sx={{
-                     flex: 1,
-                     minWidth: 220,
-                  }}
-               />
-            ) : (
+      <DetailSection icon={<RouteOutlinedIcon />} title="Маршрут">
+         {isEditing ? (
+            <LeadRouteEditor form={editForm} setValue={onEditChange} />
+         ) : (
+            <Stack spacing={1.25}>
                <RoutePoint
-                  label='Откуда'
+                  label="Откуда"
                   value={normalizeLocationValue(lead.from_location)}
                   icon={<TripOriginIcon />}
                />
-            )}
 
-            <Box
-               sx={{
-                  display: {
-                     xs: 'none',
-                     md: 'flex',
-                  },
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  px: 0.5,
-               }}
-            >
-               <ArrowRightAltRoundedIcon
-                  sx={{
-                     color: 'text.secondary',
-                     fontSize: 28,
-                  }}
-               />
-            </Box>
+               {waypoints.map((waypoint, index) => (
+                  <RoutePoint
+                     key={waypoint.id || index}
+                     label={`Промежуточная точка #${index + 1}`}
+                     value={getWaypointLabel(waypoint)}
+                     icon={<LocationOnOutlinedIcon />}
+                  />
+               ))}
 
-            {isEditing ? (
-               <TextField
-                  name='to_location'
-                  label='Куда'
-                  value={editForm.to_location}
-                  onChange={onEditChange}
-                  fullWidth
-                  size='small'
-                  sx={{
-                     flex: 1,
-                     minWidth: 220,
-                  }}
-               />
-            ) : (
                <RoutePoint
-                  label='Куда'
+                  label="Куда"
                   value={normalizeLocationValue(lead.to_location)}
                   icon={<LocationOnOutlinedIcon />}
                />
-            )}
-         </Box>
+            </Stack>
+         )}
       </DetailSection>
    );
 }

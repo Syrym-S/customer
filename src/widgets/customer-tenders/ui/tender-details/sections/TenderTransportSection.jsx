@@ -23,57 +23,33 @@ export function TenderTransportSection({ tender }) {
 
    const fromLocation = tender.from_location || lead.from_location;
    const toLocation = tender.to_location || lead.to_location;
+   const waypoints = Array.isArray(lead.waypoints) ? lead.waypoints : [];
 
    return (
       <Stack spacing={2}>
          <TenderDetailsSection icon={<RouteOutlinedIcon />} title="Маршрут">
-            <Box
-               sx={{
-                  display: 'flex',
-                  alignItems: 'stretch',
-                  gap: {
-                     xs: 1,
-                     sm: 1.5,
-                  },
-                  flexDirection: {
-                     xs: 'column',
-                     md: 'row',
-                  },
-                  minWidth: 0,
-                  width: '100%',
-               }}
-            >
+            <Stack spacing={1.25}>
                <RoutePoint
                   label="Откуда"
                   value={normalizeLocationValue(fromLocation)}
                   icon={<TripOriginIcon />}
                />
 
-               <Box
-                  sx={{
-                     display: {
-                        xs: 'none',
-                        md: 'flex',
-                     },
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                     px: 0.5,
-                  }}
-               >
-                  <ArrowRightAltRoundedIcon
-                     sx={{
-                        color: 'text.secondary',
-                        fontSize: 28,
-                     }}
+               {waypoints.map((waypoint, index) => (
+                  <RoutePoint
+                     key={waypoint.id || index}
+                     label={`Промежуточная точка #${index + 1}`}
+                     value={normalizeLocationValue(waypoint)}
+                     icon={<LocationOnOutlinedIcon />}
                   />
-               </Box>
+               ))}
 
                <RoutePoint
                   label="Куда"
                   value={normalizeLocationValue(toLocation)}
                   icon={<LocationOnOutlinedIcon />}
                />
-            </Box>
+            </Stack>
          </TenderDetailsSection>
 
          <TenderDetailsSection

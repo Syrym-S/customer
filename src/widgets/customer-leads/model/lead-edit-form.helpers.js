@@ -30,6 +30,76 @@ function normalizeLeadCargosForEdit(lead) {
    }));
 }
 
+function createEmptyLocation() {
+   return {
+      country: '',
+      region: '',
+      city: '',
+      address: '',
+      label: '',
+   };
+}
+
+function getLocationCoordinate(location, keys) {
+   if (!location || typeof location !== 'object') {
+      return '';
+   }
+
+   for (const key of keys) {
+      const value = location[key];
+
+      if (value === null || value === undefined || value === '') {
+         continue;
+      }
+
+      const number = Number(value);
+
+      if (!Number.isNaN(number)) {
+         return number;
+      }
+   }
+
+   return '';
+}
+
+function normalizeLocationDataForEdit(location) {
+   if (!location || typeof location !== 'object') {
+      return createEmptyLocation();
+   }
+
+   const address = normalizeLocationValue(location);
+
+   return {
+      country: location.country || '',
+      region: location.region || '',
+      city: location.city || '',
+      address,
+      label: address,
+   };
+}
+
+function normalizeLeadWaypointsForEdit(lead) {
+   const sourceWaypoints = Array.isArray(lead?.waypoints) ? lead.waypoints : [];
+
+   return sourceWaypoints.map((waypoint, index) => {
+      const address = normalizeLocationValue(waypoint);
+
+      return {
+         id: waypoint.id || `waypoint-${index}`,
+         location: address,
+         lat: waypoint.lat ?? '',
+         lng: waypoint.lng ?? waypoint.lon ?? '',
+         location_data: {
+            country: waypoint.country || '',
+            region: waypoint.region || '',
+            city: waypoint.city || '',
+            address,
+            label: address,
+         },
+      };
+   });
+}
+
 function addTextIfHasValue(payload, key, value) {
    const normalizedValue = normalizeText(value);
 
@@ -85,12 +155,17 @@ export function createLeadEditForm(lead) {
 
    if (!lead) {
       return {
-         from_location: '',
-         to_location: '',
+         fromLocation: '',
+         from_location: createEmptyLocation(),
          fromLat: '',
          fromLng: '',
+
+         toLocation: '',
+         to_location: createEmptyLocation(),
          toLat: '',
          toLng: '',
+
+         waypoints: [],
 
          cargos: [createEmptyLeadCargoEditForm()],
 
@@ -106,14 +181,43 @@ export function createLeadEditForm(lead) {
       };
    }
 
-   return {
-      from_location: normalizeLocationValue(lead.from_location),
-      to_location: normalizeLocationValue(lead.to_location),
+   const fromLocationLabel = normalizeLocationValue(lead.from_location);
+   const toLocationLabel = normalizeLocationValue(lead.to_location);
 
-      fromLat: lead.raw?.route?.from?.lat ?? '',
-      fromLng: lead.raw?.route?.from?.lng ?? '',
-      toLat: lead.raw?.route?.to?.lat ?? '',
-      toLng: lead.raw?.route?.to?.lng ?? '',
+   return {
+      fromLocation: fromLocationLabel,
+      from_location: normalizeLocationDataForEdit(lead.from_location),
+
+      toLocation: toLocationLabel,
+      to_location: normalizeLocationDataForEdit(lead.to_location),
+
+      fromLat:
+         getLocationCoordinate(lead.from_location, ['lat', 'latitude']) ||
+         lead.raw?.route?.from?.lat ||
+         '',
+
+      fromLng:
+         getLocationCoordinate(lead.from_location, [
+            'lng',
+            'lon',
+            'longitude',
+         ]) ||
+         lead.raw?.route?.from?.lng ||
+         lead.raw?.route?.from?.lon ||
+         '',
+
+      toLat:
+         getLocationCoordinate(lead.to_location, ['lat', 'latitude']) ||
+         lead.raw?.route?.to?.lat ||
+         '',
+
+      toLng:
+         getLocationCoordinate(lead.to_location, ['lng', 'lon', 'longitude']) ||
+         lead.raw?.route?.to?.lng ||
+         lead.raw?.route?.to?.lon ||
+         '',
+
+      waypoints: normalizeLeadWaypointsForEdit(lead),
 
       cargos,
 
@@ -297,6 +401,182 @@ function addNumberIfChanged(payload, key, nextValue, prevValue) {
    }
 }
 
+function normalizeWaypointForPayload(waypoint = {}) {
+   const locationData = waypoint.location_data || {};
+
+   const lat = normalizeNumber(waypoint.lat);
+   const lon = normalizeNumber(waypoint.lng ?? waypoint.lon);
+
+   if (lat === null || lon === null) {
+      return null;
+   }
+
+   return {
+      country: normalizeText(locationData.country) || null,
+      region: normalizeText(locationData.region) || null,
+      city: normalizeText(locationData.city) || null,
+      address:
+         normalizeText(locationData.address) ||
+         normalizeText(locationData.label) ||
+         normalizeText(waypoint.location) ||
+         null,
+      lat,
+      lon,
+   };
+}
+
+function normalizeWaypointsForPayload(waypoints) {
+   if (!Array.isArray(waypoints)) {
+      return [];
+   }
+
+   return waypoints.map(normalizeWaypointForPayload).filter(Boolean);
+}
+
+function areWaypointsEqual(nextWaypoints, currentWaypoints) {
+   return JSON.stringify(nextWaypoints) === JSON.stringify(currentWaypoints);
+}
+
+function addLocationFieldsIfChanged(
+   payload,
+   prefix,
+   nextLocation,
+   currentLocation,
+) {
+   const nextLocationData = nextLocation.data || {};
+   const nextText = normalizeText(nextLocation.text);
+   const currentText = normalizeLocationValue(currentLocation);
+
+   const hasStructuredAddress =
+      typeof nextLocationData === 'object' &&
+      normalizeText(nextLocationData.address);
+
+   if (!hasStructuredAddress) {
+      addTextIfChanged(payload, `${prefix}_city`, nextText, currentText);
+      return;
+   }
+
+   const fields = ['country', 'region', 'city', 'address'];
+
+   fields.forEach((field) => {
+      const nextValue = normalizeText(nextLocationData[field]);
+      const currentValue =
+         currentLocation && typeof currentLocation === 'object'
+            ? normalizeText(currentLocation[field])
+            : '';
+
+      if (nextValue && nextValue !== currentValue) {
+         payload[`${prefix}_${field}`] = nextValue;
+      }
+   });
+}
+
+function getLocationFieldValue(location, key) {
+   if (!location || typeof location !== 'object') {
+      return '';
+   }
+
+   return normalizeText(location[key]);
+}
+
+function getPayloadLocationData(locationData, fallbackText) {
+   const data =
+      locationData && typeof locationData === 'object' ? locationData : {};
+
+   const fallback = normalizeText(fallbackText);
+
+   return {
+      country: normalizeText(data.country),
+      region: normalizeText(data.region),
+      city: normalizeText(data.city),
+      address:
+         normalizeText(data.address) || normalizeText(data.label) || fallback,
+   };
+}
+
+function hasRouteLocationChanged({
+   nextLocationData,
+   nextLat,
+   nextLng,
+   currentLocation,
+}) {
+   const fields = ['country', 'region', 'city', 'address'];
+
+   const hasTextChanges = fields.some((field) => {
+      return (
+         normalizeText(nextLocationData[field]) !==
+         getLocationFieldValue(currentLocation, field)
+      );
+   });
+
+   const currentLat = getLocationCoordinate(currentLocation, [
+      'lat',
+      'latitude',
+   ]);
+
+   const currentLng = getLocationCoordinate(currentLocation, [
+      'lng',
+      'lon',
+      'longitude',
+   ]);
+
+   return (
+      hasTextChanges ||
+      normalizeNumber(nextLat) !== normalizeNumber(currentLat) ||
+      normalizeNumber(nextLng) !== normalizeNumber(currentLng)
+   );
+}
+
+function addRouteLocationIfChanged({
+   payload,
+   prefix,
+   text,
+   locationData,
+   lat,
+   lng,
+   currentLocation,
+}) {
+   const nextLocationData = getPayloadLocationData(locationData, text);
+
+   const hasChanged = hasRouteLocationChanged({
+      nextLocationData,
+      nextLat: lat,
+      nextLng: lng,
+      currentLocation,
+   });
+
+   if (!hasChanged) {
+      return;
+   }
+
+   if (nextLocationData.country) {
+      payload[`${prefix}_country`] = nextLocationData.country;
+   }
+
+   if (nextLocationData.region) {
+      payload[`${prefix}_region`] = nextLocationData.region;
+   }
+
+   if (nextLocationData.city) {
+      payload[`${prefix}_city`] = nextLocationData.city;
+   }
+
+   if (nextLocationData.address) {
+      payload[`${prefix}_address`] = nextLocationData.address;
+   }
+
+   const normalizedLat = normalizeNumber(lat);
+   const normalizedLng = normalizeNumber(lng);
+
+   if (normalizedLat !== null) {
+      payload[`${prefix}_lat`] = normalizedLat;
+   }
+
+   if (normalizedLng !== null) {
+      payload[`${prefix}_lon`] = normalizedLng;
+   }
+}
+
 export function mapLeadEditFormToApi(editForm, currentLead) {
    const payload = {};
 
@@ -322,44 +602,25 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
    // ВАЖНО:
    // Не отправляем одно и то же значение одновременно в city и address.
    // Иначе backend склеивает дубли при каждом update.
-   addTextIfChanged(
+   addRouteLocationIfChanged({
       payload,
-      'from_city',
-      editForm.from_location,
-      currentLead.from_location,
-   );
+      prefix: 'from',
+      text: editForm.fromLocation,
+      locationData: editForm.from_location,
+      lat: editForm.fromLat,
+      lng: editForm.fromLng,
+      currentLocation: currentLead.from_location,
+   });
 
-   addTextIfChanged(
+   addRouteLocationIfChanged({
       payload,
-      'to_city',
-      editForm.to_location,
-      currentLead.to_location,
-   );
-
-   addNumberIfChanged(
-      payload,
-      'from_lat',
-      editForm.fromLat,
-      currentLead.raw?.route?.from?.lat,
-   );
-   addNumberIfChanged(
-      payload,
-      'from_lon',
-      editForm.fromLng,
-      currentLead.raw?.route?.from?.lng,
-   );
-   addNumberIfChanged(
-      payload,
-      'to_lat',
-      editForm.toLat,
-      currentLead.raw?.route?.to?.lat,
-   );
-   addNumberIfChanged(
-      payload,
-      'to_lon',
-      editForm.toLng,
-      currentLead.raw?.route?.to?.lng,
-   );
+      prefix: 'to',
+      text: editForm.toLocation,
+      locationData: editForm.to_location,
+      lat: editForm.toLat,
+      lng: editForm.toLng,
+      currentLocation: currentLead.to_location,
+   });
 
    if (!isForwarderCreatedLead) {
       addNumberIfChanged(payload, 'price', editForm.price, currentLead.price);
@@ -385,6 +646,13 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
 
    if (!areCargosEqual(nextCargos, currentCargos)) {
       payload.cargos = nextCargos;
+   }
+
+   const nextWaypoints = normalizeWaypointsForPayload(editForm.waypoints);
+   const currentWaypoints = normalizeWaypointsForPayload(currentLead.waypoints);
+
+   if (!areWaypointsEqual(nextWaypoints, currentWaypoints)) {
+      payload.waypoints = nextWaypoints;
    }
 
    return payload;
