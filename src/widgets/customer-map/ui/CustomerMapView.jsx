@@ -1,171 +1,25 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { Fragment } from 'react';
 import {
    MapContainer,
    TileLayer,
    Marker,
    Popup,
-   useMapEvents,
    Polyline,
-   useMap,
    Tooltip,
 } from 'react-leaflet';
 import PropTypes from 'prop-types';
-import L from 'leaflet';
-import { normalizeLocationValue } from '../../customer-leads/model/lead-edit-form.helpers';
-
-const driverIcon = L.divIcon({
-   className: 'driver-marker',
-   html: '<div class="driver-marker__icon">🚚</div>',
-   iconSize: [38, 38],
-   iconAnchor: [19, 19],
-   popupAnchor: [0, -18],
-});
-
-function hasCoordinate(value) {
-   return value !== null && value !== undefined && value !== '';
-}
-
-function getLocationPoint(location) {
-   if (!location || typeof location !== 'object') {
-      return null;
-   }
-
-   const lat = location.lat ?? location.latitude;
-   const lon = location.lon ?? location.lng ?? location.longitude;
-
-   if (!hasCoordinate(lat) || !hasCoordinate(lon)) {
-      return null;
-   }
-
-   return [Number(lat), Number(lon)];
-}
-
-function getLeadWaypoints(lead) {
-   return Array.isArray(lead?.waypoints) ? lead.waypoints : [];
-}
-
-function buildLeadRouteMarkers(lead, routePoints = []) {
-   const markers = [];
-
-   const fromPoint = getLocationPoint(lead?.from_location);
-   const toPoint = getLocationPoint(lead?.to_location);
-
-   if (fromPoint) {
-      markers.push({
-         id: `${lead.id}-route-start`,
-         position: fromPoint,
-         title: 'Точка А',
-         description: formatMapLocation(
-            lead.from_location,
-            'Откуда не указано',
-         ),
-      });
-   } else if (routePoints.length >= 2) {
-      markers.push({
-         id: `${lead.id}-route-start`,
-         position: routePoints[0],
-         title: 'Точка А',
-         description: formatMapLocation(
-            lead?.from_location,
-            'Откуда не указано',
-         ),
-      });
-   }
-
-   getLeadWaypoints(lead).forEach((waypoint, index) => {
-      const point = getLocationPoint(waypoint);
-
-      if (!point) {
-         return;
-      }
-
-      markers.push({
-         id: `${lead.id}-route-waypoint-${index}`,
-         position: point,
-         title: `Промежуточная точка ${index + 1}`,
-         description: formatMapLocation(
-            waypoint,
-            `Промежуточная точка ${index + 1}`,
-         ),
-      });
-   });
-
-   if (toPoint) {
-      markers.push({
-         id: `${lead.id}-route-end`,
-         position: toPoint,
-         title: 'Точка Б',
-         description: formatMapLocation(lead.to_location, 'Куда не указано'),
-      });
-   } else if (routePoints.length >= 2) {
-      markers.push({
-         id: `${lead.id}-route-end`,
-         position: routePoints[routePoints.length - 1],
-         title: 'Точка Б',
-         description: formatMapLocation(lead?.to_location, 'Куда не указано'),
-      });
-   }
-
-   return markers;
-}
-
-function formatMapLocation(value, fallback) {
-   return normalizeLocationValue(value) || fallback;
-}
-
-function formatDriverName(driver) {
-   return (
-      driver?.fio ||
-      driver?.name ||
-      driver?.fullName ||
-      driver?.full_name ||
-      'Водитель не указан'
-   );
-}
-
-function formatDriverPhone(driver) {
-   return driver?.phone || driver?.tel || driver?.telephone || '';
-}
-
-function normalizePhoneHref(phone) {
-   if (!phone) {
-      return '';
-   }
-
-   const normalizedPhone = String(phone).replace(/[^\d+]/g, '');
-
-   if (!normalizedPhone) {
-      return '';
-   }
-
-   return normalizedPhone.startsWith('+')
-      ? normalizedPhone
-      : `+${normalizedPhone}`;
-}
-
-function DriverMapInfo({ driver }) {
-   const driverName = formatDriverName(driver);
-   const driverPhone = formatDriverPhone(driver);
-   const driverPhoneHref = normalizePhoneHref(driverPhone);
-
-   return (
-      <>
-         <br />
-         Водитель: {driverName}
-         {driverPhone && (
-            <>
-               <br />
-               Телефон:{' '}
-               {driverPhoneHref ? (
-                  <a href={`tel:${driverPhoneHref}`}>{driverPhone}</a>
-               ) : (
-                  driverPhone
-               )}
-            </>
-         )}
-      </>
-   );
-}
+import {
+   CUSTOMER_MAP_TILE_LAYER,
+   driverIcon,
+} from '../model/customer-map.constants';
+import {
+   buildLeadRouteMarkers,
+   formatMapLocation,
+} from '../model/customer-map.helpers';
+import { DriverMapInfo } from './DriverMapInfo';
+import { MapResizeHandler } from './MapResizeHandler';
+import { FitRouteBounds } from './FitRouteBounds';
+import { MapClickHandler } from './MapClickHandler';
 
 export function CustomerMapView({
    center,
@@ -177,6 +31,7 @@ export function CustomerMapView({
    routes = [],
    route = null,
    fitBoundsKey = '',
+   fitBoundsPoints = [],
    handleMarkerClick,
    onLeadClick,
    onMapClick,
@@ -219,14 +74,16 @@ export function CustomerMapView({
             geoRoutePoints={geoRoutePoints}
             routes={routes}
             geoRoutes={geoRoutes}
+            markers={markers}
             fitBoundsKey={fitBoundsKey}
+            fitBoundsPoints={fitBoundsPoints}
          />
 
          <MapClickHandler onMapClick={onMapClick} />
 
          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+            attribution={CUSTOMER_MAP_TILE_LAYER.attribution}
+            url={CUSTOMER_MAP_TILE_LAYER.url}
          />
 
          {routes.map((mapRoute, index) => {
@@ -457,99 +314,6 @@ export function CustomerMapView({
    );
 }
 
-function MapResizeHandler({ center, zoom, markersCount, routePointsCount }) {
-   const map = useMap();
-
-   useEffect(() => {
-      const invalidate = () => {
-         map.invalidateSize();
-      };
-
-      const firstTimeoutId = setTimeout(invalidate, 0);
-      const secondTimeoutId = setTimeout(invalidate, 250);
-      const thirdTimeoutId = setTimeout(invalidate, 600);
-
-      return () => {
-         clearTimeout(firstTimeoutId);
-         clearTimeout(secondTimeoutId);
-         clearTimeout(thirdTimeoutId);
-      };
-   }, [map, center, zoom, markersCount, routePointsCount]);
-
-   useEffect(() => {
-      const container = map.getContainer();
-
-      const resizeObserver = new ResizeObserver(() => {
-         map.invalidateSize();
-      });
-
-      resizeObserver.observe(container);
-
-      return () => {
-         resizeObserver.disconnect();
-      };
-   }, [map]);
-
-   return null;
-}
-
-function FitRouteBounds({
-   routePoints,
-   geoRoutePoints,
-   routes,
-   geoRoutes,
-   fitBoundsKey,
-}) {
-   const map = useMap();
-   const fittedBoundsKeyRef = useRef(null);
-
-   useEffect(() => {
-      if (!fitBoundsKey) {
-         return;
-      }
-
-      if (fittedBoundsKeyRef.current === fitBoundsKey) {
-         return;
-      }
-
-      const routesPoints = routes.flatMap((route) => route.points || []);
-      const geoRoutesPoints = geoRoutes.flatMap((route) => route.points || []);
-
-      const points = [
-         ...routesPoints,
-         ...geoRoutesPoints,
-         ...routePoints,
-         ...geoRoutePoints,
-      ];
-
-      if (!points || points.length < 2) {
-         return;
-      }
-
-      map.fitBounds(points, {
-         padding: [32, 32],
-      });
-
-      fittedBoundsKeyRef.current = fitBoundsKey;
-   }, [map, fitBoundsKey, routePoints, geoRoutePoints, routes, geoRoutes]);
-
-   return null;
-}
-
-function MapClickHandler({ onMapClick }) {
-   useMapEvents({
-      click(event) {
-         if (!onMapClick) {
-            return;
-         }
-
-         onMapClick(event.latlng);
-      },
-   });
-
-   return null;
-}
-
 CustomerMapView.propTypes = {
    center: PropTypes.array.isRequired,
    zoom: PropTypes.number.isRequired,
@@ -564,36 +328,5 @@ CustomerMapView.propTypes = {
    onMarkerDragEnd: PropTypes.func,
    fitBoundsKey: PropTypes.string,
    onLeadClick: PropTypes.func,
-};
-
-MapResizeHandler.propTypes = {
-   center: PropTypes.array.isRequired,
-   zoom: PropTypes.number.isRequired,
-   markersCount: PropTypes.number.isRequired,
-   routePointsCount: PropTypes.number.isRequired,
-};
-
-FitRouteBounds.propTypes = {
-   routePoints: PropTypes.array,
-   geoRoutePoints: PropTypes.array,
-   routes: PropTypes.array,
-   geoRoutes: PropTypes.array,
-   fitBoundsKey: PropTypes.string,
-};
-
-MapClickHandler.propTypes = {
-   onMapClick: PropTypes.func,
-};
-
-DriverMapInfo.propTypes = {
-   driver: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      fio: PropTypes.string,
-      name: PropTypes.string,
-      fullName: PropTypes.string,
-      full_name: PropTypes.string,
-      phone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      tel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      telephone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-   }),
+   fitBoundsPoints: PropTypes.array,
 };

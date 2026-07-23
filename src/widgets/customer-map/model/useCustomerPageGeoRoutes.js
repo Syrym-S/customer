@@ -78,23 +78,23 @@ export function useCustomerPageGeoRoutes(leads) {
             const failedCount = failedLeadIds.size;
             const totalCount = leadsWithId.length;
 
-            if (openedCount > 0 && failedCount === 0) {
-                notifySuccess(
-                    `GeoWS-маршруты подключены для ${openedCount} лидов`,
-                );
-                return;
-            }
+            // if (openedCount > 0 && failedCount === 0) {
+            //     notifySuccess(
+            //         `GeoWS-маршруты подключены для ${openedCount} лидов`,
+            //     );
+            //     return;
+            // }
 
-            if (openedCount > 0 && failedCount > 0) {
-                notifyWarning(
-                    `GeoWS-маршруты подключены для ${openedCount} из ${totalCount} лидов`,
-                );
-                return;
-            }
+            // if (openedCount > 0 && failedCount > 0) {
+            //     notifyWarning(
+            //         `GeoWS-маршруты подключены для ${openedCount} из ${totalCount} лидов`,
+            //     );
+            //     return;
+            // }
 
-            notifyWarning(
-                'Не удалось подключить GeoWS-маршруты для текущих лидов',
-            );
+            // notifyWarning(
+            //     'Не удалось подключить GeoWS-маршруты для текущих лидов',
+            // );
         }
 
         function markLeadHandled(leadId, status) {

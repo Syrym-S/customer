@@ -230,7 +230,13 @@ export function mapCreatedLeadToUi(form, response) {
 
     const firstCargo = cargos[0] ?? fallbackCargo;
 
-    const waypoints = getNormalizedWaypoints(form);
+    const waypoints = getNormalizedWaypoints(form).map((waypoint, index) => ({
+        id: `waypoint-${index}`,
+        ...waypoint,
+        label: waypoint.address || '',
+        lng: waypoint.lon,
+        raw: waypoint,
+    }));
 
     return {
         id,
@@ -252,6 +258,8 @@ export function mapCreatedLeadToUi(form, response) {
 
         from_location: form.fromLocation || 'Не указано',
         to_location: form.toLocation || 'Не указано',
+
+        waypoints,
 
         price,
         summ: price,
@@ -292,10 +300,7 @@ export function mapCreatedLeadToUi(form, response) {
                     lat: form.fromLat ? Number(form.fromLat) : null,
                     lng: form.fromLng ? Number(form.fromLng) : null,
                 },
-                waypoints: waypoints.map((waypoint) => ({
-                    ...waypoint,
-                    lng: waypoint.lon,
-                })),
+                waypoints,
                 to: {
                     lat: form.toLat ? Number(form.toLat) : null,
                     lng: form.toLng ? Number(form.toLng) : null,

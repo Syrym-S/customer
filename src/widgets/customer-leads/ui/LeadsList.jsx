@@ -22,7 +22,7 @@ import { LeadsKanbanBoard } from './kanban/LeadsKanbanBoard';
 const LEADS_VIEW_MODES = {
    TABLE: 'table',
    CARDS: 'cards',
-   KANBAN: 'kanban',
+   // KANBAN: 'kanban',
 };
 
 export function LeadsList() {
@@ -131,13 +131,13 @@ export function LeadsList() {
                         <GridViewRoundedIcon fontSize="small" />
                      </ToggleButton>
 
-                     <ToggleButton
+                     {/* <ToggleButton
                         value={LEADS_VIEW_MODES.KANBAN}
                         aria-label="Показать канбаном"
                         title="Канбан"
                      >
                         <ViewKanbanRoundedIcon fontSize="small" />
-                     </ToggleButton>
+                     </ToggleButton> */}
                   </ToggleButtonGroup>
                </Stack>
             </Box>

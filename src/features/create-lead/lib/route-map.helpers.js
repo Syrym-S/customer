@@ -13,6 +13,16 @@ function getWaypoints(form) {
    return Array.isArray(form.waypoints) ? form.waypoints : [];
 }
 
+export function buildRouteFitBoundsKey({ routePoints = [], markers = [] }) {
+   return [
+      routePoints.length,
+      ...routePoints.map((point) => point.join(',')),
+      ...markers.map((marker) => marker.position.join(',')),
+   ]
+      .filter(Boolean)
+      .join('|');
+}
+
 export function getRouteMarkers(form) {
    const markers = [];
 

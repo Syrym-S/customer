@@ -16,6 +16,7 @@ import { useRouteMapPicker } from '../../../model/useRouteMapPicker';
 import { StepSection } from '../components/StepSection';
 import { searchGeocode } from '../../../api/geocoding.api';
 import { useEffect, useState } from 'react';
+import { buildRouteFitBoundsKey } from '../../../lib/route-map.helpers';
 
 export function RouteStep({ control, errors, form, setValue }) {
     const map = useCustomerMap();
@@ -127,6 +128,14 @@ export function RouteStep({ control, errors, form, setValue }) {
         };
     }, [toInputValue, form.toLocation]);
 
+    const routeFitBoundsKey = buildRouteFitBoundsKey({
+        routePoints,
+        markers: routeMarkers,
+    });
+
+    const mapCenter = routePoints[0] || routeMarkers[0]?.position || map.center;
+    const mapZoom = routePoints.length >= 2 ? 7 : map.zoom;
+
     return (
         <StepSection title="Маршрут">
             <Box
@@ -219,10 +228,11 @@ export function RouteStep({ control, errors, form, setValue }) {
                 }}
             >
                 <CustomerMapView
-                    center={map.center}
-                    zoom={map.zoom}
+                    center={mapCenter}
+                    zoom={mapZoom}
                     markers={routeMarkers}
                     routePoints={routePoints}
+                    fitBoundsKey={routeFitBoundsKey}
                     handleMarkerClick={map.handleMarkerClick}
                     onMapClick={handleRouteMapClick}
                     onMarkerDragEnd={handleRouteMarkerDragEnd}

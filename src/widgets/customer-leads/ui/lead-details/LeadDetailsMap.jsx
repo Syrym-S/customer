@@ -123,6 +123,18 @@ export function LeadDetailsMap({
           ? geoRoutePoints[geoRoutePoints.length - 1]
           : map.center;
 
+   const routeBoundsKey = [
+      lead?.id,
+      routePoints.length,
+      geoRoutePoints.length,
+      markers.length,
+      routePoints[0]?.join(','),
+      routePoints[routePoints.length - 1]?.join(','),
+      waypointMarkers.map((marker) => marker.position.join(',')).join('|'),
+   ]
+      .filter(Boolean)
+      .join('|');
+
    return (
       <Box
          sx={{
@@ -177,6 +189,7 @@ export function LeadDetailsMap({
             route={route}
             routePoints={hasRoutePoints ? routePoints : []}
             geoRoutePoints={hasGeoPoints ? geoRoutePoints : []}
+            fitBoundsKey={routeBoundsKey}
             handleMarkerClick={map.handleMarkerClick}
          />
       </Box>
