@@ -1,18 +1,23 @@
-import { apiClient } from '../../../shared/api/api-client';
-import { mapTenderLeadsSearchFromApi } from '../model/tender.adapter';
+import { apiClient } from "../../../shared/api/api-client";
+import { mapTenderLeadsSearchFromApi } from "../model/tender.adapter";
 
 export async function fetchCustomerTenders({
     page = 1,
     limit = 10,
     status,
+    publicationType,
 } = {}) {
     const params = { page, limit };
 
-    if (status && status !== 'all') {
+    if (status && status !== "all") {
         params.status = status;
     }
 
-    const response = await apiClient.get('/customer/v1/tenders', {
+    if (publicationType && publicationType !== "all") {
+        params.publication_type = publicationType;
+    }
+
+    const response = await apiClient.get("/customer/v1/tenders", {
         params,
     });
 
@@ -27,7 +32,7 @@ export async function fetchCustomerTenderById(tenderId) {
 
 export async function createCustomerTender(payload) {
     const response = await apiClient.post(
-        '/customer/v1/tender/create',
+        "/customer/v1/tender/create",
         payload,
     );
 
@@ -76,7 +81,7 @@ export async function cancelCustomerTender(tenderId) {
 }
 
 export async function searchTenderLeadsApi({
-    q = '',
+    q = "",
     status,
     page = 1,
     perPage = 10,
@@ -86,17 +91,17 @@ export async function searchTenderLeadsApi({
         per_page: perPage,
     };
 
-    const normalizedQuery = String(q ?? '').trim();
+    const normalizedQuery = String(q ?? "").trim();
 
     if (normalizedQuery) {
         params.q = normalizedQuery;
     }
 
-    if (status && status !== 'all') {
+    if (status && status !== "all") {
         params.status = status;
     }
 
-    const response = await apiClient.get('/customer/v1/leads/search', {
+    const response = await apiClient.get("/customer/v1/leads/search", {
         params,
     });
 

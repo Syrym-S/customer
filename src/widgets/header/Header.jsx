@@ -40,6 +40,7 @@ export function Header() {
   const navigate = useNavigate();
 
   const isProfileMenuOpen = Boolean(profileAnchorEl);
+  const isDashboardPage = location.pathname === '/customer/dashboard';
   const isLeadsPage = location.pathname === '/customer';
   const isTenderPage = location.pathname === '/customer/tenders';
   const isFactoringsPage = location.pathname === '/customer/factorings';
@@ -190,6 +191,27 @@ export function Header() {
         )}
 
         <List>
+          <ListItemButton
+            selected={isDashboardPage}
+            onClick={() => {
+                if (isDashboardPage) {
+                  handleCloseBurger();
+                  return;
+                }
+
+                handleNavigate('/customer/dashboard');
+            }}
+          >
+            <ListItemText
+                primary="Дэшборд"
+                primaryTypographyProps={{
+                  sx: {
+                      color: isDashboardPage ? 'primary.main' : 'text.primary',
+                      fontWeight: isDashboardPage ? 600 : 400,
+                  },
+                }}
+            />
+          </ListItemButton>
           <ListItemButton
             selected={isLeadsPage}
             onClick={() => {

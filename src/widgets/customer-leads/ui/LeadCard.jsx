@@ -7,6 +7,7 @@ import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 
 import { useLeadsContext } from '../model/useLeadsContext';
 import { normalizeLocationValue } from '../model/lead-edit-form.helpers';
+import { getLeadStatusLabel, getLeadStatusStyles } from '../model/lead.helpers';
 
 export function LeadCard({ lead }) {
    const { setOpenLead } = useLeadsContext();
@@ -113,13 +114,13 @@ export function LeadCard({ lead }) {
                   />
 
                   <Chip
-                     label={lead.status}
+                     label={getLeadStatusLabel(lead.status)}
+                     variant="outlined"
                      size="small"
                      sx={{
                         borderRadius: 999,
-                        fontWeight: 500,
-                        backgroundColor: 'grey.100',
-                        color: 'text.secondary',
+                        fontWeight: 600,
+                        ...(getLeadStatusStyles(lead.status)),
                      }}
                   />
                </Stack>

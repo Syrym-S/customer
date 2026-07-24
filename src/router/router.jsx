@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { AppLayout } from "../widgets/app-layout/AppLayout";
+import { DashboardPage } from "../pages/dashboard/DashboardPage";
 import { LeadsPage } from "../pages/leads/LeadsPage";
 import { ProfilePage } from "../pages/profile/ProfilePage";
 import { TenderPage } from "../pages/tender/TenderPage";
@@ -20,6 +21,13 @@ export const router = createBrowserRouter(
         {
           index: true,
           element: <Navigate to="/customer" replace />,
+        },
+        {
+          path: "customer/dashboard",
+          element: <DashboardPage />,
+          handle: {
+            breadcrumb: "Дэшборд",
+          },
         },
         {
           path: "customer",

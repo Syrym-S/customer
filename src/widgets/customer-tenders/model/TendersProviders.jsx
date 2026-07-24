@@ -26,13 +26,20 @@ import {
 
 const DEFAULT_PER_PAGE = 2;
 
-export function TendersProvider({ children }) {
+export function TendersProvider({
+   children,
+   initialPublicationType = 'all',
+   initialPerPage = DEFAULT_PER_PAGE,
+}) {
    const [tenders, setTenders] = useState([]);
    const [openTender, setOpenTender] = useState(null);
 
    const [page, setPage] = useState(1);
-   const [perPage, setPerPage] = useState(DEFAULT_PER_PAGE);
+   const [perPage, setPerPage] = useState(initialPerPage);
    const [status, setStatus] = useState('all');
+   const [publicationType, setPublicationType] = useState(
+      initialPublicationType,
+   );
    const [count, setCount] = useState(0);
 
    const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +61,7 @@ export function TendersProvider({ children }) {
                page,
                limit: perPage,
                status,
+               publicationType,
             });
 
             const mappedResponse = mapTendersListFromApi(response);
@@ -73,7 +81,7 @@ export function TendersProvider({ children }) {
             }
          }
       },
-      [page, perPage, status],
+      [page, perPage, status, publicationType],
    );
 
    const loadTenderDetailsWithFiles = useCallback(async (tenderId) => {
@@ -278,6 +286,8 @@ export function TendersProvider({ children }) {
          setPerPage,
          status,
          setStatus,
+         publicationType,
+         setPublicationType,
          count,
 
          isLoading,
@@ -311,6 +321,7 @@ export function TendersProvider({ children }) {
          page,
          perPage,
          status,
+         publicationType,
          count,
          isLoading,
          error,
@@ -339,4 +350,6 @@ export function TendersProvider({ children }) {
 
 TendersProvider.propTypes = {
    children: PropTypes.node.isRequired,
+   initialPublicationType: PropTypes.string,
+   initialPerPage: PropTypes.number,
 };

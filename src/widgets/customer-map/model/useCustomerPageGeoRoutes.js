@@ -1,24 +1,32 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 
 import {
     geoPointToLatLng,
     mergeGeoPointsById,
     openLeadGeoConnection,
-} from '../../../utils/geologic';
+} from "../../../utils/geologic";
+
+import {
+    deleteCachedGeoRoute,
+    getCachedGeoRouteEntry,
+    setCachedEmptyGeoRoute,
+    setCachedGeoRoute,
+} from "./geo-routes-cache";
+
 import {
     notifySuccess,
     notifyWarning,
-} from '../../../shared/model/notifications.store';
+} from "../../../shared/model/notifications.store";
 
 function getLeadId(lead) {
-    return lead?.id || lead?._id || lead?.lead_id || lead?.leadId || '';
+    return lead?.id || lead?._id || lead?.lead_id || lead?.leadId || "";
 }
 
 function buildLeadsKey(leads) {
     return leads
         .map((lead) => getLeadId(lead))
         .filter(Boolean)
-        .join('|');
+        .join("|");
 }
 
 function upsertGeoRoute(prevRoutes, nextRoute) {
@@ -43,6 +51,17 @@ function mapGeoPointsToRoutePoints(points) {
     return points.map(geoPointToLatLng);
 }
 
+function attachActualLeadToCachedRoute(cachedRoute, lead) {
+    if (!cachedRoute) {
+        return null;
+    }
+
+    return {
+        ...cachedRoute,
+        lead,
+    };
+}
+
 export function useCustomerPageGeoRoutes(leads) {
     const [geoRoutes, setGeoRoutes] = useState([]);
     const [isGeoRoutesLoading, setIsGeoRoutesLoading] = useState(false);
@@ -65,56 +84,6 @@ export function useCustomerPageGeoRoutes(leads) {
         const openedLeadIds = new Set();
         const handledLeadIds = new Set();
 
-        function showGeoRoutesSummaryIfReady() {
-            if (isCancelled) {
-                return;
-            }
-
-            if (handledLeadIds.size < leadsWithId.length) {
-                return;
-            }
-
-            const openedCount = openedLeadIds.size;
-            const failedCount = failedLeadIds.size;
-            const totalCount = leadsWithId.length;
-
-            // if (openedCount > 0 && failedCount === 0) {
-            //     notifySuccess(
-            //         `GeoWS-маршруты подключены для ${openedCount} лидов`,
-            //     );
-            //     return;
-            // }
-
-            // if (openedCount > 0 && failedCount > 0) {
-            //     notifyWarning(
-            //         `GeoWS-маршруты подключены для ${openedCount} из ${totalCount} лидов`,
-            //     );
-            //     return;
-            // }
-
-            // notifyWarning(
-            //     'Не удалось подключить GeoWS-маршруты для текущих лидов',
-            // );
-        }
-
-        function markLeadHandled(leadId, status) {
-            if (handledLeadIds.has(leadId)) {
-                return;
-            }
-
-            handledLeadIds.add(leadId);
-
-            if (status === 'opened') {
-                openedLeadIds.add(leadId);
-            }
-
-            if (status === 'failed') {
-                failedLeadIds.add(leadId);
-            }
-
-            showGeoRoutesSummaryIfReady();
-        }
-
         const leadsWithId = leads.filter((lead) => Boolean(getLeadId(lead)));
 
         if (!leadsWithId.length) {
@@ -124,16 +93,80 @@ export function useCustomerPageGeoRoutes(leads) {
             return undefined;
         }
 
-        setGeoRoutes([]);
-        setGeoRoutesError(null);
-        setIsGeoRoutesLoading(true);
+        const cachedRoutes = [];
+        const leadsWithoutFreshCache = [];
 
         leadsWithId.forEach((lead) => {
+            const leadId = String(getLeadId(lead));
+            const cachedEntry = getCachedGeoRouteEntry(leadId);
+
+            if (cachedEntry) {
+                if (cachedEntry.route) {
+                    cachedRoutes.push(
+                        attachActualLeadToCachedRoute(cachedEntry.route, lead),
+                    );
+                }
+
+                return;
+            }
+
+            leadsWithoutFreshCache.push(lead);
+        });
+
+        setGeoRoutes(cachedRoutes.filter(Boolean));
+        setGeoRoutesError(null);
+
+        if (!leadsWithoutFreshCache.length) {
+            setIsGeoRoutesLoading(false);
+            return undefined;
+        }
+
+        setIsGeoRoutesLoading(true);
+
+        function showGeoRoutesSummaryIfReady() {
+            if (isCancelled) {
+                return;
+            }
+
+            if (handledLeadIds.size < leadsWithoutFreshCache.length) {
+                return;
+            }
+
+            setIsGeoRoutesLoading(false);
+
+            const failedCount = failedLeadIds.size;
+
+            if (failedCount > 0) {
+                setGeoRoutesError(
+                    `Не удалось загрузить GeoWS-маршруты для ${failedCount} из ${leadsWithoutFreshCache.length} лидов`,
+                );
+            }
+        }
+
+        function markLeadHandled(leadId, status) {
+            if (handledLeadIds.has(leadId)) {
+                return;
+            }
+
+            handledLeadIds.add(leadId);
+
+            if (status === "opened") {
+                openedLeadIds.add(leadId);
+            }
+
+            if (status === "failed") {
+                failedLeadIds.add(leadId);
+            }
+
+            showGeoRoutesSummaryIfReady();
+        }
+
+        leadsWithoutFreshCache.forEach((lead) => {
             const leadId = String(getLeadId(lead));
 
             const connection = openLeadGeoConnection({
                 leadId,
-                mode: 'read',
+                mode: "read",
                 silent: true,
 
                 onOpen: () => {
@@ -141,7 +174,8 @@ export function useCustomerPageGeoRoutes(leads) {
                         return;
                     }
 
-                    markLeadHandled(leadId, 'opened');
+                    setCachedEmptyGeoRoute(leadId);
+                    markLeadHandled(leadId, "opened");
                 },
 
                 onPoints: (points) => {
@@ -167,13 +201,17 @@ export function useCustomerPageGeoRoutes(leads) {
                             mapGeoPointsToRoutePoints(mergedPoints);
                         const currentPoint = routePoints.at(-1) || null;
 
-                        return upsertGeoRoute(prevRoutes, {
+                        const nextRoute = {
                             id: leadId,
                             lead,
                             rawPoints: mergedPoints,
                             points: routePoints,
                             currentPoint,
-                        });
+                        };
+
+                        setCachedGeoRoute(leadId, nextRoute);
+
+                        return upsertGeoRoute(prevRoutes, nextRoute);
                     });
                 },
 
@@ -182,16 +220,14 @@ export function useCustomerPageGeoRoutes(leads) {
                         return;
                     }
 
-                    console.warn('Customer page GeoWS failed:', {
+                    deleteCachedGeoRoute(leadId);
+
+                    console.warn("Customer page GeoWS failed:", {
                         leadId,
                         error,
                     });
 
-                    markLeadHandled(leadId, 'failed');
-
-                    setGeoRoutesError(
-                        `Не удалось загрузить GeoWS-маршруты для ${failedLeadIds.size} из ${leadsWithId.length} лидов`,
-                    );
+                    markLeadHandled(leadId, "failed");
                 },
 
                 onAuthFailed: (payload) => {
@@ -199,23 +235,19 @@ export function useCustomerPageGeoRoutes(leads) {
                         return;
                     }
 
-                    console.warn('Customer page GeoWS auth failed:', {
+                    deleteCachedGeoRoute(leadId);
+
+                    console.warn("Customer page GeoWS auth failed:", {
                         leadId,
                         payload,
                     });
 
-                    markLeadHandled(leadId, 'failed');
-
-                    setGeoRoutesError(
-                        `Не удалось авторизовать GeoWS для ${failedLeadIds.size} из ${leadsWithId.length} лидов`,
-                    );
+                    markLeadHandled(leadId, "failed");
                 },
             });
 
             connections.push(connection);
         });
-
-        setIsGeoRoutesLoading(false);
 
         return () => {
             isCancelled = true;

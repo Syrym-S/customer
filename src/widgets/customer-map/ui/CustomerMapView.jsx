@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment } from "react";
 import {
    MapContainer,
    TileLayer,
@@ -6,20 +6,20 @@ import {
    Popup,
    Polyline,
    Tooltip,
-} from 'react-leaflet';
-import PropTypes from 'prop-types';
+} from "react-leaflet";
+import PropTypes from "prop-types";
 import {
    CUSTOMER_MAP_TILE_LAYER,
    driverIcon,
-} from '../model/customer-map.constants';
+} from "../model/customer-map.constants";
 import {
    buildLeadRouteMarkers,
    formatMapLocation,
-} from '../model/customer-map.helpers';
-import { DriverMapInfo } from './DriverMapInfo';
-import { MapResizeHandler } from './MapResizeHandler';
-import { FitRouteBounds } from './FitRouteBounds';
-import { MapClickHandler } from './MapClickHandler';
+} from "../model/customer-map.helpers";
+import { DriverMapInfo } from "./DriverMapInfo";
+import { MapResizeHandler } from "./MapResizeHandler";
+import { FitRouteBounds } from "./FitRouteBounds";
+import { MapClickHandler } from "./MapClickHandler";
 
 export function CustomerMapView({
    center,
@@ -30,8 +30,10 @@ export function CustomerMapView({
    geoRoutes = [],
    routes = [],
    route = null,
-   fitBoundsKey = '',
+   fitBoundsKey = "",
    fitBoundsPoints = [],
+   selectedLeadId,
+   highlightedLeadId,
    handleMarkerClick,
    onLeadClick,
    onMapClick,
@@ -47,14 +49,34 @@ export function CustomerMapView({
       0,
    );
 
+   const activeHighlightedLeadId = highlightedLeadId || selectedLeadId;
+
+   const hasHighlightedRoute =
+      Boolean(activeHighlightedLeadId) &&
+      [...routes, ...geoRoutes].some(
+         (route) => String(route.id) === String(activeHighlightedLeadId),
+      );
+
+   function getRouteViewState(routeId) {
+      const isSelected = String(routeId) === String(selectedLeadId);
+      const isHighlighted = String(routeId) === String(activeHighlightedLeadId);
+      const isDimmed = hasHighlightedRoute && !isHighlighted;
+
+      return {
+         isSelected,
+         isHighlighted,
+         isDimmed,
+      };
+   }
+
    return (
       <MapContainer
          center={center}
          zoom={zoom}
          scrollWheelZoom
          style={{
-            width: '100%',
-            height: '100%',
+            width: "100%",
+            height: "100%",
          }}
       >
          <MapResizeHandler
@@ -91,14 +113,18 @@ export function CustomerMapView({
                return null;
             }
 
+            const { isSelected, isHighlighted, isDimmed } = getRouteViewState(
+               mapRoute.id,
+            );
+
             const fromLocation = formatMapLocation(
                mapRoute.lead?.from_location,
-               'Откуда не указано',
+               "Откуда не указано",
             );
 
             const toLocation = formatMapLocation(
                mapRoute.lead?.to_location,
-               'Куда не указано',
+               "Куда не указано",
             );
 
             const routeMarkers = buildLeadRouteMarkers(
@@ -111,8 +137,20 @@ export function CustomerMapView({
                   <Polyline
                      positions={mapRoute.points}
                      pathOptions={{
-                        weight: index === 0 ? 5 : 4,
-                        opacity: index === 0 ? 0.9 : 0.65,
+                        weight: isSelected
+                           ? 7
+                           : isHighlighted
+                             ? 6
+                             : index === 0
+                               ? 5
+                               : 4,
+                        opacity: isDimmed
+                           ? 0.18
+                           : isHighlighted
+                             ? 0.95
+                             : index === 0
+                               ? 0.9
+                               : 0.65,
                      }}
                      eventHandlers={{
                         click: () => {
@@ -131,7 +169,7 @@ export function CustomerMapView({
                                  <br />
                                  {(
                                     mapRoute.route.distanceMeters / 1000
-                                 ).toFixed(1)}{' '}
+                                 ).toFixed(1)}{" "}
                                  км
                               </>
                            )}
@@ -143,6 +181,7 @@ export function CustomerMapView({
                      <Marker
                         key={marker.id}
                         position={marker.position}
+                        opacity={isDimmed ? 0.3 : 1}
                         eventHandlers={{
                            click: () => {
                               onLeadClick?.(mapRoute.lead);
@@ -170,15 +209,19 @@ export function CustomerMapView({
                return null;
             }
 
+            const { isSelected, isHighlighted, isDimmed } = getRouteViewState(
+               geoRoute.id,
+            );
+
             return (
                <Fragment key={`geo-${geoRoute.id}`}>
                   {points.length >= 2 && (
                      <Polyline
                         positions={points}
                         pathOptions={{
-                           weight: 4,
-                           opacity: 0.95,
-                           dashArray: '8 8',
+                           weight: isSelected ? 7 : isHighlighted ? 6 : 4,
+                           opacity: isDimmed ? 0.18 : 0.95,
+                           dashArray: "8 8",
                         }}
                         eventHandlers={{
                            click: () => {
@@ -195,12 +238,12 @@ export function CustomerMapView({
                               <br />
                               {formatMapLocation(
                                  geoRoute.lead?.from_location,
-                                 'Откуда не указано',
-                              )}{' '}
-                              →{' '}
+                                 "Откуда не указано",
+                              )}{" "}
+                              →{" "}
                               {formatMapLocation(
                                  geoRoute.lead?.to_location,
-                                 'Куда не указано',
+                                 "Куда не указано",
                               )}
                               <DriverMapInfo driver={geoRoute.lead?.driver} />
                               <br />
@@ -214,6 +257,7 @@ export function CustomerMapView({
                      <Marker
                         position={currentPoint}
                         icon={driverIcon}
+                        opacity={isDimmed ? 0.3 : 1}
                         eventHandlers={{
                            click: () => {
                               onLeadClick?.(geoRoute.lead);
@@ -266,7 +310,7 @@ export function CustomerMapView({
                pathOptions={{
                   weight: 4,
                   opacity: 0.95,
-                  dashArray: '8 8',
+                  dashArray: "8 8",
                }}
             >
                <Tooltip sticky>
@@ -281,7 +325,7 @@ export function CustomerMapView({
 
          {markers.map((marker) => {
             const markerProps =
-               marker.id === 'geo-current-point' ? { icon: driverIcon } : {};
+               marker.id === "geo-current-point" ? { icon: driverIcon } : {};
 
             return (
                <Marker

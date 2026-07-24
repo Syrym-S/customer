@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { useMap } from 'react-leaflet';
-import L from 'leaflet';
+import { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
+import { useMap } from "react-leaflet";
+import L from "leaflet";
 import {
    buildFitBoundsKey,
    buildFitBoundsPoints,
-} from '../model/customer-map.helpers';
+} from "../model/customer-map.helpers";
 
 export function FitRouteBounds({
    routePoints,
@@ -39,9 +39,17 @@ export function FitRouteBounds({
          return;
       }
 
+      if (fittedBoundsKeyRef.current === actualBoundsKey) {
+         return;
+      }
+
       const bounds = L.latLngBounds(points);
 
-      const fitBounds = () => {
+      const timeoutId = setTimeout(() => {
+         if (fittedBoundsKeyRef.current === actualBoundsKey) {
+            return;
+         }
+
          map.invalidateSize();
 
          map.fitBounds(bounds, {
@@ -51,19 +59,21 @@ export function FitRouteBounds({
          });
 
          fittedBoundsKeyRef.current = actualBoundsKey;
-      };
-
-      const timeoutIds = [
-         setTimeout(fitBounds, 0),
-         setTimeout(fitBounds, 250),
-         setTimeout(fitBounds, 600),
-         setTimeout(fitBounds, 1000),
-      ];
+      }, 250);
 
       return () => {
-         timeoutIds.forEach(clearTimeout);
+         clearTimeout(timeoutId);
       };
-   }, [map, fitBoundsKey, fitBoundsPoints]);
+   }, [
+      map,
+      fitBoundsKey,
+      fitBoundsPoints,
+      routes,
+      geoRoutes,
+      routePoints,
+      geoRoutePoints,
+      markers,
+   ]);
 
    return null;
 }

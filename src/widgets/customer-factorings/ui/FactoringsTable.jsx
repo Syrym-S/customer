@@ -133,7 +133,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'status',
-         headerName: 'Статус',
+         headerName: 'Статус со стороны фактора',
          width: 180,
          renderCell: ({ row }) => (
             <Chip

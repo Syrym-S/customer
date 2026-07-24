@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { generateRoute } from '../../customer-leads/api/lead-route.repository';
+import { generateRoute } from "../../customer-leads/api/lead-route.repository";
 import {
    buildLeadRoutePayload,
    decodeRoutePolyline,
    getEncodedPolylineFromRoute,
    getRoutesFromGeneratedRoute,
-} from '../../customer-leads/lib/route-polyline.helpers';
+} from "../../customer-leads/lib/route-polyline.helpers";
+import {
+   buildGeneratedRouteCacheKey,
+   getGeneratedRouteWithCache,
+} from "./routes-cache";
 
 function mapGeneratedRouteToMapRoute(lead, generatedRoute) {
    const routes = getRoutesFromGeneratedRoute(generatedRoute);
@@ -60,7 +64,12 @@ export function useCustomerPageRoutes(leads) {
                         return null;
                      }
 
-                     const generatedRoute = await generateRoute(payload);
+                     const routeCacheKey = buildGeneratedRouteCacheKey(payload);
+
+                     const generatedRoute = await getGeneratedRouteWithCache(
+                        routeCacheKey,
+                        () => generateRoute(payload),
+                     );
 
                      if (!generatedRoute) {
                         return null;
@@ -68,7 +77,7 @@ export function useCustomerPageRoutes(leads) {
 
                      return mapGeneratedRouteToMapRoute(lead, generatedRoute);
                   } catch (error) {
-                     console.error('Ошибка генерации маршрута лида:', {
+                     console.error("Ошибка генерации маршрута лида:", {
                         leadId: lead.id,
                         error,
                      });
@@ -83,7 +92,7 @@ export function useCustomerPageRoutes(leads) {
             }
          } catch (error) {
             if (!isCancelled) {
-               setRoutesError(error.message || 'Не удалось загрузить маршруты');
+               setRoutesError(error.message || "Не удалось загрузить маршруты");
                setRoutes([]);
             }
          } finally {
