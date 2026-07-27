@@ -22,6 +22,7 @@ import {
     updateCustomerProfile,
     uploadCustomerAvatar,
     deleteCustomerAvatar,
+    updateProfileDocuments,
 } from '../../features/profile-edit/profile.api';
 import { notifySuccess } from '../../shared/model/notifications.store';
 import {
@@ -30,6 +31,7 @@ import {
 } from '../../widgets/customer-profile/model/profile-photo.helpers';
 import { ProfilePhotoUploader } from '../../widgets/customer-profile/ui/ProfilePhotoUploader';
 import { EmailVerificationStatus } from '../../widgets/customer-verification/ui/EmailVerificationStatus';
+import { ProfileDocumentUpdateField } from '../../widgets/customer-profile/ui/ProfileDocumentUpdateField';
 
 export function ProfilePage() {
     const [form, setForm] = useState(initialProfileForm);
@@ -46,6 +48,21 @@ export function ProfilePage() {
     const [shouldDeleteProfilePhoto, setShouldDeleteProfilePhoto] =
         useState(false);
 
+    const [profileDocumentFiles, setProfileDocumentFiles] = useState({
+        registrationDocument: null,
+        employerDocument: null,
+    });
+
+    const [profileDocumentErrors, setProfileDocumentErrors] = useState({
+        registrationDocument: '',
+        employerDocument: '',
+    });
+
+    const [profileDocumentInputKeys, setProfileDocumentInputKeys] = useState({
+        registrationDocument: 0,
+        employerDocument: 0,
+    });
+
     function handleChange(event) {
         const { name, value } = event.target;
 
@@ -57,6 +74,95 @@ export function ProfilePage() {
         setErrors((prevErrors) => ({
             ...prevErrors,
             [name]: '',
+        }));
+
+        setSubmitError('');
+    }
+
+    function validateProfileDocumentFile(file) {
+        if (!file) {
+            return '';
+        }
+
+        const maxSizeMb = 10;
+        const maxSizeBytes = maxSizeMb * 1024 * 1024;
+
+        const allowedTypes = [
+            'application/pdf',
+            'image/jpeg',
+            'image/png',
+        ];
+
+        const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
+
+        const fileExtension = String(file.name || '')
+            .split('.')
+            .pop()
+            ?.toLowerCase();
+
+        const hasAllowedType = allowedTypes.includes(file.type);
+        const hasAllowedExtension = allowedExtensions.includes(fileExtension);
+
+        if (!hasAllowedType && !hasAllowedExtension) {
+            return 'Разрешены только PDF, JPG, JPEG или PNG';
+        }
+
+        if (file.size > maxSizeBytes) {
+            return `Размер файла не должен превышать ${maxSizeMb} MB`;
+        }
+
+        return '';
+    }
+
+    function handleProfileDocumentChange(fieldName, file) {
+        const validationError = validateProfileDocumentFile(file);
+
+        if (validationError) {
+            setProfileDocumentFiles((prevFiles) => ({
+                ...prevFiles,
+                [fieldName]: null,
+            }));
+
+            setProfileDocumentErrors((prevErrors) => ({
+                ...prevErrors,
+                [fieldName]: validationError,
+            }));
+
+            setProfileDocumentInputKeys((prevKeys) => ({
+                ...prevKeys,
+                [fieldName]: prevKeys[fieldName] + 1,
+            }));
+
+            return;
+        }
+
+        setProfileDocumentFiles((prevFiles) => ({
+            ...prevFiles,
+            [fieldName]: file,
+        }));
+
+        setProfileDocumentErrors((prevErrors) => ({
+            ...prevErrors,
+            [fieldName]: '',
+        }));
+
+        setSubmitError('');
+    }
+
+    function handleCancelProfileDocumentChange(fieldName) {
+        setProfileDocumentFiles((prevFiles) => ({
+            ...prevFiles,
+            [fieldName]: null,
+        }));
+
+        setProfileDocumentErrors((prevErrors) => ({
+            ...prevErrors,
+            [fieldName]: '',
+        }));
+
+        setProfileDocumentInputKeys((prevKeys) => ({
+            ...prevKeys,
+            [fieldName]: prevKeys[fieldName] + 1,
         }));
 
         setSubmitError('');
@@ -83,7 +189,26 @@ export function ProfilePage() {
         const hasPhotoUpload = Boolean(profilePhotoFile);
         const hasPhotoDelete = shouldDeleteProfilePhoto;
 
-        if (!hasProfileChanges && !hasPhotoUpload && !hasPhotoDelete) {
+        const hasDocumentUploads = Boolean(
+            profileDocumentFiles.registrationDocument ||
+                profileDocumentFiles.employerDocument,
+        );
+
+        const hasDocumentErrors = Boolean(
+            profileDocumentErrors.registrationDocument ||
+                profileDocumentErrors.employerDocument,
+        );
+
+        if (hasDocumentErrors) {
+            return;
+        }
+
+        if (
+            !hasProfileChanges &&
+            !hasPhotoUpload &&
+            !hasPhotoDelete &&
+            !hasDocumentUploads
+        ) {
             setSubmitError('Нет изменений для сохранения');
             return;
         }
@@ -118,6 +243,13 @@ export function ProfilePage() {
                 notifyProfilePhotoUpdated(nextAvatar);
             }
 
+            if (hasDocumentUploads) {
+                await updateProfileDocuments({
+                    registrationDocumentFile: profileDocumentFiles.registrationDocument,
+                    employerDocumentFile: profileDocumentFiles.employerDocument,
+                });
+            }
+
             const nextInitialForm = {
                 ...form,
                 currentPassword: '',
@@ -130,6 +262,21 @@ export function ProfilePage() {
             setProfilePhotoFile(null);
             setShouldDeleteProfilePhoto(false);
             setForm(nextInitialForm);
+
+            setProfileDocumentFiles({
+                registrationDocument: null,
+                employerDocument: null,
+            });
+
+            setProfileDocumentErrors({
+                registrationDocument: '',
+                employerDocument: '',
+            });
+
+            setProfileDocumentInputKeys((prevKeys) => ({
+                registrationDocument: prevKeys.registrationDocument + 1,
+                employerDocument: prevKeys.employerDocument + 1,
+            }));
 
             notifySuccess('Профиль успешно обновлен');
         } catch (error) {
@@ -165,6 +312,21 @@ export function ProfilePage() {
                     setProfilePhotoFile(null);
                     setProfilePhotoError('');
                     setShouldDeleteProfilePhoto(false);
+
+                    setProfileDocumentFiles({
+                        registrationDocument: null,
+                        employerDocument: null,
+                    });
+
+                    setProfileDocumentErrors({
+                        registrationDocument: '',
+                        employerDocument: '',
+                    });
+
+                    setProfileDocumentInputKeys({
+                        registrationDocument: 0,
+                        employerDocument: 0,
+                    });
 
                     setErrors({});
                     setSubmitError('');
@@ -439,33 +601,39 @@ export function ProfilePage() {
                         />
                     </Stack>
 
-                    {(form.registrationDocument || form.employerDocument) && (
-                        <Stack spacing={2}>
+                    <Stack spacing={2}>
+                        <Box>
                             <Typography fontWeight={600}>
                                 Регистрационные документы
                             </Typography>
+                        </Box>
 
-                            {form.registrationDocument && (
-                                <TextField
-                                    name='registrationDocument'
-                                    label='Документ о регистрации юридического лица'
-                                    value={form.registrationDocument}
-                                    disabled
-                                    fullWidth
-                                />
-                            )}
+                        <ProfileDocumentUpdateField
+                            label='Документ о регистрации юридического лица'
+                            currentDocument={form.registrationDocument}
+                            file={profileDocumentFiles.registrationDocument}
+                            inputKey={profileDocumentInputKeys.registrationDocument}
+                            error={profileDocumentErrors.registrationDocument}
+                            disabled={isSaving || isProfileLoading}
+                            onChange={(file) =>
+                                handleProfileDocumentChange('registrationDocument', file)
+                            }
+                            onCancel={() =>
+                                handleCancelProfileDocumentChange('registrationDocument')
+                            }
+                        />
 
-                            {form.employerDocument && (
-                                <TextField
-                                    name='employerDocument'
-                                    label='Документ о трудоустройстве сотрудника'
-                                    value={form.employerDocument}
-                                    disabled
-                                    fullWidth
-                                />
-                            )}
-                        </Stack>
-                    )}
+                        <ProfileDocumentUpdateField
+                            label='Документ о трудоустройстве сотрудника'
+                            currentDocument={form.employerDocument}
+                            file={profileDocumentFiles.employerDocument}
+                            inputKey={profileDocumentInputKeys.employerDocument}
+                            error={profileDocumentErrors.employerDocument}
+                            disabled={isSaving || isProfileLoading}
+                            onChange={(file) => handleProfileDocumentChange('employerDocument', file)}
+                            onCancel={() => handleCancelProfileDocumentChange('employerDocument')}
+                        />
+                    </Stack>
 
                     <Box>
                         <Button
