@@ -13,7 +13,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
     return (
         <Box
             onClick={() => onOpenDetails(factoring)}
-            role='button'
+            role="button"
             tabIndex={0}
             sx={{
                 p: {
@@ -45,8 +45,8 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                 >
                     <Box>
                         <Typography
-                            variant='body2'
-                            color='text.secondary'
+                            variant="body2"
+                            color="text.secondary"
                             sx={{ mb: 0.75 }}
                         >
                             Фактор
@@ -77,7 +77,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     </Box>
 
                     <Stack
-                        direction='row'
+                        direction="row"
                         spacing={1}
                         useFlexGap
                         sx={{
@@ -89,10 +89,10 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                         }}
                     >
                         <Chip
-                            label={`#${factoring.index}`}
-                            color='primary'
-                            variant='outlined'
-                            size='small'
+                            label={`#${factoring.id ?? factoring.index ?? '—'}`}
+                            color="primary"
+                            variant="outlined"
+                            size="small"
                             sx={{
                                 borderRadius: 999,
                                 fontWeight: 600,
@@ -103,7 +103,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                         <Chip
                             label={getFactoringStatusLabel(factoring.status)}
                             color={getFactoringStatusColor(factoring.status)}
-                            size='small'
+                            size="small"
                             sx={{
                                 borderRadius: 999,
                                 fontWeight: 600,
@@ -123,24 +123,24 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     }}
                 >
                     <InfoBadge
-                        label='Экспедитор'
+                        label="Экспедитор"
                         value={factoring.forwarder?.company_name || '—'}
                     />
 
                     <InfoBadge
-                        label='БИН экспедитора'
+                        label="БИН экспедитора"
                         value={factoring.forwarder?.bin || '—'}
                     />
 
                     {factoring.forwarder?.fio && (
                         <InfoBadge
-                            label='ФИО экспедитора'
+                            label="ФИО экспедитора"
                             value={factoring.forwarder.fio}
                         />
                     )}
 
                     <InfoBadge
-                        label='Дата создания'
+                        label="Дата создания"
                         value={formatDate(factoring.created_at)}
                     />
                 </Box>
@@ -156,7 +156,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     }}
                 >
                     <InfoBadge
-                        label='Дебиторская сумма'
+                        label="Дебиторская сумма"
                         value={formatMoney(
                             factoring.deb_summ,
                             factoring.deb_currency,
@@ -165,7 +165,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     />
 
                     <InfoBadge
-                        label='Кредитная сумма'
+                        label="Кредитная сумма"
                         value={formatMoney(
                             factoring.cred_summ,
                             factoring.currency,
@@ -190,7 +190,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     }}
                 >
                     <Stack
-                        direction='row'
+                        direction="row"
                         spacing={1}
                         useFlexGap
                         sx={{
@@ -198,7 +198,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                         }}
                     >
                         <Chip
-                            size='small'
+                            size="small"
                             label={`Вы: ${getVerificationLabel(
                                 factoring.verified_customer,
                             )}`}
@@ -211,7 +211,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                         />
 
                         <Chip
-                            size='small'
+                            size="small"
                             label={`Экспедитор: ${getVerificationLabel(
                                 factoring.verified_forwarder,
                             )}`}
@@ -230,8 +230,8 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     </Stack>
 
                     <Button
-                        size='small'
-                        variant='outlined'
+                        size="small"
+                        variant="outlined"
                         onClick={(event) => {
                             event.stopPropagation();
                             onOpenDetails(factoring);

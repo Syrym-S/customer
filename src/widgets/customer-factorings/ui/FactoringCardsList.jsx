@@ -11,7 +11,7 @@ export function FactoringCardsList({ factorings, onOpenDetails }) {
                     textAlign: 'center',
                 }}
             >
-                <Typography color='text.secondary'>
+                <Typography color="text.secondary">
                     Факторинг-покупки не найдены
                 </Typography>
             </Box>
@@ -36,7 +36,7 @@ export function FactoringCardsList({ factorings, onOpenDetails }) {
             >
                 {factorings.map((factoring) => (
                     <FactoringCard
-                        key={factoring.index}
+                        key={factoring.id ?? factoring.index}
                         factoring={factoring}
                         onOpenDetails={onOpenDetails}
                     />

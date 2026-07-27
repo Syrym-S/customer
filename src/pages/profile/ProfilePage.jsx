@@ -439,6 +439,34 @@ export function ProfilePage() {
                         />
                     </Stack>
 
+                    {(form.registrationDocument || form.employerDocument) && (
+                        <Stack spacing={2}>
+                            <Typography fontWeight={600}>
+                                Регистрационные документы
+                            </Typography>
+
+                            {form.registrationDocument && (
+                                <TextField
+                                    name='registrationDocument'
+                                    label='Документ о регистрации юридического лица'
+                                    value={form.registrationDocument}
+                                    disabled
+                                    fullWidth
+                                />
+                            )}
+
+                            {form.employerDocument && (
+                                <TextField
+                                    name='employerDocument'
+                                    label='Документ о трудоустройстве сотрудника'
+                                    value={form.employerDocument}
+                                    disabled
+                                    fullWidth
+                                />
+                            )}
+                        </Stack>
+                    )}
+
                     <Box>
                         <Button
                             type='submit'

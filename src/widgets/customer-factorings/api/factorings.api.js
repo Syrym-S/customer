@@ -11,17 +11,17 @@ export async function fetchCustomerFactorings({ page = 1, perPage = 10 } = {}) {
     return response.data;
 }
 
-export async function fetchCustomerFactoringByIndex(factoringIndex) {
+export async function fetchCustomerFactoringById(factoringId) {
     const response = await apiClient.get(
-        `/customer/v1/factoring/${encodeURIComponent(factoringIndex)}`,
+        `/customer/v1/factoring/${encodeURIComponent(factoringId)}`,
     );
 
     return response.data;
 }
 
-export async function acceptCustomerFactoring(factoringIndex) {
+export async function acceptCustomerFactoring(factoringId) {
     const response = await apiClient.post(
-        `/customer/v1/factoring/${encodeURIComponent(factoringIndex)}/accept`,
+        `/customer/v1/factoring/${encodeURIComponent(factoringId)}/accept`,
     );
 
     return response.data;

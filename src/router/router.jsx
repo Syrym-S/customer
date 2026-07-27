@@ -63,7 +63,7 @@ export const router = createBrowserRouter(
           },
         },
         {
-          path: "customer/factorings/:factoringIndex",
+          path: "customer/factorings/:factoringId",
           element: <FactoringsPage />,
         },
         {

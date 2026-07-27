@@ -13,6 +13,9 @@ export const initialProfileForm = {
     documentNumber: '',
     issueCountry: '',
 
+    registrationDocument: '',
+    employerDocument: '',
+
     currentPassword: '',
     newPassword: '',
     newPasswordConfirm: '',
@@ -52,6 +55,9 @@ export function mapProfileFromApi(profile) {
 
         documentNumber: profile?.document_number || profile?.documentNumber ||  profile?.personDocumentNumber || '',
         issueCountry: profile?.issue_country || profile?.issueCountry || profile?.personIssueCountry || '',
+
+        registrationDocument: profile.registrationDocument || '',
+        employerDocument: profile.employerDocument || '',
 
         currentPassword: '',
         newPassword: '',

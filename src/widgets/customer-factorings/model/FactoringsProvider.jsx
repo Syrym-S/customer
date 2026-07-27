@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
     acceptCustomerFactoring,
-    fetchCustomerFactoringByIndex,
+    fetchCustomerFactoringById,
     fetchCustomerFactorings,
 } from '../api/factorings.api';
 
@@ -40,6 +40,16 @@ export function FactoringsProvider({ children }) {
     function getFactoringLeadId(factoring) {
         return (
             factoring?.lead_id || factoring?.leadId || factoring?.lead?.id || ''
+        );
+    }
+
+    function getFactoringId(factoring) {
+        return (
+            factoring?.id ||
+            factoring?._id ||
+            factoring?.factoring_id ||
+            factoring?.factoringId ||
+            ''
         );
     }
 
@@ -85,8 +95,8 @@ export function FactoringsProvider({ children }) {
         [page, perPage],
     );
 
-    const loadFactoringDetailsWithLead = useCallback(async (factoringIndex) => {
-        const details = await fetchCustomerFactoringByIndex(factoringIndex);
+    const loadFactoringDetailsWithLead = useCallback(async (factoringId) => {
+        const details = await fetchCustomerFactoringById(factoringId);
 
         const leadId = getFactoringLeadId(details);
 
@@ -121,20 +131,26 @@ export function FactoringsProvider({ children }) {
 
     const openFactoringDetails = useCallback(
         async (factoring) => {
-            if (!factoring?.index && factoring?.index !== 0) {
+            const factoringId = getFactoringId(factoring);
+
+            if (!factoringId) {
                 return;
             }
 
             try {
                 setIsDetailsOpen(true);
-                setSelectedFactoring(null);
+
+                setSelectedFactoring({
+                    ...factoring,
+                    id: factoringId,
+                    isDetailsPlaceholder: true,
+                });
+
                 setDetailsError('');
                 setAcceptError('');
                 setIsDetailsLoading(true);
 
-                const details = await loadFactoringDetailsWithLead(
-                    factoring.index,
-                );
+                const details = await loadFactoringDetailsWithLead(factoringId);
 
                 setSelectedFactoring(details);
             } catch (error) {
@@ -159,7 +175,9 @@ export function FactoringsProvider({ children }) {
     }, []);
 
     const acceptFactoring = useCallback(async () => {
-        if (!selectedFactoring?.index && selectedFactoring?.index !== 0) {
+        const factoringId = getFactoringId(selectedFactoring);
+
+        if (!factoringId) {
             return;
         }
 
@@ -167,11 +185,10 @@ export function FactoringsProvider({ children }) {
             setIsAccepting(true);
             setAcceptError('');
 
-            await acceptCustomerFactoring(selectedFactoring.index);
+            await acceptCustomerFactoring(factoringId);
 
-            const updatedFactoring = await loadFactoringDetailsWithLead(
-                selectedFactoring.index,
-            );
+            const updatedFactoring =
+                await loadFactoringDetailsWithLead(factoringId);
 
             setSelectedFactoring(updatedFactoring);
 
@@ -192,18 +209,16 @@ export function FactoringsProvider({ children }) {
         loadFactorings(page, { withLoader: true });
     }, [loadFactorings, page]);
 
+    const selectedFactoringId = getFactoringId(selectedFactoring);
+
     useEffect(() => {
         return subscribeToNotificationDomainEvent(
             notificationDomainEventNames.factoringsChanged,
             () => {
                 loadFactorings(page, { withLoader: false });
 
-                if (
-                    isDetailsOpen &&
-                    selectedFactoring?.index !== undefined &&
-                    selectedFactoring?.index !== null
-                ) {
-                    loadFactoringDetailsWithLead(selectedFactoring.index)
+                if (isDetailsOpen && selectedFactoringId) {
+                    loadFactoringDetailsWithLead(selectedFactoringId)
                         .then((updatedFactoring) => {
                             setSelectedFactoring(updatedFactoring);
                         })
@@ -220,7 +235,7 @@ export function FactoringsProvider({ children }) {
         loadFactorings,
         page,
         isDetailsOpen,
-        selectedFactoring?.index,
+        selectedFactoringId,
         loadFactoringDetailsWithLead,
     ]);
 

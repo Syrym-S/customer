@@ -13,8 +13,8 @@ export function FactoringSummarySection({ factoring }) {
     return (
         <DetailSection
             icon={<AssignmentOutlinedIcon />}
-            title='Основная информация'
-            subtitle='Номер заявки, дата создания и связанный лид'
+            title="Основная информация"
+            subtitle="Номер заявки, дата создания и связанный лид"
         >
             <Box
                 sx={{
@@ -27,24 +27,24 @@ export function FactoringSummarySection({ factoring }) {
                     gap: 1,
                 }}
             >
-                <InfoBadge label='Номер' value={factoring.index} />
+                <InfoBadge label="Номер" value={factoring.id} />
 
                 <InfoBadge
-                    label='Дата создания'
+                    label="Дата создания"
                     value={formatDate(factoring.created_at)}
                 />
 
                 <InfoBadge
-                    label='Lead ID'
+                    label="Lead ID"
                     value={factoring.lead_id || '—'}
                     fullWidth
                 />
 
                 <InfoBadge
-                    label='Статус'
+                    label="Статус"
                     value={
                         <Chip
-                            size='small'
+                            size="small"
                             label={getFactoringStatusLabel(factoring.status)}
                             color={getFactoringStatusColor(factoring.status)}
                             sx={{ borderRadius: 999 }}

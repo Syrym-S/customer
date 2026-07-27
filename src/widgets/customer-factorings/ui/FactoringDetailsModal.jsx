@@ -31,6 +31,24 @@ import { generateRoute } from '../../customer-leads/api/lead-route.repository';
 import { useCustomerMap } from '../../customer-map/model/useCustomerMap';
 import { useNavigate, useParams } from 'react-router-dom';
 
+function getFactoringDisplayId(factoring, fallbackId = '') {
+    return (
+        factoring?.id ??
+        factoring?._id ??
+        factoring?.index ??
+        factoring?.factoring_id ??
+        factoring?.factoringId ??
+        fallbackId ??
+        ''
+    );
+}
+
+function getFactoringIdFromPathname(pathname) {
+    const match = String(pathname).match(/\/customer\/factorings\/([^/?#]+)/);
+
+    return match?.[1] ? decodeURIComponent(match[1]) : '';
+}
+
 export function FactoringDetailsModal({
     open,
     factoring,
@@ -42,7 +60,16 @@ export function FactoringDetailsModal({
     onAccept,
 }) {
     const navigate = useNavigate();
-    const { factoringIndex } = useParams();
+    const { factoringId } = useParams();
+
+    const routeFactoringId =
+        factoringId || getFactoringIdFromPathname(window.location.pathname);
+
+    const factoringDisplayId = getFactoringDisplayId(
+        factoring,
+        routeFactoringId,
+    );
+    const isDetailsPlaceholder = Boolean(factoring?.isDetailsPlaceholder);
 
     const map = useCustomerMap();
 
@@ -54,12 +81,13 @@ export function FactoringDetailsModal({
     const leadForMap = factoring?.lead;
 
     const isFactoringDetailsRoute =
-        Boolean(factoringIndex) ||
+        Boolean(factoringId) ||
         /\/customer\/factorings\/[^/?#]+/.test(window.location.pathname);
 
-    const shouldShowDetailsLoader = loading && !factoring;
+    const shouldShowDetailsLoader =
+        loading && (!factoring || isDetailsPlaceholder);
     const shouldRenderFactoringDetails =
-        Boolean(factoring) && !shouldShowDetailsLoader;
+        Boolean(factoring) && !isDetailsPlaceholder && !shouldShowDetailsLoader;
 
     useEffect(() => {
         let isMounted = true;
@@ -176,7 +204,7 @@ export function FactoringDetailsModal({
                 },
             }}
         >
-            {factoring ? (
+            {factoring && !isDetailsPlaceholder ? (
                 <FactoringDetailsHeader factoring={factoring} />
             ) : (
                 <DialogTitle sx={{ px: 3, pt: 3, pb: 1.5 }}>
@@ -190,7 +218,7 @@ export function FactoringDetailsModal({
                             lineHeight: 1.3,
                         }}
                     >
-                        Факторинг #{factoringIndex || ''}
+                        Факторинг #{factoringDisplayId || ''}
                     </Typography>
 
                     <Typography

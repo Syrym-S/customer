@@ -31,7 +31,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
                   cursor: 'pointer',
                }}
             >
-               {row.index}
+               {row.index ?? row.id ?? '—'}
             </Box>
          ),
       },
@@ -150,7 +150,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       <Paper sx={{ height: '70vh', my: '10px' }}>
          <DataGrid
             rows={factorings}
-            getRowId={(row) => row.index}
+            getRowId={(row) => row.id ?? row.index}
             columns={columns}
             checkboxSelection
             onRowClick={(params) => {

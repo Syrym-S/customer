@@ -12,6 +12,7 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  Tooltip,
   Menu,
   MenuItem,
   Typography,
@@ -174,6 +175,39 @@ export function Header() {
   }, []);
 
   function renderDrawerContent({ showCloseButton = false } = {}) {
+    const menuItems = [
+      {
+        label: 'Дэшборд',
+        path: '/customer/dashboard',
+        selected: isDashboardPage,
+        tooltip: 'Общая сводка по лидам, маршрутам и тендерам',
+      },
+      {
+        label: 'Лиды',
+        path: '/customer',
+        selected: isLeadsPage,
+        tooltip: 'Список заявок на перевозку и управление лидами',
+      },
+      {
+        label: 'Тендеры',
+        path: '/customer/tenders',
+        selected: isTenderPage,
+        tooltip: 'Создание и управление тендерами по перевозкам',
+      },
+      {
+        label: 'Факторинг',
+        path: '/customer/factorings',
+        selected: isFactoringsPage,
+        tooltip: 'Список факторингов и финансовых заявок',
+      },
+      {
+        label: 'Экспедиторы',
+        path: '/customer/forwarders',
+        selected: isForwardersPage,
+        tooltip: 'Список экспедиторов и приглашение новых участников',
+      },
+    ];
+
     return (
       <Box sx={{ p: 2 }}>
         {showCloseButton && (
@@ -191,114 +225,37 @@ export function Header() {
         )}
 
         <List>
-          <ListItemButton
-            selected={isDashboardPage}
-            onClick={() => {
-                if (isDashboardPage) {
-                  handleCloseBurger();
-                  return;
-                }
+          {menuItems.map((item) => (
+            <Tooltip
+              key={item.path}
+              title={item.tooltip}
+              placement="right-start"
+              arrow
+              enterDelay={400}
+            >
+              <ListItemButton
+                selected={item.selected}
+                onClick={() => {
+                  if (item.selected) {
+                    handleCloseBurger();
+                    return;
+                  }
 
-                handleNavigate('/customer/dashboard');
-            }}
-          >
-            <ListItemText
-                primary="Дэшборд"
-                primaryTypographyProps={{
-                  sx: {
-                      color: isDashboardPage ? 'primary.main' : 'text.primary',
-                      fontWeight: isDashboardPage ? 600 : 400,
-                  },
+                  handleNavigate(item.path);
                 }}
-            />
-          </ListItemButton>
-          <ListItemButton
-            selected={isLeadsPage}
-            onClick={() => {
-              if (isLeadsPage) {
-                handleCloseBurger();
-                return;
-              }
-
-              handleNavigate('/customer');
-            }}
-          >
-            <ListItemText
-              primary="Лиды"
-              primaryTypographyProps={{
-                sx: {
-                  color: isLeadsPage ? 'primary.main' : 'text.primary',
-                  fontWeight: isLeadsPage ? 600 : 400,
-                },
-              }}
-            />
-          </ListItemButton>
-
-          <ListItemButton
-            selected={isTenderPage}
-            onClick={() => {
-              if (isTenderPage) {
-                handleCloseBurger();
-                return;
-              }
-
-              handleNavigate('/customer/tenders');
-            }}
-          >
-            <ListItemText
-              primary="Тендеры"
-              primaryTypographyProps={{
-                sx: {
-                  color: isTenderPage ? 'primary.main' : 'text.primary',
-                  fontWeight: isTenderPage ? 600 : 400,
-                },
-              }}
-            />
-          </ListItemButton>
-
-          <ListItemButton
-            selected={isFactoringsPage}
-            onClick={() => {
-              if (isFactoringsPage) {
-                handleCloseBurger();
-                return;
-              }
-
-              handleNavigate('/customer/factorings');
-            }}
-          >
-            <ListItemText
-              primary="Факторинг"
-              primaryTypographyProps={{
-                sx: {
-                  color: isFactoringsPage ? 'primary.main' : 'text.primary',
-                  fontWeight: isFactoringsPage ? 600 : 400,
-                },
-              }}
-            />
-          </ListItemButton>
-
-          <ListItemButton
-            selected={isForwardersPage}
-            onClick={() => {
-              if (isForwardersPage) {
-                handleCloseBurger();
-                return;
-              }
-
-              handleNavigate('/customer/forwarders');
-            }}
-          >
-            <ListItemText
-              primary="Экспедиторы"
-              primaryTypographyProps={{
-                sx: {
-                  color: isForwardersPage ? 'primary.main' : 'text.primary',
-                  fontWeight: isForwardersPage ? 600 : 400,
-                },
-              }}
-            />
-          </ListItemButton>
+              >
+                <ListItemText
+                  primary={item.label}
+                  primaryTypographyProps={{
+                    sx: {
+                      color: item.selected ? 'primary.main' : 'text.primary',
+                      fontWeight: item.selected ? 600 : 400,
+                    },
+                  }}
+                />
+              </ListItemButton>
+            </Tooltip>
+          ))}
         </List>
       </Box>
     );
