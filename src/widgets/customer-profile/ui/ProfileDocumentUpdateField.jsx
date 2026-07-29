@@ -45,7 +45,6 @@ export function ProfileDocumentUpdateField({
       {currentDocument && (
         <Box
           sx={{
-            width: "50%",
             display: "flex",
             flexDirection: "column",
             mb: 1.5,

@@ -16,19 +16,24 @@ import {
   Menu,
   MenuItem,
   Typography,
-} from '@mui/material';
-import logoSrc from '../../../assets/logo.png';
-import CloseIcon from '@mui/icons-material/Close';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { logoutApi } from '../../shared/api/auth.api';
-import { Notifications } from '../customer-notifications/ui/Notifications';
-import { getCompactEmail } from '../../shared/helpers/helpers';
-import { PROFILE_PHOTO_UPDATED_EVENT } from '../customer-profile/model/profile-photo.helpers';
-import { fetchCustomerProfile } from '../../features/profile-edit/profile.api';
-import { isStaging } from '../../shared/api/api-client';
-import { CUSTOMER_NAV_WIDTH } from '../../shared/config/constants';
+} from "@mui/material";
+import logoSrc from "../../../assets/logo.png";
+import CloseIcon from "@mui/icons-material/Close";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { logoutApi } from "../../shared/api/auth.api";
+import { Notifications } from "../customer-notifications/ui/Notifications";
+import { getCompactEmail } from "../../shared/helpers/helpers";
+import { PROFILE_PHOTO_UPDATED_EVENT } from "../customer-profile/model/profile-photo.helpers";
+import { fetchCustomerProfile } from "../../features/profile-edit/profile.api";
+import { isStaging } from "../../shared/api/api-client";
+import { CUSTOMER_NAV_WIDTH } from "../../shared/config/constants";
+import DashboardOutlined from "@mui/icons-material/DashboardOutlined";
+import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
+import GavelOutlined from "@mui/icons-material/GavelOutlined";
+import AccountBalanceOutlined from "@mui/icons-material/AccountBalanceOutlined";
+import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
 
 export function Header() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -41,14 +46,14 @@ export function Header() {
   const navigate = useNavigate();
 
   const isProfileMenuOpen = Boolean(profileAnchorEl);
-  const isDashboardPage = location.pathname === '/customer/dashboard';
-  const isLeadsPage = location.pathname === '/customer';
-  const isTenderPage = location.pathname === '/customer/tenders';
-  const isFactoringsPage = location.pathname === '/customer/factorings';
-  const isForwardersPage = location.pathname === '/customer/forwarders';
-  const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
+  const isDashboardPage = location.pathname === "/customer/dashboard";
+  const isLeadsPage = location.pathname === "/customer";
+  const isTenderPage = location.pathname === "/customer/tenders";
+  const isFactoringsPage = location.pathname === "/customer/factorings";
+  const isForwardersPage = location.pathname === "/customer/forwarders";
+  const userEmail = window?.APP_DATA?.user_email || "Пользователь";
   const userEmailLabel = getCompactEmail(userEmail);
-  const [profilePhoto, setProfilePhoto] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState("");
 
   function handleNavigate(path) {
     if (location.pathname === path) {
@@ -62,7 +67,7 @@ export function Header() {
 
   function handleNavigateProfile() {
     handleCloseProfileMenu();
-    handleNavigate('/customer/profile');
+    handleNavigate("/customer/profile");
   }
 
   function handleOpenProfileMenu(event) {
@@ -123,13 +128,13 @@ export function Header() {
       await logoutApi();
 
       window.location.replace(
-        isStaging ? '/staging/auth/login' : '/auth/login',
+        isStaging ? "/staging/auth/login" : "/auth/login",
       );
     } catch (error) {
       setLogoutError(
         error.response?.data?.message ||
           error.message ||
-          'Не удалось выйти из аккаунта',
+          "Не удалось выйти из аккаунта",
       );
     } finally {
       setIsLogoutLoading(false);
@@ -144,17 +149,17 @@ export function Header() {
         const profile = await fetchCustomerProfile();
 
         if (!isCancelled) {
-          setProfilePhoto(profile?.avatar || '');
+          setProfilePhoto(profile?.avatar || "");
         }
       } catch {
         if (!isCancelled) {
-          setProfilePhoto('');
+          setProfilePhoto("");
         }
       }
     }
 
     function handleProfilePhotoUpdated(event) {
-      setProfilePhoto(event.detail?.photoUrl || '');
+      setProfilePhoto(event.detail?.photoUrl || "");
     }
 
     loadProfileAvatar();
@@ -177,34 +182,39 @@ export function Header() {
   function renderDrawerContent({ showCloseButton = false } = {}) {
     const menuItems = [
       {
-        label: 'Дэшборд',
-        path: '/customer/dashboard',
+        label: "Дэшборд",
+        path: "/customer/dashboard",
         selected: isDashboardPage,
-        tooltip: 'Общая сводка по лидам, маршрутам и тендерам',
+        icon: <DashboardOutlined />,
+        tooltip: "Общая сводка по лидам, маршрутам и тендерам",
       },
       {
-        label: 'Лиды',
-        path: '/customer',
+        label: "Лиды",
+        path: "/customer",
         selected: isLeadsPage,
-        tooltip: 'Список заявок на перевозку и управление лидами',
+        icon: <PersonAddAltOutlined />,
+        tooltip: "Список заявок на перевозку и управление лидами",
       },
       {
-        label: 'Тендеры',
-        path: '/customer/tenders',
+        label: "Тендеры",
+        path: "/customer/tenders",
         selected: isTenderPage,
-        tooltip: 'Создание и управление тендерами по перевозкам',
+        icon: <GavelOutlined />,
+        tooltip: "Создание и управление тендерами по перевозкам",
       },
       {
-        label: 'Факторинг',
-        path: '/customer/factorings',
+        label: "Факторинг",
+        path: "/customer/factorings",
         selected: isFactoringsPage,
-        tooltip: 'Список факторингов и финансовых заявок',
+        icon: <AccountBalanceOutlined />,
+        tooltip: "Список факторингов и финансовых заявок",
       },
       {
-        label: 'Экспедиторы',
-        path: '/customer/forwarders',
+        label: "Экспедиторы",
+        path: "/customer/forwarders",
         selected: isForwardersPage,
-        tooltip: 'Список экспедиторов и приглашение новых участников',
+        icon: <SwapHorizOutlined />,
+        tooltip: "Список экспедиторов и приглашение новых участников",
       },
     ];
 
@@ -213,8 +223,8 @@ export function Header() {
         {showCloseButton && (
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
+              display: "flex",
+              justifyContent: "flex-end",
               mb: 2,
             }}
           >
@@ -243,12 +253,17 @@ export function Header() {
 
                   handleNavigate(item.path);
                 }}
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                }}
               >
+                {item.icon}
                 <ListItemText
                   primary={item.label}
                   primaryTypographyProps={{
                     sx: {
-                      color: item.selected ? 'primary.main' : 'text.primary',
+                      color: item.selected ? "primary.main" : "text.primary",
                       fontWeight: item.selected ? 600 : 400,
                     },
                   }}
@@ -265,149 +280,149 @@ export function Header() {
     <Box
       component="header"
       sx={{
-        position: 'sticky',
+        position: "sticky",
         top: 0,
         zIndex: 1100,
-        borderBottom: '1px solid',
-        borderColor: 'divider',
-        backgroundColor: 'background.paper',
+        borderBottom: "1px solid",
+        borderColor: "divider",
+        backgroundColor: "background.paper",
       }}
     >
       <Box
         sx={{
           height: 64,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          position: 'relative',
-          width: '100%',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          position: "relative",
+          width: "100%",
           px: {
             xs: 1,
             sm: 2,
           },
-          boxSizing: 'border-box',
+          boxSizing: "border-box",
         }}
       >
-          <IconButton
-            onClick={handleOpenBurger}
-            sx={{
-              display: {
-                xs: 'inline-flex',
-                sm: 'none',
-              },
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
+        <IconButton
+          onClick={handleOpenBurger}
+          sx={{
+            display: {
+              xs: "inline-flex",
+              sm: "none",
+            },
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
 
-          <Box
-            component="img"
-            src={logoSrc}
-            alt="360 Logistics"
-            sx={{
-              height: {
-                xs: 28,
-                sm: 32,
-              },
-              width: 'auto',
-              maxWidth: {
-                xs: 130,
-                sm: 170,
-              },
-              objectFit: 'contain',
-              display: 'block',
-              flexShrink: 0,
-              pointerEvents: 'none',
-            }}
-          />
+        <Box
+          component="img"
+          src={logoSrc}
+          alt="360 Logistics"
+          sx={{
+            height: {
+              xs: 28,
+              sm: 32,
+            },
+            width: "auto",
+            maxWidth: {
+              xs: 130,
+              sm: 170,
+            },
+            objectFit: "contain",
+            display: "block",
+            flexShrink: 0,
+            pointerEvents: "none",
+          }}
+        />
 
-          <Box
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            minWidth: 0,
+            flexShrink: 1,
+            ml: "auto",
+          }}
+        >
+          <Notifications />
+
+          <Button
+            variant="outlined"
+            onClick={handleOpenProfileMenu}
+            title={userEmail}
+            aria-label={`Профиль пользователя ${userEmail}`}
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
               minWidth: 0,
+              maxWidth: {
+                xs: 140,
+                sm: 220,
+                md: 280,
+              },
+              px: {
+                xs: 0.75,
+                sm: 1.25,
+              },
+              textTransform: "none",
+              overflow: "hidden",
               flexShrink: 1,
-              ml: 'auto',
+              gap: 0.75,
+
+              "@media (max-width: 449px)": {
+                width: 36,
+                height: 36,
+                minWidth: 36,
+                maxWidth: 36,
+                px: 0,
+                border: "none",
+                borderRadius: "50%",
+              },
             }}
           >
-            <Notifications />
-
-            <Button
-              variant="outlined"
-              onClick={handleOpenProfileMenu}
-              title={userEmail}
-              aria-label={`Профиль пользователя ${userEmail}`}
+            <Avatar
+              src={profilePhoto || undefined}
               sx={{
-                minWidth: 0,
-                maxWidth: {
-                  xs: 140,
-                  sm: 220,
-                  md: 280,
+                width: {
+                  xs: 24,
+                  sm: 28,
                 },
-                px: {
-                  xs: 0.75,
-                  sm: 1.25,
+                height: {
+                  xs: 24,
+                  sm: 28,
                 },
-                textTransform: 'none',
-                overflow: 'hidden',
-                flexShrink: 1,
-                gap: 0.75,
+                fontSize: 13,
+                flexShrink: 0,
+              }}
+            />
 
-                '@media (max-width: 449px)': {
-                  width: 36,
-                  height: 36,
-                  minWidth: 36,
-                  maxWidth: 36,
-                  px: 0,
-                  border: 'none',
-                  borderRadius: '50%',
+            <Typography
+              component="span"
+              noWrap
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "block",
+                },
+                minWidth: 0,
+                maxWidth: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                fontSize: {
+                  xs: 12,
+                  sm: 14,
+                },
+                lineHeight: 1.4,
+                "@media (min-width: 450px)": {
+                  display: "block",
                 },
               }}
             >
-              <Avatar
-                src={profilePhoto || undefined}
-                sx={{
-                  width: {
-                    xs: 24,
-                    sm: 28,
-                  },
-                  height: {
-                    xs: 24,
-                    sm: 28,
-                  },
-                  fontSize: 13,
-                  flexShrink: 0,
-                }}
-              />
-
-              <Typography
-                component="span"
-                noWrap
-                sx={{
-                  display: {
-                    xs: 'none',
-                    sm: 'block',
-                  },
-                  minWidth: 0,
-                  maxWidth: '100%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  fontSize: {
-                    xs: 12,
-                    sm: 14,
-                  },
-                  lineHeight: 1.4,
-                  '@media (min-width: 450px)': {
-                    display: 'block',
-                  },
-                }}
-              >
-                {userEmailLabel}
-              </Typography>
-            </Button>
-          </Box>
+              {userEmailLabel}
+            </Typography>
+          </Button>
+        </Box>
       </Box>
 
       <>
@@ -416,16 +431,16 @@ export function Header() {
           open
           sx={{
             display: {
-              xs: 'none',
-              sm: 'block',
+              xs: "none",
+              sm: "block",
             },
-            '& .MuiDrawer-paper': {
+            "& .MuiDrawer-paper": {
               width: CUSTOMER_NAV_WIDTH,
-              boxSizing: 'border-box',
+              boxSizing: "border-box",
               top: 64,
-              height: 'calc(100dvh - 64px)',
-              borderRight: '1px solid',
-              borderColor: 'divider',
+              height: "calc(100dvh - 64px)",
+              borderRight: "1px solid",
+              borderColor: "divider",
             },
           }}
         >
@@ -440,7 +455,7 @@ export function Header() {
             paper: {
               sx: {
                 width: {
-                  xs: '100%',
+                  xs: "100%",
                   sm: CUSTOMER_NAV_WIDTH,
                 },
               },
@@ -448,8 +463,8 @@ export function Header() {
           }}
           sx={{
             display: {
-              xs: 'block',
-              sm: 'none',
+              xs: "block",
+              sm: "none",
             },
           }}
         >
@@ -492,7 +507,7 @@ export function Header() {
             onClick={handleConfirmLogout}
             disabled={isLogoutLoading}
           >
-            {isLogoutLoading ? 'Выход...' : 'Выйти'}
+            {isLogoutLoading ? "Выход..." : "Выйти"}
           </Button>
         </DialogActions>
       </Dialog>

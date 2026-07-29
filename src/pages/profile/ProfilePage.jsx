@@ -620,35 +620,45 @@ export function ProfilePage() {
               </Typography>
             </Box>
 
-            <ProfileDocumentUpdateField
-              label="Документ о регистрации юридического лица"
-              currentDocument={form.registrationDocument}
-              file={profileDocumentFiles.registrationDocument}
-              inputKey={profileDocumentInputKeys.registrationDocument}
-              error={profileDocumentErrors.registrationDocument}
-              disabled={isSaving || isProfileLoading}
-              onChange={(file) =>
-                handleProfileDocumentChange("registrationDocument", file)
-              }
-              onCancel={() =>
-                handleCancelProfileDocumentChange("registrationDocument")
-              }
-            />
-
-            <ProfileDocumentUpdateField
-              label="Документ о трудоустройстве сотрудника"
-              currentDocument={form.employerDocument}
-              file={profileDocumentFiles.employerDocument}
-              inputKey={profileDocumentInputKeys.employerDocument}
-              error={profileDocumentErrors.employerDocument}
-              disabled={isSaving || isProfileLoading}
-              onChange={(file) =>
-                handleProfileDocumentChange("employerDocument", file)
-              }
-              onCancel={() =>
-                handleCancelProfileDocumentChange("employerDocument")
-              }
-            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: {
+                  xs: "1fr",
+                  md: "1fr 1fr",
+                },
+                gap: 1,
+              }}
+            >
+              <ProfileDocumentUpdateField
+                label="Документ о регистрации юридического лица"
+                currentDocument={form.registrationDocument}
+                file={profileDocumentFiles.registrationDocument}
+                inputKey={profileDocumentInputKeys.registrationDocument}
+                error={profileDocumentErrors.registrationDocument}
+                disabled={isSaving || isProfileLoading}
+                onChange={(file) =>
+                  handleProfileDocumentChange("registrationDocument", file)
+                }
+                onCancel={() =>
+                  handleCancelProfileDocumentChange("registrationDocument")
+                }
+              />
+              <ProfileDocumentUpdateField
+                label="Документ о трудоустройстве сотрудника"
+                currentDocument={form.employerDocument}
+                file={profileDocumentFiles.employerDocument}
+                inputKey={profileDocumentInputKeys.employerDocument}
+                error={profileDocumentErrors.employerDocument}
+                disabled={isSaving || isProfileLoading}
+                onChange={(file) =>
+                  handleProfileDocumentChange("employerDocument", file)
+                }
+                onCancel={() =>
+                  handleCancelProfileDocumentChange("employerDocument")
+                }
+              />
+            </Box>
           </Stack>
 
           <Box>
