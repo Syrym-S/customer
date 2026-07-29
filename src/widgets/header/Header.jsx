@@ -298,7 +298,7 @@ export function Header() {
           <Typography
             sx={{
               fontWeight: "600",
-              fontSize: 12,
+              fontSize: 16,
             }}
           >
             Нужна помощь?
@@ -306,7 +306,7 @@ export function Header() {
           <Typography
             sx={{
               fontWeight: "400",
-              fontSize: 12,
+              fontSize: 14,
             }}
           >
             Наша служба поддержки на связи 24/7
@@ -508,7 +508,7 @@ export function Header() {
               sm: "block",
             },
             "& .MuiDrawer-paper": {
-              width: CUSTOMER_NAV_WIDTH,
+              width: "20vw",
               boxSizing: "border-box",
               top: 64,
               height: "calc(100dvh - 64px)",
