@@ -34,7 +34,11 @@ import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
 import GavelOutlined from "@mui/icons-material/GavelOutlined";
 import AccountBalanceOutlined from "@mui/icons-material/AccountBalanceOutlined";
 import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
+import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
+
+const supportEmail = window?.APP_DATA?.support?.email;
+const supportPhone = window?.APP_DATA?.support?.phone;
 
 export function Header() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -308,16 +312,38 @@ export function Header() {
             Наша служба поддержки на связи 24/7
           </Typography>
 
-          <Button
-            color="primary"
-            variant="contained"
+          <Box
             sx={{
-              boxShadow: 0,
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              gap: 1,
+              py: 1,
             }}
-            startIcon={<NotificationsNoneIcon />}
           >
-            Написать в поддержку
-          </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{
+                boxShadow: 0,
+                fontSize: 12,
+              }}
+              startIcon={<MarkunreadOutlinedIcon />}
+            >
+              {supportEmail}
+            </Button>
+
+            <Button
+              color="primary"
+              variant="contained"
+              sx={{
+                boxShadow: 0,
+                fontSize: 12,
+              }}
+              startIcon={<PhoneOutlinedIcon />}
+            >
+              {supportPhone}
+            </Button>
+          </Box>
         </Box>
       </Box>
     );
