@@ -34,6 +34,7 @@ import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
 import GavelOutlined from "@mui/icons-material/GavelOutlined";
 import AccountBalanceOutlined from "@mui/icons-material/AccountBalanceOutlined";
 import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 export function Header() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -219,12 +220,22 @@ export function Header() {
     ];
 
     return (
-      <Box sx={{ p: 2 }}>
+      <Box
+        sx={{
+          position: "relative",
+          p: 2,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          height: "100vh",
+        }}
+      >
         {showCloseButton && (
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "flex-end",
+              position: "absolute",
+              right: 1,
+              top: 1,
               mb: 2,
             }}
           >
@@ -272,6 +283,42 @@ export function Header() {
             </Tooltip>
           ))}
         </List>
+
+        <Box
+          sx={{
+            p: 1,
+            background: "rgba(174, 174, 174, 0.2)",
+            borderRadius: 2,
+          }}
+        >
+          <Typography
+            sx={{
+              fontWeight: "600",
+              fontSize: 12,
+            }}
+          >
+            Нужна помощь?
+          </Typography>
+          <Typography
+            sx={{
+              fontWeight: "400",
+              fontSize: 12,
+            }}
+          >
+            Наша служба поддержки на связи 24/7
+          </Typography>
+
+          <Button
+            color="primary"
+            variant="contained"
+            sx={{
+              boxShadow: 0,
+            }}
+            startIcon={<NotificationsNoneIcon />}
+          >
+            Написать в поддержку
+          </Button>
+        </Box>
       </Box>
     );
   }
