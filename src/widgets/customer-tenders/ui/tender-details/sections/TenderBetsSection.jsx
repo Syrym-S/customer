@@ -80,6 +80,8 @@ export function TenderBetsSection({
     }
   }
 
+  console.log("bets", bets);
+
   return (
     <>
       <TenderDetailsSection
@@ -101,7 +103,9 @@ export function TenderBetsSection({
             }}
           >
             {visibleBets.map(({ bet, index }) => {
-              const isCancelledBet = bet.status === "closed";
+              const isCancelledBet = bet.status === "loss";
+              const isWinningBet = bet.status === "winning";
+
               const canAcceptBet =
                 bet.status === "new" &&
                 tenderStatus !== "closed" &&
@@ -113,9 +117,17 @@ export function TenderBetsSection({
                   sx={{
                     p: 1.5,
                     border: "1px solid",
-                    borderColor: isCancelledBet ? "grey.300" : "divider",
+                    borderColor: isCancelledBet
+                      ? "grey.300"
+                      : isWinningBet
+                        ? "#A5D6A7"
+                        : "divider",
                     borderRadius: 2,
-                    backgroundColor: isCancelledBet ? "grey.100" : "grey.50",
+                    backgroundColor: isCancelledBet
+                      ? "grey.100"
+                      : isWinningBet
+                        ? "#EDF7ED"
+                        : "grey.50",
                     opacity: isCancelledBet ? 0.78 : 1,
                   }}
                 >
@@ -137,7 +149,9 @@ export function TenderBetsSection({
                             : "none",
                           color: isCancelledBet
                             ? "text.secondary"
-                            : "text.primary",
+                            : isWinningBet
+                              ? "#1E4620"
+                              : "text.primary",
                         }}
                       >
                         {formatMoney(bet.amount, bet.currency)}
@@ -145,9 +159,17 @@ export function TenderBetsSection({
 
                       <Typography
                         color="text.secondary"
-                        sx={{ fontSize: 12, mt: 0.5 }}
+                        sx={{
+                          fontSize: 12,
+                          mt: 0.5,
+                          color: isCancelledBet
+                            ? "text.secondary"
+                            : isWinningBet
+                              ? "#1E4620"
+                              : "text.primary",
+                        }}
                       >
-                        {bet.participant_name ||
+                        {bet.company_name ||
                           bet.participant_id ||
                           "Участник не указан"}
                       </Typography>
@@ -168,14 +190,16 @@ export function TenderBetsSection({
                           label="Отменена"
                           variant="outlined"
                           size="small"
-                          sx={{
-                            height: 24,
-                            borderRadius: 999,
-                            fontWeight: 600,
-                            borderColor: "grey.400",
-                            color: "text.secondary",
-                            backgroundColor: "grey.50",
-                          }}
+                          color="error"
+                        />
+                      )}
+
+                      {isWinningBet && (
+                        <Chip
+                          label="Победная"
+                          variant="outlined"
+                          size="small"
+                          color="success"
                         />
                       )}
                       {canAcceptBet && (
