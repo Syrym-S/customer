@@ -1,355 +1,351 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { TendersContext } from './TendersContext';
-import PropTypes from 'prop-types';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { TendersContext } from "./TendersContext";
+import PropTypes from "prop-types";
 import {
-   acceptTenderBet,
-   addTenderParticipant,
-   cancelCustomerTender,
-   createCustomerTender,
-   deleteCustomerTender,
-   deleteTenderParticipant,
-   fetchCustomerTenderById,
-   fetchCustomerTenders,
-   fetchTenderLeadFiles,
-   startCustomerTender,
-   updateCustomerTender,
-} from '../api/tender.api';
+  acceptTenderBet,
+  addTenderParticipant,
+  cancelCustomerTender,
+  createCustomerTender,
+  deleteCustomerTender,
+  deleteTenderParticipant,
+  fetchCustomerTenderById,
+  fetchCustomerTenders,
+  fetchTenderLeadFiles,
+  startCustomerTender,
+  updateCustomerTender,
+} from "../api/tender.api";
 import {
-   mapTenderFromApi,
-   mapTenderLeadDocumentsResponseFromApi,
-   mapTendersListFromApi,
-} from './tender.adapter';
+  mapTenderFromApi,
+  mapTenderLeadDocumentsResponseFromApi,
+  mapTendersListFromApi,
+} from "./tender.adapter";
 import {
-   notificationDomainEventNames,
-   subscribeToNotificationDomainEvent,
-} from '../../../shared/model/notification-domain-events';
+  notificationDomainEventNames,
+  subscribeToNotificationDomainEvent,
+} from "../../../shared/model/notification-domain-events";
 
-const DEFAULT_PER_PAGE = 2;
+const DEFAULT_PER_PAGE = 10;
 
 export function TendersProvider({
-   children,
-   initialPublicationType = 'all',
-   initialPerPage = DEFAULT_PER_PAGE,
+  children,
+  initialPublicationType = "all",
+  initialPerPage = DEFAULT_PER_PAGE,
 }) {
-   const [tenders, setTenders] = useState([]);
-   const [openTender, setOpenTender] = useState(null);
+  const [tenders, setTenders] = useState([]);
+  const [openTender, setOpenTender] = useState(null);
 
-   const [page, setPage] = useState(1);
-   const [perPage, setPerPage] = useState(initialPerPage);
-   const [status, setStatus] = useState('all');
-   const [publicationType, setPublicationType] = useState(
-      initialPublicationType,
-   );
-   const [count, setCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(initialPerPage);
+  const [status, setStatus] = useState("all");
+  const [publicationType, setPublicationType] = useState(
+    initialPublicationType,
+  );
+  const [count, setCount] = useState(0);
 
-   const [isLoading, setIsLoading] = useState(false);
-   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
-   const [detailsError, setDetailsError] = useState('');
+  const [isDetailsLoading, setIsDetailsLoading] = useState(false);
+  const [detailsError, setDetailsError] = useState("");
 
-   const loadTenders = useCallback(
-      async ({ withLoader = true } = {}) => {
-         try {
-            if (withLoader) {
-               setIsLoading(true);
-            }
+  const loadTenders = useCallback(
+    async ({ withLoader = true } = {}) => {
+      try {
+        if (withLoader) {
+          setIsLoading(true);
+        }
 
-            setError('');
+        setError("");
 
-            const response = await fetchCustomerTenders({
-               page,
-               limit: perPage,
-               status,
-               publicationType,
-            });
+        const response = await fetchCustomerTenders({
+          page,
+          limit: perPage,
+          status,
+          publicationType,
+        });
 
-            const mappedResponse = mapTendersListFromApi(response);
+        const mappedResponse = mapTendersListFromApi(response);
 
-            setTenders(mappedResponse.tenders);
-            setCount(mappedResponse.count);
-            setPerPage(mappedResponse.perPage);
-         } catch (error) {
-            setError(
-               error.response?.data?.message ||
-                  error.message ||
-                  'Не удалось загрузить тендеры',
-            );
-         } finally {
-            if (withLoader) {
-               setIsLoading(false);
-            }
-         }
-      },
-      [page, perPage, status, publicationType],
-   );
+        setTenders(mappedResponse.tenders);
+        setCount(mappedResponse.count);
+        setPerPage(mappedResponse.perPage);
+      } catch (error) {
+        setError(
+          error.response?.data?.message ||
+            error.message ||
+            "Не удалось загрузить тендеры",
+        );
+      } finally {
+        if (withLoader) {
+          setIsLoading(false);
+        }
+      }
+    },
+    [page, perPage, status, publicationType],
+  );
 
-   const loadTenderDetailsWithFiles = useCallback(async (tenderId) => {
-      const tender = await fetchCustomerTenderById(tenderId);
+  const loadTenderDetailsWithFiles = useCallback(async (tenderId) => {
+    const tender = await fetchCustomerTenderById(tenderId);
 
-      if (!tender?.lead?.id) {
-         return tender;
+    if (!tender?.lead?.id) {
+      return tender;
+    }
+
+    try {
+      const filesResponse = await fetchTenderLeadFiles(tender.lead.id);
+      const documents = mapTenderLeadDocumentsResponseFromApi(filesResponse);
+
+      return {
+        ...tender,
+        lead: {
+          ...tender.lead,
+          documents,
+          files: documents,
+        },
+      };
+    } catch (error) {
+      console.error("Не удалось загрузить файлы лида:", error);
+
+      return {
+        ...tender,
+        lead: {
+          ...tender.lead,
+          documents: [],
+          files: [],
+        },
+      };
+    }
+  }, []);
+
+  const refreshTenderDetails = useCallback(
+    async (tenderId) => {
+      const response = await loadTenderDetailsWithFiles(tenderId);
+      const mappedTender = mapTenderFromApi(response);
+
+      setOpenTender(mappedTender);
+
+      return mappedTender;
+    },
+    [loadTenderDetailsWithFiles],
+  );
+
+  const createTender = useCallback(async (payload) => {
+    return createCustomerTender(payload);
+  }, []);
+
+  const addParticipant = useCallback(async (tenderId, participantId) => {
+    return addTenderParticipant(tenderId, participantId);
+  }, []);
+
+  const addParticipantsToTender = useCallback(
+    async (tenderId, participantIds) => {
+      const uniqueParticipantIds = [...new Set(participantIds)].filter(Boolean);
+
+      if (!tenderId || uniqueParticipantIds.length === 0) {
+        return;
+      }
+
+      await Promise.all(
+        uniqueParticipantIds.map((participantId) =>
+          addTenderParticipant(tenderId, participantId),
+        ),
+      );
+
+      await refreshTenderDetails(tenderId);
+      await loadTenders();
+    },
+    [refreshTenderDetails, loadTenders],
+  );
+
+  const openTenderDetails = useCallback(
+    async (tender) => {
+      if (!tender?.id) {
+        return;
       }
 
       try {
-         const filesResponse = await fetchTenderLeadFiles(tender.lead.id);
-         const documents = mapTenderLeadDocumentsResponseFromApi(filesResponse);
+        setOpenTender(tender);
+        setIsDetailsLoading(true);
+        setDetailsError("");
 
-         return {
-            ...tender,
-            lead: {
-               ...tender.lead,
-               documents,
-               files: documents,
-            },
-         };
+        const response = await loadTenderDetailsWithFiles(tender.id);
+        const mappedTender = mapTenderFromApi(response);
+
+        setOpenTender(mappedTender);
       } catch (error) {
-         console.error('Не удалось загрузить файлы лида:', error);
-
-         return {
-            ...tender,
-            lead: {
-               ...tender.lead,
-               documents: [],
-               files: [],
-            },
-         };
+        setDetailsError(
+          error.response?.data?.message ||
+            error.message ||
+            "Не удалось загрузить детали тендера",
+        );
+      } finally {
+        setIsDetailsLoading(false);
       }
-   }, []);
+    },
+    [loadTenderDetailsWithFiles],
+  );
 
-   const refreshTenderDetails = useCallback(
-      async (tenderId) => {
-         const response = await loadTenderDetailsWithFiles(tenderId);
-         const mappedTender = mapTenderFromApi(response);
+  const closeTenderDetails = useCallback(async () => {
+    setOpenTender(null);
+    setDetailsError("");
+  }, []);
 
-         setOpenTender(mappedTender);
+  const deleteTender = useCallback(
+    async (tenderId) => {
+      await deleteCustomerTender(tenderId);
+      closeTenderDetails();
+      await loadTenders();
+    },
+    [closeTenderDetails, loadTenders],
+  );
 
-         return mappedTender;
-      },
-      [loadTenderDetailsWithFiles],
-   );
+  const cancelTender = useCallback(
+    async (tenderId) => {
+      await cancelCustomerTender(tenderId);
 
-   const createTender = useCallback(async (payload) => {
-      return createCustomerTender(payload);
-   }, []);
+      const response = await fetchCustomerTenderById(tenderId);
+      const mappedTender = mapTenderFromApi(response);
 
-   const addParticipant = useCallback(async (tenderId, participantId) => {
-      return addTenderParticipant(tenderId, participantId);
-   }, []);
+      setOpenTender(mappedTender);
+      await loadTenders();
+    },
+    [loadTenders],
+  );
 
-   const addParticipantsToTender = useCallback(
-      async (tenderId, participantIds) => {
-         const uniqueParticipantIds = [...new Set(participantIds)].filter(
-            Boolean,
-         );
+  const startTender = useCallback(
+    async (tenderId) => {
+      await startCustomerTender(tenderId);
+      await refreshTenderDetails(tenderId);
+      await loadTenders();
+    },
+    [refreshTenderDetails, loadTenders],
+  );
 
-         if (!tenderId || uniqueParticipantIds.length === 0) {
-            return;
-         }
+  const updateTender = useCallback(
+    async (tenderId, payload) => {
+      await updateCustomerTender(tenderId, payload);
+      await refreshTenderDetails(tenderId);
+      await loadTenders();
+    },
+    [refreshTenderDetails, loadTenders],
+  );
 
-         await Promise.all(
-            uniqueParticipantIds.map((participantId) =>
-               addTenderParticipant(tenderId, participantId),
-            ),
-         );
+  const acceptBet = useCallback(
+    async (tenderId, betIndex) => {
+      await acceptTenderBet(tenderId, betIndex);
+      await refreshTenderDetails(tenderId);
+      await loadTenders();
+    },
+    [refreshTenderDetails, loadTenders],
+  );
 
-         await refreshTenderDetails(tenderId);
-         await loadTenders();
-      },
-      [refreshTenderDetails, loadTenders],
-   );
+  const removeParticipant = useCallback(
+    async (tenderId, participantIndex) => {
+      await deleteTenderParticipant(tenderId, participantIndex);
+      await refreshTenderDetails(tenderId);
+      await loadTenders();
+    },
+    [refreshTenderDetails, loadTenders],
+  );
 
-   const openTenderDetails = useCallback(
-      async (tender) => {
-         if (!tender?.id) {
-            return;
-         }
+  useEffect(() => {
+    loadTenders({ withLoader: true });
+  }, [loadTenders]);
 
-         try {
-            setOpenTender(tender);
-            setIsDetailsLoading(true);
-            setDetailsError('');
+  useEffect(() => {
+    return subscribeToNotificationDomainEvent(
+      notificationDomainEventNames.tendersChanged,
+      () => {
+        loadTenders({ withLoader: false });
 
-            const response = await loadTenderDetailsWithFiles(tender.id);
-            const mappedTender = mapTenderFromApi(response);
-
-            setOpenTender(mappedTender);
-         } catch (error) {
-            setDetailsError(
-               error.response?.data?.message ||
-                  error.message ||
-                  'Не удалось загрузить детали тендера',
+        if (openTender?.id) {
+          refreshTenderDetails(openTender.id).catch((error) => {
+            console.error(
+              "Не удалось обновить детали тендера после уведомления:",
+              error,
             );
-         } finally {
-            setIsDetailsLoading(false);
-         }
+          });
+        }
       },
-      [loadTenderDetailsWithFiles],
-   );
+    );
+  }, [loadTenders, openTender?.id, refreshTenderDetails]);
 
-   const closeTenderDetails = useCallback(async () => {
-      setOpenTender(null);
-      setDetailsError('');
-   }, []);
+  const value = useMemo(
+    () => ({
+      tenders,
+      openTender,
+      setOpenTender,
+      openTenderDetails,
+      closeTenderDetails,
 
-   const deleteTender = useCallback(
-      async (tenderId) => {
-         await deleteCustomerTender(tenderId);
-         closeTenderDetails();
-         await loadTenders();
-      },
-      [closeTenderDetails, loadTenders],
-   );
+      page,
+      setPage,
+      perPage,
+      setPerPage,
+      status,
+      setStatus,
+      publicationType,
+      setPublicationType,
+      count,
 
-   const cancelTender = useCallback(
-      async (tenderId) => {
-         await cancelCustomerTender(tenderId);
+      isLoading,
+      error,
 
-         const response = await fetchCustomerTenderById(tenderId);
-         const mappedTender = mapTenderFromApi(response);
+      createTender,
+      addParticipant,
+      addParticipantsToTender,
+      acceptBet,
+      removeParticipant,
 
-         setOpenTender(mappedTender);
-         await loadTenders();
-      },
-      [loadTenders],
-   );
+      addTenderParticipant,
+      createCustomerTender,
 
-   const startTender = useCallback(
-      async (tenderId) => {
-         await startCustomerTender(tenderId);
-         await refreshTenderDetails(tenderId);
-         await loadTenders();
-      },
-      [refreshTenderDetails, loadTenders],
-   );
+      refreshTenderDetails,
+      isDetailsLoading,
+      detailsError,
 
-   const updateTender = useCallback(
-      async (tenderId, payload) => {
-         await updateCustomerTender(tenderId, payload);
-         await refreshTenderDetails(tenderId);
-         await loadTenders();
-      },
-      [refreshTenderDetails, loadTenders],
-   );
+      startTender,
+      updateTender,
 
-   const acceptBet = useCallback(
-      async (tenderId, betIndex) => {
-         await acceptTenderBet(tenderId, betIndex);
-         await refreshTenderDetails(tenderId);
-         await loadTenders();
-      },
-      [refreshTenderDetails, loadTenders],
-   );
+      reloadTenders: loadTenders,
+      deleteTender,
+      cancelTender,
+    }),
+    [
+      tenders,
+      openTender,
+      openTenderDetails,
+      closeTenderDetails,
+      page,
+      perPage,
+      status,
+      publicationType,
+      count,
+      isLoading,
+      error,
+      startTender,
+      updateTender,
+      isDetailsLoading,
+      detailsError,
+      loadTenders,
+      deleteTender,
+      cancelTender,
+      createTender,
+      addParticipant,
+      addParticipantsToTender,
+      acceptBet,
+      refreshTenderDetails,
+      removeParticipant,
+    ],
+  );
 
-   const removeParticipant = useCallback(
-      async (tenderId, participantIndex) => {
-         await deleteTenderParticipant(tenderId, participantIndex);
-         await refreshTenderDetails(tenderId);
-         await loadTenders();
-      },
-      [refreshTenderDetails, loadTenders],
-   );
-
-   useEffect(() => {
-      loadTenders({ withLoader: true });
-   }, [loadTenders]);
-
-   useEffect(() => {
-      return subscribeToNotificationDomainEvent(
-         notificationDomainEventNames.tendersChanged,
-         () => {
-            loadTenders({ withLoader: false });
-
-            if (openTender?.id) {
-               refreshTenderDetails(openTender.id).catch((error) => {
-                  console.error(
-                     'Не удалось обновить детали тендера после уведомления:',
-                     error,
-                  );
-               });
-            }
-         },
-      );
-   }, [loadTenders, openTender?.id, refreshTenderDetails]);
-
-   const value = useMemo(
-      () => ({
-         tenders,
-         openTender,
-         setOpenTender,
-         openTenderDetails,
-         closeTenderDetails,
-
-         page,
-         setPage,
-         perPage,
-         setPerPage,
-         status,
-         setStatus,
-         publicationType,
-         setPublicationType,
-         count,
-
-         isLoading,
-         error,
-
-         createTender,
-         addParticipant,
-         addParticipantsToTender,
-         acceptBet,
-         removeParticipant,
-
-         addTenderParticipant,
-         createCustomerTender,
-
-         refreshTenderDetails,
-         isDetailsLoading,
-         detailsError,
-
-         startTender,
-         updateTender,
-
-         reloadTenders: loadTenders,
-         deleteTender,
-         cancelTender,
-      }),
-      [
-         tenders,
-         openTender,
-         openTenderDetails,
-         closeTenderDetails,
-         page,
-         perPage,
-         status,
-         publicationType,
-         count,
-         isLoading,
-         error,
-         startTender,
-         updateTender,
-         isDetailsLoading,
-         detailsError,
-         loadTenders,
-         deleteTender,
-         cancelTender,
-         createTender,
-         addParticipant,
-         addParticipantsToTender,
-         acceptBet,
-         refreshTenderDetails,
-         removeParticipant,
-      ],
-   );
-
-   return (
-      <TendersContext.Provider value={value}>
-         {children}
-      </TendersContext.Provider>
-   );
+  return (
+    <TendersContext.Provider value={value}>{children}</TendersContext.Provider>
+  );
 }
 
 TendersProvider.propTypes = {
-   children: PropTypes.node.isRequired,
-   initialPublicationType: PropTypes.string,
-   initialPerPage: PropTypes.number,
+  children: PropTypes.node.isRequired,
+  initialPublicationType: PropTypes.string,
+  initialPerPage: PropTypes.number,
 };
