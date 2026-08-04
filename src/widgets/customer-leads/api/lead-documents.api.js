@@ -1,38 +1,40 @@
-import { apiClient } from '../../../shared/api/api-client';
+import { apiClient } from "../../../shared/api/api-client";
 
 export async function fetchLeadDocuments(leadId) {
-   const response = await apiClient.get(`/customer/v1/leads/${leadId}/files`);
+  const response = await apiClient.get(`/customer/v1/leads/${leadId}/files`);
 
-   return response.data;
+  return response.data;
 }
 
 export async function uploadLeadDocument(leadId, { file, name, context }) {
-   const formData = new FormData();
+  const formData = new FormData();
 
-   formData.append('file', file);
-   formData.append('name', name || file.name);
-   formData.append('context', context || '');
+  formData.append("file", file);
+  formData.append("name", name || file.name);
+  formData.append("context", context || "");
 
-   const response = await apiClient.post(
-      `/customer/v1/leads/${leadId}/files/upload`,
-      formData,
-      {
-         headers: {
-            'Content-Type': 'multipart/form-data',
-         },
+  const response = await apiClient.post(
+    `/customer/v1/leads/${leadId}/files/upload`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
-   );
+    },
+  );
 
-   return response.data;
+  return response.data;
 }
 
 export async function deleteLeadDocument(leadId, path) {
-   const response = await apiClient.post(
-      `/customer/v1/leads/${leadId}/files/delete`,
-      {
-         path,
-      },
-   );
+  console.log("path", path);
 
-   return response.data;
+  const response = await apiClient.delete(
+    `/customer/v1/leads/${leadId}/files/delete/`,
+    {
+      data: { path },
+    },
+  );
+
+  return response.data;
 }
