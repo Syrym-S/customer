@@ -22,6 +22,7 @@ import { searchTenderLeadsApi } from "../api/tender.api";
 import { getCurrentDateTimeForTenderApi } from "../model/tender.helpers";
 import { fetchForwardersApi } from "../../../features/create-lead/api/forwarders.api";
 import { FORWARDERS_PER_PAGE } from "../../customer-forwarders/model/forwarders.helpers";
+import { LeadStatusChip } from "../../dashboard/ui/DashboardLeadItem";
 
 function padDatePart(value) {
   return String(value).padStart(2, "0");
@@ -550,11 +551,7 @@ export function CreateTenderModal({ open, onClose }) {
                         }}
                       >
                         {option.status && (
-                          <Chip
-                            size="small"
-                            label={option.status}
-                            sx={{ height: 22 }}
-                          />
+                          <LeadStatusChip status={option.status} />
                         )}
 
                         <Chip
