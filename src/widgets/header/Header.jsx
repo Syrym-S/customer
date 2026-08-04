@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Avatar,
   Box,
@@ -37,8 +38,86 @@ import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 
-const supportEmail = window?.APP_DATA?.support?.email;
-const supportPhone = window?.APP_DATA?.support?.phone;
+export function SupportContacts() {
+  const supportEmail = window?.APP_DATA?.support?.email;
+  const supportPhone = window?.APP_DATA?.support?.phone;
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyPhone = async (event) => {
+    event.stopPropagation();
+
+    await navigator.clipboard.writeText(supportPhone);
+
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 1500);
+  };
+
+  return (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "1fr",
+        gap: 1,
+        minWidth: 0,
+      }}
+    >
+      <Tooltip title={supportEmail} placement="top" arrow>
+        <Button
+          color="primary"
+          variant="contained"
+          component="a"
+          href={`mailto:${supportEmail}?subject=${encodeURIComponent(
+            "Обращение в поддержку",
+          )}&body=${encodeURIComponent("Здравствуйте! У меня возник вопрос.")}`}
+          sx={{
+            boxShadow: 0,
+            fontSize: 12,
+
+            "& .MuiButton-startIcon": {
+              flexShrink: 0,
+            },
+          }}
+          startIcon={<MarkunreadOutlinedIcon />}
+        >
+          <Box
+            component="span"
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {supportEmail}
+          </Box>
+        </Button>
+      </Tooltip>
+
+      <Tooltip
+        title={copied ? "Скопировано" : "Скопировать номер"}
+        placement="top"
+        arrow
+        open={copied ? true : undefined}
+      >
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={handleCopyPhone}
+          sx={{
+            boxShadow: 0,
+            fontSize: 12,
+          }}
+          startIcon={<PhoneOutlinedIcon />}
+        >
+          {supportPhone}
+        </Button>
+      </Tooltip>
+    </Box>
+  );
+}
 
 export function Header() {
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
@@ -320,29 +399,7 @@ export function Header() {
               py: 1,
             }}
           >
-            <Button
-              color="primary"
-              variant="contained"
-              sx={{
-                boxShadow: 0,
-                fontSize: 12,
-              }}
-              startIcon={<MarkunreadOutlinedIcon />}
-            >
-              {supportEmail}
-            </Button>
-
-            <Button
-              color="primary"
-              variant="contained"
-              sx={{
-                boxShadow: 0,
-                fontSize: 12,
-              }}
-              startIcon={<PhoneOutlinedIcon />}
-            >
-              {supportPhone}
-            </Button>
+            <SupportContacts />
           </Box>
         </Box>
       </Box>
