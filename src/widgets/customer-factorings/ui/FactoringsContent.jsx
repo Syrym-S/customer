@@ -4,7 +4,6 @@ import {
     Alert,
     Box,
     CircularProgress,
-    Container,
     Pagination,
     Stack,
     ToggleButton,
@@ -17,6 +16,7 @@ import { useFactoringsContext } from '../model/useFactoringsContext';
 import { FactoringCardsList } from './FactoringCardsList';
 import { FactoringDetailsModal } from './FactoringDetailsModal';
 import { FactoringsTable } from './FactoringsTable';
+import { PageContainer } from '../../../shared/ui/PageContainer';
 
 const FACTORINGS_VIEW_MODES = {
     TABLE: 'table',
@@ -63,7 +63,7 @@ export function FactoringsContent() {
     }
 
     return (
-        <Container maxWidth="lg" sx={{ py: 3 }}>
+        <PageContainer>
             <Stack spacing={3}>
                 <Box
                     sx={{
@@ -207,6 +207,6 @@ export function FactoringsContent() {
                 onClose={closeFactoringDetails}
                 onAccept={acceptFactoring}
             />
-        </Container>
+        </PageContainer>
     );
 }

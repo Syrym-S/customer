@@ -5,7 +5,6 @@ import {
     Box,
     Button,
     CircularProgress,
-    Container,
     InputAdornment,
     Pagination,
     Stack,
@@ -33,6 +32,7 @@ import { ForwardersTable } from '../../widgets/customer-forwarders/ui/Forwarders
 import { ForwarderDetailsModal } from '../../widgets/customer-forwarders/ui/ForwardersDetailsModal';
 import { ForwardersCardsList } from '../../widgets/customer-forwarders/ui/ForwardersCardsList';
 import { CreateForwarderInviteModal } from '../../widgets/customer-forwarders/ui/CreateForwarderInviteModal';
+import { PageContainer } from '../../shared/ui/PageContainer';
 
 const FORWARDERS_VIEW_MODES = {
     TABLE: 'table',
@@ -216,7 +216,7 @@ export function ForwardersPage() {
     }, [loadForwarders]);
 
     return (
-        <Container maxWidth="lg" sx={{ py: 3 }}>
+        <PageContainer>
             <Stack spacing={3}>
                 <Stack spacing={1.5}>
                     <Box
@@ -366,6 +366,6 @@ export function ForwardersPage() {
                 onClose={handleCloseCreate}
                 onSubmit={handleCreateForwarder}
             />
-        </Container>
+        </PageContainer>
     );
 }
