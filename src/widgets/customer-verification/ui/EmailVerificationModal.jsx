@@ -78,8 +78,8 @@ export function EmailVerificationModal({ open, onClose }) {
 
    return (
       <Dialog open={open} onClose={onClose} fullWidth maxWidth='xs'>
-         <DialogTitle sx={{ px: 3, pt: 3, pb: 1 }}>
-            <Stack direction='row' spacing={1.75} alignItems='center'>
+         <DialogTitle sx={{ px: 3, pt: 3, pb: 2 }}>
+            <Stack direction='row' spacing={1.75} sx={{alignItems: 'center'}}>
                <Box
                   sx={{
                      width: 44,
@@ -106,22 +106,10 @@ export function EmailVerificationModal({ open, onClose }) {
                            xs: 18,
                            sm: 20,
                         },
-                        lineHeight: 1.25,
+                        lineHeight: 1,
                      }}
                   >
                      Email не подтверждён
-                  </Typography>
-
-                  <Typography
-                     component='div'
-                     color='text.secondary'
-                     sx={{
-                        mt: 0.5,
-                        fontSize: 13,
-                        lineHeight: 1.4,
-                     }}
-                  >
-                     Подтвердите почту, чтобы завершить настройку аккаунта
                   </Typography>
                </Box>
             </Stack>
@@ -168,7 +156,7 @@ export function EmailVerificationModal({ open, onClose }) {
                   ? 'Отправка...'
                   : cooldownLeft > 0
                     ? `Через ${cooldownLeft} сек`
-                    : 'Отправить письмо'}
+                    : 'Отправить'}
             </Button>
          </DialogActions>
       </Dialog>

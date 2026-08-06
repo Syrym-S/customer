@@ -1,6 +1,14 @@
 import { Box, Container } from '@mui/material';
 
-export function PageContainer({ children, sx, ...boxProps }) {
+export function PageContainer({ children, fullWidth = false, sx, ...boxProps }) {
+    if (fullWidth) {
+        return (
+            <Container maxWidth={false} sx={sx} {...boxProps}>
+                {children}
+            </Container>
+        );
+    }
+
     return (
         <Container maxWidth={false}>
             <Box

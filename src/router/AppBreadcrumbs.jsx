@@ -8,9 +8,10 @@ export function AppBreadcrumbs() {
   const navigate = useNavigate();
 
   const crumbs = matches.filter((match) => match.handle?.breadcrumb);
+  const isFullWidth = matches.some((match) => match.handle?.fullWidthLayout);
 
   return (
-    <PageContainer sx={{ py: 0, pt: 2 }}>
+    <PageContainer fullWidth={isFullWidth} sx={{ py: 0, pt: 2 }}>
         <Breadcrumbs>
           {crumbs.length > 1 && (
             <Link

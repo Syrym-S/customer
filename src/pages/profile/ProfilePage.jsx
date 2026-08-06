@@ -4,7 +4,6 @@ import {
   Alert,
   Box,
   Button,
-  Container,
   Paper,
   Stack,
   TextField,
@@ -33,6 +32,7 @@ import {
 import { ProfilePhotoUploader } from "../../widgets/customer-profile/ui/ProfilePhotoUploader";
 import { EmailVerificationStatus } from "../../widgets/customer-verification/ui/EmailVerificationStatus";
 import { ProfileDocumentUpdateField } from "../../widgets/customer-profile/ui/ProfileDocumentUpdateField";
+import { PageContainer } from "../../shared/ui/PageContainer";
 
 export function ProfilePage() {
   const [form, setForm] = useState(initialProfileForm);
@@ -372,7 +372,7 @@ export function ProfilePage() {
   }, []);
 
   return (
-    <Container maxWidth="md" sx={{ py: 3 }}>
+    <PageContainer>
       <Paper
         component="form"
         onSubmit={handleSubmit}
@@ -672,6 +672,6 @@ export function ProfilePage() {
           </Box>
         </Stack>
       </Paper>
-    </Container>
+    </PageContainer>
   );
 }
