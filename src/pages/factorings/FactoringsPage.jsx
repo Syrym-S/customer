@@ -1,6 +1,6 @@
-import { FactoringsProvider } from '../../widgets/customer-factorings/model/FactoringsProvider';
-import { FactoringDetailsRouteSync } from '../../widgets/customer-factorings/ui/factorings-details/FactoringDetailsRouteSync';
-import { FactoringsContent } from '../../widgets/customer-factorings/ui/FactoringsContent';
+import { FactoringsProvider } from '../../entities/factoring/model/FactoringsProvider';
+import { FactoringDetailsRouteSync } from '../../widgets/factoring-details/ui/FactoringDetailsRouteSync';
+import { FactoringsContent } from '../../widgets/factorings-list/ui/FactoringsContent';
 
 export function FactoringsPage() {
     return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
-import { useLeadsContext } from "../../customer-leads/model/useLeadsContext";
+import { useLeadsContext } from "../../../entities/lead/model/useLeadsContext";
 import { DashboardMap } from "./DashboardMap";
 import { DashboardLeadsList } from "./DashboardLeadsList";
 import { DashboardTendersSection } from "./DashboardTendersSection";

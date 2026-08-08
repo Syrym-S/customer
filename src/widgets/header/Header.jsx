@@ -1,20 +1,20 @@
 import {
-  Avatar,
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Drawer,
-  IconButton,
-  List,
-  ListItemButton,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Typography,
+   Avatar,
+   Box,
+   Button,
+   Dialog,
+   DialogActions,
+   DialogContent,
+   DialogContentText,
+   DialogTitle,
+   Drawer,
+   IconButton,
+   List,
+   ListItemButton,
+   ListItemText,
+   Menu,
+   MenuItem,
+   Typography,
 } from '@mui/material';
 import logoSrc from '../../../assets/logo.png';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,523 +22,539 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logoutApi } from '../../shared/api/auth.api';
-import { Notifications } from '../customer-notifications/ui/Notifications';
-import { getCompactEmail } from '../../shared/helpers/helpers';
-import { PROFILE_PHOTO_UPDATED_EVENT } from '../customer-profile/model/profile-photo.helpers';
-import { fetchCustomerProfile } from '../../features/profile-edit/profile.api';
+import { NotificationsCenter } from '../notifications-center/ui/NotificationsCenter';
+import { PROFILE_PHOTO_UPDATED_EVENT } from '../../features/update-profile-photo/model/profile-photo.helpers';
+import { fetchCustomerProfile } from '../../features/edit-profile/api/profile.api';
 import { isStaging } from '../../shared/api/api-client';
 import { CUSTOMER_NAV_WIDTH } from '../../shared/config/constants';
+import { formatCompactEmail } from '../../shared/lib/email/email.helpers';
 
 export function Header() {
-  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const [profileAnchorEl, setProfileAnchorEl] = useState(null);
-  const [isLogoutLoading, setIsLogoutLoading] = useState(false);
-  const [logoutError, setLogoutError] = useState(null);
+   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
+   const [isLogoutLoading, setIsLogoutLoading] = useState(false);
+   const [logoutError, setLogoutError] = useState(null);
 
-  const location = useLocation();
-  const navigate = useNavigate();
+   const location = useLocation();
+   const navigate = useNavigate();
 
-  const isProfileMenuOpen = Boolean(profileAnchorEl);
-  const isDashboardPage = location.pathname === '/customer/dashboard';
-  const isLeadsPage = location.pathname === '/customer';
-  const isTenderPage = location.pathname === '/customer/tenders';
-  const isFactoringsPage = location.pathname === '/customer/factorings';
-  const isForwardersPage = location.pathname === '/customer/forwarders';
-  const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
-  const userEmailLabel = getCompactEmail(userEmail);
-  const [profilePhoto, setProfilePhoto] = useState('');
+   const isProfileMenuOpen = Boolean(profileAnchorEl);
+   const isDashboardPage = location.pathname === '/customer/dashboard';
+   const isLeadsPage = location.pathname === '/customer';
+   const isTenderPage = location.pathname === '/customer/tenders';
+   const isFactoringsPage = location.pathname === '/customer/factorings';
+   const isForwardersPage = location.pathname === '/customer/forwarders';
+   const userEmail = window?.APP_DATA?.user_email || 'Пользователь';
+   const userEmailLabel = formatCompactEmail(userEmail);
+   const [profilePhoto, setProfilePhoto] = useState('');
 
-  function handleNavigate(path) {
-    if (location.pathname === path) {
+   function handleNavigate(path) {
+      if (location.pathname === path) {
+         handleCloseBurger();
+         return;
+      }
+
+      navigate(path);
       handleCloseBurger();
-      return;
-    }
+   }
 
-    navigate(path);
-    handleCloseBurger();
-  }
+   function handleNavigateProfile() {
+      handleCloseProfileMenu();
+      handleNavigate('/customer/profile');
+   }
 
-  function handleNavigateProfile() {
-    handleCloseProfileMenu();
-    handleNavigate('/customer/profile');
-  }
+   function handleOpenProfileMenu(event) {
+      const anchorElement = event.currentTarget;
 
-  function handleOpenProfileMenu(event) {
-    const anchorElement = event.currentTarget;
+      anchorElement.blur();
+      setProfileAnchorEl(anchorElement);
+   }
 
-    anchorElement.blur();
-    setProfileAnchorEl(anchorElement);
-  }
+   function handleCloseProfileMenu() {
+      blurActiveElement();
+      setProfileAnchorEl(null);
+   }
 
-  function handleCloseProfileMenu() {
-    blurActiveElement();
-    setProfileAnchorEl(null);
-  }
+   function handleOpenBurger(event) {
+      event.currentTarget.blur();
 
-  function handleOpenBurger(event) {
-    event.currentTarget.blur();
+      requestAnimationFrame(() => {
+         setIsBurgerOpen(true);
+      });
+   }
 
-    requestAnimationFrame(() => {
-      setIsBurgerOpen(true);
-    });
-  }
-
-  function handleOpenLogoutModal() {
-    handleCloseProfileMenu();
-    setLogoutError(null);
-
-    requestAnimationFrame(() => {
-      setIsLogoutModalOpen(true);
-    });
-  }
-
-  function blurActiveElement() {
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-  }
-
-  function handleCloseLogoutModal() {
-    if (isLogoutLoading) {
-      return;
-    }
-
-    blurActiveElement();
-    setLogoutError(null);
-    setIsLogoutModalOpen(false);
-  }
-
-  function handleCloseBurger() {
-    blurActiveElement();
-    setIsBurgerOpen(false);
-  }
-
-  async function handleConfirmLogout() {
-    try {
-      setIsLogoutLoading(true);
+   function handleOpenLogoutModal() {
+      handleCloseProfileMenu();
       setLogoutError(null);
 
-      await logoutApi();
+      requestAnimationFrame(() => {
+         setIsLogoutModalOpen(true);
+      });
+   }
 
-      window.location.replace(
-        isStaging ? '/staging/auth/login' : '/auth/login',
-      );
-    } catch (error) {
-      setLogoutError(
-        error.response?.data?.message ||
-          error.message ||
-          'Не удалось выйти из аккаунта',
-      );
-    } finally {
-      setIsLogoutLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    let isCancelled = false;
-
-    async function loadProfileAvatar() {
-      try {
-        const profile = await fetchCustomerProfile();
-
-        if (!isCancelled) {
-          setProfilePhoto(profile?.avatar || '');
-        }
-      } catch {
-        if (!isCancelled) {
-          setProfilePhoto('');
-        }
+   function blurActiveElement() {
+      if (document.activeElement instanceof HTMLElement) {
+         document.activeElement.blur();
       }
-    }
+   }
 
-    function handleProfilePhotoUpdated(event) {
-      setProfilePhoto(event.detail?.photoUrl || '');
-    }
+   function handleCloseLogoutModal() {
+      if (isLogoutLoading) {
+         return;
+      }
 
-    loadProfileAvatar();
+      blurActiveElement();
+      setLogoutError(null);
+      setIsLogoutModalOpen(false);
+   }
 
-    window.addEventListener(
-      PROFILE_PHOTO_UPDATED_EVENT,
-      handleProfilePhotoUpdated,
-    );
+   function handleCloseBurger() {
+      blurActiveElement();
+      setIsBurgerOpen(false);
+   }
 
-    return () => {
-      isCancelled = true;
+   async function handleConfirmLogout() {
+      try {
+         setIsLogoutLoading(true);
+         setLogoutError(null);
 
-      window.removeEventListener(
-        PROFILE_PHOTO_UPDATED_EVENT,
-        handleProfilePhotoUpdated,
+         await logoutApi();
+
+         window.location.replace(
+            isStaging ? '/staging/auth/login' : '/auth/login',
+         );
+      } catch (error) {
+         setLogoutError(
+            error.response?.data?.message ||
+               error.message ||
+               'Не удалось выйти из аккаунта',
+         );
+      } finally {
+         setIsLogoutLoading(false);
+      }
+   }
+
+   useEffect(() => {
+      let isCancelled = false;
+
+      async function loadProfileAvatar() {
+         try {
+            const profile = await fetchCustomerProfile();
+
+            if (!isCancelled) {
+               setProfilePhoto(profile?.avatar || '');
+            }
+         } catch {
+            if (!isCancelled) {
+               setProfilePhoto('');
+            }
+         }
+      }
+
+      function handleProfilePhotoUpdated(event) {
+         setProfilePhoto(event.detail?.photoUrl || '');
+      }
+
+      loadProfileAvatar();
+
+      window.addEventListener(
+         PROFILE_PHOTO_UPDATED_EVENT,
+         handleProfilePhotoUpdated,
       );
-    };
-  }, []);
 
-  function renderDrawerContent({ showCloseButton = false } = {}) {
-    return (
-      <Box sx={{ p: 2 }}>
-        {showCloseButton && (
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              mb: 2,
-            }}
-          >
-            <IconButton onClick={handleCloseBurger} aria-label="Закрыть меню">
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        )}
+      return () => {
+         isCancelled = true;
 
-        <List>
-          <ListItemButton
-            selected={isDashboardPage}
-            onClick={() => {
-                if (isDashboardPage) {
-                  handleCloseBurger();
-                  return;
-                }
+         window.removeEventListener(
+            PROFILE_PHOTO_UPDATED_EVENT,
+            handleProfilePhotoUpdated,
+         );
+      };
+   }, []);
 
-                handleNavigate('/customer/dashboard');
-            }}
-          >
-            <ListItemText
-                primary="Дэшборд"
-                primaryTypographyProps={{
-                  sx: {
-                      color: isDashboardPage ? 'primary.main' : 'text.primary',
-                      fontWeight: isDashboardPage ? 600 : 400,
-                  },
-                }}
-            />
-          </ListItemButton>
-          <ListItemButton
-            selected={isLeadsPage}
-            onClick={() => {
-              if (isLeadsPage) {
-                handleCloseBurger();
-                return;
-              }
+   function renderDrawerContent({ showCloseButton = false } = {}) {
+      return (
+         <Box sx={{ p: 2 }}>
+            {showCloseButton && (
+               <Box
+                  sx={{
+                     display: 'flex',
+                     justifyContent: 'flex-end',
+                     mb: 2,
+                  }}
+               >
+                  <IconButton
+                     onClick={handleCloseBurger}
+                     aria-label='Закрыть меню'
+                  >
+                     <CloseIcon />
+                  </IconButton>
+               </Box>
+            )}
 
-              handleNavigate('/customer');
-            }}
-          >
-            <ListItemText
-              primary="Лиды"
-              primaryTypographyProps={{
-                sx: {
-                  color: isLeadsPage ? 'primary.main' : 'text.primary',
-                  fontWeight: isLeadsPage ? 600 : 400,
-                },
-              }}
-            />
-          </ListItemButton>
+            <List>
+               <ListItemButton
+                  selected={isDashboardPage}
+                  onClick={() => {
+                     if (isDashboardPage) {
+                        handleCloseBurger();
+                        return;
+                     }
 
-          <ListItemButton
-            selected={isTenderPage}
-            onClick={() => {
-              if (isTenderPage) {
-                handleCloseBurger();
-                return;
-              }
+                     handleNavigate('/customer/dashboard');
+                  }}
+               >
+                  <ListItemText
+                     primary='Дэшборд'
+                     primaryTypographyProps={{
+                        sx: {
+                           color: isDashboardPage
+                              ? 'primary.main'
+                              : 'text.primary',
+                           fontWeight: isDashboardPage ? 600 : 400,
+                        },
+                     }}
+                  />
+               </ListItemButton>
+               <ListItemButton
+                  selected={isLeadsPage}
+                  onClick={() => {
+                     if (isLeadsPage) {
+                        handleCloseBurger();
+                        return;
+                     }
 
-              handleNavigate('/customer/tenders');
-            }}
-          >
-            <ListItemText
-              primary="Тендеры"
-              primaryTypographyProps={{
-                sx: {
-                  color: isTenderPage ? 'primary.main' : 'text.primary',
-                  fontWeight: isTenderPage ? 600 : 400,
-                },
-              }}
-            />
-          </ListItemButton>
+                     handleNavigate('/customer');
+                  }}
+               >
+                  <ListItemText
+                     primary='Лиды'
+                     primaryTypographyProps={{
+                        sx: {
+                           color: isLeadsPage ? 'primary.main' : 'text.primary',
+                           fontWeight: isLeadsPage ? 600 : 400,
+                        },
+                     }}
+                  />
+               </ListItemButton>
 
-          <ListItemButton
-            selected={isFactoringsPage}
-            onClick={() => {
-              if (isFactoringsPage) {
-                handleCloseBurger();
-                return;
-              }
+               <ListItemButton
+                  selected={isTenderPage}
+                  onClick={() => {
+                     if (isTenderPage) {
+                        handleCloseBurger();
+                        return;
+                     }
 
-              handleNavigate('/customer/factorings');
-            }}
-          >
-            <ListItemText
-              primary="Факторинг"
-              primaryTypographyProps={{
-                sx: {
-                  color: isFactoringsPage ? 'primary.main' : 'text.primary',
-                  fontWeight: isFactoringsPage ? 600 : 400,
-                },
-              }}
-            />
-          </ListItemButton>
+                     handleNavigate('/customer/tenders');
+                  }}
+               >
+                  <ListItemText
+                     primary='Тендеры'
+                     primaryTypographyProps={{
+                        sx: {
+                           color: isTenderPage
+                              ? 'primary.main'
+                              : 'text.primary',
+                           fontWeight: isTenderPage ? 600 : 400,
+                        },
+                     }}
+                  />
+               </ListItemButton>
 
-          <ListItemButton
-            selected={isForwardersPage}
-            onClick={() => {
-              if (isForwardersPage) {
-                handleCloseBurger();
-                return;
-              }
+               <ListItemButton
+                  selected={isFactoringsPage}
+                  onClick={() => {
+                     if (isFactoringsPage) {
+                        handleCloseBurger();
+                        return;
+                     }
 
-              handleNavigate('/customer/forwarders');
-            }}
-          >
-            <ListItemText
-              primary="Экспедиторы"
-              primaryTypographyProps={{
-                sx: {
-                  color: isForwardersPage ? 'primary.main' : 'text.primary',
-                  fontWeight: isForwardersPage ? 600 : 400,
-                },
-              }}
-            />
-          </ListItemButton>
-        </List>
-      </Box>
-    );
-  }
+                     handleNavigate('/customer/factorings');
+                  }}
+               >
+                  <ListItemText
+                     primary='Факторинг'
+                     primaryTypographyProps={{
+                        sx: {
+                           color: isFactoringsPage
+                              ? 'primary.main'
+                              : 'text.primary',
+                           fontWeight: isFactoringsPage ? 600 : 400,
+                        },
+                     }}
+                  />
+               </ListItemButton>
 
-  return (
-    <Box
-      component="header"
-      sx={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 1100,
-        borderBottom: '1px solid',
-        borderColor: 'divider',
-        backgroundColor: 'background.paper',
-      }}
-    >
+               <ListItemButton
+                  selected={isForwardersPage}
+                  onClick={() => {
+                     if (isForwardersPage) {
+                        handleCloseBurger();
+                        return;
+                     }
+
+                     handleNavigate('/customer/forwarders');
+                  }}
+               >
+                  <ListItemText
+                     primary='Экспедиторы'
+                     primaryTypographyProps={{
+                        sx: {
+                           color: isForwardersPage
+                              ? 'primary.main'
+                              : 'text.primary',
+                           fontWeight: isForwardersPage ? 600 : 400,
+                        },
+                     }}
+                  />
+               </ListItemButton>
+            </List>
+         </Box>
+      );
+   }
+
+   return (
       <Box
-        sx={{
-          height: 64,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          position: 'relative',
-          width: '100%',
-          px: {
-            xs: 1,
-            sm: 2,
-          },
-          boxSizing: 'border-box',
-        }}
+         component='header'
+         sx={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 1100,
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+            backgroundColor: 'background.paper',
+         }}
       >
-          <IconButton
-            onClick={handleOpenBurger}
+         <Box
             sx={{
-              display: {
-                xs: 'inline-flex',
-                sm: 'none',
-              },
+               height: 64,
+               display: 'flex',
+               alignItems: 'center',
+               justifyContent: 'space-between',
+               position: 'relative',
+               width: '100%',
+               px: {
+                  xs: 1,
+                  sm: 2,
+               },
+               boxSizing: 'border-box',
             }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Box
-            component="img"
-            src={logoSrc}
-            alt="360 Logistics"
-            sx={{
-              height: {
-                xs: 28,
-                sm: 32,
-              },
-              width: 'auto',
-              maxWidth: {
-                xs: 130,
-                sm: 170,
-              },
-              objectFit: 'contain',
-              display: 'block',
-              flexShrink: 0,
-              pointerEvents: 'none',
-            }}
-          />
-
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              minWidth: 0,
-              flexShrink: 1,
-              ml: 'auto',
-            }}
-          >
-            <Notifications />
-
-            <Button
-              variant="outlined"
-              onClick={handleOpenProfileMenu}
-              title={userEmail}
-              aria-label={`Профиль пользователя ${userEmail}`}
-              sx={{
-                minWidth: 0,
-                maxWidth: {
-                  xs: 140,
-                  sm: 220,
-                  md: 280,
-                },
-                px: {
-                  xs: 0.75,
-                  sm: 1.25,
-                },
-                textTransform: 'none',
-                overflow: 'hidden',
-                flexShrink: 1,
-                gap: 0.75,
-
-                '@media (max-width: 449px)': {
-                  width: 36,
-                  height: 36,
-                  minWidth: 36,
-                  maxWidth: 36,
-                  px: 0,
-                  border: 'none',
-                  borderRadius: '50%',
-                },
-              }}
-            >
-              <Avatar
-                src={profilePhoto || undefined}
-                sx={{
-                  width: {
-                    xs: 24,
-                    sm: 28,
-                  },
-                  height: {
-                    xs: 24,
-                    sm: 28,
-                  },
-                  fontSize: 13,
-                  flexShrink: 0,
-                }}
-              />
-
-              <Typography
-                component="span"
-                noWrap
-                sx={{
+         >
+            <IconButton
+               onClick={handleOpenBurger}
+               sx={{
                   display: {
-                    xs: 'none',
-                    sm: 'block',
+                     xs: 'inline-flex',
+                     sm: 'none',
                   },
+               }}
+            >
+               <MenuIcon />
+            </IconButton>
+
+            <Box
+               component='img'
+               src={logoSrc}
+               alt='360 Logistics'
+               sx={{
+                  height: {
+                     xs: 28,
+                     sm: 32,
+                  },
+                  width: 'auto',
+                  maxWidth: {
+                     xs: 130,
+                     sm: 170,
+                  },
+                  objectFit: 'contain',
+                  display: 'block',
+                  flexShrink: 0,
+                  pointerEvents: 'none',
+               }}
+            />
+
+            <Box
+               sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
                   minWidth: 0,
-                  maxWidth: '100%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  fontSize: {
-                    xs: 12,
-                    sm: 14,
+                  flexShrink: 1,
+                  ml: 'auto',
+               }}
+            >
+               <NotificationsCenter />
+
+               <Button
+                  variant='outlined'
+                  onClick={handleOpenProfileMenu}
+                  title={userEmail}
+                  aria-label={`Профиль пользователя ${userEmail}`}
+                  sx={{
+                     minWidth: 0,
+                     maxWidth: {
+                        xs: 140,
+                        sm: 220,
+                        md: 280,
+                     },
+                     px: {
+                        xs: 0.75,
+                        sm: 1.25,
+                     },
+                     textTransform: 'none',
+                     overflow: 'hidden',
+                     flexShrink: 1,
+                     gap: 0.75,
+
+                     '@media (max-width: 449px)': {
+                        width: 36,
+                        height: 36,
+                        minWidth: 36,
+                        maxWidth: 36,
+                        px: 0,
+                        border: 'none',
+                        borderRadius: '50%',
+                     },
+                  }}
+               >
+                  <Avatar
+                     src={profilePhoto || undefined}
+                     sx={{
+                        width: {
+                           xs: 24,
+                           sm: 28,
+                        },
+                        height: {
+                           xs: 24,
+                           sm: 28,
+                        },
+                        fontSize: 13,
+                        flexShrink: 0,
+                     }}
+                  />
+
+                  <Typography
+                     component='span'
+                     noWrap
+                     sx={{
+                        display: {
+                           xs: 'none',
+                           sm: 'block',
+                        },
+                        minWidth: 0,
+                        maxWidth: '100%',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        fontSize: {
+                           xs: 12,
+                           sm: 14,
+                        },
+                        lineHeight: 1.4,
+                        '@media (min-width: 450px)': {
+                           display: 'block',
+                        },
+                     }}
+                  >
+                     {userEmailLabel}
+                  </Typography>
+               </Button>
+            </Box>
+         </Box>
+
+         <>
+            <Drawer
+               variant='permanent'
+               open
+               sx={{
+                  display: {
+                     xs: 'none',
+                     sm: 'block',
                   },
-                  lineHeight: 1.4,
-                  '@media (min-width: 450px)': {
-                    display: 'block',
+                  '& .MuiDrawer-paper': {
+                     width: CUSTOMER_NAV_WIDTH,
+                     boxSizing: 'border-box',
+                     top: 64,
+                     height: 'calc(100dvh - 64px)',
+                     borderRight: '1px solid',
+                     borderColor: 'divider',
                   },
-                }}
-              >
-                {userEmailLabel}
-              </Typography>
-            </Button>
-          </Box>
+               }}
+            >
+               {renderDrawerContent({ showCloseButton: false })}
+            </Drawer>
+
+            <Drawer
+               variant='temporary'
+               open={isBurgerOpen}
+               onClose={handleCloseBurger}
+               slotProps={{
+                  paper: {
+                     sx: {
+                        width: {
+                           xs: '100%',
+                           sm: CUSTOMER_NAV_WIDTH,
+                        },
+                     },
+                  },
+               }}
+               sx={{
+                  display: {
+                     xs: 'block',
+                     sm: 'none',
+                  },
+               }}
+            >
+               {renderDrawerContent({ showCloseButton: true })}
+            </Drawer>
+         </>
+         <Menu
+            anchorEl={profileAnchorEl}
+            open={isProfileMenuOpen}
+            onClose={handleCloseProfileMenu}
+         >
+            <MenuItem onClick={handleNavigateProfile}>Профиль</MenuItem>
+
+            <MenuItem>Настройки</MenuItem>
+
+            <MenuItem onClick={handleOpenLogoutModal}>Выход</MenuItem>
+         </Menu>
+
+         <Dialog open={isLogoutModalOpen} onClose={handleCloseLogoutModal}>
+            <DialogTitle>Выход из аккаунта</DialogTitle>
+
+            <DialogContent>
+               <DialogContentText>
+                  Вы уверены, что хотите выйти?
+               </DialogContentText>
+
+               {logoutError && (
+                  <DialogContentText color='error' sx={{ mt: 2 }}>
+                     {logoutError}
+                  </DialogContentText>
+               )}
+            </DialogContent>
+
+            <DialogActions sx={{ px: 3, pb: 2 }}>
+               <Button
+                  onClick={handleCloseLogoutModal}
+                  disabled={isLogoutLoading}
+               >
+                  Отмена
+               </Button>
+
+               <Button
+                  color='error'
+                  variant='contained'
+                  onClick={handleConfirmLogout}
+                  disabled={isLogoutLoading}
+               >
+                  {isLogoutLoading ? 'Выход...' : 'Выйти'}
+               </Button>
+            </DialogActions>
+         </Dialog>
       </Box>
-
-      <>
-        <Drawer
-          variant="permanent"
-          open
-          sx={{
-            display: {
-              xs: 'none',
-              sm: 'block',
-            },
-            '& .MuiDrawer-paper': {
-              width: CUSTOMER_NAV_WIDTH,
-              boxSizing: 'border-box',
-              top: 64,
-              height: 'calc(100dvh - 64px)',
-              borderRight: '1px solid',
-              borderColor: 'divider',
-            },
-          }}
-        >
-          {renderDrawerContent({ showCloseButton: false })}
-        </Drawer>
-
-        <Drawer
-          variant="temporary"
-          open={isBurgerOpen}
-          onClose={handleCloseBurger}
-          slotProps={{
-            paper: {
-              sx: {
-                width: {
-                  xs: '100%',
-                  sm: CUSTOMER_NAV_WIDTH,
-                },
-              },
-            },
-          }}
-          sx={{
-            display: {
-              xs: 'block',
-              sm: 'none',
-            },
-          }}
-        >
-          {renderDrawerContent({ showCloseButton: true })}
-        </Drawer>
-      </>
-      <Menu
-        anchorEl={profileAnchorEl}
-        open={isProfileMenuOpen}
-        onClose={handleCloseProfileMenu}
-      >
-        <MenuItem onClick={handleNavigateProfile}>Профиль</MenuItem>
-
-        <MenuItem>Настройки</MenuItem>
-
-        <MenuItem onClick={handleOpenLogoutModal}>Выход</MenuItem>
-      </Menu>
-
-      <Dialog open={isLogoutModalOpen} onClose={handleCloseLogoutModal}>
-        <DialogTitle>Выход из аккаунта</DialogTitle>
-
-        <DialogContent>
-          <DialogContentText>Вы уверены, что хотите выйти?</DialogContentText>
-
-          {logoutError && (
-            <DialogContentText color="error" sx={{ mt: 2 }}>
-              {logoutError}
-            </DialogContentText>
-          )}
-        </DialogContent>
-
-        <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={handleCloseLogoutModal} disabled={isLogoutLoading}>
-            Отмена
-          </Button>
-
-          <Button
-            color="error"
-            variant="contained"
-            onClick={handleConfirmLogout}
-            disabled={isLogoutLoading}
-          >
-            {isLogoutLoading ? 'Выход...' : 'Выйти'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
-  );
+   );
 }

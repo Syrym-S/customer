@@ -1,13 +1,14 @@
 import { Box, Chip, Divider, Paper, Stack, Typography } from '@mui/material';
-import { normalizeLocationValue } from '../../customer-tenders/model/tender-edit-form.helpers';
 import {
     getTenderCargoTypeLabel,
     getTenderTotalCargoWeight,
     getTimeLeft,
     tenderStatusLabels,
     tenderStatusStyles,
-} from '../../customer-tenders/model/tender.helpers';
-import { useTendersContext } from '../../customer-tenders/model/useTendersContext';
+} from '../../../entities/tender/model/tender.helpers';
+import { useTendersContext } from '../../../entities/tender/model/useTendersContext';
+import { normalizeLocationValue } from '../../../shared/lib/location/location.helpers';
+import { TimeLeftBadge } from '../../../entities/tender/ui/TimeLeftBadge';
 
 function getLocationLabel(tender, field) {
     return (
@@ -65,8 +66,8 @@ function TenderStatusChip({ status }) {
     return (
         <Chip
             label={label}
-            variant="outlined"
-            size="small"
+            variant='outlined'
+            size='small'
             sx={{
                 borderRadius: 999,
                 fontWeight: 600,
@@ -77,49 +78,10 @@ function TenderStatusChip({ status }) {
     );
 }
 
-function TimeLeftBadge({ value }) {
-    return (
-        <Box
-            sx={{
-                px: 1,
-                py: 0.4,
-                border: '1px solid',
-                borderColor: 'divider',
-                borderRadius: 999,
-                backgroundColor: 'grey.50',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.5,
-            }}
-        >
-            <Typography
-                sx={{
-                    fontSize: 11,
-                    color: 'text.secondary',
-                    lineHeight: 1.2,
-                }}
-            >
-                Осталось
-            </Typography>
-
-            <Typography
-                sx={{
-                    fontSize: 12,
-                    fontWeight: 600,
-                    color: 'text.primary',
-                    lineHeight: 1.2,
-                }}
-            >
-                {value || 'Не указано'}
-            </Typography>
-        </Box>
-    );
-}
-
 function InfoText({ label, value }) {
     return (
         <Box sx={{ minWidth: 0 }}>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant='caption' color='text.secondary'>
                 {label}
             </Typography>
 
@@ -154,9 +116,9 @@ export function DashboardTenderItem({ tender }) {
 
     return (
         <Paper
-            variant="outlined"
+            variant='outlined'
             onClick={handleOpenTender}
-            role="button"
+            role='button'
             tabIndex={0}
             sx={{
                 p: 1.5,
@@ -197,9 +159,9 @@ export function DashboardTenderItem({ tender }) {
                     >
                         <Chip
                             label={`Тендер #${getShortTenderId(tender?.id)}`}
-                            size="small"
-                            color="primary"
-                            variant="outlined"
+                            size='small'
+                            color='primary'
+                            variant='outlined'
                             title={
                                 tender?.id
                                     ? `Тендер #${tender.id}`
@@ -223,8 +185,8 @@ export function DashboardTenderItem({ tender }) {
                             label={getPublicationTypeLabel(
                                 tender?.publication_type,
                             )}
-                            size="small"
-                            variant="outlined"
+                            size='small'
+                            variant='outlined'
                             sx={{
                                 borderRadius: 999,
                                 fontWeight: 500,
@@ -243,6 +205,7 @@ export function DashboardTenderItem({ tender }) {
                                     tender?.endDateTime,
                                     tender?.status,
                                 )}
+                                dense
                             />
                         </Box>
                     )}
@@ -250,7 +213,7 @@ export function DashboardTenderItem({ tender }) {
 
                 <Box>
                     <InfoText
-                        label="Откуда"
+                        label='Откуда'
                         value={getLocationLabel(tender, 'from_location')}
                     />
                 </Box>
@@ -259,7 +222,7 @@ export function DashboardTenderItem({ tender }) {
 
                 <Box>
                     <InfoText
-                        label="Куда"
+                        label='Куда'
                         value={getLocationLabel(tender, 'to_location')}
                     />
                 </Box>
@@ -274,10 +237,10 @@ export function DashboardTenderItem({ tender }) {
                         gap: 1,
                     }}
                 >
-                    <InfoText label="Тип груза" value={cargoTypeLabel} />
+                    <InfoText label='Тип груза' value={cargoTypeLabel} />
 
                     <InfoText
-                        label="Вес"
+                        label='Вес'
                         value={
                             totalCargoWeight > 0
                                 ? `${totalCargoWeight} кг`
@@ -307,8 +270,8 @@ export function DashboardTenderItem({ tender }) {
 
                     <Chip
                         label={`Ставки: ${betsCount}`}
-                        size="small"
-                        variant="outlined"
+                        size='small'
+                        variant='outlined'
                         sx={{
                             borderRadius: 999,
                             fontWeight: 500,

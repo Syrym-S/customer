@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
 import {
     Alert,
     Box,
@@ -15,54 +13,58 @@ import {
     Typography,
 } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-
-import {
-    createForwarderApi,
-    fetchForwarderById,
-    fetchForwardersApi,
-    searchForwardersApi,
-} from '../../features/create-lead/api/forwarders.api';
-import {
-    FORWARDERS_PER_PAGE,
-    getForwarderId,
-    normalizeForwardersListResponse,
-} from '../../widgets/customer-forwarders/model/forwarders.helpers';
 import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
-import { ForwardersTable } from '../../widgets/customer-forwarders/ui/ForwardersTable';
-import { ForwarderDetailsModal } from '../../widgets/customer-forwarders/ui/ForwardersDetailsModal';
-import { ForwardersCardsList } from '../../widgets/customer-forwarders/ui/ForwardersCardsList';
-import { CreateForwarderInviteModal } from '../../widgets/customer-forwarders/ui/CreateForwarderInviteModal';
 
-const FORWARDERS_VIEW_MODES = {
-    TABLE: 'table',
-    CARDS: 'cards',
-};
+import { ForwardersProvider } from '../../entities/forwarder/model/ForwardersProvider';
+import { useForwardersContext } from '../../entities/forwarder/model/useForwardersContext';
+import { FORWARDERS_VIEW_MODES } from '../../entities/forwarder/model/forwarder.constants';
+import { ForwardersTable } from '../../widgets/forwarders-list/ui/ForwardersTable';
+import { ForwarderDetailsModal } from '../../widgets/forwarder-details/ui/ForwarderDetailsModal';
+import { ForwardersCardsList } from '../../widgets/forwarders-list/ui/ForwardersCardsList';
+import { CreateForwarderInviteModal } from '../../features/invite-forwarder/ui/CreateForwarderInviteModal';
 
 export function ForwardersPage() {
-    const [forwarders, setForwarders] = useState([]);
+    return (
+        <ForwardersProvider>
+            <ForwardersPageContent />
+        </ForwardersProvider>
+    );
+}
 
-    const [page, setPage] = useState(1);
-    const [total, setTotal] = useState(0);
+function ForwardersPageContent() {
+    const {
+        forwarders,
 
-    const [search, setSearch] = useState('');
-    const [debouncedSearch, setDebouncedSearch] = useState('');
+        page,
+        setPage,
+        pageCount,
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
+        search,
+        setSearch,
+        isSearchMode,
 
-    const [selectedForwarder, setSelectedForwarder] = useState(null);
-    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-    const [isDetailsLoading, setIsDetailsLoading] = useState(false);
-    const [detailsError, setDetailsError] = useState('');
-    const [viewMode, setViewMode] = useState(FORWARDERS_VIEW_MODES.TABLE);
+        isLoading,
+        error,
 
-    const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const [isCreating, setIsCreating] = useState(false);
-    const [createError, setCreateError] = useState('');
-    const [createdInvite, setCreatedInvite] = useState(null);
+        selectedForwarder,
+        isDetailsOpen,
+        isDetailsLoading,
+        detailsError,
+        openForwarderDetails,
+        closeForwarderDetails,
 
-    const isSearchMode = Boolean(debouncedSearch.trim());
+        viewMode,
+        setViewMode,
+
+        isCreateOpen,
+        isCreating,
+        createError,
+        createdInvite,
+        openCreateForwarder,
+        closeCreateForwarder,
+        createForwarder,
+    } = useForwardersContext();
 
     function handleViewModeChange(_, nextViewMode) {
         if (!nextViewMode) {
@@ -72,50 +74,6 @@ export function ForwardersPage() {
         setViewMode(nextViewMode);
     }
 
-    const pageCount = useMemo(
-        () => Math.max(1, Math.ceil(total / FORWARDERS_PER_PAGE)),
-        [total],
-    );
-
-    const loadForwarders = useCallback(async () => {
-        try {
-            setIsLoading(true);
-            setError('');
-
-            if (isSearchMode) {
-                const searchResults =
-                    await searchForwardersApi(debouncedSearch);
-
-                const nextForwarders = Array.isArray(searchResults)
-                    ? searchResults
-                    : [];
-
-                setForwarders(nextForwarders);
-                setTotal(nextForwarders.length);
-                return;
-            }
-
-            const response = await fetchForwardersApi({
-                page,
-                perPage: FORWARDERS_PER_PAGE,
-            });
-
-            const mappedResponse = normalizeForwardersListResponse(response);
-
-            setForwarders(mappedResponse.forwarders);
-            setTotal(mappedResponse.total);
-        } catch (requestError) {
-            setError(
-                requestError.response?.data?.message ||
-                    requestError.response?.data?.error ||
-                    requestError.message ||
-                    'Не удалось загрузить экспедиторов',
-            );
-        } finally {
-            setIsLoading(false);
-        }
-    }, [debouncedSearch, isSearchMode, page]);
-
     function handleSearchChange(event) {
         setSearch(event.target.value);
     }
@@ -123,97 +81,6 @@ export function ForwardersPage() {
     function handlePageChange(_, nextPage) {
         setPage(nextPage);
     }
-
-    async function handleOpenDetails(forwarder) {
-        const forwarderId = getForwarderId(forwarder);
-
-        if (!forwarderId) {
-            return;
-        }
-
-        try {
-            setIsDetailsOpen(true);
-            setSelectedForwarder(forwarder);
-            setDetailsError('');
-            setIsDetailsLoading(true);
-
-            const details = await fetchForwarderById(forwarderId);
-
-            setSelectedForwarder(details || forwarder);
-        } catch (requestError) {
-            setDetailsError(
-                requestError.response?.data?.message ||
-                    requestError.response?.data?.error ||
-                    requestError.message ||
-                    'Не удалось загрузить данные экспедитора',
-            );
-        } finally {
-            setIsDetailsLoading(false);
-        }
-    }
-
-    function handleCloseDetails() {
-        if (isDetailsLoading) {
-            return;
-        }
-
-        setIsDetailsOpen(false);
-        setSelectedForwarder(null);
-        setDetailsError('');
-    }
-
-    function handleOpenCreate() {
-        setIsCreateOpen(true);
-        setCreateError('');
-        setCreatedInvite(null);
-    }
-
-    function handleCloseCreate() {
-        if (isCreating) {
-            return;
-        }
-
-        setIsCreateOpen(false);
-        setCreateError('');
-        setCreatedInvite(null);
-    }
-
-    async function handleCreateForwarder(payload) {
-        try {
-            setIsCreating(true);
-            setCreateError('');
-
-            const response = await createForwarderApi(payload);
-
-            setCreatedInvite(response);
-
-            await loadForwarders();
-        } catch (requestError) {
-            setCreateError(
-                requestError.response?.data?.message ||
-                    requestError.response?.data?.error ||
-                    requestError.message ||
-                    'Не удалось создать приглашение',
-            );
-        } finally {
-            setIsCreating(false);
-        }
-    }
-
-    useEffect(() => {
-        const timeoutId = window.setTimeout(() => {
-            setDebouncedSearch(search.trim());
-            setPage(1);
-        }, 450);
-
-        return () => {
-            window.clearTimeout(timeoutId);
-        };
-    }, [search]);
-
-    useEffect(() => {
-        loadForwarders();
-    }, [loadForwarders]);
 
     return (
         <Container maxWidth="lg" sx={{ py: 3 }}>
@@ -284,7 +151,7 @@ export function ForwardersPage() {
 
                     <Button
                         variant="contained"
-                        onClick={handleOpenCreate}
+                        onClick={openCreateForwarder}
                         sx={{
                             alignSelf: 'flex-start',
                         }}
@@ -323,12 +190,12 @@ export function ForwardersPage() {
                 ) : viewMode === FORWARDERS_VIEW_MODES.TABLE ? (
                     <ForwardersTable
                         forwarders={forwarders}
-                        onOpenDetails={handleOpenDetails}
+                        onOpenDetails={openForwarderDetails}
                     />
                 ) : (
                     <ForwardersCardsList
                         forwarders={forwarders}
-                        onOpenDetails={handleOpenDetails}
+                        onOpenDetails={openForwarderDetails}
                     />
                 )}
 
@@ -355,7 +222,7 @@ export function ForwardersPage() {
                 forwarder={selectedForwarder}
                 loading={isDetailsLoading}
                 error={detailsError}
-                onClose={handleCloseDetails}
+                onClose={closeForwarderDetails}
             />
 
             <CreateForwarderInviteModal
@@ -363,8 +230,8 @@ export function ForwardersPage() {
                 loading={isCreating}
                 error={createError}
                 createdInvite={createdInvite}
-                onClose={handleCloseCreate}
-                onSubmit={handleCreateForwarder}
+                onClose={closeCreateForwarder}
+                onSubmit={createForwarder}
             />
         </Container>
     );

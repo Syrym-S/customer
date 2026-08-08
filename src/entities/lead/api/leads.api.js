@@ -1,0 +1,35 @@
+import { apiClient } from '../../../shared/api/api-client';
+
+export async function fetchLeads({ page = 1, perPage = 4 } = {}) {
+   const response = await apiClient.get('/customer/v1/leads', {
+      params: {
+         page,
+         per_page: perPage,
+      },
+   });
+
+   return response.data;
+}
+
+export async function fetchLeadById(leadId) {
+   const response = await apiClient.get(`/customer/v1/leads/${leadId}`);
+
+   return response.data;
+}
+
+export async function updateLead(leadId, payload) {
+   const response = await apiClient.post(
+      `/customer/v1/leads/${leadId}/update`,
+      payload,
+   );
+
+   return response.data;
+}
+
+export async function deleteLeadCargo(leadId, cargoIndex) {
+   const response = await apiClient.delete(
+      `/customer/v1/lead/${leadId}/cargos/${cargoIndex}`,
+   );
+
+   return response.data;
+}

@@ -1,9 +1,9 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "./theme/theme";
-import { NotificationsColumn } from "./shared/ui/NotificationsColumn";
-// import { EmailVerificationWatcher } from "./widgets/customer-verification/ui/EmailVerificationWatcher";
+// import { EmailVerificationWatcher } from "./features/verify-email/ui/EmailVerificationWatcher";
 import { router } from "./router/router";
 import { RouterProvider } from "react-router-dom";
+import { NotificationToasts } from "./widgets/notification-toasts/ui/NotificationToasts";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
       <CssBaseline />
       <RouterProvider router={router} />
       {/* <EmailVerificationWatcher /> */}
-      <NotificationsColumn />
+      <NotificationToasts />
     </ThemeProvider>
   );
 }

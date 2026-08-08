@@ -1,9 +1,9 @@
 import { Box, Container } from '@mui/material';
-import { CustomerMap } from '../../widgets/customer-map/ui/CustomerMap';
-import { CustomerToolbar } from '../../widgets/customer-toolbar/CustomerToolbar';
-import { LeadsList } from '../../widgets/customer-leads/ui/LeadsList';
-import { LeadsProvider } from '../../widgets/customer-leads/model/LeadsProvider';
-import { LeadDetailsRouteSync } from '../../widgets/customer-leads/ui/lead-details/LeadDetailsRouteSync';
+import { LeadsToolbar } from '../../widgets/leads-list/ui/LeadsToolbar';
+import { LeadsList } from '../../widgets/leads-list/ui/LeadsList';
+import { LeadsProvider } from '../../entities/lead/model/LeadsProvider';
+import { LeadDetailsRouteSync } from '../../widgets/lead-details/ui/LeadDetailsRouteSync';
+import { LeadsMap } from '../../widgets/leads-map/ui/LeadsMap';
 
 export function LeadsPage() {
    return (
@@ -23,8 +23,8 @@ export function LeadsPage() {
                   py: 3,
                }}
             >
-               <CustomerMap />
-               <CustomerToolbar />
+               <LeadsMap />
+               <LeadsToolbar />
                <LeadsList />
             </Box>
          </Container>

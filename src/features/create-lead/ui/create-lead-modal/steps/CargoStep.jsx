@@ -20,7 +20,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
    fetchCustomerCargoTypesApi,
    searchCustomerCargoTypesApi,
-} from '../../../../../widgets/customer-leads/api/cargo-types.api';
+} from '../../../../../entities/cargo-type/api/cargo-types.api';
 import { fetchCustomerCurrenciesApi } from '../../../api/currencies.api';
 import { CurrencyAutocomplete } from '../components/CurrencyAutocomplete';
 

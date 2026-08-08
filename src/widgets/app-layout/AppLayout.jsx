@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { Header } from "../header/Header";
-import { AppBreadcrumbs } from "../../router/AppBreadcrumbs";
+import { AppBreadcrumbs } from "./AppBreadcrumbs";
 import { CUSTOMER_NAV_WIDTH } from "../../shared/config/constants";
 
 export function AppLayout() {

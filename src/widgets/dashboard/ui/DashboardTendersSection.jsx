@@ -11,7 +11,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import { useTendersContext } from '../../customer-tenders/model/useTendersContext';
+import { useTendersContext } from '../../../entities/tender/model/useTendersContext';
 import { DashboardTenderItem } from './DashboardTenderItem';
 
 const DASHBOARD_TENDERS_PER_PAGE = 5;

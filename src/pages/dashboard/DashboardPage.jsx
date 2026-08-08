@@ -1,9 +1,9 @@
 import { Container } from '@mui/material';
 
-import { LeadsProvider } from '../../widgets/customer-leads/model/LeadsProvider';
-import { TendersProvider } from '../../widgets/customer-tenders/model/TendersProviders';
-import { LeadDetailsModal } from '../../widgets/customer-leads/ui/LeadDetailsModal';
-import { TenderDetailsModal } from '../../widgets/customer-tenders/ui/TenderDetailsModal';
+import { LeadsProvider } from '../../entities/lead/model/LeadsProvider';
+import { TendersProvider } from '../../entities/tender/model/TendersProvider';
+import { LeadDetailsModal } from '../../widgets/lead-details/ui/LeadDetailsModal';
+import { TenderDetailsModal } from '../../widgets/tender-details/ui/TenderDetailsModal';
 import { Dashboard } from '../../widgets/dashboard/ui/Dashboard';
 
 export function DashboardPage() {

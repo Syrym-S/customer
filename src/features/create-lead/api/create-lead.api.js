@@ -1,6 +1,6 @@
 import { apiClient } from '../../../shared/api/api-client';
 
-export async function createLeadApi(payload) {
+export async function createLead(payload) {
    const response = await apiClient.post('/customer/v1/leads/create', payload);
 
    return response.data;

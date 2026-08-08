@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import {
     Alert,
     Box,
@@ -11,185 +9,41 @@ import {
     Typography,
 } from '@mui/material';
 
-import {
-    initialProfileForm,
-    mapProfileFormToChangedApi,
-    mapProfileFromApi,
-    validateProfileForm,
-} from '../../features/profile-edit/profile-form.helpers';
-import {
-    fetchCustomerProfile,
-    updateCustomerProfile,
-    uploadCustomerAvatar,
-    deleteCustomerAvatar,
-} from '../../features/profile-edit/profile.api';
-import { notifySuccess } from '../../shared/model/notifications.store';
-import {
-    getAvatarFromUploadResponse,
-    notifyProfilePhotoUpdated,
-} from '../../widgets/customer-profile/model/profile-photo.helpers';
-import { ProfilePhotoUploader } from '../../widgets/customer-profile/ui/ProfilePhotoUploader';
-import { EmailVerificationStatus } from '../../widgets/customer-verification/ui/EmailVerificationStatus';
+import { useProfileData } from '../../features/edit-profile/model/useProfileData';
+import { useProfileMutations } from '../../features/edit-profile/model/useProfileMutations';
+import { ProfilePhotoUploader } from '../../features/update-profile-photo/ui/ProfilePhotoUploader';
+import { EmailVerificationStatus } from '../../features/verify-email/ui/EmailVerificationStatus';
 
 export function ProfilePage() {
-    const [form, setForm] = useState(initialProfileForm);
-    const [errors, setErrors] = useState({});
-    const [isSaving, setIsSaving] = useState(false);
-    const [submitError, setSubmitError] = useState('');
-    const [initialLoadedForm, setInitialLoadedForm] =
-        useState(initialProfileForm);
-    const [isProfileLoading, setIsProfileLoading] = useState(false);
-    const [profileLoadError, setProfileLoadError] = useState('');
-    const [profilePhoto, setProfilePhoto] = useState('');
-    const [profilePhotoFile, setProfilePhotoFile] = useState(null);
-    const [profilePhotoError, setProfilePhotoError] = useState('');
-    const [shouldDeleteProfilePhoto, setShouldDeleteProfilePhoto] =
-        useState(false);
+    const {
+        form,
+        setForm,
+        initialLoadedForm,
+        setInitialLoadedForm,
+        profilePhoto,
+        setProfilePhoto,
+        isProfileLoading,
+        profileLoadError,
+    } = useProfileData();
 
-    function handleChange(event) {
-        const { name, value } = event.target;
-
-        setForm((prevForm) => ({
-            ...prevForm,
-            [name]: value,
-        }));
-
-        setErrors((prevErrors) => ({
-            ...prevErrors,
-            [name]: '',
-        }));
-
-        setSubmitError('');
-    }
-
-    async function handleSubmit(event) {
-        event.preventDefault();
-
-        const nextErrors = validateProfileForm(form);
-
-        setErrors(nextErrors);
-
-        if (Object.keys(nextErrors).length > 0) {
-            return;
-        }
-
-        if (profilePhotoError) {
-            return;
-        }
-
-        const payload = mapProfileFormToChangedApi(form, initialLoadedForm);
-
-        const hasProfileChanges = Object.keys(payload).length > 0;
-        const hasPhotoUpload = Boolean(profilePhotoFile);
-        const hasPhotoDelete = shouldDeleteProfilePhoto;
-
-        if (!hasProfileChanges && !hasPhotoUpload && !hasPhotoDelete) {
-            setSubmitError('Нет изменений для сохранения');
-            return;
-        }
-
-        try {
-            setIsSaving(true);
-            setSubmitError('');
-
-            if (hasProfileChanges) {
-                await updateCustomerProfile(payload);
-            }
-
-            let nextAvatar = profilePhoto;
-
-            if (hasPhotoDelete) {
-                await deleteCustomerAvatar();
-
-                nextAvatar = '';
-
-                notifyProfilePhotoUpdated('');
-            }
-
-            if (hasPhotoUpload) {
-                const uploadResponse =
-                    await uploadCustomerAvatar(profilePhotoFile);
-                const updatedProfile = await fetchCustomerProfile();
-
-                nextAvatar =
-                    updatedProfile?.avatar ||
-                    getAvatarFromUploadResponse(uploadResponse, profilePhoto);
-
-                notifyProfilePhotoUpdated(nextAvatar);
-            }
-
-            const nextInitialForm = {
-                ...form,
-                currentPassword: '',
-                newPassword: '',
-                newPasswordConfirm: '',
-            };
-
-            setInitialLoadedForm(nextInitialForm);
-            setProfilePhoto(nextAvatar);
-            setProfilePhotoFile(null);
-            setShouldDeleteProfilePhoto(false);
-            setForm(nextInitialForm);
-
-            notifySuccess('Профиль успешно обновлен');
-        } catch (error) {
-            setSubmitError(
-                error.response?.data?.message ||
-                    error.response?.data?.error ||
-                    error.message ||
-                    'Не удалось обновить профиль',
-            );
-        } finally {
-            setIsSaving(false);
-        }
-    }
-
-    useEffect(() => {
-        let isCancelled = false;
-
-        async function loadProfile() {
-            try {
-                setIsProfileLoading(true);
-                setProfileLoadError('');
-
-                const profile = await fetchCustomerProfile();
-
-                if (!isCancelled) {
-                    const mappedProfile = mapProfileFromApi(profile);
-                    const avatar = profile?.avatar || '';
-
-                    setForm(mappedProfile);
-                    setInitialLoadedForm(mappedProfile);
-
-                    setProfilePhoto(avatar);
-                    setProfilePhotoFile(null);
-                    setProfilePhotoError('');
-                    setShouldDeleteProfilePhoto(false);
-
-                    setErrors({});
-                    setSubmitError('');
-                }
-            } catch (error) {
-                if (!isCancelled) {
-                    setProfileLoadError(
-                        error.response?.data?.message ||
-                            error.message ||
-                            'Не удалось загрузить профиль',
-                    );
-                }
-            } finally {
-                if (!isCancelled) {
-                    setIsProfileLoading(false);
-                }
-            }
-        }
-
-        loadProfile();
-
-        return () => {
-            isCancelled = true;
-        };
-    }, []);
+    const {
+        errors,
+        isSaving,
+        submitError,
+        profilePhotoError,
+        setProfilePhotoError,
+        handleChange,
+        handlePhotoChange,
+        handlePhotoRemove,
+        handleSubmit,
+    } = useProfileMutations({
+        form,
+        setForm,
+        initialLoadedForm,
+        setInitialLoadedForm,
+        profilePhoto,
+        setProfilePhoto,
+    });
 
     return (
         <Container maxWidth='md' sx={{ py: 3 }}>
@@ -230,20 +84,8 @@ export function ProfilePage() {
                         error={profilePhotoError}
                         disabled={isSaving || isProfileLoading}
                         isLoading={isProfileLoading}
-                        onChange={(nextPhoto, file) => {
-                            setProfilePhoto(nextPhoto);
-                            setProfilePhotoFile(file);
-                            setShouldDeleteProfilePhoto(false);
-                            setProfilePhotoError('');
-                            setSubmitError('');
-                        }}
-                        onRemove={() => {
-                            setProfilePhoto('');
-                            setProfilePhotoFile(null);
-                            setShouldDeleteProfilePhoto(true);
-                            setProfilePhotoError('');
-                            setSubmitError('');
-                        }}
+                        onChange={handlePhotoChange}
+                        onRemove={handlePhotoRemove}
                         onError={setProfilePhotoError}
                     />
 

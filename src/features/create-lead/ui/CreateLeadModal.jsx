@@ -15,10 +15,9 @@ import { CargoStep } from './create-lead-modal/steps/CargoStep';
 import { ConfirmStep } from './create-lead-modal/steps/ConfirmStep';
 import { RouteStep } from './create-lead-modal/steps/RouteStep';
 import { CreateLeadResultModal } from './create-lead-modal/components/CreateLeadResultModal';
-import { useLeadsContext } from '../../../widgets/customer-leads/model/useLeadsContext';
-import { createLead } from '../api/create-lead.repository';
+import { createLead } from '../api/create-lead.api';
 import { DocumentsStep } from './create-lead-modal/steps/DocumentsStep';
-import { uploadLeadDocument } from '../../../widgets/customer-leads/api/lead-documents.api';
+import { uploadLeadDocument } from '../../../entities/lead/api/lead-documents.api';
 
 const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Документы', 'Проверка'];
 
@@ -117,7 +116,7 @@ async function uploadCreateLeadDocuments(leadId, documents = []) {
     }
 }
 
-export function CreateLeadModal({ open, onClose }) {
+export function CreateLeadModal({ open, onClose, onLeadCreated }) {
     const [activeStep, setActiveStep] = useState(0);
     const [maxAvailableStep, setMaxAvailableStep] = useState(0);
     const {
@@ -132,7 +131,6 @@ export function CreateLeadModal({ open, onClose }) {
         mode: 'onChange',
         reValidateMode: 'onChange',
     });
-    const { prependLead } = useLeadsContext();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [resultModal, setResultModal] = useState({
@@ -239,7 +237,7 @@ export function CreateLeadModal({ open, onClose }) {
 
             const createdLead = mapCreatedLeadToUi(data, response);
 
-            prependLead(createdLead);
+            onLeadCreated?.(createdLead);
             handleClose();
 
             setResultModal({
@@ -385,4 +383,5 @@ export function CreateLeadModal({ open, onClose }) {
 CreateLeadModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
+    onLeadCreated: PropTypes.func,
 };

@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import { CreateLeadModal } from './CreateLeadModal';
 import { useState } from 'react';
 
-export function CreateLeadButton() {
+export function CreateLeadButton({ onLeadCreated }) {
    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
    const handleOpenCreateModal = () => setIsCreateModalOpen(true);
@@ -18,6 +18,7 @@ export function CreateLeadButton() {
          <CreateLeadModal
             open={isCreateModalOpen}
             onClose={handleCloseCreateModal}
+            onLeadCreated={onLeadCreated}
          />
       </>
    );

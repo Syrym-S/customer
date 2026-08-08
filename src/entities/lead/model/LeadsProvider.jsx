@@ -1,0 +1,114 @@
+import PropTypes from 'prop-types';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { fetchLeads } from '../api/leads.api';
+import { mapLeadsResponseFromApi } from './lead.adapter';
+import { LeadsContext } from './LeadsContext';
+import {
+   notificationDomainEventNames,
+   subscribeToNotificationDomainEvent,
+} from '../../../shared/model/notification-domain-events';
+
+const DEFAULT_PER_PAGE = 10;
+
+export function LeadsProvider({ children }) {
+   const [leads, setLeads] = useState([]);
+   const [openLead, setOpenLead] = useState(null);
+
+   const [page, setPage] = useState(1);
+   const [perPage, setPerPage] = useState(DEFAULT_PER_PAGE);
+   const [count, setCount] = useState(0);
+
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState(null);
+
+   const loadLeads = useCallback(
+      async ({ withLoader = true } = {}) => {
+         try {
+            if (withLoader) {
+               setIsLoading(true);
+            }
+
+            setError(null);
+
+            const response = await fetchLeads({ page, perPage });
+            const mappedResponse = mapLeadsResponseFromApi(response);
+
+            setLeads(mappedResponse.leads);
+            setCount(mappedResponse.count);
+            setPerPage(mappedResponse.perPage);
+         } catch (requestError) {
+            setError(requestError.message || 'Не удалось загрузить лиды');
+         } finally {
+            if (withLoader) {
+               setIsLoading(false);
+            }
+         }
+      },
+      [page, perPage],
+   );
+
+   const prependLead = useCallback(
+      (lead) => {
+         if (!lead) {
+            return;
+         }
+
+         setLeads((prevLeads) => [lead, ...prevLeads].slice(0, perPage));
+         setCount((prevCount) => prevCount + 1);
+      },
+      [perPage],
+   );
+
+   useEffect(() => {
+      loadLeads({ withLoader: true });
+   }, [loadLeads]);
+
+   useEffect(() => {
+      return subscribeToNotificationDomainEvent(
+         notificationDomainEventNames.leadsChanged,
+         () => {
+            loadLeads({ withLoader: false });
+         },
+      );
+   }, [loadLeads]);
+
+   const value = useMemo(
+      () => ({
+         leads,
+         openLead,
+         setOpenLead,
+
+         page,
+         setPage,
+         perPage,
+         setPerPage,
+         count,
+
+         isLoading,
+         error,
+
+         reloadLeads: loadLeads,
+         prependLead,
+      }),
+      [
+         leads,
+         openLead,
+         page,
+         perPage,
+         count,
+         isLoading,
+         error,
+         loadLeads,
+         prependLead,
+      ],
+   );
+
+   return (
+      <LeadsContext.Provider value={value}>{children}</LeadsContext.Provider>
+   );
+}
+
+LeadsProvider.propTypes = {
+   children: PropTypes.node.isRequired,
+};

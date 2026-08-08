@@ -15,9 +15,9 @@ import { InfoBadge } from '../components/InfoBadge';
 import { StepSection } from '../components/StepSection';
 import {
     fetchForwarderById,
-    fetchForwardersApi,
-} from '../../../api/forwarders.api';
-import { FORWARDERS_PER_PAGE } from '../../../../../widgets/customer-forwarders/model/forwarders.helpers';
+    fetchForwarders,
+} from '../../../../../entities/forwarder/api/forwarders.api';
+import { FORWARDERS_PER_PAGE } from '../../../../../entities/forwarder/model/forwarder.constants';
 
 function normalizeForwarderOption(forwarder) {
     if (!forwarder) {
@@ -131,7 +131,7 @@ export function ForwarderStep({ control, errors, setValue }) {
             setIsLoading(true);
             setSearchError(null);
 
-            const response = await fetchForwardersApi({
+            const response = await fetchForwarders({
                 page: 1,
                 perPage: FORWARDERS_PER_PAGE,
             });

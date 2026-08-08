@@ -4,7 +4,7 @@ import { AppLayout } from "../widgets/app-layout/AppLayout";
 import { DashboardPage } from "../pages/dashboard/DashboardPage";
 import { LeadsPage } from "../pages/leads/LeadsPage";
 import { ProfilePage } from "../pages/profile/ProfilePage";
-import { TenderPage } from "../pages/tender/TenderPage";
+import { TendersPage } from "../pages/tenders/TendersPage";
 import { FactoringsPage } from "../pages/factorings/FactoringsPage";
 import { ForwardersPage } from "../pages/forwarders/ForwardersPage";
 import { isStaging } from "../shared/api/api-client";
@@ -46,14 +46,14 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/tenders",
-          element: <TenderPage />,
+          element: <TendersPage />,
           handle: {
             breadcrumb: "Тендеры",
           },
         },
         {
           path: "customer/tenders/:tenderId",
-          element: <TenderPage />,
+          element: <TendersPage />,
         },
         {
           path: "customer/factorings",

@@ -10,16 +10,18 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 
-import { CustomerMapView } from '../../../../../widgets/customer-map/ui/CustomerMapView';
-import { useCustomerMap } from '../../../../../widgets/customer-map/model/useCustomerMap';
+import {
+    DEFAULT_MAP_CENTER,
+    DEFAULT_MAP_ZOOM,
+} from '../../../../../shared/config/map.config';
 import { useRouteMapPicker } from '../../../model/useRouteMapPicker';
 import { StepSection } from '../components/StepSection';
 import { searchGeocode } from '../../../api/geocoding.api';
 import { useEffect, useState } from 'react';
 import { buildRouteFitBoundsKey } from '../../../lib/route-map.helpers';
+import { MapView } from '../../../../../shared/ui/map/MapView';
 
 export function RouteStep({ control, errors, form, setValue }) {
-    const map = useCustomerMap();
     const [fromInputValue, setFromInputValue] = useState('');
     const [toInputValue, setToInputValue] = useState('');
 
@@ -133,11 +135,12 @@ export function RouteStep({ control, errors, form, setValue }) {
         markers: routeMarkers,
     });
 
-    const mapCenter = routePoints[0] || routeMarkers[0]?.position || map.center;
-    const mapZoom = routePoints.length >= 2 ? 7 : map.zoom;
+    const mapCenter =
+        routePoints[0] || routeMarkers[0]?.position || DEFAULT_MAP_CENTER;
+    const mapZoom = routePoints.length >= 2 ? 7 : DEFAULT_MAP_ZOOM;
 
     return (
-        <StepSection title="Маршрут">
+        <StepSection title='Маршрут'>
             <Box
                 sx={{
                     display: 'flex',
@@ -156,7 +159,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                     }}
                 >
                     <Button
-                        size="small"
+                        size='small'
                         variant={
                             activeMapPoint === 'from' ? 'contained' : 'outlined'
                         }
@@ -171,7 +174,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                         return (
                             <Button
                                 key={pointKey}
-                                size="small"
+                                size='small'
                                 variant={
                                     activeMapPoint === pointKey
                                         ? 'contained'
@@ -185,7 +188,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                     })}
 
                     <Button
-                        size="small"
+                        size='small'
                         variant={
                             activeMapPoint === 'to' ? 'contained' : 'outlined'
                         }
@@ -195,8 +198,8 @@ export function RouteStep({ control, errors, form, setValue }) {
                     </Button>
 
                     <Button
-                        size="small"
-                        variant="outlined"
+                        size='small'
+                        variant='outlined'
                         onClick={handleAddWaypoint}
                     >
                         + Промежуточная
@@ -204,9 +207,9 @@ export function RouteStep({ control, errors, form, setValue }) {
                 </Box>
 
                 <Button
-                    size="small"
-                    color="error"
-                    variant="outlined"
+                    size='small'
+                    color='error'
+                    variant='outlined'
                     onClick={handleClearRoute}
                     disabled={isClearDisabled}
                 >
@@ -227,13 +230,12 @@ export function RouteStep({ control, errors, form, setValue }) {
                     mb: 2,
                 }}
             >
-                <CustomerMapView
+                <MapView
                     center={mapCenter}
                     zoom={mapZoom}
                     markers={routeMarkers}
                     routePoints={routePoints}
                     fitBoundsKey={routeFitBoundsKey}
-                    handleMarkerClick={map.handleMarkerClick}
                     onMapClick={handleRouteMapClick}
                     onMarkerDragEnd={handleRouteMarkerDragEnd}
                 />
@@ -250,7 +252,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                 }}
             >
                 <Controller
-                    name="fromLocation"
+                    name='fromLocation'
                     control={control}
                     rules={{
                         required: 'Укажите место отправления',
@@ -317,16 +319,16 @@ export function RouteStep({ control, errors, form, setValue }) {
                                     ? 'Введите минимум 2 символа'
                                     : 'Адрес не найден'
                             }
-                            loadingText="Поиск адреса..."
+                            loadingText='Поиск адреса...'
                             renderInput={(params) => {
                                 const inputProps = params.InputProps || {};
 
                                 return (
                                     <TextField
                                         {...params}
-                                        label="Откуда"
+                                        label='Откуда'
                                         fullWidth
-                                        size="small"
+                                        size='small'
                                         error={Boolean(errors.fromLocation)}
                                         helperText={
                                             errors.fromLocation?.message
@@ -338,7 +340,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                                                     {(isFromSearchLoading ||
                                                         loadingPoints.from) && (
                                                         <CircularProgress
-                                                            color="inherit"
+                                                            color='inherit'
                                                             size={18}
                                                         />
                                                     )}
@@ -386,7 +388,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                                     }
                                 }}
                                 fullWidth
-                                size="small"
+                                size='small'
                                 helperText={
                                     loadingPoints[pointKey]
                                         ? 'Определяем адрес...'
@@ -395,7 +397,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                                 InputProps={{
                                     endAdornment: loadingPoints[pointKey] ? (
                                         <CircularProgress
-                                            color="inherit"
+                                            color='inherit'
                                             size={18}
                                         />
                                     ) : null,
@@ -403,7 +405,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                             />
 
                             <Button
-                                size="small"
+                                size='small'
                                 variant={
                                     activeMapPoint === pointKey
                                         ? 'contained'
@@ -419,8 +421,8 @@ export function RouteStep({ control, errors, form, setValue }) {
                             </Button>
 
                             <IconButton
-                                color="error"
-                                size="small"
+                                color='error'
+                                size='small'
                                 onClick={() => handleRemoveWaypoint(index)}
                                 sx={{
                                     mt: 0.25,
@@ -429,14 +431,14 @@ export function RouteStep({ control, errors, form, setValue }) {
                                 aria-label={`Удалить промежуточную точку ${index + 1}`}
                                 title={`Удалить промежуточную точку ${index + 1}`}
                             >
-                                <DeleteOutlineRoundedIcon fontSize="small" />
+                                <DeleteOutlineRoundedIcon fontSize='small' />
                             </IconButton>
                         </Box>
                     );
                 })}
 
                 <Controller
-                    name="toLocation"
+                    name='toLocation'
                     control={control}
                     rules={{
                         required: 'Укажите место назначения',
@@ -500,16 +502,16 @@ export function RouteStep({ control, errors, form, setValue }) {
                                     ? 'Введите минимум 2 символа'
                                     : 'Адрес не найден'
                             }
-                            loadingText="Поиск адреса..."
+                            loadingText='Поиск адреса...'
                             renderInput={(params) => {
                                 const inputProps = params.InputProps || {};
 
                                 return (
                                     <TextField
                                         {...params}
-                                        label="Куда"
+                                        label='Куда'
                                         fullWidth
-                                        size="small"
+                                        size='small'
                                         error={Boolean(errors.toLocation)}
                                         helperText={errors.toLocation?.message}
                                         InputProps={{
@@ -519,7 +521,7 @@ export function RouteStep({ control, errors, form, setValue }) {
                                                     {(isToSearchLoading ||
                                                         loadingPoints.to) && (
                                                         <CircularProgress
-                                                            color="inherit"
+                                                            color='inherit'
                                                             size={18}
                                                         />
                                                     )}
@@ -536,15 +538,15 @@ export function RouteStep({ control, errors, form, setValue }) {
                 />
 
                 <Controller
-                    name="loadingDate"
+                    name='loadingDate'
                     control={control}
                     render={({ field }) => (
                         <TextField
                             {...field}
-                            label="Дата загрузки"
-                            type="date"
+                            label='Дата загрузки'
+                            type='date'
                             fullWidth
-                            size="small"
+                            size='small'
                             slotProps={{
                                 inputLabel: {
                                     shrink: true,
