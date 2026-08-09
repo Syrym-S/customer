@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -115,11 +114,4 @@ export function LeadRouteLeafletMap({
       />
    );
 }
-
-LeadRouteLeafletMap.propTypes = {
-   center: PropTypes.array.isRequired,
-   zoom: PropTypes.number.isRequired,
-   routePoints: PropTypes.array,
-   fromLabel: PropTypes.string,
-   toLabel: PropTypes.string,
-};
+

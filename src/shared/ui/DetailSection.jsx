@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 
 export function DetailSection({ icon, title, subtitle, action, children }) {
    return (
@@ -88,11 +87,3 @@ export function DetailSection({ icon, title, subtitle, action, children }) {
       </Box>
    );
 }
-
-DetailSection.propTypes = {
-   icon: PropTypes.node.isRequired,
-   title: PropTypes.string.isRequired,
-   subtitle: PropTypes.node,
-   action: PropTypes.node,
-   children: PropTypes.node,
-};

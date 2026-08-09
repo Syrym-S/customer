@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { DetailSection } from '../../../../shared/ui/DetailSection';
-import { InfoBadge } from '../components/InfoBadge';
+import { InfoBadge } from '../../../../shared/ui/InfoBadge';
 
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import { formatMoney, formatPercent } from '../../../../entities/factoring/model/factorings.helpers';
@@ -29,33 +29,39 @@ export function FactoringFinanceSection({ factoring }) {
                         factoring.deb_summ,
                         factoring.deb_currency,
                     )}
+                    variant='compact'
                     accent
                 />
 
                 <InfoBadge
                     label='Кредитная сумма'
                     value={formatMoney(factoring.cred_summ, factoring.currency)}
+                    variant='compact'
                     accent
                 />
 
                 <InfoBadge
                     label='Ставка факторинга'
                     value={formatPercent(factoring.proc_factor)}
+                    variant='compact'
                 />
 
                 <InfoBadge
                     label='Сервисная ставка'
                     value={formatPercent(factoring.proc_service)}
+                    variant='compact'
                 />
 
                 <InfoBadge
                     label='Валюта дебиторской суммы'
                     value={factoring.deb_currency || 'KZT'}
+                    variant='compact'
                 />
 
                 <InfoBadge
                     label='Валюта факторинга'
                     value={factoring.currency || 'KZT'}
+                    variant='compact'
                 />
             </Box>
         </DetailSection>

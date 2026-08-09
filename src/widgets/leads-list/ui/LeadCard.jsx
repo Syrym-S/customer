@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 import { Box, Chip, Stack, Typography } from '@mui/material';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
@@ -8,6 +7,7 @@ import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import { useLeadsContext } from '../../../entities/lead/model/useLeadsContext';
 import { getLeadStatusLabel, getLeadStatusStyles } from '../../../entities/lead/model/lead.helpers';
 import { normalizeLocationValue } from '../../../shared/lib/location/location.helpers';
+import { InfoBadge } from '../../../shared/ui/InfoBadge';
 
 export function LeadCard({ lead }) {
    const { setOpenLead } = useLeadsContext();
@@ -303,71 +303,4 @@ export function LeadCard({ lead }) {
       </Box>
    );
 }
-
-function InfoBadge({ label, value, accent = false, sx = {} }) {
-   return (
-      <Box
-         sx={{
-            px: 1.5,
-            py: 1,
-            border: '1px solid',
-            borderColor: 'divider',
-            borderRadius: 2,
-            backgroundColor: 'grey.50',
-            minWidth: 0,
-            ...sx,
-         }}
-      >
-         <Typography
-            sx={{
-               fontSize: 11,
-               lineHeight: 1.2,
-               color: 'text.secondary',
-               mb: 0.25,
-            }}
-         >
-            {label}
-         </Typography>
-
-         <Typography
-            sx={{
-               fontSize: 14,
-               lineHeight: 1.3,
-               color: accent ? 'primary.main' : 'text.primary',
-            }}
-         >
-            {value || 'Не указано'}
-         </Typography>
-      </Box>
-   );
-}
-
-LeadCard.propTypes = {
-   lead: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-      num: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      status: PropTypes.string.isRequired,
-      from_location: PropTypes.string.isRequired,
-      to_location: PropTypes.string.isRequired,
-      summ: PropTypes.number.isRequired,
-      currency: PropTypes.string.isRequired,
-      forwarder: PropTypes.shape({
-         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-         fullName: PropTypes.string,
-         companyName: PropTypes.string,
-         companyBin: PropTypes.string,
-         phone: PropTypes.string,
-      }),
-      cargo: PropTypes.shape({
-         weight_kg: PropTypes.number.isRequired,
-         type: PropTypes.string.isRequired,
-      }).isRequired,
-   }).isRequired,
-};
-
-InfoBadge.propTypes = {
-   label: PropTypes.string.isRequired,
-   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-   accent: PropTypes.bool,
-   sx: PropTypes.object,
-};
+

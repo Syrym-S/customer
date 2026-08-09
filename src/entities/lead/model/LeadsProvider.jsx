@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { fetchLeads } from '../api/leads.api';
@@ -108,7 +107,4 @@ export function LeadsProvider({ children }) {
       <LeadsContext.Provider value={value}>{children}</LeadsContext.Provider>
    );
 }
-
-LeadsProvider.propTypes = {
-   children: PropTypes.node.isRequired,
-};
+

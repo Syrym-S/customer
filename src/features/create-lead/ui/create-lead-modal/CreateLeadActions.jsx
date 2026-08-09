@@ -1,5 +1,4 @@
 import { Box, Button, DialogActions } from '@mui/material';
-import PropTypes from 'prop-types';
 
 const actionButtonSx = {
    fontSize: {
@@ -77,14 +76,4 @@ export function CreateLeadActions({
       </DialogActions>
    );
 }
-
-CreateLeadActions.propTypes = {
-   isFirstStep: PropTypes.bool.isRequired,
-   isLastStep: PropTypes.bool.isRequired,
-   hasCurrentStepErrors: PropTypes.bool.isRequired,
-   isSubmitting: PropTypes.bool.isRequired,
-   onClose: PropTypes.func.isRequired,
-   onBack: PropTypes.func.isRequired,
-   onNext: PropTypes.func.isRequired,
-   onSubmit: PropTypes.func.isRequired,
-};
+

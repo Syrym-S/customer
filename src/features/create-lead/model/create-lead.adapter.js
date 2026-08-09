@@ -12,7 +12,7 @@ function toNumber(value) {
     return Number.isNaN(number) ? null : number;
 }
 
-export function normalizeOptionalPrice(value) {
+function normalizeOptionalPrice(value) {
     if (value === '' || value === null || value === undefined) {
         return null;
     }

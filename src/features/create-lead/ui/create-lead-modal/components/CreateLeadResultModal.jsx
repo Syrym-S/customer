@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {
    Box,
    Button,
@@ -80,11 +79,4 @@ export function CreateLeadResultModal({ open, type, title, message, onClose }) {
       </Dialog>
    );
 }
-
-CreateLeadResultModal.propTypes = {
-   open: PropTypes.bool.isRequired,
-   type: PropTypes.oneOf(['success', 'error']),
-   title: PropTypes.string.isRequired,
-   message: PropTypes.string.isRequired,
-   onClose: PropTypes.func.isRequired,
-};
+

@@ -1,10 +1,10 @@
 export const EMAIL_VERIFICATION_MODAL_OPEN_EVENT =
    'customer-email-verification:modal-open';
 
-export const EMAIL_VERIFICATION_STATUS_CHANGED_EVENT =
+const EMAIL_VERIFICATION_STATUS_CHANGED_EVENT =
    'customer-email-verification:status-changed';
 
-export const EMAIL_VERIFICATION_RESEND_COOLDOWN_SECONDS = 60;
+const EMAIL_VERIFICATION_RESEND_COOLDOWN_SECONDS = 60;
 
 const EMAIL_VERIFICATION_RESEND_AVAILABLE_AT_KEY =
    'customer_email_verification_resend_available_at';

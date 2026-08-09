@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
@@ -282,7 +281,4 @@ export function FactoringsProvider({ children }) {
         </FactoringsContext.Provider>
     );
 }
-
-FactoringsProvider.propTypes = {
-    children: PropTypes.node.isRequired,
-};
+

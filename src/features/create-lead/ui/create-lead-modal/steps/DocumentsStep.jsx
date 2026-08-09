@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 import {
    Box,
@@ -265,10 +264,4 @@ export function DocumentsStep({ form, setValue }) {
       </Box>
    );
 }
-
-DocumentsStep.propTypes = {
-   form: PropTypes.shape({
-      documents: PropTypes.array,
-   }).isRequired,
-   setValue: PropTypes.func.isRequired,
-};
+

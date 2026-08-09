@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 
@@ -17,10 +16,4 @@ export function LeadDriverSection({ lead }) {
       </DetailSection>
    );
 }
-
-LeadDriverSection.propTypes = {
-   lead: PropTypes.object.isRequired,
-   isEditing: PropTypes.bool.isRequired,
-   editForm: PropTypes.object.isRequired,
-   onEditChange: PropTypes.func.isRequired,
-};
+

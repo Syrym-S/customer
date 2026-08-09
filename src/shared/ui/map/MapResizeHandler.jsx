@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useMap } from 'react-leaflet';
 
 export function MapResizeHandler({
@@ -42,10 +41,4 @@ export function MapResizeHandler({
 
    return null;
 }
-
-MapResizeHandler.propTypes = {
-   center: PropTypes.array.isRequired,
-   zoom: PropTypes.number.isRequired,
-   markersCount: PropTypes.number.isRequired,
-   routePointsCount: PropTypes.number.isRequired,
-};
+

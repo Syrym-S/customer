@@ -11,6 +11,7 @@ import {
     getForwarderPhone,
 } from '../../../entities/forwarder/model/forwarder.helpers';
 import { ForwarderInviteLink } from '../../../features/invite-forwarder/ui/ForwarderInviteLink';
+import { InfoBadge } from '../../../shared/ui/InfoBadge';
 
 export function ForwarderCard({ forwarder, onOpenDetails }) {
     const forwarderId = getForwarderId(forwarder);
@@ -110,30 +111,60 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
                         gap: 1,
                     }}
                 >
-                    <InfoBadge label="БИН" value={getForwarderBin(forwarder)} />
+                    <InfoBadge
+                        label="БИН"
+                        value={getForwarderBin(forwarder)}
+                        variant='compact'
+                        showTitle
+                        valueFontWeight={500}
+                    />
 
-                    <InfoBadge label="ИИН" value={getForwarderIin(forwarder)} />
+                    <InfoBadge
+                        label="ИИН"
+                        value={getForwarderIin(forwarder)}
+                        variant='compact'
+                        showTitle
+                        valueFontWeight={500}
+                    />
 
                     <InfoBadge
                         label="Представитель"
                         value={getForwarderFio(forwarder)}
+                        variant='compact'
+                        showTitle
+                        valueFontWeight={500}
                     />
 
                     <InfoBadge
                         label="Телефон"
                         value={getForwarderPhone(forwarder)}
+                        variant='compact'
+                        showTitle
+                        valueFontWeight={500}
                     />
 
-                    <InfoBadge label="БИК" value={getForwarderBik(forwarder)} />
+                    <InfoBadge
+                        label="БИК"
+                        value={getForwarderBik(forwarder)}
+                        variant='compact'
+                        showTitle
+                        valueFontWeight={500}
+                    />
 
                     <InfoBadge
                         label="Расчетный счет"
                         value={getForwarderAccount(forwarder)}
+                        variant='compact'
+                        showTitle
+                        valueFontWeight={500}
                     />
 
                     <InfoBadge
                         label="Адрес компании"
                         value={getForwarderAddress(forwarder)}
+                        variant='compact'
+                        showTitle
+                        valueFontWeight={500}
                         sx={{
                             gridColumn: {
                                 xs: 'auto',
@@ -182,46 +213,5 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
                 </Box>
             </Stack>
         </Paper>
-    );
-}
-
-function InfoBadge({ label, value, sx, multiline = false }) {
-    return (
-        <Box
-            sx={{
-                p: 1.25,
-                borderRadius: 2,
-                backgroundColor: 'grey.50',
-                border: '1px solid',
-                borderColor: 'divider',
-                minWidth: 0,
-                ...sx,
-            }}
-        >
-            <Typography
-                sx={{
-                    fontSize: 12,
-                    color: 'text.secondary',
-                    mb: 0.25,
-                }}
-            >
-                {label}
-            </Typography>
-
-            <Typography
-                title={value || '—'}
-                sx={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    lineHeight: 1.35,
-                    overflow: 'hidden',
-                    textOverflow: multiline ? 'clip' : 'ellipsis',
-                    whiteSpace: multiline ? 'normal' : 'nowrap',
-                    overflowWrap: multiline ? 'anywhere' : 'normal',
-                }}
-            >
-                {value || '—'}
-            </Typography>
-        </Box>
     );
 }

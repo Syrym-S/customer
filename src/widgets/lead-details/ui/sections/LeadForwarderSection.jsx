@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import {
    Autocomplete,
@@ -338,21 +337,4 @@ export function LeadForwarderSection({
       </DetailSection>
    );
 }
-
-LeadForwarderSection.propTypes = {
-   lead: PropTypes.shape({
-      forwarder: PropTypes.shape({
-         id: PropTypes.string,
-         fullName: PropTypes.string,
-         companyName: PropTypes.string,
-         companyBin: PropTypes.string,
-         phone: PropTypes.string,
-      }),
-   }).isRequired,
-   isEditing: PropTypes.bool.isRequired,
-   editForm: PropTypes.shape({
-      forwarder: PropTypes.string,
-      forwarderData: PropTypes.object,
-   }).isRequired,
-   onEditChange: PropTypes.func.isRequired,
-};
+

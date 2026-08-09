@@ -6,30 +6,6 @@ export function formatMoney(amount, currency = 'KZT') {
     return `${Number(amount).toLocaleString('ru-RU')} ${currency || 'KZT'}`;
 }
 
-export function normalizeLeadsResponse(response) {
-    if (Array.isArray(response)) {
-        return response;
-    }
-
-    if (Array.isArray(response?.data)) {
-        return response.data;
-    }
-
-    if (Array.isArray(response?.results)) {
-        return response.results;
-    }
-
-    if (Array.isArray(response?.items)) {
-        return response.items;
-    }
-
-    return [];
-}
-
-export function isFinishedLead(lead) {
-    return String(lead?.status || '').toLowerCase() === 'finished';
-}
-
 export function formatPercent(value) {
     if (value === null || value === undefined || value === '') {
         return 'Не указано';
@@ -106,12 +82,4 @@ export function getVerificationLabel(value) {
 
 export function getVerificationColor(value) {
     return value ? 'success' : 'default';
-}
-
-export function getCustomerName(customer) {
-    return customer?.fullname || customer?.fullName || customer?.name || '—';
-}
-
-export function getForwarderName(forwarder) {
-    return forwarder?.company_name || forwarder?.companyName || '—';
 }

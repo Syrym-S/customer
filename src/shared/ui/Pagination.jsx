@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
-import { Box, Pagination, useMediaQuery } from '@mui/material';
 
-export function TendersPagination({ page, count, onChange }) {
+import { Box, Pagination as MuiPagination, useMediaQuery } from '@mui/material';
+
+export function Pagination({ page, count, onChange }) {
    const isSmallMobile = useMediaQuery('(max-width: 375px)');
 
    return (
@@ -12,7 +12,7 @@ export function TendersPagination({ page, count, onChange }) {
             justifyContent: 'center',
          }}
       >
-         <Pagination
+         <MuiPagination
             page={page}
             count={count}
             onChange={onChange}
@@ -25,9 +25,3 @@ export function TendersPagination({ page, count, onChange }) {
       </Box>
    );
 }
-
-TendersPagination.propTypes = {
-   page: PropTypes.number.isRequired,
-   count: PropTypes.number.isRequired,
-   onChange: PropTypes.func.isRequired,
-};

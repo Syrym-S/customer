@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 
 export function CreateLeadStepTabs({
    steps,
@@ -98,11 +97,4 @@ export function CreateLeadStepTabs({
       </Box>
    );
 }
-
-CreateLeadStepTabs.propTypes = {
-   steps: PropTypes.arrayOf(PropTypes.string).isRequired,
-   activeStep: PropTypes.number.isRequired,
-   maxAvailableStep: PropTypes.number.isRequired,
-   hasStepErrors: PropTypes.func.isRequired,
-   onStepClick: PropTypes.func.isRequired,
-};
+

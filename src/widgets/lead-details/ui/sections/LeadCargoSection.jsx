@@ -9,7 +9,6 @@ import {
    TextField,
    Typography,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
@@ -647,12 +646,4 @@ export function LeadCargoSection({
       </DetailSection>
    );
 }
-
-LeadCargoSection.propTypes = {
-   lead: PropTypes.object.isRequired,
-   isEditing: PropTypes.bool.isRequired,
-   editForm: PropTypes.object.isRequired,
-   onEditChange: PropTypes.func.isRequired,
-   onDeleteCargo: PropTypes.func,
-   deletingCargoIndex: PropTypes.number,
-};
+

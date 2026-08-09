@@ -1,6 +1,6 @@
 import { Box, Chip, Stack, Typography } from "@mui/material";
 import { DetailSection } from "../../../../shared/ui/DetailSection";
-import { InfoBadge } from "../components/InfoBadge";
+import { InfoBadge } from "../../../../shared/ui/InfoBadge";
 
 import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
 import {
@@ -58,6 +58,7 @@ export function FactoringVerificationSection({ factoring }) {
             <InfoBadge
               label="Дата подтверждения"
               value={formatDate(factoring.date_verified_customer)}
+              variant='compact'
               fullWidth
             />
           </Stack>
@@ -97,6 +98,7 @@ export function FactoringVerificationSection({ factoring }) {
             <InfoBadge
               label="Дата подтверждения"
               value={formatDate(factoring.date_verified_forwarder)}
+              variant='compact'
               fullWidth
             />
           </Stack>
@@ -134,6 +136,7 @@ export function FactoringVerificationSection({ factoring }) {
             <InfoBadge
               label="Дата подтверждения"
               value={formatDate(factoring.verified_factor)}
+              variant='compact'
               fullWidth
             />
           </Stack>

@@ -3,7 +3,7 @@ import {
    UNKNOWN_LEAD_STATUS,
 } from './lead-kanban.constants';
 
-export function getLeadStatus(lead) {
+function getLeadStatus(lead) {
    return lead?.status || UNKNOWN_LEAD_STATUS;
 }
 
@@ -109,26 +109,4 @@ export function getLeadResponsibleLabel(lead) {
       '';
 
    return forwarderName || 'Ответственный не указан';
-}
-
-export function getLeadColumnTotal(leads) {
-   return leads.reduce((total, lead) => {
-      const amount = Number(lead?.summ);
-
-      if (Number.isNaN(amount)) {
-         return total;
-      }
-
-      return total + amount;
-   }, 0);
-}
-
-export function getLeadColumnTotalLabel(leads) {
-   const total = getLeadColumnTotal(leads);
-
-   if (!total) {
-      return '';
-   }
-
-   return `${total.toLocaleString('ru-RU')} KZT`;
 }

@@ -28,14 +28,6 @@ function onlyDigits(value) {
     return String(value ?? '').replace(/\D/g, '');
 }
 
-function addIfNotEmpty(payload, key, value) {
-    const normalizedValue = normalizeText(value);
-
-    if (normalizedValue) {
-        payload[key] = normalizedValue;
-    }
-}
-
 export function mapProfileFromApi(profile) {
     return {
         fullName: profile?.fullName || profile?.name || '',
@@ -57,42 +49,6 @@ export function mapProfileFromApi(profile) {
         newPassword: '',
         newPasswordConfirm: '',
     };
-}
-
-export function mapProfileFormToApi(form) {
-    const payload = {};
-
-    addIfNotEmpty(payload, 'fullName', form.fullName);
-    addIfNotEmpty(payload, 'legalAddress', form.legalAddress);
-    addIfNotEmpty(payload, 'bankName', form.bankName);
-    addIfNotEmpty(payload, 'personFio', form.personFio);
-    addIfNotEmpty(payload, 'personPhone', form.personPhone);
-    addIfNotEmpty(payload, 'document_number', form.documentNumber);
-    addIfNotEmpty(payload, 'issue_country', form.issueCountry);
-
-    const bin = onlyDigits(form.bin);
-    const personIin = onlyDigits(form.personIin);
-    const accountNumber = normalizeText(form.accountNumber).toUpperCase();
-    const bik = normalizeText(form.bik).toUpperCase();
-    const personEmail = normalizeText(form.personEmail);
-
-    if (bin) payload.bin = bin;
-    if (personIin) payload.personIin = personIin;
-    if (accountNumber) payload.accountNumber = accountNumber;
-    if (bik) payload.bik = bik;
-    if (personEmail) payload.personEmail = personEmail;
-
-    const currentPassword = String(form.currentPassword ?? '').trim();
-    const newPassword = String(form.newPassword ?? '').trim();
-    const newPasswordConfirm = String(form.newPasswordConfirm ?? '').trim();
-
-    if (currentPassword || newPassword || newPasswordConfirm) {
-        payload.currentPassword = currentPassword;
-        payload.newPassword = newPassword;
-        payload.newPasswordConfirm = newPasswordConfirm;
-    }
-
-    return payload;
 }
 
 function normalizeProfileValue(value) {

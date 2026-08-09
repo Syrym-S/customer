@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 
 export function InfoBadge({ label, value, accent = false }) {
    return (
@@ -38,9 +37,4 @@ export function InfoBadge({ label, value, accent = false }) {
       </Box>
    );
 }
-
-InfoBadge.propTypes = {
-   label: PropTypes.string.isRequired,
-   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-   accent: PropTypes.bool,
-};
+

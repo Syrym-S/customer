@@ -1,7 +1,7 @@
 import { getLocationPoint } from '../../../shared/ui/map/map.helpers';
 import { formatLocation } from '../../../shared/lib/location/location.helpers';
 
-export function getLeadWaypoints(lead) {
+function getLeadWaypoints(lead) {
    const waypoints =
       lead?.waypoints ||
       lead?.raw?.route?.waypoints ||

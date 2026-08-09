@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
@@ -378,7 +377,4 @@ export function TenderDocumentsSection({ documents = [] }) {
       </DetailSection>
    );
 }
-
-PreviewFallback.propTypes = {
-   text: PropTypes.string.isRequired,
-};
+

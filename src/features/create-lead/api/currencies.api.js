@@ -22,7 +22,7 @@ function getCurrenciesFromResponse(response) {
    return [];
 }
 
-export function normalizeCurrencyOption(currency) {
+function normalizeCurrencyOption(currency) {
    if (!currency) {
       return null;
    }
@@ -52,7 +52,7 @@ export function normalizeCurrencyOption(currency) {
    };
 }
 
-export function normalizeCurrenciesResponse(response) {
+function normalizeCurrenciesResponse(response) {
    return getCurrenciesFromResponse(response)
       .map(normalizeCurrencyOption)
       .filter(Boolean);

@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 
 export function RoutePoint({ label, value, icon }) {
    return (
@@ -102,9 +101,4 @@ export function RoutePoint({ label, value, icon }) {
       </Box>
    );
 }
-
-RoutePoint.propTypes = {
-   label: PropTypes.string.isRequired,
-   value: PropTypes.string,
-   icon: PropTypes.node.isRequired,
-};
+

@@ -1,5 +1,4 @@
 import { Box, Dialog, DialogContent } from '@mui/material';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
@@ -379,9 +378,4 @@ export function CreateLeadModal({ open, onClose, onLeadCreated }) {
         </>
     );
 }
-
-CreateLeadModal.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    onLeadCreated: PropTypes.func,
-};
+

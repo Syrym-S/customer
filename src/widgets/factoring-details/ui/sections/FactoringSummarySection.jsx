@@ -1,6 +1,6 @@
 import { Box, Chip } from '@mui/material';
 import { DetailSection } from '../../../../shared/ui/DetailSection';
-import { InfoBadge } from '../components/InfoBadge';
+import { InfoBadge } from '../../../../shared/ui/InfoBadge';
 
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import {
@@ -27,21 +27,24 @@ export function FactoringSummarySection({ factoring }) {
                     gap: 1,
                 }}
             >
-                <InfoBadge label='Номер' value={factoring.index} />
+                <InfoBadge label='Номер' value={factoring.index} variant='compact' />
 
                 <InfoBadge
                     label='Дата создания'
                     value={formatDate(factoring.created_at)}
+                    variant='compact'
                 />
 
                 <InfoBadge
                     label='Lead ID'
                     value={factoring.lead_id || '—'}
+                    variant='compact'
                     fullWidth
                 />
 
                 <InfoBadge
                     label='Статус'
+                    variant='compact'
                     value={
                         <Chip
                             size='small'

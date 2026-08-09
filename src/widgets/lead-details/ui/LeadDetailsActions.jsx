@@ -1,5 +1,4 @@
 import { Button, DialogActions } from '@mui/material';
-import PropTypes from 'prop-types';
 
 export function LeadDetailsActions({
    isEditing,
@@ -29,10 +28,4 @@ export function LeadDetailsActions({
       </DialogActions>
    );
 }
-
-LeadDetailsActions.propTypes = {
-   isEditing: PropTypes.bool.isRequired,
-   isSaving: PropTypes.bool,
-   onSave: PropTypes.func.isRequired,
-   onClose: PropTypes.func.isRequired,
-};
+

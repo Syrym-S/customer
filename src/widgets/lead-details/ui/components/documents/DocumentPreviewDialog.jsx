@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 import {
    Box,
@@ -97,14 +96,4 @@ export function DocumentPreviewDialog({ document, onClose }) {
       </Dialog>
    );
 }
-
-DocumentPreviewDialog.propTypes = {
-   document: PropTypes.shape({
-      name: PropTypes.string,
-      context: PropTypes.string,
-      fileName: PropTypes.string,
-      fileUrl: PropTypes.string,
-      fileType: PropTypes.string,
-   }),
-   onClose: PropTypes.func.isRequired,
-};
+

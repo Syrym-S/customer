@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 import { Box, IconButton, Typography } from '@mui/material';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
@@ -119,18 +118,4 @@ export function LeadDocumentCard({
       </Box>
    );
 }
-
-LeadDocumentCard.propTypes = {
-   document: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string,
-      context: PropTypes.string,
-      fileName: PropTypes.string,
-      fileUrl: PropTypes.string,
-      fileType: PropTypes.string,
-      source: PropTypes.string,
-   }).isRequired,
-   onOpen: PropTypes.func.isRequired,
-   onDelete: PropTypes.func.isRequired,
-   isDeleting: PropTypes.bool,
-};
+

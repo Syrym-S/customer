@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 
 export function StepSection({ title, children }) {
    return (
@@ -26,8 +25,4 @@ export function StepSection({ title, children }) {
       </Box>
    );
 }
-
-StepSection.propTypes = {
-   title: PropTypes.string.isRequired,
-   children: PropTypes.node.isRequired,
-};
+

@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 
 export function TimeLeftBadge({ value, dense = false }) {
    return (
@@ -39,8 +38,3 @@ export function TimeLeftBadge({ value, dense = false }) {
       </Box>
    );
 }
-
-TimeLeftBadge.propTypes = {
-   value: PropTypes.node,
-   dense: PropTypes.bool,
-};

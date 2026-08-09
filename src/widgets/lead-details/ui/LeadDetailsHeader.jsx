@@ -1,5 +1,4 @@
 import { Box, Chip, DialogTitle, Stack, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 
 export function LeadDetailsHeader({ lead }) {
    return (
@@ -77,7 +76,4 @@ export function LeadDetailsHeader({ lead }) {
       </DialogTitle>
    );
 }
-
-LeadDetailsHeader.propTypes = {
-   lead: PropTypes.object.isRequired,
-};
+

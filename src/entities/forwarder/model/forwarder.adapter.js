@@ -18,7 +18,7 @@ function getForwardersList(response) {
     return [];
 }
 
-export function mapForwarderFromApi(apiForwarder) {
+function mapForwarderFromApi(apiForwarder) {
     return {
         id: apiForwarder.id ?? apiForwarder._id ?? apiForwarder.ID ?? '',
 
@@ -61,15 +61,4 @@ export function mapForwardersResponseFromApi(response) {
     return getForwardersList(response)
         .map(mapForwarderFromApi)
         .filter((forwarder) => Boolean(forwarder.id));
-}
-
-export function mapForwarderSearchItemFromApi(item) {
-    return {
-        id: item.id,
-        fullName: item.fio || '',
-        companyName: item.name || '',
-        companyBin: item.bin || '',
-        phone: item.phone || '',
-        iin: item.iin || '',
-    };
 }

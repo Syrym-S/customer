@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import PropTypes from 'prop-types';
 
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import RouteOutlinedIcon from '@mui/icons-material/RouteOutlined';
@@ -46,10 +45,4 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
       </DetailSection>
    );
 }
-
-LeadRouteSection.propTypes = {
-   lead: PropTypes.object.isRequired,
-   isEditing: PropTypes.bool.isRequired,
-   editForm: PropTypes.object.isRequired,
-   onEditChange: PropTypes.func.isRequired,
-};
+

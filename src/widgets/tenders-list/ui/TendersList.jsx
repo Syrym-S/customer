@@ -13,7 +13,7 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import { TenderCard } from './TenderCard';
 import { TenderDetailsModal } from '../../tender-details/ui/TenderDetailsModal';
 import { useTendersContext } from '../../../entities/tender/model/useTendersContext';
-import { TendersPagination } from './TendersPagination';
+import { Pagination } from '../../../shared/ui/Pagination';
 import { useState } from 'react';
 import { TendersTable } from './TendersTable';
 
@@ -181,7 +181,7 @@ export function TendersList() {
                         </Box>
                      )}
 
-                     <TendersPagination
+                     <Pagination
                         page={page}
                         count={pagesCount}
                         onChange={handlePageChange}

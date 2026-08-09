@@ -1,4 +1,4 @@
-export function hasCoordinate(value) {
+function hasCoordinate(value) {
    return value !== null && value !== undefined && value !== '';
 }
 
@@ -24,7 +24,15 @@ export function getLocationPoint(location) {
    return [normalizedLat, normalizedLng];
 }
 
-export function isValidMapPoint(point) {
+export function getLocationDescription(location, fallback) {
+   if (!location || typeof location !== 'object') {
+      return location || fallback;
+   }
+
+   return location.address || location.label || location.city || fallback;
+}
+
+function isValidMapPoint(point) {
    if (!Array.isArray(point) || point.length < 2) {
       return false;
    }
@@ -34,7 +42,7 @@ export function isValidMapPoint(point) {
    );
 }
 
-export function normalizeMapPoint(point) {
+function normalizeMapPoint(point) {
    return [Number(point[0]), Number(point[1])];
 }
 

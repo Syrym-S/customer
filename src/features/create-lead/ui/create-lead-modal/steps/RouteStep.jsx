@@ -7,7 +7,6 @@ import {
     TextField,
 } from '@mui/material';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 
 import {
@@ -565,10 +564,4 @@ export function RouteStep({ control, errors, form, setValue }) {
         </StepSection>
     );
 }
-
-RouteStep.propTypes = {
-    control: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired,
-    form: PropTypes.object.isRequired,
-    setValue: PropTypes.func.isRequired,
-};
+

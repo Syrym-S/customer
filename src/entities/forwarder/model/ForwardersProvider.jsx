@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
@@ -239,7 +238,3 @@ export function ForwardersProvider({ children }) {
       </ForwardersContext.Provider>
    );
 }
-
-ForwardersProvider.propTypes = {
-   children: PropTypes.node.isRequired,
-};

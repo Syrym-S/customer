@@ -6,23 +6,18 @@ import {
    tenderStatusStyles,
 } from '../../../../entities/tender/model/tender.helpers';
 import { TimeLeftBadge } from '../../../../entities/tender/ui/TimeLeftBadge';
-
-function getCompactId(id) {
-   const normalizedId = String(id || '—');
-
-   if (normalizedId.length <= 14) {
-      return normalizedId;
-   }
-
-   return `${normalizedId.slice(0, 8)}…${normalizedId.slice(-4)}`;
-}
+import { formatCompactId } from '../../../../shared/lib/format-id.helpers';
 
 export function TenderDetailsHeader({ tender }) {
    const shouldShowTimeLeft =
       tender.status !== 'closed' && tender.status !== 'cancelled';
 
    const tenderId = tender.id || '—';
-   const compactTenderId = getCompactId(tenderId);
+   const compactTenderId = formatCompactId(tenderId, {
+      prefixLength: 8,
+      suffixLength: 4,
+      threshold: 14,
+   });
 
    return (
       <Box

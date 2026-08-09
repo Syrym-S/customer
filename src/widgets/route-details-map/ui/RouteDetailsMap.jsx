@@ -6,8 +6,8 @@ import {
 } from '../../../shared/config/map.config';
 import {
    getLocationDescription,
-   getLocationPosition,
-} from '../../../entities/lead/lib/lead-details-map.helpers';
+   getLocationPoint,
+} from '../../../shared/ui/map/map.helpers';
 import { driverMapIcon } from '../../../shared/ui/map/map-icons';
 
 export function RouteDetailsMap({
@@ -28,12 +28,12 @@ export function RouteDetailsMap({
 
    const waypoints = Array.isArray(lead.waypoints) ? lead.waypoints : [];
 
-   const fromPosition = getLocationPosition(lead.from_location);
-   const toPosition = getLocationPosition(lead.to_location);
+   const fromPosition = getLocationPoint(lead.from_location);
+   const toPosition = getLocationPoint(lead.to_location);
 
    const waypointMarkers = waypoints
       .map((waypoint, index) => {
-         const position = getLocationPosition(waypoint);
+         const position = getLocationPoint(waypoint);
 
          if (!position) {
             return null;

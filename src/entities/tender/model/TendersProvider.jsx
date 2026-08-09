@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { TendersContext } from './TendersContext';
-import PropTypes from 'prop-types';
 import {
    acceptTenderBet,
    addTenderParticipant,
@@ -347,9 +346,4 @@ export function TendersProvider({
       </TendersContext.Provider>
    );
 }
-
-TendersProvider.propTypes = {
-   children: PropTypes.node.isRequired,
-   initialPublicationType: PropTypes.string,
-   initialPerPage: PropTypes.number,
-};
+

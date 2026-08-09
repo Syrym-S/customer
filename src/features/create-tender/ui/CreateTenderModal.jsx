@@ -15,7 +15,6 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 import { useTendersContext } from '../../../entities/tender/model/useTendersContext';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { searchTenderLeadsApi } from '../../../entities/tender/api/tender.api';
@@ -911,8 +910,4 @@ export function CreateTenderModal({ open, onClose }) {
         </>
     );
 }
-
-CreateTenderModal.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-};
+

@@ -60,11 +60,3 @@ export function getForwarderAccount(forwarder) {
 export function getForwarderInviteLink(forwarder) {
     return forwarder?.invite_link || forwarder?.inviteLink || '';
 }
-
-export function getForwarderInviteCode(forwarder) {
-    return forwarder?.invite || '';
-}
-
-export function hasForwarderInviteLink(forwarder) {
-    return Boolean(getForwarderInviteLink(forwarder));
-}

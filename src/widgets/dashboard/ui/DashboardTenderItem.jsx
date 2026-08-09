@@ -3,12 +3,12 @@ import {
     getTenderCargoTypeLabel,
     getTenderTotalCargoWeight,
     getTimeLeft,
-    tenderStatusLabels,
-    tenderStatusStyles,
 } from '../../../entities/tender/model/tender.helpers';
 import { useTendersContext } from '../../../entities/tender/model/useTendersContext';
 import { normalizeLocationValue } from '../../../shared/lib/location/location.helpers';
 import { TimeLeftBadge } from '../../../entities/tender/ui/TimeLeftBadge';
+import { TenderStatusChip } from '../../../entities/tender/ui/TenderStatusChip';
+import { formatCompactId } from '../../../shared/lib/format-id.helpers';
 
 function getLocationLabel(tender, field) {
     return (
@@ -43,39 +43,6 @@ function getPublicationTypeLabel(publicationType) {
     }
 
     return 'Тип не указан';
-}
-
-function getShortTenderId(id) {
-    if (!id) {
-        return '—';
-    }
-
-    const value = String(id);
-
-    if (value.length <= 12) {
-        return value;
-    }
-
-    return `${value.slice(0, 4)}...${value.slice(-5)}`;
-}
-
-function TenderStatusChip({ status }) {
-    const label = tenderStatusLabels[status] || status || 'Не указан';
-    const styles = tenderStatusStyles[status] || tenderStatusStyles.new;
-
-    return (
-        <Chip
-            label={label}
-            variant='outlined'
-            size='small'
-            sx={{
-                borderRadius: 999,
-                fontWeight: 600,
-                fontSize: '0.75rem',
-                ...styles,
-            }}
-        />
-    );
 }
 
 function InfoText({ label, value }) {
@@ -158,7 +125,7 @@ export function DashboardTenderItem({ tender }) {
                         }}
                     >
                         <Chip
-                            label={`Тендер #${getShortTenderId(tender?.id)}`}
+                            label={`Тендер #${formatCompactId(tender?.id)}`}
                             size='small'
                             color='primary'
                             variant='outlined'
@@ -179,7 +146,7 @@ export function DashboardTenderItem({ tender }) {
                             }}
                         />
 
-                        <TenderStatusChip status={tender?.status} />
+                        <TenderStatusChip status={tender?.status} dense />
 
                         <Chip
                             label={getPublicationTypeLabel(

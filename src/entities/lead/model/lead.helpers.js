@@ -1,4 +1,4 @@
-export const leadStatusLabels = {
+const leadStatusLabels = {
    new: 'Новый',
 
    add_driver: 'Водитель добавлен',
@@ -22,7 +22,7 @@ export const leadStatusLabels = {
    cancelled: 'Отменён',
 };
 
-export const leadStatusStyles = {
+const leadStatusStyles = {
    new: {
       borderColor: 'primary.main',
       color: 'primary.main',

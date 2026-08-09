@@ -22,7 +22,7 @@ function unwrapCargoTypesResponse(response) {
     return [];
 }
 
-export function normalizeCargoType(item) {
+function normalizeCargoType(item) {
     if (!item) {
         return null;
     }
@@ -53,7 +53,7 @@ export function normalizeCargoType(item) {
     };
 }
 
-export function normalizeCargoTypesResponse(response) {
+function normalizeCargoTypesResponse(response) {
     return unwrapCargoTypesResponse(response)
         .map(normalizeCargoType)
         .filter(Boolean);

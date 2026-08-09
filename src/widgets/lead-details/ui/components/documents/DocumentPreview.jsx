@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@mui/material';
 
@@ -164,19 +163,3 @@ function PreviewFallback({ text }) {
       </Box>
    );
 }
-
-const documentPropType = PropTypes.shape({
-   name: PropTypes.string,
-   context: PropTypes.string,
-   fileName: PropTypes.string,
-   fileUrl: PropTypes.string,
-   fileType: PropTypes.string,
-});
-
-DocumentPreview.propTypes = {
-   document: documentPropType,
-};
-
-PreviewFallback.propTypes = {
-   text: PropTypes.string.isRequired,
-};

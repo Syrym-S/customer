@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { DetailSection } from '../../../../shared/ui/DetailSection';
-import { InfoBadge } from '../components/InfoBadge';
+import { InfoBadge } from '../../../../shared/ui/InfoBadge';
 
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 
@@ -47,21 +47,25 @@ export function FactoringParticipantsSection({ factoring }) {
                         <InfoBadge
                             label='Компания'
                             value={factoring.factor?.company_name || '—'}
+                            variant='compact'
                         />
 
                         <InfoBadge
                             label='БИН'
                             value={factoring.factor?.bin || '—'}
+                            variant='compact'
                         />
 
                         <InfoBadge
                             label='ФИО'
                             value={factoring.factor?.fio || '—'}
+                            variant='compact'
                         />
 
                         <InfoBadge
                             label='Телефон'
                             value={factoring.factor?.phone || '—'}
+                            variant='compact'
                         />
                     </Box>
                 </Box>
@@ -92,21 +96,25 @@ export function FactoringParticipantsSection({ factoring }) {
                         <InfoBadge
                             label='Компания'
                             value={factoring.forwarder?.company_name || '—'}
+                            variant='compact'
                         />
 
                         <InfoBadge
                             label='БИН'
                             value={factoring.forwarder?.bin || '—'}
+                            variant='compact'
                         />
 
                         <InfoBadge
                             label='ФИО'
                             value={factoring.forwarder?.fio || '—'}
+                            variant='compact'
                         />
 
                         <InfoBadge
                             label='Телефон'
                             value={factoring.forwarder?.phone || '—'}
+                            variant='compact'
                         />
                     </Box>
                 </Box>

@@ -107,7 +107,7 @@ function normalizeGeoPoint(point, index) {
    };
 }
 
-export function normalizeGeoPoints(points) {
+function normalizeGeoPoints(points) {
    return (points || [])
       .map(normalizeGeoPoint)
       .filter(Boolean)

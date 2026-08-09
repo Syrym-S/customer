@@ -14,7 +14,7 @@ export function getWaypointPointKey(index) {
    return `waypoint-${index}`;
 }
 
-export function buildFitBoundsPointsFromMarkers(markers = []) {
+function buildFitBoundsPointsFromMarkers(markers = []) {
    return markers.map((marker) => marker.position).filter(Boolean);
 }
 

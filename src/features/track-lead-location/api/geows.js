@@ -22,7 +22,7 @@
  * @returns {WebSocket}
  */
 
-export const GEO_WS_MESSAGE_TYPES = {
+const GEO_WS_MESSAGE_TYPES = {
    ADMIN: 'admin',
    READ: 'read',
    ADD: 'add',
@@ -136,7 +136,7 @@ export function requestGeoAdminPoints() {
  * Получить новые точки инкрементально.
  * Сервер вернет точки с id > последнего полученного.
  */
-export function requestGeoIncrementalPoints(ws) {
+function requestGeoIncrementalPoints(ws) {
    return sendGeoWSMessage(ws, {});
 }
 

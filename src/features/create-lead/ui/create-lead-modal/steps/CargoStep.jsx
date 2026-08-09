@@ -12,7 +12,6 @@ import {
 } from '@mui/material';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import PropTypes from 'prop-types';
 import { Controller, useFieldArray } from 'react-hook-form';
 
 import { StepSection } from '../components/StepSection';
@@ -506,8 +505,4 @@ export function CargoStep({ control, errors }) {
       </StepSection>
    );
 }
-
-CargoStep.propTypes = {
-   control: PropTypes.object.isRequired,
-   errors: PropTypes.object.isRequired,
-};
+

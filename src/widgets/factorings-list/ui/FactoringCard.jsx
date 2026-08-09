@@ -7,7 +7,7 @@ import {
     getVerificationColor,
     getVerificationLabel,
 } from '../../../entities/factoring/model/factorings.helpers';
-import { InfoBadge } from '../../factoring-details/ui/components/InfoBadge';
+import { InfoBadge } from '../../../shared/ui/InfoBadge';
 
 export function FactoringCard({ factoring, onOpenDetails }) {
     return (
@@ -125,23 +125,27 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     <InfoBadge
                         label='Экспедитор'
                         value={factoring.forwarder?.company_name || '—'}
+                        variant='compact'
                     />
 
                     <InfoBadge
                         label='БИН экспедитора'
                         value={factoring.forwarder?.bin || '—'}
+                        variant='compact'
                     />
 
                     {factoring.forwarder?.fio && (
                         <InfoBadge
                             label='ФИО экспедитора'
                             value={factoring.forwarder.fio}
+                            variant='compact'
                         />
                     )}
 
                     <InfoBadge
                         label='Дата создания'
                         value={formatDate(factoring.created_at)}
+                        variant='compact'
                     />
                 </Box>
 
@@ -161,6 +165,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                             factoring.deb_summ,
                             factoring.deb_currency,
                         )}
+                        variant='compact'
                         accent
                     />
 
@@ -170,6 +175,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                             factoring.cred_summ,
                             factoring.currency,
                         )}
+                        variant='compact'
                         accent
                     />
                 </Box>

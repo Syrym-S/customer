@@ -1,5 +1,4 @@
 import { Box, Chip, DialogTitle, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 
 export function CreateLeadHeader({ activeStep, stepsCount }) {
    return (
@@ -57,8 +56,4 @@ export function CreateLeadHeader({ activeStep, stepsCount }) {
       </DialogTitle>
    );
 }
-
-CreateLeadHeader.propTypes = {
-   activeStep: PropTypes.number.isRequired,
-   stepsCount: PropTypes.number.isRequired,
-};
+

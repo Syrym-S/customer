@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
-import PropTypes from 'prop-types';
 import {
     Autocomplete,
     Box,
@@ -494,9 +493,4 @@ export function ForwarderStep({ control, errors, setValue }) {
         </StepSection>
     );
 }
-
-ForwarderStep.propTypes = {
-    setValue: PropTypes.func.isRequired,
-    control: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired,
-};
+

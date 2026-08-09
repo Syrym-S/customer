@@ -13,7 +13,7 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import { useLeadsContext } from '../../../entities/lead/model/useLeadsContext';
 import { LeadCard } from './LeadCard';
 import { LeadDetailsModal } from '../../lead-details/ui/LeadDetailsModal';
-import { LeadsPagination } from './LeadsPagination';
+import { Pagination } from '../../../shared/ui/Pagination';
 import { useState } from 'react';
 import { LeadsTable } from './LeadsTable';
 import { LeadsKanbanBoard } from './kanban/LeadsKanbanBoard';
@@ -195,7 +195,7 @@ export function LeadsList() {
                         <LeadsKanbanBoard leads={leads} />
                      )}
 
-                     <LeadsPagination
+                     <Pagination
                         page={page}
                         count={pagesCount}
                         onChange={handlePageChange}

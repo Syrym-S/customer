@@ -219,7 +219,7 @@ function getShortLeadId(id) {
    return String(id).slice(-6);
 }
 
-export function mapTenderLeadSearchItemFromApi(item) {
+function mapTenderLeadSearchItemFromApi(item) {
    const from = item.from || '';
    const to = item.to || '';
    const cargo = item.cargo || 'Груз не указан';

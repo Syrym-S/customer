@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useMapEvents } from 'react-leaflet';
 
 export function MapClickHandler({ onMapClick }) {
@@ -14,7 +13,4 @@ export function MapClickHandler({ onMapClick }) {
 
    return null;
 }
-
-MapClickHandler.propTypes = {
-   onMapClick: PropTypes.func,
-};
+

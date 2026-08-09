@@ -1,4 +1,4 @@
-import { Box, Chip, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
@@ -6,26 +6,13 @@ import {
    getTenderCargoTypeLabel,
    getTenderTotalCargoWeight,
    getTimeLeft,
-   tenderStatusLabels,
-   tenderStatusStyles,
 } from '../../../entities/tender/model/tender.helpers';
 import { useTendersContext } from '../../../entities/tender/model/useTendersContext';
 import { normalizeLocationValue } from '../../../shared/lib/location/location.helpers';
 import { TimeLeftBadge } from '../../../entities/tender/ui/TimeLeftBadge';
-
-function getShortTenderId(id) {
-   if (!id) {
-      return '—';
-   }
-
-   const value = String(id);
-
-   if (value.length <= 12) {
-      return value;
-   }
-
-   return `${value.slice(0, 4)}...${value.slice(-5)}`;
-}
+import { TenderStatusChip } from '../../../entities/tender/ui/TenderStatusChip';
+import { formatCompactId } from '../../../shared/lib/format-id.helpers';
+import { InfoBadge } from '../../../shared/ui/InfoBadge';
 
 export function TenderCard({ tender }) {
    const { openTenderDetails } = useTendersContext();
@@ -43,7 +30,7 @@ export function TenderCard({ tender }) {
 
    const fullTenderIdLabel = tender.id ? `#${tender.id}` : '#—';
    const shortTenderIdLabel = tender.id
-      ? `#${getShortTenderId(tender.id)}`
+      ? `#${formatCompactId(tender.id)}`
       : '#—';
 
    function handleOpenTender() {
@@ -153,17 +140,7 @@ export function TenderCard({ tender }) {
                      />
                   )}
 
-                  <Chip
-                     label={tenderStatusLabels[tender.status] || tender.status}
-                     variant='outlined'
-                     size='small'
-                     sx={{
-                        borderRadius: 999,
-                        fontWeight: 600,
-                        ...(tenderStatusStyles[tender.status] ||
-                           tenderStatusStyles.new),
-                     }}
-                  />
+                  <TenderStatusChip status={tender.status} />
                </Stack>
             </Box>
 
@@ -345,48 +322,6 @@ export function TenderCard({ tender }) {
                /> */}
             </Box>
          </Stack>
-      </Box>
-   );
-}
-
-function InfoBadge({ label, value, accent = false, muted = false, sx = {} }) {
-   return (
-      <Box
-         sx={{
-            px: 1.5,
-            py: 1,
-            border: '1px solid',
-            borderColor: muted ? 'grey.300' : 'divider',
-            borderRadius: 2,
-            backgroundColor: muted ? 'grey.200' : 'grey.50',
-            minWidth: 0,
-            ...sx,
-         }}
-      >
-         <Typography
-            sx={{
-               fontSize: 11,
-               lineHeight: 1.2,
-               color: 'text.secondary',
-               mb: 0.25,
-            }}
-         >
-            {label}
-         </Typography>
-
-         <Typography
-            sx={{
-               fontSize: 14,
-               lineHeight: 1.3,
-               color: muted
-                  ? 'text.secondary'
-                  : accent
-                    ? 'primary.main'
-                    : 'text.primary',
-            }}
-         >
-            {value || 'Не указано'}
-         </Typography>
       </Box>
    );
 }

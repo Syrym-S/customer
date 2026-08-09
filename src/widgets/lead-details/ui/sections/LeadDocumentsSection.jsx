@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import {
    Alert,
@@ -174,23 +173,4 @@ export function LeadDocumentsSection({
       </DetailSection>
    );
 }
-
-LeadDocumentsSection.propTypes = {
-   documents: PropTypes.arrayOf(
-      PropTypes.shape({
-         id: PropTypes.string.isRequired,
-         name: PropTypes.string,
-         context: PropTypes.string,
-         fileName: PropTypes.string,
-         fileUrl: PropTypes.string,
-         fileType: PropTypes.string,
-      }),
-   ).isRequired,
-   onAddDocument: PropTypes.func.isRequired,
-   onDeleteDocument: PropTypes.func.isRequired,
-   isUploading: PropTypes.bool,
-   uploadError: PropTypes.string,
-   deletingDocumentIds: PropTypes.arrayOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-   ),
-};
+

@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import PropTypes from 'prop-types';
 
 import { InfoBadge } from '../components/InfoBadge';
 import { StepSection } from '../components/StepSection';
@@ -190,7 +189,4 @@ export function ConfirmStep({ form }) {
         </Box>
     );
 }
-
-ConfirmStep.propTypes = {
-    form: PropTypes.object.isRequired,
-};
+

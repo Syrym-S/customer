@@ -1,4 +1,4 @@
-export const NOTIFICATION_WS_MESSAGE_TYPES = {
+const NOTIFICATION_WS_MESSAGE_TYPES = {
     ERROR: 'error',
     NOTIFICATION: 'notification',
     NOTIFICATION_CREATED: 'notification.created',
@@ -108,7 +108,7 @@ function isAuthFailedPayload(payload) {
     );
 }
 
-export function extractNotificationFromWsPayload(payload) {
+function extractNotificationFromWsPayload(payload) {
     if (!payload) {
         return null;
     }

@@ -1,10 +1,7 @@
 import { Box, Chip, Divider, Paper, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import {
-   getLeadStatusLabel,
-   getLeadStatusStyles,
-} from '../../../entities/lead/model/lead.helpers';
+import { LeadStatusChip } from '../../../entities/lead/ui/LeadStatusChip';
 import { normalizeLocationValue } from '../../../shared/lib/location/location.helpers';
 
 function formatLocation(location) {
@@ -31,22 +28,6 @@ function hasRouteCoordinates(lead) {
       lead?.from_location?.lon &&
       lead?.to_location?.lat &&
       lead?.to_location?.lon,
-   );
-}
-
-function LeadStatusChip({ status }) {
-   return (
-      <Chip
-         label={getLeadStatusLabel(status)}
-         variant='outlined'
-         size='small'
-         sx={{
-            borderRadius: 999,
-            fontWeight: 600,
-            fontSize: '0.75rem',
-            ...getLeadStatusStyles(status),
-         }}
-      />
    );
 }
 
@@ -132,7 +113,7 @@ export function DashboardLeadItem({
                   }}
                />
 
-               {lead?.status && <LeadStatusChip status={lead.status} />}
+               {lead?.status && <LeadStatusChip status={lead.status} dense />}
             </Box>
 
             <Box>

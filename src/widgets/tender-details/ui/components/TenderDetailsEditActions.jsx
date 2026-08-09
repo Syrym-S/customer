@@ -1,5 +1,4 @@
 import { Box, Button } from "@mui/material";
-import PropTypes from "prop-types";
 
 export function TenderDetailsEditActions({
    isEditing,
@@ -25,9 +24,4 @@ export function TenderDetailsEditActions({
       </Box>
    );
 }
-
-TenderDetailsEditActions.propTypes = {
-   isEditing: PropTypes.bool.isRequired,
-   onStartEdit: PropTypes.func.isRequired,
-   onCancelEdit: PropTypes.func.isRequired,
-};
+

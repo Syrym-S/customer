@@ -1,8 +1,8 @@
-import { Box, Chip, Paper } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import { useLeadsContext } from '../../../entities/lead/model/useLeadsContext';
-import { getLeadStatusLabel, getLeadStatusStyles } from '../../../entities/lead/model/lead.helpers';
+import { LeadStatusChip } from '../../../entities/lead/ui/LeadStatusChip';
 
 function getLocationLabel(location) {
    if (!location) {
@@ -18,25 +18,6 @@ function getLocationLabel(location) {
 
 function getForwarderLabel(forwarder) {
    return forwarder?.fullName || forwarder?.companyName || '-';
-}
-
-function LeadStatusChip({ status }) {
-   return (
-      <Chip
-         label={getLeadStatusLabel(status)}
-         variant="outlined"
-         size="small"
-         sx={{
-            borderRadius: 999,
-            fontWeight: 600,
-            fontSize: {
-               xs: '0.7rem',
-               sm: '0.8rem',
-            },
-            ...(getLeadStatusStyles(status)),
-         }}
-      />
-   );
 }
 
 export function LeadsTable({ leads }) {

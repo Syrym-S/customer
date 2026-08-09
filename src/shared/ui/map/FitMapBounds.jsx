@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { buildFitBoundsKey, buildFitBoundsPoints } from './map.helpers';
@@ -74,13 +73,4 @@ export function FitMapBounds({
 
    return null;
 }
-
-FitMapBounds.propTypes = {
-   routePoints: PropTypes.array,
-   geoRoutePoints: PropTypes.array,
-   routes: PropTypes.array,
-   geoRoutes: PropTypes.array,
-   markers: PropTypes.array,
-   fitBoundsKey: PropTypes.string,
-   fitBoundsPoints: PropTypes.array,
-};
+

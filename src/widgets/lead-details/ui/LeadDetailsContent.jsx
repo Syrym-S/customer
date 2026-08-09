@@ -1,5 +1,4 @@
 import { Stack } from '@mui/material';
-import PropTypes from 'prop-types';
 
 import { LeadCargoSection } from './sections/LeadCargoSection';
 import { LeadDriverSection } from './sections/LeadDriverSection';
@@ -59,29 +58,4 @@ export function LeadDetailsContent({
       </Stack>
    );
 }
-
-LeadDetailsContent.propTypes = {
-   lead: PropTypes.object.isRequired,
-   isEditing: PropTypes.bool.isRequired,
-   editForm: PropTypes.object.isRequired,
-   onEditChange: PropTypes.func.isRequired,
-
-   documents: PropTypes.arrayOf(
-      PropTypes.shape({
-         id: PropTypes.string.isRequired,
-         name: PropTypes.string,
-         context: PropTypes.string,
-         fileName: PropTypes.string,
-         fileUrl: PropTypes.string,
-         fileType: PropTypes.string,
-         createdAt: PropTypes.string,
-      }),
-   ).isRequired,
-   onAddDocument: PropTypes.func.isRequired,
-   onDeleteDocument: PropTypes.func.isRequired,
-   isDocumentUploading: PropTypes.bool,
-   documentUploadError: PropTypes.string,
-   deletingDocumentIds: PropTypes.arrayOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-   ),
-};
+

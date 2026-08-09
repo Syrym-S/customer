@@ -13,7 +13,7 @@ function normalizeNotificationType(type) {
         .toLowerCase();
 }
 
-export function getNotificationDomainEventName(notification) {
+function getNotificationDomainEventName(notification) {
     const type = normalizeNotificationType(notification?.type);
 
     if (!type || IGNORED_NOTIFICATION_TYPES.has(type)) {
