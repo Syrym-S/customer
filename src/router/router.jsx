@@ -7,6 +7,7 @@ import { ProfilePage } from "../pages/profile/ProfilePage";
 import { TenderPage } from "../pages/tender/TenderPage";
 import { FactoringsPage } from "../pages/factorings/FactoringsPage";
 import { ForwardersPage } from "../pages/forwarders/ForwardersPage";
+import { ErrorPage } from "../pages/error/ErrorPage";
 import { isStaging } from "../shared/api/api-client";
 
 export const router = createBrowserRouter(
@@ -14,6 +15,7 @@ export const router = createBrowserRouter(
     {
       path: "/",
       element: <AppLayout />,
+      errorElement: <ErrorPage />,
       handle: {
         breadcrumb: "Главная",
       },

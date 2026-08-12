@@ -62,10 +62,10 @@ export function EmailVerificationStatus() {
 
    if (isLoading) {
       return (
-         <Stack direction='row' alignItems='center' spacing={1} sx={wrapperSx}>
+         <Stack direction="row" alignItems="center" spacing={1} sx={wrapperSx}>
             <CircularProgress size={16} />
             <Typography
-               color='text.secondary'
+               color="text.secondary"
                sx={{ fontSize: 14, lineHeight: 1.4 }}
             >
                Проверка статуса email…
@@ -76,7 +76,7 @@ export function EmailVerificationStatus() {
 
    if (loadError) {
       return (
-         <Alert severity='error' sx={{ py: 0.5 }}>
+         <Alert severity="error" sx={{ py: 0.5 }}>
             {loadError}
          </Alert>
       );
@@ -84,13 +84,18 @@ export function EmailVerificationStatus() {
 
    if (isVerified === true) {
       return (
-         <Stack direction='row' alignItems='center' spacing={0.75} sx={wrapperSx}>
+         <Stack
+            direction="row"
+            alignItems="center"
+            spacing={0.75}
+            sx={wrapperSx}
+         >
             <CheckCircleOutlineRoundedIcon
-               color='success'
+               color="success"
                sx={{ fontSize: 18 }}
             />
             <Typography
-               color='text.secondary'
+               color="text.secondary"
                sx={{ fontSize: 14, lineHeight: 1.4 }}
             >
                Email подтверждён
@@ -102,7 +107,7 @@ export function EmailVerificationStatus() {
    if (isVerified === false) {
       return (
          <Stack
-            direction='row'
+            direction="row"
             sx={{
                ...wrapperSx,
                alignItems: 'center',
@@ -113,18 +118,18 @@ export function EmailVerificationStatus() {
                backgroundColor: 'warning.50',
             }}
          >
-            <Stack direction='row' alignItems='center' spacing={0.75}>
-               <ErrorOutlineRoundedIcon color='warning' sx={{ fontSize: 18 }} />
+            <Stack direction="row" alignItems="center" spacing={0.75}>
+               <ErrorOutlineRoundedIcon color="warning" sx={{ fontSize: 18 }} />
                <Typography
-                  color='text.secondary'
+                  color="text.secondary"
                   sx={{ fontSize: 14, lineHeight: 1.4 }}
                >
                   Email не подтверждён
                </Typography>
             </Stack>
             <Button
-               size='small'
-               variant='text'
+               size="small"
+               variant="text"
                onClick={openEmailVerificationModal}
                sx={{
                   minWidth: 'auto',
