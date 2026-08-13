@@ -1,12 +1,16 @@
 import { apiClient } from '../../../shared/api/api-client';
 
-export async function fetchCustomerLeadsApi({ page = 1, perPage = 4 } = {}) {
-   const response = await apiClient.get('/customer/v1/leads', {
-      params: {
-         page,
-         per_page: perPage,
-      },
-   });
+export async function fetchCustomerLeadsApi({ page = 1, perPage = 4, status } = {}) {
+   const params = {
+      page,
+      per_page: perPage,
+   };
+
+   if (status) {
+      params.status = status;
+   }
+
+   const response = await apiClient.get('/customer/v1/leads', { params });
 
    return response.data;
 }

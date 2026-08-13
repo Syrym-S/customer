@@ -18,6 +18,7 @@ export function LeadsProvider({ children }) {
    const [page, setPage] = useState(1);
    const [perPage, setPerPage] = useState(DEFAULT_PER_PAGE);
    const [count, setCount] = useState(0);
+   const [status, setStatus] = useState('');
 
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
@@ -31,7 +32,11 @@ export function LeadsProvider({ children }) {
 
             setError(null);
 
-            const response = await fetchCustomerLeads({ page, perPage });
+            const response = await fetchCustomerLeads({
+               page,
+               perPage,
+               status,
+            });
             const mappedResponse = mapLeadsResponseFromApi(response);
 
             setLeads(mappedResponse.leads);
@@ -45,8 +50,13 @@ export function LeadsProvider({ children }) {
             }
          }
       },
-      [page, perPage],
+      [page, perPage, status],
    );
+
+   const setStatusFilter = useCallback((nextStatus) => {
+      setStatus(nextStatus);
+      setPage(1);
+   }, []);
 
    const prependLead = useCallback(
       (lead) => {
@@ -84,6 +94,8 @@ export function LeadsProvider({ children }) {
          perPage,
          setPerPage,
          count,
+         status,
+         setStatusFilter,
 
          isLoading,
          error,
@@ -97,6 +109,8 @@ export function LeadsProvider({ children }) {
          page,
          perPage,
          count,
+         status,
+         setStatusFilter,
          isLoading,
          error,
          loadLeads,

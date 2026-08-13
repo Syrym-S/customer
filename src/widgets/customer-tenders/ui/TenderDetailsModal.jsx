@@ -511,6 +511,7 @@ export function TenderDetailsModal() {
                             <TenderDetailsContent
                                 tender={openTender}
                                 isActionLoading={isActionLoading}
+                                isParticipantsLoading={isDetailsLoading}
                                 isEditing={isEditing}
                                 editForm={editForm}
                                 onEditChange={handleEditChange}

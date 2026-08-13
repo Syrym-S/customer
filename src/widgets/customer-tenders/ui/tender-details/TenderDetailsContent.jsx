@@ -14,6 +14,7 @@ import { TenderDocumentsSection } from './sections/TenderDocumentsSection';
 export function TenderDetailsContent({
    tender,
    isActionLoading = false,
+   isParticipantsLoading = false,
    isEditing = false,
    editForm,
    onEditChange,
@@ -52,6 +53,7 @@ export function TenderDetailsContent({
                maxParticipants={tender.max_participants}
                tenderStatus={tender.status}
                isActionLoading={isActionLoading}
+               isLoading={isParticipantsLoading}
                onDeleteParticipant={onDeleteParticipant}
                onAddParticipants={onAddParticipants}
             />
@@ -70,6 +72,7 @@ export function TenderDetailsContent({
 TenderDetailsContent.propTypes = {
    tender: tenderPropType.isRequired,
    isActionLoading: PropTypes.bool,
+   isParticipantsLoading: PropTypes.bool,
    isEditing: PropTypes.bool,
    editForm: tenderEditFormPropType,
    onEditChange: PropTypes.func,

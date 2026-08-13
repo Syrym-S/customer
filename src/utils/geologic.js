@@ -307,12 +307,12 @@ export function openLeadGeoConnection({
                   }, 5000);
                }
 
-               if (!silent) {
-                  notifySuccess('GeoWS connection opened', {
-                     leadId,
-                     mode,
-                  });
-               }
+               // if (!silent) {
+               //    notifySuccess('GeoWS connection opened', {
+               //       leadId,
+               //       mode,
+               //    });
+               // }
 
                onOpen?.();
             },
@@ -322,20 +322,20 @@ export function openLeadGeoConnection({
                onClose?.(event);
             },
 
-            onError: (event) => {
-               stopPolling();
-               if (!silent) {
-                  notifyError('GeoWS connection error', event);
-               }
-               onError?.(event);
-            },
+            // onError: (event) => {
+            //    stopPolling();
+            //    if (!silent) {
+            //       notifyError('GeoWS connection error', event);
+            //    }
+            //    onError?.(event);
+            // },
 
-            onAuthFailed: (payload) => {
-               if (!silent) {
-                  notifyError('GeoWS authorization failed', payload);
-               }
-               onAuthFailed?.(payload);
-            },
+            // onAuthFailed: (payload) => {
+            //    if (!silent) {
+            //       notifyError('GeoWS authorization failed', payload);
+            //    }
+            //    onAuthFailed?.(payload);
+            // },
 
             onMessage: (payload) => {
                handleGeoWsPayload(payload, {

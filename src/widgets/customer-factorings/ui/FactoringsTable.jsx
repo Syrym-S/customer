@@ -26,9 +26,14 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
          width: 120,
          renderCell: ({ row }) => (
             <Box
+               onClick={() => onOpenDetails(row)}
                sx={{
                   color: 'primary.main',
                   cursor: 'pointer',
+                  fontWeight: 600,
+                  textDecoration: 'underline',
+                  textUnderlineOffset: 2,
+                  width: 'fit-content',
                }}
             >
                {row.index ?? row.id ?? '—'}
@@ -153,9 +158,6 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
             getRowId={(row) => row.id ?? row.index}
             columns={columns}
             checkboxSelection
-            onRowClick={(params) => {
-               onOpenDetails(params.row);
-            }}
             sx={{ border: 0 }}
          />
       </Paper>

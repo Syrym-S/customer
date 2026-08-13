@@ -27,17 +27,20 @@ export const router = createBrowserRouter(
         {
           path: "customer/dashboard",
           element: <DashboardPage />,
-          handle: {
-            breadcrumb: "Дэшборд",
-          },
         },
         {
           path: "customer",
           element: <LeadsPage />,
+          handle: {
+            breadcrumb: "Лиды",
+          },
         },
         {
           path: "customer/leads/:leadId",
           element: <LeadsPage />,
+          handle: {
+            breadcrumb: "Лиды",
+          },
         },
         {
           path: "customer/profile",
@@ -66,6 +69,13 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/factorings/:factoringId",
+          element: <FactoringsPage />,
+        },
+        {
+          // Alias for outdated singular-form links sent by backend notifications
+          // (e.g. .../customer/factoring/{id}). Canonical route is the plural
+          // "factorings" above — keep using that everywhere internally.
+          path: "customer/factoring/:factoringId",
           element: <FactoringsPage />,
         },
         {

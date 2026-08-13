@@ -1,6 +1,6 @@
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import { Box, Button, Stack } from '@mui/material';
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { INITIAL_VISIBLE_COUNT } from '../components/tender-participants.helpers';
 import { TenderDetailsSection } from './TenderDetailsSection';
@@ -13,6 +13,7 @@ export function TenderParticipantsSection({
     maxParticipants,
     tenderStatus,
     isActionLoading = false,
+    isLoading = false,
     onDeleteParticipant,
     onAddParticipants,
 }) {
@@ -54,6 +55,7 @@ export function TenderParticipantsSection({
     const normalizedMaxParticipants = Number(maxParticipants) || 0;
 
     const canAddParticipants =
+        !isLoading &&
         !isTenderClosed &&
         (normalizedMaxParticipants === 0 ||
             participants.length < normalizedMaxParticipants);
@@ -99,7 +101,21 @@ export function TenderParticipantsSection({
         <TenderDetailsSection
             icon={<GroupsOutlinedIcon />}
             title="Участники"
-            subtitle={`${participants.length} участник(ов)`}
+            subtitle={
+                isLoading ? (
+                    <Stack direction="row" alignItems="center" spacing={0.75}>
+                        <CircularProgress size={12} />
+                        <Typography
+                            color="text.secondary"
+                            sx={{ fontSize: 13 }}
+                        >
+                            Загрузка участников...
+                        </Typography>
+                    </Stack>
+                ) : (
+                    `${participants.length} участник(ов)`
+                )
+            }
             action={
                 canAddParticipants && !isAdding ? (
                     <Button
@@ -158,17 +174,29 @@ export function TenderParticipantsSection({
                     />
                 )}
 
-                <TenderParticipantsList
-                    participants={participants}
-                    visibleParticipants={visibleParticipants}
-                    isExpanded={isExpanded}
-                    hasHiddenItems={hasHiddenItems}
-                    hiddenItemsCount={hiddenItemsCount}
-                    tenderStatus={tenderStatus}
-                    isActionLoading={isActionLoading}
-                    onToggleExpanded={handleToggleExpanded}
-                    onDeleteParticipant={onDeleteParticipant}
-                />
+                {isLoading ? (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            py: 2,
+                        }}
+                    >
+                        <CircularProgress size={24} />
+                    </Box>
+                ) : (
+                    <TenderParticipantsList
+                        participants={participants}
+                        visibleParticipants={visibleParticipants}
+                        isExpanded={isExpanded}
+                        hasHiddenItems={hasHiddenItems}
+                        hiddenItemsCount={hiddenItemsCount}
+                        tenderStatus={tenderStatus}
+                        isActionLoading={isActionLoading}
+                        onToggleExpanded={handleToggleExpanded}
+                        onDeleteParticipant={onDeleteParticipant}
+                    />
+                )}
             </Stack>
         </TenderDetailsSection>
     );

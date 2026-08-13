@@ -1,24 +1,12 @@
 export const leadStatusLabels = {
    new: 'Новый',
-
    add_driver: 'Водитель добавлен',
-   driver_added: 'Водитель добавлен',
-
-   start_driver: 'Погрузка',
-   loading: 'Погрузка',
+   start_driver: 'Поездка начата',
    start_loading: 'Погрузка',
-
-   loading_confirmed: 'Погрузка подтверждена',
-   confirm_loading: 'Погрузка подтверждена',
-
-   unloading: 'Разгрузка',
+   verification_loading: 'Погрузка подтверждена',
    start_unloading: 'Разгрузка',
-
-   unloading_confirmed: 'Разгрузка подтверждена',
-   confirm_unloading: 'Разгрузка подтверждена',
-
-   completed: 'Завершён',
-   done: 'Завершён',
+   verification_unloading: 'Разгрузка подтверждена',
+   finished: 'Завершён',
    cancelled: 'Отменён',
 };
 
@@ -34,67 +22,38 @@ export const leadStatusStyles = {
       color: 'info.main',
       backgroundColor: 'rgba(2, 136, 209, 0.06)',
    },
-   driver_added: {
+
+   start_driver: {
       borderColor: 'info.main',
       color: 'info.main',
       backgroundColor: 'rgba(2, 136, 209, 0.06)',
    },
 
-   start_driver: {
-      borderColor: 'warning.main',
-      color: 'warning.main',
-      backgroundColor: 'rgba(237, 108, 2, 0.06)',
-   },
-   loading: {
-      borderColor: 'warning.main',
-      color: 'warning.main',
-      backgroundColor: 'rgba(237, 108, 2, 0.06)',
-   },
    start_loading: {
       borderColor: 'warning.main',
       color: 'warning.main',
       backgroundColor: 'rgba(237, 108, 2, 0.06)',
    },
 
-   loading_confirmed: {
-      borderColor: 'success.main',
-      color: 'success.main',
-      backgroundColor: 'rgba(46, 125, 50, 0.06)',
-   },
-   confirm_loading: {
+   verification_loading: {
       borderColor: 'success.main',
       color: 'success.main',
       backgroundColor: 'rgba(46, 125, 50, 0.06)',
    },
 
-   unloading: {
-      borderColor: 'secondary.main',
-      color: 'secondary.main',
-      backgroundColor: 'rgba(156, 39, 176, 0.06)',
-   },
    start_unloading: {
       borderColor: 'secondary.main',
       color: 'secondary.main',
       backgroundColor: 'rgba(156, 39, 176, 0.06)',
    },
 
-   unloading_confirmed: {
-      borderColor: 'success.dark',
-      color: 'success.dark',
-      backgroundColor: 'rgba(27, 94, 32, 0.06)',
-   },
-   confirm_unloading: {
+   verification_unloading: {
       borderColor: 'success.dark',
       color: 'success.dark',
       backgroundColor: 'rgba(27, 94, 32, 0.06)',
    },
 
-   completed: {
-      borderColor: 'grey.400',
-      color: 'text.secondary',
-      backgroundColor: 'grey.100',
-   },
-   done: {
+   finished: {
       borderColor: 'grey.400',
       color: 'text.secondary',
       backgroundColor: 'grey.100',
@@ -109,6 +68,13 @@ export const leadStatusStyles = {
 
 export function getLeadStatusLabel(status) {
    return leadStatusLabels[status] || status || 'Не указан';
+}
+
+export function getLeadStatusFilterOptions() {
+   return Object.entries(leadStatusLabels).map(([value, label]) => ({
+      label,
+      value,
+   }));
 }
 
 export function getLeadStatusStyles(status) {

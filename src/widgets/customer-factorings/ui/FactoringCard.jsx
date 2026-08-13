@@ -228,17 +228,6 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                             }}
                         />
                     </Stack>
-
-                    <Button
-                        size="small"
-                        variant="outlined"
-                        onClick={(event) => {
-                            event.stopPropagation();
-                            onOpenDetails(factoring);
-                        }}
-                    >
-                        Подробнее
-                    </Button>
                 </Box>
             </Stack>
         </Box>

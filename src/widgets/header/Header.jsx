@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+ 
 import {
   Avatar,
   Box,
@@ -266,7 +266,7 @@ export function Header() {
   function renderDrawerContent({ showCloseButton = false } = {}) {
     const menuItems = [
       {
-        label: "Дэшборд",
+        label: "Главная страница",
         path: "/customer/dashboard",
         selected: isDashboardPage,
         icon: <DashboardOutlined />,

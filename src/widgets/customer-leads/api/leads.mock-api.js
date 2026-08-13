@@ -1,14 +1,18 @@
 import { mockLeads } from '../model/leads.mock';
 
-export async function fetchCustomerLeadsMock({ page = 1, perPage = 4 } = {}) {
+export async function fetchCustomerLeadsMock({ page = 1, perPage = 4, status } = {}) {
+   const filteredLeads = status
+      ? mockLeads.filter((lead) => lead.status === status)
+      : mockLeads;
+
    const startIndex = (page - 1) * perPage;
    const endIndex = startIndex + perPage;
 
    return {
-      results: mockLeads.slice(startIndex, endIndex),
+      results: filteredLeads.slice(startIndex, endIndex),
       page,
       per_page: perPage,
-      count: mockLeads.length,
+      count: filteredLeads.length,
    };
 }
 

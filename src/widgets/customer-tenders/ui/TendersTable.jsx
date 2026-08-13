@@ -64,9 +64,14 @@ export function TendersTable({ tenders }) {
          width: 200,
          renderCell: ({ row }) => (
             <Box
+               onClick={() => openTenderDetails(row)}
                sx={{
                   color: 'primary.main',
                   cursor: 'pointer',
+                  fontWeight: 600,
+                  textDecoration: 'underline',
+                  textUnderlineOffset: 2,
+                  width: 'fit-content',
                }}
             >
                {row.id}
@@ -155,9 +160,6 @@ export function TendersTable({ tenders }) {
             getRowId={(row) => row.id}
             columns={columns}
             checkboxSelection
-            onRowClick={(params) => {
-               openTenderDetails(params.row);
-            }}
             sx={{ border: 0 }}
          />
       </Paper>

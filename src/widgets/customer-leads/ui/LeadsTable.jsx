@@ -49,9 +49,14 @@ export function LeadsTable({ leads }) {
          width: 200,
          renderCell: ({ row }) => (
             <Box
+               onClick={() => setOpenLead(row)}
                sx={{
                   color: 'primary.main',
                   cursor: 'pointer',
+                  fontWeight: 600,
+                  textDecoration: 'underline',
+                  textUnderlineOffset: 2,
+                  width: 'fit-content',
                }}
             >
                {row.id}
@@ -105,9 +110,6 @@ export function LeadsTable({ leads }) {
             getRowId={(row) => row.id}
             columns={columns}
             checkboxSelection
-            onRowClick={(params) => {
-               setOpenLead(params.row);
-            }}
             sx={{ border: 0 }}
          />
       </Paper>

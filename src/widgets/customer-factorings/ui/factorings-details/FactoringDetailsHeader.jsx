@@ -74,7 +74,7 @@ export function FactoringDetailsHeader({ factoring }) {
                         }}
                     >
                         <Chip
-                            label={`Факторинг #${factoring?.index ?? '—'}`}
+                            label={`Факторинг #${factoring?.id ?? '—'}`}
                             color='primary'
                             variant='outlined'
                             size='small'

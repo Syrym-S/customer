@@ -25,9 +25,14 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
 
                 return (
                     <Box
+                        onClick={() => onOpenDetails(row)}
                         sx={{
                             color: 'primary.main',
                             cursor: 'pointer',
+                            fontWeight: 600,
+                            textDecoration: 'underline',
+                            textUnderlineOffset: 2,
+                            width: 'fit-content',
                         }}
                     >
                         {forwarderId || '—'}
@@ -131,9 +136,6 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
                 getRowId={(row) => getForwarderId(row)}
                 columns={columns}
                 checkboxSelection
-                onRowClick={(params) => {
-                    onOpenDetails(params.row);
-                }}
                 localeText={{
                     noRowsLabel: 'Экспедиторы не найдены',
                 }}

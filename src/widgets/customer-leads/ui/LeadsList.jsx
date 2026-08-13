@@ -2,6 +2,10 @@ import {
    Alert,
    Box,
    CircularProgress,
+   FormControl,
+   InputLabel,
+   MenuItem,
+   Select,
    Stack,
    ToggleButton,
    ToggleButtonGroup,
@@ -12,12 +16,15 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
 
 import { useLeadsContext } from '../model/useLeadsContext';
+import { getLeadStatusFilterOptions } from '../model/lead.helpers';
 import { LeadCard } from './LeadCard';
 import { LeadDetailsModal } from './LeadDetailsModal';
 import { LeadsPagination } from './LeadsPagination';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { LeadsTable } from './LeadsTable';
 import { LeadsKanbanBoard } from './kanban/LeadsKanbanBoard';
+
+const ALL_STATUSES_VALUE = 'all';
 
 const LEADS_VIEW_MODES = {
    TABLE: 'table',
@@ -26,10 +33,23 @@ const LEADS_VIEW_MODES = {
 };
 
 export function LeadsList() {
-   const { leads, page, setPage, perPage, count, isLoading, error } =
-      useLeadsContext();
+   const {
+      leads,
+      page,
+      setPage,
+      perPage,
+      count,
+      setStatusFilter,
+      isLoading,
+      error,
+   } = useLeadsContext();
 
    const [viewMode, setViewMode] = useState(LEADS_VIEW_MODES.TABLE);
+   const [selectedStatusValue, setSelectedStatusValue] = useState(
+      ALL_STATUSES_VALUE,
+   );
+
+   const statusFilterOptions = useMemo(() => getLeadStatusFilterOptions(), []);
 
    const pagesCount = Math.max(1, Math.ceil(count / perPage));
 
@@ -43,6 +63,13 @@ export function LeadsList() {
       }
 
       setViewMode(nextViewMode);
+   }
+
+   function handleStatusFilterChange(event) {
+      const nextValue = event.target.value;
+
+      setSelectedStatusValue(nextValue);
+      setStatusFilter(nextValue === ALL_STATUSES_VALUE ? '' : nextValue);
    }
 
    return (
@@ -97,6 +124,38 @@ export function LeadsList() {
                      },
                   }}
                >
+                  <FormControl
+                     size="small"
+                     sx={{
+                        minWidth: 200,
+                        alignSelf: {
+                           xs: 'stretch',
+                           sm: 'auto',
+                        },
+                     }}
+                  >
+                     <InputLabel id="leads-status-filter-label">
+                        Статус
+                     </InputLabel>
+
+                     <Select
+                        labelId="leads-status-filter-label"
+                        label="Статус"
+                        value={selectedStatusValue}
+                        onChange={handleStatusFilterChange}
+                     >
+                        <MenuItem value={ALL_STATUSES_VALUE}>
+                           Все статусы
+                        </MenuItem>
+
+                        {statusFilterOptions.map((option) => (
+                           <MenuItem key={option.value} value={option.value}>
+                              {option.label}
+                           </MenuItem>
+                        ))}
+                     </Select>
+                  </FormControl>
+
                   <ToggleButtonGroup
                      value={viewMode}
                      exclusive
