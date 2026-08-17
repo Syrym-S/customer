@@ -29,6 +29,7 @@ function createEmptyWaypoint() {
         lat: '',
         lng: '',
         location_data: emptyLocation,
+        type: '',
     };
 }
 

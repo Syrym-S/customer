@@ -3,7 +3,12 @@ import {
     Box,
     Button,
     CircularProgress,
+    FormControl,
+    FormHelperText,
     IconButton,
+    InputLabel,
+    MenuItem,
+    Select,
     TextField,
 } from '@mui/material';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
@@ -356,81 +361,130 @@ export function RouteStep({ control, errors, form, setValue }) {
 
                 {waypoints.map((waypoint, index) => {
                     const pointKey = `waypoint-${index}`;
+                    const waypointTypeError =
+                        errors.waypoints?.[index]?.type;
 
                     return (
                         <Box
                             key={waypoint.id || pointKey}
                             sx={{
                                 display: 'flex',
+                                flexDirection: 'column',
                                 gap: 1,
-                                alignItems: 'flex-start',
                                 gridColumn: {
                                     xs: 'auto',
                                     sm: '1 / -1',
                                 },
                             }}
                         >
-                            <TextField
-                                label={`Промежуточная точка #${index + 1}`}
-                                value={waypoint.location || ''}
-                                onFocus={() => setActiveMapPoint(pointKey)}
-                                onChange={(event) => {
-                                    setValue(
-                                        `waypoints.${index}.location`,
-                                        event.target.value,
-                                        setValueOptions,
-                                    );
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    gap: 1,
+                                    alignItems: 'flex-start',
+                                }}
+                            >
+                                <TextField
+                                    label={`Промежуточная точка #${index + 1}`}
+                                    value={waypoint.location || ''}
+                                    onFocus={() => setActiveMapPoint(pointKey)}
+                                    onChange={(event) => {
+                                        setValue(
+                                            `waypoints.${index}.location`,
+                                            event.target.value,
+                                            setValueOptions,
+                                        );
 
-                                    if (waypoint.lat || waypoint.lng) {
-                                        clearWaypointPoint(index);
+                                        if (waypoint.lat || waypoint.lng) {
+                                            clearWaypointPoint(index);
+                                        }
+                                    }}
+                                    fullWidth
+                                    size="small"
+                                    helperText={
+                                        loadingPoints[pointKey]
+                                            ? 'Определяем адрес...'
+                                            : 'Выберите эту точку и кликните по карте'
                                     }
+                                    InputProps={{
+                                        endAdornment: loadingPoints[
+                                            pointKey
+                                        ] ? (
+                                            <CircularProgress
+                                                color="inherit"
+                                                size={18}
+                                            />
+                                        ) : null,
+                                    }}
+                                />
+
+                                <Button
+                                    size="small"
+                                    variant={
+                                        activeMapPoint === pointKey
+                                            ? 'contained'
+                                            : 'outlined'
+                                    }
+                                    onClick={() => setActiveMapPoint(pointKey)}
+                                    sx={{
+                                        whiteSpace: 'nowrap',
+                                        minHeight: 40,
+                                    }}
+                                >
+                                    На карте
+                                </Button>
+
+                                <IconButton
+                                    color="error"
+                                    size="small"
+                                    onClick={() => handleRemoveWaypoint(index)}
+                                    sx={{
+                                        mt: 0.25,
+                                        flexShrink: 0,
+                                    }}
+                                    aria-label={`Удалить промежуточную точку ${index + 1}`}
+                                    title={`Удалить промежуточную точку ${index + 1}`}
+                                >
+                                    <DeleteOutlineRoundedIcon fontSize="small" />
+                                </IconButton>
+                            </Box>
+
+                            <Controller
+                                name={`waypoints.${index}.type`}
+                                control={control}
+                                rules={{
+                                    required: 'Выберите тип точки',
                                 }}
-                                fullWidth
-                                size="small"
-                                helperText={
-                                    loadingPoints[pointKey]
-                                        ? 'Определяем адрес...'
-                                        : 'Выберите эту точку и кликните по карте'
-                                }
-                                InputProps={{
-                                    endAdornment: loadingPoints[pointKey] ? (
-                                        <CircularProgress
-                                            color="inherit"
-                                            size={18}
-                                        />
-                                    ) : null,
-                                }}
+                                render={({ field }) => (
+                                    <FormControl
+                                        size="small"
+                                        fullWidth
+                                        error={Boolean(waypointTypeError)}
+                                    >
+                                        <InputLabel
+                                            id={`${pointKey}-type-label`}
+                                        >
+                                            Тип точки
+                                        </InputLabel>
+                                        <Select
+                                            {...field}
+                                            labelId={`${pointKey}-type-label`}
+                                            label="Тип точки"
+                                            value={field.value || ''}
+                                        >
+                                            <MenuItem value="loading">
+                                                Погрузка
+                                            </MenuItem>
+                                            <MenuItem value="unloading">
+                                                Разгрузка
+                                            </MenuItem>
+                                        </Select>
+                                        <FormHelperText>
+                                            {waypointTypeError?.message}
+                                        </FormHelperText>
+                                    </FormControl>
+                                )}
                             />
-
-                            <Button
-                                size="small"
-                                variant={
-                                    activeMapPoint === pointKey
-                                        ? 'contained'
-                                        : 'outlined'
-                                }
-                                onClick={() => setActiveMapPoint(pointKey)}
-                                sx={{
-                                    whiteSpace: 'nowrap',
-                                    minHeight: 40,
-                                }}
-                            >
-                                На карте
-                            </Button>
-
-                            <IconButton
-                                color="error"
-                                size="small"
-                                onClick={() => handleRemoveWaypoint(index)}
-                                sx={{
-                                    mt: 0.25,
-                                    flexShrink: 0,
-                                }}
-                                aria-label={`Удалить промежуточную точку ${index + 1}`}
-                                title={`Удалить промежуточную точку ${index + 1}`}
-                            >
-                                <DeleteOutlineRoundedIcon fontSize="small" />
-                            </IconButton>
                         </Box>
                     );
                 })}

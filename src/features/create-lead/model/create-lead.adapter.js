@@ -192,6 +192,7 @@ function mapWaypointToApi(waypoint = {}) {
             null,
         lat: toNumber(waypoint.lat),
         lon: toNumber(waypoint.lng),
+        type: waypoint.type || null,
     };
 }
 
@@ -202,7 +203,12 @@ function getNormalizedWaypoints(form) {
 
     return form.waypoints
         .map(mapWaypointToApi)
-        .filter((waypoint) => waypoint.lat !== null && waypoint.lon !== null);
+        .filter(
+            (waypoint) =>
+                waypoint.lat !== null &&
+                waypoint.lon !== null &&
+                Boolean(waypoint.type),
+        );
 }
 
 export function mapCreatedLeadToUi(form, response) {

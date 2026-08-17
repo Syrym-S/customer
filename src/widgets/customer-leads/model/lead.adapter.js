@@ -221,6 +221,9 @@ function normalizeWaypointFromApi(waypoint = {}, index) {
       lon,
       lng: lon,
 
+      is_passed: Boolean(waypoint.is_passed),
+      type: waypoint.type ?? null,
+
       raw: waypoint,
    };
 }

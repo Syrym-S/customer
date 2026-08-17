@@ -9,7 +9,10 @@ import { DetailSection } from '../components/DetailSection';
 import { RoutePoint } from '../components/RoutePoint';
 
 import { normalizeLocationValue } from '../../../model/lead-edit-form.helpers';
-import { getWaypointLabel } from '../../../model/lead-route.helpers';
+import {
+   getWaypointLabel,
+   getWaypointTypeLabel,
+} from '../../../model/lead-route.helpers';
 import { LeadRouteEditor } from '../LeadRouteEditor';
 
 export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
@@ -25,6 +28,7 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
                   label="Откуда"
                   value={normalizeLocationValue(lead.from_location)}
                   icon={<TripOriginIcon />}
+                  isPassed={Boolean(lead.from_location?.is_passed)}
                />
 
                {waypoints.map((waypoint, index) => (
@@ -33,6 +37,8 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
                      label={`Промежуточная точка #${index + 1}`}
                      value={getWaypointLabel(waypoint)}
                      icon={<LocationOnOutlinedIcon />}
+                     isPassed={Boolean(waypoint.is_passed)}
+                     typeLabel={getWaypointTypeLabel(waypoint.type)}
                   />
                ))}
 
@@ -40,6 +46,7 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
                   label="Куда"
                   value={normalizeLocationValue(lead.to_location)}
                   icon={<LocationOnOutlinedIcon />}
+                  isPassed={Boolean(lead.to_location?.is_passed)}
                />
             </Stack>
          )}

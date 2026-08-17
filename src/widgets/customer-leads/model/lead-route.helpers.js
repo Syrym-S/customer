@@ -8,3 +8,12 @@ export function getWaypointLabel(waypoint) {
       'Не указано'
    );
 }
+
+export const waypointTypeLabels = {
+   loading: 'Погрузка',
+   unloading: 'Разгрузка',
+};
+
+export function getWaypointTypeLabel(type) {
+   return waypointTypeLabels[type] || null;
+}

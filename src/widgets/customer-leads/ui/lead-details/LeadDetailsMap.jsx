@@ -6,6 +6,15 @@ import {
    getLocationDescription,
    getLocationPosition,
 } from '../../model/lead-details-map.helpers';
+import { getWaypointTypeLabel } from '../../model/lead-route.helpers';
+
+function getPassedStateLine(location) {
+   return location?.is_passed ? '✓ Пройдена' : 'Не пройдена';
+}
+
+function withPassedState(description, location) {
+   return `${description} · ${getPassedStateLine(location)}`;
+}
 
 export function LeadDetailsMap({
    map,
@@ -37,13 +46,16 @@ export function LeadDetailsMap({
             return null;
          }
 
+         const baseTitle = `Промежуточная точка ${index + 1}`;
+         const typeLabel = getWaypointTypeLabel(waypoint.type);
+
          return {
             id: `route-waypoint-${index}`,
             position,
-            title: `Промежуточная точка ${index + 1}`,
-            description: getLocationDescription(
+            title: typeLabel ? `${baseTitle} · ${typeLabel}` : baseTitle,
+            description: withPassedState(
+               getLocationDescription(waypoint, baseTitle),
                waypoint,
-               `Промежуточная точка ${index + 1}`,
             ),
          };
       })
@@ -57,9 +69,12 @@ export function LeadDetailsMap({
                       id: 'route-start',
                       position: fromPosition,
                       title: 'Откуда',
-                      description: getLocationDescription(
+                      description: withPassedState(
+                         getLocationDescription(
+                            lead.from_location,
+                            'Не указано',
+                         ),
                          lead.from_location,
-                         'Не указано',
                       ),
                    }
                  : hasRoutePoints
@@ -67,9 +82,12 @@ export function LeadDetailsMap({
                         id: 'route-start',
                         position: routePoints[0],
                         title: 'Откуда',
-                        description: getLocationDescription(
+                        description: withPassedState(
+                           getLocationDescription(
+                              lead.from_location,
+                              'Не указано',
+                           ),
                            lead.from_location,
-                           'Не указано',
                         ),
                      }
                    : null,
@@ -81,9 +99,12 @@ export function LeadDetailsMap({
                       id: 'route-end',
                       position: toPosition,
                       title: 'Куда',
-                      description: getLocationDescription(
+                      description: withPassedState(
+                         getLocationDescription(
+                            lead.to_location,
+                            'Не указано',
+                         ),
                          lead.to_location,
-                         'Не указано',
                       ),
                    }
                  : hasRoutePoints
@@ -91,9 +112,12 @@ export function LeadDetailsMap({
                         id: 'route-end',
                         position: routePoints[routePoints.length - 1],
                         title: 'Куда',
-                        description: getLocationDescription(
+                        description: withPassedState(
+                           getLocationDescription(
+                              lead.to_location,
+                              'Не указано',
+                           ),
                            lead.to_location,
-                           'Не указано',
                         ),
                      }
                    : null,
