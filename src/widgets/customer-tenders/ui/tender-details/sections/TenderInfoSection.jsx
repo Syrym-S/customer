@@ -28,7 +28,7 @@ export function TenderInfoSection({
    return (
       <TenderDetailsSection
          icon={<InfoOutlinedIcon />}
-         title='Информация о тендере'
+         title='Информация о аукционе'
       >
          {isEditing ? (
             <Box

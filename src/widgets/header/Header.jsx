@@ -270,7 +270,7 @@ export function Header() {
         path: "/customer/dashboard",
         selected: isDashboardPage,
         icon: <DashboardOutlined />,
-        tooltip: "Общая сводка по лидам, маршрутам и тендерам",
+        tooltip: "Общая сводка по лидам, маршрутам и аукционам",
       },
       {
         label: "Лиды",
@@ -280,11 +280,11 @@ export function Header() {
         tooltip: "Список заявок на перевозку и управление лидами",
       },
       {
-        label: "Тендеры",
+        label: "Аукционы",
         path: "/customer/tenders",
         selected: isTenderPage,
         icon: <GavelOutlined />,
-        tooltip: "Создание и управление тендерами по перевозкам",
+        tooltip: "Создание и управление аукционами по перевозкам",
       },
       {
         label: "Факторинг",

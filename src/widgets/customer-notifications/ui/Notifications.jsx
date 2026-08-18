@@ -388,7 +388,7 @@ export function Notifications() {
                         <Typography fontWeight={700}>Уведомления</Typography>
 
                         <Typography variant='body2' color='text.secondary'>
-                            Последние события по вашим заявкам и тендерам
+                            Последние события по вашим заявкам и аукционам.
                         </Typography>
                     </Box>
 

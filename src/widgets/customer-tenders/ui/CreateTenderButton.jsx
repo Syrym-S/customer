@@ -12,7 +12,7 @@ export function CreateTenderButton() {
    return (
       <>
          <Button variant='contained' onClick={handleOpenCreateModal}>
-            Создать тендер
+            Создать аукцион
          </Button>
 
          <CreateTenderModal

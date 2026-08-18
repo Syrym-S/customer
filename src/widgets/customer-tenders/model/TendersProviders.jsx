@@ -73,7 +73,7 @@ export function TendersProvider({
         setError(
           error.response?.data?.message ||
             error.message ||
-            "Не удалось загрузить тендеры",
+            "Не удалось загрузить аукционы",
         );
       } finally {
         if (withLoader) {
@@ -176,7 +176,7 @@ export function TendersProvider({
         setDetailsError(
           error.response?.data?.message ||
             error.message ||
-            "Не удалось загрузить детали тендера",
+            "Не удалось загрузить детали аукциона",
         );
       } finally {
         setIsDetailsLoading(false);
@@ -261,7 +261,7 @@ export function TendersProvider({
         if (openTender?.id) {
           refreshTenderDetails(openTender.id).catch((error) => {
             console.error(
-              "Не удалось обновить детали тендера после уведомления:",
+              "Не удалось обновить детали аукциона после уведомления:",
               error,
             );
           });

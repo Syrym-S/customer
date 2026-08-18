@@ -92,11 +92,11 @@ export function DashboardTendersSection() {
             >
                 <Box>
                     <Typography variant="h6" fontWeight={600}>
-                        Тендеры
+                        Аукционы
                     </Typography>
 
                     <Typography color="text.secondary" fontSize={14}>
-                        Список тендеров
+                        Список аукционов
                     </Typography>
                 </Box>
 
@@ -147,15 +147,15 @@ export function DashboardTendersSection() {
             >
                 {isLoading && (
                     <Typography color="text.secondary" sx={{ py: 2 }}>
-                        Загрузка тендеров...
+                        Загрузка аукционов...
                     </Typography>
                 )}
 
                 {!isLoading && !filteredTenders.length && (
                     <Typography color="text.secondary" sx={{ py: 2 }}>
                         {publicationType === 'private'
-                            ? 'Приватные тендеры пока не найдены'
-                            : 'Публичные тендеры пока не найдены'}
+                            ? 'Приватные аукционы пока не найдены'
+                            : 'Публичные аукционы пока не найдены'}
                     </Typography>
                 )}
 

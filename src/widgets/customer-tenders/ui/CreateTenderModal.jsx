@@ -334,7 +334,7 @@ export function CreateTenderModal({ open, onClose }) {
     }
 
     if (!form.isPublic && selectedForwarders.length === 0) {
-      return "Выберите хотя бы одного экспедитора для приватного тендера";
+      return "Выберите хотя бы одного экспедитора для приватного аукциона";
     }
 
     return "";
@@ -389,7 +389,7 @@ export function CreateTenderModal({ open, onClose }) {
       setSubmitError(
         error.response?.data?.message ||
           error.message ||
-          "Не удалось создать тендер",
+          "Не удалось создать аукцион",
       );
     } finally {
       setIsSubmitting(false);
@@ -462,7 +462,7 @@ export function CreateTenderModal({ open, onClose }) {
   return (
     <>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-        <DialogTitle>Создание тендера</DialogTitle>
+        <DialogTitle>Создание аукциона</DialogTitle>
 
         <DialogContent>
           <Box component="form" onSubmit={handleSubmit} sx={{ pt: 1 }}>
@@ -571,7 +571,7 @@ export function CreateTenderModal({ open, onClose }) {
                     error={Boolean(leadsSearchError)}
                     helperText={
                       leadsSearchError ||
-                      "Выберите лид, для которого создаётся тендер"
+                      "Выберите лид, для которого создаётся аукцион"
                     }
                   />
                 )}
@@ -612,7 +612,7 @@ export function CreateTenderModal({ open, onClose }) {
                     }}
                   />
                 }
-                label="Публичный тендер"
+                label="Публичный аукцион"
               />
 
               {form.isPublic && (
@@ -644,7 +644,7 @@ export function CreateTenderModal({ open, onClose }) {
                     }
                   />
                 }
-                label="Запустить тендер после создания"
+                label="Запустить аукцион после создания"
               />
 
               {!form.isPublic && (
@@ -782,7 +782,7 @@ export function CreateTenderModal({ open, onClose }) {
                       error={Boolean(forwardersSearchError)}
                       helperText={
                         forwardersSearchError ||
-                        "Выберите экспедиторов, которые будут приглашены в приватный тендер"
+                        "Выберите экспедиторов, которые будут приглашены в приватный аукцион"
                       }
                     />
                   )}
@@ -801,7 +801,7 @@ export function CreateTenderModal({ open, onClose }) {
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Создаём..." : "Создать тендер"}
+            {isSubmitting ? "Создаём..." : "Создать аукцион"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -810,7 +810,7 @@ export function CreateTenderModal({ open, onClose }) {
 
         <DialogContent>
           <DialogContentText>
-            Вы уверены, что хотите создать тендер по этому лиду?
+            Вы уверены, что хотите создать аукцион по этому лиду?
           </DialogContentText>
 
           {pendingLead && (

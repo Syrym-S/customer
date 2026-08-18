@@ -69,11 +69,11 @@ export function TendersList() {
             >
                <Box>
                   <Typography variant="h6" fontWeight={600}>
-                     Тендеры
+                     Аукционы
                   </Typography>
 
                   <Typography color="text.secondary" fontSize={14}>
-                     Список тендеров по заявкам
+                     Список аукционов по заявкам
                   </Typography>
                </Box>
 
@@ -100,7 +100,7 @@ export function TendersList() {
                      onChange={handleViewModeChange}
                      size="small"
                      color="primary"
-                     aria-label="Переключение отображения тендеров"
+                     aria-label="Переключение отображения аукционов"
                      sx={{
                         alignSelf: {
                            xs: 'stretch',
@@ -162,7 +162,7 @@ export function TendersList() {
                            }}
                         >
                            <Typography color="text.secondary">
-                              Тендеры не найдены
+                              Аукционы не найдены
                            </Typography>
                         </Box>
                      ) : (

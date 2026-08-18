@@ -53,7 +53,7 @@ export const router = createBrowserRouter(
           path: "customer/tenders",
           element: <TenderPage />,
           handle: {
-            breadcrumb: "Тендеры",
+            breadcrumb: "Аукционы",
           },
         },
         {

@@ -12,16 +12,16 @@ import { useState } from 'react';
 
 const confirmActionConfig = {
    cancel: {
-      title: 'Отменить тендер',
-      text: 'Вы уверены, что хотите отменить этот тендер? После отмены он станет недоступен для участников.',
-      confirmText: 'Отменить тендер',
+      title: 'Отменить аукцион',
+      text: 'Вы уверены, что хотите отменить этот аукцион? После отмены он станет недоступен для участников.',
+      confirmText: 'Отменить аукцион',
       loadingText: 'Отмена...',
       color: 'warning',
    },
    delete: {
-      title: 'Удалить тендер',
-      text: 'Вы уверены, что хотите удалить этот тендер? Это действие нельзя будет отменить.',
-      confirmText: 'Удалить тендер',
+      title: 'Удалить аукцион',
+      text: 'Вы уверены, что хотите удалить этот аукцион? Это действие нельзя будет отменить.',
+      confirmText: 'Удалить аукцион',
       loadingText: 'Удаление...',
       color: 'error',
    },
@@ -101,7 +101,7 @@ export function TenderDetailsActions({
                      onClick={onStartTender}
                      disabled={isActionLoading}
                   >
-                     Запустить тендер
+                     Запустить аукцион
                   </Button>
                )}
 
@@ -112,7 +112,7 @@ export function TenderDetailsActions({
                      onClick={(event) => handleOpenConfirm('cancel', event)}
                      disabled={isActionLoading}
                   >
-                     Отменить тендер
+                     Отменить аукцион
                   </Button>
                )}
 
@@ -123,7 +123,7 @@ export function TenderDetailsActions({
                      onClick={(event) => handleOpenConfirm('delete', event)}
                      disabled={isActionLoading}
                   >
-                     Удалить тендер
+                     Удалить аукцион
                   </Button>
                )}
             </div>

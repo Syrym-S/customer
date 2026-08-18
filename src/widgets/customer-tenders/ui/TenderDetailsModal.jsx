@@ -148,7 +148,7 @@ export function TenderDetailsModal() {
             setActionError(
                 error.response?.data?.message ||
                     error.message ||
-                    'Не удалось запустить тендер',
+                    'Не удалось запустить аукцион',
             );
         } finally {
             setIsActionLoading(false);
@@ -192,7 +192,7 @@ export function TenderDetailsModal() {
             await cancelTender(openTender.id);
         } catch (error) {
             setActionError(
-                error.response?.data?.message || 'Не удалось отменить тендер',
+                error.response?.data?.message || 'Не удалось отменить аукцион',
             );
         } finally {
             setIsActionLoading(false);
@@ -213,7 +213,7 @@ export function TenderDetailsModal() {
             setActionError(
                 error.response?.data?.message ||
                     error.message ||
-                    'Не удалось удалить тендер',
+                    'Не удалось удалить аукцион',
             );
         } finally {
             setIsActionLoading(false);
@@ -293,7 +293,7 @@ export function TenderDetailsModal() {
             setSaveEditError(
                 error.response?.data?.message ||
                     error.message ||
-                    'Не удалось сохранить изменения тендера',
+                    'Не удалось сохранить изменения аукциона',
             );
         } finally {
             setIsSavingEdit(false);
@@ -336,7 +336,7 @@ export function TenderDetailsModal() {
 
                 if (!mainRoute) {
                     console.warn(
-                        'Маршруты тендера не найдены в response:',
+                        'Маршруты аукциона не найдены в response:',
                         generatedRoute,
                     );
 
@@ -350,7 +350,7 @@ export function TenderDetailsModal() {
                 const decodedPoints = decodeRoutePolyline(encodedPolyline);
 
                 if (!decodedPoints.length) {
-                    console.warn('Polyline тендера не декодировался:', {
+                    console.warn('Polyline аукциона не декодировался:', {
                         generatedRoute,
                         mainRoute,
                         encodedPolyline,
@@ -365,7 +365,7 @@ export function TenderDetailsModal() {
                 setRoute(mainRoute);
                 setRoutePoints(decodedPoints);
             } catch (error) {
-                console.error('Не удалось построить маршрут тендера:', error);
+                console.error('Не удалось построить маршрут аукциона:', error);
 
                 if (!isMounted) {
                     return;
@@ -427,7 +427,7 @@ export function TenderDetailsModal() {
                             lineHeight: 1.3,
                         }}
                     >
-                        Тендер #{openTender?.id}
+                        Аукцион #{openTender?.id}
                     </Typography>
 
                     <Typography
@@ -435,7 +435,7 @@ export function TenderDetailsModal() {
                         color="text.secondary"
                         sx={{ mt: 0.5 }}
                     >
-                        Загружаем детали тендера...
+                        Загружаем детали аукциона...
                     </Typography>
                 </DialogTitle>
             ) : (
@@ -484,7 +484,7 @@ export function TenderDetailsModal() {
                         <CircularProgress size={32} />
 
                         <Typography color="text.secondary">
-                            Загружаем детали тендера...
+                            Загружаем детали аукциона...
                         </Typography>
                     </Box>
                 ) : (

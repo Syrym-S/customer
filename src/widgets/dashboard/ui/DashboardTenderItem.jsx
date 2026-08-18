@@ -196,14 +196,14 @@ export function DashboardTenderItem({ tender }) {
                         }}
                     >
                         <Chip
-                            label={`Тендер #${getShortTenderId(tender?.id)}`}
+                            label={`Аукцион #${getShortTenderId(tender?.id)}`}
                             size="small"
                             color="primary"
                             variant="outlined"
                             title={
                                 tender?.id
-                                    ? `Тендер #${tender.id}`
-                                    : 'Тендер #—'
+                                    ? `Аукцион #${tender.id}`
+                                    : 'Аукцион #—'
                             }
                             sx={{
                                 fontWeight: 600,

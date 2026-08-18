@@ -96,7 +96,7 @@ export function TenderCard({ tender }) {
                      color="text.secondary"
                      sx={{ mb: 0.75 }}
                   >
-                     Тендер
+                     Аукцион
                   </Typography>
 
                   <Typography

@@ -45,7 +45,7 @@ export function TenderDetailsHeader({ tender }) {
       >
          <Box sx={{ minWidth: 0 }}>
             <Typography variant='body2' color='text.secondary'>
-               Тендер
+               Аукцион
             </Typography>
 
             <Typography
