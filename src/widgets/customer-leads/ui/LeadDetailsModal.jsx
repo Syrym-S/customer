@@ -208,6 +208,7 @@ export function LeadDetailsModal() {
                   />
 
                   <LeadDetailsEditActions
+                     leadId={currentLead?.id}
                      isEditing={isEditing}
                      onStartEdit={handleStartEdit}
                      onCancelEdit={handleCancelEdit}

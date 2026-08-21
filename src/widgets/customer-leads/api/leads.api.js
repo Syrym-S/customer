@@ -37,3 +37,12 @@ export async function deleteLeadCargoApi(leadId, cargoIndex) {
 
    return response.data;
 }
+
+// Response shape: { token, url, expires_at } — `url` is the full,
+// ready-to-share link (already includes the token), and `expires_at` is
+// a "YYYY-MM-DD HH:mm:ss" timestamp.
+export async function getLeadShareLinkApi(leadId) {
+   const response = await apiClient.post(`/customer/v1/lead/${leadId}/share`);
+
+   return response.data;
+}

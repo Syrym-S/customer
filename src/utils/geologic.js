@@ -241,6 +241,15 @@ export function openLeadGeoConnection({
    leadId,
    mode = 'read',
    silent = false,
+   // Public/shared-lead flow only (see SharedLeadPage's tracking hook):
+   // when shareToken is present, it's used directly as the WS token and the
+   // /geows/v1/token REST round-trip below is skipped entirely — that step
+   // already effectively happened server-side when the shared-lead response
+   // was generated. shareSeance is threaded through to connectGeoWS as a
+   // substitute for the WordPress user_id an anonymous visitor doesn't have
+   // (see the ASSUMPTION comment in geows.js's connectGeoWS).
+   shareToken,
+   shareSeance,
    onOpen,
    onClose,
    onError,
@@ -266,6 +275,14 @@ export function openLeadGeoConnection({
          const { wsUrl, userId } = getGeoWsConfig();
 
          if (!wsUrl) {
+            // window.GeoWS_Config.ws is only ever injected by WordPress on
+            // the authenticated app's template today — fail gracefully
+            // (warn, don't throw) rather than assume it'll be present on
+            // the public shared-lead page's template too.
+            console.warn(
+               'GeoWS: window.GeoWS_Config.ws is not configured — live tracking connection skipped.',
+            );
+
             if (!silent) {
                notifyWarning('GeoWS config is not available', {
                   wsUrl,
@@ -275,22 +292,27 @@ export function openLeadGeoConnection({
             return;
          }
 
-         if (!userId) {
-            throw new Error('GeoWS user_id is not available');
+         let wsToken = shareToken;
+
+         if (!wsToken) {
+            if (!userId) {
+               throw new Error('GeoWS user_id is not available');
+            }
+
+            const tokenResponse = await fetchLeadGeoWsToken(leadId, mode, {
+               signal: abortController.signal,
+            });
+
+            if (isClosed) return;
+
+            wsToken = tokenResponse.token;
          }
-
-         const tokenResponse = await fetchLeadGeoWsToken(leadId, mode, {
-            signal: abortController.signal,
-         });
-
-         if (isClosed) return;
-
-         const wsToken = tokenResponse.token;
 
          ws = connectGeoWS({
             wsUrl,
             token: wsToken,
             userId,
+            shareSeance,
          });
 
          bindGeoWS(ws, {

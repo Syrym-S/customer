@@ -38,15 +38,27 @@ export function debugGeoWS(...args) {
    }
 }
 
-export function connectGeoWS({ wsUrl, token, userId }) {
+export function connectGeoWS({ wsUrl, token, userId, shareSeance }) {
    if (!wsUrl) throw new Error('WS URL not configured');
    if (!token) throw new Error('WS token missing');
-   if (!userId) throw new Error('GeoWS user_id missing');
+
+   // Public/shared-lead flow: there's no WordPress user_id for an anonymous
+   // visitor, so `shareSeance` (from the shared-lead response's
+   // `tracking.seance` field) is used in its place.
+   //
+   // ASSUMPTION, NOT CONFIRMED WITH BACKEND YET: this puts `shareSeance` in
+   // the exact same `user_id` query param the authenticated flow uses,
+   // guessing the backend treats it as an equivalent per-viewer identity for
+   // this anonymous flow. Verify against a live payload once available —
+   // if wrong, this is the one line to change.
+   const identityValue = userId ?? shareSeance;
+
+   if (!identityValue) throw new Error('GeoWS user_id missing');
 
    const url = new URL(wsUrl);
 
    url.searchParams.set('token', token);
-   url.searchParams.set('user_id', userId);
+   url.searchParams.set('user_id', identityValue);
 
    return new WebSocket(url.toString());
 }

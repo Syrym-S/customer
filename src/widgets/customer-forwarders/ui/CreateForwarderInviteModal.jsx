@@ -18,6 +18,7 @@ import {
     mapForwarderInviteFormToApi,
     validateForwarderInviteForm,
 } from '../model/create-forwarder-invite.helpers';
+import { formatPhoneInput } from '../../../shared/helpers/phone-format.helpers';
 
 export function CreateForwarderInviteModal({
     open,
@@ -37,6 +38,17 @@ export function CreateForwarderInviteModal({
         setForm((prevForm) => ({
             ...prevForm,
             [name]: value,
+        }));
+
+        setValidationError('');
+    }
+
+    function handlePhoneChange(event) {
+        const { value } = formatPhoneInput(event.target.value, form.phone);
+
+        setForm((prevForm) => ({
+            ...prevForm,
+            phone: value,
         }));
 
         setValidationError('');
@@ -142,8 +154,8 @@ export function CreateForwarderInviteModal({
                                 <TextField
                                     name="phone"
                                     label="Телефон"
-                                    value={form.phone}
-                                    onChange={handleFieldChange}
+                                    value={formatPhoneInput(form.phone).display}
+                                    onChange={handlePhoneChange}
                                     fullWidth
                                     size="small"
                                     required

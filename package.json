@@ -7,8 +7,9 @@
       "dev": "vite --mode mock",
       "dev:api": "vite --mode api",
       "build": "vite build --mode production",
+      "build:public": "vite build --mode production --config vite.config.public.js",
       "preview": "vite preview",
-      "deploy": "vite build --mode production && node deploy.js"
+      "deploy": "npm run build && npm run build:public && node deploy.js"
    },
    "dependencies": {
       "@emotion/styled": "^11.14.1",
