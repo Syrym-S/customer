@@ -208,10 +208,12 @@ export function LeadDetailsModal() {
                   />
 
                   <LeadDetailsEditActions
+                     lead={currentLead}
                      leadId={currentLead?.id}
                      isEditing={isEditing}
                      onStartEdit={handleStartEdit}
                      onCancelEdit={handleCancelEdit}
+                     onClose={handleClose}
                   />
 
                   <LeadDetailsContent

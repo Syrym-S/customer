@@ -287,6 +287,7 @@ export function FactoringDetailsModal({
       {shouldRenderFactoringDetails ? (
         <FactoringDetailsActions
           factoring={factoring}
+          factoringId={factoringDisplayId}
           accepting={accepting}
           canAccept={canBeVerified}
           onClose={handleClose}

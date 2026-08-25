@@ -14,6 +14,7 @@ import {
     subscribeToNotificationDomainEvent,
 } from '../../../shared/model/notification-domain-events';
 import { mapLeadDetailsResponseFromApi } from '../../customer-leads/model/lead.adapter';
+import { getFactoringLeadId } from './factorings.helpers';
 
 const DEFAULT_PER_PAGE = 10;
 
@@ -36,12 +37,6 @@ export function FactoringsProvider({ children }) {
     const [acceptError, setAcceptError] = useState('');
 
     const pageCount = Math.max(1, Math.ceil(total / perPage));
-
-    function getFactoringLeadId(factoring) {
-        return (
-            factoring?.lead_id || factoring?.leadId || factoring?.lead?.id || ''
-        );
-    }
 
     function getFactoringId(factoring) {
         return (

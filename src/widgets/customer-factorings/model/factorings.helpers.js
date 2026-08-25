@@ -112,6 +112,20 @@ export function getCustomerName(customer) {
     return customer?.fullname || customer?.fullName || customer?.name || '—';
 }
 
+// Factorings are consumed as the raw API shape directly (no adapter/mapper
+// file exists for them, unlike leads' lead.adapter.js) — `lead_id` is
+// already present as-is on the raw object. Confirmed: the chat backend
+// requires this lead_id for a factoring's chat URLs, not the factoring's
+// own id (see chat-widget's FactoringChatButton.jsx) — this is also
+// FactoringsProvider.jsx's existing lookup, extracted here so both places
+// share one implementation instead of two copies of the same fallback
+// chain.
+export function getFactoringLeadId(factoring) {
+    return (
+        factoring?.lead_id || factoring?.leadId || factoring?.lead?.id || ''
+    );
+}
+
 export function getForwarderName(forwarder) {
     return forwarder?.company_name || forwarder?.companyName || '—';
 }

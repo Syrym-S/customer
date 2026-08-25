@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Header } from "../header/Header";
 import { AppBreadcrumbs } from "../../router/AppBreadcrumbs";
 import { CUSTOMER_NAV_WIDTH } from "../../shared/config/constants";
+import { ChatWidget } from "../chat-widget/ui/ChatWidget";
 
 export function AppLayout() {
   return (
@@ -22,6 +23,8 @@ export function AppLayout() {
 
         <Outlet />
       </Box>
+
+      <ChatWidget />
     </Box>
   );
 }

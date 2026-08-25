@@ -1,7 +1,9 @@
 import { Box, Button, Chip, DialogActions, Stack } from "@mui/material";
+import { FactoringChatButton } from "./FactoringChatButton";
 
 export function FactoringDetailsActions({
   factoring,
+  factoringId,
   accepting,
   canAccept,
   onClose,
@@ -33,6 +35,14 @@ export function FactoringDetailsActions({
       </Box>
 
       <Stack direction="row" spacing={1}>
+        {factoringId && (
+          <FactoringChatButton
+            factoringId={factoringId}
+            factoring={factoring}
+            onClose={onClose}
+          />
+        )}
+
         {canAccept && (
           <Button variant="contained" onClick={onAccept} disabled={accepting}>
             {accepting ? "Подтверждение..." : "Подтвердить"}
