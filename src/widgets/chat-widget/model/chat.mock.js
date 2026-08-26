@@ -1,6 +1,7 @@
 export const CHAT_CATEGORIES = [
   { key: "shipments", label: "Перевозки" },
   { key: "factorings", label: "Факторинги" },
+  { key: "delivery", label: "Доставка" },
 ];
 
 let mockMessageIdCounter = 0;

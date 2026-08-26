@@ -8,37 +8,39 @@ import {
   getTotalUnreadCount,
 } from "../../../chat-widget/model/chat.helpers";
 import {
-  buildLeadCounterpartFromLead,
+  buildDriverCounterpartFromLead,
   buildLeadRouteSummary,
 } from "../../../chat-widget/model/chat.mappers";
 
-export function LeadChatButton({ lead, onClose }) {
+export function LeadDeliveryChatButton({ lead, onClose }) {
   const leadId = lead?.id;
   const chats = useChatStore((state) => state.chats);
-  const openLeadChat = useChatStore((state) => state.openLeadChat);
+  const openDeliveryChat = useChatStore((state) => state.openDeliveryChat);
 
-  const leadUnreadCount = getTotalUnreadCount(
-    getEntityChats(chats, "lead", leadId),
+  const deliveryUnreadCount = getTotalUnreadCount(
+    getEntityChats(chats, "delivery", leadId),
   );
 
-  if (!lead?.forwarder) {
+  const driverCounterpart = buildDriverCounterpartFromLead(lead);
+
+  if (!driverCounterpart) {
     return null;
   }
 
   function handleClick() {
     onClose?.();
-    openLeadChat(leadId, buildLeadCounterpartFromLead(lead), buildLeadRouteSummary(lead));
+    openDeliveryChat(leadId, driverCounterpart, buildLeadRouteSummary(lead));
   }
 
   return (
     <Button
       variant="outlined"
-      color="info"
+      color="secondary"
       startIcon={
         <Badge
-          badgeContent={leadUnreadCount}
+          badgeContent={deliveryUnreadCount}
           color="error"
-          invisible={leadUnreadCount === 0}
+          invisible={deliveryUnreadCount === 0}
         >
           <ChatBubbleOutlineRoundedIcon fontSize="small" />
         </Badge>
@@ -46,12 +48,12 @@ export function LeadChatButton({ lead, onClose }) {
       onClick={handleClick}
       sx={{ textTransform: 'none' }}
     >
-      Чат с экспедитором
+      Чат с водителем
     </Button>
   );
 }
 
-LeadChatButton.propTypes = {
+LeadDeliveryChatButton.propTypes = {
   lead: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,

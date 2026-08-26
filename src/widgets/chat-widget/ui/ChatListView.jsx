@@ -20,6 +20,7 @@ export function ChatListView() {
   const openChat = useChatStore((state) => state.openChat);
   const openLeadChat = useChatStore((state) => state.openLeadChat);
   const openFactoringChat = useChatStore((state) => state.openFactoringChat);
+  const openDeliveryChat = useChatStore((state) => state.openDeliveryChat);
   const leadChatsStatus = useChatStore((state) => state.leadChatsStatus);
   const leadChatsError = useChatStore((state) => state.leadChatsError);
   const loadLeadChats = useChatStore((state) => state.loadLeadChats);
@@ -36,13 +37,13 @@ export function ChatListView() {
   }, [leadChatsStatus, loadLeadChats]);
 
   const categoryChats = getChatsByCategory(chats, activeCategory);
-  const isShipmentsTab = activeCategory === "shipments";
-  const isLoadingLeadChats = isShipmentsTab && leadChatsStatus === "loading";
-  const hasLeadChatsError = isShipmentsTab && leadChatsStatus === "error";
+  // All three tabs are backed by the same paginated /customer/v1/chats feed,
+  // so loading/error/load-more state applies regardless of the active tab.
+  const isLoadingLeadChats = leadChatsStatus === "loading";
+  const hasLeadChatsError = leadChatsStatus === "error";
 
   function handleScroll(event) {
     if (
-      !isShipmentsTab ||
       leadChatsStatus !== "loaded" ||
       !hasMoreLeadChats ||
       isLoadingMoreLeadChats
@@ -69,6 +70,11 @@ export function ChatListView() {
 
     if (chat.entityType === "factoring") {
       openFactoringChat(chat.entityId, chat.counterpart, chat.apiEntityId);
+      return;
+    }
+
+    if (chat.entityType === "delivery") {
+      openDeliveryChat(chat.entityId, chat.counterpart, chat.routeSummary);
       return;
     }
 
@@ -243,7 +249,7 @@ export function ChatListView() {
           })
         )}
 
-        {isShipmentsTab && isLoadingMoreLeadChats && (
+        {isLoadingMoreLeadChats && (
           <Box sx={{ display: "flex", justifyContent: "center", py: 1.5 }}>
             <CircularProgress size={20} />
           </Box>

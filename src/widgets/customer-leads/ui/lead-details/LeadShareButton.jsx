@@ -6,10 +6,13 @@ import {
    DialogActions,
    DialogContent,
    DialogContentText,
+   IconButton,
    TextField,
    DialogTitle,
+   Tooltip,
    Typography,
 } from '@mui/material';
+import IosShareRoundedIcon from '@mui/icons-material/IosShareRounded';
 import PropTypes from 'prop-types';
 
 import { getLeadShareLinkApi } from '../../api/leads.api';
@@ -117,9 +120,15 @@ export function LeadShareButton({ leadId }) {
 
    return (
       <>
-         <Button variant="outlined" onClick={handleOpenConfirm}>
-            Поделиться
-         </Button>
+         <Tooltip title="Поделиться">
+            <IconButton
+               color="primary"
+               aria-label="Поделиться"
+               onClick={handleOpenConfirm}
+            >
+               <IosShareRoundedIcon fontSize="small" />
+            </IconButton>
+         </Tooltip>
 
          <Dialog open={isConfirmOpen} onClose={handleCloseConfirm}>
             <DialogTitle>Поделиться лидом</DialogTitle>

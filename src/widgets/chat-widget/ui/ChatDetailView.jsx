@@ -10,6 +10,7 @@ import {
   DialogTitle,
   IconButton,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
@@ -20,7 +21,9 @@ import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import DoneAllRoundedIcon from "@mui/icons-material/DoneAllRounded";
 import { useChatStore } from "../model/chat.store";
+import { CHAT_ROLE_ID, CHAT_ROLE_LABEL_BY_ID } from "../model/chat.mappers";
 import {
   CHAT_ATTACHMENT_MAX_COUNT,
   formatFileSize,
@@ -38,6 +41,55 @@ import { CounterpartDetailsModal } from "./CounterpartDetailsModal";
 import { CounterpartAvatar } from "./CounterpartAvatar";
 
 const LOAD_OLDER_SCROLL_THRESHOLD_PX = 80;
+
+// Consistent, distinct per-role name color for factoring's grouped sender labels —
+// theme tokens (not hardcoded hex), kept apart from "primary" which is already used
+// for the current user's own message bubbles.
+const FACTORING_SENDER_NAME_COLOR_BY_ROLE_ID = {
+  [CHAT_ROLE_ID.FORWARDER]: "secondary.main",
+  [CHAT_ROLE_ID.FACTOR]: "success.main",
+};
+
+// How many consecutive messages from the same sender to allow before re-showing the
+// avatar+name label, so a long run doesn't stay label-less indefinitely.
+const FACTORING_SENDER_RELABEL_INTERVAL = 8;
+
+// Marks which messages in a factoring chat should show the avatar+name sender label:
+// the first message of each same-sender run, and then again every Nth message within
+// a long run. Grouping key is the sender's role_id (forwarder vs. factor are the only
+// two non-own senders in a factoring chat) — deleted/edited messages don't break a
+// run, since their participant role is unchanged.
+function computeFactoringSenderLabelFlags(messages) {
+  const shouldShowLabel = new Array(messages.length).fill(false);
+  let previousRoleId = undefined;
+  let sinceLastLabel = 0;
+
+  messages.forEach((message, index) => {
+    if (message.authorType === "me") {
+      previousRoleId = undefined;
+      sinceLastLabel = 0;
+      return;
+    }
+
+    const roleId = message.participantRoleId;
+
+    if (roleId !== previousRoleId) {
+      shouldShowLabel[index] = true;
+      previousRoleId = roleId;
+      sinceLastLabel = 0;
+      return;
+    }
+
+    sinceLastLabel += 1;
+
+    if (sinceLastLabel >= FACTORING_SENDER_RELABEL_INTERVAL) {
+      shouldShowLabel[index] = true;
+      sinceLastLabel = 0;
+    }
+  });
+
+  return shouldShowLabel;
+}
 
 function isServerBackedAttachment(attachment) {
   return Boolean(attachment?.leadId);
@@ -259,12 +311,20 @@ export function ChatDetailView({ chat }) {
   const reportChatWsError = useChatStore((state) => state.reportChatWsError);
   const pagination = useChatStore((state) => state.chatPagination[chat.id]);
 
-  const isRealChat = chat.entityType === "lead" || chat.entityType === "factoring";
+  const isFactoring = chat.entityType === "factoring";
+  const isRealChat =
+    chat.entityType === "lead" || isFactoring || chat.entityType === "delivery";
+
+  // chat.counterpart is the chat's stable identity (used by the list row); the header
+  // prefers the live-fetched participant from chat.counterparts when available, since
+  // it carries the real name/company/requisites the header is meant to display.
+  const headerCounterpart = chat.counterparts?.[0] || chat.counterpart;
 
   const [draft, setDraft] = useState("");
   const [pendingAttachments, setPendingAttachments] = useState([]);
   const [lightboxAttachment, setLightboxAttachment] = useState(null);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [contactModalCounterpart, setContactModalCounterpart] = useState(null);
   const [messagePendingDeletion, setMessagePendingDeletion] = useState(null);
   const [isDeletingMessage, setIsDeletingMessage] = useState(false);
   const [editingMessageId, setEditingMessageId] = useState(null);
@@ -275,7 +335,8 @@ export function ChatDetailView({ chat }) {
   const fileInputRef = useRef(null);
   const pendingScrollAdjustRef = useRef(null);
 
-  function handleOpenContactModal() {
+  function handleOpenContactModal(counterpart) {
+    setContactModalCounterpart(counterpart || chat.counterpart);
     setIsContactModalOpen(true);
   }
 
@@ -368,8 +429,8 @@ export function ChatDetailView({ chat }) {
         receiveLeadMessageUpdated(chat.entityId, message, chat.entityType),
       onMessageDeleted: (message) =>
         receiveLeadMessageDeleted(chat.entityId, message, chat.entityType),
-      onMessagesRead: (participantId) =>
-        receiveLeadMessagesRead(chat.entityId, participantId, chat.entityType),
+      onMessagesRead: (participantId, lastReadMessageId) =>
+        receiveLeadMessagesRead(chat.entityId, participantId, lastReadMessageId, chat.entityType),
       onError: (error) => reportChatWsError(chat.entityId, error, chat.entityType),
     });
 
@@ -392,6 +453,9 @@ export function ChatDetailView({ chat }) {
   const hasMore = hasMoreMessages(chat, pagination);
   const isLoadingMore = pagination?.isLoadingMore ?? false;
   const lastMessageId = loadedMessages[loadedMessages.length - 1]?.id;
+  const factoringSenderLabelFlags = isFactoring
+    ? computeFactoringSenderLabelFlags(loadedMessages)
+    : null;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ block: "end" });
@@ -529,31 +593,64 @@ export function ChatDetailView({ chat }) {
           <ArrowBackRoundedIcon fontSize="small" />
         </IconButton>
 
-        <Box
-          onClick={handleOpenContactModal}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            minWidth: 0,
-            cursor: "pointer",
-            borderRadius: 1,
-            px: 0.5,
-            mx: -0.5,
-            "&:hover": { backgroundColor: "action.hover" },
-          }}
-        >
-          <CounterpartAvatar counterpart={chat.counterpart} size={36} />
+        {chat.entityType === "factoring" && chat.counterparts?.length > 1 ? (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5, minWidth: 0, flex: 1 }}>
+            {chat.counterparts.map((counterpart, index) => (
+              <Box
+                key={`${counterpart.name}-${index}`}
+                onClick={() => handleOpenContactModal(counterpart)}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  minWidth: 0,
+                  cursor: "pointer",
+                  borderRadius: 1,
+                  px: 0.5,
+                  mx: -0.5,
+                  "&:hover": { backgroundColor: "action.hover" },
+                }}
+              >
+                <CounterpartAvatar counterpart={counterpart} size={24} fontSize={11} />
 
-          <Box sx={{ minWidth: 0 }}>
-            <Typography noWrap sx={{ fontSize: 14, fontWeight: 600 }}>
-              {chat.counterpart.name}
-            </Typography>
-            <Typography color="text.secondary" sx={{ fontSize: 11 }}>
-              {chat.counterpart.role}
-            </Typography>
+                <Box sx={{ minWidth: 0 }}>
+                  <Typography noWrap sx={{ fontSize: 13, fontWeight: 600, lineHeight: 1.3 }}>
+                    {counterpart.name}
+                  </Typography>
+                  <Typography color="text.secondary" sx={{ fontSize: 10, lineHeight: 1.2 }}>
+                    {counterpart.role}
+                  </Typography>
+                </Box>
+              </Box>
+            ))}
           </Box>
-        </Box>
+        ) : (
+          <Box
+            onClick={() => handleOpenContactModal(headerCounterpart)}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              minWidth: 0,
+              cursor: "pointer",
+              borderRadius: 1,
+              px: 0.5,
+              mx: -0.5,
+              "&:hover": { backgroundColor: "action.hover" },
+            }}
+          >
+            <CounterpartAvatar counterpart={headerCounterpart} size={36} />
+
+            <Box sx={{ minWidth: 0 }}>
+              <Typography noWrap sx={{ fontSize: 14, fontWeight: 600 }}>
+                {headerCounterpart.name}
+              </Typography>
+              <Typography color="text.secondary" sx={{ fontSize: 11 }}>
+                {headerCounterpart.role}
+              </Typography>
+            </Box>
+          </Box>
+        )}
       </Box>
 
       <Box
@@ -585,18 +682,51 @@ export function ChatDetailView({ chat }) {
           </Typography>
         )}
 
-        {loadedMessages.map((message) => {
+        {loadedMessages.map((message, index) => {
           const isMine = message.authorType === "me";
           const isDeleted = Boolean(message.isDeleted);
+
+          const senderCounterpart =
+            isFactoring && !isMine
+              ? chat.counterparts?.find(
+                  (counterpart) => counterpart.roleId === message.participantRoleId,
+                )
+              : null;
+          const senderLabel =
+            isFactoring && !isMine
+              ? senderCounterpart?.name ||
+                CHAT_ROLE_LABEL_BY_ID[message.participantRoleId] ||
+                null
+              : null;
+          const showSenderLabel = senderLabel && Boolean(factoringSenderLabelFlags?.[index]);
 
           return (
             <Box
               key={message.id}
               sx={{
                 display: "flex",
-                justifyContent: isMine ? "flex-end" : "flex-start",
+                flexDirection: "column",
+                alignItems: isMine ? "flex-end" : "flex-start",
+                mt: isFactoring && !isMine && !showSenderLabel ? -0.5 : 0,
               }}
             >
+              {showSenderLabel && (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 0.25, px: 0.5 }}>
+                  <CounterpartAvatar counterpart={senderCounterpart} size={18} fontSize={9} />
+                  <Typography
+                    sx={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      color:
+                        FACTORING_SENDER_NAME_COLOR_BY_ROLE_ID[message.participantRoleId] ||
+                        "text.secondary",
+                    }}
+                  >
+                    {senderLabel}
+                  </Typography>
+                </Box>
+              )}
+
               <Box
                 sx={{
                   position: "relative",
@@ -817,16 +947,33 @@ export function ChatDetailView({ chat }) {
                   </>
                 )}
 
-                <Typography
+                <Box
                   sx={{
-                    fontSize: 10,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    gap: 0.4,
                     mt: 0.5,
-                    textAlign: "right",
-                    color: isMine ? "rgba(255,255,255,0.75)" : "text.disabled",
                   }}
                 >
-                  {formatRelativeTime(message.createdAt)}
-                </Typography>
+                  {isMine && !isDeleted && message.isViewed === true && (
+                    <Tooltip title="Прочитано" placement="top" arrow>
+                      <DoneAllRoundedIcon
+                        sx={{ fontSize: 13, color: "rgba(255,255,255,0.85)" }}
+                      />
+                    </Tooltip>
+                  )}
+
+                  <Typography
+                    sx={{
+                      fontSize: 10,
+                      textAlign: "right",
+                      color: isMine ? "rgba(255,255,255,0.75)" : "text.disabled",
+                    }}
+                  >
+                    {formatRelativeTime(message.createdAt)}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           );
@@ -1014,7 +1161,7 @@ export function ChatDetailView({ chat }) {
 
       <CounterpartDetailsModal
         open={isContactModalOpen}
-        counterpart={chat.counterpart}
+        counterpart={contactModalCounterpart || headerCounterpart}
         onClose={handleCloseContactModal}
       />
 

@@ -1,6 +1,33 @@
-import { participantTypeLabels } from "../../customer-tenders/ui/tender-details/components/tender-participants.helpers";
+// Confirmed system-wide role_id table (usable everywhere a role_id shows up:
+// message.participant.role_id, .messages.read resolution, etc).
+export const CHAT_ROLE_ID = {
+  FORWARDER: 1,
+  CUSTOMER: 2,
+  FACTOR: 3,
+  DRIVER: 4,
+};
 
-const CUSTOMER_PARTICIPANT_ROLE_ID = 2;
+const CUSTOMER_PARTICIPANT_ROLE_ID = CHAT_ROLE_ID.CUSTOMER;
+
+export const CHAT_ROLE_LABEL_BY_ID = {
+  [CHAT_ROLE_ID.FORWARDER]: "Экспедитор",
+  [CHAT_ROLE_ID.CUSTOMER]: "Клиент",
+  [CHAT_ROLE_ID.FACTOR]: "Фактор",
+  [CHAT_ROLE_ID.DRIVER]: "Водитель",
+};
+
+// role (string, from /chat/participants) <-> role_id (number, from messages/WS) —
+// both describe the same fixed roles, so a role string can be resolved to its id.
+const CHAT_ROLE_ID_BY_ROLE_STRING = {
+  forwarder: CHAT_ROLE_ID.FORWARDER,
+  customer: CHAT_ROLE_ID.CUSTOMER,
+  factor: CHAT_ROLE_ID.FACTOR,
+  driver: CHAT_ROLE_ID.DRIVER,
+};
+
+export function resolveChatRoleIdFromRoleString(role) {
+  return CHAT_ROLE_ID_BY_ROLE_STRING[role] ?? null;
+}
 
 export function mapLeadChatMessageFromApi(apiMessage, leadId, chatType = "lead") {
   const roleId = apiMessage?.participant?.role_id ?? null;
@@ -14,7 +41,27 @@ export function mapLeadChatMessageFromApi(apiMessage, leadId, chatType = "lead")
     attachments: normalizeLeadChatAttachments(apiMessage?.attachments, leadId, chatType),
     isViewed: apiMessage?.is_viewed ?? null,
     isDeleted: Boolean(apiMessage?.is_deleted),
+    participantId: apiMessage?.participant?.id ?? null,
+    participantRoleId: roleId,
   };
+}
+
+// Builds a participant_id -> role_id map from message history already loaded for a
+// chat. Used to resolve .messages.read's bare participant_id (no role_id of its own)
+// to a role, by matching against ids seen on messages from that same participant.
+export function buildParticipantRoleMap(apiMessages) {
+  const map = {};
+
+  for (const apiMessage of Array.isArray(apiMessages) ? apiMessages : []) {
+    const participantId = apiMessage?.participant?.id;
+    const roleId = apiMessage?.participant?.role_id;
+
+    if (participantId != null && roleId != null) {
+      map[participantId] = roleId;
+    }
+  }
+
+  return map;
 }
 
 // UNCONFIRMED: only mime_type_id 1 (application/pdf) has been observed; other ids fall back to a generic binary type.
@@ -86,23 +133,18 @@ function getParticipantRoleLabel(role) {
     return "Участник";
   }
 
-  return participantTypeLabels[role] || role;
+  const roleId = resolveChatRoleIdFromRoleString(role);
+
+  return (roleId && CHAT_ROLE_LABEL_BY_ID[roleId]) || participantTypeLabels[role] || role;
 }
 
-// GAP: can't distinguish factor vs. forwarder — participants endpoint has no id field; always uses the first entry.
-function pickLeadChatParticipant(apiParticipants, chatType = "lead") {
-  if (!Array.isArray(apiParticipants) || apiParticipants.length === 0) {
-    return null;
-  }
-
+function warnIfUnexpectedParticipantCount(apiParticipants, chatType) {
   if (apiParticipants.length > 1 && chatType !== "factoring") {
     console.warn(
       `[chat] /chat/participants?chat_type=${chatType} returned more than one participant — expected exactly one per the confirmed example. Using the first.`,
       apiParticipants,
     );
   }
-
-  return apiParticipants[0];
 }
 
 function mapLeadChatParticipantFromApi(apiParticipant) {
@@ -112,6 +154,7 @@ function mapLeadChatParticipantFromApi(apiParticipant) {
   return {
     name: fullName || companyName || "Участник чата",
     role: getParticipantRoleLabel(apiParticipant?.role),
+    roleId: resolveChatRoleIdFromRoleString(apiParticipant?.role),
     fullName,
     companyName,
     bin: apiParticipant?.bin || undefined,
@@ -136,9 +179,21 @@ export function normalizeLeadChatParticipantsResponse(response) {
   return [];
 }
 
+// For factoring chats, /chat/participants returns both counterparts (forwarder and
+// factor) — the caller should show all of them, not just the first.
+export function buildLeadCounterpartsFromParticipants(apiParticipants, chatType = "lead") {
+  if (!Array.isArray(apiParticipants) || apiParticipants.length === 0) {
+    return [];
+  }
+
+  warnIfUnexpectedParticipantCount(apiParticipants, chatType);
+
+  return apiParticipants.map(mapLeadChatParticipantFromApi);
+}
+
 export function buildLeadCounterpartFromParticipants(apiParticipants, chatType = "lead") {
-  const participant = pickLeadChatParticipant(apiParticipants, chatType);
-  return participant ? mapLeadChatParticipantFromApi(participant) : null;
+  const counterparts = buildLeadCounterpartsFromParticipants(apiParticipants, chatType);
+  return counterparts[0] || null;
 }
 
 export function buildLeadCounterpartFromLead(lead) {
@@ -160,6 +215,24 @@ export function buildLeadCounterpartFromLead(lead) {
   return {
     name: `Лид #${lead?.num ?? lead?.id}`,
     role: "Экспедитор",
+  };
+}
+
+// Confirmed shape: lead.driver is either { id, fio } or absent (lead.adapter.js falls
+// back to the string 'Не назначен' when there's no assigned driver) — no phone/company
+// confirmed on this shape, so those fields are left unset, same as other counterparts
+// built from partial data.
+export function buildDriverCounterpartFromLead(lead) {
+  const driver = lead?.driver;
+
+  if (!driver || typeof driver !== "object" || !driver.fio) {
+    return null;
+  }
+
+  return {
+    name: driver.fio,
+    role: CHAT_ROLE_LABEL_BY_ID[CHAT_ROLE_ID.DRIVER],
+    fullName: driver.fio,
   };
 }
 
@@ -263,11 +336,31 @@ function buildFactoringCounterpartFallback(factoringId) {
   };
 }
 
+function buildDeliveryCounterpartFallback(id) {
+  return {
+    name: `Доставка #${id}`,
+    role: "Доставка",
+  };
+}
+
+function resolveChatCategoryKey(chatType) {
+  if (chatType === "factoring") {
+    return "factorings";
+  }
+
+  if (chatType === "delivery") {
+    return "delivery";
+  }
+
+  return "shipments";
+}
+
 export function buildLeadChatFromApiMessages({
   leadId,
   entityId,
   lead,
   counterpart,
+  counterparts,
   routeSummary,
   fallbackActivityAt,
   chatType = "lead",
@@ -285,22 +378,30 @@ export function buildLeadChatFromApiMessages({
   ).length;
 
   const isFactoring = chatType === "factoring";
+  const isDelivery = chatType === "delivery";
+
+  const resolvedCounterpart =
+    counterpart ||
+    (isFactoring
+      ? buildFactoringCounterpartFallback(resolvedEntityId)
+      : isDelivery
+        ? buildDeliveryCounterpartFallback(resolvedEntityId)
+        : buildLeadCounterpartFromLead(lead));
 
   return {
     id: `${chatType}-chat-${resolvedEntityId}`,
     entityType: chatType,
     entityId: resolvedEntityId,
     apiEntityId: leadId,
-    categoryKey: isFactoring ? "factorings" : "shipments",
-    counterpart:
-      counterpart ||
-      (isFactoring
-        ? buildFactoringCounterpartFallback(resolvedEntityId)
-        : buildLeadCounterpartFromLead(lead)),
+    categoryKey: resolveChatCategoryKey(chatType),
+    counterpart: resolvedCounterpart,
+    counterparts:
+      counterparts && counterparts.length > 0 ? counterparts : [resolvedCounterpart],
     routeSummary: isFactoring ? "" : routeSummary ?? (lead ? buildLeadRouteSummary(lead) : ""),
     unreadCount,
     lastActivityAt: lastMessage?.createdAt || fallbackActivityAt || new Date().toISOString(),
     messages,
+    participantRoleById: buildParticipantRoleMap(apiMessages),
     remoteChatId: apiMessages[0]?.chat_id ?? null,
     messagesLoaded: true,
   };
@@ -313,8 +414,10 @@ export function normalizeLeadChatsListResponse(response) {
   };
 }
 
-// GAP: /customer/v1/chats has no participant/forwarder data — list rows show generic "Лид #<num>" until the chat is opened.
+// GAP: /customer/v1/chats has no participant/forwarder data — list rows show generic fallback names until the chat is opened.
+// UNCONFIRMED: for a factoring-type row, entityId here is lead_id, not the factoring's own id — matching openFactoringChat's id would need the factoring id, which this endpoint doesn't return.
 export function mapLeadChatListEntryFromApi(apiChatEntry) {
+  const chatType = apiChatEntry?.chat_type || "lead";
   const leadId = apiChatEntry?.lead_id ?? apiChatEntry?.lead?.id;
   const lead = apiChatEntry?.lead;
 
@@ -324,16 +427,23 @@ export function mapLeadChatListEntryFromApi(apiChatEntry) {
   const lastMessageText = apiChatEntry?.last_message ?? "";
   const lastMessageAt = apiChatEntry?.last_message_at ?? null;
 
+  const counterpart =
+    chatType === "factoring"
+      ? buildFactoringCounterpartFallback(leadId)
+      : chatType === "delivery"
+        ? buildDeliveryCounterpartFallback(leadId)
+        : { name: `Лид #${lead?.num ?? leadId}`, role: "Экспедитор" };
+
   return {
-    id: `lead-chat-${leadId}`,
-    entityType: "lead",
+    id: `${chatType}-chat-${leadId}`,
+    entityType: chatType,
     entityId: leadId,
-    categoryKey: "shipments",
-    counterpart: {
-      name: `Лид #${lead?.num ?? leadId}`,
-      role: "Экспедитор",
-    },
-    routeSummary: collapseRouteCities(fromCity, toCity, { allowCollapseWhenEqual: true }),
+    categoryKey: resolveChatCategoryKey(chatType),
+    counterpart,
+    routeSummary:
+      chatType === "lead"
+        ? collapseRouteCities(fromCity, toCity, { allowCollapseWhenEqual: true })
+        : "",
     unreadCount: apiChatEntry?.unread_count ?? 0,
     lastActivityAt: lastMessageAt || new Date().toISOString(),
     messages: lastMessageText

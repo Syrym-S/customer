@@ -3,7 +3,8 @@ import { CHAT_CATEGORIES, createMockMessageId } from "./chat.mock";
 import { CHAT_MESSAGES_PAGE_SIZE } from "./chat.helpers";
 import {
   buildLeadChatFromApiMessages,
-  buildLeadCounterpartFromParticipants,
+  buildLeadCounterpartsFromParticipants,
+  CHAT_ROLE_ID,
   mapLeadChatListEntryFromApi,
   mapLeadChatMessageFromApi,
   normalizeLeadChatMessageResponse,
@@ -45,8 +46,12 @@ function isFactoringChat(chat) {
   return chat?.entityType === "factoring";
 }
 
+function isDeliveryChat(chat) {
+  return chat?.entityType === "delivery";
+}
+
 function isRealChat(chat) {
-  return isLeadChat(chat) || isFactoringChat(chat);
+  return isLeadChat(chat) || isFactoringChat(chat) || isDeliveryChat(chat);
 }
 
 function applyUpdatedMessageFields(message, apiMessage) {
@@ -69,6 +74,18 @@ function withMessageDeletedFlag(chats, chatId, messageId, isDeleted) {
         }
       : item,
   );
+}
+
+function mergeParticipantRole(map, participantId, roleId) {
+  if (participantId == null || roleId == null) {
+    return map;
+  }
+
+  if (map?.[participantId] === roleId) {
+    return map;
+  }
+
+  return { ...(map || {}), [participantId]: roleId };
 }
 
 function mergeLeadChats(existingChats, newLeadChats) {
@@ -125,14 +142,16 @@ export const useChatStore = create((set, get) => ({
     get().openChat(chatId);
   },
 
-  fetchEntityChatCounterpart: async (entityId, chatType) => {
+  // Returns all chat participants (e.g. both forwarder and factor for factoring chats),
+  // not just one — the caller decides which counterpart(s) to display.
+  fetchEntityChatCounterparts: async (entityId, chatType) => {
     try {
       const participantsResponse = await fetchLeadChatParticipantsApi(entityId, chatType);
       const apiParticipants = normalizeLeadChatParticipantsResponse(participantsResponse);
-      return buildLeadCounterpartFromParticipants(apiParticipants, chatType);
+      return buildLeadCounterpartsFromParticipants(apiParticipants, chatType);
     } catch (error) {
       console.error(`Не удалось загрузить участников чата (${chatType}) ${entityId}`, error);
-      return null;
+      return [];
     }
   },
 
@@ -148,14 +167,15 @@ export const useChatStore = create((set, get) => ({
       return;
     }
 
-    const activeCategory = chatType === "factoring" ? "factorings" : "shipments";
+    const activeCategory =
+      chatType === "factoring" ? "factorings" : chatType === "delivery" ? "delivery" : "shipments";
 
     set({ isOpen: true, activeCategory, pendingLeadChatLeadId: entityId });
 
     try {
-      const [messagesResponse, participantCounterpart] = await Promise.all([
+      const [messagesResponse, participantCounterparts] = await Promise.all([
         fetchLeadChatMessagesApi(resolvedApiEntityId, chatType),
-        get().fetchEntityChatCounterpart(resolvedApiEntityId, chatType),
+        get().fetchEntityChatCounterparts(resolvedApiEntityId, chatType),
       ]);
       const apiMessages = normalizeLeadChatMessagesResponse(messagesResponse);
 
@@ -164,7 +184,16 @@ export const useChatStore = create((set, get) => ({
           leadId: resolvedApiEntityId,
           entityId,
           chatType,
-          counterpart: participantCounterpart || counterpart || existingChat?.counterpart,
+          // chat.counterpart is the chat's stable identity (list row title/avatar) —
+          // it must never be replaced by the live /chat/participants fetch, which can
+          // reflect whoever is currently active in the thread rather than a fixed
+          // "who this chat is with". Live participant data only feeds `counterparts`,
+          // used by the detail header/per-message sender labels.
+          counterpart: counterpart || existingChat?.counterpart,
+          counterparts:
+            participantCounterparts.length > 0
+              ? participantCounterparts
+              : existingChat?.counterparts,
           routeSummary: routeSummary ?? existingChat?.routeSummary,
         },
         apiMessages,
@@ -183,7 +212,9 @@ export const useChatStore = create((set, get) => ({
           error.message ||
           (chatType === "factoring"
             ? "Не удалось загрузить чат по факторингу"
-            : "Не удалось загрузить чат по лиду"),
+            : chatType === "delivery"
+              ? "Не удалось загрузить чат по доставке"
+              : "Не удалось загрузить чат по лиду"),
       );
     }
   },
@@ -195,6 +226,11 @@ export const useChatStore = create((set, get) => ({
     get().openEntityChat("factoring", factoringId, counterpart, undefined, {
       apiEntityId: leadId,
     }),
+
+  // Delivery chats are scoped by the lead's own id, same as lead chats — the
+  // chat_type param (not a separate entity id) is what distinguishes them.
+  openDeliveryChat: (leadId, counterpart, routeSummary) =>
+    get().openEntityChat("delivery", leadId, counterpart, routeSummary),
 
   loadLeadChats: async () => {
     const state = get();
@@ -463,6 +499,11 @@ export const useChatStore = create((set, get) => ({
                 messages: item.messages.map((message) =>
                   message.id === tempId ? realMessage : message,
                 ),
+                participantRoleById: mergeParticipantRole(
+                  item.participantRoleById,
+                  realMessage.participantId,
+                  realMessage.participantRoleId,
+                ),
                 lastActivityAt: realMessage.createdAt,
               }
             : item,
@@ -638,6 +679,11 @@ export const useChatStore = create((set, get) => ({
         return {
           ...item,
           messages,
+          participantRoleById: mergeParticipantRole(
+            item.participantRoleById,
+            incomingMessage.participantId,
+            incomingMessage.participantRoleId,
+          ),
           lastActivityAt: incomingMessage.createdAt || item.lastActivityAt,
         };
       }),
@@ -683,19 +729,49 @@ export const useChatStore = create((set, get) => ({
     }));
   },
 
-  // GAP: .messages.read has no participant id to match against — data stored (lastReadByParticipantId) but no UI reads it yet.
-  receiveLeadMessagesRead: (leadId, participantId, chatType = "lead") => {
+  // The read checkmark itself is sourced from each message's persistent isViewed
+  // (mapped from REST is_viewed, survives reload). This handler is only for live,
+  // same-session updates: a .messages.read event carries last_read_message_id, so we
+  // locally flip isViewed on every already-loaded own message with id <= that id,
+  // rather than waiting for a refetch.
+  //
+  // .messages.read carries participant_id, not role_id — resolve it against the
+  // participant_id -> role_id map built from this chat's own message history to guard
+  // against self-echo: if the newest message in the chat happens to be one of our own,
+  // our own read-marking action (participant_id resolving to CUSTOMER) would otherwise
+  // report last_read_message_id >= one of our own messages, which is not proof the
+  // counterpart actually read it. If that participant hasn't sent any message we've
+  // seen yet, the role stays unresolved and the update is skipped defensively.
+  receiveLeadMessagesRead: (leadId, participantId, lastReadMessageId, chatType = "lead") => {
     const chat = get().chats.find(
       (item) => item.entityType === chatType && String(item.entityId) === String(leadId),
     );
 
-    if (!chat) {
+    if (!chat || lastReadMessageId == null) {
+      return;
+    }
+
+    const roleId = chat.participantRoleById?.[participantId] ?? null;
+
+    if (roleId === null || roleId === CHAT_ROLE_ID.CUSTOMER) {
       return;
     }
 
     set((state) => ({
       chats: state.chats.map((item) =>
-        item.id === chat.id ? { ...item, lastReadByParticipantId: participantId } : item,
+        item.id === chat.id
+          ? {
+              ...item,
+              messages: item.messages.map((message) =>
+                message.authorType === "me" &&
+                !message.isViewed &&
+                typeof message.id === "number" &&
+                message.id <= lastReadMessageId
+                  ? { ...message, isViewed: true }
+                  : message,
+              ),
+            }
+          : item,
       ),
     }));
   },

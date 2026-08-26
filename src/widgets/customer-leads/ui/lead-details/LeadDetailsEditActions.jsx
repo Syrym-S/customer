@@ -1,8 +1,10 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton, Tooltip } from '@mui/material';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PropTypes from 'prop-types';
 
 import { LeadShareButton } from './LeadShareButton';
 import { LeadChatButton } from './LeadChatButton';
+import { LeadDeliveryChatButton } from './LeadDeliveryChatButton';
 
 export function LeadDetailsEditActions({
    lead,
@@ -23,14 +25,18 @@ export function LeadDetailsEditActions({
       >
          {!isEditing && lead && <LeadChatButton lead={lead} onClose={onClose} />}
 
+         {!isEditing && lead && <LeadDeliveryChatButton lead={lead} onClose={onClose} />}
+
          {!isEditing && leadId && <LeadShareButton leadId={leadId} />}
 
          {isEditing ? (
             <Button onClick={onCancelEdit}>Отмена</Button>
          ) : (
-            <Button variant='outlined' onClick={onStartEdit}>
-               Изменить
-            </Button>
+            <Tooltip title="Изменить">
+               <IconButton color="primary" aria-label="Изменить" onClick={onStartEdit}>
+                  <EditOutlinedIcon fontSize="small" />
+               </IconButton>
+            </Tooltip>
          )}
       </Box>
    );
