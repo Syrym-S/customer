@@ -17,10 +17,6 @@ import PropTypes from 'prop-types';
 
 import { getLeadShareLinkApi } from '../../api/leads.api';
 
-// Mirrors this codebase's existing date-display convention (see
-// formatDate/formatNotificationDate/formatDateTime in the other widgets):
-// numeric DD.MM.YYYY via toLocaleString('ru-RU', ...), duplicated locally
-// rather than pulled from a shared helper, matching the established pattern.
 function formatShareExpiryDate(date) {
    if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
       return '';
@@ -33,8 +29,6 @@ function formatShareExpiryDate(date) {
    });
 }
 
-// Same "space" -> "T" normalization used elsewhere in this codebase for
-// backend timestamps (see e.g. factorings.helpers.js's formatDate).
 function parseApiDate(value) {
    if (!value) {
       return null;

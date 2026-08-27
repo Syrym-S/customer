@@ -1,5 +1,4 @@
-// Confirmed system-wide role_id table (usable everywhere a role_id shows up:
-// message.participant.role_id, .messages.read resolution, etc).
+// Confirmed system-wide role_id table.
 export const CHAT_ROLE_ID = {
   FORWARDER: 1,
   CUSTOMER: 2,
@@ -16,8 +15,6 @@ export const CHAT_ROLE_LABEL_BY_ID = {
   [CHAT_ROLE_ID.DRIVER]: "Водитель",
 };
 
-// role (string, from /chat/participants) <-> role_id (number, from messages/WS) —
-// both describe the same fixed roles, so a role string can be resolved to its id.
 const CHAT_ROLE_ID_BY_ROLE_STRING = {
   forwarder: CHAT_ROLE_ID.FORWARDER,
   customer: CHAT_ROLE_ID.CUSTOMER,
@@ -46,9 +43,7 @@ export function mapLeadChatMessageFromApi(apiMessage, leadId, chatType = "lead")
   };
 }
 
-// Builds a participant_id -> role_id map from message history already loaded for a
-// chat. Used to resolve .messages.read's bare participant_id (no role_id of its own)
-// to a role, by matching against ids seen on messages from that same participant.
+// Resolves .messages.read's bare participant_id to a role_id.
 export function buildParticipantRoleMap(apiMessages) {
   const map = {};
 
@@ -179,8 +174,6 @@ export function normalizeLeadChatParticipantsResponse(response) {
   return [];
 }
 
-// For factoring chats, /chat/participants returns both counterparts (forwarder and
-// factor) — the caller should show all of them, not just the first.
 export function buildLeadCounterpartsFromParticipants(apiParticipants, chatType = "lead") {
   if (!Array.isArray(apiParticipants) || apiParticipants.length === 0) {
     return [];
@@ -218,10 +211,7 @@ export function buildLeadCounterpartFromLead(lead) {
   };
 }
 
-// Confirmed shape: lead.driver is either { id, fio } or absent (lead.adapter.js falls
-// back to the string 'Не назначен' when there's no assigned driver) — no phone/company
-// confirmed on this shape, so those fields are left unset, same as other counterparts
-// built from partial data.
+// lead.driver is either { id, fio } or the string 'Не назначен' when unassigned.
 export function buildDriverCounterpartFromLead(lead) {
   const driver = lead?.driver;
 
@@ -455,6 +445,12 @@ export function mapLeadChatListEntryFromApi(apiChatEntry) {
           },
         ]
       : [],
+    // Dedicated preview-text carrier, kept separate from `messages` so a
+    // list refresh can update a fully-loaded chat's displayed last message
+    // without touching its protected, real `messages` array.
+    lastMessagePreview: lastMessageText
+      ? { text: lastMessageText, createdAt: lastMessageAt }
+      : null,
     remoteChatId: apiChatEntry?.chat_id ?? null,
     messagesLoaded: false,
   };

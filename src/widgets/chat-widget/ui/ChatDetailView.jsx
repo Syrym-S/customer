@@ -42,23 +42,14 @@ import { CounterpartAvatar } from "./CounterpartAvatar";
 
 const LOAD_OLDER_SCROLL_THRESHOLD_PX = 80;
 
-// Consistent, distinct per-role name color for factoring's grouped sender labels —
-// theme tokens (not hardcoded hex), kept apart from "primary" which is already used
-// for the current user's own message bubbles.
 const FACTORING_SENDER_NAME_COLOR_BY_ROLE_ID = {
   [CHAT_ROLE_ID.FORWARDER]: "secondary.main",
   [CHAT_ROLE_ID.FACTOR]: "success.main",
 };
 
-// How many consecutive messages from the same sender to allow before re-showing the
-// avatar+name label, so a long run doesn't stay label-less indefinitely.
 const FACTORING_SENDER_RELABEL_INTERVAL = 8;
 
-// Marks which messages in a factoring chat should show the avatar+name sender label:
-// the first message of each same-sender run, and then again every Nth message within
-// a long run. Grouping key is the sender's role_id (forwarder vs. factor are the only
-// two non-own senders in a factoring chat) — deleted/edited messages don't break a
-// run, since their participant role is unchanged.
+// Grouping key is role_id (forwarder/factor are the only two non-own senders).
 function computeFactoringSenderLabelFlags(messages) {
   const shouldShowLabel = new Array(messages.length).fill(false);
   let previousRoleId = undefined;
@@ -315,9 +306,6 @@ export function ChatDetailView({ chat }) {
   const isRealChat =
     chat.entityType === "lead" || isFactoring || chat.entityType === "delivery";
 
-  // chat.counterpart is the chat's stable identity (used by the list row); the header
-  // prefers the live-fetched participant from chat.counterparts when available, since
-  // it carries the real name/company/requisites the header is meant to display.
   const headerCounterpart = chat.counterparts?.[0] || chat.counterpart;
 
   const [draft, setDraft] = useState("");

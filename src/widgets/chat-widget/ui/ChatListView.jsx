@@ -37,8 +37,6 @@ export function ChatListView() {
   }, [leadChatsStatus, loadLeadChats]);
 
   const categoryChats = getChatsByCategory(chats, activeCategory);
-  // All three tabs are backed by the same paginated /customer/v1/chats feed,
-  // so loading/error/load-more state applies regardless of the active tab.
   const isLoadingLeadChats = leadChatsStatus === "loading";
   const hasLeadChatsError = leadChatsStatus === "error";
 

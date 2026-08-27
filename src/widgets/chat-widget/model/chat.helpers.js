@@ -54,12 +54,30 @@ export function formatRelativeTime(value) {
   });
 }
 
+// For a fully-loaded chat, `messages` (real, live-updated) and
+// `lastMessagePreview` (from the most recent list refresh) can each be the
+// fresher source depending on timing — WS may have appended a newer message
+// since the last list refresh, or a list refresh may have picked up a
+// message sent while this chat's WS connection was closed. Pick whichever
+// is actually newer rather than preferring one source outright.
 export function getLastMessage(chat) {
-  if (!chat?.messages?.length) {
-    return null;
+  const lastFromMessages = chat?.messages?.length
+    ? chat.messages[chat.messages.length - 1]
+    : null;
+
+  const preview = chat?.lastMessagePreview || null;
+
+  if (!lastFromMessages) {
+    return preview;
   }
 
-  return chat.messages[chat.messages.length - 1];
+  if (!preview) {
+    return lastFromMessages;
+  }
+
+  return new Date(preview.createdAt) > new Date(lastFromMessages.createdAt)
+    ? preview
+    : lastFromMessages;
 }
 
 export function getEntityChats(chats, entityType, entityId) {

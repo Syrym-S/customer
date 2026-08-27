@@ -88,6 +88,23 @@ function mergeParticipantRole(map, participantId, roleId) {
   return { ...(map || {}), [participantId]: roleId };
 }
 
+// On chat reopen, the freshly-fetched REST history may be missing messages the
+// still-connected WS already appended (or a not-yet-round-tripped own optimistic
+// send) — union by id instead of wholesale-replacing, so neither source's
+// messages are lost. Fresh REST entries win on id collisions (canonical server
+// state); anything only present locally (e.g. a pending own-send) is kept as-is.
+function reconcileFreshMessagesWithCurrent(freshMessages, currentMessages) {
+  const freshById = new Map(freshMessages.map((message) => [message.id, message]));
+
+  const extraCurrentMessages = currentMessages.filter(
+    (message) => !freshById.has(message.id),
+  );
+
+  return [...freshMessages, ...extraCurrentMessages].sort(
+    (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+  );
+}
+
 function mergeLeadChats(existingChats, newLeadChats) {
   const newById = new Map(newLeadChats.map((chat) => [chat.id, chat]));
 
@@ -98,7 +115,21 @@ function mergeLeadChats(existingChats, newLeadChats) {
 
     const incoming = newById.get(chat.id);
 
-    return chat.messagesLoaded && !incoming.messagesLoaded ? chat : incoming;
+    if (chat.messagesLoaded && !incoming.messagesLoaded) {
+      // Keep the fully-loaded chat's protected fields (messages, counterpart(s),
+      // messagesLoaded, remoteChatId) — a list-preview refetch must never
+      // clobber those — but still adopt the preview's row-level metadata so
+      // unread count / last-message text don't go stale after this chat has
+      // been opened once this session.
+      return {
+        ...chat,
+        unreadCount: incoming.unreadCount,
+        lastActivityAt: incoming.lastActivityAt,
+        lastMessagePreview: incoming.lastMessagePreview,
+      };
+    }
+
+    return incoming;
   });
 
   const existingIds = new Set(existingChats.map((chat) => chat.id));
@@ -124,7 +155,15 @@ export const useChatStore = create((set, get) => ({
   pendingLeadChatLeadId: null,
 
   toggleWidget: () => {
+    const willOpen = !get().isOpen;
+
     set((state) => ({ isOpen: !state.isOpen }));
+
+    if (willOpen) {
+      // Refresh unread counts / last-message previews every time the panel is
+      // reopened, not just on the very first mount this session.
+      get().loadLeadChats();
+    }
   },
 
   closeWidget: () => {
@@ -142,8 +181,6 @@ export const useChatStore = create((set, get) => ({
     get().openChat(chatId);
   },
 
-  // Returns all chat participants (e.g. both forwarder and factor for factoring chats),
-  // not just one — the caller decides which counterpart(s) to display.
   fetchEntityChatCounterparts: async (entityId, chatType) => {
     try {
       const participantsResponse = await fetchLeadChatParticipantsApi(entityId, chatType);
@@ -162,11 +199,6 @@ export const useChatStore = create((set, get) => ({
       (chat) => chat.entityType === chatType && String(chat.entityId) === String(entityId),
     );
 
-    if (existingChat?.messagesLoaded) {
-      get().openChatById(existingChat.id);
-      return;
-    }
-
     const activeCategory =
       chatType === "factoring" ? "factorings" : chatType === "delivery" ? "delivery" : "shipments";
 
@@ -184,11 +216,7 @@ export const useChatStore = create((set, get) => ({
           leadId: resolvedApiEntityId,
           entityId,
           chatType,
-          // chat.counterpart is the chat's stable identity (list row title/avatar) —
-          // it must never be replaced by the live /chat/participants fetch, which can
-          // reflect whoever is currently active in the thread rather than a fixed
-          // "who this chat is with". Live participant data only feeds `counterparts`,
-          // used by the detail header/per-message sender labels.
+          // stable identity, not overwritten by the live /chat/participants fetch
           counterpart: counterpart || existingChat?.counterpart,
           counterparts:
             participantCounterparts.length > 0
@@ -199,10 +227,34 @@ export const useChatStore = create((set, get) => ({
         apiMessages,
       );
 
-      set((prevState) => ({
-        chats: mergeLeadChats(prevState.chats, [chat]),
-        pendingLeadChatLeadId: null,
-      }));
+      set((prevState) => {
+        const currentChat = prevState.chats.find((item) => item.id === chat.id);
+
+        // A list-preview entry (messagesLoaded: false) only carries a synthetic
+        // "{chat_id}-preview" placeholder message with no authorType — it must
+        // never be unioned in as if it were real chat history.
+        const currentMessages = currentChat?.messagesLoaded ? currentChat.messages : [];
+
+        const reconciledMessages = reconcileFreshMessagesWithCurrent(
+          chat.messages,
+          currentMessages,
+        );
+
+        const reconciledChat = {
+          ...chat,
+          messages: reconciledMessages,
+          lastActivityAt:
+            reconciledMessages[reconciledMessages.length - 1]?.createdAt || chat.lastActivityAt,
+          unreadCount: reconciledMessages.filter(
+            (message) => message.authorType === "them" && message.isViewed === false,
+          ).length,
+        };
+
+        return {
+          chats: mergeLeadChats(prevState.chats, [reconciledChat]),
+          pendingLeadChatLeadId: null,
+        };
+      });
 
       get().openChatById(chat.id);
     } catch (error) {
@@ -227,8 +279,7 @@ export const useChatStore = create((set, get) => ({
       apiEntityId: leadId,
     }),
 
-  // Delivery chats are scoped by the lead's own id, same as lead chats — the
-  // chat_type param (not a separate entity id) is what distinguishes them.
+  // Delivery chats are scoped by the lead's own id — chat_type distinguishes them.
   openDeliveryChat: (leadId, counterpart, routeSummary) =>
     get().openEntityChat("delivery", leadId, counterpart, routeSummary),
 
@@ -492,22 +543,33 @@ export const useChatStore = create((set, get) => ({
       };
 
       set((state) => ({
-        chats: state.chats.map((item) =>
-          item.id === chat.id
-            ? {
-                ...item,
-                messages: item.messages.map((message) =>
+        chats: state.chats.map((item) => {
+          if (item.id !== chat.id) {
+            return item;
+          }
+
+          // A reopen's REST refetch may have already merged this same message in
+          // (by real id) while this send was still in flight — drop the now-stale
+          // optimistic placeholder instead of duplicating it.
+          const alreadyReconciled = item.messages.some(
+            (message) => message.id === realMessage.id && message.id !== tempId,
+          );
+
+          return {
+            ...item,
+            messages: alreadyReconciled
+              ? item.messages.filter((message) => message.id !== tempId)
+              : item.messages.map((message) =>
                   message.id === tempId ? realMessage : message,
                 ),
-                participantRoleById: mergeParticipantRole(
-                  item.participantRoleById,
-                  realMessage.participantId,
-                  realMessage.participantRoleId,
-                ),
-                lastActivityAt: realMessage.createdAt,
-              }
-            : item,
-        ),
+            participantRoleById: mergeParticipantRole(
+              item.participantRoleById,
+              realMessage.participantId,
+              realMessage.participantRoleId,
+            ),
+            lastActivityAt: realMessage.createdAt,
+          };
+        }),
       }));
     } catch (error) {
       set((state) => ({
@@ -651,8 +713,10 @@ export const useChatStore = create((set, get) => ({
       chatType,
     );
 
-    set((state) => ({
-      chats: state.chats.map((item) => {
+    set((state) => {
+      let didAppend = false;
+
+      const chats = state.chats.map((item) => {
         if (item.id !== chat.id) {
           return item;
         }
@@ -661,20 +725,18 @@ export const useChatStore = create((set, get) => ({
           return item;
         }
 
-        // Own message may already be present as an unreconciled optimistic
-        // (temp-id) entry if this WS event beats sendLeadMessage's own API
-        // response — replace it in place instead of appending a duplicate.
         const pendingOwnIndex =
           incomingMessage.authorType === "me"
             ? item.messages.findIndex((message) => isPendingOptimisticMessageId(message.id))
             : -1;
 
-        const messages =
-          pendingOwnIndex === -1
-            ? [...item.messages, incomingMessage]
-            : item.messages.map((message, index) =>
-                index === pendingOwnIndex ? incomingMessage : message,
-              );
+        didAppend = pendingOwnIndex === -1;
+
+        const messages = didAppend
+          ? [...item.messages, incomingMessage]
+          : item.messages.map((message, index) =>
+              index === pendingOwnIndex ? incomingMessage : message,
+            );
 
         return {
           ...item,
@@ -686,8 +748,24 @@ export const useChatStore = create((set, get) => ({
           ),
           lastActivityAt: incomingMessage.createdAt || item.lastActivityAt,
         };
-      }),
-    }));
+      });
+
+      const existingPagination = state.chatPagination[chat.id];
+
+      return {
+        chats,
+        chatPagination:
+          didAppend && existingPagination
+            ? {
+                ...state.chatPagination,
+                [chat.id]: {
+                  ...existingPagination,
+                  loadedCount: existingPagination.loadedCount + 1,
+                },
+              }
+            : state.chatPagination,
+      };
+    });
   },
 
   receiveLeadMessageUpdated: (leadId, apiMessage, chatType = "lead") => {
@@ -729,19 +807,7 @@ export const useChatStore = create((set, get) => ({
     }));
   },
 
-  // The read checkmark itself is sourced from each message's persistent isViewed
-  // (mapped from REST is_viewed, survives reload). This handler is only for live,
-  // same-session updates: a .messages.read event carries last_read_message_id, so we
-  // locally flip isViewed on every already-loaded own message with id <= that id,
-  // rather than waiting for a refetch.
-  //
-  // .messages.read carries participant_id, not role_id — resolve it against the
-  // participant_id -> role_id map built from this chat's own message history to guard
-  // against self-echo: if the newest message in the chat happens to be one of our own,
-  // our own read-marking action (participant_id resolving to CUSTOMER) would otherwise
-  // report last_read_message_id >= one of our own messages, which is not proof the
-  // counterpart actually read it. If that participant hasn't sent any message we've
-  // seen yet, the role stays unresolved and the update is skipped defensively.
+  // Flips isViewed on loaded own messages up to last_read_message_id; skips self-echo.
   receiveLeadMessagesRead: (leadId, participantId, lastReadMessageId, chatType = "lead") => {
     const chat = get().chats.find(
       (item) => item.entityType === chatType && String(item.entityId) === String(leadId),

@@ -1,6 +1,7 @@
-import { Badge, Box, CircularProgress, Fab, Grow, Paper, Typography, useTheme } from "@mui/material";
+import { Badge, Box, CircularProgress, Fab, Grow, IconButton, Paper, Typography, useTheme } from "@mui/material";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import { useChatStore } from "../model/chat.store";
 import { getTotalUnreadCount } from "../model/chat.helpers";
 import { ChatListView } from "./ChatListView";
@@ -13,10 +14,13 @@ export function ChatWidget() {
   const chats = useChatStore((state) => state.chats);
   const activeChatId = useChatStore((state) => state.activeChatId);
   const pendingLeadChatLeadId = useChatStore((state) => state.pendingLeadChatLeadId);
+  const leadChatsStatus = useChatStore((state) => state.leadChatsStatus);
+  const loadLeadChats = useChatStore((state) => state.loadLeadChats);
 
   const totalUnreadCount = getTotalUnreadCount(chats);
   const activeChat = chats.find((chat) => chat.id === activeChatId) || null;
   const isLoadingSingleLeadChat = Boolean(pendingLeadChatLeadId) && !activeChat;
+  const isLoadingLeadChats = leadChatsStatus === "loading";
 
   return (
     <Box
@@ -59,7 +63,11 @@ export function ChatWidget() {
           {!activeChat && !isLoadingSingleLeadChat && (
             <Box
               sx={{
-                px: 2,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                pl: 2,
+                pr: 1,
                 py: 1.25,
                 borderBottom: "1px solid",
                 borderColor: "divider",
@@ -67,6 +75,15 @@ export function ChatWidget() {
               }}
             >
               <Typography sx={{ fontSize: 15, fontWeight: 700 }}>Чаты</Typography>
+
+              <IconButton
+                size="small"
+                onClick={() => loadLeadChats()}
+                disabled={isLoadingLeadChats}
+                aria-label="Обновить список чатов"
+              >
+                <RefreshRoundedIcon fontSize="small" />
+              </IconButton>
             </Box>
           )}
 
