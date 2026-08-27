@@ -25,6 +25,7 @@ import {
   getLegalDocumentsApi,
 } from "../../features/profile-edit/profile.api";
 import { notifySuccess } from "../../shared/model/notifications.store";
+import { useContractStore } from "../../shared/model/contract.store";
 import {
   getAvatarFromUploadResponse,
   notifyProfilePhotoUpdated,
@@ -32,6 +33,7 @@ import {
 import { ProfilePhotoUploader } from "../../widgets/customer-profile/ui/ProfilePhotoUploader";
 import { EmailVerificationStatus } from "../../widgets/customer-verification/ui/EmailVerificationStatus";
 import { ProfileDocumentUpdateField } from "../../widgets/customer-profile/ui/ProfileDocumentUpdateField";
+import { ContractDocumentCard } from "../../widgets/customer-profile/ui/ContractDocumentCard";
 import { PageContainer } from "../../shared/ui/PageContainer";
 
 export function ProfilePage() {
@@ -371,6 +373,17 @@ export function ProfilePage() {
     };
   }, []);
 
+  useEffect(() => {
+    // No-ops unless the contract gate was suspended for this visit (i.e. the
+    // user arrived here via the missing-fields signing error's link) — see
+    // contract.store.js. Runs on unmount, i.e. when navigating away from
+    // /customer/profile, and re-triggers a contract check so a re-attempt at
+    // signing reflects the just-saved profile data immediately.
+    return () => {
+      useContractStore.getState().resumeGateAfterProfile();
+    };
+  }, []);
+
   return (
     <PageContainer>
       <Paper
@@ -658,6 +671,8 @@ export function ProfilePage() {
                   handleCancelProfileDocumentChange("employerDocument")
                 }
               />
+
+              <ContractDocumentCard />
             </Box>
           </Stack>
 

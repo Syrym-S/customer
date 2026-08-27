@@ -1,26 +1,37 @@
-// TODO(backend): replace mock body with a real request once the contract-status
-// endpoint exists, e.g.:
-//   const response = await apiClient.get('/contracts/v1/status');
-//   return { hasValidContract: Boolean(response.data?.has_valid_contract) };
-// Keep the function signature and return shape (`{ hasValidContract: boolean }`)
-// unchanged so callers don't need to change.
+import { apiClient } from './api-client';
 
-const MOCK_CONTRACT_SIGNED_KEY = 'mock_contract_signed';
-const MOCK_DELAY_MIN_MS = 200;
-const MOCK_DELAY_MAX_MS = 300;
+// Both endpoints must be exempt from the contract-gate request interceptor
+// (see api-client.js) — without skipContractGate they'd block themselves
+// once hasValidContract is false, and the app could never recover.
 
-function readMockContractSigned() {
-   return localStorage.getItem(MOCK_CONTRACT_SIGNED_KEY) === 'true';
-}
-
-function wait(ms) {
-   return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
+// Only `signed` is documented on this response, but sign_date/expires_at are
+// passed through opportunistically in case the backend already includes them
+// (undefined otherwise) — see useContractStore, which now keeps these instead
+// of discarding everything but the boolean.
 export async function checkContractStatus() {
-   await wait(
-      MOCK_DELAY_MIN_MS + Math.random() * (MOCK_DELAY_MAX_MS - MOCK_DELAY_MIN_MS),
+   const response = await apiClient.get('/customer/contract/v1/status', {
+      skipContractGate: true,
+   });
+
+   return {
+      // hasValidContract: true,
+      hasValidContract: Boolean(response.data?.signed),
+      signDate: response.data?.sign_date ?? null,
+      expiresAt: response.data?.expires_at ?? null,
+   };
+}
+
+// Resolves with { session_id, status, sign_url, expires_at } on success.
+// Safe to call repeatedly — the backend returns the same pending session's
+// working sign_url instead of creating a new one. Rejects (AxiosError) on
+// 409 (already signed), 422 (missing profile fields / config issue), or 502
+// (signing service down) — callers should branch on error.response.status.
+export async function initiateContractSigning() {
+   const response = await apiClient.post(
+      '/customer/contract/v1/sign',
+      null,
+      { skipContractGate: true },
    );
 
-   return { hasValidContract: readMockContractSigned() };
+   return response.data;
 }
