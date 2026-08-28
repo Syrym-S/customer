@@ -41,6 +41,7 @@ import { CounterpartDetailsModal } from "./CounterpartDetailsModal";
 import { CounterpartAvatar } from "./CounterpartAvatar";
 
 const LOAD_OLDER_SCROLL_THRESHOLD_PX = 80;
+const MARK_AS_READ_DEBOUNCE_MS = 1200;
 
 const FACTORING_SENDER_NAME_COLOR_BY_ROLE_ID = {
   [CHAT_ROLE_ID.FORWARDER]: "secondary.main",
@@ -299,6 +300,7 @@ export function ChatDetailView({ chat }) {
   const receiveLeadMessageUpdated = useChatStore((state) => state.receiveLeadMessageUpdated);
   const receiveLeadMessageDeleted = useChatStore((state) => state.receiveLeadMessageDeleted);
   const receiveLeadMessagesRead = useChatStore((state) => state.receiveLeadMessagesRead);
+  const markLeadChatAsRead = useChatStore((state) => state.markLeadChatAsRead);
   const reportChatWsError = useChatStore((state) => state.reportChatWsError);
   const pagination = useChatStore((state) => state.chatPagination[chat.id]);
 
@@ -322,6 +324,7 @@ export function ChatDetailView({ chat }) {
   const scrollContainerRef = useRef(null);
   const fileInputRef = useRef(null);
   const pendingScrollAdjustRef = useRef(null);
+  const markAsReadTimeoutRef = useRef(null);
 
   function handleOpenContactModal(counterpart) {
     setContactModalCounterpart(counterpart || chat.counterpart);
@@ -412,7 +415,26 @@ export function ChatDetailView({ chat }) {
     const connection = openLeadChatConnection({
       leadId: chat.apiEntityId ?? chat.entityId,
       chatType: chat.entityType,
-      onMessageSent: (message) => receiveLeadMessageSent(chat.entityId, message, chat.entityType),
+      onMessageSent: (message) => {
+        receiveLeadMessageSent(chat.entityId, message, chat.entityType);
+
+        const isOwnMessage = message?.participant?.role_id === CHAT_ROLE_ID.CUSTOMER;
+
+        if (isOwnMessage) {
+          return;
+        }
+
+        // Debounce so a burst of incoming messages while this chat stays open
+        // triggers one mark-as-read call after things settle, not one per message.
+        if (markAsReadTimeoutRef.current) {
+          clearTimeout(markAsReadTimeoutRef.current);
+        }
+
+        markAsReadTimeoutRef.current = setTimeout(() => {
+          markAsReadTimeoutRef.current = null;
+          markLeadChatAsRead(chat.apiEntityId ?? chat.entityId, chat.entityType);
+        }, MARK_AS_READ_DEBOUNCE_MS);
+      },
       onMessageUpdated: (message) =>
         receiveLeadMessageUpdated(chat.entityId, message, chat.entityType),
       onMessageDeleted: (message) =>
@@ -424,6 +446,11 @@ export function ChatDetailView({ chat }) {
 
     return () => {
       connection.close();
+
+      if (markAsReadTimeoutRef.current) {
+        clearTimeout(markAsReadTimeoutRef.current);
+        markAsReadTimeoutRef.current = null;
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chat.entityId, chat.entityType, isRealChat]);

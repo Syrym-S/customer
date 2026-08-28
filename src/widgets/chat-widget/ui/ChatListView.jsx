@@ -215,9 +215,17 @@ export function ChatListView() {
                     <Typography
                       noWrap
                       color="text.secondary"
-                      sx={{ fontSize: 13, flex: 1 }}
+                      sx={{
+                        fontSize: 13,
+                        flex: 1,
+                        fontStyle: lastMessage && !lastMessage.text ? "italic" : "normal",
+                      }}
                     >
-                      {lastMessage ? truncateText(lastMessage.text, 42) : ""}
+                      {lastMessage
+                        ? lastMessage.text
+                          ? truncateText(lastMessage.text, 42)
+                          : "Вложение"
+                        : ""}
                     </Typography>
 
                     {chat.unreadCount > 0 && (

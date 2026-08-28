@@ -59,9 +59,11 @@ export function buildParticipantRoleMap(apiMessages) {
   return map;
 }
 
-// UNCONFIRMED: only mime_type_id 1 (application/pdf) has been observed; other ids fall back to a generic binary type.
+// UNCONFIRMED: 1=pdf confirmed; 7=image/jpeg is still not backed by backend docs, but
+// is confirmed working in practice on driver-mobile — other ids fall back to a generic binary type.
 const LEAD_CHAT_MIME_TYPE_BY_ID = {
   1: "application/pdf",
+  7: "image/jpeg",
 };
 const DEFAULT_LEAD_CHAT_MIME_TYPE = "application/octet-stream";
 
@@ -416,6 +418,11 @@ export function mapLeadChatListEntryFromApi(apiChatEntry) {
 
   const lastMessageText = apiChatEntry?.last_message ?? "";
   const lastMessageAt = apiChatEntry?.last_message_at ?? null;
+  // An attachment-only last message legitimately has empty text — use
+  // last_message_at (not the text) to decide whether a last message exists at
+  // all, so its createdAt (needed for the newest-wins comparison in
+  // getLastMessage) isn't discarded along with the empty text.
+  const hasLastMessage = Boolean(lastMessageAt);
 
   const counterpart =
     chatType === "factoring"
@@ -436,7 +443,7 @@ export function mapLeadChatListEntryFromApi(apiChatEntry) {
         : "",
     unreadCount: apiChatEntry?.unread_count ?? 0,
     lastActivityAt: lastMessageAt || new Date().toISOString(),
-    messages: lastMessageText
+    messages: hasLastMessage
       ? [
           {
             id: `${apiChatEntry?.chat_id ?? leadId}-preview`,
@@ -448,7 +455,7 @@ export function mapLeadChatListEntryFromApi(apiChatEntry) {
     // Dedicated preview-text carrier, kept separate from `messages` so a
     // list refresh can update a fully-loaded chat's displayed last message
     // without touching its protected, real `messages` array.
-    lastMessagePreview: lastMessageText
+    lastMessagePreview: hasLastMessage
       ? { text: lastMessageText, createdAt: lastMessageAt }
       : null,
     remoteChatId: apiChatEntry?.chat_id ?? null,
