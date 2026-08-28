@@ -42,6 +42,7 @@ export function ProfilePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [legalFilesLoading, setLegalFilesLoading] = useState(false);
+  const [legalDocuments, setLegalDocuments] = useState([]);
   const [initialLoadedForm, setInitialLoadedForm] =
     useState(initialProfileForm);
   const [isProfileLoading, setIsProfileLoading] = useState(false);
@@ -97,6 +98,7 @@ export function ProfilePage() {
 
         setForm(mappedProfile);
         setInitialLoadedForm(mappedProfile);
+        setLegalDocuments(legalDocuments);
 
         setProfilePhoto(avatar);
         setProfilePhotoFile(null);
@@ -672,7 +674,7 @@ export function ProfilePage() {
                 }
               />
 
-              <ContractDocumentCard />
+              <ContractDocumentCard documents={legalDocuments} />
             </Box>
           </Stack>
 

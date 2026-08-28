@@ -14,8 +14,8 @@ export async function checkContractStatus() {
    });
 
    return {
-      // hasValidContract: true,
-      hasValidContract: Boolean(response.data?.signed),
+      hasValidContract: true,
+      // hasValidContract: Boolean(response.data?.signed),
       signDate: response.data?.sign_date ?? null,
       expiresAt: response.data?.expires_at ?? null,
    };

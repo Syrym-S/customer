@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 
 import { useContractStore, attemptContractSigning } from "../../../shared/model/contract.store";
-import { notifyError, notifyWarning } from "../../../shared/model/notifications.store";
+import { notifyError } from "../../../shared/model/notifications.store";
 
 function formatDate(value) {
   if (!value) {
@@ -31,13 +32,38 @@ function classifySigningError(error) {
   return message || error.message || "Не удалось начать подписание";
 }
 
-// TODO(backend): there's no real download endpoint for the signed contract
-// yet, so this just surfaces a toast instead of fetching a file.
-function handleDownload() {
-  notifyWarning("Скачивание пока недоступно");
+// The signed contract has no separate download endpoint — its content comes
+// back as base64 in the same GET /customer/profile/v1/documents response
+// used for the registration/employer documents (context: "contract").
+function downloadContractDocument(contractDocument) {
+  if (!contractDocument?.content) {
+    notifyError("Документ договора пока недоступен, попробуйте позже");
+    return;
+  }
+
+  const base64 = contractDocument.content.replace(/^data:[^;]+;base64,/, "");
+  const binaryString = window.atob(base64);
+  const bytes = new Uint8Array(binaryString.length);
+
+  for (let index = 0; index < binaryString.length; index += 1) {
+    bytes[index] = binaryString.charCodeAt(index);
+  }
+
+  const blob = new Blob([bytes], {
+    type: contractDocument.mime || "application/pdf",
+  });
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = objectUrl;
+  link.download = contractDocument.name || "";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(objectUrl);
 }
 
-export function ContractDocumentCard() {
+export function ContractDocumentCard({ documents }) {
   const hasValidContract = useContractStore((state) => state.hasValidContract);
   const contractExpiresAt = useContractStore((state) => state.contractExpiresAt);
 
@@ -47,7 +73,11 @@ export function ContractDocumentCard() {
 
   async function handleClick() {
     if (isSigned) {
-      handleDownload();
+      const contractDocument = documents?.find(
+        (document) => document.context === "contract",
+      );
+
+      downloadContractDocument(contractDocument);
       return;
     }
 
@@ -113,7 +143,7 @@ export function ContractDocumentCard() {
         {isSigning ? (
           <CircularProgress size={20} />
         ) : isSigned ? (
-          <CheckCircleOutlineRoundedIcon color="success" fontSize="large" />
+          <InsertDriveFileOutlinedIcon color="primary" fontSize="large" />
         ) : (
           <DescriptionOutlinedIcon color="warning" fontSize="large" />
         )}
