@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { checkContractStatus, initiateContractSigning } from '../api/contract.api';
+import { checkContractStatus, initiateContractSigning, fetchFeatureFlags } from '../api/contract.api';
 
 // Set in sessionStorage right before redirecting the tab to Aitu's sign_url,
 // and checked on next app mount (see useContractGate.js) so a real redirect
@@ -8,8 +8,25 @@ import { checkContractStatus, initiateContractSigning } from '../api/contract.ap
 // appends to the return URL.
 export const CONTRACT_SIGN_REDIRECT_MARKER_KEY = 'contract_sign_redirect_pending';
 
+// Same fail-closed fallback used both for the window.APP_DATA seed value
+// below and for refreshFeatureFlags()'s response handling — a compliance
+// check must stay active when its source is missing, not silently disable.
+const DEFAULT_IS_CONTRACT_GATE_ENABLED = true;
+
 export const useContractStore = create((set, get) => ({
    hasValidContract: null,
+
+   // Admin-panel switch (per-service enable/disable of Aitu Passport-based
+   // verification steps) for this service's contract-signing step. Seeded
+   // synchronously from window.APP_DATA — injected server-side before the
+   // bundle runs, so it's already available at store creation — then kept
+   // fresh by refreshFeatureFlags() polling GET /customer/v1/features (see
+   // useContractGate.js) so an admin toggling it takes effect without a
+   // page reload. Store state rather than a module const specifically so
+   // the three consuming sites (App.jsx, ContractGateModal.jsx,
+   // api-client.js) pick up updates instead of reading a stale value.
+   isContractGateEnabled:
+      window?.APP_DATA?.features?.aitu_contract_signing ?? DEFAULT_IS_CONTRACT_GATE_ENABLED,
 
    // sign_date/expires_at from the last status check, if the backend included
    // them (see contract.api.js) — null until a check resolves or if the
@@ -32,6 +49,19 @@ export const useContractStore = create((set, get) => ({
          hasValidContract,
          contractSignDate: signDate,
          contractExpiresAt: expiresAt,
+      });
+   },
+
+   // Polled alongside checkContract() (see useContractGate.js) so an admin
+   // toggling the flag takes effect for already-open tabs without a reload.
+   // Same fail-closed fallback as the window.APP_DATA seed: a missing field
+   // in the response keeps the gate active rather than disabling it.
+   async refreshFeatureFlags() {
+      const features = await fetchFeatureFlags();
+
+      set({
+         isContractGateEnabled:
+            features?.aitu_contract_signing ?? DEFAULT_IS_CONTRACT_GATE_ENABLED,
       });
    },
 

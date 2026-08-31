@@ -14,8 +14,7 @@ export async function checkContractStatus() {
    });
 
    return {
-      hasValidContract: true,
-      // hasValidContract: Boolean(response.data?.signed),
+      hasValidContract: Boolean(response.data?.signed),
       signDate: response.data?.sign_date ?? null,
       expiresAt: response.data?.expires_at ?? null,
    };
@@ -32,6 +31,18 @@ export async function initiateContractSigning() {
       null,
       { skipContractGate: true },
    );
+
+   return response.data;
+}
+
+// { aitu_iin_verification, aitu_contract_signing } — polled periodically (see
+// useContractGate) to pick up admin-panel flag changes without a page reload.
+// skipContractGate for the same reason as the two calls above: must stay
+// reachable while the gate is blocking everything else.
+export async function fetchFeatureFlags() {
+   const response = await apiClient.get('/customer/v1/features', {
+      skipContractGate: true,
+   });
 
    return response.data;
 }

@@ -17,6 +17,7 @@ export { CONTRACT_SIGN_REDIRECT_MARKER_KEY };
 export function useContractGate() {
    const hasValidContract = useContractStore((state) => state.hasValidContract);
    const checkContract = useContractStore((state) => state.checkContract);
+   const refreshFeatureFlags = useContractStore((state) => state.refreshFeatureFlags);
 
    useEffect(() => {
       // A full-tab redirect back from Aitu's sign_url reloads the page, which
@@ -27,12 +28,19 @@ export function useContractGate() {
       // refresh) and get mistaken for another pending return.
       sessionStorage.removeItem(CONTRACT_SIGN_REDIRECT_MARKER_KEY);
 
-      checkContract();
+      // Shares this interval rather than running its own — the flag doesn't
+      // need finer-grained polling than the contract status does.
+      function pollContractGateState() {
+         checkContract();
+         refreshFeatureFlags();
+      }
 
-      const intervalId = setInterval(checkContract, CONTRACT_POLL_INTERVAL_MS);
+      pollContractGateState();
+
+      const intervalId = setInterval(pollContractGateState, CONTRACT_POLL_INTERVAL_MS);
 
       return () => clearInterval(intervalId);
-   }, [checkContract]);
+   }, [checkContract, refreshFeatureFlags]);
 
    return hasValidContract;
 }

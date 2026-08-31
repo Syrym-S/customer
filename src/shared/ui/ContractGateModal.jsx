@@ -47,6 +47,7 @@ export function ContractGateModal() {
       (state) => state.contractGateSuspendedForProfile,
    );
    const suspendGateForProfile = useContractStore((state) => state.suspendGateForProfile);
+   const isContractGateEnabled = useContractStore((state) => state.isContractGateEnabled);
 
    const [isSigning, setIsSigning] = useState(false);
    const [signingError, setSigningError] = useState(null);
@@ -71,7 +72,8 @@ export function ContractGateModal() {
       }
    }
 
-   const isBlocked = hasValidContract === false && !contractGateSuspendedForProfile;
+   const isBlocked =
+      isContractGateEnabled && hasValidContract === false && !contractGateSuspendedForProfile;
 
    return (
       <Dialog
