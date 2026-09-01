@@ -5,13 +5,21 @@ import './shared/config/leaflet-icons.js';
 import PublicApp from './PublicApp.jsx';
 import './index.css';
 
-// Standalone entry for the public, unauthenticated shared-lead page only
-// (see vite.config.public.js). Deliberately doesn't import App.jsx/router.jsx
-// — pulling those in would drag the whole authenticated app (Dashboard,
-// Leads, Tenders, Factorings, Forwarders, Profile, Notifications, ...) into
-// a bundle meant for anonymous visitors following a share link.
-createRoot(document.getElementById('root')).render(
-   <StrictMode>
-      <PublicApp />
-   </StrictMode>,
-);
+function mount() {
+   createRoot(document.getElementById('root')).render(
+      <StrictMode>
+         <PublicApp />
+      </StrictMode>,
+   );
+}
+
+// The WordPress template that embeds this bundle sometimes emits the
+// `<div id="root">`/`<script>` pair before the inline `window.APP_DATA`
+// assignment (order differs between environments). Waiting for
+// DOMContentLoaded guarantees the whole document — including that inline
+// script, wherever it sits — has already run before we read APP_DATA.
+if (document.readyState === 'loading') {
+   document.addEventListener('DOMContentLoaded', mount);
+} else {
+   mount();
+}

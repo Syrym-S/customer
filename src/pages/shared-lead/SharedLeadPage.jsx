@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 
 import { useCustomerMap } from '../../widgets/customer-map/model/useCustomerMap';
 import { LeadDetailsMap } from '../../widgets/customer-leads/ui/lead-details/LeadDetailsMap';
@@ -9,9 +8,6 @@ import { LeadRouteSection } from '../../widgets/customer-leads/ui/lead-details/s
 import { LeadCargoSection } from '../../widgets/customer-leads/ui/lead-details/sections/LeadCargoSection';
 import { LeadForwarderSection } from '../../widgets/customer-leads/ui/lead-details/sections/LeadForwarderSection';
 import { LeadDriverSection } from '../../widgets/customer-leads/ui/lead-details/sections/LeadDriverSection';
-import { DetailSection } from '../../widgets/customer-leads/ui/lead-details/components/DetailSection';
-import { LeadDocumentCard } from '../../widgets/customer-leads/ui/lead-details/components/documents/LeadDocumentCard';
-import { DocumentPreviewDialog } from '../../widgets/customer-leads/ui/lead-details/components/documents/DocumentPreviewDialog';
 import { LeadStatusChip } from '../../widgets/dashboard/ui/DashboardLeadItem';
 import { getSharedLeadApi } from '../../widgets/customer-leads/api/shared-lead.api';
 import { mapLeadDetailsResponseFromApi } from '../../widgets/customer-leads/model/lead.adapter';
@@ -27,18 +23,6 @@ const noop = () => {};
 const LOAD_ERROR_MESSAGE =
    'Ссылка недействительна или срок её действия истёк.';
 
-// Same reasoning as the authenticated modal's waypoint markers (see
-// LeadDetailsMap.jsx): waypoints are always plotted as their own markers on
-// top of the route line, independently of how that line itself was built —
-// the polyline doesn't make them redundant, so this stays unchanged whether
-// we end up using the decoded route or the straight-line fallback below.
-
-// Fallback only: used when this lead has no computed route yet. Straight
-// line built directly from from_location/to_location/waypoint coordinates —
-// mapLeadFromApi turns from_location/to_location into a plain display
-// string (see lead.adapter.js), discarding any lat/lng they carry, but this
-// endpoint's raw payload puts coordinates directly on them (confirmed by
-// backend), same as it already does for waypoints.
 function getStraightLineRoutePoints(lead) {
    const fromPoint = getLocationPosition(lead?.raw?.from_location);
    const toPoint = getLocationPosition(lead?.raw?.to_location);
@@ -50,11 +34,6 @@ function getStraightLineRoutePoints(lead) {
    return [fromPoint, ...waypointPoints, toPoint].filter(Boolean);
 }
 
-// This endpoint now returns lead.routes[0].polyline.encodedPolyline — a real
-// road-following route, same encoding format the authenticated flow already
-// decodes via generateRoute (see useLeadDetailsRoute + route-polyline.helpers.js).
-// Reuse that exact decode path instead of the straight line whenever a route
-// is actually present.
 function getSharedLeadRoute(lead) {
    const routes = Array.isArray(lead?.raw?.routes) ? lead.raw.routes : [];
    const mainRoute = routes[0] ?? null;
@@ -71,7 +50,6 @@ function getSharedLeadRoute(lead) {
 
 export function SharedLeadPage() {
    const { leadId, token } = useParams();
-   const [selectedDocument, setSelectedDocument] = useState(null);
    const [lead, setLead] = useState(null);
    const [isLoading, setIsLoading] = useState(true);
    const [loadError, setLoadError] = useState('');
@@ -146,7 +124,6 @@ export function SharedLeadPage() {
       );
    }
 
-   const documents = Array.isArray(lead.documents) ? lead.documents : [];
    const { route, routePoints } = getSharedLeadRoute(lead);
 
    return (
@@ -211,31 +188,7 @@ export function SharedLeadPage() {
             />
 
             <LeadDriverSection lead={lead} />
-
-            {/* <DetailSection icon={<DescriptionOutlinedIcon />} title="Документы">
-               {documents.length === 0 ? (
-                  <Typography color="text.secondary" fontSize={14}>
-                     Документы не добавлены
-                  </Typography>
-               ) : (
-                  <Stack spacing={1}>
-                     {documents.map((document) => (
-                        <LeadDocumentCard
-                           key={document.id}
-                           document={{ ...document, source: 'public' }}
-                           onOpen={setSelectedDocument}
-                           onDelete={noop}
-                        />
-                     ))}
-                  </Stack>
-               )}
-            </DetailSection> */}
          </Stack>
-
-         {/* <DocumentPreviewDialog
-            document={selectedDocument}
-            onClose={() => setSelectedDocument(null)}
-         /> */}
       </Box>
    );
 }

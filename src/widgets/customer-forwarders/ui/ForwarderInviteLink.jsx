@@ -42,7 +42,7 @@ export function ForwarderInviteLink({
                 onClick={handleCopy}
                 sx={{ whiteSpace: 'nowrap' }}
             >
-                {isCopied ? 'Скопировано' : 'Скопировать'}
+                {isCopied ? 'Скопировано' : 'Скопировать ссылку'}
             </Button>
         );
     }

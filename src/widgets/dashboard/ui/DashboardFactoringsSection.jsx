@@ -94,7 +94,7 @@ export function DashboardFactoringsSection() {
           </Typography>
 
           <Typography color="text.secondary" fontSize={14}>
-            Список Факторингов
+            Список факторингов
           </Typography>
         </Box>
       </Box>

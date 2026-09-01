@@ -4,12 +4,6 @@ import PropTypes from "prop-types";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 
-// Kept in its own file (rather than co-located in widgets/header/Header.jsx,
-// where it originally lived) so it can be reused by SharedLeadLayout.jsx's
-// public/unauthenticated header without dragging in Header.jsx's own
-// imports (Notifications, logoutApi, profile fetching, react-router nav
-// hooks, etc.) — those aren't referenced by this component itself, but
-// living in the same file meant the public bundle picked them up anyway.
 export function SupportContacts({ layout = "column" }) {
   const isRow = layout === "row";
   const iconFontSize = isRow ? 16 : undefined;
@@ -61,18 +55,11 @@ export function SupportContacts({ layout = "column" }) {
           sx={{
             boxShadow: 0,
             fontSize: isRow ? 11 : 12,
-            // MUI's default uppercase transform mangles an email address's
-            // readability — not a deliberate style choice here in either
-            // layout, so this applies to both, not just the row layout.
             textTransform: "none",
 
             "& .MuiButton-startIcon": {
               flexShrink: 0,
             },
-
-            // In a row layout the phone button (short, fixed-length) should
-            // keep its size — this one shrinks first when space is tight,
-            // relying on the inner span's existing ellipsis to stay legible.
             ...(isRow && {
               minWidth: 0,
               flex: "1 1 auto",

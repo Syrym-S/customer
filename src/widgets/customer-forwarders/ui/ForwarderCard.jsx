@@ -162,24 +162,6 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
 
                     <ForwarderInviteLink forwarder={forwarder} compact />
                 </Box>
-
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                    }}
-                >
-                    <Button
-                        size="small"
-                        variant="outlined"
-                        onClick={(event) => {
-                            event.stopPropagation();
-                            onOpenDetails(forwarder);
-                        }}
-                    >
-                        Подробнее
-                    </Button>
-                </Box>
             </Stack>
         </Paper>
     );

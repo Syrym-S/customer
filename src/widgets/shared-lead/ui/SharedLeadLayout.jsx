@@ -13,10 +13,6 @@ export function SharedLeadLayout() {
                position: 'sticky',
                top: 0,
                zIndex: 1100,
-               // SupportContacts is rendered in a row here (layout="row"),
-               // but flexWrap below still lets it drop to its own line at
-               // very narrow widths instead of clipping/overlapping — this
-               // grows to fit that case rather than a hard height.
                minHeight: 64,
                display: 'flex',
                alignItems: 'center',
