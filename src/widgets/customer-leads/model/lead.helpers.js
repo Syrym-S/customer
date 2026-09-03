@@ -80,3 +80,9 @@ export function getLeadStatusFilterOptions() {
 export function getLeadStatusStyles(status) {
    return leadStatusStyles[status] || leadStatusStyles.new;
 }
+
+// Moved here from factorings.helpers.js — this is a lead-status helper, not
+// a factoring one; it lived there unused until the AVR flow needed it.
+export function isFinishedLead(lead) {
+   return String(lead?.status || '').toLowerCase() === 'finished';
+}

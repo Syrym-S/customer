@@ -6,6 +6,8 @@ import { LeadDriverSection } from './sections/LeadDriverSection';
 import { LeadRouteSection } from './sections/LeadRouteSection';
 import { LeadForwarderSection } from './sections/LeadForwarderSection';
 import { LeadDocumentsSection } from './sections/LeadDocumentsSection';
+import { AvrSection } from './sections/AvrSection';
+import { isFinishedLead } from '../../model/lead.helpers';
 
 export function LeadDetailsContent({
    lead,
@@ -56,6 +58,8 @@ export function LeadDetailsContent({
             uploadError={documentUploadError}
             deletingDocumentIds={deletingDocumentIds}
          />
+
+         {isFinishedLead(lead) && <AvrSection lead={lead} />}
       </Stack>
    );
 }

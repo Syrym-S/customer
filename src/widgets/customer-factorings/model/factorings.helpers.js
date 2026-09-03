@@ -26,10 +26,6 @@ export function normalizeLeadsResponse(response) {
     return [];
 }
 
-export function isFinishedLead(lead) {
-    return String(lead?.status || '').toLowerCase() === 'finished';
-}
-
 export function formatPercent(value) {
     if (value === null || value === undefined || value === '') {
         return 'Не указано';
