@@ -6,6 +6,7 @@ import {
    Button,
    Chip,
    CircularProgress,
+   Link,
    Stack,
    Typography,
 } from '@mui/material';
@@ -108,6 +109,7 @@ export function AvrSection({ lead }) {
    const [isCheckingStatus, setIsCheckingStatus] = useState(false);
    const [hasLoadedStatus, setHasLoadedStatus] = useState(false);
    const [isSigning, setIsSigning] = useState(false);
+   const [signUrl, setSignUrl] = useState(null);
 
    const pollIntervalRef = useRef(null);
    const signExpiresAtRef = useRef(null);
@@ -147,11 +149,15 @@ export function AvrSection({ lead }) {
             }
          } catch (error) {
             if (!isCancelled) {
-               notifyError(
-                  error.response?.data?.message ||
-                     error.message ||
-                     'Не удалось загрузить статус АВР',
-               );
+               // A 404 here just means the forwarder hasn't produced the AVR
+               // document yet — an expected state, not an error worth a toast.
+               if (error.response?.status !== 404) {
+                  notifyError(
+                     error.response?.data?.message ||
+                        error.message ||
+                        'Не удалось загрузить статус АВР',
+                  );
+               }
             }
          } finally {
             if (!isCancelled) {
@@ -179,6 +185,7 @@ export function AvrSection({ lead }) {
          ) {
             stopPolling();
             setIsSigning(false);
+            setSignUrl(null);
             notifyError('Время на подписание АВР истекло, попробуйте снова');
             return;
          }
@@ -195,6 +202,7 @@ export function AvrSection({ lead }) {
                stopPolling();
                setIsSigning(false);
                setIsSigned(true);
+               setSignUrl(null);
             }
          } catch {
             // Transient poll errors are ignored — the interval retries on
@@ -218,12 +226,14 @@ export function AvrSection({ lead }) {
             : null;
 
          if (session?.sign_url) {
+            setSignUrl(session.sign_url);
             window.open(session.sign_url, '_blank');
          }
 
          pollForSignature();
       } catch (error) {
          setIsSigning(false);
+         setSignUrl(null);
          notifyError(
             error.response?.data?.message ||
                error.message ||
@@ -357,6 +367,21 @@ export function AvrSection({ lead }) {
                               Не закрывайте страницу — окно подписания открыто
                               в новой вкладке. Статус обновится
                               автоматически.
+                           </Typography>
+                        )}
+
+                        {isSigning && signUrl && (
+                           <Typography fontSize={12} color='text.secondary'>
+                              Если окно для подписания не открылось
+                              автоматически, откройте его по{' '}
+                              <Link
+                                 href={signUrl}
+                                 target='_blank'
+                                 rel='noopener noreferrer'
+                              >
+                                 этой ссылке
+                              </Link>
+                              .
                            </Typography>
                         )}
                      </Stack>
