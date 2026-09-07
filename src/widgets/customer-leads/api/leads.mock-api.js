@@ -1,9 +1,26 @@
 import { mockLeads } from '../model/leads.mock';
 
-export async function fetchCustomerLeadsMock({ page = 1, perPage = 4, status } = {}) {
-   const filteredLeads = status
+export async function fetchCustomerLeadsMock({
+   page = 1,
+   perPage = 4,
+   status,
+   search,
+} = {}) {
+   let filteredLeads = status
       ? mockLeads.filter((lead) => lead.status === status)
       : mockLeads;
+
+   const normalizedSearch = String(search ?? '').trim().toLowerCase();
+
+   if (normalizedSearch) {
+      filteredLeads = filteredLeads.filter((lead) =>
+         [lead.from_location, lead.to_location]
+            .filter(Boolean)
+            .some((location) =>
+               location.toLowerCase().includes(normalizedSearch),
+            ),
+      );
+   }
 
    const startIndex = (page - 1) * perPage;
    const endIndex = startIndex + perPage;

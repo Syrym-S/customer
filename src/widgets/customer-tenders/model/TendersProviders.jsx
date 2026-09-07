@@ -25,6 +25,7 @@ import {
 } from "../../../shared/model/notification-domain-events";
 
 const DEFAULT_PER_PAGE = 10;
+const SEARCH_DEBOUNCE_MS = 450;
 
 export function TendersProvider({
   children,
@@ -41,6 +42,9 @@ export function TendersProvider({
     initialPublicationType,
   );
   const [count, setCount] = useState(0);
+
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -62,6 +66,7 @@ export function TendersProvider({
           limit: perPage,
           status,
           publicationType,
+          search: debouncedSearch,
         });
 
         const mappedResponse = mapTendersListFromApi(response);
@@ -81,7 +86,7 @@ export function TendersProvider({
         }
       }
     },
-    [page, perPage, status, publicationType],
+    [page, perPage, status, publicationType, debouncedSearch],
   );
 
   const loadTenderDetailsWithFiles = useCallback(async (tenderId) => {
@@ -249,6 +254,17 @@ export function TendersProvider({
   );
 
   useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearch(search.trim());
+      setPage(1);
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [search]);
+
+  useEffect(() => {
     loadTenders({ withLoader: true });
   }, [loadTenders]);
 
@@ -288,6 +304,9 @@ export function TendersProvider({
       setPublicationType,
       count,
 
+      search,
+      setSearch,
+
       isLoading,
       error,
 
@@ -321,6 +340,7 @@ export function TendersProvider({
       status,
       publicationType,
       count,
+      search,
       isLoading,
       error,
       startTender,

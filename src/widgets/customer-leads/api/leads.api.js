@@ -1,6 +1,11 @@
 import { apiClient } from '../../../shared/api/api-client';
 
-export async function fetchCustomerLeadsApi({ page = 1, perPage = 4, status } = {}) {
+export async function fetchCustomerLeadsApi({
+   page = 1,
+   perPage = 4,
+   status,
+   search,
+} = {}) {
    const params = {
       page,
       per_page: perPage,
@@ -8,6 +13,12 @@ export async function fetchCustomerLeadsApi({ page = 1, perPage = 4, status } = 
 
    if (status) {
       params.status = status;
+   }
+
+   const normalizedSearch = String(search ?? '').trim();
+
+   if (normalizedSearch) {
+      params.q = normalizedSearch;
    }
 
    const response = await apiClient.get('/customer/v1/leads', { params });

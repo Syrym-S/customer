@@ -10,6 +10,7 @@ import {
 } from '../../../shared/model/notification-domain-events';
 
 const DEFAULT_PER_PAGE = 10;
+const SEARCH_DEBOUNCE_MS = 450;
 
 export function LeadsProvider({ children }) {
    const [leads, setLeads] = useState([]);
@@ -19,6 +20,9 @@ export function LeadsProvider({ children }) {
    const [perPage, setPerPage] = useState(DEFAULT_PER_PAGE);
    const [count, setCount] = useState(0);
    const [status, setStatus] = useState('');
+
+   const [search, setSearch] = useState('');
+   const [debouncedSearch, setDebouncedSearch] = useState('');
 
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
@@ -36,6 +40,7 @@ export function LeadsProvider({ children }) {
                page,
                perPage,
                status,
+               search: debouncedSearch,
             });
             const mappedResponse = mapLeadsResponseFromApi(response);
 
@@ -50,7 +55,7 @@ export function LeadsProvider({ children }) {
             }
          }
       },
-      [page, perPage, status],
+      [page, perPage, status, debouncedSearch],
    );
 
    const setStatusFilter = useCallback((nextStatus) => {
@@ -69,6 +74,17 @@ export function LeadsProvider({ children }) {
       },
       [perPage],
    );
+
+   useEffect(() => {
+      const timeoutId = window.setTimeout(() => {
+         setDebouncedSearch(search.trim());
+         setPage(1);
+      }, SEARCH_DEBOUNCE_MS);
+
+      return () => {
+         window.clearTimeout(timeoutId);
+      };
+   }, [search]);
 
    useEffect(() => {
       loadLeads({ withLoader: true });
@@ -97,6 +113,9 @@ export function LeadsProvider({ children }) {
          status,
          setStatusFilter,
 
+         search,
+         setSearch,
+
          isLoading,
          error,
 
@@ -111,6 +130,7 @@ export function LeadsProvider({ children }) {
          count,
          status,
          setStatusFilter,
+         search,
          isLoading,
          error,
          loadLeads,

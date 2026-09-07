@@ -3,10 +3,12 @@ import {
    Box,
    CircularProgress,
    FormControl,
+   InputAdornment,
    InputLabel,
    MenuItem,
    Select,
    Stack,
+   TextField,
    ToggleButton,
    ToggleButtonGroup,
    Typography,
@@ -14,6 +16,7 @@ import {
 import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 import { useLeadsContext } from '../model/useLeadsContext';
 import { getLeadStatusFilterOptions } from '../model/lead.helpers';
@@ -40,6 +43,8 @@ export function LeadsList() {
       perPage,
       count,
       setStatusFilter,
+      search,
+      setSearch,
       isLoading,
       error,
    } = useLeadsContext();
@@ -70,6 +75,10 @@ export function LeadsList() {
 
       setSelectedStatusValue(nextValue);
       setStatusFilter(nextValue === ALL_STATUSES_VALUE ? '' : nextValue);
+   }
+
+   function handleSearchChange(event) {
+      setSearch(event.target.value);
    }
 
    return (
@@ -200,6 +209,21 @@ export function LeadsList() {
                   </ToggleButtonGroup>
                </Stack>
             </Box>
+
+            <TextField
+               value={search}
+               onChange={handleSearchChange}
+               placeholder="Поиск по направлению"
+               fullWidth
+               size="small"
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <SearchRoundedIcon color="action" fontSize="small" />
+                     </InputAdornment>
+                  ),
+               }}
+            />
 
             {error && <Alert severity="error">{error}</Alert>}
 

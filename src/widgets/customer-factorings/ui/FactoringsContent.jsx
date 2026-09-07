@@ -39,13 +39,13 @@ export function FactoringsContent() {
         isDetailsLoading,
         detailsError,
 
-        isAccepting,
-        acceptError,
+        isInitiatingSigning,
+        signingError,
 
         openFactoringDetails,
         closeFactoringDetails,
 
-        acceptFactoring,
+        initiateFactoringSigning,
     } = useFactoringsContext();
 
     const [viewMode, setViewMode] = useState(FACTORINGS_VIEW_MODES.TABLE);
@@ -202,10 +202,10 @@ export function FactoringsContent() {
                 factoring={selectedFactoring}
                 loading={isDetailsLoading}
                 error={detailsError}
-                accepting={isAccepting}
-                acceptError={acceptError}
+                initiatingSigning={isInitiatingSigning}
+                signingError={signingError}
                 onClose={closeFactoringDetails}
-                onAccept={acceptFactoring}
+                onInitiateSigning={initiateFactoringSigning}
             />
         </PageContainer>
     );

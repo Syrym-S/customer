@@ -54,10 +54,10 @@ export function FactoringDetailsModal({
   factoring,
   loading,
   error,
-  accepting,
-  acceptError,
+  initiatingSigning,
+  signingError,
   onClose,
-  onAccept,
+  onInitiateSigning,
 }) {
   const navigate = useNavigate();
   const { factoringId } = useParams();
@@ -191,7 +191,7 @@ export function FactoringDetailsModal({
   return (
     <Dialog
       open={open}
-      onClose={accepting ? undefined : handleClose}
+      onClose={initiatingSigning ? undefined : handleClose}
       maxWidth="md"
       fullWidth
       slotProps={{
@@ -251,9 +251,9 @@ export function FactoringDetailsModal({
           </Alert>
         )}
 
-        {acceptError && (
+        {signingError && (
           <Alert severity="error" sx={{ mb: 2 }}>
-            {acceptError}
+            {signingError}
           </Alert>
         )}
 
@@ -288,10 +288,10 @@ export function FactoringDetailsModal({
         <FactoringDetailsActions
           factoring={factoring}
           factoringId={factoringDisplayId}
-          accepting={accepting}
+          initiatingSigning={initiatingSigning}
           canAccept={canBeVerified}
           onClose={handleClose}
-          onAccept={onAccept}
+          onInitiateSigning={onInitiateSigning}
         />
       ) : (
         <DialogActions

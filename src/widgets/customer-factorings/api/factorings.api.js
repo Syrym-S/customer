@@ -26,3 +26,14 @@ export async function acceptCustomerFactoring(factoringId) {
 
     return response.data;
 }
+
+// TODO(backend): no real endpoint exists yet for creating a factoring
+// signing session. Once one lands, replace this with a real apiClient call
+// that returns { sign_url }.
+export async function initiateFactoringSigningApi(factoringId) {
+    return Promise.resolve({
+        sign_url: `https://sign-workspace.example.com/factoring/${encodeURIComponent(
+            factoringId,
+        )}/customer`,
+    });
+}

@@ -2,13 +2,16 @@ import {
    Alert,
    Box,
    CircularProgress,
+   InputAdornment,
    Stack,
+   TextField,
    ToggleButton,
    ToggleButtonGroup,
    Typography,
 } from '@mui/material';
 import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 import { TenderCard } from './TenderCard';
 import { TenderDetailsModal } from './TenderDetailsModal';
@@ -23,8 +26,17 @@ const TENDERS_VIEW_MODES = {
 };
 
 export function TendersList() {
-   const { tenders, page, setPage, perPage, count, isLoading, error } =
-      useTendersContext();
+   const {
+      tenders,
+      page,
+      setPage,
+      perPage,
+      count,
+      isLoading,
+      error,
+      search,
+      setSearch,
+   } = useTendersContext();
 
    const [viewMode, setViewMode] = useState(TENDERS_VIEW_MODES.TABLE);
 
@@ -32,6 +44,10 @@ export function TendersList() {
 
    function handlePageChange(_, value) {
       setPage(value);
+   }
+
+   function handleSearchChange(event) {
+      setSearch(event.target.value);
    }
 
    function handleViewModeChange(_, nextViewMode) {
@@ -130,6 +146,21 @@ export function TendersList() {
                   </ToggleButtonGroup>
                </Stack>
             </Box>
+
+            <TextField
+               value={search}
+               onChange={handleSearchChange}
+               placeholder="Поиск по направлению"
+               fullWidth
+               size="small"
+               InputProps={{
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <SearchRoundedIcon color="action" fontSize="small" />
+                     </InputAdornment>
+                  ),
+               }}
+            />
 
             {error && <Alert severity="error">{error}</Alert>}
 

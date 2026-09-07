@@ -6,6 +6,7 @@ export async function fetchCustomerTenders({
     limit = 10,
     status,
     publicationType,
+    search,
 } = {}) {
     const params = { page, limit };
 
@@ -15,6 +16,12 @@ export async function fetchCustomerTenders({
 
     if (publicationType && publicationType !== "all") {
         params.publication_type = publicationType;
+    }
+
+    const normalizedSearch = String(search ?? "").trim();
+
+    if (normalizedSearch) {
+        params.q = normalizedSearch;
     }
 
     const response = await apiClient.get("/customer/v1/tenders", {

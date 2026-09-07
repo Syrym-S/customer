@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
-    acceptCustomerFactoring,
     fetchCustomerFactoringById,
     fetchCustomerFactorings,
+    initiateFactoringSigningApi,
 } from '../api/factorings.api';
 
 import { FactoringsContext } from './FactoringsContext';
@@ -33,8 +33,8 @@ export function FactoringsProvider({ children }) {
     const [isDetailsLoading, setIsDetailsLoading] = useState(false);
     const [detailsError, setDetailsError] = useState('');
 
-    const [isAccepting, setIsAccepting] = useState(false);
-    const [acceptError, setAcceptError] = useState('');
+    const [isInitiatingSigning, setIsInitiatingSigning] = useState(false);
+    const [signingError, setSigningError] = useState('');
 
     const pageCount = Math.max(1, Math.ceil(total / perPage));
 
@@ -142,7 +142,7 @@ export function FactoringsProvider({ children }) {
                 });
 
                 setDetailsError('');
-                setAcceptError('');
+                setSigningError('');
                 setIsDetailsLoading(true);
 
                 const details = await loadFactoringDetailsWithLead(factoringId);
@@ -166,10 +166,17 @@ export function FactoringsProvider({ children }) {
         setIsDetailsOpen(false);
         setSelectedFactoring(null);
         setDetailsError('');
-        setAcceptError('');
+        setSigningError('');
     }, []);
 
-    const acceptFactoring = useCallback(async () => {
+    // Customer confirmation no longer flips verified_customer directly (that
+    // used to happen via acceptCustomerFactoring). It now just opens the
+    // sign-workspace tab — the real "confirmed" state will eventually be set
+    // by a signing-completion signal from sign-workspace, not by this dialog.
+    // acceptCustomerFactoring is left in factorings.api.js since the same
+    // endpoint (or one like it) will likely be called once that signal
+    // exists, but it is intentionally not wired up here anymore.
+    const initiateFactoringSigning = useCallback(async () => {
         const factoringId = getFactoringId(selectedFactoring);
 
         if (!factoringId) {
@@ -177,28 +184,25 @@ export function FactoringsProvider({ children }) {
         }
 
         try {
-            setIsAccepting(true);
-            setAcceptError('');
+            setIsInitiatingSigning(true);
+            setSigningError('');
 
-            await acceptCustomerFactoring(factoringId);
+            const session = await initiateFactoringSigningApi(factoringId);
 
-            const updatedFactoring =
-                await loadFactoringDetailsWithLead(factoringId);
-
-            setSelectedFactoring(updatedFactoring);
-
-            await loadFactorings(page);
+            if (session?.sign_url) {
+                window.open(session.sign_url, '_blank');
+            }
         } catch (error) {
-            setAcceptError(
+            setSigningError(
                 error.response?.data?.message ||
                     error.response?.data?.error ||
                     error.message ||
-                    'Не удалось подтвердить факторинг',
+                    'Не удалось открыть окно подписания',
             );
         } finally {
-            setIsAccepting(false);
+            setIsInitiatingSigning(false);
         }
-    }, [selectedFactoring, loadFactorings, loadFactoringDetailsWithLead, page]);
+    }, [selectedFactoring]);
 
     useEffect(() => {
         loadFactorings(page, { withLoader: true });
@@ -255,15 +259,15 @@ export function FactoringsProvider({ children }) {
             isDetailsLoading,
             detailsError,
 
-            isAccepting,
-            acceptError,
+            isInitiatingSigning,
+            signingError,
 
             reloadFactorings: loadFactorings,
 
             openFactoringDetails,
             closeFactoringDetails,
 
-            acceptFactoring,
+            initiateFactoringSigning,
         }),
         [
             factorings,
@@ -277,12 +281,12 @@ export function FactoringsProvider({ children }) {
             isDetailsOpen,
             isDetailsLoading,
             detailsError,
-            isAccepting,
-            acceptError,
+            isInitiatingSigning,
+            signingError,
             loadFactorings,
             openFactoringDetails,
             closeFactoringDetails,
-            acceptFactoring,
+            initiateFactoringSigning,
         ],
     );
 
