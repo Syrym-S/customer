@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
+    acceptCustomerFactoring,
     fetchCustomerFactoringById,
     fetchCustomerFactorings,
-    initiateFactoringSigningApi,
 } from '../api/factorings.api';
 
 import { FactoringsContext } from './FactoringsContext';
@@ -169,13 +169,9 @@ export function FactoringsProvider({ children }) {
         setSigningError('');
     }, []);
 
-    // Customer confirmation no longer flips verified_customer directly (that
-    // used to happen via acceptCustomerFactoring). It now just opens the
-    // sign-workspace tab — the real "confirmed" state will eventually be set
-    // by a signing-completion signal from sign-workspace, not by this dialog.
-    // acceptCustomerFactoring is left in factorings.api.js since the same
-    // endpoint (or one like it) will likely be called once that signal
-    // exists, but it is intentionally not wired up here anymore.
+    // Customer confirmation now calls the real accept endpoint, which has
+    // been updated backend-side (for three-party signing) to return a
+    // sign_url alongside its original accept-confirmation behavior.
     const initiateFactoringSigning = useCallback(async () => {
         const factoringId = getFactoringId(selectedFactoring);
 
@@ -187,10 +183,15 @@ export function FactoringsProvider({ children }) {
             setIsInitiatingSigning(true);
             setSigningError('');
 
-            const session = await initiateFactoringSigningApi(factoringId);
+            const response = await acceptCustomerFactoring(factoringId);
 
-            if (session?.sign_url) {
-                window.open(session.sign_url, '_blank');
+            const signUrl =
+                response?.sign_url ||
+                response?.data?.sign_url ||
+                response?.result?.sign_url;
+
+            if (signUrl) {
+                window.open(signUrl, '_blank');
             }
         } catch (error) {
             setSigningError(

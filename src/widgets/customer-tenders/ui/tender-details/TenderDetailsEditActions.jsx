@@ -1,11 +1,20 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 
+import { isCancelledTender, isClosedTender } from "../../model/tender.helpers";
+import { tenderPropType } from "../../model/tenders.prop-types";
+
 export function TenderDetailsEditActions({
+   tender,
    isEditing,
    onStartEdit,
    onCancelEdit,
 }) {
+   const isEditDisabled = isClosedTender(tender) || isCancelledTender(tender);
+   const editTooltipTitle = isEditDisabled
+      ? "Нельзя редактировать закрытый или отменённый аукцион"
+      : "Изменить";
+
    return (
       <Box
          sx={{
@@ -18,15 +27,24 @@ export function TenderDetailsEditActions({
          {isEditing ? (
             <Button onClick={onCancelEdit}>Отмена</Button>
          ) : (
-            <Button variant="outlined" onClick={onStartEdit}>
-               Изменить
-            </Button>
+            <Tooltip title={editTooltipTitle}>
+               <span>
+                  <Button
+                     variant="outlined"
+                     onClick={onStartEdit}
+                     disabled={isEditDisabled}
+                  >
+                     Изменить
+                  </Button>
+               </span>
+            </Tooltip>
          )}
       </Box>
    );
 }
 
 TenderDetailsEditActions.propTypes = {
+   tender: tenderPropType,
    isEditing: PropTypes.bool.isRequired,
    onStartEdit: PropTypes.func.isRequired,
    onCancelEdit: PropTypes.func.isRequired,

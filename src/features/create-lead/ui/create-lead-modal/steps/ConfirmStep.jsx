@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { InfoBadge } from '../components/InfoBadge';
 import { StepSection } from '../components/StepSection';
+import { formatAmount } from '../../../../../shared/helpers/currency-format.helpers';
 
 function getLocationDisplay(location, fallback) {
     if (location?.address) {
@@ -108,7 +109,7 @@ export function ConfirmStep({ form }) {
                                     label="Цена груза"
                                     value={
                                         cargo.cargo_price
-                                            ? `${cargo.cargo_price} ${form.currency || ''}`.trim()
+                                            ? `${formatAmount(cargo.cargo_price)} ${form.currency || ''}`.trim()
                                             : 'Не указано'
                                     }
                                 />
@@ -125,7 +126,7 @@ export function ConfirmStep({ form }) {
                         label="Цена исполнения"
                         value={
                             form.price
-                                ? `${form.price} ${form.currency || ''}`.trim()
+                                ? `${formatAmount(form.price)} ${form.currency || ''}`.trim()
                                 : 'Не указано'
                         }
                         accent

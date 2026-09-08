@@ -221,7 +221,7 @@ export function TenderDetailsModal() {
     }
 
     async function handleDeleteParticipant(forwarderId) {
-        if (!openTender?.id || forwarderId) {
+        if (!openTender?.id || !forwarderId) {
             return;
         }
 
@@ -503,6 +503,7 @@ export function TenderDetailsModal() {
                             )}
 
                             <TenderDetailsEditActions
+                                tender={openTender}
                                 isEditing={isEditing}
                                 onStartEdit={handleStartEdit}
                                 onCancelEdit={handleCancelEdit}

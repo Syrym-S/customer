@@ -1,3 +1,5 @@
+import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
+
 export const tenderStatusLabels = {
    new: 'Новый',
    active: 'Активный',
@@ -32,16 +34,90 @@ export function hasValue(value) {
    return value !== null && value !== undefined && value !== '';
 }
 
+// closed/cancelled are the tender's two terminal statuses (analogous to
+// leads' finished/cancelled — see isFinishedLead in lead.helpers.js).
+export function isClosedTender(tender) {
+   return String(tender?.status || '').toLowerCase() === 'closed';
+}
+
+export function isCancelledTender(tender) {
+   return String(tender?.status || '').toLowerCase() === 'cancelled';
+}
+
+// The backend validates/stores public_date_time and end_date_time as
+// Asia/Almaty wall-clock time (bare "YYYY-MM-DD HH:mm:ss", no offset) — NOT
+// UTC and NOT the viewer's own timezone. Confirmed live: sending a true UTC
+// instant produced a 422 "must be in the present or future", since the
+// backend's own "now" (Almaty, UTC+5) was 5 hours ahead of what was sent.
+// Do not "fix" this back to UTC — Kazakhstan runs this single zone with no
+// DST (fixed UTC+5 since 2005), which is why a hardcoded "+05:00" offset
+// below is exact, not an approximation.
+export const TENDER_API_TIMEZONE = 'Asia/Almaty';
+
+// Reads an absolute instant's calendar/clock fields as they'd read on a
+// wall clock in Asia/Almaty, regardless of what timezone the browser itself
+// is in — so this stays correct even for a user whose device isn't in
+// Kazakhstan.
+function getAlmatyDateTimeParts(date) {
+   const formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: TENDER_API_TIMEZONE,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hourCycle: 'h23',
+   });
+
+   const partMap = {};
+
+   for (const part of formatter.formatToParts(date)) {
+      if (part.type !== 'literal') {
+         partMap[part.type] = part.value;
+      }
+   }
+
+   return partMap;
+}
+
+// Converts an absolute instant (any Date) into the "YYYY-MM-DD HH:mm:ss"
+// string the tender API expects, expressed in Asia/Almaty wall-clock time.
+export function formatDateToTenderApiDateTime(date) {
+   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+      return '';
+   }
+
+   const { year, month, day, hour, minute, second } =
+      getAlmatyDateTimeParts(date);
+
+   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+}
+
+// Parses a "YYYY-MM-DD HH:mm:ss" string returned by the tender API (which is
+// Asia/Almaty wall-clock time, per above) back into the correct absolute
+// instant.
+export function parseTenderApiDateTime(value) {
+   if (!value || typeof value !== 'string') {
+      return null;
+   }
+
+   const date = new Date(`${value.replace(' ', 'T')}+05:00`);
+
+   return Number.isNaN(date.getTime()) ? null : date;
+}
+
 export function getTimeLeft(endDateTime, status) {
    if (status === 'cancelled') return 'Отменён';
    if (status === 'closed') return 'Завершён';
 
    if (!endDateTime) return 'Не указано';
 
-   const endDate = new Date(endDateTime);
-   const endTime = endDate.getTime();
+   const endDate = parseTenderApiDateTime(endDateTime);
 
-   if (Number.isNaN(endTime)) return 'Некорректная дата';
+   if (!endDate) return 'Некорректная дата';
+
+   const endTime = endDate.getTime();
 
    const diffMs = endTime - Date.now();
 
@@ -61,19 +137,6 @@ export function getTimeLeft(endDateTime, status) {
    }
 
    return `${minutes} мин`;
-}
-
-export function getCurrentDateTimeForTenderApi() {
-   const date = new Date();
-
-   const year = date.getFullYear();
-   const month = String(date.getMonth() + 1).padStart(2, '0');
-   const day = String(date.getDate()).padStart(2, '0');
-   const hours = String(date.getHours()).padStart(2, '0');
-   const minutes = String(date.getMinutes()).padStart(2, '0');
-   const seconds = String(date.getSeconds()).padStart(2, '0');
-
-   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 export function getTenderCargos(tender) {
@@ -111,9 +174,11 @@ export function getTenderCargoTypeLabel(tender) {
 }
 
 export function getTenderCargoPriceLabel(cargo, currency = 'KZT') {
-   if (!hasValue(cargo?.cargo_price)) {
+   const formattedAmount = formatAmount(cargo?.cargo_price);
+
+   if (!formattedAmount) {
       return 'Не указано';
    }
 
-   return `${Number(cargo.cargo_price).toLocaleString('ru-RU')} ${currency}`.trim();
+   return `${formattedAmount} ${currency}`.trim();
 }

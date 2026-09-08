@@ -5,6 +5,11 @@ import PropTypes from 'prop-types';
 import { LeadShareButton } from './LeadShareButton';
 import { LeadChatButton } from './LeadChatButton';
 import { LeadDeliveryChatButton } from './LeadDeliveryChatButton';
+import { isFinishedLead } from '../../model/lead.helpers';
+
+function isCancelledLead(lead) {
+   return String(lead?.status || '').toLowerCase() === 'cancelled';
+}
 
 export function LeadDetailsEditActions({
    lead,
@@ -14,6 +19,11 @@ export function LeadDetailsEditActions({
    onCancelEdit,
    onClose,
 }) {
+   const isEditDisabled = isFinishedLead(lead) || isCancelledLead(lead);
+   const editTooltipTitle = isEditDisabled
+      ? 'Нельзя редактировать завершённый или отменённый лид'
+      : 'Изменить';
+
    return (
       <Box
          sx={{
@@ -32,10 +42,17 @@ export function LeadDetailsEditActions({
          {isEditing ? (
             <Button onClick={onCancelEdit}>Отмена</Button>
          ) : (
-            <Tooltip title="Изменить">
-               <IconButton color="primary" aria-label="Изменить" onClick={onStartEdit}>
-                  <EditOutlinedIcon fontSize="small" />
-               </IconButton>
+            <Tooltip title={editTooltipTitle}>
+               <span>
+                  <IconButton
+                     color="primary"
+                     aria-label="Изменить"
+                     onClick={onStartEdit}
+                     disabled={isEditDisabled}
+                  >
+                     <EditOutlinedIcon fontSize="small" />
+                  </IconButton>
+               </span>
             </Tooltip>
          )}
       </Box>

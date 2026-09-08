@@ -1,17 +1,45 @@
+import {
+   formatDateToTenderApiDateTime,
+   parseTenderApiDateTime,
+} from './tender.helpers';
+
+function padDatePart(value) {
+   return String(value).padStart(2, '0');
+}
+
+// The backend validates/stores this as Asia/Almaty wall-clock time, not UTC
+// (see tender.helpers.js's parseTenderApiDateTime for why — do not "fix"
+// this back to UTC). parseTenderApiDateTime resolves the string to the
+// correct absolute instant; a datetime-local input displays local time to
+// the viewer, so we read that instant back via the *local* getters here.
 function formatApiDateTimeToInput(value) {
-   if (!value || typeof value !== 'string') {
+   const date = parseTenderApiDateTime(value);
+
+   if (!date) {
       return '';
    }
 
-   return value.replace(' ', 'T').slice(0, 16);
+   const year = date.getFullYear();
+   const month = padDatePart(date.getMonth() + 1);
+   const day = padDatePart(date.getDate());
+   const hours = padDatePart(date.getHours());
+   const minutes = padDatePart(date.getMinutes());
+
+   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
+// A datetime-local input's value (e.g. "2026-09-08T19:00") has no timezone
+// designator, so `new Date(value)` correctly parses it as the viewer's
+// local time, giving the correct absolute instant. From there,
+// formatDateToTenderApiDateTime re-expresses that instant as Asia/Almaty
+// wall-clock time — what the backend actually validates against — mirroring
+// CreateTenderModal.jsx's formatDateTimeForTenderApi.
 function formatInputDateTimeToApi(value) {
    if (!value) {
       return '';
    }
 
-   return `${value.replace('T', ' ')}:00`;
+   return formatDateToTenderApiDateTime(new Date(value));
 }
 
 function normalizeText(value) {

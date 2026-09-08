@@ -2,6 +2,7 @@ import {
    LEAD_KANBAN_COLUMNS,
    UNKNOWN_LEAD_STATUS,
 } from './lead-kanban.constants';
+import { formatAmount } from '../../../../shared/helpers/currency-format.helpers';
 
 export function getLeadStatus(lead) {
    return lead?.status || UNKNOWN_LEAD_STATUS;
@@ -75,13 +76,13 @@ export function getLeadCargoLabel(lead) {
 }
 
 export function getLeadPriceLabel(lead) {
-   if (lead?.summ === null || lead?.summ === undefined || lead?.summ === '') {
+   const formattedAmount = formatAmount(lead?.summ);
+
+   if (!formattedAmount) {
       return 'Цена не указана';
    }
 
-   return `${Number(lead.summ).toLocaleString('ru-RU')} ${
-      lead.currency || ''
-   }`.trim();
+   return `${formattedAmount} ${lead.currency || ''}`.trim();
 }
 
 export function getLeadResponsibleLabel(lead) {
@@ -130,5 +131,5 @@ export function getLeadColumnTotalLabel(leads) {
       return '';
    }
 
-   return `${total.toLocaleString('ru-RU')} KZT`;
+   return `${formatAmount(total)} KZT`;
 }

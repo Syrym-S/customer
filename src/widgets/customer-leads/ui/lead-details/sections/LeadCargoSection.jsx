@@ -18,6 +18,7 @@ import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined
 import { DetailSection } from "../components/DetailSection";
 import { InfoBadge } from "../components/InfoBadge";
 import { useEffect, useMemo, useState } from "react";
+import { formatAmount } from "../../../../../shared/helpers/currency-format.helpers";
 import {
   fetchCustomerCargoTypesApi,
   searchCustomerCargoTypesApi,
@@ -497,7 +498,7 @@ export function LeadCargoSection({
                       label="Цена груза"
                       value={
                         hasValue(cargo.cargo_price)
-                          ? `${cargo.cargo_price} ${lead.currency || ""}`.trim()
+                          ? `${formatAmount(cargo.cargo_price)} ${lead.currency || ""}`.trim()
                           : "Не указано"
                       }
                     />
@@ -606,7 +607,7 @@ export function LeadCargoSection({
                 label="Цена исполнения"
                 value={
                   hasValue(lead.price)
-                    ? `${lead.price} ${lead.currency}`
+                    ? `${formatAmount(lead.price)} ${lead.currency}`
                     : "Не указано"
                 }
                 accent

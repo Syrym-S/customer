@@ -5,6 +5,7 @@ import {
   getFactoringStatusLabel,
 } from "../../customer-factorings/model/factorings.helpers";
 import { useFactoringsContext } from "../../customer-factorings/model/useFactoringsContext";
+import { formatAmount } from "../../../shared/helpers/currency-format.helpers";
 
 function InfoText({ label, value }) {
   return (
@@ -124,10 +125,16 @@ export function DashboardFactoringItem({ factoring }) {
           <InfoText label="ФИО экспедитора" value={factoring.forwarder.fio} />
         </Box>
         <Box>
-          <InfoText label="Дебиторская сумма" value={factoring.deb_summ} />
+          <InfoText
+            label="Дебиторская сумма"
+            value={formatAmount(factoring.deb_summ)}
+          />
         </Box>{" "}
         <Box>
-          <InfoText label="Кредитная сумма" value={factoring.cred_summ} />
+          <InfoText
+            label="Кредитная сумма"
+            value={formatAmount(factoring.cred_summ)}
+          />
         </Box>
       </Stack>
     </Paper>

@@ -8,6 +8,7 @@ import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import { useLeadsContext } from '../model/useLeadsContext';
 import { normalizeLocationValue } from '../model/lead-edit-form.helpers';
 import { getLeadStatusLabel, getLeadStatusStyles } from '../model/lead.helpers';
+import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 
 export function LeadCard({ lead }) {
    const { setOpenLead } = useLeadsContext();
@@ -22,19 +23,6 @@ export function LeadCard({ lead }) {
 
    const forwarderLabel =
       lead.forwarder?.fullName || lead.forwarder?.companyName || 'Не указан';
-
-   const cargos = Array.isArray(lead.cargos) ? lead.cargos : [];
-
-   const totalWeight = cargos.reduce((sum, cargo) => {
-      const weight = Number(cargo.weight_kg);
-
-      return Number.isNaN(weight) ? sum : sum + weight;
-   }, 0);
-
-   const cargoTypeLabel =
-      cargos.length > 1
-         ? `${cargos[0]?.type || 'Не указано'} + ещё ${cargos.length - 1}`
-         : cargos[0]?.type || 'Не указано';
 
    return (
       <Box
@@ -266,39 +254,15 @@ export function LeadCard({ lead }) {
                </Box>
             </Box>
 
-            <Box
-               sx={{
-                  display: 'grid',
-                  gridTemplateColumns: {
-                     xs: '1fr 1fr',
-                     md: 'repeat(3, 1fr)',
-                  },
-                  gap: 1,
-               }}
-            >
-               <InfoBadge
-                  label="Вес"
-                  value={totalWeight > 0 ? `${totalWeight} кг` : 'Не указано'}
-               />
-
-               <InfoBadge label="Тип" value={cargoTypeLabel} />
-
-               <InfoBadge
-                  label="Цена"
-                  value={
-                     hasValue(lead.summ)
-                        ? `${lead.summ} ${lead.currency}`
-                        : 'Не указано'
-                  }
-                  accent
-                  sx={{
-                     gridColumn: {
-                        xs: '1 / -1',
-                        md: 'auto',
-                     },
-                  }}
-               />
-            </Box>
+            <InfoBadge
+               label="Цена"
+               value={
+                  hasValue(lead.summ)
+                     ? `${formatAmount(lead.summ)} ${lead.currency}`
+                     : 'Не указано'
+               }
+               accent
+            />
          </Stack>
       </Box>
    );
@@ -358,10 +322,6 @@ LeadCard.propTypes = {
          companyBin: PropTypes.string,
          phone: PropTypes.string,
       }),
-      cargo: PropTypes.shape({
-         weight_kg: PropTypes.number.isRequired,
-         type: PropTypes.string.isRequired,
-      }).isRequired,
    }).isRequired,
 };
 

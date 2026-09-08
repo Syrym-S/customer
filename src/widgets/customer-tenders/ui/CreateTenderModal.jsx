@@ -19,10 +19,30 @@ import PropTypes from "prop-types";
 import { useTendersContext } from "../model/useTendersContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { searchTenderLeadsApi } from "../api/tender.api";
-import { getCurrentDateTimeForTenderApi } from "../model/tender.helpers";
+import { formatDateToTenderApiDateTime } from "../model/tender.helpers";
 import { fetchForwardersApi } from "../../../features/create-lead/api/forwarders.api";
 import { FORWARDERS_PER_PAGE } from "../../customer-forwarders/model/forwarders.helpers";
 import { LeadStatusChip } from "../../dashboard/ui/DashboardLeadItem";
+import { formatAmount } from "../../../shared/helpers/currency-format.helpers";
+
+// A tender must be published at least this far in the future — gives a
+// safety buffer against the few seconds between picking "now" and actually
+// hitting submit, which previously could trip the backend's "must be in the
+// present or future" (Almaty-time) validation on a near-miss.
+const PUBLICATION_LEAD_TIME_MS = 5 * 60 * 1000;
+
+// "Дата окончания" must be at least this far after "Дата публикации".
+const MIN_GAP_AFTER_PUBLICATION_MS = 30 * 60 * 1000;
+
+// NOTE on timezones: everything below compares and offsets plain JS Date
+// instants (ms since epoch), which is timezone-independent by
+// construction — "5 minutes from now" or "is this before that" doesn't
+// depend on which zone you're framing it in, only actual duration math
+// does. The one place a timezone actually matters is turning an instant
+// into the "YYYY-MM-DD HH:mm:ss" string the backend expects, which is
+// Asia/Almaty wall-clock time — that conversion already happens in
+// formatDateTimeForTenderApi below (via formatDateToTenderApiDateTime) and
+// is untouched here.
 
 function padDatePart(value) {
   return String(value).padStart(2, "0");
@@ -38,7 +58,7 @@ function formatDateTimeLocalValue(date) {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
-function getDefaultTenderEndDateTime() {
+function getDefaultTenderEndDateTime(notBeforeDate) {
   const date = new Date();
 
   date.setHours(date.getHours() + 1);
@@ -53,32 +73,47 @@ function getDefaultTenderEndDateTime() {
 
   date.setMinutes(0, 0, 0);
 
-  return formatDateTimeLocalValue(date);
+  const minEndDate = new Date(
+    notBeforeDate.getTime() + MIN_GAP_AFTER_PUBLICATION_MS,
+  );
+
+  return formatDateTimeLocalValue(date < minEndDate ? minEndDate : date);
 }
 
 function createInitialForm() {
+  const publicationDate = new Date(Date.now() + PUBLICATION_LEAD_TIME_MS);
+
   return {
-    endDateTime: getDefaultTenderEndDateTime(),
+    publicationDateTime: formatDateTimeLocalValue(publicationDate),
+    endDateTime: getDefaultTenderEndDateTime(publicationDate),
     isPublic: true,
     maxParticipants: 0,
     startAfterCreate: false,
   };
 }
 
+// A datetime-local input's value (e.g. "2026-09-08T19:00") has no timezone
+// designator, so `new Date(value)` correctly parses it as the user's local
+// time, giving us the correct absolute instant. From there,
+// formatDateToTenderApiDateTime (tender.helpers.js) re-expresses that same
+// instant as Asia/Almaty wall-clock time — NOT UTC — since that's what the
+// backend actually validates against (see the comment there for why).
 function formatDateTimeForTenderApi(value) {
   if (!value) {
     return "";
   }
 
-  return `${value.replace("T", " ")}:00`;
+  return formatDateToTenderApiDateTime(new Date(value));
 }
 
 function formatMoney(value) {
-  if (value === null || value === undefined || value === "") {
+  const formattedAmount = formatAmount(value);
+
+  if (!formattedAmount) {
     return "Цена не указана";
   }
 
-  return `${Number(value).toLocaleString("ru-RU")} KZT`;
+  return `${formattedAmount} KZT`;
 }
 
 function getLeadOptionLabel(option) {
@@ -310,12 +345,26 @@ export function CreateTenderModal({ open, onClose }) {
       return "Выберите лид";
     }
 
+    if (!form.publicationDateTime) {
+      return "Укажите дату публикации";
+    }
+
+    const publicationDate = new Date(form.publicationDateTime);
+    const now = new Date();
+
+    if (Number.isNaN(publicationDate.getTime())) {
+      return "Некорректная дата публикации";
+    }
+
+    if (publicationDate < now) {
+      return "Дата публикации не может быть в прошлом";
+    }
+
     if (!form.endDateTime) {
       return "Укажите дату окончания";
     }
 
     const endDate = new Date(form.endDateTime);
-    const now = new Date();
 
     if (Number.isNaN(endDate.getTime())) {
       return "Некорректная дата окончания";
@@ -323,6 +372,13 @@ export function CreateTenderModal({ open, onClose }) {
 
     if (endDate <= now) {
       return "Дата окончания должна быть позже текущего времени";
+    }
+
+    if (
+      endDate.getTime() - publicationDate.getTime() <
+      MIN_GAP_AFTER_PUBLICATION_MS
+    ) {
+      return "Дата окончания должна быть минимум через 30 минут после даты публикации";
     }
 
     if (form.isPublic) {
@@ -358,7 +414,9 @@ export function CreateTenderModal({ open, onClose }) {
 
       const payload = {
         lead_id: selectedLead.id,
-        public_date_time: getCurrentDateTimeForTenderApi(),
+        public_date_time: formatDateTimeForTenderApi(
+          form.publicationDateTime,
+        ),
         end_date_time: formatDateTimeForTenderApi(form.endDateTime),
         type: "forwarder",
         publication_type: isPublicTender ? "public" : "private",
@@ -458,6 +516,70 @@ export function CreateTenderModal({ open, onClose }) {
     setForwarderInputValue("");
     setForwardersSearchError("");
   }, [form.isPublic]);
+
+  // Private tenders auto-activate on the server once a participant is added
+  // (they require at least one), so "start" (only valid from `new`) would
+  // fail with a 400 right after creation. Hide + reset this field for
+  // private tenders so the submit flow never attempts that start call.
+  useEffect(() => {
+    if (form.isPublic) {
+      return;
+    }
+
+    setForm((prevForm) =>
+      prevForm.startAfterCreate
+        ? { ...prevForm, startAfterCreate: false }
+        : prevForm,
+    );
+  }, [form.isPublic]);
+
+  const nowLocalValue = formatDateTimeLocalValue(new Date());
+
+  // "Дата окончания" can never be in the past, and never less than 30
+  // minutes after whatever "Дата публикации" currently holds — recomputed
+  // on every render, so it always reflects the live publication value.
+  const publicationDateValue = form.publicationDateTime
+    ? new Date(form.publicationDateTime)
+    : null;
+
+  const endDateTimeMinDate =
+    publicationDateValue && !Number.isNaN(publicationDateValue.getTime())
+      ? new Date(
+          Math.max(
+            Date.now(),
+            publicationDateValue.getTime() + MIN_GAP_AFTER_PUBLICATION_MS,
+          ),
+        )
+      : new Date();
+
+  const endDateTimeMin = formatDateTimeLocalValue(endDateTimeMinDate);
+
+  // If the user pushes "Дата публикации" forward after already picking an
+  // end date, the previously-valid end date can fall below the new
+  // minimum — auto-advance it instead of leaving the picker's own min
+  // constraint silently disagreeing with its selected value.
+  useEffect(() => {
+    setForm((prevForm) => {
+      if (!prevForm.endDateTime) {
+        return prevForm;
+      }
+
+      const currentEndDate = new Date(prevForm.endDateTime);
+
+      if (
+        Number.isNaN(currentEndDate.getTime()) ||
+        currentEndDate.getTime() >= endDateTimeMinDate.getTime()
+      ) {
+        return prevForm;
+      }
+
+      return {
+        ...prevForm,
+        endDateTime: formatDateTimeLocalValue(endDateTimeMinDate),
+      };
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.publicationDateTime]);
 
   return (
     <>
@@ -578,6 +700,27 @@ export function CreateTenderModal({ open, onClose }) {
               />
 
               <TextField
+                label="Дата публикации"
+                type="datetime-local"
+                value={form.publicationDateTime}
+                onChange={(event) =>
+                  handleFieldChange(
+                    "publicationDateTime",
+                    event.target.value,
+                  )
+                }
+                slotProps={{
+                  inputLabel: {
+                    shrink: true,
+                  },
+                  htmlInput: {
+                    min: nowLocalValue,
+                  },
+                }}
+                fullWidth
+              />
+
+              <TextField
                 label="Дата окончания"
                 type="datetime-local"
                 value={form.endDateTime}
@@ -589,7 +732,7 @@ export function CreateTenderModal({ open, onClose }) {
                     shrink: true,
                   },
                   htmlInput: {
-                    min: formatDateTimeLocalValue(new Date()),
+                    min: endDateTimeMin,
                   },
                 }}
                 fullWidth
@@ -632,20 +775,22 @@ export function CreateTenderModal({ open, onClose }) {
                 />
               )}
 
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={Boolean(form.startAfterCreate)}
-                    onChange={(event) =>
-                      handleFieldChange(
-                        "startAfterCreate",
-                        event.target.checked,
-                      )
-                    }
-                  />
-                }
-                label="Запустить аукцион после создания"
-              />
+              {form.isPublic && (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={Boolean(form.startAfterCreate)}
+                      onChange={(event) =>
+                        handleFieldChange(
+                          "startAfterCreate",
+                          event.target.checked,
+                        )
+                      }
+                    />
+                  }
+                  label="Запустить аукцион после создания"
+                />
+              )}
 
               {!form.isPublic && (
                 <Autocomplete

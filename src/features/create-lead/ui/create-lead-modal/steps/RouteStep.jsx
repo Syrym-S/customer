@@ -23,6 +23,16 @@ import { searchGeocode } from '../../../api/geocoding.api';
 import { useEffect, useState } from 'react';
 import { buildRouteFitBoundsKey } from '../../../lib/route-map.helpers';
 
+function padDatePart(value) {
+    return String(value).padStart(2, '0');
+}
+
+function getTodayDateInputValue() {
+    const now = new Date();
+
+    return `${now.getFullYear()}-${padDatePart(now.getMonth() + 1)}-${padDatePart(now.getDate())}`;
+}
+
 export function RouteStep({ control, errors, form, setValue }) {
     const map = useCustomerMap();
     const [fromInputValue, setFromInputValue] = useState('');
@@ -592,6 +602,18 @@ export function RouteStep({ control, errors, form, setValue }) {
                 <Controller
                     name="loadingDate"
                     control={control}
+                    rules={{
+                        validate: (value) => {
+                            if (!value) {
+                                return true;
+                            }
+
+                            return (
+                                value >= getTodayDateInputValue() ||
+                                'Дата загрузки не может быть в прошлом'
+                            );
+                        },
+                    }}
                     render={({ field }) => (
                         <TextField
                             {...field}
@@ -599,9 +621,14 @@ export function RouteStep({ control, errors, form, setValue }) {
                             type="date"
                             fullWidth
                             size="small"
+                            error={Boolean(errors.loadingDate)}
+                            helperText={errors.loadingDate?.message}
                             slotProps={{
                                 inputLabel: {
                                     shrink: true,
+                                },
+                                htmlInput: {
+                                    min: getTodayDateInputValue(),
                                 },
                             }}
                             sx={{

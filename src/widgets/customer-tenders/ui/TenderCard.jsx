@@ -3,15 +3,13 @@ import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import {
-   getTenderCargoTypeLabel,
-   getTenderTotalCargoWeight,
    getTimeLeft,
    tenderStatusLabels,
    tenderStatusStyles,
 } from '../model/tender.helpers';
 import { useTendersContext } from '../model/useTendersContext';
 import PropTypes from 'prop-types';
-import { sxPropType, tenderPropType } from '../model/tenders.prop-types';
+import { tenderPropType } from '../model/tenders.prop-types';
 import { normalizeLocationValue } from '../model/tender-edit-form.helpers';
 
 function getShortTenderId(id) {
@@ -35,9 +33,6 @@ export function TenderCard({ tender }) {
 
    const shouldShowTimeLeft =
       tender.status !== 'closed' && tender.status !== 'cancelled';
-
-   const totalCargoWeight = getTenderTotalCargoWeight(tender);
-   const cargoTypeLabel = getTenderCargoTypeLabel(tender);
 
    const fromLocationLabel = normalizeLocationValue(tender.from_location);
    const toLocationLabel = normalizeLocationValue(tender.to_location);
@@ -307,44 +302,6 @@ export function TenderCard({ tender }) {
                   </Box>
                </Box>
             </Box>
-
-            <Box
-               sx={{
-                  display: 'grid',
-                  gridTemplateColumns: {
-                     xs: '1fr 1fr',
-                     md: 'repeat(3, 1fr)',
-                  },
-                  gap: 1,
-               }}
-            >
-               <InfoBadge
-                  label="Вес"
-                  value={
-                     totalCargoWeight > 0
-                        ? `${totalCargoWeight} кг`
-                        : 'Не указано'
-                  }
-                  muted={isCancelled}
-               />
-
-               <InfoBadge
-                  label="Тип"
-                  value={cargoTypeLabel}
-                  muted={isCancelled}
-               />
-
-               {/* <InfoBadge
-                  label='Цена'
-                  value={
-                     hasValue(tender.summ)
-                        ? `${tender.summ} ${tender.currency}`
-                        : 'Не указано'
-                  }
-                  accent
-                  muted={isCancelled}
-               /> */}
-            </Box>
          </Stack>
       </Box>
    );
@@ -389,58 +346,8 @@ function TimeLeftBadge({ value }) {
    );
 }
 
-function InfoBadge({ label, value, accent = false, muted = false, sx = {} }) {
-   return (
-      <Box
-         sx={{
-            px: 1.5,
-            py: 1,
-            border: '1px solid',
-            borderColor: muted ? 'grey.300' : 'divider',
-            borderRadius: 2,
-            backgroundColor: muted ? 'grey.200' : 'grey.50',
-            minWidth: 0,
-            ...sx,
-         }}
-      >
-         <Typography
-            sx={{
-               fontSize: 11,
-               lineHeight: 1.2,
-               color: 'text.secondary',
-               mb: 0.25,
-            }}
-         >
-            {label}
-         </Typography>
-
-         <Typography
-            sx={{
-               fontSize: 14,
-               lineHeight: 1.3,
-               color: muted
-                  ? 'text.secondary'
-                  : accent
-                    ? 'primary.main'
-                    : 'text.primary',
-            }}
-         >
-            {value || 'Не указано'}
-         </Typography>
-      </Box>
-   );
-}
-
 TenderCard.propTypes = {
    tender: tenderPropType.isRequired,
-};
-
-InfoBadge.propTypes = {
-   label: PropTypes.string.isRequired,
-   value: PropTypes.node,
-   accent: PropTypes.bool,
-   muted: PropTypes.bool,
-   sx: sxPropType,
 };
 
 TimeLeftBadge.propTypes = {

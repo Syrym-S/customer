@@ -16,6 +16,7 @@ import {
    getTenderCargos,
    hasValue,
 } from '../../../model/tender.helpers';
+import { formatAmount } from '../../../../../shared/helpers/currency-format.helpers';
 
 export function TenderTransportSection({ tender }) {
    const lead = tender.lead || {};
@@ -148,8 +149,8 @@ export function TenderTransportSection({ tender }) {
                   <TenderInfoBadge
                      label="Общая цена лида"
                      value={
-                        hasValue(lead.summ)
-                           ? `${Number(lead.summ).toLocaleString('ru-RU')} ${lead.currency || ''}`.trim()
+                        formatAmount(lead.summ)
+                           ? `${formatAmount(lead.summ)} ${lead.currency || ''}`.trim()
                            : 'Не указано'
                      }
                   />

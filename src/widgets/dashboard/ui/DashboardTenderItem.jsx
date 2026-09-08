@@ -8,6 +8,7 @@ import {
     tenderStatusStyles,
 } from '../../customer-tenders/model/tender.helpers';
 import { useTendersContext } from '../../customer-tenders/model/useTendersContext';
+import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 
 function getLocationLabel(tender, field) {
     return (
@@ -21,11 +22,13 @@ function getMoneyLabel(tender) {
     const amount = tender?.summ || tender?.price || tender?.lead?.summ;
     const currency = tender?.currency || tender?.lead?.currency || '';
 
-    if (amount === null || amount === undefined || amount === '') {
+    const formattedAmount = formatAmount(amount);
+
+    if (!formattedAmount) {
         return 'Цена не указана';
     }
 
-    return `${Number(amount).toLocaleString('ru-RU')} ${currency}`.trim();
+    return `${formattedAmount} ${currency}`.trim();
 }
 
 function getBetsCount(tender) {

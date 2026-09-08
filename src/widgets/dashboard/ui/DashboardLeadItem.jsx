@@ -6,6 +6,7 @@ import {
   getLeadStatusLabel,
   getLeadStatusStyles,
 } from "../../customer-leads/model/lead.helpers";
+import { formatAmount } from "../../../shared/helpers/currency-format.helpers";
 
 function formatLocation(location) {
   return normalizeLocationValue(location) || "Адрес не указан";
@@ -17,12 +18,13 @@ function hasValue(value) {
 
 function formatLeadPrice(lead) {
   const price = hasValue(lead?.summ) ? lead.summ : lead?.cargo_price;
+  const formattedAmount = formatAmount(price);
 
-  if (!hasValue(price)) {
+  if (!formattedAmount) {
     return "Цена не указана";
   }
 
-  return `${Number(price).toLocaleString("ru-RU")} ${lead?.currency || ""}`.trim();
+  return `${formattedAmount} ${lead?.currency || ""}`.trim();
 }
 
 function hasRouteCoordinates(lead) {

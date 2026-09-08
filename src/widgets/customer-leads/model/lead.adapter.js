@@ -313,7 +313,7 @@ export function mapLeadsResponseFromApi(response) {
          : [],
       page: response.page ?? 1,
       perPage: response.per_page ?? response.perPage ?? 4,
-      count: response.count ?? 0,
+      count: response.count ?? response.total ?? 0,
    };
 }
 

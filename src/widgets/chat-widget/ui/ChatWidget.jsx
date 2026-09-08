@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Badge, Box, CircularProgress, Fab, Grow, IconButton, Paper, Typography, useTheme } from "@mui/material";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -6,6 +7,8 @@ import { useChatStore } from "../model/chat.store";
 import { getTotalUnreadCount } from "../model/chat.helpers";
 import { ChatListView } from "./ChatListView";
 import { ChatDetailView } from "./ChatDetailView";
+
+const UNREAD_CHATS_POLL_INTERVAL_MS = 60 * 1000;
 
 export function ChatWidget() {
   const theme = useTheme();
@@ -21,6 +24,20 @@ export function ChatWidget() {
   const activeChat = chats.find((chat) => chat.id === activeChatId) || null;
   const isLoadingSingleLeadChat = Boolean(pendingLeadChatLeadId) && !activeChat;
   const isLoadingLeadChats = leadChatsStatus === "loading";
+
+  // Loads the unread badge count on app mount, then keeps it fresh with
+  // polling — without this, the count previously only appeared after the
+  // user opened (and closed) the widget once, since toggleWidget() was the
+  // sole trigger for loadLeadChats(). loadLeadChats() already no-ops while
+  // a fetch is in flight, so an immediate open right after mount can't fire
+  // a duplicate request.
+  useEffect(() => {
+    loadLeadChats();
+
+    const intervalId = setInterval(loadLeadChats, UNREAD_CHATS_POLL_INTERVAL_MS);
+
+    return () => clearInterval(intervalId);
+  }, [loadLeadChats]);
 
   return (
     <Box

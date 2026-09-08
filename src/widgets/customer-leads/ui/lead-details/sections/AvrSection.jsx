@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
+   Alert,
    Box,
    Button,
    Chip,
@@ -110,6 +111,8 @@ export function AvrSection({ lead }) {
    const [hasLoadedStatus, setHasLoadedStatus] = useState(false);
    const [isSigning, setIsSigning] = useState(false);
    const [signUrl, setSignUrl] = useState(null);
+   const [serviceUnavailableMessage, setServiceUnavailableMessage] =
+      useState('');
 
    const pollIntervalRef = useRef(null);
    const signExpiresAtRef = useRef(null);
@@ -140,18 +143,29 @@ export function AvrSection({ lead }) {
                return;
             }
 
+            setServiceUnavailableMessage('');
             setAvrDocument(status?.document || null);
             setIsSigned(Boolean(status?.signed));
 
-            
             if (status?.document) {
                setForwarderSigned(true);
             }
          } catch (error) {
             if (!isCancelled) {
-               // A 404 here just means the forwarder hasn't produced the AVR
-               // document yet — an expected state, not an error worth a toast.
-               if (error.response?.status !== 404) {
+               const statusCode = error.response?.status;
+
+               if (statusCode === 404) {
+                  // A 404 here just means the forwarder hasn't produced the AVR
+                  // document yet — an expected state, not an error worth a toast.
+               } else if (statusCode === 502) {
+                  // Signing service being temporarily down is a transient,
+                  // expected-ish backend issue — shown inline in this section
+                  // rather than as a disruptive global toast.
+                  setServiceUnavailableMessage(
+                     error.response?.data?.message ||
+                        'Сервис подписания недоступен, попробуйте позже',
+                  );
+               } else {
                   notifyError(
                      error.response?.data?.message ||
                         error.message ||
@@ -258,6 +272,10 @@ export function AvrSection({ lead }) {
                </Box>
             ) : (
                <>
+                  {serviceUnavailableMessage && (
+                     <Alert severity='error'>{serviceUnavailableMessage}</Alert>
+                  )}
+
                   <ForwarderAvrCard signed={forwarderSigned} />
 
                   {/* Dev-only: mocks the forwarder having signed, since no

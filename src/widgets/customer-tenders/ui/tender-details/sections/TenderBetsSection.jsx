@@ -15,15 +15,18 @@ import PropTypes from "prop-types";
 
 import { TenderDetailsSection } from "./TenderDetailsSection";
 import { betPropType } from "../../../model/tenders.prop-types";
+import { formatAmount } from "../../../../../shared/helpers/currency-format.helpers";
 
 const INITIAL_VISIBLE_COUNT = 3;
 
 function formatMoney(amount, currency = "KZT") {
-  if (amount === null || amount === undefined || amount === "") {
+  const formattedAmount = formatAmount(amount);
+
+  if (!formattedAmount) {
     return "Не указано";
   }
 
-  return `${Number(amount).toLocaleString("ru-RU")} ${currency}`;
+  return `${formattedAmount} ${currency}`;
 }
 
 export function TenderBetsSection({

@@ -1,9 +1,13 @@
+import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
+
 export function formatMoney(amount, currency = 'KZT') {
-    if (amount === null || amount === undefined || amount === '') {
+    const formattedAmount = formatAmount(amount);
+
+    if (!formattedAmount) {
         return 'Не указано';
     }
 
-    return `${Number(amount).toLocaleString('ru-RU')} ${currency || 'KZT'}`;
+    return `${formattedAmount} ${currency || 'KZT'}`;
 }
 
 export function normalizeLeadsResponse(response) {

@@ -21,7 +21,11 @@ export async function fetchCustomerLeadsApi({
       params.q = normalizedSearch;
    }
 
-   const response = await apiClient.get('/customer/v1/leads', { params });
+   const endpoint = normalizedSearch
+      ? '/customer/v1/leads/search'
+      : '/customer/v1/leads';
+
+   const response = await apiClient.get(endpoint, { params });
 
    return response.data;
 }
