@@ -9,6 +9,7 @@ export function LeadDocumentCard({
   onOpen,
   onDelete,
   isDeleting = false,
+  canDelete = true,
 }) {
   return (
     <Box
@@ -105,7 +106,7 @@ export function LeadDocumentCard({
           event.stopPropagation();
         }}
       >
-        {(!document.source || document.source === "customer") && (
+        {canDelete && (!document.source || document.source === "customer") && (
           <IconButton
             size="small"
             color="error"
@@ -134,4 +135,5 @@ LeadDocumentCard.propTypes = {
   onOpen: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   isDeleting: PropTypes.bool,
+  canDelete: PropTypes.bool,
 };

@@ -13,10 +13,29 @@ const notPassedChipStyle = {
    backgroundColor: 'grey.100',
 };
 
-const typeChipStyle = {
-   borderColor: 'primary.main',
-   color: 'primary.main',
-   backgroundColor: 'rgba(33, 150, 243, 0.04)',
+// rgba values matched to leadStatusStyles in lead.helpers.js so this chip's
+// colors stay consistent with the lead status chips used elsewhere.
+const typeChipStyles = {
+   warning: {
+      borderColor: 'warning.main',
+      color: 'warning.main',
+      backgroundColor: 'rgba(237, 108, 2, 0.06)',
+   },
+   secondary: {
+      borderColor: 'secondary.main',
+      color: 'secondary.main',
+      backgroundColor: 'rgba(156, 39, 176, 0.06)',
+   },
+   info: {
+      borderColor: 'info.main',
+      color: 'info.main',
+      backgroundColor: 'rgba(2, 136, 209, 0.06)',
+   },
+   primary: {
+      borderColor: 'primary.main',
+      color: 'primary.main',
+      backgroundColor: 'rgba(33, 150, 243, 0.04)',
+   },
 };
 
 const routePointChipSx = {
@@ -26,7 +45,14 @@ const routePointChipSx = {
    height: 22,
 };
 
-export function RoutePoint({ label, value, icon, isPassed, typeLabel }) {
+export function RoutePoint({
+   label,
+   value,
+   icon,
+   isPassed,
+   typeLabel,
+   typeColor,
+}) {
    return (
       <Box
          sx={{
@@ -67,15 +93,37 @@ export function RoutePoint({ label, value, icon, isPassed, typeLabel }) {
                mb: 0.5,
             }}
          >
-            <Typography
-               variant='caption'
+            <Box
                sx={{
-                  display: 'block',
-                  color: 'text.secondary',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.75,
+                  minWidth: 0,
                }}
             >
-               {label}
-            </Typography>
+               <Typography
+                  variant='caption'
+                  sx={{
+                     display: 'block',
+                     color: 'text.secondary',
+                     whiteSpace: 'nowrap',
+                  }}
+               >
+                  {label}
+               </Typography>
+
+               {typeLabel && (
+                  <Chip
+                     label={typeLabel}
+                     variant='outlined'
+                     size='small'
+                     sx={{
+                        ...routePointChipSx,
+                        ...(typeChipStyles[typeColor] || typeChipStyles.primary),
+                     }}
+                  />
+               )}
+            </Box>
 
             <Chip
                label={isPassed ? 'Пройдена' : 'Не пройдена'}
@@ -143,19 +191,6 @@ export function RoutePoint({ label, value, icon, isPassed, typeLabel }) {
                {value || 'Не указано'}
             </Typography>
          </Box>
-
-         {typeLabel && (
-            <Chip
-               label={typeLabel}
-               variant='outlined'
-               size='small'
-               sx={{
-                  ...routePointChipSx,
-                  ...typeChipStyle,
-                  mt: 1,
-               }}
-            />
-         )}
       </Box>
    );
 }
@@ -166,4 +201,5 @@ RoutePoint.propTypes = {
    icon: PropTypes.node.isRequired,
    isPassed: PropTypes.bool,
    typeLabel: PropTypes.string,
+   typeColor: PropTypes.oneOf(['warning', 'secondary', 'info', 'primary']),
 };

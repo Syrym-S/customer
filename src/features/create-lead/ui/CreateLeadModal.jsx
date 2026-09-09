@@ -85,7 +85,7 @@ function createInitialForm() {
 }
 
 const stepFields = [
-    ['fromLocation', 'toLocation', 'loadingDate', 'waypoints'],
+    ['fromLocation', 'toLocation', 'loadingDate'],
     ['cargos', 'price', 'currency'],
     [],
     [],

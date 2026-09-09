@@ -51,6 +51,7 @@ export function LeadDetailsContent({
          <LeadDriverSection lead={lead} />
 
          <LeadDocumentsSection
+            lead={lead}
             documents={documents}
             onAddDocument={onAddDocument}
             onDeleteDocument={onDeleteDocument}

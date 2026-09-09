@@ -462,9 +462,6 @@ export function RouteStep({ control, errors, form, setValue }) {
                             <Controller
                                 name={`waypoints.${index}.type`}
                                 control={control}
-                                rules={{
-                                    required: 'Выберите тип точки',
-                                }}
                                 render={({ field }) => (
                                     <FormControl
                                         size="small"
@@ -480,13 +477,16 @@ export function RouteStep({ control, errors, form, setValue }) {
                                             {...field}
                                             labelId={`${pointKey}-type-label`}
                                             label="Тип точки"
-                                            value={field.value || ''}
+                                            value={field.value || 'check_passes'}
                                         >
                                             <MenuItem value="loading">
                                                 Погрузка
                                             </MenuItem>
                                             <MenuItem value="unloading">
                                                 Разгрузка
+                                            </MenuItem>
+                                            <MenuItem value="check_passes">
+                                                Транзит
                                             </MenuItem>
                                         </Select>
                                         <FormHelperText>

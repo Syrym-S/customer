@@ -87,7 +87,7 @@ export function ProfilePhotoUploader({
                             width: 96,
                             height: 96,
                             fontSize: 32,
-                            bgcolor: 'primary.light',
+                            bgcolor: value ? undefined : 'primary.light',
                             flexShrink: 0,
                         }}
                     />

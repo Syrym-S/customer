@@ -24,6 +24,7 @@ import {
   searchCustomerCargoTypesApi,
 } from "../../../api/cargo-types.api";
 import { CurrencyAutocomplete } from "../../../../../features/create-lead/ui/create-lead-modal/components/CurrencyAutocomplete";
+import { isFinishedLead, isCancelledLead } from "../../../model/lead.helpers";
 
 function createEmptyLeadCargo() {
   return {
@@ -87,6 +88,7 @@ export function LeadCargoSection({
 
   const isForwarderCreatedLead = lead?.created_by === "forwarder";
   const canBeDeleted = lead?.cargos?.length > 1;
+  const canDeleteCargo = !isFinishedLead(lead) && !isCancelledLead(lead);
 
   useEffect(() => {
     if (!isEditing) {
@@ -455,20 +457,22 @@ export function LeadCargoSection({
                   >
                     <Typography fontWeight={600}>Груз #{index + 1}</Typography>
 
-                    <IconButton
-                      size="small"
-                      color="error"
-                      disabled={deletingCargoIndex === index}
-                      onClick={() => onDeleteCargo?.(index)}
-                    >
-                      {deletingCargoIndex === index ? (
-                        <CircularProgress size={18} color="inherit" />
-                      ) : (
-                        canBeDeleted && (
-                          <DeleteOutlineRoundedIcon fontSize="small" />
-                        )
-                      )}
-                    </IconButton>
+                    {canDeleteCargo && (
+                      <IconButton
+                        size="small"
+                        color="error"
+                        disabled={deletingCargoIndex === index}
+                        onClick={() => onDeleteCargo?.(index)}
+                      >
+                        {deletingCargoIndex === index ? (
+                          <CircularProgress size={18} color="inherit" />
+                        ) : (
+                          canBeDeleted && (
+                            <DeleteOutlineRoundedIcon fontSize="small" />
+                          )
+                        )}
+                      </IconButton>
+                    )}
                   </Box>
 
                   <Box

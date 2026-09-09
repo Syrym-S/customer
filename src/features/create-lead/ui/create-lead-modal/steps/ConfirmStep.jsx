@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import { InfoBadge } from '../components/InfoBadge';
@@ -75,49 +75,54 @@ export function ConfirmStep({ form }) {
                         }}
                     >
                         {cargos.map((cargo, index) => (
-                            <Box
-                                key={`${cargo.name || cargo.type || 'cargo'}-${index}`}
-                                sx={{
-                                    display: 'grid',
-                                    gridTemplateColumns: {
-                                        xs: '1fr',
-                                        sm: 'repeat(2, 1fr)',
-                                    },
-                                    gap: 1,
-                                }}
-                            >
-                                <InfoBadge
-                                    label={`Груз #${index + 1}`}
-                                    value={cargo.name || 'Не указано'}
-                                />
+                            <Box key={`${cargo.name || cargo.type || 'cargo'}-${index}`}>
+                                <Box
+                                    sx={{
+                                        display: 'grid',
+                                        gridTemplateColumns: {
+                                            xs: '1fr',
+                                            sm: 'repeat(2, 1fr)',
+                                        },
+                                        gap: 1,
+                                    }}
+                                >
+                                    <InfoBadge
+                                        label={`Груз #${index + 1}`}
+                                        value={cargo.name || 'Не указано'}
+                                    />
 
-                                <InfoBadge
-                                    label="Тип груза"
-                                    value={cargo.type || 'Не указан'}
-                                />
+                                    <InfoBadge
+                                        label="Тип груза"
+                                        value={cargo.type || 'Не указан'}
+                                    />
 
-                                <InfoBadge
-                                    label="Вес"
-                                    value={
-                                        cargo.weight_kg
-                                            ? `${cargo.weight_kg} кг`
-                                            : 'Не указано'
-                                    }
-                                />
+                                    <InfoBadge
+                                        label="Вес"
+                                        value={
+                                            cargo.weight_kg
+                                                ? `${cargo.weight_kg} кг`
+                                                : 'Не указано'
+                                        }
+                                    />
 
-                                <InfoBadge
-                                    label="Цена груза"
-                                    value={
-                                        cargo.cargo_price
-                                            ? `${formatAmount(cargo.cargo_price)} ${form.currency || ''}`.trim()
-                                            : 'Не указано'
-                                    }
-                                />
+                                    <InfoBadge
+                                        label="Цена груза"
+                                        value={
+                                            cargo.cargo_price
+                                                ? `${formatAmount(cargo.cargo_price)} ${form.currency || ''}`.trim()
+                                                : 'Не указано'
+                                        }
+                                    />
 
-                                <InfoBadge
-                                    label="Размеры"
-                                    value={getDimensionsDisplay(cargo)}
-                                />
+                                    <InfoBadge
+                                        label="Размеры"
+                                        value={getDimensionsDisplay(cargo)}
+                                    />
+                                </Box>
+
+                                {index < cargos.length - 1 && (
+                                    <Divider sx={{ my: 1.5 }} />
+                                )}
                             </Box>
                         ))}
                     </Box>

@@ -11,6 +11,7 @@ import { RoutePoint } from '../components/RoutePoint';
 import { normalizeLocationValue } from '../../../model/lead-edit-form.helpers';
 import {
    getWaypointLabel,
+   getWaypointTypeChipColor,
    getWaypointTypeLabel,
 } from '../../../model/lead-route.helpers';
 import { LeadRouteEditor } from '../LeadRouteEditor';
@@ -39,6 +40,7 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
                      icon={<LocationOnOutlinedIcon />}
                      isPassed={Boolean(waypoint.is_passed)}
                      typeLabel={getWaypointTypeLabel(waypoint.type)}
+                     typeColor={getWaypointTypeChipColor(waypoint.type)}
                   />
                ))}
 

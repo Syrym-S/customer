@@ -12,8 +12,22 @@ export function getWaypointLabel(waypoint) {
 export const waypointTypeLabels = {
    loading: 'Погрузка',
    unloading: 'Разгрузка',
+   check_passes: 'Транзит',
 };
 
 export function getWaypointTypeLabel(type) {
    return waypointTypeLabels[type] || null;
+}
+
+// Reuses the same palette/rgba pairing as leadStatusStyles in lead.helpers.js
+// (start_loading -> warning, start_unloading -> secondary) so waypoint type
+// chips read consistently with the lead status chips elsewhere in the app.
+export const waypointTypeChipColors = {
+   loading: 'warning',
+   unloading: 'secondary',
+   check_passes: 'info',
+};
+
+export function getWaypointTypeChipColor(type) {
+   return waypointTypeChipColors[type] || 'primary';
 }

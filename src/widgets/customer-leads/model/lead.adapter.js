@@ -44,12 +44,29 @@ function normalizeApiPrice(value) {
 }
 
 function mapForwarderFromLead(apiLead) {
-   const forwarder =
+   const forwarderRaw =
       apiLead.forwarder ||
       apiLead.forwarder_data ||
       apiLead.expeditor ||
       apiLead.expediter ||
       null;
+
+   // Search endpoint (/customer/v1/leads/search) returns `forwarder` as a
+   // plain display-name string instead of an object — see
+   // mapTenderLeadSearchItemFromApi in tender.adapter.js for the same shape.
+   if (typeof forwarderRaw === 'string') {
+      const trimmed = forwarderRaw.trim();
+
+      return {
+         id: apiLead.forwarder_id ?? null,
+         fullName: trimmed || 'Не указан',
+         companyName: '',
+         companyBin: '',
+         phone: '',
+      };
+   }
+
+   const forwarder = forwarderRaw;
 
    const rawCompanyName =
       forwarder?.companyName ??
@@ -258,16 +275,20 @@ export function mapLeadFromApi(apiLead) {
 
       forwarder: mapForwarderFromLead(apiLead),
 
+      // `from`/`to` are the search endpoint's flat address-string fields —
+      // see mapTenderLeadSearchItemFromApi in tender.adapter.js.
       from_location:
          apiLead.from_location ||
          apiLead.route?.from?.address ||
          apiLead.route?.from?.city ||
+         apiLead.from ||
          'Не указано',
 
       to_location:
          apiLead.to_location ||
          apiLead.route?.to?.address ||
          apiLead.route?.to?.city ||
+         apiLead.to ||
          'Не указано',
 
       waypoints,

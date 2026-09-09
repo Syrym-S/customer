@@ -5,11 +5,7 @@ import PropTypes from 'prop-types';
 import { LeadShareButton } from './LeadShareButton';
 import { LeadChatButton } from './LeadChatButton';
 import { LeadDeliveryChatButton } from './LeadDeliveryChatButton';
-import { isFinishedLead } from '../../model/lead.helpers';
-
-function isCancelledLead(lead) {
-   return String(lead?.status || '').toLowerCase() === 'cancelled';
-}
+import { isFinishedLead, isCancelledLead } from '../../model/lead.helpers';
 
 export function LeadDetailsEditActions({
    lead,

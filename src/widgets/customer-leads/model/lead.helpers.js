@@ -86,3 +86,7 @@ export function getLeadStatusStyles(status) {
 export function isFinishedLead(lead) {
    return String(lead?.status || '').toLowerCase() === 'finished';
 }
+
+export function isCancelledLead(lead) {
+   return String(lead?.status || '').toLowerCase() === 'cancelled';
+}
