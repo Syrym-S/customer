@@ -20,7 +20,9 @@ export function getNotificationDomainEventName(notification) {
         return '';
     }
 
-    return NOTIFICATION_DOMAIN_EVENTS[type] || '';
+    const domain = type.split('.')[0];
+
+    return NOTIFICATION_DOMAIN_EVENTS[domain] || '';
 }
 
 export function publishNotificationDomainEvent(notification) {
