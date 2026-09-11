@@ -93,6 +93,7 @@ export function TendersTable({ tenders }) {
          field: 'num',
          headerName: 'Номер',
          width: 160,
+         cellClassName: 'tabular-nums',
          renderCell: ({ row }) => {
             return <Box>{row.num || row.lead?.num || '-'}</Box>;
          },
@@ -125,6 +126,9 @@ export function TendersTable({ tenders }) {
          field: 'cargoTotalWeight',
          headerName: 'Вес грузов',
          width: 160,
+         align: 'right',
+         headerAlign: 'right',
+         cellClassName: 'tabular-nums',
          renderCell: ({ row }) => {
             const totalWeight = getTenderTotalCargoWeight(row);
 
@@ -135,6 +139,9 @@ export function TendersTable({ tenders }) {
          field: 'price',
          headerName: 'Цена',
          width: 180,
+         align: 'right',
+         headerAlign: 'right',
+         cellClassName: 'tabular-nums',
          renderCell: ({ row }) => {
             return (
                <Box>
@@ -150,6 +157,9 @@ export function TendersTable({ tenders }) {
          field: 'bets',
          headerName: 'Ставки',
          width: 140,
+         align: 'right',
+         headerAlign: 'right',
+         cellClassName: 'tabular-nums',
          renderCell: ({ row }) => {
             return <Box>{Array.isArray(row.bets) ? row.bets.length : 0}</Box>;
          },

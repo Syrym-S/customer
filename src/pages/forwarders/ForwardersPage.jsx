@@ -240,8 +240,7 @@ export function ForwardersPage() {
                             </Typography>
 
                             <Typography color="text.secondary" fontSize={14}>
-                                Полный список экспедиторов с поиском по
-                                компании, представителю, БИН или телефону
+                                Полный список всех экспедиторов
                             </Typography>
                         </Box>
 

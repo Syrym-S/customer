@@ -1,5 +1,6 @@
  
 import {
+  alpha,
   Avatar,
   Box,
   Button,
@@ -246,7 +247,14 @@ export function Header() {
           </Box>
         )}
 
-        <List>
+        <List
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 0.5,
+            p: 0,
+          }}
+        >
           {menuItems.map((item) => (
             <Tooltip
               key={item.path}
@@ -265,17 +273,41 @@ export function Header() {
 
                   handleNavigate(item.path);
                 }}
-                sx={{
+                sx={(theme) => ({
                   display: "flex",
-                  gap: 1,
-                }}
+                  alignItems: "center",
+                  gap: 1.25,
+                  pl: "13px",
+                  pr: 1.25,
+                  py: 1,
+                  borderRadius: `${theme.radius.md}px`,
+                  color: theme.palette.text.secondary,
+                  transition: "background-color 120ms ease, color 120ms ease",
+
+                  "& .MuiSvgIcon-root": {
+                    fontSize: 20,
+                  },
+
+                  "&:hover": {
+                    backgroundColor: alpha(theme.palette.text.primary, 0.04),
+                    color: theme.palette.text.primary,
+                  },
+
+                  "&.Mui-selected": {
+                    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                    color: theme.palette.primary.main,
+                  },
+                  "&.Mui-selected:hover": {
+                    backgroundColor: alpha(theme.palette.primary.main, 0.12),
+                  },
+                })}
               >
                 {item.icon}
                 <ListItemText
                   primary={item.label}
                   primaryTypographyProps={{
                     sx: {
-                      color: item.selected ? "primary.main" : "text.primary",
+                      color: "inherit",
                       fontWeight: item.selected ? 600 : 400,
                     },
                   }}
@@ -286,26 +318,15 @@ export function Header() {
         </List>
 
         <Box
-          sx={{
-            p: 1,
-            background: "rgba(174, 174, 174, 0.2)",
-            borderRadius: 2,
-          }}
+          sx={(theme) => ({
+            p: 2.5,
+            background: alpha(theme.palette.divider, 0.4),
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: `${theme.radius.lg}px`,
+          })}
         >
-          <Typography
-            sx={{
-              fontWeight: "600",
-              fontSize: 16,
-            }}
-          >
-            Нужна помощь?
-          </Typography>
-          <Typography
-            sx={{
-              fontWeight: "400",
-              fontSize: 14,
-            }}
-          >
+          <Typography variant="subtitle2">Нужна помощь?</Typography>
+          <Typography variant="body2" color="text.secondary">
             Наша служба поддержки на связи 24/7
           </Typography>
 

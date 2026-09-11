@@ -46,17 +46,22 @@ export function SupportContacts({ layout = "column" }) {
     >
       <Tooltip title={supportEmail} placement="top" arrow>
         <Button
-          color="primary"
-          variant="contained"
+          color="inherit"
+          variant="outlined"
           component="a"
           href={`mailto:${supportEmail}?subject=${encodeURIComponent(
             "Обращение в поддержку",
           )}&body=${encodeURIComponent("Здравствуйте! У меня возник вопрос.")}`}
           sx={{
-            boxShadow: 0,
+            color: "text.secondary",
+            borderColor: "divider",
             fontSize: isRow ? 11 : 12,
             textTransform: "none",
 
+            "&:hover": {
+              borderColor: "text.secondary",
+              backgroundColor: "action.hover",
+            },
             "& .MuiButton-startIcon": {
               flexShrink: 0,
             },
@@ -87,13 +92,19 @@ export function SupportContacts({ layout = "column" }) {
         open={copied ? true : undefined}
       >
         <Button
-          color="primary"
-          variant="contained"
+          color="inherit"
+          variant="outlined"
           onClick={handleCopyPhone}
           sx={{
-            boxShadow: 0,
+            color: "text.secondary",
+            borderColor: "divider",
             fontSize: isRow ? 11 : 12,
             textTransform: "none",
+
+            "&:hover": {
+              borderColor: "text.secondary",
+              backgroundColor: "action.hover",
+            },
             ...(isRow && { flexShrink: 0 }),
           }}
           startIcon={<PhoneOutlinedIcon sx={{ fontSize: iconFontSize }} />}

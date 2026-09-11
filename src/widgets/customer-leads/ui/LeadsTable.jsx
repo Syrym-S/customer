@@ -91,6 +91,7 @@ export function LeadsTable({ leads }) {
          field: 'num',
          headerName: 'Номер',
          width: 200,
+         cellClassName: 'tabular-nums',
       },
       {
          field: 'forwarder',

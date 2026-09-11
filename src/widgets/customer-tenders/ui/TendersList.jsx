@@ -19,6 +19,7 @@ import { useTendersContext } from '../model/useTendersContext';
 import { TendersPagination } from './TendersPagination';
 import { useState } from 'react';
 import { TendersTable } from './TendersTable';
+import { CreateTenderButton } from './CreateTenderButton';
 
 const TENDERS_VIEW_MODES = {
    TABLE: 'table',
@@ -64,88 +65,93 @@ export function TendersList() {
             width: '100%',
             maxWidth: 1200,
             mx: 'auto',
-            mt: 4,
          }}
       >
          <Stack spacing={3}>
-            <Box
-               sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  gap: 2,
-                  alignItems: {
-                     xs: 'flex-start',
-                     sm: 'center',
-                  },
-                  flexDirection: {
-                     xs: 'column',
-                     sm: 'row',
-                  },
-               }}
-            >
-               <Box>
-                  <Typography variant="h6" fontWeight={600}>
-                     Аукционы
-                  </Typography>
-
-                  <Typography color="text.secondary" fontSize={14}>
-                     Список аукционов по заявкам
-                  </Typography>
-               </Box>
-
-               <Stack
-                  direction={{
-                     xs: 'column',
-                     sm: 'row',
-                  }}
-                  spacing={1}
+            <Stack spacing={1.5}>
+               <Box
                   sx={{
-                     width: {
-                        xs: '100%',
-                        sm: 'auto',
-                     },
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     gap: 2,
                      alignItems: {
-                        xs: 'stretch',
+                        xs: 'flex-start',
                         sm: 'center',
+                     },
+                     flexDirection: {
+                        xs: 'column',
+                        sm: 'row',
                      },
                   }}
                >
-                  <ToggleButtonGroup
-                     value={viewMode}
-                     exclusive
-                     onChange={handleViewModeChange}
-                     size="small"
-                     color="primary"
-                     aria-label="Переключение отображения аукционов"
+                  <Box>
+                     <Typography variant="h6" fontWeight={600}>
+                        Аукционы
+                     </Typography>
+
+                     <Typography color="text.secondary" fontSize={14}>
+                        Список аукционов по заявкам
+                     </Typography>
+                  </Box>
+
+                  <Stack
+                     direction={{
+                        xs: 'column',
+                        sm: 'row',
+                     }}
+                     spacing={1}
                      sx={{
-                        alignSelf: {
-                           xs: 'stretch',
+                        width: {
+                           xs: '100%',
                            sm: 'auto',
                         },
-                        '& .MuiToggleButton-root': {
-                           px: 1.5,
-                           minWidth: 40,
+                        alignItems: {
+                           xs: 'stretch',
+                           sm: 'center',
                         },
                      }}
                   >
-                     <ToggleButton
-                        value={TENDERS_VIEW_MODES.TABLE}
-                        aria-label="Показать таблицей"
-                        title="Таблица"
+                     <ToggleButtonGroup
+                        value={viewMode}
+                        exclusive
+                        onChange={handleViewModeChange}
+                        size="small"
+                        color="primary"
+                        aria-label="Переключение отображения аукционов"
+                        sx={{
+                           alignSelf: {
+                              xs: 'stretch',
+                              sm: 'auto',
+                           },
+                           '& .MuiToggleButton-root': {
+                              px: 1.5,
+                              minWidth: 40,
+                           },
+                        }}
                      >
-                        <ViewListRoundedIcon fontSize="small" />
-                     </ToggleButton>
+                        <ToggleButton
+                           value={TENDERS_VIEW_MODES.TABLE}
+                           aria-label="Показать таблицей"
+                           title="Таблица"
+                        >
+                           <ViewListRoundedIcon fontSize="small" />
+                        </ToggleButton>
 
-                     <ToggleButton
-                        value={TENDERS_VIEW_MODES.CARDS}
-                        aria-label="Показать карточками"
-                        title="Карточки"
-                     >
-                        <GridViewRoundedIcon fontSize="small" />
-                     </ToggleButton>
-                  </ToggleButtonGroup>
-               </Stack>
-            </Box>
+                        <ToggleButton
+                           value={TENDERS_VIEW_MODES.CARDS}
+                           aria-label="Показать карточками"
+                           title="Карточки"
+                        >
+                           <GridViewRoundedIcon fontSize="small" />
+                        </ToggleButton>
+                     </ToggleButtonGroup>
+                  </Stack>
+               </Box>
+
+               <Box sx={{ alignSelf: 'flex-start' }}>
+                  <CreateTenderButton />
+               </Box>
+            </Stack>
 
             <TextField
                value={search}

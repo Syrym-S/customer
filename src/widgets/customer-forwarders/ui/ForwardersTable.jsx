@@ -63,12 +63,14 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             field: 'bin',
             headerName: 'БИН',
             width: 160,
+            cellClassName: 'tabular-nums',
             renderCell: ({ row }) => <Box>{getForwarderBin(row)}</Box>,
         },
         {
             field: 'iin',
             headerName: 'ИИН',
             width: 160,
+            cellClassName: 'tabular-nums',
             renderCell: ({ row }) => <Box>{getForwarderIin(row)}</Box>,
         },
         {
@@ -81,6 +83,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             field: 'phone',
             headerName: 'Телефон',
             width: 160,
+            cellClassName: 'tabular-nums',
             renderCell: ({ row }) => <Box>{getForwarderPhone(row)}</Box>,
         },
         {
@@ -97,12 +100,14 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             field: 'bik',
             headerName: 'БИК',
             width: 140,
+            cellClassName: 'tabular-nums',
             renderCell: ({ row }) => <Box>{getForwarderBik(row)}</Box>,
         },
         {
             field: 'account',
             headerName: 'Расчетный счет',
             width: 220,
+            cellClassName: 'tabular-nums',
             renderCell: ({ row }) => <Box>{getForwarderAccount(row)}</Box>,
         },
         {

@@ -24,6 +24,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
          field: 'index',
          headerName: '№',
          width: 120,
+         cellClassName: 'tabular-nums',
          renderCell: ({ row }) => (
             <Box
                onClick={() => onOpenDetails(row)}
@@ -44,6 +45,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
          field: 'created_at',
          headerName: 'Дата',
          width: 160,
+         cellClassName: 'tabular-nums',
          renderCell: ({ row }) => <Box>{formatDate(row.created_at)}</Box>,
       },
       {
@@ -83,6 +85,9 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
          field: 'deb_summ',
          headerName: 'Дебиторская сумма',
          width: 190,
+         align: 'right',
+         headerAlign: 'right',
+         cellClassName: 'tabular-nums',
          renderCell: ({ row }) => (
             <Box>{formatMoney(row.deb_summ, row.deb_currency)}</Box>
          ),
@@ -91,6 +96,9 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
          field: 'cred_summ',
          headerName: 'Кредитная сумма',
          width: 190,
+         align: 'right',
+         headerAlign: 'right',
+         cellClassName: 'tabular-nums',
          renderCell: ({ row }) => (
             <Box>{formatMoney(row.cred_summ, row.currency)}</Box>
          ),

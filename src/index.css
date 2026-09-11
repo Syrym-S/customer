@@ -2,6 +2,14 @@ body {
     min-width: 300px;
 }
 
+/* Theme's numeric/data typography treatment (prices, weights, IDs, dates)
+   applied as a plain CSS class so it can be dropped onto a DataGrid cell
+   via cellClassName without rewriting the column into a renderCell. */
+.tabular-nums {
+   font-variant-numeric: tabular-nums;
+   font-feature-settings: "tnum";
+}
+
 .leaflet-container {
    width: 100%;
    height: 100%;
