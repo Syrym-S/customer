@@ -159,12 +159,14 @@ export function TendersList() {
                placeholder="Поиск по направлению"
                fullWidth
                size="small"
-               InputProps={{
-                  startAdornment: (
-                     <InputAdornment position="start">
-                        <SearchRoundedIcon color="action" fontSize="small" />
-                     </InputAdornment>
-                  ),
+               slotProps={{
+                  input: {
+                     startAdornment: (
+                        <InputAdornment position="start">
+                           <SearchRoundedIcon color="action" fontSize="small" />
+                        </InputAdornment>
+                     ),
+                  },
                }}
             />
 

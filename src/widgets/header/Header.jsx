@@ -510,6 +510,8 @@ export function Header() {
               height: "calc(100dvh - 64px)",
               borderRight: "1px solid",
               borderColor: "divider",
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
             },
           }}
         >

@@ -297,12 +297,15 @@ export function ForwardersPage() {
                     onChange={handleSearchChange}
                     placeholder="Поиск экспедитора"
                     fullWidth
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchRoundedIcon color="action" />
-                            </InputAdornment>
-                        ),
+                    size="small"
+                    slotProps={{
+                        input: {
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchRoundedIcon color="action" fontSize="small" />
+                                </InputAdornment>
+                            ),
+                        },
                     }}
                 />
 

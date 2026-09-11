@@ -105,11 +105,26 @@ export function SupportContacts({ layout = "column" }) {
               borderColor: "text.secondary",
               backgroundColor: "action.hover",
             },
-            ...(isRow && { flexShrink: 0 }),
+            "& .MuiButton-startIcon": {
+              flexShrink: 0,
+            },
+            ...(isRow && {
+              minWidth: 0,
+              flex: "1 1 auto",
+            }),
           }}
           startIcon={<PhoneOutlinedIcon sx={{ fontSize: iconFontSize }} />}
         >
-          {supportPhone}
+          <Box
+            component="span"
+            sx={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {supportPhone}
+          </Box>
         </Button>
       </Tooltip>
     </Box>
