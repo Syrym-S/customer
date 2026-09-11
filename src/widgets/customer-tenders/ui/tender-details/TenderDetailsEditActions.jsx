@@ -1,4 +1,5 @@
-import { Box, Button, Tooltip } from "@mui/material";
+import { Box, Button, IconButton, Tooltip } from "@mui/material";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PropTypes from "prop-types";
 
 import { isCancelledTender, isClosedTender } from "../../model/tender.helpers";
@@ -29,13 +30,14 @@ export function TenderDetailsEditActions({
          ) : (
             <Tooltip title={editTooltipTitle}>
                <span>
-                  <Button
-                     variant="outlined"
+                  <IconButton
+                     color="primary"
+                     aria-label="Изменить"
                      onClick={onStartEdit}
                      disabled={isEditDisabled}
                   >
-                     Изменить
-                  </Button>
+                     <EditOutlinedIcon fontSize="small" />
+                  </IconButton>
                </span>
             </Tooltip>
          )}

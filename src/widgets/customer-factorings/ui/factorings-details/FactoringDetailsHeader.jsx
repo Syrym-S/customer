@@ -3,14 +3,20 @@ import {
     getFactoringStatusColor,
     getFactoringStatusLabel,
 } from '../../model/factorings.helpers';
+import { paletteKeyToColorPath } from '../../../../shared/helpers/status-color.helpers';
+import { StatusDot } from '../../../../shared/ui/StatusDot';
 
 export function FactoringDetailsHeader({ factoring }) {
     return (
         <DialogTitle
             sx={{
-                px: {
+                pl: {
                     xs: 2,
                     sm: 3,
+                },
+                pr: {
+                    xs: 6,
+                    sm: 7,
                 },
                 pt: {
                     xs: 2,
@@ -85,14 +91,9 @@ export function FactoringDetailsHeader({ factoring }) {
                             }}
                         />
 
-                        <Chip
+                        <StatusDot
                             label={getFactoringStatusLabel(factoring?.status)}
-                            color={getFactoringStatusColor(factoring?.status)}
-                            size='small'
-                            sx={{
-                                borderRadius: 999,
-                                fontWeight: 500,
-                            }}
+                            color={paletteKeyToColorPath(getFactoringStatusColor(factoring?.status))}
                         />
                     </Stack>
                 )}

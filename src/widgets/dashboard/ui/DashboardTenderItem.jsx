@@ -9,6 +9,7 @@ import {
 } from '../../customer-tenders/model/tender.helpers';
 import { useTendersContext } from '../../customer-tenders/model/useTendersContext';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
+import { StatusDot } from '../../../shared/ui/StatusDot';
 
 function getLocationLabel(tender, field) {
     return (
@@ -65,19 +66,7 @@ function TenderStatusChip({ status }) {
     const label = tenderStatusLabels[status] || status || 'Не указан';
     const styles = tenderStatusStyles[status] || tenderStatusStyles.new;
 
-    return (
-        <Chip
-            label={label}
-            variant="outlined"
-            size="small"
-            sx={{
-                borderRadius: 999,
-                fontWeight: 600,
-                fontSize: '0.75rem',
-                ...styles,
-            }}
-        />
-    );
+    return <StatusDot label={label} color={styles.color} />;
 }
 
 function TimeLeftBadge({ value }) {

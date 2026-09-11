@@ -6,6 +6,8 @@ import {
 } from "../../customer-factorings/model/factorings.helpers";
 import { useFactoringsContext } from "../../customer-factorings/model/useFactoringsContext";
 import { formatAmount } from "../../../shared/helpers/currency-format.helpers";
+import { paletteKeyToColorPath } from "../../../shared/helpers/status-color.helpers";
+import { StatusDot } from "../../../shared/ui/StatusDot";
 
 function InfoText({ label, value }) {
   return (
@@ -100,14 +102,9 @@ export function DashboardFactoringItem({ factoring }) {
               }}
             />
 
-            <Chip
+            <StatusDot
               label={getFactoringStatusLabel(factoring.status)}
-              color={getFactoringStatusColor(factoring.status)}
-              size="small"
-              sx={{
-                borderRadius: 999,
-                fontWeight: 600,
-              }}
+              color={paletteKeyToColorPath(getFactoringStatusColor(factoring.status))}
             />
           </Box>
         </Box>

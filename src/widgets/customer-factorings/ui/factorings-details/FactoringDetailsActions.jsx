@@ -84,10 +84,6 @@ export function FactoringDetailsActions({
               {initiatingSigning ? "Открываем подписание..." : "Подтвердить"}
             </Button>
           )}
-
-          <Button onClick={onClose} disabled={initiatingSigning}>
-            Закрыть
-          </Button>
         </Stack>
       </DialogActions>
 

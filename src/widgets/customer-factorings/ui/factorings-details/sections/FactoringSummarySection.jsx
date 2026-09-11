@@ -1,4 +1,4 @@
-import { Box, Chip } from '@mui/material';
+import { Box } from '@mui/material';
 import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
 
@@ -8,6 +8,8 @@ import {
     getFactoringStatusColor,
     getFactoringStatusLabel,
 } from '../../../model/factorings.helpers';
+import { paletteKeyToColorPath } from '../../../../../shared/helpers/status-color.helpers';
+import { StatusDot } from '../../../../../shared/ui/StatusDot';
 
 export function FactoringSummarySection({ factoring }) {
     return (
@@ -43,11 +45,9 @@ export function FactoringSummarySection({ factoring }) {
                 <InfoBadge
                     label="Статус"
                     value={
-                        <Chip
-                            size="small"
+                        <StatusDot
                             label={getFactoringStatusLabel(factoring.status)}
-                            color={getFactoringStatusColor(factoring.status)}
-                            sx={{ borderRadius: 999 }}
+                            color={paletteKeyToColorPath(getFactoringStatusColor(factoring.status))}
                         />
                     }
                 />

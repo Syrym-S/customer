@@ -1,8 +1,14 @@
-import { Box, Chip, Paper } from '@mui/material';
+import { Box, Paper, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import { useLeadsContext } from '../model/useLeadsContext';
 import { getLeadStatusLabel, getLeadStatusStyles } from '../model/lead.helpers';
+import {
+   getShortLocationLabel,
+   getZebraRowClassName,
+   truncateId,
+} from '../../../shared/helpers/data-grid.helpers';
+import { StatusDot } from '../../../shared/ui/StatusDot';
 
 function getLocationLabel(location) {
    if (!location) {
@@ -22,19 +28,9 @@ function getForwarderLabel(forwarder) {
 
 function LeadStatusChip({ status }) {
    return (
-      <Chip
+      <StatusDot
          label={getLeadStatusLabel(status)}
-         variant="outlined"
-         size="small"
-         sx={{
-            borderRadius: 999,
-            fontWeight: 600,
-            fontSize: {
-               xs: '0.7rem',
-               sm: '0.8rem',
-            },
-            ...(getLeadStatusStyles(status)),
-         }}
+         color={getLeadStatusStyles(status).color}
       />
    );
 }
@@ -46,27 +42,29 @@ export function LeadsTable({ leads }) {
       {
          field: 'id',
          headerName: 'ID',
-         width: 200,
+         width: 130,
          renderCell: ({ row }) => (
-            <Box
-               onClick={() => setOpenLead(row)}
-               sx={{
-                  color: 'primary.main',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  textDecoration: 'underline',
-                  textUnderlineOffset: 2,
-                  width: 'fit-content',
-               }}
-            >
-               {row.id}
-            </Box>
+            <Tooltip title={row.id}>
+               <Box
+                  onClick={() => setOpenLead(row)}
+                  sx={{
+                     color: 'primary.main',
+                     cursor: 'pointer',
+                     fontWeight: 600,
+                     textDecoration: 'underline',
+                     textUnderlineOffset: 2,
+                     width: 'fit-content',
+                  }}
+               >
+                  {truncateId(row.id)}
+               </Box>
+            </Tooltip>
          ),
       },
       {
          field: 'status',
          headerName: 'Статус',
-         width: 220,
+         width: 180,
          renderCell: ({ row }) => {
             return <LeadStatusChip status={row.status} />;
          },
@@ -74,34 +72,42 @@ export function LeadsTable({ leads }) {
       {
          field: 'from_location',
          headerName: 'Откуда',
-         width: 200,
-         renderCell: ({ row }) => (
-            <Box>{getLocationLabel(row.from_location)}</Box>
-         ),
+         flex: 1,
+         minWidth: 140,
+         renderCell: ({ row }) => {
+            const fullLabel = getLocationLabel(row.from_location);
+
+            return (
+               <Tooltip title={fullLabel}>
+                  <Box>{getShortLocationLabel(row.from_location, fullLabel)}</Box>
+               </Tooltip>
+            );
+         },
       },
       {
          field: 'to_location',
          headerName: 'Куда',
-         width: 200,
-         renderCell: ({ row }) => (
-            <Box>{getLocationLabel(row.to_location)}</Box>
-         ),
-      },
-      {
-         field: 'num',
-         headerName: 'Номер',
-         width: 200,
-         cellClassName: 'tabular-nums',
+         flex: 1,
+         minWidth: 140,
+         renderCell: ({ row }) => {
+            const fullLabel = getLocationLabel(row.to_location);
+
+            return (
+               <Tooltip title={fullLabel}>
+                  <Box>{getShortLocationLabel(row.to_location, fullLabel)}</Box>
+               </Tooltip>
+            );
+         },
       },
       {
          field: 'forwarder',
          headerName: 'Экспедитор',
-         width: 200,
+         flex: 1,
+         minWidth: 180,
          renderCell: ({ row }) => {
             return <Box>{getForwarderLabel(row.forwarder)}</Box>;
          },
       },
-      
    ];
 
    return (
@@ -110,7 +116,8 @@ export function LeadsTable({ leads }) {
             rows={leads}
             getRowId={(row) => row.id}
             columns={columns}
-            checkboxSelection
+            getRowClassName={getZebraRowClassName}
+            hideFooter
             sx={{ border: 0 }}
          />
       </Paper>

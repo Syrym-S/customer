@@ -6,7 +6,8 @@ export function LeadDetailsHeader({ lead }) {
   return (
     <DialogTitle
       sx={{
-        px: 3,
+        pl: 3,
+        pr: 7,
         pt: 3,
         pb: 1.5,
       }}

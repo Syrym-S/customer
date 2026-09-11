@@ -1,6 +1,9 @@
-import { Box, Chip, Paper, Stack } from '@mui/material';
+import { Box, Paper, Stack, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
+import { getZebraRowClassName, truncateId } from '../../../shared/helpers/data-grid.helpers';
+import { paletteKeyToColorPath } from '../../../shared/helpers/status-color.helpers';
+import { StatusDot } from '../../../shared/ui/StatusDot';
 import {
    formatDate,
    formatMoney,
@@ -23,23 +26,29 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       {
          field: 'index',
          headerName: '№',
-         width: 120,
+         width: 130,
          cellClassName: 'tabular-nums',
-         renderCell: ({ row }) => (
-            <Box
-               onClick={() => onOpenDetails(row)}
-               sx={{
-                  color: 'primary.main',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  textDecoration: 'underline',
-                  textUnderlineOffset: 2,
-                  width: 'fit-content',
-               }}
-            >
-               {row.index ?? row.id ?? '—'}
-            </Box>
-         ),
+         renderCell: ({ row }) => {
+            const value = row.index ?? row.id ?? '—';
+
+            return (
+               <Tooltip title={value}>
+                  <Box
+                     onClick={() => onOpenDetails(row)}
+                     sx={{
+                        color: 'primary.main',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                        textDecoration: 'underline',
+                        textUnderlineOffset: 2,
+                        width: 'fit-content',
+                     }}
+                  >
+                     {truncateId(value)}
+                  </Box>
+               </Tooltip>
+            );
+         },
       },
       {
          field: 'created_at',
@@ -64,7 +73,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       {
          field: 'forwarder',
          headerName: 'Экспедитор',
-         width: 240,
+         width: 200,
          renderCell: ({ row }) => (
             <Stack spacing={0.25}>
                <Box>{getCompanyLabel(row.forwarder)}</Box>
@@ -79,6 +88,39 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
                   </Box>
                )}
             </Stack>
+         ),
+      },
+      {
+         field: 'verified_customer',
+         headerName: 'Вы',
+         width: 150,
+         renderCell: ({ row }) => (
+            <StatusDot
+               label={getVerificationLabel(row.verified_customer)}
+               color={paletteKeyToColorPath(getVerificationColor(row.verified_customer))}
+            />
+         ),
+      },
+      {
+         field: 'verified_forwarder',
+         headerName: 'Экспедитор',
+         width: 150,
+         renderCell: ({ row }) => (
+            <StatusDot
+               label={getVerificationLabel(row.verified_forwarder)}
+               color={paletteKeyToColorPath(getVerificationColor(row.verified_forwarder))}
+            />
+         ),
+      },
+      {
+         field: 'status',
+         headerName: 'Фактор',
+         width: 160,
+         renderCell: ({ row }) => (
+            <StatusDot
+               label={getFactoringStatusLabel(row.status)}
+               color={paletteKeyToColorPath(getFactoringStatusColor(row.status))}
+            />
          ),
       },
       {
@@ -103,60 +145,6 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
             <Box>{formatMoney(row.cred_summ, row.currency)}</Box>
          ),
       },
-      {
-         field: 'verified_customer',
-         headerName: 'Вы',
-         width: 150,
-         renderCell: ({ row }) => (
-            <Chip
-               size="small"
-               label={getVerificationLabel(row.verified_customer)}
-               color={getVerificationColor(row.verified_customer)}
-               sx={{
-                  borderRadius: 999,
-                  maxWidth: '100%',
-                  '& .MuiChip-label': {
-                     overflow: 'hidden',
-                     textOverflow: 'ellipsis',
-                  },
-               }}
-            />
-         ),
-      },
-      {
-         field: 'verified_forwarder',
-         headerName: 'Экспедитор',
-         width: 170,
-         renderCell: ({ row }) => (
-            <Chip
-               size="small"
-               label={getVerificationLabel(row.verified_forwarder)}
-               color={getVerificationColor(row.verified_forwarder)}
-               variant={row.verified_forwarder ? 'filled' : 'outlined'}
-               sx={{
-                  borderRadius: 999,
-                  maxWidth: '100%',
-                  '& .MuiChip-label': {
-                     overflow: 'hidden',
-                     textOverflow: 'ellipsis',
-                  },
-               }}
-            />
-         ),
-      },
-      {
-         field: 'status',
-         headerName: 'Статус со стороны фактора',
-         width: 180,
-         renderCell: ({ row }) => (
-            <Chip
-               size="small"
-               label={getFactoringStatusLabel(row.status)}
-               color={getFactoringStatusColor(row.status)}
-               sx={{ borderRadius: 999 }}
-            />
-         ),
-      },
    ];
 
    return (
@@ -165,7 +153,8 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
             rows={factorings}
             getRowId={(row) => row.id ?? row.index}
             columns={columns}
-            checkboxSelection
+            getRowClassName={getZebraRowClassName}
+            hideFooter
             sx={{ border: 0 }}
          />
       </Paper>

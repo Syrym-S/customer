@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import {
   Alert,
   Box,
-  Button,
   CircularProgress,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   Stack,
@@ -30,6 +28,7 @@ import {
 import { generateRoute } from "../../customer-leads/api/lead-route.repository";
 import { useCustomerMap } from "../../customer-map/model/useCustomerMap";
 import { useNavigate, useParams } from "react-router-dom";
+import { DialogCloseButton } from "../../../shared/ui/DialogCloseButton";
 
 function getFactoringDisplayId(factoring, fallbackId = "") {
   return (
@@ -198,14 +197,20 @@ export function FactoringDetailsModal({
         paper: {
           sx: {
             borderRadius: 4,
+            position: "relative",
           },
         },
       }}
     >
+      <DialogCloseButton
+        onClick={handleClose}
+        disabled={initiatingSigning}
+      />
+
       {factoring && !isDetailsPlaceholder ? (
         <FactoringDetailsHeader factoring={factoring} />
       ) : (
-        <DialogTitle sx={{ px: 3, pt: 3, pb: 1.5 }}>
+        <DialogTitle sx={{ pl: 3, pr: 7, pt: 3, pb: 1.5 }}>
           <Typography
             sx={{
               fontSize: {
@@ -284,7 +289,7 @@ export function FactoringDetailsModal({
         )}
       </DialogContent>
 
-      {shouldRenderFactoringDetails ? (
+      {shouldRenderFactoringDetails && (
         <FactoringDetailsActions
           factoring={factoring}
           factoringId={factoringDisplayId}
@@ -293,17 +298,6 @@ export function FactoringDetailsModal({
           onClose={handleClose}
           onInitiateSigning={onInitiateSigning}
         />
-      ) : (
-        <DialogActions
-          sx={{
-            px: 3,
-            pb: 3,
-            pt: 2,
-            justifyContent: "flex-end",
-          }}
-        >
-          <Button onClick={handleClose}>Закрыть</Button>
-        </DialogActions>
       )}
     </Dialog>
   );

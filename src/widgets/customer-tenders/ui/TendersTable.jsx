@@ -1,6 +1,12 @@
-import { Box, Chip, Paper } from '@mui/material';
+import { Box, Paper, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useTendersContext } from '../model/useTendersContext';
+import {
+   getShortLocationLabel,
+   getZebraRowClassName,
+   truncateId,
+} from '../../../shared/helpers/data-grid.helpers';
+import { StatusDot } from '../../../shared/ui/StatusDot';
 import {
    getTenderCargoTypeLabel,
    getTenderTotalCargoWeight,
@@ -39,22 +45,7 @@ function TenderStatusChip({ status }) {
    const label = tenderStatusLabels[status] || status || 'Не указан';
    const styles = tenderStatusStyles[status] || tenderStatusStyles.new;
 
-   return (
-      <Chip
-         label={label}
-         variant="outlined"
-         size="small"
-         sx={{
-            borderRadius: 999,
-            fontWeight: 600,
-            fontSize: {
-               xs: '0.7rem',
-               sm: '0.8rem',
-            },
-            ...styles,
-         }}
-      />
-   );
+   return <StatusDot label={label} color={styles.color} />;
 }
 
 export function TendersTable({ tenders }) {
@@ -64,68 +55,95 @@ export function TendersTable({ tenders }) {
       {
          field: 'id',
          headerName: 'ID',
-         width: 200,
+         width: 130,
          renderCell: ({ row }) => (
-            <Box
-               onClick={() => openTenderDetails(row)}
-               sx={{
-                  color: 'primary.main',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  textDecoration: 'underline',
-                  textUnderlineOffset: 2,
-                  width: 'fit-content',
-               }}
-            >
-               {row.id}
-            </Box>
+            <Tooltip title={row.id}>
+               <Box
+                  onClick={() => openTenderDetails(row)}
+                  sx={{
+                     color: 'primary.main',
+                     cursor: 'pointer',
+                     fontWeight: 600,
+                     textDecoration: 'underline',
+                     textUnderlineOffset: 2,
+                     width: 'fit-content',
+                  }}
+               >
+                  {truncateId(row.id)}
+               </Box>
+            </Tooltip>
          ),
       },
       {
          field: 'status',
          headerName: 'Статус',
-         width: 180,
+         width: 140,
          renderCell: ({ row }) => {
             return <TenderStatusChip status={row.status} />;
          },
       },
       {
-         field: 'num',
-         headerName: 'Номер',
-         width: 160,
-         cellClassName: 'tabular-nums',
-         renderCell: ({ row }) => {
-            return <Box>{row.num || row.lead?.num || '-'}</Box>;
-         },
-      },
-      {
          field: 'from_location',
          headerName: 'Откуда',
-         width: 220,
-         renderCell: ({ row }) => (
-            <Box>{getLocationLabel(getLeadValue(row, 'from_location'))}</Box>
-         ),
+         flex: 1,
+         minWidth: 140,
+         renderCell: ({ row }) => {
+            const location = getLeadValue(row, 'from_location');
+            const fullLabel = getLocationLabel(location);
+
+            return (
+               <Tooltip title={fullLabel}>
+                  <Box>{getShortLocationLabel(location, fullLabel)}</Box>
+               </Tooltip>
+            );
+         },
       },
       {
          field: 'to_location',
          headerName: 'Куда',
-         width: 220,
-         renderCell: ({ row }) => (
-            <Box>{getLocationLabel(getLeadValue(row, 'to_location'))}</Box>
-         ),
+         flex: 1,
+         minWidth: 140,
+         renderCell: ({ row }) => {
+            const location = getLeadValue(row, 'to_location');
+            const fullLabel = getLocationLabel(location);
+
+            return (
+               <Tooltip title={fullLabel}>
+                  <Box>{getShortLocationLabel(location, fullLabel)}</Box>
+               </Tooltip>
+            );
+         },
       },
       {
+         // Fixed, not flex: its content (a cargo type name, optionally
+         // "+ ещё N") doesn't benefit from growing, and leaving it in the
+         // flex pool was taking a 3rd share of the space that
+         // from_location/to_location compete for. Ellipsis + title as a
+         // safety net now that it's tighter than the longest possible label.
          field: 'cargoTypes',
          headerName: 'Тип груза',
-         width: 220,
+         width: 160,
          renderCell: ({ row }) => {
-            return <Box>{getTenderCargoTypeLabel(row)}</Box>;
+            const label = getTenderCargoTypeLabel(row);
+
+            return (
+               <Box
+                  title={label}
+                  sx={{
+                     overflow: 'hidden',
+                     textOverflow: 'ellipsis',
+                     whiteSpace: 'nowrap',
+                  }}
+               >
+                  {label}
+               </Box>
+            );
          },
       },
       {
          field: 'cargoTotalWeight',
          headerName: 'Вес грузов',
-         width: 160,
+         width: 120,
          align: 'right',
          headerAlign: 'right',
          cellClassName: 'tabular-nums',
@@ -138,7 +156,7 @@ export function TendersTable({ tenders }) {
       {
          field: 'price',
          headerName: 'Цена',
-         width: 180,
+         width: 140,
          align: 'right',
          headerAlign: 'right',
          cellClassName: 'tabular-nums',
@@ -156,7 +174,7 @@ export function TendersTable({ tenders }) {
       {
          field: 'bets',
          headerName: 'Ставки',
-         width: 140,
+         width: 70,
          align: 'right',
          headerAlign: 'right',
          cellClassName: 'tabular-nums',
@@ -172,7 +190,8 @@ export function TendersTable({ tenders }) {
             rows={tenders}
             getRowId={(row) => row.id}
             columns={columns}
-            checkboxSelection
+            getRowClassName={getZebraRowClassName}
+            hideFooter
             sx={{ border: 0 }}
          />
       </Paper>

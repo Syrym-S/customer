@@ -1,10 +1,8 @@
 import {
     Alert,
     Box,
-    Button,
     CircularProgress,
     Dialog,
-    DialogActions,
     DialogContent,
     DialogTitle,
     Typography,
@@ -31,6 +29,7 @@ import {
 } from '../model/tender-edit-form.helpers';
 import { TenderDetailsActions } from './tender-details/TenderDetailsActions';
 import { useNavigate, useParams } from 'react-router-dom';
+import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
 
 function getTenderRouteKey(lead) {
     if (!lead?.id) {
@@ -411,12 +410,18 @@ export function TenderDetailsModal() {
                 paper: {
                     sx: {
                         borderRadius: 4,
+                        position: 'relative',
                     },
                 },
             }}
         >
+            <DialogCloseButton
+                onClick={handleClose}
+                disabled={isSavingEdit || isActionLoading}
+            />
+
             {isRoutePlaceholder ? (
-                <DialogTitle sx={{ px: 3, pt: 3, pb: 1.5 }}>
+                <DialogTitle sx={{ pl: 3, pr: 7, pt: 3, pb: 1.5 }}>
                     <Typography
                         sx={{
                             fontSize: {
@@ -525,29 +530,17 @@ export function TenderDetailsModal() {
                 )}
             </DialogContent>
 
-            {shouldRenderTenderDetails ? (
+            {shouldRenderTenderDetails && (
                 <TenderDetailsActions
                     tender={openTender}
                     isEditing={isEditing}
                     isSaving={isSavingEdit}
                     isActionLoading={isActionLoading}
                     onSave={handleSaveEdit}
-                    onClose={handleClose}
                     onStartTender={handleStartTender}
                     onCancelTender={handleCancelTender}
                     onDeleteTender={handleDeleteTender}
                 />
-            ) : (
-                <DialogActions
-                    sx={{
-                        px: 3,
-                        pb: 3,
-                        pt: 2,
-                        justifyContent: 'flex-end',
-                    }}
-                >
-                    <Button onClick={handleClose}>Закрыть</Button>
-                </DialogActions>
             )}
         </Dialog>
     );

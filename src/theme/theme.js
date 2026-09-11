@@ -142,6 +142,15 @@ export const theme = createTheme({
             columnHeaders: ({ theme }) => ({
                backgroundColor: alpha(theme.palette.divider, 0.35),
                borderBottom: `1px solid ${theme.palette.divider}`,
+               // Not `:first-of-type` — MUI X renders a structural spacer
+               // <div> ahead of the first real header (for horizontal-scroll
+               // offset) when no column is pinned, so the first header is
+               // never actually first-of-type among its siblings. Every
+               // header carries `aria-colindex` reflecting its real column
+               // position (1-indexed), which is immune to that spacer.
+               '& .MuiDataGrid-columnHeader[aria-colindex="1"]': {
+                  paddingLeft: 32,
+               },
             }),
             columnHeaderTitle: ({ theme }) => ({
                fontWeight: 600,
@@ -156,10 +165,34 @@ export const theme = createTheme({
                '&:focus, &:focus-within': {
                   outline: 'none',
                },
+               // Not `:first-of-type` — MUI X renders a structural
+               // "cellOffsetLeft" spacer <div> immediately before the first
+               // real cell in every row (for horizontal-scroll offset) when
+               // no column is pinned, so the first cell is never actually
+               // first-of-type among its row siblings and the rule silently
+               // never matched. `aria-colindex="1"` targets the cell by its
+               // real column position instead, which the spacer doesn't have.
+               '&[aria-colindex="1"]': {
+                  paddingLeft: 32,
+               },
             }),
             row: ({ theme }) => ({
+               // Zebra-striping: odd rows get a clearly-visible tint (still
+               // a touch below the header's 0.35 so the header reads as the
+               // most prominent band). Declared before the hover rule so
+               // hover (same selector specificity) always wins the cascade.
+               // Hover's own alpha is bumped up to stay visually distinct
+               // now that the stripe itself is much stronger.
+               // Targets a `row-odd` class applied via each table's
+               // `getRowClassName` prop, NOT MUI X's own class list — this
+               // installed version (^9.9.0) has no automatic
+               // `MuiDataGrid-row--odd`/`--even` class (confirmed absent
+               // from its gridClasses.js), so that selector never matched.
+               '&.row-odd': {
+                  backgroundColor: alpha(theme.palette.divider, 0.32),
+               },
                '&:hover': {
-                  backgroundColor: alpha(theme.palette.primary.main, 0.04),
+                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
                },
             }),
          },

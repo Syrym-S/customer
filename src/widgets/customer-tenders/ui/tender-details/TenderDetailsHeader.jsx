@@ -1,4 +1,4 @@
-import { Box, Chip, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { tenderPropType } from '../../model/tenders.prop-types';
 
@@ -7,6 +7,7 @@ import {
    tenderStatusLabels,
    tenderStatusStyles,
 } from '../../model/tender.helpers';
+import { StatusDot } from '../../../../shared/ui/StatusDot';
 
 function getCompactId(id) {
    const normalizedId = String(id || '—');
@@ -28,9 +29,13 @@ export function TenderDetailsHeader({ tender }) {
    return (
       <Box
          sx={{
-            px: {
+            pl: {
                xs: 2,
                sm: 3,
+            },
+            pr: {
+               xs: 6,
+               sm: 7,
             },
             py: 2,
             borderBottom: '1px solid',
@@ -89,16 +94,12 @@ export function TenderDetailsHeader({ tender }) {
                />
             )}
 
-            <Chip
+            <StatusDot
                label={tenderStatusLabels[tender.status] || tender.status}
-               variant='outlined'
-               size='small'
-               sx={{
-                  borderRadius: 999,
-                  fontWeight: 600,
-                  ...(tenderStatusStyles[tender.status] ||
-                     tenderStatusStyles.new),
-               }}
+               color={
+                  (tenderStatusStyles[tender.status] ||
+                     tenderStatusStyles.new).color
+               }
             />
          </Stack>
       </Box>

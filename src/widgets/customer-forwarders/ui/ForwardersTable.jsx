@@ -1,6 +1,7 @@
 import { Box, Paper, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
+import { getZebraRowClassName } from '../../../shared/helpers/data-grid.helpers';
 import {
     getForwarderAccount,
     getForwarderAddress,
@@ -140,7 +141,8 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
                 rows={forwarders}
                 getRowId={(row) => getForwarderId(row)}
                 columns={columns}
-                checkboxSelection
+                getRowClassName={getZebraRowClassName}
+                hideFooter
                 localeText={{
                     noRowsLabel: 'Экспедиторы не найдены',
                 }}

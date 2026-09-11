@@ -1,12 +1,11 @@
 import { Button, DialogActions } from '@mui/material';
 import PropTypes from 'prop-types';
 
-export function LeadDetailsActions({
-   isEditing,
-   isSaving = false,
-   onSave,
-   onClose,
-}) {
+export function LeadDetailsActions({ isEditing, isSaving = false, onSave }) {
+   if (!isEditing) {
+      return null;
+   }
+
    return (
       <DialogActions
          sx={{
@@ -17,14 +16,8 @@ export function LeadDetailsActions({
             gap: 1,
          }}
       >
-         {isEditing && (
-            <Button variant='contained' onClick={onSave} disabled={isSaving}>
-               {isSaving ? 'Сохранение...' : 'Сохранить'}
-            </Button>
-         )}
-
-         <Button onClick={onClose} disabled={isSaving}>
-            Закрыть
+         <Button variant='contained' onClick={onSave} disabled={isSaving}>
+            {isSaving ? 'Сохранение...' : 'Сохранить'}
          </Button>
       </DialogActions>
    );
@@ -34,5 +27,4 @@ LeadDetailsActions.propTypes = {
    isEditing: PropTypes.bool.isRequired,
    isSaving: PropTypes.bool,
    onSave: PropTypes.func.isRequired,
-   onClose: PropTypes.func.isRequired,
 };

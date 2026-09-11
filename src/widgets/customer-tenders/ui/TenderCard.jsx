@@ -1,4 +1,4 @@
-import { Box, Chip, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
@@ -11,6 +11,7 @@ import { useTendersContext } from '../model/useTendersContext';
 import PropTypes from 'prop-types';
 import { tenderPropType } from '../model/tenders.prop-types';
 import { normalizeLocationValue } from '../model/tender-edit-form.helpers';
+import { StatusDot } from '../../../shared/ui/StatusDot';
 
 function getShortTenderId(id) {
    if (!id) {
@@ -149,16 +150,12 @@ export function TenderCard({ tender }) {
                      />
                   )}
 
-                  <Chip
+                  <StatusDot
                      label={tenderStatusLabels[tender.status] || tender.status}
-                     variant="outlined"
-                     size="small"
-                     sx={{
-                        borderRadius: 999,
-                        fontWeight: 600,
-                        ...(tenderStatusStyles[tender.status] ||
-                           tenderStatusStyles.new),
-                     }}
+                     color={
+                        (tenderStatusStyles[tender.status] ||
+                           tenderStatusStyles.new).color
+                     }
                   />
                </Stack>
             </Box>

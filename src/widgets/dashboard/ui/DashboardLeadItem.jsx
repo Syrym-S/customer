@@ -7,6 +7,7 @@ import {
   getLeadStatusStyles,
 } from "../../customer-leads/model/lead.helpers";
 import { formatAmount } from "../../../shared/helpers/currency-format.helpers";
+import { StatusDot } from "../../../shared/ui/StatusDot";
 
 function formatLocation(location) {
   return normalizeLocationValue(location) || "Адрес не указан";
@@ -38,16 +39,9 @@ function hasRouteCoordinates(lead) {
 
 export function LeadStatusChip({ status }) {
   return (
-    <Chip
+    <StatusDot
       label={getLeadStatusLabel(status)}
-      variant="outlined"
-      size="small"
-      sx={{
-        borderRadius: 999,
-        fontWeight: 600,
-        fontSize: "0.75rem",
-        ...getLeadStatusStyles(status),
-      }}
+      color={getLeadStatusStyles(status).color}
     />
   );
 }

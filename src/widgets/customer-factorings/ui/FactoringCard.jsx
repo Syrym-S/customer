@@ -7,6 +7,8 @@ import {
     getVerificationColor,
     getVerificationLabel,
 } from '../model/factorings.helpers';
+import { paletteKeyToColorPath } from '../../../shared/helpers/status-color.helpers';
+import { StatusDot } from '../../../shared/ui/StatusDot';
 import { InfoBadge } from './InfoBadge';
 
 export function FactoringCard({ factoring, onOpenDetails }) {
@@ -100,14 +102,9 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                             }}
                         />
 
-                        <Chip
+                        <StatusDot
                             label={getFactoringStatusLabel(factoring.status)}
-                            color={getFactoringStatusColor(factoring.status)}
-                            size="small"
-                            sx={{
-                                borderRadius: 999,
-                                fontWeight: 600,
-                            }}
+                            color={paletteKeyToColorPath(getFactoringStatusColor(factoring.status))}
                         />
                     </Stack>
                 </Box>
@@ -197,35 +194,26 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                             flexWrap: 'wrap',
                         }}
                     >
-                        <Chip
-                            size="small"
+                        <StatusDot
                             label={`Вы: ${getVerificationLabel(
                                 factoring.verified_customer,
                             )}`}
-                            color={getVerificationColor(
-                                factoring.verified_customer,
+                            color={paletteKeyToColorPath(
+                                getVerificationColor(
+                                    factoring.verified_customer,
+                                ),
                             )}
-                            sx={{
-                                borderRadius: 999,
-                            }}
                         />
 
-                        <Chip
-                            size="small"
+                        <StatusDot
                             label={`Экспедитор: ${getVerificationLabel(
                                 factoring.verified_forwarder,
                             )}`}
-                            color={getVerificationColor(
-                                factoring.verified_forwarder,
+                            color={paletteKeyToColorPath(
+                                getVerificationColor(
+                                    factoring.verified_forwarder,
+                                ),
                             )}
-                            variant={
-                                factoring.verified_forwarder
-                                    ? 'filled'
-                                    : 'outlined'
-                            }
-                            sx={{
-                                borderRadius: 999,
-                            }}
                         />
                     </Stack>
                 </Box>

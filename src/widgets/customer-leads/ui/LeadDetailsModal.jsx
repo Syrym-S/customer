@@ -24,6 +24,7 @@ import { useLeadDetailsRoute } from './lead-details/hooks/useLeadDetailsRoute';
 import { useLeadDetailsDocuments } from './lead-details/hooks/useLeadDetailsDocuments';
 import { useLeadDetailsGeoTracking } from './lead-details/hooks/useLeadDetailsGeoTracking';
 import { useLeadDetailsMutations } from './lead-details/hooks/useLeadDetailsMutations';
+import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
 
 export function LeadDetailsModal() {
    const navigate = useNavigate();
@@ -120,14 +121,17 @@ export function LeadDetailsModal() {
             paper: {
                sx: {
                   borderRadius: 4,
+                  position: 'relative',
                },
             },
          }}
       >
+         <DialogCloseButton onClick={handleClose} />
+
          {shouldRenderLeadDetails ? (
             <LeadDetailsHeader lead={currentLead} />
          ) : (
-            <DialogTitle sx={{ px: 3, pt: 3, pb: 1.5 }}>
+            <DialogTitle sx={{ pl: 3, pr: 7, pt: 3, pb: 1.5 }}>
                <Typography
                   sx={{
                      fontSize: {
@@ -238,7 +242,6 @@ export function LeadDetailsModal() {
             isEditing={isEditing}
             isSaving={isSavingEdit}
             onSave={handleSaveEdit}
-            onClose={handleClose}
          />
       </Dialog>
    );

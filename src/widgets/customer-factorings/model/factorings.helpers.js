@@ -79,7 +79,7 @@ export function formatDate(value) {
 export function getFactoringStatusLabel(status) {
     const labels = {
         new: 'Новый',
-        verified_participant: 'Один участник подтвердил',
+        verified_participant: 'Частично подтвержден',
         await_paid: 'Ожидает оплаты',
         finished: 'Завершён',
         cancelled: 'Отменён',

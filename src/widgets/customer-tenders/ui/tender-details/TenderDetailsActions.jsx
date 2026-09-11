@@ -6,6 +6,9 @@ import {
    DialogContentText,
    DialogTitle,
 } from '@mui/material';
+import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
+import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import PropTypes from 'prop-types';
 import { tenderPropType } from '../../model/tenders.prop-types';
 import { useState } from 'react';
@@ -33,7 +36,6 @@ export function TenderDetailsActions({
    isSaving = false,
    isActionLoading = false,
    onSave,
-   onClose,
    onStartTender,
    onCancelTender,
    onDeleteTender,
@@ -98,6 +100,7 @@ export function TenderDetailsActions({
                   <Button
                      color='success'
                      variant='contained'
+                     startIcon={<PlayArrowOutlinedIcon />}
                      onClick={onStartTender}
                      disabled={isActionLoading}
                   >
@@ -109,6 +112,7 @@ export function TenderDetailsActions({
                   <Button
                      color='warning'
                      variant='outlined'
+                     startIcon={<BlockOutlinedIcon />}
                      onClick={(event) => handleOpenConfirm('cancel', event)}
                      disabled={isActionLoading}
                   >
@@ -120,6 +124,7 @@ export function TenderDetailsActions({
                   <Button
                      color='error'
                      variant='outlined'
+                     startIcon={<DeleteOutlinedIcon />}
                      onClick={(event) => handleOpenConfirm('delete', event)}
                      disabled={isActionLoading}
                   >
@@ -128,14 +133,14 @@ export function TenderDetailsActions({
                )}
             </div>
 
-            <div
-               style={{
-                  display: 'flex',
-                  gap: 8,
-                  flexWrap: 'wrap',
-               }}
-            >
-               {isEditing && (
+            {isEditing && (
+               <div
+                  style={{
+                     display: 'flex',
+                     gap: 8,
+                     flexWrap: 'wrap',
+                  }}
+               >
                   <Button
                      variant='contained'
                      onClick={onSave}
@@ -143,12 +148,8 @@ export function TenderDetailsActions({
                   >
                      {isSaving ? 'Сохранение...' : 'Сохранить'}
                   </Button>
-               )}
-
-               <Button onClick={onClose} disabled={isSaving || isActionLoading}>
-                  Закрыть
-               </Button>
-            </div>
+               </div>
+            )}
          </DialogActions>
          <Dialog open={Boolean(confirmAction)} onClose={handleCloseConfirm}>
             <DialogTitle>{confirmConfig?.title}</DialogTitle>
@@ -184,7 +185,6 @@ TenderDetailsActions.propTypes = {
    isSaving: PropTypes.bool,
    isActionLoading: PropTypes.bool,
    onSave: PropTypes.func.isRequired,
-   onClose: PropTypes.func.isRequired,
    onStartTender: PropTypes.func,
    onCancelTender: PropTypes.func,
    onDeleteTender: PropTypes.func,

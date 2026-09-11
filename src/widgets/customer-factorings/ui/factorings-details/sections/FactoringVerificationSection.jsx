@@ -1,4 +1,4 @@
-import { Box, Chip, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { DetailSection } from "../components/DetailSection";
 import { InfoBadge } from "../components/InfoBadge";
 
@@ -8,6 +8,8 @@ import {
   getVerificationColor,
   getVerificationLabel,
 } from "../../../model/factorings.helpers";
+import { paletteKeyToColorPath } from "../../../../../shared/helpers/status-color.helpers";
+import { StatusDot } from "../../../../../shared/ui/StatusDot";
 
 export function FactoringVerificationSection({ factoring }) {
   return (
@@ -47,11 +49,9 @@ export function FactoringVerificationSection({ factoring }) {
             >
               <Typography fontWeight={700}>Подтверждение заказчика</Typography>
 
-              <Chip
-                size="small"
+              <StatusDot
                 label={getVerificationLabel(factoring.verified_customer)}
-                color={getVerificationColor(factoring.verified_customer)}
-                sx={{ borderRadius: 999 }}
+                color={paletteKeyToColorPath(getVerificationColor(factoring.verified_customer))}
               />
             </Box>
 
@@ -86,11 +86,9 @@ export function FactoringVerificationSection({ factoring }) {
                 Подтверждение экспедитора
               </Typography>
 
-              <Chip
-                size="small"
+              <StatusDot
                 label={getVerificationLabel(factoring.verified_forwarder)}
-                color={getVerificationColor(factoring.verified_forwarder)}
-                sx={{ borderRadius: 999 }}
+                color={paletteKeyToColorPath(getVerificationColor(factoring.verified_forwarder))}
               />
             </Box>
 
@@ -123,11 +121,9 @@ export function FactoringVerificationSection({ factoring }) {
             >
               <Typography fontWeight={700}>Подтверждение фактора</Typography>
 
-              <Chip
-                size="small"
+              <StatusDot
                 label={getVerificationLabel(factoring.verified_factor)}
-                color={getVerificationColor(factoring.verified_factor)}
-                sx={{ borderRadius: 999 }}
+                color={paletteKeyToColorPath(getVerificationColor(factoring.verified_factor))}
               />
             </Box>
 
