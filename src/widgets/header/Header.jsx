@@ -253,6 +253,7 @@ export function Header() {
             flexDirection: "column",
             gap: 0.5,
             p: 0,
+            mt: showCloseButton ? 5 : 0,
           }}
         >
           {menuItems.map((item) => (
@@ -505,13 +506,13 @@ export function Header() {
             },
             "& .MuiDrawer-paper": {
               width: "20vw",
+              minWidth: 220,
               boxSizing: "border-box",
               top: 64,
               height: "calc(100dvh - 64px)",
               borderRight: "1px solid",
               borderColor: "divider",
-              borderTopRightRadius: 0,
-              borderBottomRightRadius: 0,
+              borderRadius: 0,
             },
           }}
         >
@@ -529,6 +530,7 @@ export function Header() {
                   xs: "100%",
                   sm: CUSTOMER_NAV_WIDTH,
                 },
+                borderRadius: 0,
               },
             },
           }}

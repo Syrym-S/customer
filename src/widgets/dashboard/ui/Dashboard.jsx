@@ -70,12 +70,15 @@ export function Dashboard() {
         />
       </Box>
       <Box
-        sx={{
+        sx={(theme) => ({
           mt: 2,
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           gap: 2,
-        }}
+          [theme.breakpoints.down(850)]: {
+            gridTemplateColumns: "1fr",
+          },
+        })}
       >
         <DashboardTendersSection />
 

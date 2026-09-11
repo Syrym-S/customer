@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { Header } from "../header/Header";
 import { AppBreadcrumbs } from "../../router/AppBreadcrumbs";
-import { CUSTOMER_NAV_WIDTH } from "../../shared/config/constants";
 import { ChatWidget } from "../chat-widget/ui/ChatWidget";
 
 export function AppLayout() {
@@ -15,7 +14,7 @@ export function AppLayout() {
         sx={{
           ml: {
             xs: 0,
-            sm: `${CUSTOMER_NAV_WIDTH}px`,
+            sm: "max(20vw, 220px)",
           },
         }}
       >

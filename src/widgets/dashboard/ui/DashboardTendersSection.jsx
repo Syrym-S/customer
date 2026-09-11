@@ -77,17 +77,11 @@ export function DashboardTendersSection() {
             <Box
                 sx={{
                     display: 'flex',
-                    alignItems: {
-                        xs: 'flex-start',
-                        sm: 'center',
-                    },
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
                     justifyContent: 'space-between',
                     gap: 2,
                     mb: 1.5,
-                    flexDirection: {
-                        xs: 'column',
-                        sm: 'row',
-                    },
                 }}
             >
                 <Box>
@@ -116,10 +110,6 @@ export function DashboardTendersSection() {
                     }
                     sx={{
                         m: 0,
-                        alignSelf: {
-                            xs: 'flex-start',
-                            sm: 'center',
-                        },
                         '& .MuiFormControlLabel-label': {
                             fontSize: 14,
                             fontWeight: 600,
