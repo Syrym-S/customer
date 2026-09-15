@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
     acceptCustomerFactoring,
+    acceptFactoringLine,
     cancelCustomerFactoring,
     fetchCustomerFactoringById,
     fetchCustomerFactorings,
@@ -219,9 +220,9 @@ export function FactoringsProvider({ children }) {
         setCancelError('');
     }, []);
 
-    // Customer confirmation now calls the real accept endpoint, which has
-    // been updated backend-side (for three-party signing) to return a
-    // sign_url alongside its original accept-confirmation behavior.
+    // `is_line: true` on the factoring (from both the list and details
+    // endpoints) marks a closed factoring line — its accept call goes to the
+    // line-specific endpoint; everything else keeps using the regular one.
     const initiateFactoringSigning = useCallback(async () => {
         const factoringId = getFactoringId(selectedFactoring);
 
@@ -233,7 +234,9 @@ export function FactoringsProvider({ children }) {
             setIsInitiatingSigning(true);
             setSigningError('');
 
-            const response = await acceptCustomerFactoring(factoringId);
+            const response = selectedFactoring?.is_line
+                ? await acceptFactoringLine(factoringId)
+                : await acceptCustomerFactoring(factoringId);
 
             const signUrl =
                 response?.sign_url ||

@@ -129,3 +129,13 @@ export function getFactoringLeadId(factoring) {
 export function getForwarderName(forwarder) {
     return forwarder?.company_name || forwarder?.companyName || '—';
 }
+
+// `is_line: true` marks a closed factoring (it has its own factoring-line
+// document/signature), returned both in the factorings list and details.
+export function getFactoringLineTypeLabel(isLine) {
+    return isLine ? 'Закрытая линия' : 'Открытая линия';
+}
+
+export function getFactoringLineTypeColor(isLine) {
+    return isLine ? 'secondary' : 'default';
+}

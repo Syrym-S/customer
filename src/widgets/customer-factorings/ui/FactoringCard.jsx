@@ -2,6 +2,8 @@ import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import {
     formatDate,
     formatMoney,
+    getFactoringLineTypeColor,
+    getFactoringLineTypeLabel,
     getFactoringStatusColor,
     getFactoringStatusLabel,
     getVerificationColor,
@@ -105,6 +107,13 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                         <StatusDot
                             label={getFactoringStatusLabel(factoring.status)}
                             color={paletteKeyToColorPath(getFactoringStatusColor(factoring.status))}
+                        />
+
+                        <StatusDot
+                            label={getFactoringLineTypeLabel(factoring.is_line)}
+                            color={paletteKeyToColorPath(
+                                getFactoringLineTypeColor(factoring.is_line),
+                            )}
                         />
                     </Stack>
                 </Box>

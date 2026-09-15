@@ -138,8 +138,6 @@ export function FactoringDetailsModal({
         const encodedPolyline = getEncodedPolylineFromRoute(mainRoute);
         const decodedPoints = decodeRoutePolyline(encodedPolyline);
 
-                    console.log('decodedPoints', decodedPoints);
-
 
         if (!decodedPoints.length) {
           console.warn("Polyline факторинга не декодировался:", {

@@ -27,6 +27,12 @@ import LegalDocumentViewer from "../../file-input/LegalDocumentViewer";
 
 const POLL_INTERVAL_MS = 4000;
 
+// TEMP: the customer's own factoring-line signing should only unlock once
+// both forwarder and factor have signed (mirrors AvrSection's forwarderSigned
+// gate). Disabled for now at product's request — flip back to `true` to
+// re-enable the gate.
+const ENABLE_PARTIES_SIGNED_GATE = false;
+
 // The general factoring-line contract between forwarder and factor — already
 // signed by both, purely view-only for the customer. No `signed` state, no
 // sign action, no polling — distinct from FactoringLineCard below, which is
@@ -58,11 +64,14 @@ function FactoringLineDocumentCard({ document: lineDocument }) {
   );
 }
 
-function FactoringLineCard({ factoringId, line }) {
+function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
   const [lineDocument, setLineDocument] = useState(line?.document || null);
   const [isSigned, setIsSigned] = useState(Boolean(line?.signed));
   const [isSigning, setIsSigning] = useState(false);
   const [signUrl, setSignUrl] = useState(null);
+
+  const isLockedByParties =
+    ENABLE_PARTIES_SIGNED_GATE && !bothPartiesSigned;
 
   const pollIntervalRef = useRef(null);
   const signExpiresAtRef = useRef(null);
@@ -122,7 +131,7 @@ function FactoringLineCard({ factoringId, line }) {
   }
 
   async function handleSign() {
-    if (isSigning || isSigned) {
+    if (isSigning || isSigned || isLockedByParties) {
       return;
     }
 
@@ -163,6 +172,8 @@ function FactoringLineCard({ factoringId, line }) {
         backgroundColor: isSigned
           ? "grey.50"
           : "rgba(33, 150, 243, 0.04)",
+        opacity: isLockedByParties ? 0.5 : 1,
+        pointerEvents: isLockedByParties ? "none" : "auto",
       }}
     >
       <Stack spacing={1.25}>
@@ -185,13 +196,20 @@ function FactoringLineCard({ factoringId, line }) {
           />
         </Box>
 
+        {isLockedByParties && (
+          <Typography fontSize={12} color="text.secondary">
+            Подписание станет доступно после подписания экспедитором и
+            фактором.
+          </Typography>
+        )}
+
         {lineDocument && <LegalDocumentViewer file={lineDocument} />}
 
         {!isSigned && (
           <Button
             variant="outlined"
             size="small"
-            disabled={isSigning}
+            disabled={isSigning || isLockedByParties}
             onClick={handleSign}
             sx={{ alignSelf: "flex-start" }}
             startIcon={isSigning ? <CircularProgress size={16} /> : undefined}
@@ -237,6 +255,9 @@ export function FactoringVerificationSection({ factoring }) {
         <FactoringLineCard
           factoringId={factoring.id}
           line={factoring.factoringLine}
+          bothPartiesSigned={Boolean(
+            factoring.verified_forwarder && factoring.verified_factor,
+          )}
         />
       )}
 

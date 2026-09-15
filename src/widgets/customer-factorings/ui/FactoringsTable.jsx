@@ -7,6 +7,8 @@ import { StatusDot } from '../../../shared/ui/StatusDot';
 import {
    formatDate,
    formatMoney,
+   getFactoringLineTypeColor,
+   getFactoringLineTypeLabel,
    getFactoringStatusColor,
    getFactoringStatusLabel,
    getVerificationColor,
@@ -49,6 +51,17 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
                </Tooltip>
             );
          },
+      },
+      {
+         field: 'is_line',
+         headerName: 'Тип',
+         width: 150,
+         renderCell: ({ row }) => (
+            <StatusDot
+               label={getFactoringLineTypeLabel(row.is_line)}
+               color={paletteKeyToColorPath(getFactoringLineTypeColor(row.is_line))}
+            />
+         ),
       },
       {
          field: 'created_at',
