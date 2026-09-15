@@ -42,10 +42,14 @@ export function FactoringsContent() {
         isInitiatingSigning,
         signingError,
 
+        isCancelling,
+        cancelError,
+
         openFactoringDetails,
         closeFactoringDetails,
 
         initiateFactoringSigning,
+        cancelFactoring,
     } = useFactoringsContext();
 
     const [viewMode, setViewMode] = useState(FACTORINGS_VIEW_MODES.TABLE);
@@ -204,8 +208,11 @@ export function FactoringsContent() {
                 error={detailsError}
                 initiatingSigning={isInitiatingSigning}
                 signingError={signingError}
+                isCancelling={isCancelling}
+                cancelError={cancelError}
                 onClose={closeFactoringDetails}
                 onInitiateSigning={initiateFactoringSigning}
+                onCancelFactoring={cancelFactoring}
             />
         </PageContainer>
     );

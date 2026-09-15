@@ -55,8 +55,11 @@ export function FactoringDetailsModal({
   error,
   initiatingSigning,
   signingError,
+  isCancelling,
+  cancelError,
   onClose,
   onInitiateSigning,
+  onCancelFactoring,
 }) {
   const navigate = useNavigate();
   const { factoringId } = useParams();
@@ -190,7 +193,7 @@ export function FactoringDetailsModal({
   return (
     <Dialog
       open={open}
-      onClose={initiatingSigning ? undefined : handleClose}
+      onClose={initiatingSigning || isCancelling ? undefined : handleClose}
       maxWidth="md"
       fullWidth
       slotProps={{
@@ -204,7 +207,7 @@ export function FactoringDetailsModal({
     >
       <DialogCloseButton
         onClick={handleClose}
-        disabled={initiatingSigning}
+        disabled={initiatingSigning || isCancelling}
       />
 
       {factoring && !isDetailsPlaceholder ? (
@@ -262,6 +265,12 @@ export function FactoringDetailsModal({
           </Alert>
         )}
 
+        {cancelError && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {cancelError}
+          </Alert>
+        )}
+
         {shouldRenderFactoringDetails && (
           <Stack spacing={2}>
             {leadForMap && (
@@ -295,8 +304,10 @@ export function FactoringDetailsModal({
           factoringId={factoringDisplayId}
           initiatingSigning={initiatingSigning}
           canAccept={canBeVerified}
+          isCancelling={isCancelling}
           onClose={handleClose}
           onInitiateSigning={onInitiateSigning}
+          onCancelFactoring={onCancelFactoring}
         />
       )}
     </Dialog>

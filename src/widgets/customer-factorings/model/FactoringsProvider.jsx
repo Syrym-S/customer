@@ -3,8 +3,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
     acceptCustomerFactoring,
+    cancelCustomerFactoring,
     fetchCustomerFactoringById,
     fetchCustomerFactorings,
+    fetchFactoringLine,
+    fetchFactoringLineDocument,
 } from '../api/factorings.api';
 
 import { FactoringsContext } from './FactoringsContext';
@@ -35,6 +38,9 @@ export function FactoringsProvider({ children }) {
 
     const [isInitiatingSigning, setIsInitiatingSigning] = useState(false);
     const [signingError, setSigningError] = useState('');
+
+    const [isCancelling, setIsCancelling] = useState(false);
+    const [cancelError, setCancelError] = useState('');
 
     const pageCount = Math.max(1, Math.ceil(total / perPage));
 
@@ -90,13 +96,53 @@ export function FactoringsProvider({ children }) {
         [page, perPage],
     );
 
+    // Closed factorings carry their own factoring-line document. Absence of
+    // one (404, or a body with no `document`) just means this factoring has
+    // no line — i.e. it's an "open" factoring from the UI's perspective, so
+    // any fetch failure here is swallowed and treated the same way.
+    async function loadFactoringLine(factoringId) {
+        try {
+            const line = await fetchFactoringLine(factoringId);
+
+            return line?.document ? line : null;
+        } catch (error) {
+            if (error.response?.status !== 404) {
+                console.error('[factoring line load error]', error);
+            }
+
+            return null;
+        }
+    }
+
+    // The general factoring-line contract between forwarder and factor —
+    // view-only for the customer, no `signed` concept. Same absent-means-open
+    // treatment as loadFactoringLine above.
+    async function loadFactoringLineDocument(factoringId) {
+        try {
+            const response = await fetchFactoringLineDocument(factoringId);
+
+            return response?.document || null;
+        } catch (error) {
+            if (error.response?.status !== 404) {
+                console.error('[factoring line document load error]', error);
+            }
+
+            return null;
+        }
+    }
+
     const loadFactoringDetailsWithLead = useCallback(async (factoringId) => {
-        const details = await fetchCustomerFactoringById(factoringId);
+        const [details, factoringLine, factoringLineDocument] =
+            await Promise.all([
+                fetchCustomerFactoringById(factoringId),
+                loadFactoringLine(factoringId),
+                loadFactoringLineDocument(factoringId),
+            ]);
 
         const leadId = getFactoringLeadId(details);
 
         if (!leadId) {
-            return details;
+            return { ...details, factoringLine, factoringLineDocument };
         }
 
         try {
@@ -116,11 +162,13 @@ export function FactoringsProvider({ children }) {
             return {
                 ...details,
                 lead,
+                factoringLine,
+                factoringLineDocument,
             };
         } catch (leadError) {
             console.error('[factoring lead load error]', leadError);
 
-            return details;
+            return { ...details, factoringLine, factoringLineDocument };
         }
     }, []);
 
@@ -143,6 +191,7 @@ export function FactoringsProvider({ children }) {
 
                 setDetailsError('');
                 setSigningError('');
+                setCancelError('');
                 setIsDetailsLoading(true);
 
                 const details = await loadFactoringDetailsWithLead(factoringId);
@@ -167,6 +216,7 @@ export function FactoringsProvider({ children }) {
         setSelectedFactoring(null);
         setDetailsError('');
         setSigningError('');
+        setCancelError('');
     }, []);
 
     // Customer confirmation now calls the real accept endpoint, which has
@@ -204,6 +254,37 @@ export function FactoringsProvider({ children }) {
             setIsInitiatingSigning(false);
         }
     }, [selectedFactoring]);
+
+    const cancelFactoring = useCallback(async () => {
+        const factoringId = getFactoringId(selectedFactoring);
+
+        if (!factoringId) {
+            return;
+        }
+
+        try {
+            setIsCancelling(true);
+            setCancelError('');
+
+            await cancelCustomerFactoring(factoringId);
+
+            const updatedFactoring =
+                await loadFactoringDetailsWithLead(factoringId);
+
+            setSelectedFactoring(updatedFactoring);
+
+            await loadFactorings(page, { withLoader: false });
+        } catch (error) {
+            setCancelError(
+                error.response?.data?.message ||
+                    error.response?.data?.error ||
+                    error.message ||
+                    'Не удалось отменить факторинг',
+            );
+        } finally {
+            setIsCancelling(false);
+        }
+    }, [selectedFactoring, loadFactoringDetailsWithLead, loadFactorings, page]);
 
     useEffect(() => {
         loadFactorings(page, { withLoader: true });
@@ -263,12 +344,16 @@ export function FactoringsProvider({ children }) {
             isInitiatingSigning,
             signingError,
 
+            isCancelling,
+            cancelError,
+
             reloadFactorings: loadFactorings,
 
             openFactoringDetails,
             closeFactoringDetails,
 
             initiateFactoringSigning,
+            cancelFactoring,
         }),
         [
             factorings,
@@ -284,10 +369,13 @@ export function FactoringsProvider({ children }) {
             detailsError,
             isInitiatingSigning,
             signingError,
+            isCancelling,
+            cancelError,
             loadFactorings,
             openFactoringDetails,
             closeFactoringDetails,
             initiateFactoringSigning,
+            cancelFactoring,
         ],
     );
 
