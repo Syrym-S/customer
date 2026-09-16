@@ -62,8 +62,6 @@ export function ConfirmStep({ form }) {
                         )}
                     />
 
-                    <InfoBadge label="Дата загрузки" value={form.loadingDate} />
-
                     <Box
                         sx={{
                             gridColumn: {

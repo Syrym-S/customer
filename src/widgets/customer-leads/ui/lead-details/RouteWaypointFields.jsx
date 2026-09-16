@@ -2,7 +2,12 @@ import {
    Box,
    Button,
    CircularProgress,
+   FormControl,
+   FormHelperText,
    IconButton,
+   InputLabel,
+   MenuItem,
+   Select,
    TextField,
 } from '@mui/material';
 import { Controller } from 'react-hook-form';
@@ -71,10 +76,12 @@ export function RouteWaypointFields({
          {waypoints.map((waypoint, index) => {
             const pointKey = getWaypointPointKey(index);
             const locationFieldName = `waypoints.${index}.location`;
+            const typeFieldName = `waypoints.${index}.type`;
             const startAtFieldName = `waypoints.${index}.startAt`;
             const endAtFieldName = `waypoints.${index}.endAt`;
 
             const locationError = errors?.waypoints?.[index]?.location;
+            const typeError = errors?.waypoints?.[index]?.type;
             const startAtError = errors?.waypoints?.[index]?.startAt;
             const endAtError = errors?.waypoints?.[index]?.endAt;
 
@@ -194,6 +201,51 @@ export function RouteWaypointFields({
                         flexWrap: 'wrap',
                      }}
                   >
+                     <Controller
+                        name={typeFieldName}
+                        control={control}
+                        render={({ field }) => (
+                           <FormControl
+                              size="small"
+                              fullWidth
+                              error={Boolean(typeError)}
+                              sx={{
+                                 flex: 1,
+                                 minWidth: 160,
+                              }}
+                           >
+                              <InputLabel id={`${pointKey}-type-label`}>
+                                 Тип точки
+                              </InputLabel>
+                              <Select
+                                 {...field}
+                                 labelId={`${pointKey}-type-label`}
+                                 label="Тип точки"
+                                 value={field.value || 'check_passes'}
+                                 onChange={(event) => {
+                                    field.onChange(event);
+                                    setValue(
+                                       typeFieldName,
+                                       event.target.value,
+                                       setValueOptions,
+                                    );
+                                 }}
+                              >
+                                 <MenuItem value="loading">Погрузка</MenuItem>
+                                 <MenuItem value="unloading">
+                                    Разгрузка
+                                 </MenuItem>
+                                 <MenuItem value="check_passes">
+                                    Транзит
+                                 </MenuItem>
+                              </Select>
+                              <FormHelperText>
+                                 {typeError?.message}
+                              </FormHelperText>
+                           </FormControl>
+                        )}
+                     />
+
                      <Controller
                         name={startAtFieldName}
                         control={control}

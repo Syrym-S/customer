@@ -146,7 +146,6 @@ export function mapCreateLeadFormToApi(form) {
 
     addIfHasValue(payload, 'forwarder', form.forwarderId);
 
-    addIfHasValue(payload, 'loading_date', form.loadingDate);
     addIfHasValue(payload, 'comment', normalizeText(form.comment));
 
     addNumberIfHasValue(payload, 'from_lat', form.fromLat);

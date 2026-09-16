@@ -23,16 +23,6 @@ import { buildPointScheduleFields } from '../lib/point-schedule.helpers';
 
 const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Документы', 'Проверка'];
 
-function getTodayDateInputValue() {
-    const date = new Date();
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-}
-
 function createInitialCargo() {
     return {
         name: '',
@@ -73,8 +63,6 @@ function createInitialForm() {
 
         waypoints: [],
 
-        loadingDate: getTodayDateInputValue(),
-
         cargos: [createInitialCargo()],
 
         price: '',
@@ -103,7 +91,6 @@ function getRouteStepFields(waypoints) {
     return [
         'fromLocation',
         'toLocation',
-        'loadingDate',
         ...normalizedWaypoints.map((_, index) => `waypoints.${index}.location`),
         ...points.flatMap((point) => [point.startField, point.endField]),
     ];

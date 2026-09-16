@@ -107,6 +107,7 @@ function normalizeLeadWaypointsForEdit(lead) {
             address,
             label: address,
          },
+         type: waypoint.type || 'check_passes',
          startAt: getScheduleDateOnly(schedule?.start_at),
          endAt: getScheduleDateOnly(schedule?.end_at),
       };
@@ -190,7 +191,6 @@ export function createLeadEditForm(lead) {
          summ: '',
          currency: 'KZT',
          vat: 'без НДС',
-         loadingDate: '',
 
          driver: '',
          forwarder: '',
@@ -259,7 +259,6 @@ export function createLeadEditForm(lead) {
 
       currency: normalizeCurrency(lead.currency),
       vat: lead.vat || 'без НДС',
-      loadingDate: lead.raw?.loading_date || '',
 
       driver: lead.raw?.driver?.id || lead.driver?.id || '',
       forwarder: lead.forwarder?.id || '',
@@ -435,7 +434,10 @@ function addNumberIfChanged(payload, key, nextValue, prevValue) {
 }
 
 function normalizeWaypointForPayload(waypoint = {}) {
-   const locationData = waypoint.location_data || {};
+   const locationData =
+      waypoint.location_data && typeof waypoint.location_data === 'object'
+         ? waypoint.location_data
+         : waypoint;
 
    const lat = normalizeNumber(waypoint.lat);
    const lon = normalizeNumber(waypoint.lng ?? waypoint.lon);
@@ -455,6 +457,7 @@ function normalizeWaypointForPayload(waypoint = {}) {
          null,
       lat,
       lon,
+      type: waypoint.type || 'check_passes',
    };
 }
 
@@ -667,12 +670,6 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
    }
 
    addTextIfChanged(payload, 'vat', editForm.vat, currentLead.vat);
-   addTextIfChanged(
-      payload,
-      'loading_date',
-      editForm.loadingDate,
-      currentLead.raw?.loading_date,
-   );
 
    const nextCargos = normalizeCargosForPayload(editForm.cargos);
    const currentCargos = normalizeCargosForPayload(currentLead.cargos);
