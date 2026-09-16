@@ -24,7 +24,13 @@ import { useEffect, useState } from 'react';
 import { buildRouteFitBoundsKey } from '../../../lib/route-map.helpers';
 import {
     buildPointScheduleFields,
-    getFormFieldValue,
+    getEndAtChangeDependentField,
+    getEndAtMin,
+    getStartAtChangeDependentField,
+    getStartAtMin,
+    hasWaypointCoordinates,
+    validateEndAtOwnStart,
+    validateStartAtChain,
 } from '../../../lib/point-schedule.helpers';
 
 function padDatePart(value) {
@@ -35,17 +41,6 @@ function getTodayDateInputValue() {
     const now = new Date();
 
     return `${now.getFullYear()}-${padDatePart(now.getMonth() + 1)}-${padDatePart(now.getDate())}`;
-}
-
-function hasWaypointCoordinates(waypoint) {
-    return (
-        waypoint?.lat !== '' &&
-        waypoint?.lat !== null &&
-        waypoint?.lat !== undefined &&
-        waypoint?.lng !== '' &&
-        waypoint?.lng !== null &&
-        waypoint?.lng !== undefined
-    );
 }
 
 export function RouteStep({ control, errors, form, setValue, trigger }) {
@@ -62,93 +57,17 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
     const waypoints = Array.isArray(form.waypoints) ? form.waypoints : [];
     const pointScheduleFields = buildPointScheduleFields(waypoints);
 
-    function getPointScheduleIndex(fieldName, role) {
-        return pointScheduleFields.findIndex(
-            (point) => point[role] === fieldName,
-        );
-    }
-
-    function getStartAtMin(fieldName) {
-        const pointIndex = getPointScheduleIndex(fieldName, 'startField');
-
-        if (pointIndex <= 0) {
-            return undefined;
-        }
-
-        const previousEndField =
-            pointScheduleFields[pointIndex - 1].endField;
-
-        return getFormFieldValue(form, previousEndField) || undefined;
-    }
-
-    function getEndAtMin(fieldName) {
-        const pointIndex = getPointScheduleIndex(fieldName, 'endField');
-
-        if (pointIndex === -1) {
-            return undefined;
-        }
-
-        const ownStartField = pointScheduleFields[pointIndex].startField;
-
-        return getFormFieldValue(form, ownStartField) || undefined;
-    }
-
-    function validateStartAtChain(fieldName) {
-        return (value) => {
-            const pointIndex = getPointScheduleIndex(fieldName, 'startField');
-
-            if (pointIndex <= 0) {
-                return true;
-            }
-
-            const previousEndField =
-                pointScheduleFields[pointIndex - 1].endField;
-            const previousEndValue = getFormFieldValue(
-                form,
-                previousEndField,
-            );
-
-            if (!previousEndValue || !value) {
-                return true;
-            }
-
-            return (
-                value >= previousEndValue ||
-                'Дата начала не может быть раньше даты окончания предыдущей точки'
-            );
-        };
-    }
-
-    function validateEndAtOwnStart(fieldName) {
-        return (value) => {
-            const pointIndex = getPointScheduleIndex(fieldName, 'endField');
-
-            if (pointIndex === -1) {
-                return true;
-            }
-
-            const ownStartField = pointScheduleFields[pointIndex].startField;
-            const ownStartValue = getFormFieldValue(form, ownStartField);
-
-            if (!ownStartValue || !value) {
-                return true;
-            }
-
-            return (
-                value >= ownStartValue ||
-                'Дата окончания не может быть раньше даты начала этой точки'
-            );
-        };
-    }
-
     function handleStartAtChange(fieldName, onChange) {
         return (event) => {
             onChange(event);
 
-            const pointIndex = getPointScheduleIndex(fieldName, 'startField');
+            const dependentField = getStartAtChangeDependentField(
+                pointScheduleFields,
+                fieldName,
+            );
 
-            if (pointIndex !== -1) {
-                trigger(pointScheduleFields[pointIndex].endField);
+            if (dependentField) {
+                trigger(dependentField);
             }
         };
     }
@@ -157,10 +76,13 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
         return (event) => {
             onChange(event);
 
-            const pointIndex = getPointScheduleIndex(fieldName, 'endField');
+            const dependentField = getEndAtChangeDependentField(
+                pointScheduleFields,
+                fieldName,
+            );
 
-            if (pointIndex !== -1 && pointScheduleFields[pointIndex + 1]) {
-                trigger(pointScheduleFields[pointIndex + 1].startField);
+            if (dependentField) {
+                trigger(dependentField);
             }
         };
     }
@@ -498,7 +420,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         control={control}
                         rules={{
                             required: 'Укажите дату начала в точке отправления',
-                            validate: validateStartAtChain('fromStartAt'),
+                            validate: validateStartAtChain(
+                                form,
+                                pointScheduleFields,
+                                'fromStartAt',
+                            ),
                         }}
                         render={({ field }) => (
                             <TextField
@@ -525,7 +451,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         control={control}
                         rules={{
                             required: 'Укажите дату окончания в точке отправления',
-                            validate: validateEndAtOwnStart('fromEndAt'),
+                            validate: validateEndAtOwnStart(
+                                form,
+                                pointScheduleFields,
+                                'fromEndAt',
+                            ),
                         }}
                         render={({ field }) => (
                             <TextField
@@ -543,7 +473,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                 slotProps={{
                                     inputLabel: { shrink: true },
                                     htmlInput: (() => {
-                                        const min = getEndAtMin('fromEndAt');
+                                        const min = getEndAtMin(
+                                            form,
+                                            pointScheduleFields,
+                                            'fromEndAt',
+                                        );
 
                                         return min ? { min } : undefined;
                                     })(),
@@ -567,9 +501,13 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                     const waypointEndAtError =
                         errors.waypoints?.[index]?.endAt;
                     const waypointStartAtMin = getStartAtMin(
+                        form,
+                        pointScheduleFields,
                         waypointStartAtFieldName,
                     );
                     const waypointEndAtMin = getEndAtMin(
+                        form,
+                        pointScheduleFields,
                         waypointEndAtFieldName,
                     );
 
@@ -736,6 +674,8 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     rules={{
                                         required: `Укажите дату начала для точки ${index + 1}`,
                                         validate: validateStartAtChain(
+                                            form,
+                                            pointScheduleFields,
                                             waypointStartAtFieldName,
                                         ),
                                     }}
@@ -777,6 +717,8 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     rules={{
                                         required: `Укажите дату окончания для точки ${index + 1}`,
                                         validate: validateEndAtOwnStart(
+                                            form,
+                                            pointScheduleFields,
                                             waypointEndAtFieldName,
                                         ),
                                     }}
@@ -932,7 +874,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         control={control}
                         rules={{
                             required: 'Укажите дату начала в точке назначения',
-                            validate: validateStartAtChain('toStartAt'),
+                            validate: validateStartAtChain(
+                                form,
+                                pointScheduleFields,
+                                'toStartAt',
+                            ),
                         }}
                         render={({ field }) => (
                             <TextField
@@ -951,6 +897,8 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     inputLabel: { shrink: true },
                                     htmlInput: (() => {
                                         const min = getStartAtMin(
+                                            form,
+                                            pointScheduleFields,
                                             'toStartAt',
                                         );
 
@@ -966,7 +914,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         control={control}
                         rules={{
                             required: 'Укажите дату окончания в точке назначения',
-                            validate: validateEndAtOwnStart('toEndAt'),
+                            validate: validateEndAtOwnStart(
+                                form,
+                                pointScheduleFields,
+                                'toEndAt',
+                            ),
                         }}
                         render={({ field }) => (
                             <TextField
@@ -984,7 +936,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                 slotProps={{
                                     inputLabel: { shrink: true },
                                     htmlInput: (() => {
-                                        const min = getEndAtMin('toEndAt');
+                                        const min = getEndAtMin(
+                                            form,
+                                            pointScheduleFields,
+                                            'toEndAt',
+                                        );
 
                                         return min ? { min } : undefined;
                                     })(),

@@ -18,7 +18,15 @@ import {
 } from '../../../model/lead-route.helpers';
 import { LeadRouteEditor } from '../LeadRouteEditor';
 
-export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
+export function LeadRouteSection({
+   lead,
+   isEditing,
+   editForm,
+   routeControl,
+   routeErrors,
+   onTriggerRouteValidation,
+   onRouteFieldChange,
+}) {
    const waypoints = Array.isArray(lead.waypoints) ? lead.waypoints : [];
    const pointSchedules = Array.isArray(lead.point_schedules)
       ? lead.point_schedules
@@ -29,7 +37,13 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
    return (
       <DetailSection icon={<RouteOutlinedIcon />} title="Маршрут">
          {isEditing ? (
-            <LeadRouteEditor form={editForm} setValue={onEditChange} />
+            <LeadRouteEditor
+               form={editForm}
+               setValue={onRouteFieldChange}
+               control={routeControl}
+               errors={routeErrors}
+               trigger={onTriggerRouteValidation}
+            />
          ) : (
             <Stack spacing={1.25}>
                <RoutePoint
@@ -76,5 +90,8 @@ LeadRouteSection.propTypes = {
    lead: PropTypes.object.isRequired,
    isEditing: PropTypes.bool.isRequired,
    editForm: PropTypes.object.isRequired,
-   onEditChange: PropTypes.func.isRequired,
+   routeControl: PropTypes.object,
+   routeErrors: PropTypes.object,
+   onTriggerRouteValidation: PropTypes.func,
+   onRouteFieldChange: PropTypes.func,
 };

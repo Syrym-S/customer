@@ -1,4 +1,7 @@
 import { normalizeLocationValue } from './lead-edit-form.helpers';
+import { getPointScheduleByIndex } from '../../../features/create-lead/lib/point-schedule.helpers';
+
+export { getPointScheduleByIndex };
 
 export function getWaypointLabel(waypoint) {
    return (
@@ -30,18 +33,6 @@ export const waypointTypeChipColors = {
 
 export function getWaypointTypeChipColor(type) {
    return waypointTypeChipColors[type] || 'primary';
-}
-
-export function getPointScheduleByIndex(pointSchedules, pointIndex) {
-   if (!Array.isArray(pointSchedules)) {
-      return null;
-   }
-
-   return (
-      pointSchedules.find(
-         (schedule) => schedule?.point_index === pointIndex,
-      ) || null
-   );
 }
 
 function formatScheduleDatePart(value) {

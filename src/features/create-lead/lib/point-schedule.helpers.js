@@ -46,3 +46,164 @@ export function buildPointSchedulesPayload(form) {
         })
         .filter((schedule) => schedule.start_at || schedule.end_at);
 }
+
+export function hasWaypointCoordinates(waypoint) {
+    return (
+        waypoint?.lat !== '' &&
+        waypoint?.lat !== null &&
+        waypoint?.lat !== undefined &&
+        waypoint?.lng !== '' &&
+        waypoint?.lng !== null &&
+        waypoint?.lng !== undefined
+    );
+}
+
+export function getPointScheduleIndex(pointScheduleFields, fieldName, role) {
+    return pointScheduleFields.findIndex((point) => point[role] === fieldName);
+}
+
+export function getStartAtMin(form, pointScheduleFields, fieldName) {
+    const pointIndex = getPointScheduleIndex(
+        pointScheduleFields,
+        fieldName,
+        'startField',
+    );
+
+    if (pointIndex <= 0) {
+        return undefined;
+    }
+
+    const previousEndField = pointScheduleFields[pointIndex - 1].endField;
+
+    return getFormFieldValue(form, previousEndField) || undefined;
+}
+
+export function getEndAtMin(form, pointScheduleFields, fieldName) {
+    const pointIndex = getPointScheduleIndex(
+        pointScheduleFields,
+        fieldName,
+        'endField',
+    );
+
+    if (pointIndex === -1) {
+        return undefined;
+    }
+
+    const ownStartField = pointScheduleFields[pointIndex].startField;
+
+    return getFormFieldValue(form, ownStartField) || undefined;
+}
+
+export function validateStartAtChain(form, pointScheduleFields, fieldName) {
+    return (value) => {
+        const pointIndex = getPointScheduleIndex(
+            pointScheduleFields,
+            fieldName,
+            'startField',
+        );
+
+        if (pointIndex <= 0) {
+            return true;
+        }
+
+        const previousEndField = pointScheduleFields[pointIndex - 1].endField;
+        const previousEndValue = getFormFieldValue(form, previousEndField);
+
+        if (!previousEndValue || !value) {
+            return true;
+        }
+
+        return (
+            value >= previousEndValue ||
+            'Дата начала не может быть раньше даты окончания предыдущей точки'
+        );
+    };
+}
+
+export function validateEndAtOwnStart(form, pointScheduleFields, fieldName) {
+    return (value) => {
+        const pointIndex = getPointScheduleIndex(
+            pointScheduleFields,
+            fieldName,
+            'endField',
+        );
+
+        if (pointIndex === -1) {
+            return true;
+        }
+
+        const ownStartField = pointScheduleFields[pointIndex].startField;
+        const ownStartValue = getFormFieldValue(form, ownStartField);
+
+        if (!ownStartValue || !value) {
+            return true;
+        }
+
+        return (
+            value >= ownStartValue ||
+            'Дата окончания не может быть раньше даты начала этой точки'
+        );
+    };
+}
+
+export function getStartAtChangeDependentField(pointScheduleFields, fieldName) {
+    const pointIndex = getPointScheduleIndex(
+        pointScheduleFields,
+        fieldName,
+        'startField',
+    );
+
+    return pointIndex !== -1 ? pointScheduleFields[pointIndex].endField : null;
+}
+
+export function getEndAtChangeDependentField(pointScheduleFields, fieldName) {
+    const pointIndex = getPointScheduleIndex(
+        pointScheduleFields,
+        fieldName,
+        'endField',
+    );
+
+    return pointIndex !== -1 && pointScheduleFields[pointIndex + 1]
+        ? pointScheduleFields[pointIndex + 1].startField
+        : null;
+}
+
+export function getPointScheduleByIndex(pointSchedules, pointIndex) {
+    if (!Array.isArray(pointSchedules)) {
+        return null;
+    }
+
+    return (
+        pointSchedules.find(
+            (schedule) => schedule?.point_index === pointIndex,
+        ) || null
+    );
+}
+
+export function getScheduleDateOnly(value) {
+    if (!value || typeof value !== 'string') {
+        return '';
+    }
+
+    return value.split(' ')[0];
+}
+
+function normalizePointScheduleForCompare(schedule) {
+    return {
+        point_index: schedule?.point_index ?? null,
+        start_at: getScheduleDateOnly(schedule?.start_at) || null,
+        end_at: getScheduleDateOnly(schedule?.end_at) || null,
+    };
+}
+
+export function havePointSchedulesChanged(nextSchedules, currentSchedules) {
+    const next = (Array.isArray(nextSchedules) ? nextSchedules : [])
+        .map(normalizePointScheduleForCompare)
+        .sort((a, b) => a.point_index - b.point_index);
+
+    const current = (Array.isArray(currentSchedules) ? currentSchedules : [])
+        .map(normalizePointScheduleForCompare)
+        .sort((a, b) => a.point_index - b.point_index);
+
+    return JSON.stringify(next) !== JSON.stringify(current);
+}

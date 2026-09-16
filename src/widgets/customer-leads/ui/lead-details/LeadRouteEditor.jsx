@@ -1,7 +1,18 @@
 import { useState } from 'react';
 
-import { Box } from '@mui/material';
+import { Box, TextField } from '@mui/material';
+import { Controller } from 'react-hook-form';
+
 import { useRouteMapPicker } from '../../../../features/create-lead/model/useRouteMapPicker';
+import {
+   buildPointScheduleFields,
+   getEndAtChangeDependentField,
+   getEndAtMin,
+   getStartAtChangeDependentField,
+   getStartAtMin,
+   validateEndAtOwnStart,
+   validateStartAtChain,
+} from '../../../../features/create-lead/lib/point-schedule.helpers';
 import { useRouteAddressSearch } from './hooks/useRouteAddressSearch';
 import { RoutePointButtons } from './RoutePointButtons';
 import { LeadRouteEditorMap } from './LeadRouteEditorMap';
@@ -9,11 +20,46 @@ import { RouteAddressAutocomplete } from './RouteAddressAutocomplete';
 import { RouteWaypointFields } from './RouteWaypointFields';
 import { setValueOptions } from '../../model/lead-route-editor.helpers';
 
-export function LeadRouteEditor({ form, setValue }) {
+const dateFieldSx = { flex: 1, minWidth: 160 };
+
+export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
    const [fromInputValue, setFromInputValue] = useState('');
    const [toInputValue, setToInputValue] = useState('');
 
    const waypoints = Array.isArray(form.waypoints) ? form.waypoints : [];
+   const pointScheduleFields = buildPointScheduleFields(waypoints);
+
+   function handleStartAtChange(fieldName, onChange) {
+      return (event) => {
+         onChange(event);
+         setValue(fieldName, event.target.value, setValueOptions);
+
+         const dependentField = getStartAtChangeDependentField(
+            pointScheduleFields,
+            fieldName,
+         );
+
+         if (dependentField) {
+            trigger(dependentField);
+         }
+      };
+   }
+
+   function handleEndAtChange(fieldName, onChange) {
+      return (event) => {
+         onChange(event);
+         setValue(fieldName, event.target.value, setValueOptions);
+
+         const dependentField = getEndAtChangeDependentField(
+            pointScheduleFields,
+            fieldName,
+         );
+
+         if (dependentField) {
+            trigger(dependentField);
+         }
+      };
+   }
 
    const {
       activeMapPoint,
@@ -118,6 +164,89 @@ export function LeadRouteEditor({ form, setValue }) {
                onSelect={handleFromSelect}
             />
 
+            <Box
+               sx={{
+                  display: 'flex',
+                  gap: 1,
+                  flexWrap: 'wrap',
+                  gridColumn: {
+                     xs: 'auto',
+                     sm: '1 / -1',
+                  },
+               }}
+            >
+               <Controller
+                  name="fromStartAt"
+                  control={control}
+                  rules={{
+                     required: 'Укажите дату начала в точке отправления',
+                     validate: validateStartAtChain(
+                        form,
+                        pointScheduleFields,
+                        'fromStartAt',
+                     ),
+                  }}
+                  render={({ field }) => (
+                     <TextField
+                        {...field}
+                        onChange={handleStartAtChange(
+                           'fromStartAt',
+                           field.onChange,
+                        )}
+                        label="Начало (Откуда)"
+                        type="date"
+                        size="small"
+                        error={Boolean(errors?.fromStartAt)}
+                        helperText={errors?.fromStartAt?.message}
+                        sx={dateFieldSx}
+                        slotProps={{
+                           inputLabel: { shrink: true },
+                        }}
+                     />
+                  )}
+               />
+
+               <Controller
+                  name="fromEndAt"
+                  control={control}
+                  rules={{
+                     required: 'Укажите дату окончания в точке отправления',
+                     validate: validateEndAtOwnStart(
+                        form,
+                        pointScheduleFields,
+                        'fromEndAt',
+                     ),
+                  }}
+                  render={({ field }) => (
+                     <TextField
+                        {...field}
+                        onChange={handleEndAtChange(
+                           'fromEndAt',
+                           field.onChange,
+                        )}
+                        label="Окончание (Откуда)"
+                        type="date"
+                        size="small"
+                        error={Boolean(errors?.fromEndAt)}
+                        helperText={errors?.fromEndAt?.message}
+                        sx={dateFieldSx}
+                        slotProps={{
+                           inputLabel: { shrink: true },
+                           htmlInput: (() => {
+                              const min = getEndAtMin(
+                                 form,
+                                 pointScheduleFields,
+                                 'fromEndAt',
+                              );
+
+                              return min ? { min } : undefined;
+                           })(),
+                        }}
+                     />
+                  )}
+               />
+            </Box>
+
             <RouteWaypointFields
                waypoints={waypoints}
                activeMapPoint={activeMapPoint}
@@ -126,6 +255,11 @@ export function LeadRouteEditor({ form, setValue }) {
                setValue={setValue}
                clearWaypointPoint={clearWaypointPoint}
                handleRemoveWaypoint={handleRemoveWaypoint}
+               control={control}
+               errors={errors}
+               form={form}
+               pointScheduleFields={pointScheduleFields}
+               trigger={trigger}
             />
 
             <RouteAddressAutocomplete
@@ -137,6 +271,95 @@ export function LeadRouteEditor({ form, setValue }) {
                onInputChange={handleToInputChange}
                onSelect={handleToSelect}
             />
+
+            <Box
+               sx={{
+                  display: 'flex',
+                  gap: 1,
+                  flexWrap: 'wrap',
+                  gridColumn: {
+                     xs: 'auto',
+                     sm: '1 / -1',
+                  },
+               }}
+            >
+               <Controller
+                  name="toStartAt"
+                  control={control}
+                  rules={{
+                     required: 'Укажите дату начала в точке назначения',
+                     validate: validateStartAtChain(
+                        form,
+                        pointScheduleFields,
+                        'toStartAt',
+                     ),
+                  }}
+                  render={({ field }) => (
+                     <TextField
+                        {...field}
+                        onChange={handleStartAtChange(
+                           'toStartAt',
+                           field.onChange,
+                        )}
+                        label="Начало (Куда)"
+                        type="date"
+                        size="small"
+                        error={Boolean(errors?.toStartAt)}
+                        helperText={errors?.toStartAt?.message}
+                        sx={dateFieldSx}
+                        slotProps={{
+                           inputLabel: { shrink: true },
+                           htmlInput: (() => {
+                              const min = getStartAtMin(
+                                 form,
+                                 pointScheduleFields,
+                                 'toStartAt',
+                              );
+
+                              return min ? { min } : undefined;
+                           })(),
+                        }}
+                     />
+                  )}
+               />
+
+               <Controller
+                  name="toEndAt"
+                  control={control}
+                  rules={{
+                     required: 'Укажите дату окончания в точке назначения',
+                     validate: validateEndAtOwnStart(
+                        form,
+                        pointScheduleFields,
+                        'toEndAt',
+                     ),
+                  }}
+                  render={({ field }) => (
+                     <TextField
+                        {...field}
+                        onChange={handleEndAtChange('toEndAt', field.onChange)}
+                        label="Окончание (Куда)"
+                        type="date"
+                        size="small"
+                        error={Boolean(errors?.toEndAt)}
+                        helperText={errors?.toEndAt?.message}
+                        sx={dateFieldSx}
+                        slotProps={{
+                           inputLabel: { shrink: true },
+                           htmlInput: (() => {
+                              const min = getEndAtMin(
+                                 form,
+                                 pointScheduleFields,
+                                 'toEndAt',
+                              );
+
+                              return min ? { min } : undefined;
+                           })(),
+                        }}
+                     />
+                  )}
+               />
+            </Box>
          </Box>
       </Box>
    );

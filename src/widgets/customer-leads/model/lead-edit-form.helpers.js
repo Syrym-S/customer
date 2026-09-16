@@ -1,3 +1,10 @@
+import {
+   buildPointSchedulesPayload,
+   getPointScheduleByIndex,
+   getScheduleDateOnly,
+   havePointSchedulesChanged,
+} from '../../../features/create-lead/lib/point-schedule.helpers';
+
 function createEmptyLeadCargoEditForm() {
    return {
       name: '',
@@ -80,9 +87,13 @@ function normalizeLocationDataForEdit(location) {
 
 function normalizeLeadWaypointsForEdit(lead) {
    const sourceWaypoints = Array.isArray(lead?.waypoints) ? lead.waypoints : [];
+   const pointSchedules = Array.isArray(lead?.point_schedules)
+      ? lead.point_schedules
+      : [];
 
    return sourceWaypoints.map((waypoint, index) => {
       const address = normalizeLocationValue(waypoint);
+      const schedule = getPointScheduleByIndex(pointSchedules, index + 1);
 
       return {
          id: waypoint.id || `waypoint-${index}`,
@@ -96,6 +107,8 @@ function normalizeLeadWaypointsForEdit(lead) {
             address,
             label: address,
          },
+         startAt: getScheduleDateOnly(schedule?.start_at),
+         endAt: getScheduleDateOnly(schedule?.end_at),
       };
    });
 }
@@ -159,11 +172,15 @@ export function createLeadEditForm(lead) {
          from_location: createEmptyLocation(),
          fromLat: '',
          fromLng: '',
+         fromStartAt: '',
+         fromEndAt: '',
 
          toLocation: '',
          to_location: createEmptyLocation(),
          toLat: '',
          toLng: '',
+         toStartAt: '',
+         toEndAt: '',
 
          waypoints: [],
 
@@ -183,6 +200,16 @@ export function createLeadEditForm(lead) {
 
    const fromLocationLabel = normalizeLocationValue(lead.from_location);
    const toLocationLabel = normalizeLocationValue(lead.to_location);
+
+   const waypoints = normalizeLeadWaypointsForEdit(lead);
+   const pointSchedules = Array.isArray(lead.point_schedules)
+      ? lead.point_schedules
+      : [];
+   const fromSchedule = getPointScheduleByIndex(pointSchedules, 0);
+   const toSchedule = getPointScheduleByIndex(
+      pointSchedules,
+      waypoints.length + 1,
+   );
 
    return {
       fromLocation: fromLocationLabel,
@@ -206,6 +233,9 @@ export function createLeadEditForm(lead) {
          lead.raw?.route?.from?.lon ||
          '',
 
+      fromStartAt: getScheduleDateOnly(fromSchedule?.start_at),
+      fromEndAt: getScheduleDateOnly(fromSchedule?.end_at),
+
       toLat:
          getLocationCoordinate(lead.to_location, ['lat', 'latitude']) ||
          lead.raw?.route?.to?.lat ||
@@ -217,7 +247,10 @@ export function createLeadEditForm(lead) {
          lead.raw?.route?.to?.lon ||
          '',
 
-      waypoints: normalizeLeadWaypointsForEdit(lead),
+      toStartAt: getScheduleDateOnly(toSchedule?.start_at),
+      toEndAt: getScheduleDateOnly(toSchedule?.end_at),
+
+      waypoints,
 
       cargos,
 
@@ -653,6 +686,17 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
 
    if (!areWaypointsEqual(nextWaypoints, currentWaypoints)) {
       payload.waypoints = nextWaypoints;
+   }
+
+   const nextPointSchedules = buildPointSchedulesPayload(editForm);
+
+   if (
+      havePointSchedulesChanged(
+         nextPointSchedules,
+         currentLead.point_schedules,
+      )
+   ) {
+      payload.point_schedules = nextPointSchedules;
    }
 
    return payload;

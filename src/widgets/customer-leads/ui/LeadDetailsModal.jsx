@@ -72,6 +72,10 @@ export function LeadDetailsModal() {
       handleSaveEdit,
       handleDeleteCargo,
       resetMutations,
+      routeControl,
+      routeErrors,
+      triggerRoute,
+      handleRouteFieldChange,
    } = useLeadDetailsMutations({
       currentLead,
       setOpenLead,
@@ -225,6 +229,10 @@ export function LeadDetailsModal() {
                      isEditing={isEditing}
                      editForm={editForm}
                      onEditChange={handleEditChange}
+                     routeControl={routeControl}
+                     routeErrors={routeErrors}
+                     onTriggerRouteValidation={triggerRoute}
+                     onRouteFieldChange={handleRouteFieldChange}
                      documents={documents}
                      onAddDocument={handleAddDocument}
                      onDeleteDocument={handleDeleteDocument}

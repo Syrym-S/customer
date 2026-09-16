@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import {
    createLeadEditForm,
@@ -64,11 +65,29 @@ export function useLeadDetailsMutations({
    const [deletingCargoIndex, setDeletingCargoIndex] = useState(null);
    const [deleteCargoError, setDeleteCargoError] = useState('');
 
+   // Route section only: `control`/`trigger` here validate exclusively the
+   // fields RouteWaypointFields/LeadRouteEditor register via Controller
+   // (from/to/waypoint dates + waypoint coordinates). Cargo/forwarder/etc.
+   // are never registered on this instance, so they stay unvalidated and
+   // can't block save — see handleSaveEdit.
+   const {
+      control: routeControl,
+      trigger: triggerRoute,
+      reset: resetRouteForm,
+      setValue: setRouteFormValue,
+      formState: { errors: routeErrors },
+   } = useForm({
+      mode: 'onChange',
+      defaultValues: createLeadEditForm(null),
+   });
+
    function resetMutations() {
       setIsEditing(false);
       setIsSavingEdit(false);
       setSaveEditError(null);
-      setEditForm(createLeadEditForm(null));
+      const emptyForm = createLeadEditForm(null);
+      setEditForm(emptyForm);
+      resetRouteForm(emptyForm);
       setDeletingCargoIndex(null);
       setDeleteCargoError('');
    }
@@ -87,12 +106,27 @@ export function useLeadDetailsMutations({
       setEditForm((prevForm) => setValueByPath(prevForm, name, value));
    }
 
+   // Passed to the route section in place of handleEditChange: mirrors every
+   // write into both the plain editForm (payload building still reads from
+   // there) and the route-only RHF instance (so Controller rules/trigger see
+   // current values), keeping the two in lockstep.
+   function handleRouteFieldChange(path, value) {
+      setRouteFormValue(path, value, {
+         shouldDirty: true,
+         shouldTouch: true,
+         shouldValidate: true,
+      });
+      setEditForm((prevForm) => setValueByPath(prevForm, path, value));
+   }
+
    function handleStartEdit() {
       setIsEditing(true);
    }
 
    function handleCancelEdit() {
-      setEditForm(createLeadEditForm(currentLead));
+      const nextForm = createLeadEditForm(currentLead);
+      setEditForm(nextForm);
+      resetRouteForm(nextForm);
       setIsEditing(false);
    }
 
@@ -108,15 +142,25 @@ export function useLeadDetailsMutations({
          throw new Error('Не удалось получить обновленные данные лида');
       }
 
+      const nextForm = createLeadEditForm(mappedLead);
+
       setOpenLead(mappedLead);
       setLeadDetails(mappedLead);
-      setEditForm(createLeadEditForm(mappedLead));
+      setEditForm(nextForm);
+      resetRouteForm(nextForm);
 
       return mappedLead;
    }
 
    async function handleSaveEdit() {
       if (!currentLead || isSavingEdit) {
+         return;
+      }
+
+      const isRouteValid = await triggerRoute();
+
+      if (!isRouteValid) {
+         setSaveEditError('Проверьте даты маршрута');
          return;
       }
 
@@ -182,8 +226,14 @@ export function useLeadDetailsMutations({
          return;
       }
 
-      setEditForm(createLeadEditForm(currentLead));
+      const nextForm = createLeadEditForm(currentLead);
+
+      setEditForm(nextForm);
+      resetRouteForm(nextForm);
       setIsEditing(false);
+      // resetRouteForm is stable (react-hook-form's `reset` identity never
+      // changes across renders), so it's safe to omit from the deps array.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [currentLead]);
 
    return {
@@ -199,5 +249,9 @@ export function useLeadDetailsMutations({
       handleSaveEdit,
       handleDeleteCargo,
       resetMutations,
+      routeControl,
+      routeErrors,
+      triggerRoute,
+      handleRouteFieldChange,
    };
 }

@@ -14,6 +14,10 @@ export function LeadDetailsContent({
    isEditing,
    editForm,
    onEditChange,
+   routeControl,
+   routeErrors,
+   onTriggerRouteValidation,
+   onRouteFieldChange,
    documents = [],
    onAddDocument,
    onDeleteDocument,
@@ -29,7 +33,10 @@ export function LeadDetailsContent({
             lead={lead}
             isEditing={isEditing}
             editForm={editForm}
-            onEditChange={onEditChange}
+            routeControl={routeControl}
+            routeErrors={routeErrors}
+            onTriggerRouteValidation={onTriggerRouteValidation}
+            onRouteFieldChange={onRouteFieldChange}
          />
 
          <LeadCargoSection
@@ -70,6 +77,10 @@ LeadDetailsContent.propTypes = {
    isEditing: PropTypes.bool.isRequired,
    editForm: PropTypes.object.isRequired,
    onEditChange: PropTypes.func.isRequired,
+   routeControl: PropTypes.object,
+   routeErrors: PropTypes.object,
+   onTriggerRouteValidation: PropTypes.func,
+   onRouteFieldChange: PropTypes.func,
 
    documents: PropTypes.arrayOf(
       PropTypes.shape({
