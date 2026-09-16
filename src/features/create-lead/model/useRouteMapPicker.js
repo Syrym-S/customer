@@ -30,6 +30,8 @@ function createEmptyWaypoint() {
         lng: '',
         location_data: emptyLocation,
         type: 'check_passes',
+        startAt: '',
+        endAt: '',
     };
 }
 

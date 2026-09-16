@@ -292,6 +292,9 @@ export function mapLeadFromApi(apiLead) {
          'Не указано',
 
       waypoints,
+      point_schedules: Array.isArray(apiLead.point_schedules)
+         ? apiLead.point_schedules
+         : [],
 
       price,
       summ: price,

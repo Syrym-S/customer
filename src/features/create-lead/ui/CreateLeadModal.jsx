@@ -19,6 +19,7 @@ import { useLeadsContext } from '../../../widgets/customer-leads/model/useLeadsC
 import { createLead } from '../api/create-lead.repository';
 import { DocumentsStep } from './create-lead-modal/steps/DocumentsStep';
 import { uploadLeadDocument } from '../../../widgets/customer-leads/api/lead-documents.api';
+import { buildPointScheduleFields } from '../lib/point-schedule.helpers';
 
 const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Документы', 'Проверка'];
 
@@ -60,11 +61,15 @@ function createInitialForm() {
         fromLat: '',
         fromLng: '',
         from_location: createInitialLocation(),
+        fromStartAt: '',
+        fromEndAt: '',
 
         toLocation: '',
         toLat: '',
         toLng: '',
         to_location: createInitialLocation(),
+        toStartAt: '',
+        toEndAt: '',
 
         waypoints: [],
 
@@ -84,12 +89,39 @@ function createInitialForm() {
     };
 }
 
-const stepFields = [
-    ['fromLocation', 'toLocation', 'loadingDate'],
+const staticStepFields = [
+    null,
     ['cargos', 'price', 'currency'],
     [],
     [],
 ];
+
+function getRouteStepFields(waypoints) {
+    const normalizedWaypoints = Array.isArray(waypoints) ? waypoints : [];
+    const points = buildPointScheduleFields(normalizedWaypoints);
+
+    return [
+        'fromLocation',
+        'toLocation',
+        'loadingDate',
+        ...normalizedWaypoints.map((_, index) => `waypoints.${index}.location`),
+        ...points.flatMap((point) => [point.startField, point.endField]),
+    ];
+}
+
+function getStepFields(stepIndex, formValues) {
+    if (stepIndex === 0) {
+        return getRouteStepFields(formValues.waypoints);
+    }
+
+    return staticStepFields[stepIndex] || [];
+}
+
+function getNestedFieldError(errors, fieldName) {
+    return fieldName
+        .split('.')
+        .reduce((value, key) => (value ? value[key] : undefined), errors);
+}
 
 function getCreatedLeadId(response) {
     return (
@@ -147,10 +179,10 @@ export function CreateLeadModal({ open, onClose }) {
     const isFirstStep = activeStep === 0;
     const isLastStep = activeStep === steps.length - 1;
 
-    const currentStepFields = stepFields[activeStep] || [];
+    const currentStepFields = getStepFields(activeStep, formValues);
 
     const hasCurrentStepErrors = currentStepFields.some((fieldName) =>
-        Boolean(errors[fieldName]),
+        Boolean(getNestedFieldError(errors, fieldName)),
     );
 
     function handleBack() {
@@ -158,7 +190,7 @@ export function CreateLeadModal({ open, onClose }) {
     }
 
     async function handleNext() {
-        const fields = stepFields[activeStep] || [];
+        const fields = getStepFields(activeStep, formValues);
 
         const isStepValid = await trigger(fields);
 
@@ -186,7 +218,7 @@ export function CreateLeadModal({ open, onClose }) {
             return;
         }
 
-        const fields = stepFields[activeStep] || [];
+        const fields = getStepFields(activeStep, formValues);
 
         const isStepValid = await trigger(fields);
 
@@ -273,6 +305,7 @@ export function CreateLeadModal({ open, onClose }) {
                     errors={errors}
                     form={formValues}
                     setValue={setValue}
+                    trigger={trigger}
                 />
             );
         }
@@ -299,9 +332,11 @@ export function CreateLeadModal({ open, onClose }) {
     }
 
     function hasStepErrors(stepIndex) {
-        const fields = stepFields[stepIndex] || [];
+        const fields = getStepFields(stepIndex, formValues);
 
-        return fields.some((fieldName) => Boolean(errors[fieldName]));
+        return fields.some((fieldName) =>
+            Boolean(getNestedFieldError(errors, fieldName)),
+        );
     }
 
     return (

@@ -1,3 +1,5 @@
+import { buildPointSchedulesPayload } from '../lib/point-schedule.helpers';
+
 function hasValue(value) {
     return value !== null && value !== undefined && value !== '';
 }
@@ -156,6 +158,12 @@ export function mapCreateLeadFormToApi(form) {
 
     if (waypoints.length) {
         payload.waypoints = waypoints;
+    }
+
+    const pointSchedules = buildPointSchedulesPayload(form);
+
+    if (pointSchedules.length) {
+        payload.point_schedules = pointSchedules;
     }
 
     const cargos = getNormalizedFormCargos(form);

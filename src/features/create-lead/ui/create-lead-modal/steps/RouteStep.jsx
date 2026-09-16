@@ -22,6 +22,10 @@ import { StepSection } from '../components/StepSection';
 import { searchGeocode } from '../../../api/geocoding.api';
 import { useEffect, useState } from 'react';
 import { buildRouteFitBoundsKey } from '../../../lib/route-map.helpers';
+import {
+    buildPointScheduleFields,
+    getFormFieldValue,
+} from '../../../lib/point-schedule.helpers';
 
 function padDatePart(value) {
     return String(value).padStart(2, '0');
@@ -33,7 +37,18 @@ function getTodayDateInputValue() {
     return `${now.getFullYear()}-${padDatePart(now.getMonth() + 1)}-${padDatePart(now.getDate())}`;
 }
 
-export function RouteStep({ control, errors, form, setValue }) {
+function hasWaypointCoordinates(waypoint) {
+    return (
+        waypoint?.lat !== '' &&
+        waypoint?.lat !== null &&
+        waypoint?.lat !== undefined &&
+        waypoint?.lng !== '' &&
+        waypoint?.lng !== null &&
+        waypoint?.lng !== undefined
+    );
+}
+
+export function RouteStep({ control, errors, form, setValue, trigger }) {
     const map = useCustomerMap();
     const [fromInputValue, setFromInputValue] = useState('');
     const [toInputValue, setToInputValue] = useState('');
@@ -45,12 +60,110 @@ export function RouteStep({ control, errors, form, setValue }) {
     const [isToSearchLoading, setIsToSearchLoading] = useState(false);
 
     const waypoints = Array.isArray(form.waypoints) ? form.waypoints : [];
+    const pointScheduleFields = buildPointScheduleFields(waypoints);
 
-    const setValueOptions = {
-        shouldDirty: true,
-        shouldTouch: true,
-        shouldValidate: true,
-    };
+    function getPointScheduleIndex(fieldName, role) {
+        return pointScheduleFields.findIndex(
+            (point) => point[role] === fieldName,
+        );
+    }
+
+    function getStartAtMin(fieldName) {
+        const pointIndex = getPointScheduleIndex(fieldName, 'startField');
+
+        if (pointIndex <= 0) {
+            return undefined;
+        }
+
+        const previousEndField =
+            pointScheduleFields[pointIndex - 1].endField;
+
+        return getFormFieldValue(form, previousEndField) || undefined;
+    }
+
+    function getEndAtMin(fieldName) {
+        const pointIndex = getPointScheduleIndex(fieldName, 'endField');
+
+        if (pointIndex === -1) {
+            return undefined;
+        }
+
+        const ownStartField = pointScheduleFields[pointIndex].startField;
+
+        return getFormFieldValue(form, ownStartField) || undefined;
+    }
+
+    function validateStartAtChain(fieldName) {
+        return (value) => {
+            const pointIndex = getPointScheduleIndex(fieldName, 'startField');
+
+            if (pointIndex <= 0) {
+                return true;
+            }
+
+            const previousEndField =
+                pointScheduleFields[pointIndex - 1].endField;
+            const previousEndValue = getFormFieldValue(
+                form,
+                previousEndField,
+            );
+
+            if (!previousEndValue || !value) {
+                return true;
+            }
+
+            return (
+                value >= previousEndValue ||
+                'Дата начала не может быть раньше даты окончания предыдущей точки'
+            );
+        };
+    }
+
+    function validateEndAtOwnStart(fieldName) {
+        return (value) => {
+            const pointIndex = getPointScheduleIndex(fieldName, 'endField');
+
+            if (pointIndex === -1) {
+                return true;
+            }
+
+            const ownStartField = pointScheduleFields[pointIndex].startField;
+            const ownStartValue = getFormFieldValue(form, ownStartField);
+
+            if (!ownStartValue || !value) {
+                return true;
+            }
+
+            return (
+                value >= ownStartValue ||
+                'Дата окончания не может быть раньше даты начала этой точки'
+            );
+        };
+    }
+
+    function handleStartAtChange(fieldName, onChange) {
+        return (event) => {
+            onChange(event);
+
+            const pointIndex = getPointScheduleIndex(fieldName, 'startField');
+
+            if (pointIndex !== -1) {
+                trigger(pointScheduleFields[pointIndex].endField);
+            }
+        };
+    }
+
+    function handleEndAtChange(fieldName, onChange) {
+        return (event) => {
+            onChange(event);
+
+            const pointIndex = getPointScheduleIndex(fieldName, 'endField');
+
+            if (pointIndex !== -1 && pointScheduleFields[pointIndex + 1]) {
+                trigger(pointScheduleFields[pointIndex + 1].startField);
+            }
+        };
+    }
 
     const {
         activeMapPoint,
@@ -369,10 +482,96 @@ export function RouteStep({ control, errors, form, setValue }) {
                     )}
                 />
 
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 1,
+                        flexWrap: 'wrap',
+                        gridColumn: {
+                            xs: 'auto',
+                            sm: '1 / -1',
+                        },
+                    }}
+                >
+                    <Controller
+                        name="fromStartAt"
+                        control={control}
+                        rules={{
+                            required: 'Укажите дату начала в точке отправления',
+                            validate: validateStartAtChain('fromStartAt'),
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                onChange={handleStartAtChange(
+                                    'fromStartAt',
+                                    field.onChange,
+                                )}
+                                label="Начало (Откуда)"
+                                type="date"
+                                size="small"
+                                error={Boolean(errors.fromStartAt)}
+                                helperText={errors.fromStartAt?.message}
+                                sx={{ flex: 1, minWidth: 160 }}
+                                slotProps={{
+                                    inputLabel: { shrink: true },
+                                }}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        name="fromEndAt"
+                        control={control}
+                        rules={{
+                            required: 'Укажите дату окончания в точке отправления',
+                            validate: validateEndAtOwnStart('fromEndAt'),
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                onChange={handleEndAtChange(
+                                    'fromEndAt',
+                                    field.onChange,
+                                )}
+                                label="Окончание (Откуда)"
+                                type="date"
+                                size="small"
+                                error={Boolean(errors.fromEndAt)}
+                                helperText={errors.fromEndAt?.message}
+                                sx={{ flex: 1, minWidth: 160 }}
+                                slotProps={{
+                                    inputLabel: { shrink: true },
+                                    htmlInput: (() => {
+                                        const min = getEndAtMin('fromEndAt');
+
+                                        return min ? { min } : undefined;
+                                    })(),
+                                }}
+                            />
+                        )}
+                    />
+                </Box>
+
                 {waypoints.map((waypoint, index) => {
                     const pointKey = `waypoint-${index}`;
                     const waypointTypeError =
                         errors.waypoints?.[index]?.type;
+                    const waypointLocationFieldName = `waypoints.${index}.location`;
+                    const waypointLocationError =
+                        errors.waypoints?.[index]?.location;
+                    const waypointStartAtFieldName = `waypoints.${index}.startAt`;
+                    const waypointEndAtFieldName = `waypoints.${index}.endAt`;
+                    const waypointStartAtError =
+                        errors.waypoints?.[index]?.startAt;
+                    const waypointEndAtError =
+                        errors.waypoints?.[index]?.endAt;
+                    const waypointStartAtMin = getStartAtMin(
+                        waypointStartAtFieldName,
+                    );
+                    const waypointEndAtMin = getEndAtMin(
+                        waypointEndAtFieldName,
+                    );
 
                     return (
                         <Box
@@ -394,38 +593,59 @@ export function RouteStep({ control, errors, form, setValue }) {
                                     alignItems: 'flex-start',
                                 }}
                             >
-                                <TextField
-                                    label={`Промежуточная точка #${index + 1}`}
-                                    value={waypoint.location || ''}
-                                    onFocus={() => setActiveMapPoint(pointKey)}
-                                    onChange={(event) => {
-                                        setValue(
-                                            `waypoints.${index}.location`,
-                                            event.target.value,
-                                            setValueOptions,
-                                        );
+                                <Controller
+                                    name={waypointLocationFieldName}
+                                    control={control}
+                                    rules={{
+                                        required:
+                                            'Выберите эту точку и кликните по карте',
+                                        validate: () =>
+                                            hasWaypointCoordinates(
+                                                waypoint,
+                                            ) ||
+                                            `Укажите координаты для точки ${index + 1}: кликните по карте`,
+                                    }}
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            label={`Промежуточная точка #${index + 1}`}
+                                            value={waypoint.location || ''}
+                                            onFocus={() =>
+                                                setActiveMapPoint(pointKey)
+                                            }
+                                            onChange={(event) => {
+                                                field.onChange(event);
 
-                                        if (waypoint.lat || waypoint.lng) {
-                                            clearWaypointPoint(index);
-                                        }
-                                    }}
-                                    fullWidth
-                                    size="small"
-                                    helperText={
-                                        loadingPoints[pointKey]
-                                            ? 'Определяем адрес...'
-                                            : 'Выберите эту точку и кликните по карте'
-                                    }
-                                    InputProps={{
-                                        endAdornment: loadingPoints[
-                                            pointKey
-                                        ] ? (
-                                            <CircularProgress
-                                                color="inherit"
-                                                size={18}
-                                            />
-                                        ) : null,
-                                    }}
+                                                if (
+                                                    waypoint.lat ||
+                                                    waypoint.lng
+                                                ) {
+                                                    clearWaypointPoint(index);
+                                                }
+                                            }}
+                                            fullWidth
+                                            size="small"
+                                            error={Boolean(
+                                                waypointLocationError,
+                                            )}
+                                            helperText={
+                                                waypointLocationError?.message ||
+                                                (loadingPoints[pointKey]
+                                                    ? 'Определяем адрес...'
+                                                    : 'Выберите эту точку и кликните по карте')
+                                            }
+                                            InputProps={{
+                                                endAdornment: loadingPoints[
+                                                    pointKey
+                                                ] ? (
+                                                    <CircularProgress
+                                                        color="inherit"
+                                                        size={18}
+                                                    />
+                                                ) : null,
+                                            }}
+                                        />
+                                    )}
                                 />
 
                                 <Button
@@ -459,42 +679,139 @@ export function RouteStep({ control, errors, form, setValue }) {
                                 </IconButton>
                             </Box>
 
-                            <Controller
-                                name={`waypoints.${index}.type`}
-                                control={control}
-                                render={({ field }) => (
-                                    <FormControl
-                                        size="small"
-                                        fullWidth
-                                        error={Boolean(waypointTypeError)}
-                                    >
-                                        <InputLabel
-                                            id={`${pointKey}-type-label`}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    gap: 1,
+                                    flexWrap: 'wrap',
+                                }}
+                            >
+                                <Controller
+                                    name={`waypoints.${index}.type`}
+                                    control={control}
+                                    render={({ field }) => (
+                                        <FormControl
+                                            size="small"
+                                            fullWidth
+                                            error={Boolean(waypointTypeError)}
+                                            sx={{
+                                                flex: 1,
+                                                minWidth: 160,
+                                            }}
                                         >
-                                            Тип точки
-                                        </InputLabel>
-                                        <Select
+                                            <InputLabel
+                                                id={`${pointKey}-type-label`}
+                                            >
+                                                Тип точки
+                                            </InputLabel>
+                                            <Select
+                                                {...field}
+                                                labelId={`${pointKey}-type-label`}
+                                                label="Тип точки"
+                                                value={
+                                                    field.value ||
+                                                    'check_passes'
+                                                }
+                                            >
+                                                <MenuItem value="loading">
+                                                    Погрузка
+                                                </MenuItem>
+                                                <MenuItem value="unloading">
+                                                    Разгрузка
+                                                </MenuItem>
+                                                <MenuItem value="check_passes">
+                                                    Транзит
+                                                </MenuItem>
+                                            </Select>
+                                            <FormHelperText>
+                                                {waypointTypeError?.message}
+                                            </FormHelperText>
+                                        </FormControl>
+                                    )}
+                                />
+
+                                <Controller
+                                    name={waypointStartAtFieldName}
+                                    control={control}
+                                    rules={{
+                                        required: `Укажите дату начала для точки ${index + 1}`,
+                                        validate: validateStartAtChain(
+                                            waypointStartAtFieldName,
+                                        ),
+                                    }}
+                                    render={({ field }) => (
+                                        <TextField
                                             {...field}
-                                            labelId={`${pointKey}-type-label`}
-                                            label="Тип точки"
-                                            value={field.value || 'check_passes'}
-                                        >
-                                            <MenuItem value="loading">
-                                                Погрузка
-                                            </MenuItem>
-                                            <MenuItem value="unloading">
-                                                Разгрузка
-                                            </MenuItem>
-                                            <MenuItem value="check_passes">
-                                                Транзит
-                                            </MenuItem>
-                                        </Select>
-                                        <FormHelperText>
-                                            {waypointTypeError?.message}
-                                        </FormHelperText>
-                                    </FormControl>
-                                )}
-                            />
+                                            onChange={handleStartAtChange(
+                                                waypointStartAtFieldName,
+                                                field.onChange,
+                                            )}
+                                            label={`Начало (точка ${index + 1})`}
+                                            type="date"
+                                            size="small"
+                                            error={Boolean(
+                                                waypointStartAtError,
+                                            )}
+                                            helperText={
+                                                waypointStartAtError?.message
+                                            }
+                                            sx={{
+                                                flex: 1,
+                                                minWidth: 160,
+                                            }}
+                                            slotProps={{
+                                                inputLabel: {
+                                                    shrink: true,
+                                                },
+                                                htmlInput: waypointStartAtMin
+                                                    ? { min: waypointStartAtMin }
+                                                    : undefined,
+                                            }}
+                                        />
+                                    )}
+                                />
+
+                                <Controller
+                                    name={waypointEndAtFieldName}
+                                    control={control}
+                                    rules={{
+                                        required: `Укажите дату окончания для точки ${index + 1}`,
+                                        validate: validateEndAtOwnStart(
+                                            waypointEndAtFieldName,
+                                        ),
+                                    }}
+                                    render={({ field }) => (
+                                        <TextField
+                                            {...field}
+                                            onChange={handleEndAtChange(
+                                                waypointEndAtFieldName,
+                                                field.onChange,
+                                            )}
+                                            label={`Окончание (точка ${index + 1})`}
+                                            type="date"
+                                            size="small"
+                                            error={Boolean(
+                                                waypointEndAtError,
+                                            )}
+                                            helperText={
+                                                waypointEndAtError?.message
+                                            }
+                                            sx={{
+                                                flex: 1,
+                                                minWidth: 160,
+                                            }}
+                                            slotProps={{
+                                                inputLabel: {
+                                                    shrink: true,
+                                                },
+                                                htmlInput: waypointEndAtMin
+                                                    ? { min: waypointEndAtMin }
+                                                    : undefined,
+                                            }}
+                                        />
+                                    )}
+                                />
+                            </Box>
                         </Box>
                     );
                 })}
@@ -599,6 +916,84 @@ export function RouteStep({ control, errors, form, setValue }) {
                     )}
                 />
 
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 1,
+                        flexWrap: 'wrap',
+                        gridColumn: {
+                            xs: 'auto',
+                            sm: '1 / -1',
+                        },
+                    }}
+                >
+                    <Controller
+                        name="toStartAt"
+                        control={control}
+                        rules={{
+                            required: 'Укажите дату начала в точке назначения',
+                            validate: validateStartAtChain('toStartAt'),
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                onChange={handleStartAtChange(
+                                    'toStartAt',
+                                    field.onChange,
+                                )}
+                                label="Начало (Куда)"
+                                type="date"
+                                size="small"
+                                error={Boolean(errors.toStartAt)}
+                                helperText={errors.toStartAt?.message}
+                                sx={{ flex: 1, minWidth: 160 }}
+                                slotProps={{
+                                    inputLabel: { shrink: true },
+                                    htmlInput: (() => {
+                                        const min = getStartAtMin(
+                                            'toStartAt',
+                                        );
+
+                                        return min ? { min } : undefined;
+                                    })(),
+                                }}
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        name="toEndAt"
+                        control={control}
+                        rules={{
+                            required: 'Укажите дату окончания в точке назначения',
+                            validate: validateEndAtOwnStart('toEndAt'),
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                onChange={handleEndAtChange(
+                                    'toEndAt',
+                                    field.onChange,
+                                )}
+                                label="Окончание (Куда)"
+                                type="date"
+                                size="small"
+                                error={Boolean(errors.toEndAt)}
+                                helperText={errors.toEndAt?.message}
+                                sx={{ flex: 1, minWidth: 160 }}
+                                slotProps={{
+                                    inputLabel: { shrink: true },
+                                    htmlInput: (() => {
+                                        const min = getEndAtMin('toEndAt');
+
+                                        return min ? { min } : undefined;
+                                    })(),
+                                }}
+                            />
+                        )}
+                    />
+                </Box>
+
                 <Controller
                     name="loadingDate"
                     control={control}
@@ -650,4 +1045,5 @@ RouteStep.propTypes = {
     errors: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
     setValue: PropTypes.func.isRequired,
+    trigger: PropTypes.func.isRequired,
 };

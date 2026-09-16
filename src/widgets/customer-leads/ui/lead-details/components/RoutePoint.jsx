@@ -13,6 +13,12 @@ const notPassedChipStyle = {
    backgroundColor: 'grey.100',
 };
 
+const dateChipStyle = {
+   borderColor: 'grey.300',
+   color: 'text.secondary',
+   backgroundColor: 'transparent',
+};
+
 // rgba values matched to leadStatusStyles in lead.helpers.js so this chip's
 // colors stay consistent with the lead status chips used elsewhere.
 const typeChipStyles = {
@@ -52,6 +58,7 @@ export function RoutePoint({
    isPassed,
    typeLabel,
    typeColor,
+   date,
 }) {
    return (
       <Box
@@ -125,15 +132,34 @@ export function RoutePoint({
                )}
             </Box>
 
-            <Chip
-               label={isPassed ? 'Пройдена' : 'Не пройдена'}
-               variant='outlined'
-               size='small'
+            <Box
                sx={{
-                  ...routePointChipSx,
-                  ...(isPassed ? passedChipStyle : notPassedChipStyle),
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.75,
+                  flexShrink: 0,
                }}
-            />
+            >
+               <Chip
+                  label={date || '—'}
+                  variant='outlined'
+                  size='small'
+                  sx={{
+                     ...routePointChipSx,
+                     ...dateChipStyle,
+                  }}
+               />
+
+               <Chip
+                  label={isPassed ? 'Пройдена' : 'Не пройдена'}
+                  variant='outlined'
+                  size='small'
+                  sx={{
+                     ...routePointChipSx,
+                     ...(isPassed ? passedChipStyle : notPassedChipStyle),
+                  }}
+               />
+            </Box>
          </Box>
 
          <Box
@@ -202,4 +228,5 @@ RoutePoint.propTypes = {
    isPassed: PropTypes.bool,
    typeLabel: PropTypes.string,
    typeColor: PropTypes.oneOf(['warning', 'secondary', 'info', 'primary']),
+   date: PropTypes.string,
 };

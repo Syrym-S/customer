@@ -10,6 +10,8 @@ import { RoutePoint } from '../components/RoutePoint';
 
 import { normalizeLocationValue } from '../../../model/lead-edit-form.helpers';
 import {
+   getPointScheduleByIndex,
+   getPointScheduleLabel,
    getWaypointLabel,
    getWaypointTypeChipColor,
    getWaypointTypeLabel,
@@ -18,6 +20,11 @@ import { LeadRouteEditor } from '../LeadRouteEditor';
 
 export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
    const waypoints = Array.isArray(lead.waypoints) ? lead.waypoints : [];
+   const pointSchedules = Array.isArray(lead.point_schedules)
+      ? lead.point_schedules
+      : [];
+
+   const lastPointIndex = waypoints.length + 1;
 
    return (
       <DetailSection icon={<RouteOutlinedIcon />} title="Маршрут">
@@ -30,6 +37,9 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
                   value={normalizeLocationValue(lead.from_location)}
                   icon={<TripOriginIcon />}
                   isPassed={Boolean(lead.from_location?.is_passed)}
+                  date={getPointScheduleLabel(
+                     getPointScheduleByIndex(pointSchedules, 0),
+                  )}
                />
 
                {waypoints.map((waypoint, index) => (
@@ -41,6 +51,9 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
                      isPassed={Boolean(waypoint.is_passed)}
                      typeLabel={getWaypointTypeLabel(waypoint.type)}
                      typeColor={getWaypointTypeChipColor(waypoint.type)}
+                     date={getPointScheduleLabel(
+                        getPointScheduleByIndex(pointSchedules, index + 1),
+                     )}
                   />
                ))}
 
@@ -49,6 +62,9 @@ export function LeadRouteSection({ lead, isEditing, editForm, onEditChange }) {
                   value={normalizeLocationValue(lead.to_location)}
                   icon={<LocationOnOutlinedIcon />}
                   isPassed={Boolean(lead.to_location?.is_passed)}
+                  date={getPointScheduleLabel(
+                     getPointScheduleByIndex(pointSchedules, lastPointIndex),
+                  )}
                />
             </Stack>
          )}
