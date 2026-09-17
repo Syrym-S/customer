@@ -15,7 +15,12 @@ import UploadFileOutlinedIcon from '@mui/icons-material/UploadFileOutlined';
 import { DetailSection } from '../components/DetailSection';
 import { LeadDocumentCard } from '../components/documents/LeadDocumentCard';
 import { DocumentPreviewDialog } from '../components/documents/DocumentPreviewDialog';
-import { isFinishedLead, isCancelledLead } from '../../../model/lead.helpers';
+import {
+   isFinishedLead,
+   isCancelledLead,
+   isEmergencyLead,
+   isFinishedEmergencyLead,
+} from '../../../model/lead.helpers';
 
 export function LeadDocumentsSection({
    lead,
@@ -26,7 +31,11 @@ export function LeadDocumentsSection({
    uploadError = '',
    deletingDocumentIds = [],
 }) {
-   const canManageDocuments = !isFinishedLead(lead) && !isCancelledLead(lead);
+   const canManageDocuments =
+      !isFinishedLead(lead) &&
+      !isCancelledLead(lead) &&
+      !isEmergencyLead(lead) &&
+      !isFinishedEmergencyLead(lead);
    const [selectedDocument, setSelectedDocument] = useState(null);
    const [selectedFileName, setSelectedFileName] = useState('');
 

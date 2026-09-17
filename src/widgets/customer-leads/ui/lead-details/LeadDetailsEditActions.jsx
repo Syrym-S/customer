@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 import { LeadShareButton } from './LeadShareButton';
 import { LeadChatButton } from './LeadChatButton';
 import { LeadDeliveryChatButton } from './LeadDeliveryChatButton';
-import { isFinishedLead, isCancelledLead } from '../../model/lead.helpers';
+import {
+   isFinishedLead,
+   isCancelledLead,
+   isEmergencyLead,
+   isFinishedEmergencyLead,
+} from '../../model/lead.helpers';
 
 export function LeadDetailsEditActions({
    lead,
@@ -15,10 +20,18 @@ export function LeadDetailsEditActions({
    onCancelEdit,
    onClose,
 }) {
-   const isEditDisabled = isFinishedLead(lead) || isCancelledLead(lead);
-   const editTooltipTitle = isEditDisabled
-      ? 'Нельзя редактировать завершённый или отменённый лид'
-      : 'Изменить';
+   const isEditDisabled =
+      isFinishedLead(lead) ||
+      isCancelledLead(lead) ||
+      isEmergencyLead(lead) ||
+      isFinishedEmergencyLead(lead);
+   const editTooltipTitle = isEmergencyLead(lead)
+      ? 'Нельзя редактировать лид в аварийной ситуации'
+      : isFinishedEmergencyLead(lead)
+        ? 'Нельзя редактировать лид, завершённый в аварийной ситуации'
+        : isEditDisabled
+          ? 'Нельзя редактировать завершённый или отменённый лид'
+          : 'Изменить';
 
    return (
       <Box

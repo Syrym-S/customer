@@ -24,7 +24,12 @@ import {
   searchCustomerCargoTypesApi,
 } from "../../../api/cargo-types.api";
 import { CurrencyAutocomplete } from "../../../../../features/create-lead/ui/create-lead-modal/components/CurrencyAutocomplete";
-import { isFinishedLead, isCancelledLead } from "../../../model/lead.helpers";
+import {
+  isFinishedLead,
+  isCancelledLead,
+  isEmergencyLead,
+  isFinishedEmergencyLead,
+} from "../../../model/lead.helpers";
 
 function createEmptyLeadCargo() {
   return {
@@ -88,7 +93,11 @@ export function LeadCargoSection({
 
   const isForwarderCreatedLead = lead?.created_by === "forwarder";
   const canBeDeleted = lead?.cargos?.length > 1;
-  const canDeleteCargo = !isFinishedLead(lead) && !isCancelledLead(lead);
+  const canDeleteCargo =
+    !isFinishedLead(lead) &&
+    !isCancelledLead(lead) &&
+    !isEmergencyLead(lead) &&
+    !isFinishedEmergencyLead(lead);
 
   useEffect(() => {
     if (!isEditing) {

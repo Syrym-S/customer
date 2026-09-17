@@ -8,6 +8,8 @@ export const leadStatusLabels = {
    verification_unloading: 'Разгрузка подтверждена',
    finished: 'Завершён',
    cancelled: 'Отменён',
+   emergency_situation: 'Аварийная ситуация',
+   finished_emergency_situation: 'Завершён (аварийная ситуация)',
 };
 
 export const leadStatusStyles = {
@@ -64,6 +66,18 @@ export const leadStatusStyles = {
       color: 'error.main',
       backgroundColor: 'rgba(211, 47, 47, 0.06)',
    },
+
+   emergency_situation: {
+      borderColor: 'error.main',
+      color: 'error.main',
+      backgroundColor: 'rgba(211, 47, 47, 0.06)',
+   },
+
+   finished_emergency_situation: {
+      borderColor: 'warning.main',
+      color: 'warning.main',
+      backgroundColor: 'rgba(237, 108, 2, 0.06)',
+   },
 };
 
 export function getLeadStatusLabel(status) {
@@ -89,4 +103,15 @@ export function isFinishedLead(lead) {
 
 export function isCancelledLead(lead) {
    return String(lead?.status || '').toLowerCase() === 'cancelled';
+}
+
+export function isEmergencyLead(lead) {
+   return String(lead?.status || '').toLowerCase() === 'emergency_situation';
+}
+
+export function isFinishedEmergencyLead(lead) {
+   return (
+      String(lead?.status || '').toLowerCase() ===
+      'finished_emergency_situation'
+   );
 }

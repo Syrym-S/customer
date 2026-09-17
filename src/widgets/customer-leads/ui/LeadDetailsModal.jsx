@@ -191,6 +191,34 @@ export function LeadDetailsModal() {
                </Alert>
             )}
 
+            {currentLead?.status === 'emergency_situation' && (
+               <Alert severity="error" sx={{ mb: 2 }}>
+                  <Typography sx={{ fontWeight: 600 }}>
+                     Аварийная ситуация на рейсе
+                  </Typography>
+
+                  {currentLead?.emergency_situation_comment && (
+                     <Typography variant="body2" sx={{ mt: 0.5 }}>
+                        Комментарий водителя: {currentLead.emergency_situation_comment}
+                     </Typography>
+                  )}
+               </Alert>
+            )}
+
+            {currentLead?.status === 'finished_emergency_situation' && (
+               <Alert severity="warning" sx={{ mb: 2 }}>
+                  <Typography sx={{ fontWeight: 600 }}>
+                     Рейс был завершён в аварийной ситуации
+                  </Typography>
+
+                  {currentLead?.emergency_situation_comment && (
+                     <Typography variant="body2" sx={{ mt: 0.5 }}>
+                        Комментарий водителя: {currentLead.emergency_situation_comment}
+                     </Typography>
+                  )}
+               </Alert>
+            )}
+
             {saveEditError && (
                <Alert severity="error" sx={{ mb: 2 }}>
                   {saveEditError}

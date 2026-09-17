@@ -186,6 +186,9 @@ export function mapTenderFromApi(tender) {
       from_location: lead?.fromLocationLabel || '',
       to_location: lead?.toLocationLabel || '',
       waypoints: lead?.waypoints || [],
+      point_schedules: Array.isArray(tender.lead?.point_schedules)
+         ? tender.lead.point_schedules
+         : [],
 
       cargos: lead?.cargos || [],
       summ: lead?.summ ?? null,

@@ -323,6 +323,26 @@ export function FactoringsProvider({ children }) {
         loadFactoringDetailsWithLead,
     ]);
 
+    useEffect(() => {
+        return subscribeToNotificationDomainEvent(
+            notificationDomainEventNames.shippingChanged,
+            () => {
+                if (isDetailsOpen && selectedFactoringId) {
+                    loadFactoringDetailsWithLead(selectedFactoringId)
+                        .then((updatedFactoring) => {
+                            setSelectedFactoring(updatedFactoring);
+                        })
+                        .catch((error) => {
+                            console.error(
+                                'Не удалось обновить детали факторинга после уведомления:',
+                                error,
+                            );
+                        });
+                }
+            },
+        );
+    }, [isDetailsOpen, selectedFactoringId, loadFactoringDetailsWithLead]);
+
     const value = useMemo(
         () => ({
             factorings,

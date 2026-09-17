@@ -301,6 +301,7 @@ export function mapLeadFromApi(apiLead) {
       currency: apiLead.currency ?? 'KZT',
 
       status: apiLead.status || 'unknown',
+      emergency_situation_comment: apiLead.emergency_situation_comment || '',
 
       transportation_price: apiLead.transportation_price ?? null,
       vat: apiLead.vat ?? null,

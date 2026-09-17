@@ -1,12 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { fetchCustomerLeadById } from '../../../api/leads.repository';
 import { mapLeadDetailsResponseFromApi } from '../../../model/lead.adapter';
+import {
+   notificationDomainEventNames,
+   subscribeToNotificationDomainEvent,
+} from '../../../../../shared/model/notification-domain-events';
 
 export function useLeadDetailsData(openLead) {
    const [leadDetails, setLeadDetails] = useState(null);
    const [isLeadDetailsLoading, setIsLeadDetailsLoading] = useState(false);
    const [leadDetailsError, setLeadDetailsError] = useState(null);
+
+   const requestIdRef = useRef(0);
 
    function resetLeadDetails() {
       setLeadDetails(null);
@@ -14,42 +20,69 @@ export function useLeadDetailsData(openLead) {
       setIsLeadDetailsLoading(false);
    }
 
+   const loadLeadDetails = useCallback(
+      async (leadId, { withLoader = true } = {}) => {
+         const requestId = ++requestIdRef.current;
+
+         try {
+            if (withLoader) {
+               setIsLeadDetailsLoading(true);
+            }
+
+            setLeadDetailsError(null);
+
+            const response = await fetchCustomerLeadById(leadId);
+            const mappedLead = mapLeadDetailsResponseFromApi(response);
+
+            if (requestId === requestIdRef.current) {
+               setLeadDetails(mappedLead);
+            }
+         } catch (error) {
+            if (requestId === requestIdRef.current) {
+               setLeadDetailsError(error.message || 'Не удалось загрузить лид');
+            }
+         } finally {
+            if (withLoader && requestId === requestIdRef.current) {
+               setIsLeadDetailsLoading(false);
+            }
+         }
+      },
+      [],
+   );
+
    useEffect(() => {
       if (!openLead?.id) {
          setLeadDetails(null);
          return;
       }
 
-      let isCancelled = false;
+      loadLeadDetails(openLead.id, { withLoader: true });
+   }, [openLead?.id, loadLeadDetails]);
 
-      async function loadLeadDetails() {
-         try {
-            setIsLeadDetailsLoading(true);
-            setLeadDetailsError(null);
-
-            const response = await fetchCustomerLeadById(openLead.id);
-            const mappedLead = mapLeadDetailsResponseFromApi(response);
-
-            if (!isCancelled) {
-               setLeadDetails(mappedLead);
-            }
-         } catch (error) {
-            if (!isCancelled) {
-               setLeadDetailsError(error.message || 'Не удалось загрузить лид');
-            }
-         } finally {
-            if (!isCancelled) {
-               setIsLeadDetailsLoading(false);
-            }
-         }
+   useEffect(() => {
+      if (!openLead?.id) {
+         return undefined;
       }
 
-      loadLeadDetails();
+      // Lead status changes (e.g. emergency_situation) publish under "shipping", not "lead".
+      function handleLeadRelatedEvent() {
+         loadLeadDetails(openLead.id, { withLoader: false });
+      }
+
+      const unsubscribeLeads = subscribeToNotificationDomainEvent(
+         notificationDomainEventNames.leadsChanged,
+         handleLeadRelatedEvent,
+      );
+      const unsubscribeShipping = subscribeToNotificationDomainEvent(
+         notificationDomainEventNames.shippingChanged,
+         handleLeadRelatedEvent,
+      );
 
       return () => {
-         isCancelled = true;
+         unsubscribeLeads();
+         unsubscribeShipping();
       };
-   }, [openLead?.id]);
+   }, [openLead?.id, loadLeadDetails]);
 
    return {
       leadDetails,

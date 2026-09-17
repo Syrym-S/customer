@@ -16,6 +16,10 @@ import {
    getTenderCargos,
    hasValue,
 } from '../../../model/tender.helpers';
+import {
+   getPointScheduleByIndex,
+   getPointScheduleLabel,
+} from '../../../../customer-leads/model/lead-route.helpers';
 import { formatAmount } from '../../../../../shared/helpers/currency-format.helpers';
 
 export function TenderTransportSection({ tender }) {
@@ -25,6 +29,10 @@ export function TenderTransportSection({ tender }) {
    const fromLocation = tender.from_location || lead.from_location;
    const toLocation = tender.to_location || lead.to_location;
    const waypoints = Array.isArray(lead.waypoints) ? lead.waypoints : [];
+   const pointSchedules = Array.isArray(tender.point_schedules)
+      ? tender.point_schedules
+      : [];
+   const lastPointIndex = waypoints.length + 1;
 
    return (
       <Stack spacing={2}>
@@ -34,6 +42,9 @@ export function TenderTransportSection({ tender }) {
                   label="Откуда"
                   value={normalizeLocationValue(fromLocation)}
                   icon={<TripOriginIcon />}
+                  date={getPointScheduleLabel(
+                     getPointScheduleByIndex(pointSchedules, 0),
+                  )}
                />
 
                {waypoints.map((waypoint, index) => (
@@ -42,6 +53,9 @@ export function TenderTransportSection({ tender }) {
                      label={`Промежуточная точка #${index + 1}`}
                      value={normalizeLocationValue(waypoint)}
                      icon={<LocationOnOutlinedIcon />}
+                     date={getPointScheduleLabel(
+                        getPointScheduleByIndex(pointSchedules, index + 1),
+                     )}
                   />
                ))}
 
@@ -49,6 +63,9 @@ export function TenderTransportSection({ tender }) {
                   label="Куда"
                   value={normalizeLocationValue(toLocation)}
                   icon={<LocationOnOutlinedIcon />}
+                  date={getPointScheduleLabel(
+                     getPointScheduleByIndex(pointSchedules, lastPointIndex),
+                  )}
                />
             </Stack>
          </TenderDetailsSection>
