@@ -109,7 +109,7 @@ export function FactoringDetailsActions({
               onClick={handleOpenCancelConfirm}
               disabled={initiatingSigning || isCancelling}
             >
-              {isCancelling ? "Отмена..." : "Отменить факторинг"}
+              {isCancelling ? "Отменяем факторинг…" : "Отменить факторинг"}
             </Button>
           )}
 
@@ -171,7 +171,7 @@ export function FactoringDetailsActions({
             onClick={handleConfirmCancel}
             disabled={isCancelling}
           >
-            {isCancelling ? "Отмена..." : "Отменить факторинг"}
+            {isCancelling ? "Отменяем факторинг…" : "Отменить факторинг"}
           </Button>
         </DialogActions>
       </Dialog>

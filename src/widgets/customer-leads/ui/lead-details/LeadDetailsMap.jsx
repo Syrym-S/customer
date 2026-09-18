@@ -171,7 +171,6 @@ export function LeadDetailsMap({
             border: '1px solid',
             borderColor: 'divider',
             borderRadius: 3,
-            overflow: 'hidden',
             mb: 3,
             mt: 1,
          }}
@@ -214,6 +213,7 @@ export function LeadDetailsMap({
             routePoints={hasRoutePoints ? routePoints : []}
             geoRoutePoints={hasGeoPoints ? geoRoutePoints : []}
             fitBoundsKey={routeBoundsKey}
+            borderRadius={3}
             handleMarkerClick={map.handleMarkerClick}
          />
       </Box>

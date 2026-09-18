@@ -7,6 +7,11 @@ export const tenderStatusLabels = {
    cancelled: 'Отменён',
 };
 
+export const publicationTypeLabels = {
+   public: 'Публичный',
+   private: 'Приватный',
+};
+
 export const tenderStatusStyles = {
    new: {
       borderColor: 'primary.main',

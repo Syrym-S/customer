@@ -302,6 +302,7 @@ export function mapLeadFromApi(apiLead) {
 
       status: apiLead.status || 'unknown',
       emergency_situation_comment: apiLead.emergency_situation_comment || '',
+      is_tender: Boolean(apiLead.is_tender),
 
       transportation_price: apiLead.transportation_price ?? null,
       vat: apiLead.vat ?? null,

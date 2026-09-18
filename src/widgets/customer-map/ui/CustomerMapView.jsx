@@ -1,4 +1,5 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import { Box } from "@mui/material";
 import {
    MapContainer,
    TileLayer,
@@ -10,6 +11,7 @@ import {
 import PropTypes from "prop-types";
 import {
    CUSTOMER_MAP_TILE_LAYER,
+   ROUTE_TOOLTIP_PANE_NAME,
    driverIcon,
 } from "../model/customer-map.constants";
 import {
@@ -20,6 +22,7 @@ import { DriverMapInfo } from "./DriverMapInfo";
 import { MapResizeHandler } from "./MapResizeHandler";
 import { FitRouteBounds } from "./FitRouteBounds";
 import { MapClickHandler } from "./MapClickHandler";
+import { TooltipEscapePane } from "./TooltipEscapePane";
 
 export function CustomerMapView({
    center,
@@ -34,11 +37,14 @@ export function CustomerMapView({
    fitBoundsPoints = [],
    selectedLeadId,
    highlightedLeadId,
+   borderRadius = 0,
    handleMarkerClick,
    onLeadClick,
    onMapClick,
    onMarkerDragEnd,
 }) {
+   const [tooltipPaneContainer, setTooltipPaneContainer] = useState(null);
+
    const routesPointsCount = routes.reduce(
       (count, route) => count + (route.points?.length || 0),
       0,
@@ -70,6 +76,8 @@ export function CustomerMapView({
    }
 
    return (
+      <Box sx={{ position: "relative", width: "100%", height: "100%" }}>
+      <Box sx={{ position: "absolute", inset: 0, overflow: "hidden", borderRadius }}>
       <MapContainer
          center={center}
          zoom={zoom}
@@ -79,6 +87,8 @@ export function CustomerMapView({
             height: "100%",
          }}
       >
+         <TooltipEscapePane container={tooltipPaneContainer} />
+
          <MapResizeHandler
             center={center}
             zoom={zoom}
@@ -158,7 +168,7 @@ export function CustomerMapView({
                         },
                      }}
                   >
-                     <Tooltip sticky>
+                     <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                         <div>
                            <b>Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}</b>
                            <br />
@@ -229,7 +239,7 @@ export function CustomerMapView({
                            },
                         }}
                      >
-                        <Tooltip sticky>
+                        <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                            <div>
                               <b>
                                  Фактический путь лида #
@@ -282,7 +292,7 @@ export function CustomerMapView({
                   opacity: 0.9,
                }}
             >
-               <Tooltip sticky>
+               <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                   <div>
                      <b>Маршрут</b>
 
@@ -313,7 +323,7 @@ export function CustomerMapView({
                   dashArray: "8 8",
                }}
             >
-               <Tooltip sticky>
+               <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                   <div>
                      <b>Фактический путь</b>
                      <br />
@@ -355,6 +365,14 @@ export function CustomerMapView({
             );
          })}
       </MapContainer>
+      </Box>
+
+      <Box
+         ref={setTooltipPaneContainer}
+         className="route-tooltip-pane"
+         sx={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+      />
+      </Box>
    );
 }
 
@@ -362,6 +380,7 @@ CustomerMapView.propTypes = {
    center: PropTypes.array.isRequired,
    zoom: PropTypes.number.isRequired,
    markers: PropTypes.array.isRequired,
+   borderRadius: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
    routePoints: PropTypes.array,
    geoRoutePoints: PropTypes.array,
    geoRoutes: PropTypes.array,

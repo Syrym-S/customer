@@ -65,7 +65,6 @@ export function CustomerMap() {
                borderColor: 'divider',
                borderRadius: 3,
                backgroundColor: 'background.paper',
-               overflow: 'hidden',
             }}
          >
             {isMapLoading && (
@@ -106,6 +105,7 @@ export function CustomerMap() {
                routes={routes}
                geoRoutes={geoRoutes}
                fitBoundsKey={fitBoundsKey}
+               borderRadius={3}
                handleMarkerClick={map.handleMarkerClick}
                onLeadClick={handleLeadRouteClick}
             />

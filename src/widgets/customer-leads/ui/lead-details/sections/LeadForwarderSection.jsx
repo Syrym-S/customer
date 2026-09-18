@@ -120,6 +120,7 @@ export function LeadForwarderSection({
    onEditChange,
 }) {
    const forwarder = lead.forwarder;
+   const isForwarderLocked = lead.is_tender === true;
 
    const [inputValue, setInputValue] = useState('');
    const [allForwarders, setAllForwarders] = useState([]);
@@ -199,6 +200,7 @@ export function LeadForwarderSection({
       <DetailSection icon={<BusinessOutlinedIcon />} title="Экспедитор">
          {isEditing ? (
             <Autocomplete
+               disabled={isForwarderLocked}
                value={selectedForwarder}
                inputValue={inputValue}
                options={options}
@@ -279,7 +281,12 @@ export function LeadForwarderSection({
                         label="Экспедитор"
                         placeholder="Введите название компании или БИН"
                         error={Boolean(searchError)}
-                        helperText={searchError}
+                        helperText={
+                           searchError ||
+                           (isForwarderLocked
+                              ? 'Экспедитор назначен по результатам тендера и не может быть изменён'
+                              : '')
+                        }
                         size="small"
                         fullWidth
                         onFocus={loadForwarders}
@@ -348,6 +355,7 @@ LeadForwarderSection.propTypes = {
          companyBin: PropTypes.string,
          phone: PropTypes.string,
       }),
+      is_tender: PropTypes.bool,
    }).isRequired,
    isEditing: PropTypes.bool.isRequired,
    editForm: PropTypes.shape({

@@ -16,6 +16,7 @@ import IosShareRoundedIcon from '@mui/icons-material/IosShareRounded';
 import PropTypes from 'prop-types';
 
 import { getLeadShareLinkApi } from '../../api/leads.api';
+import { notifyError } from '../../../../shared/model/notifications.store';
 
 function formatShareExpiryDate(date) {
    if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
@@ -81,11 +82,13 @@ export function LeadShareButton({ leadId }) {
          setShareExpiresAt(parseApiDate(data?.expires_at));
          setIsConfirmOpen(false);
       } catch (error) {
-         setShareError(
+         const message =
             error.response?.data?.message ||
-               error.message ||
-               'Не удалось получить ссылку. Попробуйте позже.',
-         );
+            error.message ||
+            'Не удалось получить ссылку. Попробуйте позже.';
+
+         setShareError(message);
+         notifyError(message);
       } finally {
          setIsSharing(false);
       }

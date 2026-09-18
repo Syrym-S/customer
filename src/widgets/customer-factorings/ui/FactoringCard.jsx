@@ -224,6 +224,17 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                                 ),
                             )}
                         />
+
+                        <StatusDot
+                            label={`Фактор: ${getVerificationLabel(
+                                factoring.verified_factor,
+                            )}`}
+                            color={paletteKeyToColorPath(
+                                getVerificationColor(
+                                    factoring.verified_factor,
+                                ),
+                            )}
+                        />
                     </Stack>
                 </Box>
             </Stack>

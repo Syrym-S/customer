@@ -88,7 +88,6 @@ export function DashboardMap({
                     borderColor: "divider",
                     borderRadius: 2,
                     backgroundColor: "background.paper",
-                    overflow: "hidden",
                     boxShadow: 2,
                 }}
             >
@@ -131,6 +130,7 @@ export function DashboardMap({
                     geoRoutes={geoRoutes}
                     fitBoundsKey={fitBoundsKey}
                     fitBoundsPoints={fitBoundsPoints}
+                    borderRadius={2}
                     selectedLeadId={selectedLeadId}
                     highlightedLeadId={highlightedLeadId}
                     handleMarkerClick={map.handleMarkerClick}

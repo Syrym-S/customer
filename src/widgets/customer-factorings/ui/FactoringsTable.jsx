@@ -71,6 +71,17 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
          renderCell: ({ row }) => <Box>{formatDate(row.created_at)}</Box>,
       },
       {
+         field: 'status',
+         headerName: 'Статус',
+         width: 160,
+         renderCell: ({ row }) => (
+            <StatusDot
+               label={getFactoringStatusLabel(row.status)}
+               color={paletteKeyToColorPath(getFactoringStatusColor(row.status))}
+            />
+         ),
+      },
+      {
          field: 'factor',
          headerName: 'Фактор',
          width: 220,
@@ -126,13 +137,13 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
          ),
       },
       {
-         field: 'status',
+         field: 'verified_factor',
          headerName: 'Фактор',
-         width: 160,
+         width: 150,
          renderCell: ({ row }) => (
             <StatusDot
-               label={getFactoringStatusLabel(row.status)}
-               color={paletteKeyToColorPath(getFactoringStatusColor(row.status))}
+               label={getVerificationLabel(row.verified_factor)}
+               color={paletteKeyToColorPath(getVerificationColor(row.verified_factor))}
             />
          ),
       },
@@ -168,6 +179,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
             columns={columns}
             getRowClassName={getZebraRowClassName}
             hideFooter
+            localeText={{ noRowsLabel: 'Факторинг-покупки не найдены' }}
             sx={{ border: 0 }}
          />
       </Paper>

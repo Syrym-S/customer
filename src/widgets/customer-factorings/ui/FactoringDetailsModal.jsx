@@ -18,6 +18,7 @@ import { FactoringVerificationSection } from "./factorings-details/sections/Fact
 import { FactoringDetailsActions } from "./factorings-details/FactoringDetailsActions";
 import { FactoringPartiesRequisitesSection } from "./factorings-details/sections/FactoringPartiesRequisitesSection";
 import { LeadDetailsMap } from "../../customer-leads/ui/lead-details/LeadDetailsMap";
+import { fetchCustomerProfile } from "../../../features/profile-edit/profile.api";
 import {
   buildFallbackLeadRoutePoints,
   buildLeadRoutePayload,
@@ -75,6 +76,10 @@ export function FactoringDetailsModal({
   const [route, setRoute] = useState(null);
   const [routePoints, setRoutePoints] = useState([]);
   const [isRouteLoading, setIsRouteLoading] = useState(false);
+
+  const [customerProfile, setCustomerProfile] = useState(null);
+  const [isCustomerProfileLoading, setIsCustomerProfileLoading] = useState(true);
+  const [customerProfileLoadFailed, setCustomerProfileLoadFailed] = useState(false);
 
   const canBeVerified =
     factoring?.status !== "cancelled" && !factoring?.verified_customer;
@@ -176,6 +181,43 @@ export function FactoringDetailsModal({
       isMounted = false;
     };
   }, [open, factoring]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadCustomerProfile() {
+      if (!open) {
+        setIsCustomerProfileLoading(false);
+        return;
+      }
+
+      try {
+        setIsCustomerProfileLoading(true);
+        setCustomerProfileLoadFailed(false);
+
+        const profile = await fetchCustomerProfile();
+
+        if (isMounted) {
+          setCustomerProfile(profile);
+        }
+      } catch {
+        if (isMounted) {
+          setCustomerProfile(null);
+          setCustomerProfileLoadFailed(true);
+        }
+      } finally {
+        if (isMounted) {
+          setIsCustomerProfileLoading(false);
+        }
+      }
+    }
+
+    loadCustomerProfile();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [open]);
 
   function handleClose() {
     setRoute(null);
@@ -287,11 +329,21 @@ export function FactoringDetailsModal({
 
             <FactoringFinanceSection factoring={factoring} />
 
-            <FactoringParticipantsSection factoring={factoring} />
+            <FactoringParticipantsSection
+              factoring={factoring}
+              customerProfile={customerProfile}
+              isCustomerProfileLoading={isCustomerProfileLoading}
+              customerProfileLoadFailed={customerProfileLoadFailed}
+            />
 
             <FactoringVerificationSection factoring={factoring} />
 
-            <FactoringPartiesRequisitesSection factoring={factoring} />
+            <FactoringPartiesRequisitesSection
+              factoring={factoring}
+              customerProfile={customerProfile}
+              isCustomerProfileLoading={isCustomerProfileLoading}
+              customerProfileLoadFailed={customerProfileLoadFailed}
+            />
           </Stack>
         )}
       </DialogContent>

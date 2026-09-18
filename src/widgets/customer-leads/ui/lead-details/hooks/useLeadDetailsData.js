@@ -6,6 +6,7 @@ import {
    notificationDomainEventNames,
    subscribeToNotificationDomainEvent,
 } from '../../../../../shared/model/notification-domain-events';
+import { notifyError } from '../../../../../shared/model/notifications.store';
 
 export function useLeadDetailsData(openLead) {
    const [leadDetails, setLeadDetails] = useState(null);
@@ -39,7 +40,10 @@ export function useLeadDetailsData(openLead) {
             }
          } catch (error) {
             if (requestId === requestIdRef.current) {
-               setLeadDetailsError(error.message || 'Не удалось загрузить лид');
+               const message = error.message || 'Не удалось загрузить лид';
+
+               setLeadDetailsError(message);
+               notifyError(message);
             }
          } finally {
             if (withLoader && requestId === requestIdRef.current) {

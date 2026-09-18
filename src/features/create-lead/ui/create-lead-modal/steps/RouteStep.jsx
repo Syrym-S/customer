@@ -28,8 +28,11 @@ import {
     getEndAtMin,
     getStartAtChangeDependentField,
     getStartAtMin,
+    getTodayDateInputValue,
     hasWaypointCoordinates,
+    isDateFieldDisabled,
     validateEndAtOwnStart,
+    validateNotBeforeToday,
     validateStartAtChain,
 } from '../../../lib/point-schedule.helpers';
 
@@ -263,7 +266,6 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                     border: '1px solid',
                     borderColor: 'divider',
                     borderRadius: 3,
-                    overflow: 'hidden',
                     mb: 2,
                 }}
             >
@@ -273,6 +275,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                     markers={routeMarkers}
                     routePoints={routePoints}
                     fitBoundsKey={routeFitBoundsKey}
+                    borderRadius={3}
                     handleMarkerClick={map.handleMarkerClick}
                     onMapClick={handleRouteMapClick}
                     onMarkerDragEnd={handleRouteMarkerDragEnd}
@@ -410,11 +413,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         control={control}
                         rules={{
                             required: 'Укажите дату начала в точке отправления',
-                            validate: validateStartAtChain(
-                                form,
-                                pointScheduleFields,
-                                'fromStartAt',
-                            ),
+                            validate: validateNotBeforeToday,
                         }}
                         render={({ field }) => (
                             <TextField
@@ -426,11 +425,19 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                 label="Дата начала"
                                 type="date"
                                 size="small"
+                                disabled={isDateFieldDisabled(
+                                    form,
+                                    pointScheduleFields,
+                                    'fromStartAt',
+                                )}
                                 error={Boolean(errors.fromStartAt)}
                                 helperText={errors.fromStartAt?.message}
                                 sx={{ flex: 1, minWidth: 160 }}
                                 slotProps={{
                                     inputLabel: { shrink: true },
+                                    htmlInput: {
+                                        min: getTodayDateInputValue(),
+                                    },
                                 }}
                             />
                         )}
@@ -457,6 +464,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                 label="Дата окончания"
                                 type="date"
                                 size="small"
+                                disabled={isDateFieldDisabled(
+                                    form,
+                                    pointScheduleFields,
+                                    'fromEndAt',
+                                )}
                                 error={Boolean(errors.fromEndAt)}
                                 helperText={errors.fromEndAt?.message}
                                 sx={{ flex: 1, minWidth: 160 }}
@@ -679,6 +691,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                             label="Дата начала"
                                             type="date"
                                             size="small"
+                                            disabled={isDateFieldDisabled(
+                                                form,
+                                                pointScheduleFields,
+                                                waypointStartAtFieldName,
+                                            )}
                                             error={Boolean(
                                                 waypointStartAtError,
                                             )}
@@ -722,6 +739,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                             label="Дата окончания"
                                             type="date"
                                             size="small"
+                                            disabled={isDateFieldDisabled(
+                                                form,
+                                                pointScheduleFields,
+                                                waypointEndAtFieldName,
+                                            )}
                                             error={Boolean(
                                                 waypointEndAtError,
                                             )}
@@ -880,6 +902,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                 label="Дата начала"
                                 type="date"
                                 size="small"
+                                disabled={isDateFieldDisabled(
+                                    form,
+                                    pointScheduleFields,
+                                    'toStartAt',
+                                )}
                                 error={Boolean(errors.toStartAt)}
                                 helperText={errors.toStartAt?.message}
                                 sx={{ flex: 1, minWidth: 160 }}
@@ -920,6 +947,11 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                 label="Дата окончания"
                                 type="date"
                                 size="small"
+                                disabled={isDateFieldDisabled(
+                                    form,
+                                    pointScheduleFields,
+                                    'toEndAt',
+                                )}
                                 error={Boolean(errors.toEndAt)}
                                 helperText={errors.toEndAt?.message}
                                 sx={{ flex: 1, minWidth: 160 }}

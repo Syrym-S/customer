@@ -1,3 +1,5 @@
+import { formatDateToTenderApiDateTime } from '../../../widgets/customer-tenders/model/tender.helpers';
+
 export function getFormFieldValue(form, fieldPath) {
     return fieldPath
         .split('.')
@@ -94,6 +96,21 @@ export function getEndAtMin(form, pointScheduleFields, fieldName) {
     return getFormFieldValue(form, ownStartField) || undefined;
 }
 
+export function getTodayDateInputValue() {
+    return formatDateToTenderApiDateTime(new Date()).split(' ')[0];
+}
+
+export function validateNotBeforeToday(value) {
+    if (!value) {
+        return true;
+    }
+
+    return (
+        value >= getTodayDateInputValue() ||
+        'Дата не может быть раньше сегодняшнего дня'
+    );
+}
+
 export function validateStartAtChain(form, pointScheduleFields, fieldName) {
     return (value) => {
         const pointIndex = getPointScheduleIndex(
@@ -144,6 +161,26 @@ export function validateEndAtOwnStart(form, pointScheduleFields, fieldName) {
             'Дата окончания не может быть раньше даты начала этой точки'
         );
     };
+}
+
+export function getPointScheduleFieldOrder(pointScheduleFields) {
+    return pointScheduleFields.flatMap((point) => [
+        point.startField,
+        point.endField,
+    ]);
+}
+
+export function isDateFieldDisabled(form, pointScheduleFields, fieldName) {
+    const fieldOrder = getPointScheduleFieldOrder(pointScheduleFields);
+    const fieldIndex = fieldOrder.indexOf(fieldName);
+
+    if (fieldIndex <= 0) {
+        return false;
+    }
+
+    return fieldOrder
+        .slice(0, fieldIndex)
+        .some((precedingField) => !getFormFieldValue(form, precedingField));
 }
 
 export function getStartAtChangeDependentField(pointScheduleFields, fieldName) {

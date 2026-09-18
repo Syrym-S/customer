@@ -11,6 +11,7 @@ import {
 } from '../../../api/leads.repository';
 import { deleteLeadCargoApi } from '../../../api/leads.api';
 import { mapLeadDetailsResponseFromApi } from '../../../model/lead.adapter';
+import { notifyError } from '../../../../../shared/model/notifications.store';
 
 function setValueByPath(source, path, value) {
    const keys = String(path).split('.');
@@ -160,12 +161,18 @@ export function useLeadDetailsMutations({
       const isRouteValid = await triggerRoute();
 
       if (!isRouteValid) {
-         setSaveEditError('Проверьте даты маршрута');
+         const message = 'Проверьте даты маршрута';
+
+         setSaveEditError(message);
+         notifyError(message);
          return;
       }
 
       if (!editForm.fromLocation?.trim() || !editForm.toLocation?.trim()) {
-         setSaveEditError('Укажите точки отправления и назначения маршрута');
+         const message = 'Укажите точки отправления и назначения маршрута';
+
+         setSaveEditError(message);
+         notifyError(message);
          return;
       }
 
@@ -186,11 +193,13 @@ export function useLeadDetailsMutations({
 
          setIsEditing(false);
       } catch (error) {
-         setSaveEditError(
+         const message =
             error.response?.data?.message ||
-               error.message ||
-               'Не удалось сохранить изменения',
-         );
+            error.message ||
+            'Не удалось сохранить изменения';
+
+         setSaveEditError(message);
+         notifyError(message);
       } finally {
          setIsSavingEdit(false);
       }
@@ -216,11 +225,13 @@ export function useLeadDetailsMutations({
 
          await reloadLeads?.({ withLoader: false });
       } catch (error) {
-         setDeleteCargoError(
+         const message =
             error.response?.data?.message ||
-               error.message ||
-               'Не удалось удалить груз',
-         );
+            error.message ||
+            'Не удалось удалить груз';
+
+         setDeleteCargoError(message);
+         notifyError(message);
       } finally {
          setDeletingCargoIndex(null);
       }

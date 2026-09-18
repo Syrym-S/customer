@@ -1,6 +1,6 @@
 import { Box, Dialog, DialogContent } from '@mui/material';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
     mapCreatedLeadToUi,
@@ -139,6 +139,8 @@ async function uploadCreateLeadDocuments(leadId, documents = []) {
 export function CreateLeadModal({ open, onClose }) {
     const [activeStep, setActiveStep] = useState(0);
     const [maxAvailableStep, setMaxAvailableStep] = useState(0);
+    const stepContentRef = useRef(null);
+    const [stepContentHeight, setStepContentHeight] = useState(null);
     const {
         control,
         handleSubmit,
@@ -162,6 +164,22 @@ export function CreateLeadModal({ open, onClose }) {
     });
 
     const formValues = useWatch({ control });
+
+    useLayoutEffect(() => {
+        const node = stepContentRef.current;
+
+        if (!node) {
+            return undefined;
+        }
+
+        const observer = new ResizeObserver(([entry]) => {
+            setStepContentHeight(entry.contentRect.height);
+        });
+
+        observer.observe(node);
+
+        return () => observer.disconnect();
+    }, []);
 
     const isFirstStep = activeStep === 0;
     const isLastStep = activeStep === steps.length - 1;
@@ -366,10 +384,12 @@ export function CreateLeadModal({ open, onClose }) {
 
                         <Box
                             sx={{
-                                minHeight: 360,
+                                height: stepContentHeight ?? 'auto',
+                                overflow: 'hidden',
+                                transition: 'height 200ms ease',
                             }}
                         >
-                            {renderStepContent()}
+                            <Box ref={stepContentRef}>{renderStepContent()}</Box>
                         </Box>
                     </DialogContent>
 

@@ -35,7 +35,7 @@ export function getWaypointTypeChipColor(type) {
    return waypointTypeChipColors[type] || 'primary';
 }
 
-function formatScheduleDatePart(value) {
+export function formatScheduleDatePart(value) {
    if (!value || typeof value !== 'string') {
       return '';
    }

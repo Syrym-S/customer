@@ -150,15 +150,17 @@ export function RoutePoint({
                   }}
                />
 
-               <Chip
-                  label={isPassed ? 'Пройдена' : 'Не пройдена'}
-                  variant='outlined'
-                  size='small'
-                  sx={{
-                     ...routePointChipSx,
-                     ...(isPassed ? passedChipStyle : notPassedChipStyle),
-                  }}
-               />
+               {isPassed !== undefined && (
+                  <Chip
+                     label={isPassed ? 'Пройдена' : 'Не пройдена'}
+                     variant='outlined'
+                     size='small'
+                     sx={{
+                        ...routePointChipSx,
+                        ...(isPassed ? passedChipStyle : notPassedChipStyle),
+                     }}
+                  />
+               )}
             </Box>
          </Box>
 

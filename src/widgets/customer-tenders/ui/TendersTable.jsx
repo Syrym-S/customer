@@ -192,6 +192,7 @@ export function TendersTable({ tenders }) {
             columns={columns}
             getRowClassName={getZebraRowClassName}
             hideFooter
+            localeText={{ noRowsLabel: 'Аукционы не найдены' }}
             sx={{ border: 0 }}
          />
       </Paper>

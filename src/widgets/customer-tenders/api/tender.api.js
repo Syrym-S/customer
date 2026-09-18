@@ -108,7 +108,7 @@ export async function searchTenderLeadsApi({
         params.status = status;
     }
 
-    const response = await apiClient.get("/customer/v1/leads/search", {
+    const response = await apiClient.get("/customer/v1/tenders/leads/search", {
         params,
     });
 

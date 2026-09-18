@@ -326,6 +326,8 @@ export function useRouteMapPicker({ form, setValue }) {
         const nextIndex = nextWaypoints.length - 1;
 
         setValue('waypoints', nextWaypoints, setValueOptions);
+        setValue('toStartAt', '', setValueOptions);
+        setValue('toEndAt', '', setValueOptions);
         setActiveMapPoint(getWaypointPointKey(nextIndex));
     }
 

@@ -1,5 +1,6 @@
 import {
     Box,
+    CircularProgress,
     Table,
     TableBody,
     TableCell,
@@ -47,7 +48,12 @@ function PartyDataTable({ rows }) {
     );
 }
 
-export function FactoringPartiesRequisitesSection({ factoring }) {
+export function FactoringPartiesRequisitesSection({
+    factoring,
+    customerProfile,
+    isCustomerProfileLoading,
+    customerProfileLoadFailed,
+}) {
     const forwarder = factoring.forwarder || {};
     const factor = factoring.factor || {};
 
@@ -113,6 +119,37 @@ export function FactoringPartiesRequisitesSection({ factoring }) {
         },
     ];
 
+    const customerRows = [
+        {
+            label: 'Компания',
+            value: customerProfile?.fullName,
+        },
+        {
+            label: 'БИН',
+            value: customerProfile?.bin,
+        },
+        {
+            label: 'ФИО',
+            value: customerProfile?.personFio,
+        },
+        {
+            label: 'Email',
+            value: customerProfile?.personEmail,
+        },
+        {
+            label: 'ИИН',
+            value: customerProfile?.personIin,
+        },
+        {
+            label: 'Номер',
+            value: customerProfile?.personPhone,
+        },
+        {
+            label: 'Адрес компании',
+            value: customerProfile?.legalAddress,
+        },
+    ];
+
     return (
         <Box
             sx={{
@@ -139,6 +176,7 @@ export function FactoringPartiesRequisitesSection({ factoring }) {
                     gridTemplateColumns: {
                         xs: '1fr',
                         md: 'repeat(2, minmax(0, 1fr))',
+                        lg: 'repeat(3, minmax(0, 1fr))',
                     },
                     gap: 2,
                 }}
@@ -185,6 +223,45 @@ export function FactoringPartiesRequisitesSection({ factoring }) {
                     </Typography>
 
                     <PartyDataTable rows={factorRows} />
+                </Box>
+
+                <Box
+                    sx={{
+                        p: 1.5,
+                        borderRadius: 2,
+                        backgroundColor: 'background.paper',
+                        border: '1px solid',
+                        borderColor: 'divider',
+                    }}
+                >
+                    <Typography
+                        sx={{
+                            fontSize: 14,
+                            fontWeight: 600,
+                            mb: 1,
+                        }}
+                    >
+                        Заказчик
+                    </Typography>
+
+                    {isCustomerProfileLoading ? (
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                py: 3,
+                            }}
+                        >
+                            <CircularProgress size={20} />
+                        </Box>
+                    ) : customerProfileLoadFailed ? (
+                        <Typography fontSize={13} color="text.secondary">
+                            Не удалось загрузить реквизиты заказчика
+                        </Typography>
+                    ) : (
+                        <PartyDataTable rows={customerRows} />
+                    )}
                 </Box>
             </Box>
         </Box>

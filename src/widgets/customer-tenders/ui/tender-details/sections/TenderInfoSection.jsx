@@ -7,16 +7,12 @@ import {
    tenderEditFormPropType,
    tenderPropType,
 } from '../../../model/tenders.prop-types';
+import { publicationTypeLabels } from '../../../model/tender.helpers';
 import PropTypes from 'prop-types';
 
 const tenderTypeLabels = {
    forwarder: 'Для экспедиторов',
    shipper: 'Для грузоотправителей',
-};
-
-const publicationTypeLabels = {
-   public: 'Публичный',
-   private: 'Приватный',
 };
 
 export function TenderInfoSection({

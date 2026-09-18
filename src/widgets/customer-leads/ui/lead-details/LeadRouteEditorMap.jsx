@@ -27,7 +27,6 @@ export function LeadRouteEditorMap({
             border: '1px solid',
             borderColor: 'divider',
             borderRadius: 3,
-            overflow: 'hidden',
             mb: 2,
          }}
       >
@@ -38,6 +37,7 @@ export function LeadRouteEditorMap({
             routePoints={routePoints}
             fitBoundsKey={fitBoundsKey}
             fitBoundsPoints={fitBoundsPoints}
+            borderRadius={3}
             handleMarkerClick={map.handleMarkerClick}
             onMapClick={onMapClick}
             onMarkerDragEnd={onMarkerDragEnd}

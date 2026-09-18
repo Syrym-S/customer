@@ -8,6 +8,8 @@ export const driverIcon = L.divIcon({
    popupAnchor: [0, -18],
 });
 
+export const ROUTE_TOOLTIP_PANE_NAME = 'routeTooltipPane';
+
 export const CUSTOMER_MAP_TILE_LAYER = {
    attribution:
       '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',

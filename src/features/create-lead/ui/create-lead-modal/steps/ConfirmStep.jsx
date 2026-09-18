@@ -1,9 +1,17 @@
-import { Box, Divider } from '@mui/material';
+import { Box, Divider, Stack } from '@mui/material';
 import PropTypes from 'prop-types';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import TripOriginIcon from '@mui/icons-material/TripOrigin';
 
 import { InfoBadge } from '../components/InfoBadge';
 import { StepSection } from '../components/StepSection';
 import { formatAmount } from '../../../../../shared/helpers/currency-format.helpers';
+import { RoutePoint } from '../../../../../widgets/customer-leads/ui/lead-details/components/RoutePoint';
+import {
+    formatScheduleDatePart,
+    getWaypointTypeChipColor,
+    getWaypointTypeLabel,
+} from '../../../../../widgets/customer-leads/model/lead-route.helpers';
 
 function getLocationDisplay(location, fallback) {
     if (location?.address) {
@@ -15,6 +23,21 @@ function getLocationDisplay(location, fallback) {
 
 function getFormCargos(form) {
     return Array.isArray(form.cargos) ? form.cargos : [];
+}
+
+function getFormWaypoints(form) {
+    return Array.isArray(form.waypoints) ? form.waypoints : [];
+}
+
+function getFormPointDateLabel(startAt, endAt) {
+    const startLabel = formatScheduleDatePart(startAt);
+    const endLabel = formatScheduleDatePart(endAt);
+
+    if (startLabel && endLabel && startLabel !== endLabel) {
+        return `${startLabel} – ${endLabel}`;
+    }
+
+    return startLabel || endLabel || null;
 }
 
 function getDimensionsDisplay(cargo) {
@@ -32,9 +55,55 @@ function getDimensionsDisplay(cargo) {
 export function ConfirmStep({ form }) {
     const selectedForwarder = form.forwarder;
     const cargos = getFormCargos(form);
+    const waypoints = getFormWaypoints(form);
 
     return (
         <Box sx={{ display: 'grid', gap: 2 }}>
+            <StepSection title="Маршрут">
+                <Stack spacing={1.25}>
+                    <RoutePoint
+                        label="Откуда"
+                        value={getLocationDisplay(
+                            form.from_location,
+                            form.fromLocation,
+                        )}
+                        icon={<TripOriginIcon />}
+                        date={getFormPointDateLabel(
+                            form.fromStartAt,
+                            form.fromEndAt,
+                        )}
+                    />
+
+                    {waypoints.map((waypoint, index) => (
+                        <RoutePoint
+                            key={waypoint.id || index}
+                            label={`Промежуточная точка #${index + 1}`}
+                            value={waypoint.location || 'Не указано'}
+                            icon={<LocationOnOutlinedIcon />}
+                            typeLabel={getWaypointTypeLabel(waypoint.type)}
+                            typeColor={getWaypointTypeChipColor(waypoint.type)}
+                            date={getFormPointDateLabel(
+                                waypoint.startAt,
+                                waypoint.endAt,
+                            )}
+                        />
+                    ))}
+
+                    <RoutePoint
+                        label="Куда"
+                        value={getLocationDisplay(
+                            form.to_location,
+                            form.toLocation,
+                        )}
+                        icon={<LocationOnOutlinedIcon />}
+                        date={getFormPointDateLabel(
+                            form.toStartAt,
+                            form.toEndAt,
+                        )}
+                    />
+                </Stack>
+            </StepSection>
+
             <StepSection title="Проверьте данные">
                 <Box
                     sx={{
@@ -46,22 +115,6 @@ export function ConfirmStep({ form }) {
                         gap: 1,
                     }}
                 >
-                    <InfoBadge
-                        label="Откуда"
-                        value={getLocationDisplay(
-                            form.from_location,
-                            form.fromLocation,
-                        )}
-                    />
-
-                    <InfoBadge
-                        label="Куда"
-                        value={getLocationDisplay(
-                            form.to_location,
-                            form.toLocation,
-                        )}
-                    />
-
                     <Box
                         sx={{
                             gridColumn: {

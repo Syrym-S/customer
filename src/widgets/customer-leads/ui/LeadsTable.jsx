@@ -118,6 +118,7 @@ export function LeadsTable({ leads }) {
             columns={columns}
             getRowClassName={getZebraRowClassName}
             hideFooter
+            localeText={{ noRowsLabel: 'Лиды не найдены' }}
             sx={{ border: 0 }}
          />
       </Paper>
