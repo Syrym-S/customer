@@ -193,7 +193,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                            'fromStartAt',
                            field.onChange,
                         )}
-                        label="Начало (Откуда)"
+                        label="Дата начала"
                         type="date"
                         size="small"
                         error={Boolean(errors?.fromStartAt)}
@@ -224,7 +224,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                            'fromEndAt',
                            field.onChange,
                         )}
-                        label="Окончание (Откуда)"
+                        label="Дата окончания"
                         type="date"
                         size="small"
                         error={Boolean(errors?.fromEndAt)}
@@ -301,7 +301,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                            'toStartAt',
                            field.onChange,
                         )}
-                        label="Начало (Куда)"
+                        label="Дата начала"
                         type="date"
                         size="small"
                         error={Boolean(errors?.toStartAt)}
@@ -338,7 +338,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                      <TextField
                         {...field}
                         onChange={handleEndAtChange('toEndAt', field.onChange)}
-                        label="Окончание (Куда)"
+                        label="Дата окончания"
                         type="date"
                         size="small"
                         error={Boolean(errors?.toEndAt)}

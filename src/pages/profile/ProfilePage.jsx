@@ -4,6 +4,7 @@ import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   Paper,
   Stack,
   TextField,
@@ -440,243 +441,258 @@ export function ProfilePage() {
             onError={setProfilePhotoError}
           />
 
-          <Stack spacing={2}>
-            <Typography fontWeight={600}>Компания и реквизиты</Typography>
-
-            <TextField
-              name="fullName"
-              label="Название"
-              value={form.fullName}
-              onChange={handleChange}
-              error={Boolean(errors.fullName)}
-              helperText={errors.fullName}
-              fullWidth
-            />
-
-            <TextField
-              name="bin"
-              label="БИН"
-              value={form.bin}
-              onChange={handleChange}
-              error={Boolean(errors.bin)}
-              helperText={errors.bin}
-              fullWidth
-            />
-
-            <TextField
-              name="bik"
-              label="БИК"
-              value={form.bik}
-              onChange={handleChange}
-              error={Boolean(errors.bik)}
-              helperText={errors.bik}
-              fullWidth
-            />
-
-            <TextField
-              name="accountNumber"
-              label="ИИК"
-              value={form.accountNumber}
-              onChange={handleChange}
-              error={Boolean(errors.accountNumber)}
-              helperText={errors.accountNumber}
-              fullWidth
-            />
-
-            <TextField
-              name="legalAddress"
-              label="Юридический адрес"
-              value={form.legalAddress}
-              onChange={handleChange}
-              error={Boolean(errors.legalAddress)}
-              helperText={errors.legalAddress}
-              fullWidth
-            />
-
-            <TextField
-              name="bankName"
-              label="Название банка"
-              value={form.bankName}
-              onChange={handleChange}
-              error={Boolean(errors.bankName)}
-              helperText={errors.bankName}
-              fullWidth
-            />
-          </Stack>
-
-          <Stack spacing={2}>
-            <Typography fontWeight={600}>Контактное лицо</Typography>
-
-            <TextField
-              name="personFio"
-              label="ФИО"
-              value={form.personFio}
-              onChange={handleChange}
-              fullWidth
-            />
-
-            <TextField
-              name="personPhone"
-              label="Телефон"
-              value={form.personPhone}
-              onChange={handleChange}
-              fullWidth
-            />
-
-            <TextField
-              name="personEmail"
-              label="Email"
-              value={form.personEmail}
-              onChange={handleChange}
-              error={Boolean(errors.personEmail)}
-              helperText={errors.personEmail}
-              fullWidth
-            />
-
-            <TextField
-              name="personIin"
-              label="ИИН"
-              value={form.personIin}
-              onChange={handleChange}
-              error={Boolean(errors.personIin)}
-              helperText={errors.personIin}
-              fullWidth
-            />
-          </Stack>
-
-          <Stack spacing={2}>
-            <Typography fontWeight={600}>Смена пароля</Typography>
-
-            <TextField
-              name="profileCurrentPassword"
-              label="Текущий пароль"
-              type="password"
-              value={form.currentPassword}
-              onChange={(event) => {
-                handleChange({
-                  target: {
-                    name: "currentPassword",
-                    value: event.target.value,
-                  },
-                });
-              }}
-              error={Boolean(errors.currentPassword)}
-              helperText={errors.currentPassword}
-              fullWidth
-              autoComplete="new-password"
-              inputProps={{
-                autoComplete: "new-password",
-                readOnly: true,
-                onFocus: (event) => {
-                  event.target.removeAttribute("readonly");
-                },
-              }}
-            />
-
-            <TextField
-              name="newPassword"
-              label="Новый пароль"
-              type="password"
-              value={form.newPassword}
-              onChange={handleChange}
-              error={Boolean(errors.newPassword)}
-              helperText={errors.newPassword}
-              fullWidth
-              autoComplete="new-password"
-              inputProps={{
-                autoComplete: "new-password",
-              }}
-            />
-
-            <TextField
-              name="newPasswordConfirm"
-              label="Повторите новый пароль"
-              type="password"
-              value={form.newPasswordConfirm}
-              onChange={handleChange}
-              error={Boolean(errors.newPasswordConfirm)}
-              helperText={errors.newPasswordConfirm}
-              fullWidth
-              autoComplete="new-password"
-              inputProps={{
-                autoComplete: "new-password",
-              }}
-            />
-          </Stack>
-
-          <Stack spacing={2}>
-            <Typography fontWeight={600}>Документ</Typography>
-
-            <TextField
-              name="documentNumber"
-              label="Номер документа"
-              value={form.documentNumber}
-              onChange={handleChange}
-              error={Boolean(errors.documentNumber)}
-              helperText={errors.documentNumber}
-              fullWidth
-            />
-
-            <TextField
-              name="issueCountry"
-              label="Страна выдачи"
-              value={form.issueCountry}
-              onChange={handleChange}
-              error={Boolean(errors.issueCountry)}
-              helperText={errors.issueCountry}
-              fullWidth
-            />
-          </Stack>
-
-          <Stack spacing={2}>
-            <Box>
-              <Typography fontWeight={600}>
-                Регистрационные документы
-              </Typography>
-            </Box>
-
+          {isProfileLoading ? (
             <Box
               sx={{
-                display: "grid",
-                gridTemplateColumns: {
-                  xs: "1fr",
-                  md: "1fr 1fr",
-                },
-                gap: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                py: 6,
               }}
             >
-              <ProfileDocumentUpdateField
-                label="Документ о регистрации юридического лица"
-                currentDocument={form.registrationDocument}
-                file={profileDocumentFiles.registrationDocument}
-                inputKey={profileDocumentInputKeys.registrationDocument}
-                error={profileDocumentErrors.registrationDocument}
-                disabled={isSaving || isProfileLoading}
-                onChange={(file) =>
-                  handleProfileDocumentChange("registrationDocument", file)
-                }
-                onCancel={() =>
-                  handleCancelProfileDocumentChange("registrationDocument")
-                }
-              />
-              <ProfileDocumentUpdateField
-                label="Документ о трудоустройстве сотрудника"
-                currentDocument={form.employerDocument}
-                file={profileDocumentFiles.employerDocument}
-                inputKey={profileDocumentInputKeys.employerDocument}
-                error={profileDocumentErrors.employerDocument}
-                disabled={isSaving || isProfileLoading}
-                onChange={(file) =>
-                  handleProfileDocumentChange("employerDocument", file)
-                }
-                onCancel={() =>
-                  handleCancelProfileDocumentChange("employerDocument")
-                }
-              />
-
-              <ContractDocumentCard documents={legalDocuments} />
+              <CircularProgress />
             </Box>
-          </Stack>
+          ) : (
+            <>
+              <Stack spacing={2}>
+                <Typography fontWeight={600}>Компания и реквизиты</Typography>
+
+                <TextField
+                  name="fullName"
+                  label="Название"
+                  value={form.fullName}
+                  onChange={handleChange}
+                  error={Boolean(errors.fullName)}
+                  helperText={errors.fullName}
+                  fullWidth
+                />
+
+                <TextField
+                  name="bin"
+                  label="БИН"
+                  value={form.bin}
+                  onChange={handleChange}
+                  error={Boolean(errors.bin)}
+                  helperText={errors.bin}
+                  fullWidth
+                />
+
+                <TextField
+                  name="bik"
+                  label="БИК"
+                  value={form.bik}
+                  onChange={handleChange}
+                  error={Boolean(errors.bik)}
+                  helperText={errors.bik}
+                  fullWidth
+                />
+
+                <TextField
+                  name="accountNumber"
+                  label="ИИК"
+                  value={form.accountNumber}
+                  onChange={handleChange}
+                  error={Boolean(errors.accountNumber)}
+                  helperText={errors.accountNumber}
+                  fullWidth
+                />
+
+                <TextField
+                  name="legalAddress"
+                  label="Юридический адрес"
+                  value={form.legalAddress}
+                  onChange={handleChange}
+                  error={Boolean(errors.legalAddress)}
+                  helperText={errors.legalAddress}
+                  fullWidth
+                />
+
+                <TextField
+                  name="bankName"
+                  label="Название банка"
+                  value={form.bankName}
+                  onChange={handleChange}
+                  error={Boolean(errors.bankName)}
+                  helperText={errors.bankName}
+                  fullWidth
+                />
+              </Stack>
+
+              <Stack spacing={2}>
+                <Typography fontWeight={600}>Контактное лицо</Typography>
+
+                <TextField
+                  name="personFio"
+                  label="ФИО"
+                  value={form.personFio}
+                  onChange={handleChange}
+                  fullWidth
+                />
+
+                <TextField
+                  name="personPhone"
+                  label="Телефон"
+                  value={form.personPhone}
+                  onChange={handleChange}
+                  fullWidth
+                />
+
+                <TextField
+                  name="personEmail"
+                  label="Email"
+                  value={form.personEmail}
+                  onChange={handleChange}
+                  error={Boolean(errors.personEmail)}
+                  helperText={errors.personEmail}
+                  fullWidth
+                />
+
+                <TextField
+                  name="personIin"
+                  label="ИИН"
+                  value={form.personIin}
+                  onChange={handleChange}
+                  error={Boolean(errors.personIin)}
+                  helperText={errors.personIin}
+                  fullWidth
+                />
+              </Stack>
+
+              <Stack spacing={2}>
+                <Typography fontWeight={600}>Смена пароля</Typography>
+
+                <TextField
+                  name="profileCurrentPassword"
+                  label="Текущий пароль"
+                  type="password"
+                  value={form.currentPassword}
+                  onChange={(event) => {
+                    handleChange({
+                      target: {
+                        name: "currentPassword",
+                        value: event.target.value,
+                      },
+                    });
+                  }}
+                  error={Boolean(errors.currentPassword)}
+                  helperText={errors.currentPassword}
+                  fullWidth
+                  autoComplete="new-password"
+                  inputProps={{
+                    autoComplete: "new-password",
+                    readOnly: true,
+                    onFocus: (event) => {
+                      event.target.removeAttribute("readonly");
+                    },
+                  }}
+                />
+
+                <TextField
+                  name="newPassword"
+                  label="Новый пароль"
+                  type="password"
+                  value={form.newPassword}
+                  onChange={handleChange}
+                  error={Boolean(errors.newPassword)}
+                  helperText={errors.newPassword}
+                  fullWidth
+                  autoComplete="new-password"
+                  inputProps={{
+                    autoComplete: "new-password",
+                  }}
+                />
+
+                <TextField
+                  name="newPasswordConfirm"
+                  label="Повторите новый пароль"
+                  type="password"
+                  value={form.newPasswordConfirm}
+                  onChange={handleChange}
+                  error={Boolean(errors.newPasswordConfirm)}
+                  helperText={errors.newPasswordConfirm}
+                  fullWidth
+                  autoComplete="new-password"
+                  inputProps={{
+                    autoComplete: "new-password",
+                  }}
+                />
+              </Stack>
+
+              <Stack spacing={2}>
+                <Typography fontWeight={600}>Документ</Typography>
+
+                <TextField
+                  name="documentNumber"
+                  label="Номер документа"
+                  value={form.documentNumber}
+                  onChange={handleChange}
+                  error={Boolean(errors.documentNumber)}
+                  helperText={errors.documentNumber}
+                  fullWidth
+                />
+
+                <TextField
+                  name="issueCountry"
+                  label="Страна выдачи"
+                  value={form.issueCountry}
+                  onChange={handleChange}
+                  error={Boolean(errors.issueCountry)}
+                  helperText={errors.issueCountry}
+                  fullWidth
+                />
+              </Stack>
+
+              <Stack spacing={2}>
+                <Box>
+                  <Typography fontWeight={600}>
+                    Регистрационные документы
+                  </Typography>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "grid",
+                    gridTemplateColumns: {
+                      xs: "1fr",
+                      md: "1fr 1fr",
+                    },
+                    gap: 1,
+                  }}
+                >
+                  <ProfileDocumentUpdateField
+                    label="Документ о регистрации юридического лица"
+                    currentDocument={form.registrationDocument}
+                    file={profileDocumentFiles.registrationDocument}
+                    inputKey={profileDocumentInputKeys.registrationDocument}
+                    error={profileDocumentErrors.registrationDocument}
+                    disabled={isSaving || isProfileLoading}
+                    onChange={(file) =>
+                      handleProfileDocumentChange("registrationDocument", file)
+                    }
+                    onCancel={() =>
+                      handleCancelProfileDocumentChange("registrationDocument")
+                    }
+                  />
+                  <ProfileDocumentUpdateField
+                    label="Документ о трудоустройстве сотрудника"
+                    currentDocument={form.employerDocument}
+                    file={profileDocumentFiles.employerDocument}
+                    inputKey={profileDocumentInputKeys.employerDocument}
+                    error={profileDocumentErrors.employerDocument}
+                    disabled={isSaving || isProfileLoading}
+                    onChange={(file) =>
+                      handleProfileDocumentChange("employerDocument", file)
+                    }
+                    onCancel={() =>
+                      handleCancelProfileDocumentChange("employerDocument")
+                    }
+                  />
+
+                  <ContractDocumentCard documents={legalDocuments} />
+                </Box>
+              </Stack>
+            </>
+          )}
 
           <Box>
             <Button

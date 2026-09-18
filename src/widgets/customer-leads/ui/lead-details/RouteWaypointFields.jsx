@@ -264,7 +264,7 @@ export function RouteWaypointFields({
                                  startAtFieldName,
                                  field.onChange,
                               )}
-                              label={`Начало (точка ${index + 1})`}
+                              label="Дата начала"
                               type="date"
                               size="small"
                               error={Boolean(startAtError)}
@@ -298,7 +298,7 @@ export function RouteWaypointFields({
                                  endAtFieldName,
                                  field.onChange,
                               )}
-                              label={`Окончание (точка ${index + 1})`}
+                              label="Дата окончания"
                               type="date"
                               size="small"
                               error={Boolean(endAtError)}

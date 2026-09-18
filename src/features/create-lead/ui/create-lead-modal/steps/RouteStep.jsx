@@ -423,7 +423,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     'fromStartAt',
                                     field.onChange,
                                 )}
-                                label="Начало (Откуда)"
+                                label="Дата начала"
                                 type="date"
                                 size="small"
                                 error={Boolean(errors.fromStartAt)}
@@ -454,7 +454,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     'fromEndAt',
                                     field.onChange,
                                 )}
-                                label="Окончание (Откуда)"
+                                label="Дата окончания"
                                 type="date"
                                 size="small"
                                 error={Boolean(errors.fromEndAt)}
@@ -676,7 +676,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                                 waypointStartAtFieldName,
                                                 field.onChange,
                                             )}
-                                            label={`Начало (точка ${index + 1})`}
+                                            label="Дата начала"
                                             type="date"
                                             size="small"
                                             error={Boolean(
@@ -719,7 +719,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                                 waypointEndAtFieldName,
                                                 field.onChange,
                                             )}
-                                            label={`Окончание (точка ${index + 1})`}
+                                            label="Дата окончания"
                                             type="date"
                                             size="small"
                                             error={Boolean(
@@ -877,7 +877,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     'toStartAt',
                                     field.onChange,
                                 )}
-                                label="Начало (Куда)"
+                                label="Дата начала"
                                 type="date"
                                 size="small"
                                 error={Boolean(errors.toStartAt)}
@@ -917,7 +917,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     'toEndAt',
                                     field.onChange,
                                 )}
-                                label="Окончание (Куда)"
+                                label="Дата окончания"
                                 type="date"
                                 size="small"
                                 error={Boolean(errors.toEndAt)}

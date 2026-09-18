@@ -3,11 +3,13 @@ import { useRef } from 'react';
 import {
     Avatar,
     Box,
-    Button,
     CircularProgress,
+    IconButton,
     Stack,
     Typography,
 } from '@mui/material';
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
 import { validateAndReadProfilePhoto } from '../model/profile-photo.helpers';
 
@@ -63,46 +65,169 @@ export function ProfilePhotoUploader({
                     sm: 'center',
                 }}
             >
-                {isLoading ? (
+                <Box sx={{ flexShrink: 0 }}>
                     <Box
                         sx={{
+                            position: 'relative',
                             width: 96,
                             height: 96,
                             borderRadius: '50%',
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            bgcolor: 'background.default',
-                            flexShrink: 0,
+                            '&:hover .profile-photo-overlay, &:focus-within .profile-photo-overlay':
+                                {
+                                    opacity: 1,
+                                    pointerEvents: 'auto',
+                                },
                         }}
                     >
-                        <CircularProgress size={28} />
-                    </Box>
-                ) : (
-                    <Avatar
-                        src={value || undefined}
-                        sx={{
-                            width: 96,
-                            height: 96,
-                            fontSize: 32,
-                            bgcolor: value ? undefined : 'primary.light',
-                            flexShrink: 0,
-                        }}
-                    />
-                )}
+                        {isLoading ? (
+                            <Box
+                                sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                    borderRadius: '50%',
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    bgcolor: 'background.default',
+                                }}
+                            >
+                                <CircularProgress size={28} />
+                            </Box>
+                        ) : (
+                            <Avatar
+                                src={value || undefined}
+                                sx={{
+                                    width: '100%',
+                                    height: '100%',
+                                    fontSize: 32,
+                                    bgcolor: value ? undefined : 'primary.light',
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                }}
+                            />
+                        )}
 
-                <Box>
-                    <Typography fontWeight={600}>Фото профиля</Typography>
+                        {!isLoading && (
+                            <Stack
+                                className='profile-photo-overlay'
+                                direction='row'
+                                spacing={1}
+                                sx={{
+                                    position: 'absolute',
+                                    inset: 0,
+                                    borderRadius: '50%',
+                                    bgcolor: 'rgba(22,36,62,0.8)',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    opacity: 0,
+                                    pointerEvents: 'none',
+                                    transition: 'opacity 0.15s ease',
+                                    display: {
+                                        xs: 'none',
+                                        sm: 'flex',
+                                    },
+                                }}
+                            >
+                                <IconButton
+                                    size='small'
+                                    onClick={handleOpenFileDialog}
+                                    disabled={disabled}
+                                    aria-label='Загрузить фото'
+                                    sx={{
+                                        color: '#fff',
+                                        bgcolor: 'rgba(255,255,255,0.35)',
+                                        '&:hover': {
+                                            bgcolor: 'rgba(255,255,255,0.45)',
+                                        },
+                                    }}
+                                >
+                                    <PhotoCameraOutlinedIcon fontSize='small' />
+                                </IconButton>
+
+                                {value && (
+                                    <IconButton
+                                        size='small'
+                                        onClick={handleRemovePhoto}
+                                        disabled={disabled}
+                                        aria-label='Удалить фото'
+                                        sx={{
+                                            color: 'error.main',
+                                            bgcolor: 'rgba(255,255,255,0.65)',
+                                            '&:hover': {
+                                                bgcolor: 'rgba(255,255,255,0.75)',
+                                            },
+                                        }}
+                                    >
+                                        <DeleteOutlineRoundedIcon fontSize='small' />
+                                    </IconButton>
+                                )}
+                            </Stack>
+                        )}
+                    </Box>
 
                     <Typography
+                        variant='caption'
                         color='text.secondary'
-                        fontSize={14}
-                        sx={{ mt: 0.5 }}
+                        sx={{
+                            display: 'block',
+                            mt: 0.5,
+                            fontSize: 10,
+                            fontStyle: 'italic',
+                            textAlign: {
+                                xs: 'left',
+                                sm: 'center',
+                            },
+                        }}
                     >
-                        PNG или JPEG, размер от 400x400 до 600x600 px
+                        .png, .jpeg · 400–600px
                     </Typography>
+                </Box>
+
+                <Box>
+                    {!isLoading && (
+                        <Stack
+                            direction='row'
+                            spacing={1}
+                            sx={{
+                                display: {
+                                    xs: 'flex',
+                                    sm: 'none',
+                                },
+                                mb: 1,
+                            }}
+                        >
+                            <IconButton
+                                size='small'
+                                onClick={handleOpenFileDialog}
+                                disabled={disabled}
+                                aria-label='Загрузить фото'
+                                sx={{
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                }}
+                            >
+                                <PhotoCameraOutlinedIcon fontSize='small' />
+                            </IconButton>
+
+                            {value && (
+                                <IconButton
+                                    size='small'
+                                    color='error'
+                                    onClick={handleRemovePhoto}
+                                    disabled={disabled}
+                                    aria-label='Удалить фото'
+                                    sx={{
+                                        border: '1px solid',
+                                        borderColor: 'divider',
+                                    }}
+                                >
+                                    <DeleteOutlineRoundedIcon fontSize='small' />
+                                </IconButton>
+                            )}
+                        </Stack>
+                    )}
 
                     {error && (
                         <Typography
@@ -113,27 +238,6 @@ export function ProfilePhotoUploader({
                             {error}
                         </Typography>
                     )}
-
-                    <Stack direction='row' spacing={1} sx={{ mt: 1.5 }}>
-                        <Button
-                            variant='outlined'
-                            onClick={handleOpenFileDialog}
-                            disabled={disabled}
-                        >
-                            Загрузить фото
-                        </Button>
-
-                        {value && !isLoading && (
-                            <Button
-                                color='error'
-                                variant='text'
-                                onClick={handleRemovePhoto}
-                                disabled={disabled}
-                            >
-                                Удалить
-                            </Button>
-                        )}
-                    </Stack>
                 </Box>
             </Stack>
 
