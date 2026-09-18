@@ -144,6 +144,7 @@ export const useChatStore = create((set, get) => ({
   activeChatId: null,
   chats: [],
   chatPagination: {},
+  chatRequestToken: 0,
 
   // GAP: no "list all my factoring chats" endpoint — factoring rows only exist once opened this session.
   leadChatsStatus: "idle", // "idle" | "loading" | "loaded" | "error"
@@ -157,7 +158,10 @@ export const useChatStore = create((set, get) => ({
   toggleWidget: () => {
     const willOpen = !get().isOpen;
 
-    set((state) => ({ isOpen: !state.isOpen }));
+    set((state) => ({
+      isOpen: !state.isOpen,
+      chatRequestToken: willOpen ? state.chatRequestToken : state.chatRequestToken + 1,
+    }));
 
     if (willOpen) {
       // Refresh unread counts / last-message previews every time the panel is
@@ -167,7 +171,7 @@ export const useChatStore = create((set, get) => ({
   },
 
   closeWidget: () => {
-    set({ isOpen: false });
+    set((state) => ({ isOpen: false, chatRequestToken: state.chatRequestToken + 1 }));
   },
 
   openChatById: (chatId) => {
@@ -202,7 +206,9 @@ export const useChatStore = create((set, get) => ({
     const activeCategory =
       chatType === "factoring" ? "factorings" : chatType === "delivery" ? "delivery" : "shipments";
 
-    set({ isOpen: true, activeCategory, pendingLeadChatLeadId: entityId });
+    const requestToken = get().chatRequestToken + 1;
+
+    set({ isOpen: true, activeCategory, pendingLeadChatLeadId: entityId, chatRequestToken: requestToken });
 
     try {
       const [messagesResponse, participantCounterparts] = await Promise.all([
@@ -256,7 +262,9 @@ export const useChatStore = create((set, get) => ({
         };
       });
 
-      get().openChatById(chat.id);
+      if (get().chatRequestToken === requestToken) {
+        get().openChatById(chat.id);
+      }
     } catch (error) {
       set({ pendingLeadChatLeadId: null });
       notifyError(
