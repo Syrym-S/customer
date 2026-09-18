@@ -1,3 +1,5 @@
+import { truncateId } from "../../../shared/helpers/data-grid.helpers";
+
 // Confirmed system-wide role_id table.
 export const CHAT_ROLE_ID = {
   FORWARDER: 1,
@@ -208,7 +210,7 @@ export function buildLeadCounterpartFromLead(lead) {
   }
 
   return {
-    name: `Лид #${lead?.num ?? lead?.id}`,
+    name: `Лид #${truncateId(lead?.num ?? lead?.id)}`,
     role: "Экспедитор",
   };
 }
@@ -323,14 +325,14 @@ export function buildLeadRouteSummary(lead) {
 
 function buildFactoringCounterpartFallback(factoringId) {
   return {
-    name: `Факторинг #${factoringId}`,
+    name: `Факторинг #${truncateId(factoringId)}`,
     role: "Факторинг",
   };
 }
 
 function buildDeliveryCounterpartFallback(id) {
   return {
-    name: `Доставка #${id}`,
+    name: `Доставка #${truncateId(id)}`,
     role: "Доставка",
   };
 }
@@ -407,7 +409,6 @@ export function normalizeLeadChatsListResponse(response) {
 }
 
 // GAP: /customer/v1/chats has no participant/forwarder data — list rows show generic fallback names until the chat is opened.
-// UNCONFIRMED: for a factoring-type row, entityId here is lead_id, not the factoring's own id — matching openFactoringChat's id would need the factoring id, which this endpoint doesn't return.
 export function mapLeadChatListEntryFromApi(apiChatEntry) {
   const chatType = apiChatEntry?.chat_type || "lead";
   const leadId = apiChatEntry?.lead_id ?? apiChatEntry?.lead?.id;
@@ -429,7 +430,7 @@ export function mapLeadChatListEntryFromApi(apiChatEntry) {
       ? buildFactoringCounterpartFallback(leadId)
       : chatType === "delivery"
         ? buildDeliveryCounterpartFallback(leadId)
-        : { name: `Лид #${lead?.num ?? leadId}`, role: "Экспедитор" };
+        : { name: `Лид #${truncateId(lead?.num ?? leadId)}`, role: "Экспедитор" };
 
   return {
     id: `${chatType}-chat-${leadId}`,

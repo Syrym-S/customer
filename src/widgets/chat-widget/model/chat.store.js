@@ -196,8 +196,8 @@ export const useChatStore = create((set, get) => ({
     }
   },
 
-  openEntityChat: async (chatType, entityId, counterpart, routeSummary, { apiEntityId } = {}) => {
-    const resolvedApiEntityId = apiEntityId ?? entityId;
+  openEntityChat: async (chatType, entityId, counterpart, routeSummary) => {
+    const resolvedApiEntityId = entityId;
     const state = get();
     const existingChat = state.chats.find(
       (chat) => chat.entityType === chatType && String(chat.entityId) === String(entityId),
@@ -282,10 +282,8 @@ export const useChatStore = create((set, get) => ({
   openLeadChat: (leadId, counterpart, routeSummary) =>
     get().openEntityChat("lead", leadId, counterpart, routeSummary),
 
-  openFactoringChat: (factoringId, counterpart, leadId) =>
-    get().openEntityChat("factoring", factoringId, counterpart, undefined, {
-      apiEntityId: leadId,
-    }),
+  openFactoringChat: (leadId, counterpart) =>
+    get().openEntityChat("factoring", leadId, counterpart),
 
   // Delivery chats are scoped by the lead's own id — chat_type distinguishes them.
   openDeliveryChat: (leadId, counterpart, routeSummary) =>

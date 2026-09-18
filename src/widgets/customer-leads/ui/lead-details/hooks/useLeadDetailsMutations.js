@@ -164,6 +164,11 @@ export function useLeadDetailsMutations({
          return;
       }
 
+      if (!editForm.fromLocation?.trim() || !editForm.toLocation?.trim()) {
+         setSaveEditError('Укажите точки отправления и назначения маршрута');
+         return;
+      }
+
       const payload = mapLeadEditFormToApi(editForm, currentLead);
 
       if (Object.keys(payload).length === 0) {

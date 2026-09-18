@@ -67,7 +67,7 @@ export function ChatListView() {
     }
 
     if (chat.entityType === "factoring") {
-      openFactoringChat(chat.entityId, chat.counterpart, chat.apiEntityId);
+      openFactoringChat(chat.entityId, chat.counterpart);
       return;
     }
 

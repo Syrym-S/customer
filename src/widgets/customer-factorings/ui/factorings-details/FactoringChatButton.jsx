@@ -11,14 +11,17 @@ import {
 import { fetchCustomerFactoringById } from "../../api/factorings.api";
 import { getFactoringLeadId } from "../../model/factorings.helpers";
 import { notifyError } from "../../../../shared/model/notifications.store";
+import { truncateId } from "../../../../shared/helpers/data-grid.helpers";
 
 export function FactoringChatButton({ factoringId, factoring, onClose }) {
   const chats = useChatStore((state) => state.chats);
   const openFactoringChat = useChatStore((state) => state.openFactoringChat);
   const [isResolvingChat, setIsResolvingChat] = useState(false);
 
+  const knownLeadId = getFactoringLeadId(factoring);
+
   const factoringUnreadCount = getTotalUnreadCount(
-    getEntityChats(chats, "factoring", factoringId),
+    getEntityChats(chats, "factoring", knownLeadId),
   );
 
   async function handleClick() {
@@ -26,16 +29,9 @@ export function FactoringChatButton({ factoringId, factoring, onClose }) {
       return;
     }
 
-    const counterpart = {
-      name: `Факторинг #${factoringId}`,
-      role: "Факторинг",
-    };
-
-    const knownLeadId = getFactoringLeadId(factoring);
-
     if (knownLeadId) {
       onClose?.();
-      openFactoringChat(factoringId, counterpart, knownLeadId);
+      openFactoringChat(knownLeadId, { name: `Факторинг #${truncateId(knownLeadId)}`, role: "Факторинг" });
       return;
     }
 
@@ -50,7 +46,7 @@ export function FactoringChatButton({ factoringId, factoring, onClose }) {
       }
 
       onClose?.();
-      openFactoringChat(factoringId, counterpart, leadId);
+      openFactoringChat(leadId, { name: `Факторинг #${truncateId(leadId)}`, role: "Факторинг" });
     } catch (error) {
       notifyError(
         error.response?.data?.message ||
