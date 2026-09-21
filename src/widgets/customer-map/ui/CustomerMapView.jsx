@@ -1,11 +1,10 @@
 import { Fragment, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import {
    MapContainer,
    TileLayer,
    Marker,
    Popup,
-   Polyline,
    Tooltip,
 } from "react-leaflet";
 import PropTypes from "prop-types";
@@ -13,16 +12,24 @@ import {
    CUSTOMER_MAP_TILE_LAYER,
    ROUTE_TOOLTIP_PANE_NAME,
    driverIcon,
+   getMarkerIcon,
 } from "../model/customer-map.constants";
 import {
    buildLeadRouteMarkers,
    formatMapLocation,
 } from "../model/customer-map.helpers";
+import {
+   getRoutePathStyle,
+   getRouteStatusStyle,
+} from "../model/route-status-style";
 import { DriverMapInfo } from "./DriverMapInfo";
 import { MapResizeHandler } from "./MapResizeHandler";
 import { FitRouteBounds } from "./FitRouteBounds";
 import { MapClickHandler } from "./MapClickHandler";
 import { TooltipEscapePane } from "./TooltipEscapePane";
+import { RouteCasingPane } from "./RouteCasingPane";
+import { RoutePolyline } from "./RoutePolyline";
+import { RouteArrows } from "./RouteArrows";
 
 export function CustomerMapView({
    center,
@@ -33,6 +40,7 @@ export function CustomerMapView({
    geoRoutes = [],
    routes = [],
    route = null,
+   status,
    fitBoundsKey = "",
    fitBoundsPoints = [],
    selectedLeadId,
@@ -43,6 +51,7 @@ export function CustomerMapView({
    onMapClick,
    onMarkerDragEnd,
 }) {
+   const theme = useTheme();
    const [tooltipPaneContainer, setTooltipPaneContainer] = useState(null);
 
    const routesPointsCount = routes.reduce(
@@ -75,6 +84,14 @@ export function CustomerMapView({
       };
    }
 
+   const singleRouteStyle = getRoutePathStyle({ status, theme });
+   const singleGeoRouteStyle = getRoutePathStyle({
+      status,
+      theme,
+      isGeo: true,
+   });
+   const singleMarkerColor = getRouteStatusStyle(status, theme).color;
+
    return (
       <Box sx={{ position: "relative", width: "100%", height: "100%" }}>
       <Box sx={{ position: "absolute", inset: 0, overflow: "hidden", borderRadius }}>
@@ -87,6 +104,8 @@ export function CustomerMapView({
             height: "100%",
          }}
       >
+         <RouteCasingPane />
+
          <TooltipEscapePane container={tooltipPaneContainer} />
 
          <MapResizeHandler
@@ -118,7 +137,7 @@ export function CustomerMapView({
             url={CUSTOMER_MAP_TILE_LAYER.url}
          />
 
-         {routes.map((mapRoute, index) => {
+         {routes.map((mapRoute) => {
             if (!mapRoute.points || mapRoute.points.length < 2) {
                return null;
             }
@@ -142,30 +161,21 @@ export function CustomerMapView({
                mapRoute.points,
             );
 
+            const routeStyle = getRoutePathStyle({
+               status: mapRoute.lead?.status,
+               theme,
+               isSelected,
+               isHighlighted,
+               isDimmed,
+            });
+
             return (
                <Fragment key={mapRoute.id}>
-                  <Polyline
+                  <RoutePolyline
                      positions={mapRoute.points}
-                     pathOptions={{
-                        weight: isSelected
-                           ? 7
-                           : isHighlighted
-                             ? 6
-                             : index === 0
-                               ? 5
-                               : 4,
-                        opacity: isDimmed
-                           ? 0.18
-                           : isHighlighted
-                             ? 0.95
-                             : index === 0
-                               ? 0.9
-                               : 0.65,
-                     }}
-                     eventHandlers={{
-                        click: () => {
-                           onLeadClick?.(mapRoute.lead);
-                        },
+                     style={routeStyle}
+                     onClick={() => {
+                        onLeadClick?.(mapRoute.lead);
                      }}
                   >
                      <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
@@ -185,12 +195,20 @@ export function CustomerMapView({
                            )}
                         </div>
                      </Tooltip>
-                  </Polyline>
+                  </RoutePolyline>
+
+                  {isHighlighted && (
+                     <RouteArrows
+                        positions={mapRoute.points}
+                        color={routeStyle.path.color}
+                     />
+                  )}
 
                   {routeMarkers.map((marker) => (
                      <Marker
                         key={marker.id}
                         position={marker.position}
+                        icon={getMarkerIcon(marker, routeStyle.path.color)}
                         opacity={isDimmed ? 0.3 : 1}
                         eventHandlers={{
                            click: () => {
@@ -223,20 +241,23 @@ export function CustomerMapView({
                geoRoute.id,
             );
 
+            const geoRouteStyle = getRoutePathStyle({
+               status: geoRoute.lead?.status,
+               theme,
+               isSelected,
+               isHighlighted,
+               isDimmed,
+               isGeo: true,
+            });
+
             return (
                <Fragment key={`geo-${geoRoute.id}`}>
                   {points.length >= 2 && (
-                     <Polyline
+                     <RoutePolyline
                         positions={points}
-                        pathOptions={{
-                           weight: isSelected ? 7 : isHighlighted ? 6 : 4,
-                           opacity: isDimmed ? 0.18 : 0.95,
-                           dashArray: "8 8",
-                        }}
-                        eventHandlers={{
-                           click: () => {
-                              onLeadClick?.(geoRoute.lead);
-                           },
+                        style={geoRouteStyle}
+                        onClick={() => {
+                           onLeadClick?.(geoRoute.lead);
                         }}
                      >
                         <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
@@ -260,7 +281,7 @@ export function CustomerMapView({
                               Точек: {points.length}
                            </div>
                         </Tooltip>
-                     </Polyline>
+                     </RoutePolyline>
                   )}
 
                   {currentPoint && (
@@ -285,43 +306,40 @@ export function CustomerMapView({
          })}
 
          {routePoints.length >= 2 && (
-            <Polyline
-               positions={routePoints}
-               pathOptions={{
-                  weight: 5,
-                  opacity: 0.9,
-               }}
-            >
-               <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
-                  <div>
-                     <b>Маршрут</b>
+            <>
+               <RoutePolyline positions={routePoints} style={singleRouteStyle}>
+                  <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
+                     <div>
+                        <b>Маршрут</b>
 
-                     {route?.distanceMeters && (
-                        <>
-                           <br />
-                           {(route.distanceMeters / 1000).toFixed(1)} км
-                        </>
-                     )}
+                        {route?.distanceMeters && (
+                           <>
+                              <br />
+                              {(route.distanceMeters / 1000).toFixed(1)} км
+                           </>
+                        )}
 
-                     {route?.duration && (
-                        <>
-                           <br />
-                           {Math.round(parseInt(route.duration, 10) / 60)} мин
-                        </>
-                     )}
-                  </div>
-               </Tooltip>
-            </Polyline>
+                        {route?.duration && (
+                           <>
+                              <br />
+                              {Math.round(parseInt(route.duration, 10) / 60)} мин
+                           </>
+                        )}
+                     </div>
+                  </Tooltip>
+               </RoutePolyline>
+
+               <RouteArrows
+                  positions={routePoints}
+                  color={singleRouteStyle.path.color}
+               />
+            </>
          )}
 
          {geoRoutePoints.length >= 2 && (
-            <Polyline
+            <RoutePolyline
                positions={geoRoutePoints}
-               pathOptions={{
-                  weight: 4,
-                  opacity: 0.95,
-                  dashArray: "8 8",
-               }}
+               style={singleGeoRouteStyle}
             >
                <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                   <div>
@@ -330,40 +348,35 @@ export function CustomerMapView({
                      Точек: {geoRoutePoints.length}
                   </div>
                </Tooltip>
-            </Polyline>
+            </RoutePolyline>
          )}
 
-         {markers.map((marker) => {
-            const markerProps =
-               marker.id === "geo-current-point" ? { icon: driverIcon } : {};
+         {markers.map((marker) => (
+            <Marker
+               key={marker.id}
+               position={marker.position}
+               icon={getMarkerIcon(marker, singleMarkerColor)}
+               draggable={Boolean(marker.draggable)}
+               eventHandlers={{
+                  click: () => handleMarkerClick?.(marker),
+                  dragend: (event) => {
+                     if (!onMarkerDragEnd) {
+                        return;
+                     }
 
-            return (
-               <Marker
-                  key={marker.id}
-                  position={marker.position}
-                  draggable={Boolean(marker.draggable)}
-                  {...markerProps}
-                  eventHandlers={{
-                     click: () => handleMarkerClick?.(marker),
-                     dragend: (event) => {
-                        if (!onMarkerDragEnd) {
-                           return;
-                        }
+                     const position = event.target.getLatLng();
 
-                        const position = event.target.getLatLng();
-
-                        onMarkerDragEnd(marker, position);
-                     },
-                  }}
-               >
-                  <Popup>
-                     <strong>{marker.title}</strong>
-                     <br />
-                     {marker.description}
-                  </Popup>
-               </Marker>
-            );
-         })}
+                     onMarkerDragEnd(marker, position);
+                  },
+               }}
+            >
+               <Popup>
+                  <strong>{marker.title}</strong>
+                  <br />
+                  {marker.description}
+               </Popup>
+            </Marker>
+         ))}
       </MapContainer>
       </Box>
 
@@ -386,6 +399,7 @@ CustomerMapView.propTypes = {
    geoRoutes: PropTypes.array,
    route: PropTypes.object,
    routes: PropTypes.array,
+   status: PropTypes.string,
    handleMarkerClick: PropTypes.func.isRequired,
    onMapClick: PropTypes.func,
    onMarkerDragEnd: PropTypes.func,

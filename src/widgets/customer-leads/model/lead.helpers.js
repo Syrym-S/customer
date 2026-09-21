@@ -95,6 +95,18 @@ export function getLeadStatusStyles(status) {
    return leadStatusStyles[status] || leadStatusStyles.new;
 }
 
+// Resolves the theme-path `color` of a status (e.g. 'success.dark') to a
+// literal color string, for consumers that can't take theme paths (Leaflet).
+export function getLeadStatusColorValue(status, theme) {
+   const path = getLeadStatusStyles(status).color;
+
+   const value = path
+      .split('.')
+      .reduce((node, key) => node?.[key], theme.palette);
+
+   return typeof value === 'string' ? value : theme.palette.primary.main;
+}
+
 // Moved here from factorings.helpers.js — this is a lead-status helper, not
 // a factoring one; it lived there unused until the AVR flow needed it.
 export function isFinishedLead(lead) {

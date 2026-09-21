@@ -210,6 +210,7 @@ export function LeadDetailsMap({
             zoom={hasRoutePoints ? 7 : hasGeoPoints ? 13 : map.zoom}
             markers={markers}
             route={route}
+            status={lead.status}
             routePoints={hasRoutePoints ? routePoints : []}
             geoRoutePoints={hasGeoPoints ? geoRoutePoints : []}
             fitBoundsKey={routeBoundsKey}
@@ -231,6 +232,7 @@ LeadDetailsMap.propTypes = {
    lead: PropTypes.shape({
       from_location: PropTypes.string,
       to_location: PropTypes.string,
+      status: PropTypes.string,
    }).isRequired,
    route: PropTypes.object,
    routePoints: PropTypes.array,

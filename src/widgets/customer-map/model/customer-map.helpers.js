@@ -1,5 +1,29 @@
 import { normalizeLocationValue } from '../../customer-leads/model/lead-edit-form.helpers';
 
+export function getMarkerVisual(marker) {
+   const id = String(marker?.id ?? '');
+
+   if (id === 'geo-current-point') {
+      return { kind: 'driver', label: '' };
+   }
+
+   if (id === 'from' || /route-start$/.test(id)) {
+      return { kind: 'start', label: 'A' };
+   }
+
+   if (id === 'to' || /route-end$/.test(id)) {
+      return { kind: 'end', label: 'B' };
+   }
+
+   const waypointMatch = id.match(/waypoint-(\d+)$/);
+
+   if (waypointMatch) {
+      return { kind: 'transit', label: String(Number(waypointMatch[1]) + 1) };
+   }
+
+   return { kind: 'default', label: '' };
+}
+
 export function hasCoordinate(value) {
    return value !== null && value !== undefined && value !== '';
 }
