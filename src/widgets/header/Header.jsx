@@ -185,7 +185,7 @@ export function Header() {
   function renderDrawerContent({ showCloseButton = false } = {}) {
     const menuItems = [
       {
-        label: "Главная страница",
+        label: "Главная",
         path: "/customer/dashboard",
         selected: isDashboardPage,
         icon: <DashboardOutlined />,
