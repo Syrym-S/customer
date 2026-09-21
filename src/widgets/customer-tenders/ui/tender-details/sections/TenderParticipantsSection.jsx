@@ -4,6 +4,7 @@ import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material'
 import { useEffect, useMemo, useState } from 'react';
 import { INITIAL_VISIBLE_COUNT } from '../components/tender-participants.helpers';
 import { TenderDetailsSection } from './TenderDetailsSection';
+import { pluralizeRu } from '../../../../../shared/helpers/plural.helpers';
 import { TenderParticipantsAddForm } from '../components/TenderParticipantsAddForm';
 import { TenderParticipantsList } from '../components/TenderParticipantsList';
 import { useTenderParticipantForwarders } from '../components/useTenderParticipantForwarders';
@@ -113,7 +114,7 @@ export function TenderParticipantsSection({
                         </Typography>
                     </Stack>
                 ) : (
-                    `${participants.length} участник(ов)`
+                    `${participants.length} ${pluralizeRu(participants.length, ['участник', 'участника', 'участников'])}`
                 )
             }
             action={

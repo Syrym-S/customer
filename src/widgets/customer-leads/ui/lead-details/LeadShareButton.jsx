@@ -128,11 +128,11 @@ export function LeadShareButton({ leadId }) {
          </Tooltip>
 
          <Dialog open={isConfirmOpen} onClose={handleCloseConfirm}>
-            <DialogTitle>Поделиться лидом</DialogTitle>
+            <DialogTitle>Поделиться заказом</DialogTitle>
 
             <DialogContent>
                <DialogContentText>
-                  Вы уверены, что хотите поделиться информацией о лиде с
+                  Вы уверены, что хотите поделиться информацией о заказе с
                   третьими лицами? Информация будет доступна по ссылке любому,
                   у кого она есть.
                </DialogContentText>
@@ -165,12 +165,12 @@ export function LeadShareButton({ leadId }) {
             fullWidth
             maxWidth="sm"
          >
-            <DialogTitle>Ссылка на лид</DialogTitle>
+            <DialogTitle>Ссылка на заказ</DialogTitle>
 
             <DialogContent>
                <DialogContentText sx={{ mb: 2 }}>
                   Любой, у кого есть эта ссылка, сможет просмотреть информацию
-                  о лиде.
+                  о заказе.
                </DialogContentText>
 
                <TextField value={shareLink} fullWidth size="small" disabled />

@@ -110,13 +110,13 @@ export function DashboardFactoringItem({ factoring }) {
         </Box>
         <Box>
           <InfoText
-            label="Экпедитор"
+            label="Экспедитор"
             value={factoring.forwarder.company_name}
           />
         </Box>
         <Divider />
         <Box>
-          <InfoText label="БИН экпедитора" value={factoring.forwarder.bin} />
+          <InfoText label="БИН экспедитора" value={factoring.forwarder.bin} />
         </Box>
         <Box>
           <InfoText label="ФИО экспедитора" value={factoring.forwarder.fio} />

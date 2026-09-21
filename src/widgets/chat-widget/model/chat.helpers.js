@@ -208,7 +208,7 @@ export function validateChatAttachmentFile(file) {
   }
 
   if (file.size > CHAT_ATTACHMENT_MAX_SIZE_BYTES) {
-    return `Размер файла не должен превышать ${CHAT_ATTACHMENT_MAX_SIZE_MB} MB`;
+    return `Размер файла не должен превышать ${CHAT_ATTACHMENT_MAX_SIZE_MB} МБ`;
   }
 
   return "";

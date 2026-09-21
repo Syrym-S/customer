@@ -32,7 +32,7 @@ export function LeadDetailsHeader({ lead }) {
               lineHeight: 1.3,
             }}
           >
-            Информация о лиде
+            Информация о заказе
           </Typography>
 
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
@@ -49,7 +49,7 @@ export function LeadDetailsHeader({ lead }) {
           useFlexGap
         >
           <Chip
-            label={`Лид #${lead.num || "—"}`}
+            label={`Заказ #${lead.num || "—"}`}
             color="primary"
             variant="outlined"
             size="small"

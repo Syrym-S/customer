@@ -241,7 +241,7 @@ export function mapTenderLeadSearchItemFromApi(item) {
            ? `Куда: ${to}`
            : from
              ? `Откуда: ${from}`
-             : `Лид #${shortId || item.id}`;
+             : `Заказ #${shortId || item.id}`;
 
    return {
       id: item.id,

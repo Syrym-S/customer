@@ -108,7 +108,7 @@ export function LeadsList() {
             >
                <Box>
                   <Typography variant="h6" fontWeight={600}>
-                     Лиды
+                     Заказы
                   </Typography>
 
                   <Typography color="text.secondary" fontSize={14}>
@@ -171,7 +171,7 @@ export function LeadsList() {
                      onChange={handleViewModeChange}
                      size="small"
                      color="primary"
-                     aria-label="Переключение отображения лидов"
+                     aria-label="Переключение отображения заказов"
                      sx={{
                         alignSelf: {
                            xs: 'stretch',
@@ -259,7 +259,7 @@ export function LeadsList() {
                               }}
                            >
                               <Typography color="text.secondary">
-                                 Лиды не найдены
+                                 Заказы не найдены
                               </Typography>
                            </Box>
                         ) : (

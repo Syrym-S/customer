@@ -26,11 +26,11 @@ export function LeadDetailsEditActions({
       isEmergencyLead(lead) ||
       isFinishedEmergencyLead(lead);
    const editTooltipTitle = isEmergencyLead(lead)
-      ? 'Нельзя редактировать лид в аварийной ситуации'
+      ? 'Нельзя редактировать заказ в аварийной ситуации'
       : isFinishedEmergencyLead(lead)
-        ? 'Нельзя редактировать лид, завершённый в аварийной ситуации'
+        ? 'Нельзя редактировать заказ, завершенный в аварийной ситуации'
         : isEditDisabled
-          ? 'Нельзя редактировать завершённый или отменённый лид'
+          ? 'Нельзя редактировать завершенный или отмененный заказ'
           : 'Изменить';
 
    return (

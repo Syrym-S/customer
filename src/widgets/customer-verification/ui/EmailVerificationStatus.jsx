@@ -98,7 +98,7 @@ export function EmailVerificationStatus() {
                color="text.secondary"
                sx={{ fontSize: 14, lineHeight: 1.4 }}
             >
-               Email подтверждён
+               Email подтвержден
             </Typography>
          </Stack>
       );
@@ -124,7 +124,7 @@ export function EmailVerificationStatus() {
                   color="text.secondary"
                   sx={{ fontSize: 14, lineHeight: 1.4 }}
                >
-                  Email не подтверждён
+                  Email не подтвержден
                </Typography>
             </Stack>
             <Button

@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import { tenderPropType } from '../model/tenders.prop-types';
 import { normalizeLocationValue } from '../model/tender-edit-form.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
+import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
 import { getShortLocationLabel } from '../../../shared/helpers/data-grid.helpers';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 
@@ -247,7 +248,7 @@ export function TenderCard({ tender }) {
                {waypointsCount > 0 && (
                   <>
                      <MiniPill
-                        label={`+${waypointsCount} ${waypointsCount === 1 ? 'точка' : 'точки'}`}
+                        label={`+${waypointsCount} ${pluralizeRu(waypointsCount, ['точка', 'точки', 'точек'])}`}
                      />
 
                      <ArrowRightAltRoundedIcon

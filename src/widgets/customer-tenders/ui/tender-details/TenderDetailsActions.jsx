@@ -18,7 +18,7 @@ const confirmActionConfig = {
       title: 'Отменить аукцион',
       text: 'Вы уверены, что хотите отменить этот аукцион? После отмены он станет недоступен для участников.',
       confirmText: 'Отменить аукцион',
-      loadingText: 'Отмен...',
+      loadingText: 'Отмена...',
       color: 'warning',
    },
    delete: {

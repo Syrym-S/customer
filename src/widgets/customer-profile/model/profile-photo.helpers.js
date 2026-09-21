@@ -45,11 +45,11 @@ export async function validateAndReadProfilePhoto(file) {
     const { width, height } = await getImageSize(dataUrl);
 
     if (width < 400 || height < 400) {
-        throw new Error('Минимальный размер фото — 400x400 px');
+        throw new Error('Минимальный размер фото — 400×400 px');
     }
 
     if (width > 600 || height > 600) {
-        throw new Error('Максимальный размер фото — 600x600 px');
+        throw new Error('Максимальный размер фото — 600×600 px');
     }
 
     return dataUrl;

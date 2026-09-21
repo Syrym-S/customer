@@ -61,11 +61,11 @@ export function DashboardLeadsList({
         >
             <Box sx={{ mb: 1.5 }}>
                 <Typography variant="h6" fontWeight={600}>
-                    Активные лиды
+                    Активные заказы
                 </Typography>
 
                 <Typography color="text.secondary" fontSize={14}>
-                    Выберите лид, чтобы подсветить маршрут на карте
+                    Выберите заказ, чтобы подсветить маршрут на карте
                 </Typography>
             </Box>
 
@@ -86,13 +86,13 @@ export function DashboardLeadsList({
             >
                 {isLoading && (
                     <Typography color="text.secondary" sx={{ py: 2 }}>
-                        Загрузка лидов...
+                        Загрузка заказов...
                     </Typography>
                 )}
 
                 {!isLoading && !leads.length && (
                     <Typography color="text.secondary" sx={{ py: 2 }}>
-                        Активных лидов пока нет
+                        Активных заказов пока нет
                     </Typography>
                 )}
 

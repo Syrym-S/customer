@@ -273,7 +273,7 @@ export function CreateForwarderInviteModal({
                         onClick={handleSubmit}
                         disabled={loading}
                     >
-                        {loading ? 'Создаём...' : 'Создать приглашение'}
+                        {loading ? 'Создаем...' : 'Создать приглашение'}
                     </Button>
                 )}
             </DialogActions>

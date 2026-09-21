@@ -42,7 +42,7 @@ export function FactoringChatButton({ factoringId, factoring, onClose }) {
       const leadId = getFactoringLeadId(details);
 
       if (!leadId) {
-        throw new Error("Не удалось определить лид, связанный с факторингом");
+        throw new Error("Не удалось определить заказ, связанный с факторингом");
       }
 
       onClose?.();

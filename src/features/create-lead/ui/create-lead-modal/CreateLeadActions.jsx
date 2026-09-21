@@ -60,7 +60,7 @@ export function CreateLeadActions({
                   onClick={onSubmit}
                   sx={actionButtonSx}
                >
-                  {isSubmitting ? 'Создание...' : 'Создать маршрут'}
+                  {isSubmitting ? 'Создание...' : 'Создать заказ'}
                </Button>
             ) : (
                <Button

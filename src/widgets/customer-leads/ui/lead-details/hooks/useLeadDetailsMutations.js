@@ -133,14 +133,14 @@ export function useLeadDetailsMutations({
 
    async function reloadCurrentLead() {
       if (!currentLead?.id) {
-         throw new Error('Не удалось определить лид');
+         throw new Error('Не удалось определить заказ');
       }
 
       const response = await fetchCustomerLeadById(currentLead.id);
       const mappedLead = mapLeadDetailsResponseFromApi(response);
 
       if (!mappedLead) {
-         throw new Error('Не удалось получить обновленные данные лида');
+         throw new Error('Не удалось получить обновленные данные заказа');
       }
 
       const nextForm = createLeadEditForm(mappedLead);

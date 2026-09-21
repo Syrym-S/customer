@@ -130,7 +130,7 @@ export function FactoringDetailsActions({
 
         <DialogContent>
           <DialogContentText>
-            Хотите подтвердить своё участие в этом факторинге? Вы будете
+            Хотите подтвердить свое участие в этом факторинге? Вы будете
             перенаправлены в окно подписания документов.
           </DialogContentText>
         </DialogContent>
@@ -156,7 +156,7 @@ export function FactoringDetailsActions({
         <DialogContent>
           <DialogContentText>
             Вы уверены, что хотите отменить этот факторинг? Это действие
-            нельзя будет отменить обратно.
+            нельзя будет отменить.
           </DialogContentText>
         </DialogContent>
 

@@ -4,7 +4,7 @@ export const tenderStatusLabels = {
    new: 'Новый',
    active: 'Активный',
    closed: 'Закрыт',
-   cancelled: 'Отменён',
+   cancelled: 'Отменен',
 };
 
 export const publicationTypeLabels = {
@@ -113,8 +113,8 @@ export function parseTenderApiDateTime(value) {
 }
 
 export function getTimeLeft(endDateTime, status) {
-   if (status === 'cancelled') return 'Отменён';
-   if (status === 'closed') return 'Завершён';
+   if (status === 'cancelled') return 'Отменен';
+   if (status === 'closed') return 'Завершен';
 
    if (!endDateTime) return 'Не указано';
 
@@ -126,7 +126,7 @@ export function getTimeLeft(endDateTime, status) {
 
    const diffMs = endTime - Date.now();
 
-   if (diffMs <= 0) return 'Завершён';
+   if (diffMs <= 0) return 'Завершен';
 
    const totalMinutes = Math.floor(diffMs / 1000 / 60);
    const days = Math.floor(totalMinutes / 60 / 24);
@@ -175,7 +175,7 @@ export function getTenderCargoTypeLabel(tender) {
       return cargos[0]?.type || 'Не указан';
    }
 
-   return `${cargos[0]?.type || 'Не указан'} + ещё ${cargos.length - 1}`;
+   return `${cargos[0]?.type || 'Не указан'} + еще ${cargos.length - 1}`;
 }
 
 export function getTenderCargoPriceLabel(cargo, currency = 'KZT') {

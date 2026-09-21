@@ -164,7 +164,7 @@ export function ProfilePage() {
     }
 
     if (file.size > maxSizeBytes) {
-      return `Размер файла не должен превышать ${maxSizeMb} MB`;
+      return `Размер файла не должен превышать ${maxSizeMb} МБ`;
     }
 
     return "";

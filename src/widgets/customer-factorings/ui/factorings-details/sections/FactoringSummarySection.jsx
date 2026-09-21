@@ -16,7 +16,7 @@ export function FactoringSummarySection({ factoring }) {
         <DetailSection
             icon={<AssignmentOutlinedIcon />}
             title="Основная информация"
-            subtitle="Номер заявки, дата создания и связанный лид"
+            subtitle="Номер заявки, дата создания и связанный заказ"
         >
             <Box
                 sx={{

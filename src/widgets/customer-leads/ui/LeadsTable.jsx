@@ -12,14 +12,14 @@ import { StatusDot } from '../../../shared/ui/StatusDot';
 
 function getLocationLabel(location) {
    if (!location) {
-      return 'Битые данные';
+      return 'Некорректные данные';
    }
 
    if (typeof location === 'string') {
-      return location || 'Битые данные';
+      return location || 'Некорректные данные';
    }
 
-   return location.address || location.name || location.title || 'Битые данные';
+   return location.address || location.name || location.title || 'Некорректные данные';
 }
 
 function getForwarderLabel(forwarder) {
@@ -118,7 +118,7 @@ export function LeadsTable({ leads }) {
             columns={columns}
             getRowClassName={getZebraRowClassName}
             hideFooter
-            localeText={{ noRowsLabel: 'Лиды не найдены' }}
+            localeText={{ noRowsLabel: 'Заказы не найдены' }}
             sx={{ border: 0 }}
          />
       </Paper>

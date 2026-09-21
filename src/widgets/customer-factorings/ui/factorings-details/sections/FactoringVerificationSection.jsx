@@ -105,7 +105,7 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
         setIsSigning(false);
         setSignUrl(null);
         notifyError(
-          "Время на подписание факторинг-лайна истекло, попробуйте снова",
+          "Время на подписание факторинг-линии истекло, попробуйте снова",
         );
         return;
       }
@@ -156,7 +156,7 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
       notifyError(
         error.response?.data?.message ||
           error.message ||
-          "Не удалось начать подписание факторинг-лайна",
+          "Не удалось начать подписание факторинг-линии",
       );
     }
   }
@@ -186,7 +186,7 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
             flexWrap: "wrap",
           }}
         >
-          <Typography fontWeight={700}>Факторинг-лайн (ваша подпись)</Typography>
+          <Typography fontWeight={700}>Факторинг-линия (ваша подпись)</Typography>
 
           <StatusDot
             label={isSigned ? "Подписано" : "Не подписано"}

@@ -109,7 +109,7 @@ export function EmailVerificationModal({ open, onClose }) {
                         lineHeight: 1,
                      }}
                   >
-                     Email не подтверждён
+                     Email не подтвержден
                   </Typography>
                </Box>
             </Stack>

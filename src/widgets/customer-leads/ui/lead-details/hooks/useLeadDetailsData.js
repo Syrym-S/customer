@@ -40,7 +40,7 @@ export function useLeadDetailsData(openLead) {
             }
          } catch (error) {
             if (requestId === requestIdRef.current) {
-               const message = error.message || 'Не удалось загрузить лид';
+               const message = error.message || 'Не удалось загрузить заказ';
 
                setLeadDetailsError(message);
                notifyError(message);

@@ -274,7 +274,7 @@ export const useChatStore = create((set, get) => ({
             ? "Не удалось загрузить чат по факторингу"
             : chatType === "delivery"
               ? "Не удалось загрузить чат по доставке"
-              : "Не удалось загрузить чат по лиду"),
+              : "Не удалось загрузить чат по заказу"),
       );
     }
   },
@@ -390,7 +390,7 @@ export const useChatStore = create((set, get) => ({
     try {
       await markLeadChatAsReadApi(leadId, chatType);
     } catch (error) {
-      console.warn(`Не удалось отметить чат по лиду ${leadId} как прочитанный`, error);
+      console.warn(`Не удалось отметить чат по заказу ${leadId} как прочитанный`, error);
     }
   },
 

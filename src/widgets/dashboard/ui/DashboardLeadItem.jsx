@@ -118,7 +118,7 @@ export function DashboardLeadItem({
           }}
         >
           <Chip
-            label={`Лид #${lead?.num || lead?.id || "—"}`}
+            label={`Заказ #${lead?.num || lead?.id || "—"}`}
             size="small"
             color={isSelected ? "primary" : "default"}
             variant={isSelected ? "filled" : "outlined"}

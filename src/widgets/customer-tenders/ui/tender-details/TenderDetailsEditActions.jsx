@@ -13,7 +13,7 @@ export function TenderDetailsEditActions({
 }) {
    const isEditDisabled = isClosedTender(tender) || isCancelledTender(tender);
    const editTooltipTitle = isEditDisabled
-      ? "Нельзя редактировать закрытый или отменённый аукцион"
+      ? "Нельзя редактировать закрытый или отмененный аукцион"
       : "Изменить";
 
    return (

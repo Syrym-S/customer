@@ -123,7 +123,7 @@ export function notifyEmailVerificationRequired() {
 
    return addNotification({
       type: 'warning',
-      title: 'Email не подтверждён',
+      title: 'Email не подтвержден',
       message:
          'Подтвердите электронную почту. Нажмите на уведомление, чтобы отправить письмо повторно.',
       autoCloseMs: 0,

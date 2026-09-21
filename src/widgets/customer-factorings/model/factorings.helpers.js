@@ -81,8 +81,8 @@ export function getFactoringStatusLabel(status) {
         new: 'Новый',
         verified_participant: 'Частично подтвержден',
         await_paid: 'Ожидает оплаты',
-        finished: 'Завершён',
-        cancelled: 'Отменён',
+        finished: 'Завершен',
+        cancelled: 'Отменен',
     };
 
     return labels[status] || status || 'Не указано';

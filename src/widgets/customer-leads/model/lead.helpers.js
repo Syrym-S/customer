@@ -6,10 +6,10 @@ export const leadStatusLabels = {
    verification_loading: 'Погрузка подтверждена',
    start_unloading: 'Разгрузка',
    verification_unloading: 'Разгрузка подтверждена',
-   finished: 'Завершён',
-   cancelled: 'Отменён',
+   finished: 'Завершен',
+   cancelled: 'Отменен',
    emergency_situation: 'Аварийная ситуация',
-   finished_emergency_situation: 'Завершён (аварийная ситуация)',
+   finished_emergency_situation: 'Завершен (аварийная ситуация)',
 };
 
 export const leadStatusStyles = {

@@ -354,7 +354,7 @@ export function TenderDocumentsSection({ documents = [] }) {
    return (
       <TenderDetailsSection
          icon={<DescriptionOutlinedIcon />}
-         title='Документы лида'
+         title='Документы заказа'
       >
          {documents.length === 0 ? (
             <Typography color='text.secondary' fontSize={14}>

@@ -428,7 +428,7 @@ export function ForwarderStep({ control, errors, setValue }) {
                                     helperText={
                                         errors.forwarderId?.message ||
                                         searchError ||
-                                        'Можно пропустить этот шаг и создать лид без экспедитора'
+                                        'Можно пропустить этот шаг и создать заказ без экспедитора'
                                     }
                                 />
                             )}

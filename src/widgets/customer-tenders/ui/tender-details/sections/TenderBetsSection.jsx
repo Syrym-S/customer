@@ -199,7 +199,7 @@ export function TenderBetsSection({
 
                       {isWinningBet && (
                         <Chip
-                          label="Победная"
+                          label="Победившая"
                           variant="outlined"
                           size="small"
                           color="success"

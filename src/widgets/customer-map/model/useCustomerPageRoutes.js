@@ -77,7 +77,7 @@ export function useCustomerPageRoutes(leads) {
 
                      return mapGeneratedRouteToMapRoute(lead, generatedRoute);
                   } catch (error) {
-                     console.error("Ошибка генерации маршрута лида:", {
+                     console.error("Ошибка генерации маршрута заказа:", {
                         leadId: lead.id,
                         error,
                      });

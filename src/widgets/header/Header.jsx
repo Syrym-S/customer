@@ -189,14 +189,14 @@ export function Header() {
         path: "/customer/dashboard",
         selected: isDashboardPage,
         icon: <DashboardOutlined />,
-        tooltip: "Общая сводка по лидам, маршрутам и аукционам",
+        tooltip: "Общая сводка по заказам, маршрутам и аукционам",
       },
       {
-        label: "Лиды",
+        label: "Заказы",
         path: "/customer",
         selected: isLeadsPage,
         icon: <PersonAddAltOutlined />,
-        tooltip: "Список заявок на перевозку и управление лидами",
+        tooltip: "Список заявок на перевозку и управление заказами",
       },
       {
         label: "Аукционы",

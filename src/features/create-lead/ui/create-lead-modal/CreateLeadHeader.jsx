@@ -30,7 +30,7 @@ export function CreateLeadHeader({ activeStep, stepsCount }) {
                      lineHeight: 1.3,
                   }}
                >
-                  Создание маршрута
+                  Создание заказа
                </Typography>
 
                <Typography

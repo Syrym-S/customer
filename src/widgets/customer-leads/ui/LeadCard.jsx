@@ -11,6 +11,7 @@ import { normalizeLocationValue } from '../model/lead-edit-form.helpers';
 import { getLeadStatusLabel, getLeadStatusStyles } from '../model/lead.helpers';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
+import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
 import { getShortLocationLabel } from '../../../shared/helpers/data-grid.helpers';
 
 // Russian plural rules for "груз" (1 груз / 2-4 груза / 5-20, 0 грузов).
@@ -176,7 +177,7 @@ export function LeadCard({ lead }) {
                               whiteSpace: 'nowrap',
                            }}
                         >
-                           +{waypointsCount} {waypointsCount === 1 ? 'точка' : 'точки'}
+                           +{waypointsCount} {pluralizeRu(waypointsCount, ['точка', 'точки', 'точек'])}
                         </Typography>
                      </Box>
 

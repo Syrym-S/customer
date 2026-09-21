@@ -17,14 +17,14 @@ import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 
 function getLocationLabel(location) {
    if (!location) {
-      return 'Битые данные';
+      return 'Некорректные данные';
    }
 
    if (typeof location === 'string') {
-      return location || 'Битые данные';
+      return location || 'Некорректные данные';
    }
 
-   return location.address || location.name || location.title || 'Битые данные';
+   return location.address || location.name || location.title || 'Некорректные данные';
 }
 
 function getMoneyLabel(amount, currency) {
@@ -116,7 +116,7 @@ export function TendersTable({ tenders }) {
       },
       {
          // Fixed, not flex: its content (a cargo type name, optionally
-         // "+ ещё N") doesn't benefit from growing, and leaving it in the
+         // "+ еще N") doesn't benefit from growing, and leaving it in the
          // flex pool was taking a 3rd share of the space that
          // from_location/to_location compete for. Ellipsis + title as a
          // safety net now that it's tighter than the longest possible label.

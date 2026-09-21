@@ -146,7 +146,7 @@ export function LeadDetailsModal() {
                      lineHeight: 1.3,
                   }}
                >
-                  Лид #{openLead?.id}
+                  Заказ #{openLead?.id}
                </Typography>
 
                <Typography
@@ -154,7 +154,7 @@ export function LeadDetailsModal() {
                   color="text.secondary"
                   sx={{ mt: 0.5 }}
                >
-                  Загружаем детали лида...
+                  Загружаем детали заказа...
                </Typography>
             </DialogTitle>
          )}
@@ -174,14 +174,14 @@ export function LeadDetailsModal() {
                   <CircularProgress />
 
                   <Typography color="text.secondary">
-                     Загружаем детали лида...
+                     Загружаем детали заказа...
                   </Typography>
                </Box>
             )}
 
             {!shouldShowRouteLeadLoader && isLeadDetailsLoading && (
                <Typography color="text.secondary" sx={{ mb: 2 }}>
-                  Загружаем детали лида...
+                  Загружаем детали заказа...
                </Typography>
             )}
 
@@ -208,7 +208,7 @@ export function LeadDetailsModal() {
             {currentLead?.status === 'finished_emergency_situation' && (
                <Alert severity="warning" sx={{ mb: 2 }}>
                   <Typography sx={{ fontWeight: 600 }}>
-                     Рейс был завершён в аварийной ситуации
+                     Рейс был завершен в аварийной ситуации
                   </Typography>
 
                   {currentLead?.emergency_situation_comment && (

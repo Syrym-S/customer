@@ -288,7 +288,7 @@ export function AvrSection({ lead }) {
                         onClick={() => setForwarderSigned(true)}
                         sx={{ alignSelf: 'flex-start' }}
                      >
-                        [dev] Мокнуть подписание экспедитором
+                        [dev] Имитировать подписание экспедитором
                      </Button>
                   )}
 

@@ -48,7 +48,7 @@ export function LeadsProvider({ children }) {
             setCount(mappedResponse.count);
             setPerPage(mappedResponse.perPage);
          } catch (requestError) {
-            setError(requestError.message || 'Не удалось загрузить лиды');
+            setError(requestError.message || 'Не удалось загрузить заказы');
          } finally {
             if (withLoader) {
                setIsLoading(false);

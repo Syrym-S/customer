@@ -282,10 +282,10 @@ export function CreateLeadModal({ open, onClose }) {
             setResultModal({
                 open: true,
                 type: documentsUploadFailed ? 'warning' : 'success',
-                title: 'Перевозка создана',
+                title: 'Заказ создан',
                 message: documentsUploadFailed
-                    ? 'Лид создан, но часть документов не загрузилась'
-                    : `Лид успешно создан${createdLeadId ? `: ${createdLeadId}` : ''}`,
+                    ? 'Заказ создан, но часть документов не загрузилась'
+                    : `Заказ успешно создан${createdLeadId ? `: ${createdLeadId}` : ''}`,
             });
         } catch (error) {
             setResultModal({
@@ -295,7 +295,7 @@ export function CreateLeadModal({ open, onClose }) {
                 message:
                     error.response?.data?.message ||
                     error.message ||
-                    'Не удалось создать перевозку',
+                    'Не удалось создать заказ',
             });
         } finally {
             setIsSubmitting(false);

@@ -180,7 +180,7 @@ export function CustomerMapView({
                   >
                      <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                         <div>
-                           <b>Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}</b>
+                           <b>Заказ #{mapRoute.lead?.num ?? mapRoute.lead?.id}</b>
                            <br />
                            {fromLocation} → {toLocation}
                            <DriverMapInfo driver={mapRoute.lead?.driver} />
@@ -219,7 +219,7 @@ export function CustomerMapView({
                         <Popup>
                            <strong>{marker.title}</strong>
                            <br />
-                           Лид #{mapRoute.lead?.num ?? mapRoute.lead?.id}
+                           Заказ #{mapRoute.lead?.num ?? mapRoute.lead?.id}
                            <br />
                            {marker.description}
                         </Popup>
@@ -263,7 +263,7 @@ export function CustomerMapView({
                         <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                            <div>
                               <b>
-                                 Фактический путь лида #
+                                 Фактический путь заказа #
                                  {geoRoute.lead?.num ?? geoRoute.lead?.id}
                               </b>
                               <br />

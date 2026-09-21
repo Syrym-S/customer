@@ -180,7 +180,7 @@ function getLeadWaypointsForRoutePayload(lead) {
 
 export function buildLeadRoutePayload(lead) {
    if (!lead?.id) {
-      console.warn('Не хватает id лида для генерации маршрута:', lead);
+      console.warn('Не хватает id заказа для генерации маршрута:', lead);
 
       return null;
    }

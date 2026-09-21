@@ -32,14 +32,14 @@ export const router = createBrowserRouter(
           path: "customer",
           element: <LeadsPage />,
           handle: {
-            breadcrumb: "Лиды",
+            breadcrumb: "Заказы",
           },
         },
         {
           path: "customer/leads/:leadId",
           element: <LeadsPage />,
           handle: {
-            breadcrumb: "Лиды",
+            breadcrumb: "Заказы",
           },
         },
         {
@@ -82,7 +82,7 @@ export const router = createBrowserRouter(
           path: "customer/forwarders",
           element: <ForwardersPage />,
           handle: {
-            breadcrumb: "Экпедиторы",
+            breadcrumb: "Экспедиторы",
           },
         },
       ],

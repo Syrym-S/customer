@@ -153,7 +153,7 @@ export function NotificationsColumn({
                         </Typography>
 
                         <Typography variant='body2' color='text.secondary'>
-                            Последние события по вашим заявкам и аукионам
+                            Последние события по вашим заявкам и аукционам
                         </Typography>
                     </Box>
 

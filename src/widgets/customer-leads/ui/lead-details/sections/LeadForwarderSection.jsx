@@ -284,7 +284,7 @@ export function LeadForwarderSection({
                         helperText={
                            searchError ||
                            (isForwarderLocked
-                              ? 'Экспедитор назначен по результатам тендера и не может быть изменён'
+                              ? 'Экспедитор назначен по результатам аукциона и не может быть изменен'
                               : '')
                         }
                         size="small"

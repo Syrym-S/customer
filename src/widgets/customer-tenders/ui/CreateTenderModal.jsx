@@ -342,7 +342,7 @@ export function CreateTenderModal({ open, onClose }) {
 
   function validateForm() {
     if (!selectedLead?.id) {
-      return "Выберите лид";
+      return "Выберите заказ";
     }
 
     if (!form.publicationDateTime) {
@@ -491,7 +491,7 @@ export function CreateTenderModal({ open, onClose }) {
           setLeadsSearchError(
             error.response?.data?.message ||
               error.message ||
-              "Не удалось найти лиды",
+              "Не удалось найти заказы",
           );
         }
       } finally {
@@ -604,9 +604,9 @@ export function CreateTenderModal({ open, onClose }) {
                 noOptionsText={
                   leadInputValue.trim().length < 2
                     ? "Введите минимум 2 символа"
-                    : "Лиды не найдены"
+                    : "Заказы не найдены"
                 }
-                loadingText="Поиск лидов..."
+                loadingText="Поиск заказов..."
                 onInputChange={(_, newInputValue, reason) => {
                   if (reason === "reset") {
                     setLeadInputValue(newInputValue);
@@ -654,12 +654,12 @@ export function CreateTenderModal({ open, onClose }) {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Лид"
+                    label="Заказ"
                     placeholder="Введите город, груз или направление"
                     error={Boolean(leadsSearchError)}
                     helperText={
                       leadsSearchError ||
-                      "Выберите лид, для которого создаётся аукцион"
+                      "Выберите заказ, для которого создается аукцион"
                     }
                   />
                 )}
@@ -912,16 +912,16 @@ export function CreateTenderModal({ open, onClose }) {
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Создаём..." : "Создать аукцион"}
+            {isSubmitting ? "Создаем..." : "Создать аукцион"}
           </Button>
         </DialogActions>
       </Dialog>
       <Dialog open={isLeadConfirmOpen} onClose={handleCloseLeadConfirm}>
-        <DialogTitle>Выбор лида</DialogTitle>
+        <DialogTitle>Выбор заказа</DialogTitle>
 
         <DialogContent>
           <DialogContentText>
-            Вы уверены, что хотите создать аукцион по этому лиду?
+            Вы уверены, что хотите создать аукцион по этому заказу?
           </DialogContentText>
 
           {pendingLead && (
@@ -929,7 +929,7 @@ export function CreateTenderModal({ open, onClose }) {
               <Typography fontWeight={700}>
                 {pendingLead.title ||
                   pendingLead.label ||
-                  `Лид #${pendingLead.id}`}
+                  `Заказ #${pendingLead.id}`}
               </Typography>
 
               <Typography color="text.secondary" sx={{ mt: 0.5 }}>
@@ -953,7 +953,7 @@ export function CreateTenderModal({ open, onClose }) {
           <Button onClick={handleCloseLeadConfirm}>Отмена</Button>
 
           <Button variant="contained" onClick={handleConfirmLeadSelection}>
-            Выбрать лид
+            Выбрать заказ
           </Button>
         </DialogActions>
       </Dialog>

@@ -138,7 +138,7 @@ export function useCustomerPageGeoRoutes(leads) {
 
             if (failedCount > 0) {
                 setGeoRoutesError(
-                    `Не удалось загрузить GeoWS-маршруты для ${failedCount} из ${leadsWithoutFreshCache.length} лидов`,
+                    `Не удалось загрузить GeoWS-маршруты для ${failedCount} из ${leadsWithoutFreshCache.length} заказов`,
                 );
             }
         }

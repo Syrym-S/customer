@@ -48,7 +48,7 @@ export function DocumentPreview({ document }) {
 
    if (!hasPreviewUrl(document)) {
       return (
-         <PreviewFallback text='Для этого mock-документа нет файла для предпросмотра' />
+         <PreviewFallback text='Для этого документа нет файла для предпросмотра' />
       );
    }
 

@@ -30,7 +30,7 @@ export function getRouteMarkers(form) {
       markers.push({
          id: 'from',
          position: [Number(form.fromLat), Number(form.fromLng)],
-         title: 'Точка A',
+         title: 'Точка А',
          description: 'Откуда',
          draggable: true,
       });
@@ -54,7 +54,7 @@ export function getRouteMarkers(form) {
       markers.push({
          id: 'to',
          position: [Number(form.toLat), Number(form.toLng)],
-         title: 'Точка B',
+         title: 'Точка Б',
          description: 'Куда',
          draggable: true,
       });

@@ -164,7 +164,7 @@ export function TenderTransportSection({ tender }) {
                   />
 
                   <TenderInfoBadge
-                     label="Общая цена лида"
+                     label="Общая цена заказа"
                      value={
                         formatAmount(lead.summ)
                            ? `${formatAmount(lead.summ)} ${lead.currency || ''}`.trim()

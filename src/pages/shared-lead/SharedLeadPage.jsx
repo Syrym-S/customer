@@ -21,7 +21,7 @@ import { useSharedLeadGeoTracking } from '../../widgets/customer-leads/ui/lead-d
 const noop = () => {};
 
 const LOAD_ERROR_MESSAGE =
-   'Ссылка недействительна или срок её действия истёк.';
+   'Ссылка недействительна или срок ее действия истек.';
 
 function getStraightLineRoutePoints(lead) {
    const fromPoint = getLocationPosition(lead?.raw?.from_location);
@@ -112,7 +112,7 @@ export function SharedLeadPage() {
             <CircularProgress />
 
             <Typography color="text.secondary">
-               Загружаем информацию о лиде...
+               Загружаем информацию о заказе...
             </Typography>
          </Box>
       );
@@ -140,11 +140,11 @@ export function SharedLeadPage() {
          >
             <Box>
                <Typography sx={{ fontSize: { xs: 18, sm: 20 }, fontWeight: 600 }}>
-                  Информация о лиде
+                  Информация о заказе
                </Typography>
 
                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                  Лид #{lead.num || lead.id}
+                  Заказ #{lead.num || lead.id}
                </Typography>
             </Box>
 
@@ -152,7 +152,7 @@ export function SharedLeadPage() {
          </Box>
 
          <Alert severity="info" sx={{ mb: 2 }}>
-            Это страница просмотра лида по ссылке. Редактирование недоступно.
+            Это страница просмотра заказа по ссылке. Редактирование недоступно.
          </Alert>
 
          <LeadDetailsMap

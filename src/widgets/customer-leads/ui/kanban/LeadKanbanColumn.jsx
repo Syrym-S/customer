@@ -92,7 +92,7 @@ export function LeadKanbanColumn({
                      color: 'text.secondary',
                   }}
                >
-                  Нет лидов
+                  Нет заказов
                </Typography>
             ) : (
                leads.map((lead) => (

@@ -12,7 +12,7 @@ const CUSTOMER_PARTICIPANT_ROLE_ID = CHAT_ROLE_ID.CUSTOMER;
 
 export const CHAT_ROLE_LABEL_BY_ID = {
   [CHAT_ROLE_ID.FORWARDER]: "Экспедитор",
-  [CHAT_ROLE_ID.CUSTOMER]: "Клиент",
+  [CHAT_ROLE_ID.CUSTOMER]: "Заказчик",
   [CHAT_ROLE_ID.FACTOR]: "Фактор",
   [CHAT_ROLE_ID.DRIVER]: "Водитель",
 };
@@ -210,7 +210,7 @@ export function buildLeadCounterpartFromLead(lead) {
   }
 
   return {
-    name: `Лид #${truncateId(lead?.num ?? lead?.id)}`,
+    name: `Заказ #${truncateId(lead?.num ?? lead?.id)}`,
     role: "Экспедитор",
   };
 }
@@ -430,7 +430,7 @@ export function mapLeadChatListEntryFromApi(apiChatEntry) {
       ? buildFactoringCounterpartFallback(leadId)
       : chatType === "delivery"
         ? buildDeliveryCounterpartFallback(leadId)
-        : { name: `Лид #${truncateId(lead?.num ?? leadId)}`, role: "Экспедитор" };
+        : { name: `Заказ #${truncateId(lead?.num ?? leadId)}`, role: "Экспедитор" };
 
   return {
     id: `${chatType}-chat-${leadId}`,

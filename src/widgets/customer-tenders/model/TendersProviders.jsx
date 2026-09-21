@@ -109,7 +109,7 @@ export function TendersProvider({
         },
       };
     } catch (error) {
-      console.error("Не удалось загрузить файлы лида:", error);
+      console.error("Не удалось загрузить файлы заказа:", error);
 
       return {
         ...tender,

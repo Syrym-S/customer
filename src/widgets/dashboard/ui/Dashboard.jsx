@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box } from "@mui/material";
 import { useLeadsContext } from "../../customer-leads/model/useLeadsContext";
 import { DashboardMap } from "./DashboardMap";
+import { DashboardStats } from "./DashboardStats";
 import { DashboardLeadsList } from "./DashboardLeadsList";
 import { DashboardTendersSection } from "./DashboardTendersSection";
 import { DashboardFactoringsSection } from "./DashboardFactoringsSection";
@@ -39,6 +40,8 @@ export function Dashboard() {
         py: 3,
       }}
     >
+      <DashboardStats />
+
       <Box
         sx={{
           display: "grid",
