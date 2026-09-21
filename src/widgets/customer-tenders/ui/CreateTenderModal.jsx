@@ -22,7 +22,7 @@ import { searchTenderLeadsApi } from "../api/tender.api";
 import { formatDateToTenderApiDateTime } from "../model/tender.helpers";
 import { fetchForwardersApi } from "../../../features/create-lead/api/forwarders.api";
 import { FORWARDERS_PER_PAGE } from "../../customer-forwarders/model/forwarders.helpers";
-import { LeadStatusChip } from "../../dashboard/ui/DashboardLeadItem";
+import { TenderLeadOption } from "./TenderLeadOption";
 import { formatAmount } from "../../../shared/helpers/currency-format.helpers";
 
 // A tender must be published at least this far in the future — gives a
@@ -640,48 +640,14 @@ export function CreateTenderModal({ open, onClose }) {
                       component="li"
                       {...listItemProps}
                       sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                        gap: 0.5,
-                        py: 1.2,
+                        py: 1.25,
+                        "&:not(:last-of-type)": {
+                          borderBottom: "1px solid",
+                          borderColor: "divider",
+                        },
                       }}
                     >
-                      <Typography fontWeight={700}>
-                        {option.title || option.label || `Лид #${option.id}`}
-                      </Typography>
-
-                      <Typography color="text.secondary" sx={{ fontSize: 13 }}>
-                        Груз: {option.cargo || "Не указан"}
-                      </Typography>
-
-                      {option.forwarder && (
-                        <Typography
-                          color="text.secondary"
-                          sx={{ fontSize: 13 }}
-                        >
-                          Экспедитор: {option.forwarder}
-                        </Typography>
-                      )}
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          gap: 1,
-                          flexWrap: "wrap",
-                          mt: 0.5,
-                        }}
-                      >
-                        {option.status && (
-                          <LeadStatusChip status={option.status} />
-                        )}
-
-                        <Chip
-                          size="small"
-                          label={formatMoney(option.price)}
-                          sx={{ height: 22 }}
-                        />
-                      </Box>
+                      <TenderLeadOption option={option} />
                     </Box>
                   );
                 }}

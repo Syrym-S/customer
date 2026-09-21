@@ -225,8 +225,14 @@ function getShortLeadId(id) {
 export function mapTenderLeadSearchItemFromApi(item) {
    const from = item.from || '';
    const to = item.to || '';
-   const cargo = item.cargo || 'Груз не указан';
+   const cargoNames = (Array.isArray(item.cargos) ? item.cargos : [])
+      .map((cargoItem) => String(cargoItem?.name || cargoItem?.type || '').trim())
+      .filter(Boolean);
+   const cargo = item.cargo || cargoNames[0] || 'Груз не указан';
    const shortId = getShortLeadId(item.id);
+   const waypointsCount = (
+      Array.isArray(item.waypoints) ? item.waypoints : []
+   ).filter(Boolean).length;
 
    const title =
       from && to
@@ -243,7 +249,16 @@ export function mapTenderLeadSearchItemFromApi(item) {
       forwarder: item.forwarder || '',
       from,
       to,
+      fromCity: String(item.from_city ?? '').trim(),
+      toCity: String(item.to_city ?? '').trim(),
+      pointSchedules: Array.isArray(item.point_schedules)
+         ? item.point_schedules
+         : [],
+      num: item.num ?? null,
+      shortId,
       cargo,
+      cargoNames,
+      waypointsCount,
       price: item.price ?? null,
       createdAt: item.created_at || '',
 

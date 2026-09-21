@@ -8,11 +8,11 @@ export function getMarkerVisual(marker) {
    }
 
    if (id === 'from' || /route-start$/.test(id)) {
-      return { kind: 'start', label: 'A' };
+      return { kind: 'start', label: 'А' };
    }
 
    if (id === 'to' || /route-end$/.test(id)) {
-      return { kind: 'end', label: 'B' };
+      return { kind: 'end', label: 'Б' };
    }
 
    const waypointMatch = id.match(/waypoint-(\d+)$/);
