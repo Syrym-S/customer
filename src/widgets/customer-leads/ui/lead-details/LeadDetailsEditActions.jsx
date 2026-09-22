@@ -10,6 +10,7 @@ import {
    isCancelledLead,
    isEmergencyLead,
    isFinishedEmergencyLead,
+   isSignAvrLead,
 } from '../../model/lead.helpers';
 
 export function LeadDetailsEditActions({
@@ -24,7 +25,8 @@ export function LeadDetailsEditActions({
       isFinishedLead(lead) ||
       isCancelledLead(lead) ||
       isEmergencyLead(lead) ||
-      isFinishedEmergencyLead(lead);
+      isFinishedEmergencyLead(lead) ||
+      isSignAvrLead(lead);
    const editTooltipTitle = isEmergencyLead(lead)
       ? 'Нельзя редактировать заказ в аварийной ситуации'
       : isFinishedEmergencyLead(lead)

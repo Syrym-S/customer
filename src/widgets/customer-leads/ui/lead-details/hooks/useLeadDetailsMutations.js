@@ -191,6 +191,8 @@ export function useLeadDetailsMutations({
          await updateCustomerLead(currentLead.id, payload);
          await reloadCurrentLead();
 
+         await reloadLeads?.({ withLoader: false });
+
          setIsEditing(false);
       } catch (error) {
          const message =

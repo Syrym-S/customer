@@ -73,7 +73,7 @@ function ForwarderAvrCard({ signed }) {
                flexWrap: 'wrap',
             }}
          >
-            <Typography fontWeight={700}>АВР экспедитора</Typography>
+            <Typography fontWeight={700}>Подпись экспедитора</Typography>
 
             <Chip
                size='small'
@@ -88,7 +88,7 @@ function ForwarderAvrCard({ signed }) {
                sx={{ mt: 0.5, fontSize: 12 }}
                color='text.secondary'
             >
-               Подписание АВР заказчиком станет доступно после подписания
+               Подписание АВР станет доступно после подписания
                экспедитором.
             </Typography>
          )}
@@ -306,7 +306,7 @@ export function AvrSection({ lead }) {
                      }}
                   >
                      <Stack spacing={1}>
-                        <Typography fontWeight={700}>АВР заказчика</Typography>
+                        <Typography fontWeight={700}>Подпись заказчика</Typography>
 
                         {avrDocument && (
                            <Box

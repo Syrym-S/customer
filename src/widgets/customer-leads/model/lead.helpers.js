@@ -6,6 +6,7 @@ export const leadStatusLabels = {
    verification_loading: 'Погрузка подтверждена',
    start_unloading: 'Разгрузка',
    verification_unloading: 'Разгрузка подтверждена',
+   sign_avr: 'Подписание АВР',
    finished: 'Завершен',
    cancelled: 'Отменен',
    emergency_situation: 'Аварийная ситуация',
@@ -53,6 +54,12 @@ export const leadStatusStyles = {
       borderColor: 'success.dark',
       color: 'success.dark',
       backgroundColor: 'rgba(27, 94, 32, 0.06)',
+   },
+
+   sign_avr: {
+      borderColor: 'primary.main',
+      color: 'primary.main',
+      backgroundColor: 'rgba(33, 150, 243, 0.04)',
    },
 
    finished: {
@@ -111,6 +118,10 @@ export function getLeadStatusColorValue(status, theme) {
 // a factoring one; it lived there unused until the AVR flow needed it.
 export function isFinishedLead(lead) {
    return String(lead?.status || '').toLowerCase() === 'finished';
+}
+
+export function isSignAvrLead(lead) {
+   return String(lead?.status || '').toLowerCase() === 'sign_avr';
 }
 
 export function isCancelledLead(lead) {

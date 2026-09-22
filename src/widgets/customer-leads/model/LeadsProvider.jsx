@@ -91,12 +91,23 @@ export function LeadsProvider({ children }) {
    }, [loadLeads]);
 
    useEffect(() => {
-      return subscribeToNotificationDomainEvent(
+      function handleLeadsRelatedEvent() {
+         loadLeads({ withLoader: false });
+      }
+
+      const unsubscribeLeads = subscribeToNotificationDomainEvent(
          notificationDomainEventNames.leadsChanged,
-         () => {
-            loadLeads({ withLoader: false });
-         },
+         handleLeadsRelatedEvent,
       );
+      const unsubscribeShipping = subscribeToNotificationDomainEvent(
+         notificationDomainEventNames.shippingChanged,
+         handleLeadsRelatedEvent,
+      );
+
+      return () => {
+         unsubscribeLeads();
+         unsubscribeShipping();
+      };
    }, [loadLeads]);
 
    const value = useMemo(

@@ -219,6 +219,14 @@ export function LeadDetailsModal() {
                </Alert>
             )}
 
+            {currentLead?.status === 'finished' && (
+               <Alert severity="success" sx={{ mb: 2 }}>
+                  <Typography sx={{ fontWeight: 600 }}>
+                     АВР подписан, рейс завершен
+                  </Typography>
+               </Alert>
+            )}
+
             {saveEditError && (
                <Alert severity="error" sx={{ mb: 2 }}>
                   {saveEditError}
