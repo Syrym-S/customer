@@ -6,6 +6,7 @@ import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 import { DashboardStatCurrencies } from './DashboardStatCurrencies';
 
 const CARD_HEIGHT = 140;
+const HEADER_HEIGHT = 24;
 
 export function DashboardStatCard({
    label,
@@ -13,6 +14,8 @@ export function DashboardStatCard({
    section,
    showSums,
    loading,
+   refreshing,
+   action,
    sx,
 }) {
    const count = section?.count ?? 0;
@@ -21,6 +24,7 @@ export function DashboardStatCard({
    return (
       <Paper
          variant="outlined"
+         aria-busy={refreshing}
          sx={{
             height: CARD_HEIGHT,
             p: 2,
@@ -28,18 +32,34 @@ export function DashboardStatCard({
             flexDirection: 'column',
             justifyContent: 'space-between',
             minWidth: 0,
+            opacity: refreshing ? 0.5 : 1,
+            pointerEvents: refreshing ? 'none' : 'auto',
+            transition: 'opacity 0.2s ease',
             ...sx,
          }}
       >
          <Box sx={{ minWidth: 0 }}>
-            <Typography
-               noWrap
-               color="text.secondary"
-               sx={{ fontSize: 13, fontWeight: 500, lineHeight: '18px' }}
-               title={label}
+            <Box
+               sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 1,
+                  minHeight: HEADER_HEIGHT,
+                  minWidth: 0,
+               }}
             >
-               {label}
-            </Typography>
+               <Typography
+                  noWrap
+                  color="text.secondary"
+                  sx={{ fontSize: 13, fontWeight: 500, lineHeight: '18px' }}
+                  title={label}
+               >
+                  {label}
+               </Typography>
+
+               {action}
+            </Box>
 
             {loading ? (
                <Skeleton
@@ -105,5 +125,7 @@ DashboardStatCard.propTypes = {
    }),
    showSums: PropTypes.bool,
    loading: PropTypes.bool,
+   refreshing: PropTypes.bool,
+   action: PropTypes.node,
    sx: PropTypes.object,
 };

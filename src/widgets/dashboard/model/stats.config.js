@@ -10,6 +10,8 @@ export const STATS_PERIODS = [
 
 export const DEFAULT_STATS_PERIOD = 'month';
 
+export const CUSTOM_STATS_PERIOD = 'custom';
+
 export const customerStatsConfig = {
    role: 'customer',
    fetchStats: fetchCustomerStats,
@@ -18,13 +20,13 @@ export const customerStatsConfig = {
       {
          id: 'period',
          title: 'За период',
-         periodDependent: true,
          columns: 2,
          cards: [
             {
                id: 'leads-period',
                sectionKey: 'leadsPeriod',
                label: 'Перевозки',
+               periodSelectorLabel: 'Период перевозок',
                unitForms: ['перевозка', 'перевозки', 'перевозок'],
                showSums: true,
             },
@@ -32,6 +34,7 @@ export const customerStatsConfig = {
                id: 'factorings-period',
                sectionKey: 'factoringsPeriod',
                label: 'Продажи факторинга',
+               periodSelectorLabel: 'Период продаж факторинга',
                unitForms: ['продажа', 'продажи', 'продаж'],
                showSums: true,
             },
@@ -41,7 +44,6 @@ export const customerStatsConfig = {
          id: 'active',
          title: 'Активные',
          // caption: 'Не зависит от периода',
-         periodDependent: false,
          columns: 3,
          cards: [
             {

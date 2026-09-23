@@ -88,18 +88,58 @@ const PERIOD_SECTIONS = {
    },
 };
 
-export async function fetchCustomerStatsMock({ period = 'month' } = {}) {
+const DEFAULT_PERIOD = 'month';
+const DAY_MS = 24 * 60 * 60 * 1000;
+const EMPTY_SECTION = { count: 0, currencies: [] };
+
+function getPeriodForRange(from, to) {
+   const days = Math.round((new Date(to) - new Date(from)) / DAY_MS) + 1;
+
+   if (days <= 1) {
+      return 'day';
+   }
+
+   if (days <= 7) {
+      return 'week';
+   }
+
+   if (days <= 31) {
+      return 'month';
+   }
+
+   return 'year';
+}
+
+function resolvePeriodSection(params, key) {
+   const from = params[`${key}_from`];
+   const to = params[`${key}_to`];
+
+   if (from && to) {
+      return {
+         period: null,
+         from,
+         to,
+         ...(PERIOD_SECTIONS[getPeriodForRange(from, to)][key] ?? EMPTY_SECTION),
+      };
+   }
+
+   const period = PERIOD_SECTIONS[params[key]] ? params[key] : DEFAULT_PERIOD;
+
+   return {
+      period,
+      ...getRange(period),
+      ...(PERIOD_SECTIONS[period][key] ?? EMPTY_SECTION),
+   };
+}
+
+export async function fetchCustomerStatsMock(params = {}) {
    await new Promise((resolve) => {
       window.setTimeout(resolve, MOCK_DELAY_MS);
    });
 
-   const { from, to } = getRange(period);
-
    return {
-      period,
-      from,
-      to,
-      ...(PERIOD_SECTIONS[period] ?? PERIOD_SECTIONS.month),
+      leads_period: resolvePeriodSection(params, 'leads_period'),
+      factorings_period: resolvePeriodSection(params, 'factorings_period'),
       ...ACTIVE_SECTIONS,
    };
 }

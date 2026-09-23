@@ -43,6 +43,19 @@ function mapSection(section) {
    };
 }
 
+function mapPeriod(value) {
+   return typeof value === 'string' && value.trim() ? value.trim() : null;
+}
+
+function mapPeriodSection(section, fallback) {
+   return {
+      ...mapSection(section),
+      period: mapPeriod(section?.period) ?? fallback.period,
+      from: toDateString(section?.from) ?? fallback.from,
+      to: toDateString(section?.to) ?? fallback.to,
+   };
+}
+
 export function mapStatsResponseFromApi(response) {
    const payload =
       response?.data && typeof response.data === 'object'
@@ -52,13 +65,18 @@ export function mapStatsResponseFromApi(response) {
 
    const isLegacyShape =
       !SECTION_KEYS.some((key) => key in source) && 'count' in source;
-
-   return {
-      period: typeof source.period === 'string' ? source.period : null,
+   const fallback = {
+      period: mapPeriod(source.period),
       from: toDateString(source.from),
       to: toDateString(source.to),
-      leadsPeriod: mapSection(isLegacyShape ? source : source.leads_period),
-      factoringsPeriod: mapSection(source.factorings_period),
+   };
+
+   return {
+      leadsPeriod: mapPeriodSection(
+         isLegacyShape ? source : source.leads_period,
+         fallback,
+      ),
+      factoringsPeriod: mapPeriodSection(source.factorings_period, fallback),
       leadsActive: mapSection(source.leads_active),
       tendersActive: { count: mapSection(source.tenders_active).count },
       factoringsActive: mapSection(source.factorings_active),

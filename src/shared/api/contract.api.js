@@ -35,7 +35,7 @@ export async function initiateContractSigning() {
    return response.data;
 }
 
-// { aitu_iin_verification, aitu_contract_signing } — polled periodically (see
+// { aitu_iin_verification, contract_signing } — polled periodically (see
 // useContractGate) to pick up admin-panel flag changes without a page reload.
 // skipContractGate for the same reason as the two calls above: must stay
 // reachable while the gate is blocking everything else.

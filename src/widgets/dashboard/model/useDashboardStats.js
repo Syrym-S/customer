@@ -5,6 +5,7 @@ import {
    subscribeToNotificationDomainEvent,
 } from '../../../shared/model/notification-domain-events';
 import { customerStatsConfig } from './stats.config';
+import { isSameStatsPeriod } from './stats.helpers';
 
 const REFETCH_DEBOUNCE_MS = 400;
 const LOAD_ERROR_MESSAGE = 'Не удалось загрузить статистику';
@@ -16,14 +17,25 @@ const REFRESH_EVENT_NAMES = [
    notificationDomainEventNames.shippingChanged,
 ];
 
-export function useDashboardStats(period, config = customerStatsConfig) {
+const IDLE_REFRESHING_SECTIONS = {
+   leadsPeriod: false,
+   factoringsPeriod: false,
+};
+
+export function useDashboardStats(
+   { leadsPeriod, factoringsPeriod },
+   config = customerStatsConfig,
+) {
    const [data, setData] = useState(null);
    const [isLoading, setIsLoading] = useState(true);
-   const [isRefreshing, setIsRefreshing] = useState(false);
+   const [refreshingSections, setRefreshingSections] = useState(
+      IDLE_REFRESHING_SECTIONS,
+   );
    const [error, setError] = useState(null);
 
    const requestIdRef = useRef(0);
    const hasDataRef = useRef(false);
+   const loadedPeriodsRef = useRef(null);
 
    const loadStats = useCallback(
       async ({ silent = false } = {}) => {
@@ -34,20 +46,36 @@ export function useDashboardStats(period, config = customerStatsConfig) {
             setError(null);
 
             if (hasDataRef.current) {
-               setIsRefreshing(true);
+               const loadedPeriods = loadedPeriodsRef.current;
+
+               setRefreshingSections((current) => ({
+                  leadsPeriod:
+                     current.leadsPeriod ||
+                     !isSameStatsPeriod(loadedPeriods?.leadsPeriod, leadsPeriod),
+                  factoringsPeriod:
+                     current.factoringsPeriod ||
+                     !isSameStatsPeriod(
+                        loadedPeriods?.factoringsPeriod,
+                        factoringsPeriod,
+                     ),
+               }));
             } else {
                setIsLoading(true);
             }
          }
 
          try {
-            const response = await config.fetchStats({ period });
+            const response = await config.fetchStats({
+               leadsPeriod,
+               factoringsPeriod,
+            });
 
             if (requestId !== requestIdRef.current) {
                return;
             }
 
             hasDataRef.current = true;
+            loadedPeriodsRef.current = { leadsPeriod, factoringsPeriod };
             setData(config.mapResponse(response));
             setError(null);
          } catch {
@@ -61,11 +89,11 @@ export function useDashboardStats(period, config = customerStatsConfig) {
          } finally {
             if (requestId === requestIdRef.current) {
                setIsLoading(false);
-               setIsRefreshing(false);
+               setRefreshingSections(IDLE_REFRESHING_SECTIONS);
             }
          }
       },
-      [period, config],
+      [leadsPeriod, factoringsPeriod, config],
    );
 
    const retry = useCallback(() => {
@@ -100,5 +128,8 @@ export function useDashboardStats(period, config = customerStatsConfig) {
       };
    }, [loadStats]);
 
-   return { data, isLoading, isRefreshing, error, retry };
+   const isRefreshing =
+      refreshingSections.leadsPeriod || refreshingSections.factoringsPeriod;
+
+   return { data, isLoading, isRefreshing, refreshingSections, error, retry };
 }

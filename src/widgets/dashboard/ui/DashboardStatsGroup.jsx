@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box, Chip, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { DashboardStatCard } from './DashboardStatCard';
 
@@ -7,11 +7,10 @@ export function DashboardStatsGroup({
    group,
    data,
    loading,
-   periodLabel,
-   rangeLabel,
+   refreshingSections,
+   renderCardAction,
 }) {
    const spanLastCard = group.cards.length % 2 === 1;
-   const caption = group.periodDependent ? rangeLabel : group.caption;
 
    return (
       <Box sx={{ minWidth: 0 }}>
@@ -28,19 +27,9 @@ export function DashboardStatsGroup({
          >
             <Typography variant="subtitle1">{group.title}</Typography>
 
-            {group.periodDependent && (
-               <Chip
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                  label={periodLabel}
-                  sx={{ height: 24, fontWeight: 600 }}
-               />
-            )}
-
-            {caption && (
+            {group.caption && (
                <Typography color="text.secondary" sx={{ fontSize: 13 }}>
-                  {caption}
+                  {group.caption}
                </Typography>
             )}
          </Box>
@@ -67,6 +56,8 @@ export function DashboardStatsGroup({
                      showSums={card.showSums}
                      section={data?.[card.sectionKey]}
                      loading={loading}
+                     refreshing={Boolean(refreshingSections?.[card.sectionKey])}
+                     action={renderCardAction?.(card)}
                      sx={
                         spanLastCard && isLast
                            ? { gridColumn: { xs: 'auto', sm: '1 / -1', lg: 'auto' } }
@@ -84,12 +75,11 @@ DashboardStatsGroup.propTypes = {
    group: PropTypes.shape({
       title: PropTypes.string.isRequired,
       caption: PropTypes.string,
-      periodDependent: PropTypes.bool,
       columns: PropTypes.number.isRequired,
       cards: PropTypes.array.isRequired,
    }).isRequired,
    data: PropTypes.object,
    loading: PropTypes.bool,
-   periodLabel: PropTypes.string,
-   rangeLabel: PropTypes.string,
+   refreshingSections: PropTypes.objectOf(PropTypes.bool),
+   renderCardAction: PropTypes.func,
 };

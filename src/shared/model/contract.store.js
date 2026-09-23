@@ -16,8 +16,8 @@ const DEFAULT_IS_CONTRACT_GATE_ENABLED = true;
 export const useContractStore = create((set, get) => ({
    hasValidContract: null,
 
-   // Admin-panel switch (per-service enable/disable of Aitu Passport-based
-   // verification steps) for this service's contract-signing step. Seeded
+   // Admin-panel switch (per-service enable/disable) for this service's
+   // contract-signing gate, independent of signing provider. Seeded
    // synchronously from window.APP_DATA — injected server-side before the
    // bundle runs, so it's already available at store creation — then kept
    // fresh by refreshFeatureFlags() polling GET /customer/v1/features (see
@@ -26,7 +26,7 @@ export const useContractStore = create((set, get) => ({
    // the three consuming sites (App.jsx, ContractGateModal.jsx,
    // api-client.js) pick up updates instead of reading a stale value.
    isContractGateEnabled:
-      window?.APP_DATA?.features?.aitu_contract_signing ?? DEFAULT_IS_CONTRACT_GATE_ENABLED,
+      window?.APP_DATA?.features?.contract_signing ??DEFAULT_IS_CONTRACT_GATE_ENABLED,
 
    // sign_date/expires_at from the last status check, if the backend included
    // them (see contract.api.js) — null until a check resolves or if the
@@ -61,7 +61,7 @@ export const useContractStore = create((set, get) => ({
 
       set({
          isContractGateEnabled:
-            features?.aitu_contract_signing ?? DEFAULT_IS_CONTRACT_GATE_ENABLED,
+            features?.contract_signing ??DEFAULT_IS_CONTRACT_GATE_ENABLED,
       });
    },
 
