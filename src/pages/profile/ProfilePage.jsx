@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  MenuItem,
   Paper,
   Stack,
   TextField,
@@ -12,11 +13,13 @@ import {
 } from "@mui/material";
 
 import {
+  DOCUMENT_ISSUED_BY_OPTIONS,
   initialProfileForm,
   mapProfileFormToChangedApi,
   mapProfileFromApi,
   validateProfileForm,
 } from "../../features/profile-edit/profile-form.helpers";
+import { getTodayDateInputValue } from "../../features/create-lead/lib/point-schedule.helpers";
 import {
   fetchCustomerProfile,
   updateCustomerProfile,
@@ -239,7 +242,7 @@ export function ProfilePage() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const nextErrors = validateProfileForm(form);
+    const nextErrors = validateProfileForm(form, initialLoadedForm);
 
     setErrors(nextErrors);
 
@@ -640,6 +643,38 @@ export function ProfilePage() {
                   helperText={errors.issueCountry}
                   fullWidth
                 />
+
+                <TextField
+                  name="documentIssueDate"
+                  label="Когда выдан документ"
+                  type="date"
+                  value={form.documentIssueDate}
+                  onChange={handleChange}
+                  error={Boolean(errors.documentIssueDate)}
+                  helperText={errors.documentIssueDate}
+                  fullWidth
+                  slotProps={{
+                    inputLabel: { shrink: true },
+                    htmlInput: { max: getTodayDateInputValue() },
+                  }}
+                />
+
+                <TextField
+                  select
+                  name="documentIssuedBy"
+                  label="Кем выдан документ"
+                  value={form.documentIssuedBy}
+                  onChange={handleChange}
+                  error={Boolean(errors.documentIssuedBy)}
+                  helperText={errors.documentIssuedBy}
+                  fullWidth
+                >
+                  {DOCUMENT_ISSUED_BY_OPTIONS.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
               </Stack>
 
               <Stack spacing={2}>

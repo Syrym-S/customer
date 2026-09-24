@@ -1,3 +1,19 @@
+import { getTodayDateInputValue } from "../create-lead/lib/point-schedule.helpers";
+
+// Sent to the backend exactly as written (same convention as driver-mobile).
+export const DOCUMENT_ISSUED_BY_OPTIONS = ["МЮ РК", "МВД РК"];
+
+export function validateNotAfterToday(value) {
+  if (!value) {
+    return true;
+  }
+
+  return (
+    value <= getTodayDateInputValue() ||
+    "Дата не может быть позже сегодняшнего дня"
+  );
+}
+
 export const initialProfileForm = {
   fullName: "",
   bin: "",
@@ -12,6 +28,8 @@ export const initialProfileForm = {
 
   documentNumber: "",
   issueCountry: "",
+  documentIssueDate: "",
+  documentIssuedBy: "",
 
   registrationDocument: "",
   employerDocument: "",
@@ -63,6 +81,10 @@ export function mapProfileFromApi(profile, legalDocuments) {
       profile?.issueCountry ||
       profile?.personIssueCountry ||
       "",
+    documentIssueDate:
+      profile?.document_issue_date || profile?.documentIssueDate || "",
+    documentIssuedBy:
+      profile?.document_issued_by || profile?.documentIssuedBy || "",
 
     // registrationDocument: profile?.registrationDocument || "",
     // employerDocument: profile?.employerDocument || "",
@@ -159,6 +181,24 @@ export function mapProfileFormToChangedApi(form, initialForm) {
     payload.personIssueCountry = nextIssueCountry;
   }
 
+  const nextDocumentIssueDate = normalizeProfileValue(form.documentIssueDate);
+  const prevDocumentIssueDate = normalizeProfileValue(
+    initialForm?.documentIssueDate,
+  );
+
+  if (nextDocumentIssueDate && nextDocumentIssueDate !== prevDocumentIssueDate) {
+    payload.document_issue_date = nextDocumentIssueDate;
+  }
+
+  const nextDocumentIssuedBy = normalizeProfileValue(form.documentIssuedBy);
+  const prevDocumentIssuedBy = normalizeProfileValue(
+    initialForm?.documentIssuedBy,
+  );
+
+  if (nextDocumentIssuedBy && nextDocumentIssuedBy !== prevDocumentIssuedBy) {
+    payload.document_issued_by = nextDocumentIssuedBy;
+  }
+
   const nextBin = normalizeDigitsValue(form.bin);
   const prevBin = normalizeDigitsValue(initialForm?.bin);
 
@@ -186,7 +226,25 @@ export function mapProfileFormToChangedApi(form, initialForm) {
   return payload;
 }
 
-export function validateProfileForm(form) {
+const DOCUMENT_SECTION_FIELDS = [
+  "documentNumber",
+  "issueCountry",
+  "documentIssueDate",
+  "documentIssuedBy",
+];
+
+// Like the password block, the issue date / issuer become required only once
+// the user edits the document section, so unrelated profile saves (and
+// profiles registered before these fields existed) are not blocked.
+function isDocumentSectionChanged(form, initialForm) {
+  return DOCUMENT_SECTION_FIELDS.some(
+    (field) =>
+      normalizeProfileValue(form[field]) !==
+      normalizeProfileValue(initialForm?.[field]),
+  );
+}
+
+export function validateProfileForm(form, initialForm) {
   const errors = {};
 
   const fullName = normalizeText(form.fullName);
@@ -245,6 +303,24 @@ export function validateProfileForm(form) {
 
   if (issueCountry && issueCountry.length > 100) {
     errors.issueCountry = "Не больше 100 символов";
+  }
+
+  const documentIssueDate = normalizeText(form.documentIssueDate);
+  const documentIssuedBy = normalizeText(form.documentIssuedBy);
+  const documentSectionChanged = isDocumentSectionChanged(form, initialForm);
+
+  if (documentIssueDate) {
+    const issueDateValidation = validateNotAfterToday(documentIssueDate);
+
+    if (issueDateValidation !== true) {
+      errors.documentIssueDate = issueDateValidation;
+    }
+  } else if (documentSectionChanged) {
+    errors.documentIssueDate = "Укажите дату выдачи документа";
+  }
+
+  if (!documentIssuedBy && documentSectionChanged) {
+    errors.documentIssuedBy = "Укажите, кем выдан документ";
   }
 
   if (wantsPasswordChange) {
