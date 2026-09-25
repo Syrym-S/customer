@@ -2,8 +2,10 @@ import {
     Autocomplete,
     Box,
     Button,
+    Checkbox,
     CircularProgress,
     FormControl,
+    FormControlLabel,
     FormHelperText,
     IconButton,
     InputLabel,
@@ -972,6 +974,30 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                     />
                 </Box>
             </Box>
+
+            <Controller
+                name="pass_verify"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                    <FormControlLabel
+                        label="Пропуск видеофиксации разгрузки/погрузки"
+                        sx={{ mt: 1 }}
+                        control={
+                            <Checkbox
+                                size="small"
+                                name={field.name}
+                                inputRef={field.ref}
+                                checked={Boolean(field.value)}
+                                onBlur={field.onBlur}
+                                onChange={(event) =>
+                                    field.onChange(event.target.checked)
+                                }
+                            />
+                        }
+                    />
+                )}
+            />
         </StepSection>
     );
 }

@@ -206,8 +206,7 @@ function filterForwardersLocally(forwarders, query) {
 }
 
 export function CreateTenderModal({ open, onClose }) {
-  const { createTender, addParticipant, reloadTenders, startTender } =
-    useTendersContext();
+  const { createTender, reloadTenders, startTender } = useTendersContext();
 
   const [form, setForm] = useState(() => createInitialForm());
 
@@ -425,15 +424,13 @@ export function CreateTenderModal({ open, onClose }) {
           : 0,
       };
 
-      const createdTender = await createTender(payload);
-
       if (!isPublicTender) {
-        await Promise.all(
-          selectedForwarders.map((forwarder) =>
-            addParticipant(createdTender.id, forwarder.id),
-          ),
+        payload.participants = selectedForwarders.map(
+          (forwarder) => forwarder.id,
         );
       }
+
+      const createdTender = await createTender(payload);
 
       if (form.startAfterCreate) {
         await startTender(createdTender.id);

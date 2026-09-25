@@ -142,6 +142,7 @@ export function mapCreateLeadFormToApi(form) {
 
         currency: form.currency || 'KZT',
         vat: form.vat ? 'с НДС' : 'без НДС',
+        pass_verify: Boolean(form.pass_verify),
     };
 
     addIfHasValue(payload, 'forwarder', form.forwarderId);

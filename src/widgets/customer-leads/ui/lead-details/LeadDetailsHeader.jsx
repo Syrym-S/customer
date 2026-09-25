@@ -60,6 +60,20 @@ export function LeadDetailsHeader({ lead }) {
             }}
           />
 
+          {lead.pass_verify && (
+            <Chip
+              label="Видеофиксация отключена"
+              color="warning"
+              variant="outlined"
+              size="small"
+              sx={{
+                borderRadius: 999,
+                fontWeight: 600,
+                backgroundColor: "rgba(237, 108, 2, 0.06)",
+              }}
+            />
+          )}
+
           <LeadStatusChip status={lead.status} />
         </Stack>
       </Box>

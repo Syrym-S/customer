@@ -84,6 +84,7 @@ export function LeadCargoSection({
   onDeleteCargo,
   deletingCargoIndex = null,
 }) {
+  console.log(lead)
   const [cargoTypes, setCargoTypes] = useState([]);
   const [cargoTypesSearch, setCargoTypesSearch] = useState("");
   const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);

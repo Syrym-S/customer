@@ -68,6 +68,7 @@ function createInitialForm() {
         price: '',
         currency: 'KZT',
         vat: true,
+        pass_verify: false,
         comment: '',
 
         forwarderId: '',
