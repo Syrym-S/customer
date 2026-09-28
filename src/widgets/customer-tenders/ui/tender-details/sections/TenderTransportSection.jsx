@@ -17,6 +17,13 @@ import {
    hasValue,
 } from '../../../model/tender.helpers';
 import {
+   formatCargoVolumeM3,
+   getCompositionTypeLabel,
+   getLoadingTypeLabel,
+   getPackagingTypeLabel,
+   getTransportTypeLabel,
+} from '../../../../customer-leads/model/lead-transportation.helpers';
+import {
    getPointScheduleByIndex,
    getPointScheduleLabel,
 } from '../../../../customer-leads/model/lead-route.helpers';
@@ -25,6 +32,11 @@ import { formatAmount } from '../../../../../shared/helpers/currency-format.help
 export function TenderTransportSection({ tender }) {
    const lead = tender.lead || {};
    const cargos = getTenderCargos(tender);
+
+   const loadingTypeLabel = getLoadingTypeLabel(lead.loadingType);
+   const packagingTypeLabel = getPackagingTypeLabel(lead.packagingType);
+   const compositionTypeLabel = getCompositionTypeLabel(lead.compositionType);
+   const transportTypeLabel = getTransportTypeLabel(lead.transportType);
 
    const fromLocation = tender.from_location || lead.from_location;
    const toLocation = tender.to_location || lead.to_location;
@@ -128,6 +140,14 @@ export function TenderTransportSection({ tender }) {
                                  lead.currency,
                               )}
                            />
+
+                           <TenderInfoBadge
+                              label="Объем"
+                              value={
+                                 formatCargoVolumeM3(cargo.volume_m3) ||
+                                 'Не указано'
+                              }
+                           />
                         </Box>
 
                         <TenderInfoBadge
@@ -173,6 +193,51 @@ export function TenderTransportSection({ tender }) {
                   />
                </Box>
             </Stack>
+         </TenderDetailsSection>
+
+         <TenderDetailsSection
+            icon={<LocalShippingOutlinedIcon />}
+            title="Параметры перевозки"
+         >
+            <Box
+               sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                     xs: '1fr 1fr',
+                     sm: 'repeat(2, 1fr)',
+                     md: 'repeat(4, 1fr)',
+                  },
+                  gap: 1,
+               }}
+            >
+               {loadingTypeLabel && (
+                  <TenderInfoBadge
+                     label="Тип погрузки"
+                     value={loadingTypeLabel}
+                  />
+               )}
+
+               {packagingTypeLabel && (
+                  <TenderInfoBadge
+                     label="Вид упаковки"
+                     value={packagingTypeLabel}
+                  />
+               )}
+
+               {compositionTypeLabel && (
+                  <TenderInfoBadge
+                     label="Тип состава"
+                     value={compositionTypeLabel}
+                  />
+               )}
+
+               {transportTypeLabel && (
+                  <TenderInfoBadge
+                     label="Тип транспорта"
+                     value={transportTypeLabel}
+                  />
+               )}
+            </Box>
          </TenderDetailsSection>
       </Stack>
    );

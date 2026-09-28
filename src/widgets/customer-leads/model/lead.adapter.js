@@ -1,3 +1,9 @@
+import {
+   cargoVolumeBackendToM3,
+   cargoVolumeField,
+   leadTransportationFields,
+} from './lead-transportation.helpers';
+
 function isBinLike(value) {
    return /^\d{12}$/.test(String(value ?? '').trim());
 }
@@ -203,7 +209,7 @@ function normalizeCargoFromApi(apiCargo = {}) {
 
       type,
 
-      volume_cm: apiCargo.volume_cm ?? null,
+      volume_m3: cargoVolumeBackendToM3(apiCargo[cargoVolumeField]),
       width_cm: apiCargo.width_cm ?? null,
       height_cm: apiCargo.height_cm ?? null,
       length_cm: apiCargo.length_cm ?? null,
@@ -323,10 +329,11 @@ export function mapLeadFromApi(apiLead) {
       agreement: apiLead.agreement ?? null,
       geows: apiLead.geows ?? null,
 
-      type_of_loading: apiLead.type_of_loading ?? 'Не указан',
-      type_of_packaging: apiLead.type_of_packaging ?? 'Не указан',
-      type_of_composition: apiLead.type_of_composition ?? 'Не указан',
-      type_of_transport: apiLead.type_of_transport ?? 'Не указан',
+      loadingType: apiLead[leadTransportationFields.loadingType] ?? null,
+      packagingType: apiLead[leadTransportationFields.packagingType] ?? null,
+      compositionType:
+         apiLead[leadTransportationFields.compositionType] ?? null,
+      transportType: apiLead[leadTransportationFields.transportType] ?? null,
       gos_number: apiLead.gos_number ?? null,
 
       raw: apiLead,

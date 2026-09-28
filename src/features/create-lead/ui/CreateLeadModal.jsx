@@ -32,6 +32,8 @@ function createInitialCargo() {
         width_cm: '',
         height_cm: '',
         length_cm: '',
+        volume_m3: '',
+        isVolumeManual: false,
         cargo_price: '',
     };
 }
@@ -70,6 +72,11 @@ function createInitialForm() {
         vat: true,
         pass_verify: false,
         comment: '',
+
+        loadingType: '',
+        packagingType: '',
+        compositionType: '',
+        transportType: '',
 
         forwarderId: '',
         forwarder: null,
@@ -148,6 +155,7 @@ export function CreateLeadModal({ open, onClose }) {
         reset,
         trigger,
         setValue,
+        getValues,
         formState: { errors },
     } = useForm({
         defaultValues: createInitialForm(),
@@ -317,7 +325,14 @@ export function CreateLeadModal({ open, onClose }) {
         }
 
         if (activeStep === 1) {
-            return <CargoStep control={control} errors={errors} />;
+            return (
+                <CargoStep
+                    control={control}
+                    errors={errors}
+                    setValue={setValue}
+                    getValues={getValues}
+                />
+            );
         }
 
         if (activeStep === 2) {

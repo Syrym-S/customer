@@ -30,6 +30,10 @@ import {
   isEmergencyLead,
   isFinishedEmergencyLead,
 } from "../../../model/lead.helpers";
+import {
+  computeCargoVolumeM3,
+  formatCargoVolumeM3,
+} from "../../../model/lead-transportation.helpers";
 
 function createEmptyLeadCargo() {
   return {
@@ -41,6 +45,8 @@ function createEmptyLeadCargo() {
     width_cm: "",
     height_cm: "",
     length_cm: "",
+    volume_m3: "",
+    isVolumeManual: false,
   };
 }
 
@@ -74,6 +80,10 @@ function getCargoDimensionsDisplay(cargo) {
   }
 
   return `${length || "—"} × ${width || "—"} × ${height || "—"} см`;
+}
+
+function getCargoVolumeDisplay(cargo) {
+  return formatCargoVolumeM3(cargo.volume_m3) || "Не указано";
 }
 
 export function LeadCargoSection({
@@ -193,14 +203,44 @@ export function LeadCargoSection({
   }, [cargoTypes]);
 
   function handleCargoChange(index, key, value) {
-    const nextCargos = editCargos.map((cargo, cargoIndex) =>
-      cargoIndex === index
-        ? {
-            ...cargo,
-            [key]: value,
-          }
-        : cargo,
-    );
+    const nextCargos = editCargos.map((cargo, cargoIndex) => {
+      if (cargoIndex !== index) {
+        return cargo;
+      }
+
+      const nextCargo = { ...cargo, [key]: value };
+
+      if (key === "volume_m3") {
+        nextCargo.isVolumeManual = value !== "";
+
+        if (!nextCargo.isVolumeManual) {
+          const computedVolume = computeCargoVolumeM3(
+            nextCargo.length_cm,
+            nextCargo.width_cm,
+            nextCargo.height_cm,
+          );
+
+          nextCargo.volume_m3 = computedVolume === null ? "" : computedVolume;
+        }
+
+        return nextCargo;
+      }
+
+      if (
+        ["length_cm", "width_cm", "height_cm"].includes(key) &&
+        !nextCargo.isVolumeManual
+      ) {
+        const computedVolume = computeCargoVolumeM3(
+          nextCargo.length_cm,
+          nextCargo.width_cm,
+          nextCargo.height_cm,
+        );
+
+        nextCargo.volume_m3 = computedVolume === null ? "" : computedVolume;
+      }
+
+      return nextCargo;
+    });
 
     onEditChange("cargos", nextCargos);
   }
@@ -359,7 +399,7 @@ export function LeadCargoSection({
                       display: "grid",
                       gridTemplateColumns: {
                         xs: "1fr",
-                        sm: "repeat(3, 1fr)",
+                        sm: "repeat(4, 1fr)",
                       },
                       gap: 1,
                       gridColumn: {
@@ -399,6 +439,20 @@ export function LeadCargoSection({
                         handleCargoChange(
                           index,
                           "height_cm",
+                          event.target.value,
+                        )
+                      }
+                      fullWidth
+                      size="small"
+                    />
+
+                    <TextField
+                      label="Объем, м³"
+                      value={cargo.volume_m3 || ""}
+                      onChange={(event) =>
+                        handleCargoChange(
+                          index,
+                          "volume_m3",
                           event.target.value,
                         )
                       }
@@ -520,6 +574,11 @@ export function LeadCargoSection({
                     <InfoBadge
                       label="Размеры"
                       value={getCargoDimensionsDisplay(cargo)}
+                    />
+
+                    <InfoBadge
+                      label="Объем"
+                      value={getCargoVolumeDisplay(cargo)}
                     />
                   </Box>
 

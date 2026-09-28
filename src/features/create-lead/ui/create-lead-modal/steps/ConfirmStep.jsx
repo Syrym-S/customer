@@ -12,6 +12,13 @@ import {
     getWaypointTypeChipColor,
     getWaypointTypeLabel,
 } from '../../../../../widgets/customer-leads/model/lead-route.helpers';
+import {
+    formatCargoVolumeM3,
+    getCompositionTypeLabel,
+    getLoadingTypeLabel,
+    getPackagingTypeLabel,
+    getTransportTypeLabel,
+} from '../../../../../widgets/customer-leads/model/lead-transportation.helpers';
 
 function getLocationDisplay(location, fallback) {
     if (location?.address) {
@@ -56,6 +63,11 @@ export function ConfirmStep({ form }) {
     const selectedForwarder = form.forwarder;
     const cargos = getFormCargos(form);
     const waypoints = getFormWaypoints(form);
+
+    const loadingTypeLabel = getLoadingTypeLabel(form.loadingType);
+    const packagingTypeLabel = getPackagingTypeLabel(form.packagingType);
+    const compositionTypeLabel = getCompositionTypeLabel(form.compositionType);
+    const transportTypeLabel = getTransportTypeLabel(form.transportType);
 
     return (
         <Box sx={{ display: 'grid', gap: 2 }}>
@@ -169,6 +181,15 @@ export function ConfirmStep({ form }) {
                                         label="Размеры"
                                         value={getDimensionsDisplay(cargo)}
                                     />
+
+                                    <InfoBadge
+                                        label="Объем"
+                                        value={
+                                            formatCargoVolumeM3(
+                                                cargo.volume_m3,
+                                            ) || 'Не указано'
+                                        }
+                                    />
                                 </Box>
 
                                 {index < cargos.length - 1 && (
@@ -187,6 +208,47 @@ export function ConfirmStep({ form }) {
                         }
                         accent
                     />
+                </Box>
+            </StepSection>
+
+            <StepSection title="Параметры перевозки">
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: {
+                            xs: '1fr',
+                            sm: 'repeat(2, 1fr)',
+                        },
+                        gap: 1,
+                    }}
+                >
+                    {loadingTypeLabel && (
+                        <InfoBadge
+                            label="Тип погрузки"
+                            value={loadingTypeLabel}
+                        />
+                    )}
+
+                    {packagingTypeLabel && (
+                        <InfoBadge
+                            label="Вид упаковки"
+                            value={packagingTypeLabel}
+                        />
+                    )}
+
+                    {compositionTypeLabel && (
+                        <InfoBadge
+                            label="Тип состава"
+                            value={compositionTypeLabel}
+                        />
+                    )}
+
+                    {transportTypeLabel && (
+                        <InfoBadge
+                            label="Тип транспорта"
+                            value={transportTypeLabel}
+                        />
+                    )}
                 </Box>
             </StepSection>
 

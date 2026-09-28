@@ -4,6 +4,13 @@ import {
    getScheduleDateOnly,
    havePointSchedulesChanged,
 } from '../../../features/create-lead/lib/point-schedule.helpers';
+import {
+   cargoVolumeField,
+   cargoVolumeM3ToBackend,
+   leadTransportationFields,
+   getTransportationEditValue,
+   getTransportationPayloadValue,
+} from './lead-transportation.helpers';
 
 function createEmptyLeadCargoEditForm() {
    return {
@@ -15,6 +22,8 @@ function createEmptyLeadCargoEditForm() {
       width_cm: '',
       height_cm: '',
       length_cm: '',
+      volume_m3: '',
+      isVolumeManual: false,
    };
 }
 
@@ -34,6 +43,8 @@ function normalizeLeadCargosForEdit(lead) {
       width_cm: cargo.width_cm ?? '',
       height_cm: cargo.height_cm ?? '',
       length_cm: cargo.length_cm ?? '',
+      volume_m3: cargo.volume_m3 ?? '',
+      isVolumeManual: cargo.volume_m3 !== null && cargo.volume_m3 !== undefined,
    }));
 }
 
@@ -147,6 +158,12 @@ function normalizeCargoForPayload(cargo = {}) {
    addNumberIfHasValue(payload, 'height_cm', cargo.height_cm);
    addNumberIfHasValue(payload, 'length_cm', cargo.length_cm);
 
+   const volumeBackend = cargoVolumeM3ToBackend(cargo.volume_m3);
+
+   if (volumeBackend !== null) {
+      payload[cargoVolumeField] = volumeBackend;
+   }
+
    return payload;
 }
 
@@ -195,6 +212,11 @@ export function createLeadEditForm(lead) {
          driver: '',
          forwarder: '',
          forwarderData: null,
+
+         loadingType: '',
+         packagingType: '',
+         compositionType: '',
+         transportType: '',
       };
    }
 
@@ -263,6 +285,11 @@ export function createLeadEditForm(lead) {
       driver: lead.raw?.driver?.id || lead.driver?.id || '',
       forwarder: lead.forwarder?.id || '',
       forwarderData: lead.forwarder || null,
+
+      loadingType: getTransportationEditValue(lead.loadingType),
+      packagingType: getTransportationEditValue(lead.packagingType),
+      compositionType: getTransportationEditValue(lead.compositionType),
+      transportType: getTransportationEditValue(lead.transportType),
    };
 }
 
@@ -407,6 +434,22 @@ function hasNumberChanged(nextValue, prevValue) {
 
 function isValidMongoId(value) {
    return /^[a-f0-9]{24}$/.test(String(value ?? ''));
+}
+
+function addTransportationFieldIfChanged(
+   payload,
+   key,
+   nextValue,
+   prevRawValue,
+) {
+   const nextPayloadValue = getTransportationPayloadValue(nextValue);
+   const prevPayloadValue = getTransportationPayloadValue(prevRawValue);
+
+   if (nextPayloadValue === prevPayloadValue || nextPayloadValue === null) {
+      return;
+   }
+
+   payload[key] = nextPayloadValue;
 }
 
 function addTextIfChanged(payload, key, nextValue, prevValue) {
@@ -695,6 +738,31 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
    ) {
       payload.point_schedules = nextPointSchedules;
    }
+
+   addTransportationFieldIfChanged(
+      payload,
+      leadTransportationFields.loadingType,
+      editForm.loadingType,
+      currentLead.loadingType,
+   );
+   addTransportationFieldIfChanged(
+      payload,
+      leadTransportationFields.packagingType,
+      editForm.packagingType,
+      currentLead.packagingType,
+   );
+   addTransportationFieldIfChanged(
+      payload,
+      leadTransportationFields.compositionType,
+      editForm.compositionType,
+      currentLead.compositionType,
+   );
+   addTransportationFieldIfChanged(
+      payload,
+      leadTransportationFields.transportType,
+      editForm.transportType,
+      currentLead.transportType,
+   );
 
    return payload;
 }

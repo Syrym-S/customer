@@ -6,6 +6,7 @@ import { LeadDriverSection } from './sections/LeadDriverSection';
 import { LeadRouteSection } from './sections/LeadRouteSection';
 import { LeadForwarderSection } from './sections/LeadForwarderSection';
 import { LeadDocumentsSection } from './sections/LeadDocumentsSection';
+import { LeadTransportationSection } from './sections/LeadTransportationSection';
 import { AvrSection } from './sections/AvrSection';
 import { isFinishedLead, isSignAvrLead } from '../../model/lead.helpers';
 
@@ -46,6 +47,13 @@ export function LeadDetailsContent({
             onEditChange={onEditChange}
             onDeleteCargo={onDeleteCargo}
             deletingCargoIndex={deletingCargoIndex}
+         />
+
+         <LeadTransportationSection
+            lead={lead}
+            isEditing={isEditing}
+            editForm={editForm}
+            onEditChange={onEditChange}
          />
 
          <LeadForwarderSection

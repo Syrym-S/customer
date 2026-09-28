@@ -1,4 +1,11 @@
 import { buildPointSchedulesPayload } from '../lib/point-schedule.helpers';
+import {
+    cargoVolumeBackendToM3,
+    cargoVolumeM3ToBackend,
+    cargoVolumeField,
+    leadTransportationFields,
+    getTransportationPayloadValue,
+} from '../../../widgets/customer-leads/model/lead-transportation.helpers';
 
 function hasValue(value) {
     return value !== null && value !== undefined && value !== '';
@@ -67,16 +74,25 @@ function mapFormCargoToApiCargo(cargo = {}) {
         cargo.description ?? cargo.comment ?? cargo.context,
     );
 
-    return {
+    const payload = {
         name,
         description: description || null,
         weight_kg: toNumber(cargo.weight_kg),
         cargo_price: toNumber(cargo.cargo_price),
         type: type || null,
-        width_cm: toNumber(cargo.width_cm),
-        height_cm: toNumber(cargo.height_cm),
-        length_cm: toNumber(cargo.length_cm),
     };
+
+    addNumberIfHasValue(payload, 'width_cm', cargo.width_cm);
+    addNumberIfHasValue(payload, 'height_cm', cargo.height_cm);
+    addNumberIfHasValue(payload, 'length_cm', cargo.length_cm);
+
+    const volumeBackend = cargoVolumeM3ToBackend(cargo.volume_m3);
+
+    if (volumeBackend !== null) {
+        payload[cargoVolumeField] = volumeBackend;
+    }
+
+    return payload;
 }
 
 function getNormalizedFormCargos(form) {
@@ -98,7 +114,7 @@ function mapApiCargoToUiCargo(cargo) {
         weight_kg: cargo.weight_kg ?? 0,
         cargo_price: cargo.cargo_price ?? null,
         type,
-        volume_cm: null,
+        volume_m3: cargoVolumeBackendToM3(cargo[cargoVolumeField]),
         width_cm: cargo.width_cm ?? null,
         height_cm: cargo.height_cm ?? null,
         length_cm: cargo.length_cm ?? null,
@@ -174,6 +190,27 @@ export function mapCreateLeadFormToApi(form) {
 
     addNumberIfHasValue(payload, 'price', form.price);
 
+    addIfHasValue(
+        payload,
+        leadTransportationFields.loadingType,
+        getTransportationPayloadValue(form.loadingType),
+    );
+    addIfHasValue(
+        payload,
+        leadTransportationFields.packagingType,
+        getTransportationPayloadValue(form.packagingType),
+    );
+    addIfHasValue(
+        payload,
+        leadTransportationFields.compositionType,
+        getTransportationPayloadValue(form.compositionType),
+    );
+    addIfHasValue(
+        payload,
+        leadTransportationFields.transportType,
+        getTransportationPayloadValue(form.transportType),
+    );
+
     return payload;
 }
 
@@ -236,7 +273,7 @@ export function mapCreatedLeadToUi(form, response) {
         context: '',
         weight_kg: 0,
         type: 'Не указан',
-        volume_cm: null,
+        volume_m3: null,
         width_cm: null,
         height_cm: null,
         length_cm: null,
@@ -298,10 +335,10 @@ export function mapCreatedLeadToUi(form, response) {
         agreement: null,
         geows: null,
 
-        type_of_loading: 'Не указан',
-        type_of_packaging: 'Не указан',
-        type_of_composition: 'Не указан',
-        type_of_transport: 'Не указан',
+        loadingType: getTransportationPayloadValue(form.loadingType),
+        packagingType: getTransportationPayloadValue(form.packagingType),
+        compositionType: getTransportationPayloadValue(form.compositionType),
+        transportType: getTransportationPayloadValue(form.transportType),
         gos_number: null,
 
         raw: {

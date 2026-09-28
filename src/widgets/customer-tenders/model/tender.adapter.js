@@ -1,3 +1,9 @@
+import {
+   cargoVolumeBackendToM3,
+   cargoVolumeField,
+   leadTransportationFields,
+} from '../../customer-leads/model/lead-transportation.helpers';
+
 function formatTenderLocation(location) {
    if (!location) {
       return '';
@@ -118,6 +124,7 @@ function normalizeTenderCargoFromApi(cargo = {}) {
       width_cm: cargo.width_cm ?? null,
       height_cm: cargo.height_cm ?? null,
       length_cm: cargo.length_cm ?? null,
+      volume_m3: cargoVolumeBackendToM3(cargo[cargoVolumeField]),
       raw: cargo,
    };
 }
@@ -155,6 +162,12 @@ function mapTenderLeadFromApi(lead) {
       cargos,
       documents,
       files: documents,
+
+      loadingType: lead[leadTransportationFields.loadingType] ?? null,
+      packagingType: lead[leadTransportationFields.packagingType] ?? null,
+      compositionType:
+         lead[leadTransportationFields.compositionType] ?? null,
+      transportType: lead[leadTransportationFields.transportType] ?? null,
    };
 }
 

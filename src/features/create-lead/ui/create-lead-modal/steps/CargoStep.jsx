@@ -2,7 +2,11 @@ import {
    Autocomplete,
    Box,
    CircularProgress,
+   FormControl,
    FormControlLabel,
+   InputLabel,
+   MenuItem,
+   Select,
    Switch,
    TextField,
    Button,
@@ -23,6 +27,8 @@ import {
 } from '../../../../../widgets/customer-leads/api/cargo-types.api';
 import { fetchCustomerCurrenciesApi } from '../../../api/currencies.api';
 import { CurrencyAutocomplete } from '../components/CurrencyAutocomplete';
+import { computeCargoVolumeM3 } from '../../../../../widgets/customer-leads/model/lead-transportation.helpers';
+import { useLeadParamsOptions } from '../../../../../widgets/customer-leads/model/lead-params.store';
 
 function createEmptyCargo() {
    return {
@@ -33,14 +39,17 @@ function createEmptyCargo() {
       width_cm: '',
       height_cm: '',
       length_cm: '',
+      volume_m3: '',
+      isVolumeManual: false,
       cargo_price: '',
    };
 }
 
-export function CargoStep({ control, errors }) {
+export function CargoStep({ control, errors, setValue, getValues }) {
    const [cargoTypes, setCargoTypes] = useState([]);
    const [cargoTypesSearch, setCargoTypesSearch] = useState('');
    const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);
+   const transportationOptions = useLeadParamsOptions();
 
    const { fields, append, remove } = useFieldArray({
       control,
@@ -147,6 +156,46 @@ export function CargoStep({ control, errors }) {
 
       return Array.from(uniqueMap.values());
    }, [cargoTypes]);
+
+   function recalcCargoVolume(index) {
+      const cargo = getValues(`cargos.${index}`) || {};
+
+      if (cargo.isVolumeManual) {
+         return;
+      }
+
+      const computedVolume = computeCargoVolumeM3(
+         cargo.length_cm,
+         cargo.width_cm,
+         cargo.height_cm,
+      );
+
+      setValue(
+         `cargos.${index}.volume_m3`,
+         computedVolume === null ? '' : computedVolume,
+      );
+   }
+
+   function handleDimensionFieldChange(index, onFieldChange) {
+      return (event) => {
+         onFieldChange(event);
+         recalcCargoVolume(index);
+      };
+   }
+
+   function handleVolumeFieldChange(index, onFieldChange) {
+      return (event) => {
+         onFieldChange(event);
+
+         const isManual = event.target.value !== '';
+
+         setValue(`cargos.${index}.isVolumeManual`, isManual);
+
+         if (!isManual) {
+            recalcCargoVolume(index);
+         }
+      };
+   }
 
    return (
       <StepSection title="Грузы и оплата">
@@ -345,7 +394,7 @@ export function CargoStep({ control, errors }) {
                               display: 'grid',
                               gridTemplateColumns: {
                                  xs: '1fr',
-                                 sm: 'repeat(3, 1fr)',
+                                 sm: 'repeat(4, 1fr)',
                               },
                               gap: 2,
                               gridColumn: {
@@ -360,6 +409,10 @@ export function CargoStep({ control, errors }) {
                               render={({ field }) => (
                                  <TextField
                                     {...field}
+                                    onChange={handleDimensionFieldChange(
+                                       index,
+                                       field.onChange,
+                                    )}
                                     label="Длина, см"
                                     fullWidth
                                     size="small"
@@ -373,6 +426,10 @@ export function CargoStep({ control, errors }) {
                               render={({ field }) => (
                                  <TextField
                                     {...field}
+                                    onChange={handleDimensionFieldChange(
+                                       index,
+                                       field.onChange,
+                                    )}
                                     label="Ширина, см"
                                     fullWidth
                                     size="small"
@@ -386,7 +443,28 @@ export function CargoStep({ control, errors }) {
                               render={({ field }) => (
                                  <TextField
                                     {...field}
+                                    onChange={handleDimensionFieldChange(
+                                       index,
+                                       field.onChange,
+                                    )}
                                     label="Высота, см"
+                                    fullWidth
+                                    size="small"
+                                 />
+                              )}
+                           />
+
+                           <Controller
+                              name={`cargos.${index}.volume_m3`}
+                              control={control}
+                              render={({ field }) => (
+                                 <TextField
+                                    {...field}
+                                    onChange={handleVolumeFieldChange(
+                                       index,
+                                       field.onChange,
+                                    )}
+                                    label="Объем, м³"
                                     fullWidth
                                     size="small"
                                  />
@@ -428,6 +506,118 @@ export function CargoStep({ control, errors }) {
             >
                Добавить груз
             </Button>
+
+            <Box
+               sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                     xs: '1fr',
+                     sm: 'repeat(2, 1fr)',
+                     md: 'repeat(4, 1fr)',
+                  },
+                  gap: 2,
+               }}
+            >
+               <Controller
+                  name="loadingType"
+                  control={control}
+                  render={({ field }) => (
+                     <FormControl fullWidth size="small">
+                        <InputLabel id="loading-type-label">
+                           Тип погрузки
+                        </InputLabel>
+                        <Select
+                           {...field}
+                           labelId="loading-type-label"
+                           label="Тип погрузки"
+                           value={field.value || ''}
+                        >
+                           <MenuItem value="">Не указан</MenuItem>
+                           {transportationOptions.loadingType.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                 {option.label}
+                              </MenuItem>
+                           ))}
+                        </Select>
+                     </FormControl>
+                  )}
+               />
+
+               <Controller
+                  name="packagingType"
+                  control={control}
+                  render={({ field }) => (
+                     <FormControl fullWidth size="small">
+                        <InputLabel id="packaging-type-label">
+                           Вид упаковки
+                        </InputLabel>
+                        <Select
+                           {...field}
+                           labelId="packaging-type-label"
+                           label="Вид упаковки"
+                           value={field.value || ''}
+                        >
+                           <MenuItem value="">Не указан</MenuItem>
+                           {transportationOptions.packagingType.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                 {option.label}
+                              </MenuItem>
+                           ))}
+                        </Select>
+                     </FormControl>
+                  )}
+               />
+
+               <Controller
+                  name="compositionType"
+                  control={control}
+                  render={({ field }) => (
+                     <FormControl fullWidth size="small">
+                        <InputLabel id="composition-type-label">
+                           Тип состава
+                        </InputLabel>
+                        <Select
+                           {...field}
+                           labelId="composition-type-label"
+                           label="Тип состава"
+                           value={field.value || ''}
+                        >
+                           <MenuItem value="">Не указан</MenuItem>
+                           {transportationOptions.compositionType.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                 {option.label}
+                              </MenuItem>
+                           ))}
+                        </Select>
+                     </FormControl>
+                  )}
+               />
+
+               <Controller
+                  name="transportType"
+                  control={control}
+                  render={({ field }) => (
+                     <FormControl fullWidth size="small">
+                        <InputLabel id="transport-type-label">
+                           Тип транспорта
+                        </InputLabel>
+                        <Select
+                           {...field}
+                           labelId="transport-type-label"
+                           label="Тип транспорта"
+                           value={field.value || ''}
+                        >
+                           <MenuItem value="">Не указан</MenuItem>
+                           {transportationOptions.transportType.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                 {option.label}
+                              </MenuItem>
+                           ))}
+                        </Select>
+                     </FormControl>
+                  )}
+               />
+            </Box>
 
             <Box
                sx={{
@@ -510,4 +700,6 @@ export function CargoStep({ control, errors }) {
 CargoStep.propTypes = {
    control: PropTypes.object.isRequired,
    errors: PropTypes.object.isRequired,
+   setValue: PropTypes.func.isRequired,
+   getValues: PropTypes.func.isRequired,
 };

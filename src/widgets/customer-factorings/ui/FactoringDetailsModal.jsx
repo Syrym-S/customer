@@ -12,6 +12,7 @@ import {
 
 import { FactoringDetailsHeader } from "./factorings-details/FactoringDetailsHeader";
 import { FactoringSummarySection } from "./factorings-details/sections/FactoringSummarySection";
+import { FactoringCargoSection } from "./factorings-details/sections/FactoringCargoSection";
 import { FactoringFinanceSection } from "./factorings-details/sections/FactoringFinanceSection";
 import { FactoringParticipantsSection } from "./factorings-details/sections/FactoringParticipantsSection";
 import { FactoringVerificationSection } from "./factorings-details/sections/FactoringVerificationSection";
@@ -326,6 +327,8 @@ export function FactoringDetailsModal({
             )}
 
             <FactoringSummarySection factoring={factoring} />
+
+            <FactoringCargoSection factoring={factoring} />
 
             <FactoringFinanceSection factoring={factoring} />
 

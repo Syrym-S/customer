@@ -6,6 +6,7 @@ import { useCustomerMap } from '../../widgets/customer-map/model/useCustomerMap'
 import { LeadDetailsMap } from '../../widgets/customer-leads/ui/lead-details/LeadDetailsMap';
 import { LeadRouteSection } from '../../widgets/customer-leads/ui/lead-details/sections/LeadRouteSection';
 import { LeadCargoSection } from '../../widgets/customer-leads/ui/lead-details/sections/LeadCargoSection';
+import { LeadTransportationSection } from '../../widgets/customer-leads/ui/lead-details/sections/LeadTransportationSection';
 import { LeadForwarderSection } from '../../widgets/customer-leads/ui/lead-details/sections/LeadForwarderSection';
 import { LeadDriverSection } from '../../widgets/customer-leads/ui/lead-details/sections/LeadDriverSection';
 import { LeadStatusChip } from '../../widgets/dashboard/ui/DashboardLeadItem';
@@ -178,6 +179,13 @@ export function SharedLeadPage() {
                editForm={{}}
                onEditChange={noop}
                onDeleteCargo={noop}
+            />
+
+            <LeadTransportationSection
+               lead={lead}
+               isEditing={false}
+               editForm={{}}
+               onEditChange={noop}
             />
 
             <LeadForwarderSection

@@ -1,3 +1,5 @@
+import { leadTransportationFields } from './lead-transportation.helpers';
+
 const mockRoutes = [
    {
       from_location: 'Казахстан, г Алматы',
@@ -413,9 +415,56 @@ const mockLeadStatuses = [
    'unknown_backend_status',
 ];
 
+// Names match the mock lead-params list (lead-params.mock-api.js) — the
+// backend's confirmed wire value for these four fields is the option's
+// name string, not an id.
+const mockLoadingTypeNames = ['Задняя', 'Боковая', 'Верхняя', 'Верхняя+Боковая'];
+const mockPackagingTypeNames = ['Коробка', 'Паллета', 'Биг-бэг', 'Без упаковки'];
+const mockCompositionTypeNames = [
+   'Тент',
+   'Трал',
+   'Открытая',
+   'Спец. техника',
+   'Рефрижератор',
+];
+const mockTransportTypeNames = [
+   'Грузовой авто без прицепа',
+   'Полуприцеп открытый',
+   'Полуприцеп тент',
+   'Полуприцеп закрытый',
+];
+
+function buildMockCargo(index) {
+   const base = {
+      name: `Груз заявки #${33249585 + index}`,
+      description: `Груз заявки #${33249585 + index} Не указан`,
+      context: null,
+      weight_kg: index % 5 === 0 ? 0 : 500 + index * 50,
+      cargo_price: index % 3 === 0 ? null : 20000 + index * 1000,
+      type: index % 2 === 0 ? 'Не указан' : 'Оборудование',
+   };
+
+   const volumeVariant = index % 4;
+
+   if (volumeVariant === 0) {
+      return { ...base, volume: null, width_cm: null, height_cm: null, length_cm: null };
+   }
+
+   if (volumeVariant === 1) {
+      return { ...base, volume: 8.5, width_cm: null, height_cm: null, length_cm: null };
+   }
+
+   if (volumeVariant === 2) {
+      return { ...base, volume: null, width_cm: 120, height_cm: 100, length_cm: 200 };
+   }
+
+   return { ...base, volume: 3, width_cm: 150, height_cm: 100, length_cm: 200 };
+}
+
 export const mockLeads = Array.from({ length: 60 }, (_, index) => {
    const mockRoute = mockRoutes[index % mockRoutes.length];
    const status = mockLeadStatuses[index % mockLeadStatuses.length];
+   const hasTransportationParams = index % 3 !== 0;
 
    return {
       status,
@@ -442,12 +491,20 @@ export const mockLeads = Array.from({ length: 60 }, (_, index) => {
       gsm: false,
       customer: mockRoute.customer,
 
-      cargo: {
-         description: `Груз заявки #${33249585 + index} Не указан`,
-         context: null,
-         weight_kg: index % 5 === 0 ? 0 : 500 + index * 50,
-         type: index % 2 === 0 ? 'Не указан' : 'Оборудование',
-         volume_cm: null,
-      },
+      cargo: buildMockCargo(index),
+      cargos: [buildMockCargo(index)],
+
+      [leadTransportationFields.loadingType]: hasTransportationParams
+         ? mockLoadingTypeNames[index % mockLoadingTypeNames.length]
+         : null,
+      [leadTransportationFields.packagingType]: hasTransportationParams
+         ? mockPackagingTypeNames[index % mockPackagingTypeNames.length]
+         : null,
+      [leadTransportationFields.compositionType]: hasTransportationParams
+         ? mockCompositionTypeNames[index % mockCompositionTypeNames.length]
+         : null,
+      [leadTransportationFields.transportType]: hasTransportationParams
+         ? mockTransportTypeNames[index % mockTransportTypeNames.length]
+         : null,
    };
 });
