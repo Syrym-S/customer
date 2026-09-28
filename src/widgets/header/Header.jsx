@@ -551,7 +551,7 @@ export function Header() {
       >
         <MenuItem onClick={handleNavigateProfile}>Профиль</MenuItem>
 
-        <MenuItem>Настройки</MenuItem>
+        <MenuItem disabled>Настройки</MenuItem>
 
         <MenuItem onClick={handleOpenLogoutModal}>Выход</MenuItem>
       </Menu>
