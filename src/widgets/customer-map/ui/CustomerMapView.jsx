@@ -99,6 +99,7 @@ export function CustomerMapView({
          center={center}
          zoom={zoom}
          scrollWheelZoom
+         attributionControl={false}
          style={{
             width: "100%",
             height: "100%",
@@ -132,10 +133,7 @@ export function CustomerMapView({
 
          <MapClickHandler onMapClick={onMapClick} />
 
-         <TileLayer
-            attribution={CUSTOMER_MAP_TILE_LAYER.attribution}
-            url={CUSTOMER_MAP_TILE_LAYER.url}
-         />
+         <TileLayer url={CUSTOMER_MAP_TILE_LAYER.url} />
 
          {routes.map((mapRoute) => {
             if (!mapRoute.points || mapRoute.points.length < 2) {

@@ -93,10 +93,6 @@ body {
    display: block;
 }
 
-.leaflet-attribution-flag {
-   display: none !important;
-}
-
 .route-tooltip-pane .leaflet-tooltip {
    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
    font-size: 12px;
