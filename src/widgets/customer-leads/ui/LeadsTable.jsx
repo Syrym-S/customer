@@ -6,6 +6,7 @@ import { getLeadStatusLabel, getLeadStatusStyles } from '../model/lead.helpers';
 import {
    getShortLocationLabel,
    getZebraRowClassName,
+   toSortString,
    truncateId,
 } from '../../../shared/helpers/data-grid.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
@@ -24,6 +25,14 @@ function getLocationLabel(location) {
 
 function getForwarderLabel(forwarder) {
    return forwarder?.fullName || forwarder?.companyName || '-';
+}
+
+function getLocationSortValue(location) {
+   return toSortString(
+      getShortLocationLabel(location, getLocationLabel(location)),
+      'Некорректные данные',
+      'Не указано',
+   );
 }
 
 function LeadStatusChip({ status }) {
@@ -65,6 +74,8 @@ export function LeadsTable({ leads }) {
          field: 'status',
          headerName: 'Статус',
          width: 180,
+         valueGetter: (_, row) =>
+            row?.status ? getLeadStatusLabel(row.status) : '',
          renderCell: ({ row }) => {
             return <LeadStatusChip status={row.status} />;
          },
@@ -74,6 +85,7 @@ export function LeadsTable({ leads }) {
          headerName: 'Откуда',
          flex: 1,
          minWidth: 140,
+         valueGetter: (_, row) => getLocationSortValue(row?.from_location),
          renderCell: ({ row }) => {
             const fullLabel = getLocationLabel(row.from_location);
 
@@ -89,6 +101,7 @@ export function LeadsTable({ leads }) {
          headerName: 'Куда',
          flex: 1,
          minWidth: 140,
+         valueGetter: (_, row) => getLocationSortValue(row?.to_location),
          renderCell: ({ row }) => {
             const fullLabel = getLocationLabel(row.to_location);
 
@@ -104,6 +117,8 @@ export function LeadsTable({ leads }) {
          headerName: 'Экспедитор',
          flex: 1,
          minWidth: 180,
+         valueGetter: (_, row) =>
+            toSortString(getForwarderLabel(row?.forwarder), '-', 'Не указан'),
          renderCell: ({ row }) => {
             return <Box>{getForwarderLabel(row.forwarder)}</Box>;
          },

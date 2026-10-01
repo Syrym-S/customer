@@ -1,7 +1,10 @@
 import { Box, Paper, Stack } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
-import { getZebraRowClassName } from '../../../shared/helpers/data-grid.helpers';
+import {
+    getZebraRowClassName,
+    toSortString,
+} from '../../../shared/helpers/data-grid.helpers';
 import {
     getForwarderAccount,
     getForwarderAddress,
@@ -15,12 +18,17 @@ import {
 } from '../model/forwarders.helpers';
 import { ForwarderInviteLink } from './ForwarderInviteLink';
 
+function getForwarderSortValue(value) {
+    return toSortString(value, 'Не указан', 'Компания не указана');
+}
+
 export function ForwardersTable({ forwarders, onOpenDetails }) {
     const columns = [
         {
             field: 'id',
             headerName: 'ID',
             width: 200,
+            valueGetter: (_, row) => getForwarderId(row),
             renderCell: ({ row }) => {
                 const forwarderId = getForwarderId(row);
 
@@ -45,6 +53,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             field: 'company',
             headerName: 'Компания',
             width: 240,
+            valueGetter: (_, row) => getForwarderSortValue(getForwarderCompanyName(row)),
             renderCell: ({ row }) => (
                 <Stack spacing={0.25}>
                     <Box>{getForwarderCompanyName(row)}</Box>
@@ -65,6 +74,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             headerName: 'БИН',
             width: 160,
             cellClassName: 'tabular-nums',
+            valueGetter: (_, row) => getForwarderSortValue(getForwarderBin(row)),
             renderCell: ({ row }) => <Box>{getForwarderBin(row)}</Box>,
         },
         {
@@ -72,12 +82,14 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             headerName: 'ИИН',
             width: 160,
             cellClassName: 'tabular-nums',
+            valueGetter: (_, row) => getForwarderSortValue(getForwarderIin(row)),
             renderCell: ({ row }) => <Box>{getForwarderIin(row)}</Box>,
         },
         {
             field: 'fio',
             headerName: 'Представитель',
             width: 220,
+            valueGetter: (_, row) => getForwarderSortValue(getForwarderFio(row)),
             renderCell: ({ row }) => <Box>{getForwarderFio(row)}</Box>,
         },
         {
@@ -85,6 +97,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             headerName: 'Телефон',
             width: 160,
             cellClassName: 'tabular-nums',
+            valueGetter: (_, row) => getForwarderSortValue(getForwarderPhone(row)),
             renderCell: ({ row }) => <Box>{getForwarderPhone(row)}</Box>,
         },
         {
@@ -102,6 +115,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             headerName: 'БИК',
             width: 140,
             cellClassName: 'tabular-nums',
+            valueGetter: (_, row) => getForwarderSortValue(getForwarderBik(row)),
             renderCell: ({ row }) => <Box>{getForwarderBik(row)}</Box>,
         },
         {
@@ -109,12 +123,14 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
             headerName: 'Расчетный счет',
             width: 220,
             cellClassName: 'tabular-nums',
+            valueGetter: (_, row) => getForwarderSortValue(getForwarderAccount(row)),
             renderCell: ({ row }) => <Box>{getForwarderAccount(row)}</Box>,
         },
         {
             field: 'address',
             headerName: 'Адрес компании',
             width: 280,
+            valueGetter: (_, row) => getForwarderSortValue(getForwarderAddress(row)),
             renderCell: ({ row }) => {
                 const address = getForwarderAddress(row);
 

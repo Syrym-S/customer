@@ -31,3 +31,70 @@ export function getShortLocationLabel(location, fullLabel) {
 
    return parts.length ? parts.join(', ') : fullLabel;
 }
+
+export function toNumberOrNull(value) {
+   if (value === null || value === undefined) {
+      return null;
+   }
+
+   if (typeof value === 'string' && value.trim() === '') {
+      return null;
+   }
+
+   const number = Number(value);
+
+   return Number.isFinite(number) ? number : null;
+}
+
+export function toSortString(value, ...placeholders) {
+   const text = String(value ?? '').trim();
+
+   return placeholders.includes(text) ? '' : text;
+}
+
+function parseDateText(raw, timezone) {
+   if (typeof raw !== 'string') {
+      return null;
+   }
+
+   let text = raw
+      .trim()
+      .replace(' ', 'T')
+      .replace(/(\.\d{3})\d+/, '$1');
+
+   if (!text) {
+      return null;
+   }
+
+   if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+      text = `${text}T00:00:00`;
+   }
+
+   const hasZone = /(Z|[+-]\d{2}:?\d{2})$/i.test(text);
+   const isUtc = !timezone || timezone === 'UTC';
+   const time = new Date(hasZone || !isUtc ? text : `${text}Z`).getTime();
+
+   return Number.isNaN(time) ? null : time;
+}
+
+export function toTimestamp(value) {
+   if (value === null || value === undefined || value === '') {
+      return null;
+   }
+
+   if (typeof value === 'number') {
+      return Number.isFinite(value) ? value : null;
+   }
+
+   if (value instanceof Date) {
+      const time = value.getTime();
+
+      return Number.isNaN(time) ? null : time;
+   }
+
+   if (typeof value === 'object') {
+      return parseDateText(value.date, value.timezone);
+   }
+
+   return parseDateText(value);
+}

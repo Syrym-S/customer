@@ -4,6 +4,8 @@ import { useTendersContext } from '../model/useTendersContext';
 import {
    getShortLocationLabel,
    getZebraRowClassName,
+   toNumberOrNull,
+   toSortString,
    truncateId,
 } from '../../../shared/helpers/data-grid.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
@@ -39,6 +41,35 @@ function getMoneyLabel(amount, currency) {
 
 function getLeadValue(tender, field) {
    return tender?.lead?.[field] || tender?.[field] || null;
+}
+
+function getTenderPrice(tender) {
+   return tender?.summ || tender?.price || tender?.lead?.summ || tender?.lead?.price;
+}
+
+function getTenderBetsCount(tender) {
+   const betsCount = Number(tender?.bets_count);
+
+   if (Number.isFinite(betsCount) && betsCount > 0) {
+      return betsCount;
+   }
+
+   return Array.isArray(tender?.bets) ? tender.bets.length : 0;
+}
+
+function getTenderShortLocation(tender, field) {
+   const location = getLeadValue(tender, field);
+
+   return toSortString(
+      getShortLocationLabel(location, getLocationLabel(location)),
+      'Некорректные данные',
+   );
+}
+
+function getTenderTotalWeightSortValue(tender) {
+   const totalWeight = getTenderTotalCargoWeight(tender);
+
+   return totalWeight > 0 ? totalWeight : null;
 }
 
 function TenderStatusChip({ status }) {
@@ -78,6 +109,8 @@ export function TendersTable({ tenders }) {
          field: 'status',
          headerName: 'Статус',
          width: 140,
+         valueGetter: (_, row) =>
+            row?.status ? tenderStatusLabels[row.status] || row.status : '',
          renderCell: ({ row }) => {
             return <TenderStatusChip status={row.status} />;
          },
@@ -87,6 +120,7 @@ export function TendersTable({ tenders }) {
          headerName: 'Откуда',
          flex: 1,
          minWidth: 140,
+         valueGetter: (_, row) => getTenderShortLocation(row, 'from_location'),
          renderCell: ({ row }) => {
             const location = getLeadValue(row, 'from_location');
             const fullLabel = getLocationLabel(location);
@@ -103,6 +137,7 @@ export function TendersTable({ tenders }) {
          headerName: 'Куда',
          flex: 1,
          minWidth: 140,
+         valueGetter: (_, row) => getTenderShortLocation(row, 'to_location'),
          renderCell: ({ row }) => {
             const location = getLeadValue(row, 'to_location');
             const fullLabel = getLocationLabel(location);
@@ -123,6 +158,8 @@ export function TendersTable({ tenders }) {
          field: 'cargoTypes',
          headerName: 'Тип груза',
          width: 160,
+         valueGetter: (_, row) =>
+            toSortString(getTenderCargoTypeLabel(row), 'Не указан'),
          renderCell: ({ row }) => {
             const label = getTenderCargoTypeLabel(row);
 
@@ -147,6 +184,7 @@ export function TendersTable({ tenders }) {
          align: 'right',
          headerAlign: 'right',
          cellClassName: 'tabular-nums',
+         valueGetter: (_, row) => getTenderTotalWeightSortValue(row),
          renderCell: ({ row }) => {
             const totalWeight = getTenderTotalCargoWeight(row);
 
@@ -160,11 +198,12 @@ export function TendersTable({ tenders }) {
          align: 'right',
          headerAlign: 'right',
          cellClassName: 'tabular-nums',
+         valueGetter: (_, row) => toNumberOrNull(getTenderPrice(row)),
          renderCell: ({ row }) => {
             return (
                <Box>
                   {getMoneyLabel(
-                     row.summ || row.price || row.lead?.summ,
+                     getTenderPrice(row),
                      row.currency || row.lead?.currency,
                   )}
                </Box>
@@ -178,8 +217,9 @@ export function TendersTable({ tenders }) {
          align: 'right',
          headerAlign: 'right',
          cellClassName: 'tabular-nums',
+         valueGetter: (_, row) => getTenderBetsCount(row),
          renderCell: ({ row }) => {
-            return <Box>{Array.isArray(row.bets) ? row.bets.length : 0}</Box>;
+            return <Box>{getTenderBetsCount(row)}</Box>;
          },
       },
    ];
