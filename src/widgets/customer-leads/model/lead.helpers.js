@@ -102,6 +102,22 @@ export function getLeadStatusStyles(status) {
    return leadStatusStyles[status] || leadStatusStyles.new;
 }
 
+export const DRAFT_STATUS_LABEL = 'Черновик';
+
+const draftStatusStyle = {
+   borderColor: 'grey.500',
+   color: 'text.secondary',
+   backgroundColor: 'grey.200',
+};
+
+export function getDisplayLeadStatusLabel(lead) {
+   return isDraftLead(lead) ? DRAFT_STATUS_LABEL : getLeadStatusLabel(lead?.status);
+}
+
+export function getDisplayLeadStatusStyles(lead) {
+   return isDraftLead(lead) ? draftStatusStyle : getLeadStatusStyles(lead?.status);
+}
+
 // Resolves the theme-path `color` of a status (e.g. 'success.dark') to a
 // literal color string, for consumers that can't take theme paths (Leaflet).
 export function getLeadStatusColorValue(status, theme) {
@@ -137,4 +153,71 @@ export function isFinishedEmergencyLead(lead) {
       String(lead?.status || '').toLowerCase() ===
       'finished_emergency_situation'
    );
+}
+
+export function isDraftLead(lead) {
+   return lead?.is_draft === true;
+}
+
+const EMPTY_LOCATION_PLACEHOLDER = 'Не указано';
+
+function hasLocationValue(location) {
+   if (!location) {
+      return false;
+   }
+
+   if (typeof location === 'string') {
+      const trimmed = location.trim();
+
+      return trimmed !== '' && trimmed !== EMPTY_LOCATION_PLACEHOLDER;
+   }
+
+   if (typeof location === 'object') {
+      return Boolean(
+         location.address || location.city || location.region || location.country,
+      );
+   }
+
+   return false;
+}
+
+export function isDraftPublishable(lead) {
+   const hasFromLocation = hasLocationValue(lead?.from_location);
+   const hasToLocation = hasLocationValue(lead?.to_location);
+   const hasCargo = Array.isArray(lead?.cargos) && lead.cargos.length > 0;
+
+   return hasFromLocation && hasToLocation && hasCargo;
+}
+
+export function formatLeadDate(value) {
+   if (!value) {
+      return 'Не указано';
+   }
+
+   let dateValue = value;
+
+   if (typeof value === 'object') {
+      dateValue = value.date || value.datetime || value.value || '';
+
+      if (!dateValue) {
+         return 'Не указано';
+      }
+   }
+
+   const normalizedDateValue =
+      typeof dateValue === 'string' ? dateValue.replace(' ', 'T') : dateValue;
+
+   const date = new Date(normalizedDateValue);
+
+   if (Number.isNaN(date.getTime())) {
+      return String(dateValue || 'Не указано');
+   }
+
+   return date.toLocaleString('ru-RU', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+   });
 }

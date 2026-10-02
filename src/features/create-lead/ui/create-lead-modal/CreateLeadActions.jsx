@@ -17,11 +17,15 @@ export function CreateLeadActions({
    isLastStep,
    hasCurrentStepErrors,
    isSubmitting,
+   isSavingDraft = false,
    onClose,
    onBack,
    onNext,
    onSubmit,
+   onSaveDraft,
 }) {
+   const isAnyActionPending = isSubmitting || isSavingDraft;
+
    return (
       <DialogActions
          sx={{
@@ -34,18 +38,29 @@ export function CreateLeadActions({
          <Button
             type='button'
             onClick={onClose}
-            disabled={isSubmitting}
+            disabled={isAnyActionPending}
             sx={actionButtonSx}
          >
             Отмена
          </Button>
 
          <Box sx={{ display: 'flex', gap: 1 }}>
+            {onSaveDraft && (
+               <Button
+                  type='button'
+                  onClick={onSaveDraft}
+                  disabled={isAnyActionPending}
+                  sx={actionButtonSx}
+               >
+                  {isSavingDraft ? 'Сохранение...' : 'Сохранить как черновик'}
+               </Button>
+            )}
+
             {!isFirstStep && (
                <Button
                   type='button'
                   onClick={onBack}
-                  disabled={isSubmitting}
+                  disabled={isAnyActionPending}
                   sx={actionButtonSx}
                >
                   Назад
@@ -56,7 +71,7 @@ export function CreateLeadActions({
                <Button
                   type='button'
                   variant='contained'
-                  disabled={isSubmitting || hasCurrentStepErrors}
+                  disabled={isAnyActionPending || hasCurrentStepErrors}
                   onClick={onSubmit}
                   sx={actionButtonSx}
                >
@@ -66,7 +81,7 @@ export function CreateLeadActions({
                <Button
                   type='button'
                   variant='contained'
-                  disabled={hasCurrentStepErrors || isSubmitting}
+                  disabled={hasCurrentStepErrors || isAnyActionPending}
                   onClick={onNext}
                   sx={actionButtonSx}
                >
@@ -83,8 +98,10 @@ CreateLeadActions.propTypes = {
    isLastStep: PropTypes.bool.isRequired,
    hasCurrentStepErrors: PropTypes.bool.isRequired,
    isSubmitting: PropTypes.bool.isRequired,
+   isSavingDraft: PropTypes.bool,
    onClose: PropTypes.func.isRequired,
    onBack: PropTypes.func.isRequired,
    onNext: PropTypes.func.isRequired,
    onSubmit: PropTypes.func.isRequired,
+   onSaveDraft: PropTypes.func,
 };

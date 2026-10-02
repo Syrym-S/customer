@@ -135,7 +135,7 @@ export function TenderLeadOption({ option }) {
                   </Typography>
                )}
 
-               {option.status && <LeadStatusChip status={option.status} />}
+               {option.status && <LeadStatusChip lead={option} />}
 
                {priceLabel && (
                   <Typography noWrap sx={{ fontSize: 13, fontWeight: 600 }}>

@@ -2,12 +2,15 @@ import { Box, Paper, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import { useLeadsContext } from '../model/useLeadsContext';
-import { getLeadStatusLabel, getLeadStatusStyles } from '../model/lead.helpers';
+import {
+   getDisplayLeadStatusLabel,
+   getDisplayLeadStatusStyles,
+   isDraftLead,
+} from '../model/lead.helpers';
 import {
    getShortLocationLabel,
    getZebraRowClassName,
    toSortString,
-   truncateId,
 } from '../../../shared/helpers/data-grid.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
 
@@ -35,11 +38,19 @@ function getLocationSortValue(location) {
    );
 }
 
-function LeadStatusChip({ status }) {
+function getLeadRowClassName(params) {
+   if (isDraftLead(params.row)) {
+      return 'row-draft';
+   }
+
+   return getZebraRowClassName(params);
+}
+
+function LeadStatusChip({ lead }) {
    return (
       <StatusDot
-         label={getLeadStatusLabel(status)}
-         color={getLeadStatusStyles(status).color}
+         label={getDisplayLeadStatusLabel(lead)}
+         color={getDisplayLeadStatusStyles(lead).color}
       />
    );
 }
@@ -49,11 +60,11 @@ export function LeadsTable({ leads }) {
 
    const columns = [
       {
-         field: 'id',
-         headerName: 'ID',
+         field: 'num',
+         headerName: '№',
          width: 130,
          renderCell: ({ row }) => (
-            <Tooltip title={row.id}>
+            <Tooltip title={row.num ?? row.id}>
                <Box
                   onClick={() => setOpenLead(row)}
                   sx={{
@@ -65,7 +76,7 @@ export function LeadsTable({ leads }) {
                      width: 'fit-content',
                   }}
                >
-                  {truncateId(row.id)}
+                  {row.num ?? row.id}
                </Box>
             </Tooltip>
          ),
@@ -74,10 +85,9 @@ export function LeadsTable({ leads }) {
          field: 'status',
          headerName: 'Статус',
          width: 180,
-         valueGetter: (_, row) =>
-            row?.status ? getLeadStatusLabel(row.status) : '',
+         valueGetter: (_, row) => getDisplayLeadStatusLabel(row),
          renderCell: ({ row }) => {
-            return <LeadStatusChip status={row.status} />;
+            return <LeadStatusChip lead={row} />;
          },
       },
       {
@@ -85,8 +95,17 @@ export function LeadsTable({ leads }) {
          headerName: 'Откуда',
          flex: 1,
          minWidth: 140,
+         colSpan: (_value, row) => (isDraftLead(row) ? 3 : undefined),
          valueGetter: (_, row) => getLocationSortValue(row?.from_location),
          renderCell: ({ row }) => {
+            if (isDraftLead(row)) {
+               return (
+                  <Box sx={{ color: 'text.secondary' }}>
+                     Данные не заполнены
+                  </Box>
+               );
+            }
+
             const fullLabel = getLocationLabel(row.from_location);
 
             return (
@@ -131,7 +150,7 @@ export function LeadsTable({ leads }) {
             rows={leads}
             getRowId={(row) => row.id}
             columns={columns}
-            getRowClassName={getZebraRowClassName}
+            getRowClassName={getLeadRowClassName}
             hideFooter
             localeText={{ noRowsLabel: 'Заказы не найдены' }}
             sx={{ border: 0 }}

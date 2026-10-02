@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { normalizeLocationValue } from "../../customer-leads/model/lead-edit-form.helpers";
 import {
-  getLeadStatusLabel,
-  getLeadStatusStyles,
+  getDisplayLeadStatusLabel,
+  getDisplayLeadStatusStyles,
 } from "../../customer-leads/model/lead.helpers";
 import { formatAmount } from "../../../shared/helpers/currency-format.helpers";
 import { StatusDot } from "../../../shared/ui/StatusDot";
@@ -37,11 +37,11 @@ function hasRouteCoordinates(lead) {
   );
 }
 
-export function LeadStatusChip({ status }) {
+export function LeadStatusChip({ lead }) {
   return (
     <StatusDot
-      label={getLeadStatusLabel(status)}
-      color={getLeadStatusStyles(status).color}
+      label={getDisplayLeadStatusLabel(lead)}
+      color={getDisplayLeadStatusStyles(lead).color}
     />
   );
 }
@@ -128,7 +128,7 @@ export function DashboardLeadItem({
             }}
           />
 
-          {lead?.status && <LeadStatusChip status={lead.status} />}
+          {lead?.status && <LeadStatusChip lead={lead} />}
         </Box>
 
         <Box>

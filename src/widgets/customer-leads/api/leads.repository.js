@@ -1,9 +1,17 @@
 import { apiClient } from '../../../shared/api/api-client';
 import { isMockApi } from '../../../shared/config/api.config';
-import { fetchCustomerLeadByIdApi, fetchCustomerLeadsApi } from './leads.api';
 import {
+   deleteLeadApi,
+   fetchCustomerLeadByIdApi,
+   fetchCustomerLeadsApi,
+   publishLeadApi,
+} from './leads.api';
+import {
+   deleteLeadMock,
    fetchCustomerLeadByIdMock,
    fetchCustomerLeadsMock,
+   publishLeadMock,
+   updateCustomerLeadMock,
 } from './leads.mock-api';
 
 export function fetchCustomerLeads(params) {
@@ -31,16 +39,26 @@ export async function updateCustomerLeadApi(leadId, payload) {
    return response.data;
 }
 
-export async function updateCustomerLead(leadId, payload) {
+export function updateCustomerLead(leadId, payload) {
    if (isMockApi) {
-      return {
-         message: 'Lead updated',
-         data: {
-            id: leadId,
-            ...payload,
-         },
-      };
+      return updateCustomerLeadMock(leadId, payload);
    }
 
    return updateCustomerLeadApi(leadId, payload);
+}
+
+export function publishLead(leadId) {
+   if (isMockApi) {
+      return publishLeadMock(leadId);
+   }
+
+   return publishLeadApi(leadId);
+}
+
+export function deleteLead(leadId) {
+   if (isMockApi) {
+      return deleteLeadMock(leadId);
+   }
+
+   return deleteLeadApi(leadId);
 }

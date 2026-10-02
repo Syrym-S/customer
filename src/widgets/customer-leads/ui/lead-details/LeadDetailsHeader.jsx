@@ -74,7 +74,7 @@ export function LeadDetailsHeader({ lead }) {
             />
           )}
 
-          <LeadStatusChip status={lead.status} />
+          <LeadStatusChip lead={lead} />
         </Stack>
       </Box>
     </DialogTitle>

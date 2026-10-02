@@ -317,6 +317,7 @@ export function mapCreatedLeadToUi(form, response) {
         currency: form.currency || 'KZT',
 
         status: responseData?.status || 'new',
+        is_draft: Boolean(responseData?.is_draft),
 
         transportation_price: null,
         vat: form.vat ? 'с НДС' : 'без НДС',

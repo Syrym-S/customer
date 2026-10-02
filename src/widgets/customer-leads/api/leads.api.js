@@ -5,6 +5,7 @@ export async function fetchCustomerLeadsApi({
    perPage = 4,
    status,
    search,
+   isDraft,
 } = {}) {
    const params = {
       page,
@@ -13,6 +14,10 @@ export async function fetchCustomerLeadsApi({
 
    if (status) {
       params.status = status;
+   }
+
+   if (isDraft) {
+      params.is_draft = 1;
    }
 
    const normalizedSearch = String(search ?? '').trim();
@@ -58,6 +63,18 @@ export async function deleteLeadCargoApi(leadId, cargoIndex) {
 // a "YYYY-MM-DD HH:mm:ss" timestamp.
 export async function getLeadShareLinkApi(leadId) {
    const response = await apiClient.post(`/customer/v1/lead/${leadId}/share`);
+
+   return response.data;
+}
+
+export async function publishLeadApi(leadId) {
+   const response = await apiClient.post(`/customer/v1/lead/${leadId}/publish`);
+
+   return response.data;
+}
+
+export async function deleteLeadApi(leadId) {
+   const response = await apiClient.delete(`/customer/v1/lead/${leadId}`);
 
    return response.data;
 }

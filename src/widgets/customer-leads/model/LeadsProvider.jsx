@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { fetchCustomerLeads } from '../api/leads.repository';
 import { mapLeadsResponseFromApi } from './lead.adapter';
+import { isDraftLead } from './lead.helpers';
 import { LeadsContext } from './LeadsContext';
 import {
    notificationDomainEventNames,
@@ -11,6 +12,14 @@ import {
 
 const DEFAULT_PER_PAGE = 10;
 const SEARCH_DEBOUNCE_MS = 450;
+
+function sortLeadsWithDraftsFirst(leads) {
+   return [...leads].sort((a, b) => {
+      const draftRank = (lead) => (isDraftLead(lead) ? 0 : 1);
+
+      return draftRank(a) - draftRank(b);
+   });
+}
 
 export function LeadsProvider({ children }) {
    const [leads, setLeads] = useState([]);
@@ -44,7 +53,7 @@ export function LeadsProvider({ children }) {
             });
             const mappedResponse = mapLeadsResponseFromApi(response);
 
-            setLeads(mappedResponse.leads);
+            setLeads(sortLeadsWithDraftsFirst(mappedResponse.leads));
             setCount(mappedResponse.count);
             setPerPage(mappedResponse.perPage);
          } catch (requestError) {

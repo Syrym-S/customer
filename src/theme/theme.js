@@ -191,6 +191,14 @@ export const theme = createTheme({
                '&.row-odd': {
                   backgroundColor: alpha(theme.palette.divider, 0.32),
                },
+               // Draft rows get a warning-tinted background that overrides
+               // the zebra stripe (declared after `.row-odd`, same
+               // specificity, so it wins the cascade regardless of odd/even)
+               // — the same `alpha(theme.palette.X.main, …)` mechanism as
+               // the hover rule below, just a different token/purpose.
+               '&.row-draft': {
+                  backgroundColor: alpha(theme.palette.warning.main, 0.08),
+               },
                '&:hover': {
                   backgroundColor: alpha(theme.palette.primary.main, 0.08),
                },

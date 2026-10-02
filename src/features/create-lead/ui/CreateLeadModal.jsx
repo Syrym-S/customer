@@ -165,6 +165,7 @@ export function CreateLeadModal({ open, onClose }) {
     const { prependLead } = useLeadsContext();
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSavingDraft, setIsSavingDraft] = useState(false);
     const [resultModal, setResultModal] = useState({
         open: false,
         type: null,
@@ -249,6 +250,44 @@ export function CreateLeadModal({ open, onClose }) {
         }
 
         await handleSubmit(handleCreateLead)();
+    }
+
+    async function handleSaveDraft() {
+        if (isSubmitting || isSavingDraft) {
+            return;
+        }
+
+        try {
+            setIsSavingDraft(true);
+
+            const data = getValues();
+            const payload = { ...mapCreateLeadFormToApi(data), is_draft: true };
+            const response = await createLead(payload);
+
+            const createdLead = mapCreatedLeadToUi(data, response);
+
+            prependLead(createdLead);
+            handleClose();
+
+            setResultModal({
+                open: true,
+                type: 'success',
+                title: 'Черновик сохранен',
+                message: 'Заказ сохранен как черновик',
+            });
+        } catch (error) {
+            setResultModal({
+                open: true,
+                type: 'error',
+                title: 'Ошибка сохранения',
+                message:
+                    error.response?.data?.message ||
+                    error.message ||
+                    'Не удалось сохранить черновик',
+            });
+        } finally {
+            setIsSavingDraft(false);
+        }
     }
 
     function handleClose() {
@@ -414,10 +453,12 @@ export function CreateLeadModal({ open, onClose }) {
                         isLastStep={isLastStep}
                         hasCurrentStepErrors={hasCurrentStepErrors}
                         isSubmitting={isSubmitting}
+                        isSavingDraft={isSavingDraft}
                         onClose={handleClose}
                         onBack={handleBack}
                         onNext={handleNext}
                         onSubmit={handleSubmitClick}
+                        onSaveDraft={handleSaveDraft}
                     />
                 </Box>
             </Dialog>

@@ -12,6 +12,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useLeadsContext } from '../model/useLeadsContext';
 import { useCustomerMap } from '../../customer-map/model/useCustomerMap';
+import { useLeadPublish } from '../model/useLeadPublish';
 
 import { LeadDetailsMap } from './lead-details/LeadDetailsMap';
 import { LeadDetailsEditActions } from './lead-details/LeadDetailsEditActions';
@@ -32,6 +33,7 @@ export function LeadDetailsModal() {
 
    const map = useCustomerMap();
    const { openLead, setOpenLead, reloadLeads } = useLeadsContext();
+   const { publishDraft, isPublishing } = useLeadPublish();
 
    const {
       leadDetails,
@@ -108,6 +110,14 @@ export function LeadDetailsModal() {
 
       if (leadId) {
          navigate('/customer', { replace: true });
+      }
+   }
+
+   async function handlePublishDraft() {
+      const published = await publishDraft(currentLead?.id);
+
+      if (published) {
+         handleClose();
       }
    }
 
@@ -258,6 +268,8 @@ export function LeadDetailsModal() {
                      onStartEdit={handleStartEdit}
                      onCancelEdit={handleCancelEdit}
                      onClose={handleClose}
+                     onPublishDraft={handlePublishDraft}
+                     isPublishing={isPublishing}
                   />
 
                   <LeadDetailsContent

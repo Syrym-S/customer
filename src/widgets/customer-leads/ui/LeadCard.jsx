@@ -8,7 +8,14 @@ import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined
 
 import { useLeadsContext } from '../model/useLeadsContext';
 import { normalizeLocationValue } from '../model/lead-edit-form.helpers';
-import { getLeadStatusLabel, getLeadStatusStyles } from '../model/lead.helpers';
+import {
+   formatLeadDate,
+   getDisplayLeadStatusLabel,
+   getDisplayLeadStatusStyles,
+   getLeadStatusLabel,
+   getLeadStatusStyles,
+   isDraftLead,
+} from '../model/lead.helpers';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
 import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
@@ -45,11 +52,61 @@ function getCargoSummaryLabel(cargos) {
    return totalWeight > 0 ? `${countLabel} · ${totalWeight} кг` : countLabel;
 }
 
+const cardContainerSx = {
+   p: 3,
+   border: '2px solid',
+   borderColor: 'divider',
+   borderRadius: 4,
+   backgroundColor: 'background.paper',
+   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+   transition: '0.2s ease',
+   cursor: 'pointer',
+   '&:hover': {
+      borderColor: 'primary.light',
+      boxShadow: '0 8px 24px rgba(33, 150, 243, 0.12)',
+   },
+};
+
 export function LeadCard({ lead }) {
    const { setOpenLead } = useLeadsContext();
 
    function handleOpenLead() {
       setOpenLead(lead);
+   }
+
+   if (isDraftLead(lead)) {
+      return (
+         <Box
+            onClick={handleOpenLead}
+            role="button"
+            tabIndex={0}
+            sx={(theme) => ({
+               ...cardContainerSx,
+               backgroundColor: alpha(theme.palette.warning.main, 0.08),
+            })}
+         >
+            <Stack spacing={2}>
+               <Stack direction="row" spacing={0.75} alignItems="center">
+                  <Typography variant="body2" color="text.secondary">
+                     #{lead.num || '—'}
+                  </Typography>
+
+                  <Typography variant="body2" color="text.secondary">
+                     ·
+                  </Typography>
+
+                  <StatusDot
+                     label={getDisplayLeadStatusLabel(lead)}
+                     color={getDisplayLeadStatusStyles(lead).color}
+                  />
+               </Stack>
+
+               <Typography variant="body2" color="text.secondary">
+                  {formatLeadDate(lead.created_at)}
+               </Typography>
+            </Stack>
+         </Box>
+      );
    }
 
    function hasValue(value) {
@@ -276,12 +333,14 @@ LeadCard.propTypes = {
       id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       num: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       status: PropTypes.string.isRequired,
-      from_location: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-      to_location: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+      is_draft: PropTypes.bool,
+      created_at: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+      from_location: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+      to_location: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
       waypoints: PropTypes.array,
       cargos: PropTypes.array,
-      summ: PropTypes.number.isRequired,
-      currency: PropTypes.string.isRequired,
+      summ: PropTypes.number,
+      currency: PropTypes.string,
       forwarder: PropTypes.shape({
          id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
          fullName: PropTypes.string,

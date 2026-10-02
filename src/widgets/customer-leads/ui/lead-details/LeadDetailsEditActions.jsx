@@ -8,6 +8,8 @@ import { LeadDeliveryChatButton } from './LeadDeliveryChatButton';
 import {
    isFinishedLead,
    isCancelledLead,
+   isDraftLead,
+   isDraftPublishable,
    isEmergencyLead,
    isFinishedEmergencyLead,
    isSignAvrLead,
@@ -20,20 +22,33 @@ export function LeadDetailsEditActions({
    onStartEdit,
    onCancelEdit,
    onClose,
+   onPublishDraft,
+   isPublishing = false,
 }) {
+   const isDraft = isDraftLead(lead);
+   const canPublishDraft = isDraftPublishable(lead);
+
    const isEditDisabled =
-      isFinishedLead(lead) ||
-      isCancelledLead(lead) ||
-      isEmergencyLead(lead) ||
-      isFinishedEmergencyLead(lead) ||
-      isSignAvrLead(lead);
-   const editTooltipTitle = isEmergencyLead(lead)
-      ? 'Нельзя редактировать заказ в аварийной ситуации'
-      : isFinishedEmergencyLead(lead)
-        ? 'Нельзя редактировать заказ, завершенный в аварийной ситуации'
-        : isEditDisabled
-          ? 'Нельзя редактировать завершенный или отмененный заказ'
-          : 'Изменить';
+      !isDraft &&
+      (isFinishedLead(lead) ||
+         isCancelledLead(lead) ||
+         isEmergencyLead(lead) ||
+         isFinishedEmergencyLead(lead) ||
+         isSignAvrLead(lead));
+
+   const editTooltipTitle = isDraft
+      ? 'Изменить'
+      : isEmergencyLead(lead)
+        ? 'Нельзя редактировать заказ в аварийной ситуации'
+        : isFinishedEmergencyLead(lead)
+          ? 'Нельзя редактировать заказ, завершенный в аварийной ситуации'
+          : isEditDisabled
+            ? 'Нельзя редактировать завершенный или отмененный заказ'
+            : 'Изменить';
+
+   const publishTooltipTitle = canPublishDraft
+      ? ''
+      : 'Заполните маршрут и груз перед публикацией';
 
    return (
       <Box
@@ -44,27 +59,43 @@ export function LeadDetailsEditActions({
             mb: 2,
          }}
       >
-         {!isEditing && lead && <LeadChatButton lead={lead} onClose={onClose} />}
+         {!isDraft && !isEditing && lead && <LeadChatButton lead={lead} onClose={onClose} />}
 
-         {!isEditing && lead && <LeadDeliveryChatButton lead={lead} onClose={onClose} />}
+         {!isDraft && !isEditing && lead && <LeadDeliveryChatButton lead={lead} onClose={onClose} />}
 
-         {!isEditing && leadId && <LeadShareButton leadId={leadId} />}
+         {!isDraft && !isEditing && leadId && <LeadShareButton leadId={leadId} />}
 
          {isEditing ? (
             <Button onClick={onCancelEdit}>Отмена</Button>
          ) : (
-            <Tooltip title={editTooltipTitle}>
-               <span>
-                  <IconButton
-                     color="primary"
-                     aria-label="Изменить"
-                     onClick={onStartEdit}
-                     disabled={isEditDisabled}
-                  >
-                     <EditOutlinedIcon fontSize="small" />
-                  </IconButton>
-               </span>
-            </Tooltip>
+            <>
+               <Tooltip title={editTooltipTitle}>
+                  <span>
+                     <IconButton
+                        color="primary"
+                        aria-label="Изменить"
+                        onClick={onStartEdit}
+                        disabled={isEditDisabled}
+                     >
+                        <EditOutlinedIcon fontSize="small" />
+                     </IconButton>
+                  </span>
+               </Tooltip>
+
+               {isDraft && (
+                  <Tooltip title={publishTooltipTitle}>
+                     <span>
+                        <Button
+                           variant="contained"
+                           onClick={onPublishDraft}
+                           disabled={isPublishing || !canPublishDraft}
+                        >
+                           {isPublishing ? 'Публикация...' : 'Опубликовать'}
+                        </Button>
+                     </span>
+                  </Tooltip>
+               )}
+            </>
          )}
       </Box>
    );
@@ -79,4 +110,6 @@ LeadDetailsEditActions.propTypes = {
    onStartEdit: PropTypes.func.isRequired,
    onCancelEdit: PropTypes.func.isRequired,
    onClose: PropTypes.func,
+   onPublishDraft: PropTypes.func,
+   isPublishing: PropTypes.bool,
 };

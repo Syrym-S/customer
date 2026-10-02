@@ -149,7 +149,7 @@ export function SharedLeadPage() {
                </Typography>
             </Box>
 
-            <LeadStatusChip status={lead.status} />
+            <LeadStatusChip lead={lead} />
          </Box>
 
          <Alert severity="info" sx={{ mb: 2 }}>
