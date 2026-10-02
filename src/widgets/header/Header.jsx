@@ -37,6 +37,7 @@ import GavelOutlined from "@mui/icons-material/GavelOutlined";
 import AccountBalanceOutlined from "@mui/icons-material/AccountBalanceOutlined";
 import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
 import InventoryOutlined from "@mui/icons-material/InventoryOutlined";
+import ReportProblemOutlined from "@mui/icons-material/ReportProblemOutlined";
 import { SupportContacts } from "../../shared/ui/SupportContacts";
 
 export function Header() {
@@ -56,6 +57,7 @@ export function Header() {
   const isFactoringsPage = location.pathname === "/customer/factorings";
   const isForwardersPage = location.pathname === "/customer/forwarders";
   const isTnvedPage = location.pathname === "/customer/tnved";
+  const isComplaintsPage = location.pathname === "/customer/complaints";
   const userEmail = window?.APP_DATA?.user_email || "Пользователь";
   const userEmailLabel = getCompactEmail(userEmail);
   const [profilePhoto, setProfilePhoto] = useState("");
@@ -227,6 +229,13 @@ export function Header() {
         selected: isTnvedPage,
         icon: <InventoryOutlined />,
         tooltip: "Справочник товарной номенклатуры внешнеэкономической деятельности",
+      },
+      {
+        label: "Жалобы",
+        path: "/customer/complaints",
+        selected: isComplaintsPage,
+        icon: <ReportProblemOutlined />,
+        tooltip: "Подача жалоб по заказам и факторингам, история и ответы администрации",
       },
     ];
 

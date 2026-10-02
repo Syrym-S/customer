@@ -468,6 +468,30 @@ function buildMockCargo(index) {
    return { ...base, volume: 3, width_cm: 150, height_cm: 100, length_cm: 200 };
 }
 
+// Spreads each lead's created_at across the last ~60 days relative to
+// "now" (instead of one fixed historical date) so date-windowed views
+// (e.g. the complaints target picker's "last 30 days" filter) have a
+// realistic, non-empty mix of in-window and out-of-window leads.
+function buildMockLeadCreatedAt(index) {
+   const daysAgo = index % 60;
+   const date = new Date();
+
+   date.setDate(date.getDate() - daysAgo);
+   date.setHours(5, 16, 24, 59);
+
+   const pad = (value, length = 2) => String(value).padStart(length, '0');
+
+   const dateString =
+      `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ` +
+      `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}.059000`;
+
+   return {
+      date: dateString,
+      timezone_type: 3,
+      timezone: 'UTC',
+   };
+}
+
 export const mockLeads = Array.from({ length: 60 }, (_, index) => {
    const mockRoute = mockRoutes[index % mockRoutes.length];
    const status = mockLeadStatuses[index % mockLeadStatuses.length];
@@ -478,11 +502,7 @@ export const mockLeads = Array.from({ length: 60 }, (_, index) => {
       id: `mock-lead-${index + 1}`,
       num: index + 1,
 
-      created_at: {
-         date: '2026-05-19 05:16:24.059000',
-         timezone_type: 3,
-         timezone: 'UTC',
-      },
+      created_at: buildMockLeadCreatedAt(index),
 
       driver: mockRoute.driver,
       summ: index % 4 === 0 ? 0 : 150000 + index * 5000,

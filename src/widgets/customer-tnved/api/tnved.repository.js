@@ -1,35 +1,24 @@
 import { isMockApi } from '../../../shared/config/api.config';
-import {
-   fetchTnvedTreeApi,
-   searchTnvedApi,
-   searchTnvedCodesApi,
-} from './tnved.api';
-import {
-   fetchTnvedTreeMock,
-   searchTnvedCodesMock,
-   searchTnvedMock,
-} from './tnved.mock-api';
+import { fetchTnvedCatalogApi, searchTnvedCodesApi } from './tnved.api';
+import { fetchTnvedCatalogMock, searchTnvedCodesMock } from './tnved.mock-api';
+import { normalizeTnvedCatalogResponse } from '../model/tnved.normalize';
 
-export function fetchTnvedTree() {
+export async function fetchTnvedCatalog({ q, page = 1, perPage = 100 } = {}) {
    if (isMockApi) {
-      return fetchTnvedTreeMock();
+      return fetchTnvedCatalogMock({ q, page, perPage });
    }
 
-   return fetchTnvedTreeApi();
+   const response = await fetchTnvedCatalogApi({ q, page, per_page: perPage });
+
+   return normalizeTnvedCatalogResponse(response);
 }
 
-export function searchTnved(query) {
+export async function searchTnvedCodes(q, limit = 10) {
    if (isMockApi) {
-      return searchTnvedMock(query);
+      return searchTnvedCodesMock(q, limit);
    }
 
-   return searchTnvedApi(query);
-}
+   const response = await searchTnvedCodesApi(q, limit);
 
-export function searchTnvedCodes(query) {
-   if (isMockApi) {
-      return searchTnvedCodesMock(query);
-   }
-
-   return searchTnvedCodesApi(query);
+   return Array.isArray(response?.results) ? response.results : [];
 }

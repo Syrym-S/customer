@@ -180,6 +180,21 @@ export const tnvedTree = [
    },
 ];
 
+let nextTnvedId = 1;
+
+function assignTnvedIds(nodes) {
+   nodes.forEach((node) => {
+      node.id = nextTnvedId;
+      nextTnvedId += 1;
+
+      if (Array.isArray(node.children)) {
+         assignTnvedIds(node.children);
+      }
+   });
+}
+
+assignTnvedIds(tnvedTree);
+
 export function flattenTnvedLeaves(tree = tnvedTree) {
    const leaves = [];
 

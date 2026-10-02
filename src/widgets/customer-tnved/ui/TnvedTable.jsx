@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
    Box,
    Button,
@@ -18,33 +18,23 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 
 import { TnvedRow } from './TnvedRow';
 import { LeadsPagination } from '../../customer-leads/ui/LeadsPagination';
-import { fetchTnvedTree, searchTnved } from '../api/tnved.repository';
+import { fetchTnvedCatalog } from '../api/tnved.repository';
 import { collectAllNodeKeys, getNodeKey } from '../model/tnved-tree.helpers';
 
-const ROOT_PAGE_SIZE = 100;
+const PAGE_SIZE = 100;
 
 function nodeMatchesQuery(node, normalizedQuery) {
-   const codeMatches = node.code && node.code.includes(normalizedQuery);
+   const codeMatches = node.code && node.code.toLowerCase().startsWith(normalizedQuery);
    const nameMatches = node.name.toLowerCase().includes(normalizedQuery);
 
    return Boolean(codeMatches || nameMatches);
 }
 
-function renderNodeRows({
-   nodes,
-   parentPath,
-   level,
-   expandedKeys,
-   onToggle,
-   normalizedQuery,
-   startOffset = 0,
-}) {
+function renderNodeRows({ nodes, level, expandedKeys, onToggle, normalizedQuery }) {
    const rows = [];
 
-   nodes.forEach((node, index) => {
-      const effectiveIndex = level === 0 ? startOffset + index : index;
-      const path = [...parentPath, effectiveIndex];
-      const nodeKey = getNodeKey(path);
+   nodes.forEach((node) => {
+      const nodeKey = getNodeKey(level, node.id);
       const hasChildren = Array.isArray(node.children) && node.children.length > 0;
       const isHighlighted =
          normalizedQuery.length > 0 && nodeMatchesQuery(node, normalizedQuery);
@@ -53,7 +43,6 @@ function renderNodeRows({
          <TnvedRow
             key={nodeKey}
             node={node}
-            path={path}
             level={level}
             expandedKeys={expandedKeys}
             onToggle={onToggle}
@@ -65,7 +54,6 @@ function renderNodeRows({
          rows.push(
             ...renderNodeRows({
                nodes: node.children,
-               parentPath: path,
                level: level + 1,
                expandedKeys,
                onToggle,
@@ -79,26 +67,52 @@ function renderNodeRows({
 }
 
 export function TnvedTable() {
-   const [fullTree, setFullTree] = useState([]);
-   const [displayTree, setDisplayTree] = useState([]);
    const [searchInput, setSearchInput] = useState('');
-   const [expandedKeys, setExpandedKeys] = useState(new Set());
+   const [appliedQuery, setAppliedQuery] = useState('');
    const [page, setPage] = useState(1);
+   const [results, setResults] = useState([]);
+   const [count, setCount] = useState(0);
+   const [expandedKeys, setExpandedKeys] = useState(new Set());
    const [isLoading, setIsLoading] = useState(false);
+
+   useEffect(() => {
+      const timeoutId = window.setTimeout(() => {
+         setAppliedQuery(searchInput.trim());
+         setPage(1);
+      }, 300);
+
+      return () => {
+         window.clearTimeout(timeoutId);
+      };
+   }, [searchInput]);
 
    useEffect(() => {
       let isCancelled = false;
 
-      async function loadTree() {
+      async function loadCatalog() {
          try {
             setIsLoading(true);
 
-            const tree = await fetchTnvedTree();
+            const response = await fetchTnvedCatalog({
+               q: appliedQuery || undefined,
+               page,
+               perPage: PAGE_SIZE,
+            });
 
-            if (!isCancelled) {
-               setFullTree(tree);
-               setDisplayTree(tree);
+            if (isCancelled) {
+               return;
             }
+
+            // TODO: confirm with backend whether cross-branch ancestor dedup
+            // happens server-side; currently we render whatever shape the
+            // response gives us.
+            setResults(response.results);
+            setCount(response.count);
+            setExpandedKeys(
+               appliedQuery
+                  ? new Set(collectAllNodeKeys(response.results))
+                  : new Set(),
+            );
          } finally {
             if (!isCancelled) {
                setIsLoading(false);
@@ -106,40 +120,12 @@ export function TnvedTable() {
          }
       }
 
-      loadTree();
+      loadCatalog();
 
       return () => {
          isCancelled = true;
       };
-   }, []);
-
-   useEffect(() => {
-      const query = searchInput.trim();
-
-      if (!query) {
-         setDisplayTree(fullTree);
-         setExpandedKeys(new Set());
-         setPage(1);
-         return undefined;
-      }
-
-      let isCancelled = false;
-
-      const timeoutId = window.setTimeout(async () => {
-         const result = await searchTnved(query);
-
-         if (!isCancelled) {
-            setDisplayTree(result);
-            setExpandedKeys(new Set(collectAllNodeKeys(result)));
-            setPage(1);
-         }
-      }, 300);
-
-      return () => {
-         isCancelled = true;
-         window.clearTimeout(timeoutId);
-      };
-   }, [searchInput, fullTree]);
+   }, [appliedQuery, page]);
 
    function handleToggle(nodeKey) {
       setExpandedKeys((previous) => {
@@ -159,24 +145,15 @@ export function TnvedTable() {
       setSearchInput('');
    }
 
-   const pageCount = Math.max(1, Math.ceil(displayTree.length / ROOT_PAGE_SIZE));
-   const pagedRootNodes = useMemo(() => {
-      const startIndex = (page - 1) * ROOT_PAGE_SIZE;
-
-      return displayTree.slice(startIndex, startIndex + ROOT_PAGE_SIZE);
-   }, [displayTree, page]);
-
-   const rootStartIndex = (page - 1) * ROOT_PAGE_SIZE;
-   const normalizedQuery = searchInput.trim().toLowerCase();
+   const pageCount = Math.max(1, Math.ceil(count / PAGE_SIZE));
+   const normalizedQuery = appliedQuery.trim().toLowerCase();
 
    const rows = renderNodeRows({
-      nodes: pagedRootNodes,
-      parentPath: [],
+      nodes: results,
       level: 0,
       expandedKeys,
       onToggle: handleToggle,
       normalizedQuery,
-      startOffset: rootStartIndex,
    });
 
    return (

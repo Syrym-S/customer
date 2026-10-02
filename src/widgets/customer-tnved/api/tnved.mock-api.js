@@ -1,7 +1,8 @@
 import { flattenTnvedLeaves, tnvedTree } from '../model/tnved.mock';
 
 function nodeMatchesQuery(node, normalizedQuery) {
-   const codeMatches = node.code && node.code.includes(normalizedQuery);
+   const codeMatches =
+      node.code && node.code.toLowerCase().startsWith(normalizedQuery);
    const nameMatches = node.name.toLowerCase().includes(normalizedQuery);
 
    return Boolean(codeMatches || nameMatches);
@@ -27,9 +28,7 @@ function filterTnvedNode(node, normalizedQuery) {
    return { ...node, children: filteredChildren };
 }
 
-export function filterTnvedTree(tree, query) {
-   const normalizedQuery = String(query ?? '').trim().toLowerCase();
-
+function filterTnvedTree(tree, normalizedQuery) {
    if (!normalizedQuery) {
       return tree;
    }
@@ -39,25 +38,98 @@ export function filterTnvedTree(tree, query) {
       .filter(Boolean);
 }
 
-export async function fetchTnvedTreeMock() {
-   return tnvedTree;
+function flattenLeafChains(nodes, chain = []) {
+   let chains = [];
+
+   nodes.forEach((node) => {
+      const nextChain = [...chain, node];
+
+      if (Array.isArray(node.children) && node.children.length) {
+         chains = chains.concat(flattenLeafChains(node.children, nextChain));
+      } else {
+         chains.push(nextChain);
+      }
+   });
+
+   return chains;
 }
 
-export async function searchTnvedMock(query) {
-   return filterTnvedTree(tnvedTree, query);
-}
+function buildTreeFromChains(chains) {
+   const roots = [];
+   const rootMap = new Map();
 
-export async function searchTnvedCodesMock(query) {
-   const normalizedQuery = String(query ?? '').trim().toLowerCase();
-   const leaves = flattenTnvedLeaves(tnvedTree);
+   chains.forEach((chain) => {
+      let currentMap = rootMap;
+      let currentArray = roots;
 
-   if (!normalizedQuery) {
-      return leaves;
+      chain.forEach((node, depth) => {
+         const isLeaf = depth === chain.length - 1;
+         let existing = currentMap.get(node.id);
+
+         if (!existing) {
+            existing = isLeaf
+               ? { id: node.id, code: node.code, name: node.name }
+               : {
+                    id: node.id,
+                    code: node.code,
+                    name: node.name,
+                    children: [],
+                    childMap: new Map(),
+                 };
+
+            currentMap.set(node.id, existing);
+            currentArray.push(existing);
+         }
+
+         if (!isLeaf) {
+            currentMap = existing.childMap;
+            currentArray = existing.children;
+         }
+      });
+   });
+
+   function stripInternalMaps(nodes) {
+      nodes.forEach((node) => {
+         delete node.childMap;
+
+         if (Array.isArray(node.children)) {
+            stripInternalMaps(node.children);
+         }
+      });
    }
 
-   return leaves.filter(
-      (leaf) =>
-         leaf.code.includes(normalizedQuery) ||
-         leaf.name.toLowerCase().includes(normalizedQuery),
-   );
+   stripInternalMaps(roots);
+
+   return roots;
+}
+
+export async function fetchTnvedCatalogMock({ q, page = 1, perPage = 100 } = {}) {
+   const normalizedQuery = String(q ?? '').trim().toLowerCase();
+   const filteredTree = filterTnvedTree(tnvedTree, normalizedQuery);
+   const leafChains = flattenLeafChains(filteredTree);
+
+   const cappedPerPage = Math.min(perPage ?? 100, 100);
+   const startIndex = (page - 1) * cappedPerPage;
+   const pageChains = leafChains.slice(startIndex, startIndex + cappedPerPage);
+
+   return {
+      results: buildTreeFromChains(pageChains),
+      page,
+      perPage: cappedPerPage,
+      count: leafChains.length,
+   };
+}
+
+export async function searchTnvedCodesMock(q, limit = 10) {
+   const normalizedQuery = String(q ?? '').trim().toLowerCase();
+   const cappedLimit = Math.min(limit ?? 10, 100);
+   const leaves = flattenTnvedLeaves(tnvedTree);
+
+   const matches = normalizedQuery
+      ? leaves.filter((leaf) => nodeMatchesQuery(leaf, normalizedQuery))
+      : leaves;
+
+   return matches
+      .slice(0, cappedLimit)
+      .map((leaf) => ({ code: leaf.code, name: leaf.name }));
 }

@@ -9,13 +9,12 @@ const LEVEL_INDENT_PX = 24;
 
 export function TnvedRow({
    node,
-   path,
    level,
    expandedKeys,
    onToggle,
    isHighlighted,
 }) {
-   const nodeKey = getNodeKey(path);
+   const nodeKey = getNodeKey(level, node.id);
    const hasChildren = Array.isArray(node.children) && node.children.length > 0;
    const isExpanded = expandedKeys.has(nodeKey);
 
@@ -72,11 +71,11 @@ export function TnvedRow({
 
 TnvedRow.propTypes = {
    node: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       code: PropTypes.string,
       name: PropTypes.string.isRequired,
       children: PropTypes.array,
    }).isRequired,
-   path: PropTypes.arrayOf(PropTypes.number).isRequired,
    level: PropTypes.number.isRequired,
    expandedKeys: PropTypes.instanceOf(Set).isRequired,
    onToggle: PropTypes.func.isRequired,

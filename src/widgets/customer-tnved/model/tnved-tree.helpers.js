@@ -1,17 +1,15 @@
-export function getNodeKey(path) {
-   return path.join('-');
+export function getNodeKey(level, id) {
+   return `${level}:${id}`;
 }
 
-export function collectAllNodeKeys(nodes, parentPath = []) {
+export function collectAllNodeKeys(nodes, level = 0) {
    const keys = [];
 
-   nodes.forEach((node, index) => {
-      const path = [...parentPath, index];
-
-      keys.push(getNodeKey(path));
+   nodes.forEach((node) => {
+      keys.push(getNodeKey(level, node.id));
 
       if (Array.isArray(node.children) && node.children.length) {
-         keys.push(...collectAllNodeKeys(node.children, path));
+         keys.push(...collectAllNodeKeys(node.children, level + 1));
       }
    });
 

@@ -80,7 +80,7 @@ function mapFormCargoToApiCargo(cargo = {}) {
         weight_kg: toNumber(cargo.weight_kg),
         cargo_price: toNumber(cargo.cargo_price),
         type: type || null,
-        tnved: cargo.tnved?.code ? cargo.tnved : null,
+        tnved_code: cargo.tnved?.code || null,
     };
 
     addNumberIfHasValue(payload, 'width_cm', cargo.width_cm);
@@ -96,15 +96,17 @@ function mapFormCargoToApiCargo(cargo = {}) {
     return payload;
 }
 
-function getNormalizedFormCargos(form) {
+function getFilteredFormCargos(form) {
     const sourceCargos = Array.isArray(form.cargos) ? form.cargos : [];
 
-    return sourceCargos
-        .map(mapFormCargoToApiCargo)
-        .filter((cargo) => hasValue(cargo.name));
+    return sourceCargos.filter((cargo) => hasValue(normalizeText(cargo.name)));
 }
 
-function mapApiCargoToUiCargo(cargo) {
+function getNormalizedFormCargos(form) {
+    return getFilteredFormCargos(form).map(mapFormCargoToApiCargo);
+}
+
+function mapApiCargoToUiCargo(cargo, formCargo) {
     const type = normalizeCargoTypeValue(cargo.type) || 'Не указан';
     const name = normalizeText(cargo.name) || type;
 
@@ -119,7 +121,7 @@ function mapApiCargoToUiCargo(cargo) {
         width_cm: cargo.width_cm ?? null,
         height_cm: cargo.height_cm ?? null,
         length_cm: cargo.length_cm ?? null,
-        tnved: cargo.tnved ?? null,
+        tnved: formCargo?.tnved ?? null,
     };
 }
 
@@ -268,7 +270,10 @@ export function mapCreatedLeadToUi(form, response) {
 
     const price = normalizeOptionalPrice(form.price);
 
-    const cargos = getNormalizedFormCargos(form).map(mapApiCargoToUiCargo);
+    const filteredFormCargos = getFilteredFormCargos(form);
+    const cargos = filteredFormCargos.map((formCargo) =>
+        mapApiCargoToUiCargo(mapFormCargoToApiCargo(formCargo), formCargo),
+    );
 
     const fallbackCargo = {
         name: 'Не указан',

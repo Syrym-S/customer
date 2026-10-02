@@ -8,6 +8,7 @@ import { TenderPage } from "../pages/tender/TenderPage";
 import { FactoringsPage } from "../pages/factorings/FactoringsPage";
 import { ForwardersPage } from "../pages/forwarders/ForwardersPage";
 import { TnvedPage } from "../pages/tnved/TnvedPage";
+import { ComplaintsPage } from "../pages/complaints/ComplaintsPage";
 import { ErrorPage } from "../pages/error/ErrorPage";
 import { isStaging } from "../shared/api/api-client";
 
@@ -92,6 +93,17 @@ export const router = createBrowserRouter(
           handle: {
             breadcrumb: "ТН ВЭД",
           },
+        },
+        {
+          path: "customer/complaints",
+          element: <ComplaintsPage />,
+          handle: {
+            breadcrumb: "Жалобы",
+          },
+        },
+        {
+          path: "customer/complaints/:complaintId",
+          element: <ComplaintsPage />,
         },
       ],
     },
