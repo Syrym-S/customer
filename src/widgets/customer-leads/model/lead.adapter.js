@@ -213,6 +213,7 @@ function normalizeCargoFromApi(apiCargo = {}) {
       width_cm: apiCargo.width_cm ?? null,
       height_cm: apiCargo.height_cm ?? null,
       length_cm: apiCargo.length_cm ?? null,
+      tnved: apiCargo.tnved ?? null,
 
       raw: apiCargo,
    };

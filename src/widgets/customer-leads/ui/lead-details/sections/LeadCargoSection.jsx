@@ -580,6 +580,13 @@ export function LeadCargoSection({
                       label="Объем"
                       value={getCargoVolumeDisplay(cargo)}
                     />
+
+                    {cargo.tnved?.code && (
+                      <InfoBadge
+                        label="Код ТН ВЭД"
+                        value={`${cargo.tnved.code} — ${cargo.tnved.name}`}
+                      />
+                    )}
                   </Box>
 
                   <InfoBadge

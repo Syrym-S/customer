@@ -114,6 +114,15 @@ export function ConfirmStep({ form }) {
                         )}
                     />
                 </Stack>
+
+                {form.is_international && (
+                    <Box sx={{ mt: 1.25 }}>
+                        <InfoBadge
+                            label="Международная перевозка"
+                            value="Да"
+                        />
+                    </Box>
+                )}
             </StepSection>
 
             <StepSection title="Проверьте данные">
@@ -190,6 +199,13 @@ export function ConfirmStep({ form }) {
                                             ) || 'Не указано'
                                         }
                                     />
+
+                                    {cargo.tnved?.code && (
+                                        <InfoBadge
+                                            label="Код ТН ВЭД"
+                                            value={`${cargo.tnved.code} — ${cargo.tnved.name}`}
+                                        />
+                                    )}
                                 </Box>
 
                                 {index < cargos.length - 1 && (

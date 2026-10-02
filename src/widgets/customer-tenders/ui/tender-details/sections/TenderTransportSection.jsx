@@ -148,6 +148,13 @@ export function TenderTransportSection({ tender }) {
                                  'Не указано'
                               }
                            />
+
+                           {cargo.tnved?.code && (
+                              <TenderInfoBadge
+                                 label="Код ТН ВЭД"
+                                 value={`${cargo.tnved.code} — ${cargo.tnved.name}`}
+                              />
+                           )}
                         </Box>
 
                         <TenderInfoBadge

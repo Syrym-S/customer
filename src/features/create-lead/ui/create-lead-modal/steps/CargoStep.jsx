@@ -17,7 +17,7 @@ import {
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import PropTypes from 'prop-types';
-import { Controller, useFieldArray } from 'react-hook-form';
+import { Controller, useFieldArray, useWatch } from 'react-hook-form';
 
 import { StepSection } from '../components/StepSection';
 import { useEffect, useMemo, useState } from 'react';
@@ -27,6 +27,7 @@ import {
 } from '../../../../../widgets/customer-leads/api/cargo-types.api';
 import { fetchCustomerCurrenciesApi } from '../../../api/currencies.api';
 import { CurrencyAutocomplete } from '../components/CurrencyAutocomplete';
+import { TnvedCodeAutocomplete } from '../../../../../widgets/customer-tnved/ui/TnvedCodeAutocomplete';
 import { computeCargoVolumeM3 } from '../../../../../widgets/customer-leads/model/lead-transportation.helpers';
 import { useLeadParamsOptions } from '../../../../../widgets/customer-leads/model/lead-params.store';
 
@@ -42,6 +43,7 @@ function createEmptyCargo() {
       volume_m3: '',
       isVolumeManual: false,
       cargo_price: '',
+      tnved: null,
    };
 }
 
@@ -50,6 +52,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
    const [cargoTypesSearch, setCargoTypesSearch] = useState('');
    const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);
    const transportationOptions = useLeadParamsOptions();
+   const isInternational = useWatch({ control, name: 'is_international' });
 
    const { fields, append, remove } = useFieldArray({
       control,
@@ -492,6 +495,37 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                               />
                            )}
                         />
+
+                        {isInternational && (
+                           <Controller
+                              name={`cargos.${index}.tnved`}
+                              control={control}
+                              rules={{
+                                 validate: (value) =>
+                                    !isInternational ||
+                                    Boolean(value?.code) ||
+                                    'Укажите код ТН ВЭД',
+                              }}
+                              render={({ field }) => (
+                                 <Box
+                                    sx={{
+                                       gridColumn: {
+                                          xs: 'auto',
+                                          sm: '1 / -1',
+                                       },
+                                    }}
+                                 >
+                                    <TnvedCodeAutocomplete
+                                       value={field.value}
+                                       onChange={field.onChange}
+                                       label="Код ТН ВЭД"
+                                       error={Boolean(cargoErrors.tnved)}
+                                       helperText={cargoErrors.tnved?.message}
+                                    />
+                                 </Box>
+                              )}
+                           />
+                        )}
                      </Box>
                   </Box>
                );

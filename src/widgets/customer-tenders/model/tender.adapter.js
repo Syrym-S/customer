@@ -125,6 +125,7 @@ function normalizeTenderCargoFromApi(cargo = {}) {
       height_cm: cargo.height_cm ?? null,
       length_cm: cargo.length_cm ?? null,
       volume_m3: cargoVolumeBackendToM3(cargo[cargoVolumeField]),
+      tnved: cargo.tnved ?? null,
       raw: cargo,
    };
 }

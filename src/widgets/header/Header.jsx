@@ -36,6 +36,7 @@ import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
 import GavelOutlined from "@mui/icons-material/GavelOutlined";
 import AccountBalanceOutlined from "@mui/icons-material/AccountBalanceOutlined";
 import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
+import InventoryOutlined from "@mui/icons-material/InventoryOutlined";
 import { SupportContacts } from "../../shared/ui/SupportContacts";
 
 export function Header() {
@@ -54,6 +55,7 @@ export function Header() {
   const isTenderPage = location.pathname === "/customer/tenders";
   const isFactoringsPage = location.pathname === "/customer/factorings";
   const isForwardersPage = location.pathname === "/customer/forwarders";
+  const isTnvedPage = location.pathname === "/customer/tnved";
   const userEmail = window?.APP_DATA?.user_email || "Пользователь";
   const userEmailLabel = getCompactEmail(userEmail);
   const [profilePhoto, setProfilePhoto] = useState("");
@@ -218,6 +220,13 @@ export function Header() {
         selected: isForwardersPage,
         icon: <SwapHorizOutlined />,
         tooltip: "Список экспедиторов и приглашение новых участников",
+      },
+      {
+        label: "ТН ВЭД",
+        path: "/customer/tnved",
+        selected: isTnvedPage,
+        icon: <InventoryOutlined />,
+        tooltip: "Справочник товарной номенклатуры внешнеэкономической деятельности",
       },
     ];
 

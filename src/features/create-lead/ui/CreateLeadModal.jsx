@@ -35,6 +35,7 @@ function createInitialCargo() {
         volume_m3: '',
         isVolumeManual: false,
         cargo_price: '',
+        tnved: null,
     };
 }
 
@@ -71,6 +72,7 @@ function createInitialForm() {
         currency: 'KZT',
         vat: true,
         pass_verify: false,
+        is_international: false,
         comment: '',
 
         loadingType: '',

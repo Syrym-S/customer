@@ -982,7 +982,31 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                 render={({ field }) => (
                     <FormControlLabel
                         label="Пропуск видеофиксации разгрузки/погрузки"
-                        sx={{ mt: 1 }}
+                        sx={{ mt: 1, display: 'block' }}
+                        control={
+                            <Checkbox
+                                size="small"
+                                name={field.name}
+                                inputRef={field.ref}
+                                checked={Boolean(field.value)}
+                                onBlur={field.onBlur}
+                                onChange={(event) =>
+                                    field.onChange(event.target.checked)
+                                }
+                            />
+                        }
+                    />
+                )}
+            />
+
+            <Controller
+                name="is_international"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                    <FormControlLabel
+                        label="Международная перевозка"
+                        sx={{ display: 'block' }}
                         control={
                             <Checkbox
                                 size="small"

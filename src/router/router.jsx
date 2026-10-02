@@ -7,6 +7,7 @@ import { ProfilePage } from "../pages/profile/ProfilePage";
 import { TenderPage } from "../pages/tender/TenderPage";
 import { FactoringsPage } from "../pages/factorings/FactoringsPage";
 import { ForwardersPage } from "../pages/forwarders/ForwardersPage";
+import { TnvedPage } from "../pages/tnved/TnvedPage";
 import { ErrorPage } from "../pages/error/ErrorPage";
 import { isStaging } from "../shared/api/api-client";
 
@@ -83,6 +84,13 @@ export const router = createBrowserRouter(
           element: <ForwardersPage />,
           handle: {
             breadcrumb: "Экспедиторы",
+          },
+        },
+        {
+          path: "customer/tnved",
+          element: <TnvedPage />,
+          handle: {
+            breadcrumb: "ТН ВЭД",
           },
         },
       ],

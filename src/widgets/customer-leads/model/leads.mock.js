@@ -434,6 +434,12 @@ const mockTransportTypeNames = [
    'Полуприцеп закрытый',
 ];
 
+const mockTnvedCodes = [
+   { code: '8704211001', name: 'Транспортные средства полной массой не более 2,5 т' },
+   { code: '2501001001', name: 'Соль поваренная пищевая мелкокристаллическая' },
+   { code: '8504211000', name: 'Трансформаторы мощностью не более 50 кВА' },
+];
+
 function buildMockCargo(index) {
    const base = {
       name: `Груз заявки #${33249585 + index}`,
@@ -442,6 +448,7 @@ function buildMockCargo(index) {
       weight_kg: index % 5 === 0 ? 0 : 500 + index * 50,
       cargo_price: index % 3 === 0 ? null : 20000 + index * 1000,
       type: index % 2 === 0 ? 'Не указан' : 'Оборудование',
+      tnved: index % 7 === 0 ? mockTnvedCodes[index % mockTnvedCodes.length] : null,
    };
 
    const volumeVariant = index % 4;

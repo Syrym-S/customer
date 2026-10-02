@@ -112,6 +112,13 @@ export function FactoringCargoSection({ factoring }) {
                                         'Не указано'
                                     }
                                 />
+
+                                {cargo.tnved?.code && (
+                                    <InfoBadge
+                                        label="Код ТН ВЭД"
+                                        value={`${cargo.tnved.code} — ${cargo.tnved.name}`}
+                                    />
+                                )}
                             </Box>
                         </Box>
                     ))

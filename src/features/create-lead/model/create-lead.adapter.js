@@ -80,6 +80,7 @@ function mapFormCargoToApiCargo(cargo = {}) {
         weight_kg: toNumber(cargo.weight_kg),
         cargo_price: toNumber(cargo.cargo_price),
         type: type || null,
+        tnved: cargo.tnved?.code ? cargo.tnved : null,
     };
 
     addNumberIfHasValue(payload, 'width_cm', cargo.width_cm);
@@ -118,6 +119,7 @@ function mapApiCargoToUiCargo(cargo) {
         width_cm: cargo.width_cm ?? null,
         height_cm: cargo.height_cm ?? null,
         length_cm: cargo.length_cm ?? null,
+        tnved: cargo.tnved ?? null,
     };
 }
 
@@ -159,6 +161,7 @@ export function mapCreateLeadFormToApi(form) {
         currency: form.currency || 'KZT',
         vat: form.vat ? 'с НДС' : 'без НДС',
         pass_verify: Boolean(form.pass_verify),
+        is_international: Boolean(form.is_international),
     };
 
     addIfHasValue(payload, 'forwarder', form.forwarderId);
