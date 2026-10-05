@@ -1,4 +1,5 @@
 import { mockLeads } from '../../../widgets/customer-leads/model/leads.mock';
+import { mapMockCargosTnved } from '../../../widgets/customer-leads/api/leads.mock-api';
 import { getCurrentUserId } from '../../../shared/helpers/current-user.helpers';
 
 export async function createLeadMock(payload = {}) {
@@ -7,6 +8,7 @@ export async function createLeadMock(payload = {}) {
 
    const createdLead = {
       ...payload,
+      cargos: mapMockCargosTnved(payload.cargos),
       id: `mock-lead-${Date.now()}`,
       status: payload.status || 'new',
       is_draft: isDraft,

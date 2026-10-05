@@ -192,6 +192,16 @@ function getCargoDescription(apiCargo) {
    return apiCargo?.context ?? apiCargo?.comment ?? apiCargo?.description ?? '';
 }
 
+function normalizeTnvedFromApi(apiCargo) {
+   if (apiCargo?.tnved?.code) {
+      return apiCargo.tnved;
+   }
+
+   const code = normalizeText(apiCargo?.tnved_code);
+
+   return code ? { code, name: '' } : null;
+}
+
 function normalizeCargoFromApi(apiCargo = {}) {
    const type = normalizeCargoTypeValue(apiCargo.type);
    const name = normalizeText(apiCargo.name) || type || 'Не указан';
@@ -213,7 +223,7 @@ function normalizeCargoFromApi(apiCargo = {}) {
       width_cm: apiCargo.width_cm ?? null,
       height_cm: apiCargo.height_cm ?? null,
       length_cm: apiCargo.length_cm ?? null,
-      tnved: apiCargo.tnved ?? null,
+      tnved: normalizeTnvedFromApi(apiCargo),
 
       raw: apiCargo,
    };
@@ -311,6 +321,7 @@ export function mapLeadFromApi(apiLead) {
       emergency_situation_comment: apiLead.emergency_situation_comment || '',
       is_tender: Boolean(apiLead.is_tender),
       is_draft: Boolean(apiLead.is_draft),
+      is_international: Boolean(apiLead.is_international),
 
       transportation_price: apiLead.transportation_price ?? null,
       vat: apiLead.vat ?? null,

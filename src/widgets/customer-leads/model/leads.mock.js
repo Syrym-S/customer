@@ -516,6 +516,7 @@ export const mockLeads = Array.from({ length: 60 }, (_, index) => {
       route: mockRoute.route,
 
       gsm: false,
+      is_international: index % 7 === 0,
       customer: mockRoute.customer,
 
       cargo: buildMockCargo(index),

@@ -176,6 +176,20 @@ export function useLeadDetailsMutations({
          return;
       }
 
+      const isTnvedMissing =
+         currentLead.is_international &&
+         (editForm.cargos ?? []).some(
+            (cargo) => String(cargo.name ?? '').trim() && !cargo.tnved?.code,
+         );
+
+      if (isTnvedMissing) {
+         const message = 'Укажите код ТН ВЭД для всех грузов';
+
+         setSaveEditError(message);
+         notifyError(message);
+         return;
+      }
+
       const payload = mapLeadEditFormToApi(editForm, currentLead);
 
       if (Object.keys(payload).length === 0) {

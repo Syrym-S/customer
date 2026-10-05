@@ -24,6 +24,7 @@ function createEmptyLeadCargoEditForm() {
       length_cm: '',
       volume_m3: '',
       isVolumeManual: false,
+      tnved: null,
    };
 }
 
@@ -45,6 +46,7 @@ function normalizeLeadCargosForEdit(lead) {
       length_cm: cargo.length_cm ?? '',
       volume_m3: cargo.volume_m3 ?? '',
       isVolumeManual: cargo.volume_m3 !== null && cargo.volume_m3 !== undefined,
+      tnved: cargo.tnved?.code ? cargo.tnved : null,
    }));
 }
 
@@ -151,6 +153,7 @@ function normalizeCargoForPayload(cargo = {}) {
    addTextIfHasValue(payload, 'name', name);
    addTextIfHasValue(payload, 'description', description);
    addTextIfHasValue(payload, 'type', type);
+   addTextIfHasValue(payload, 'tnved_code', cargo.tnved?.code);
 
    addNumberIfHasValue(payload, 'weight_kg', cargo.weight_kg);
    addNumberIfHasValue(payload, 'cargo_price', cargo.cargo_price);
@@ -514,40 +517,6 @@ function normalizeWaypointsForPayload(waypoints) {
 
 function areWaypointsEqual(nextWaypoints, currentWaypoints) {
    return JSON.stringify(nextWaypoints) === JSON.stringify(currentWaypoints);
-}
-
-function addLocationFieldsIfChanged(
-   payload,
-   prefix,
-   nextLocation,
-   currentLocation,
-) {
-   const nextLocationData = nextLocation.data || {};
-   const nextText = normalizeText(nextLocation.text);
-   const currentText = normalizeLocationValue(currentLocation);
-
-   const hasStructuredAddress =
-      typeof nextLocationData === 'object' &&
-      normalizeText(nextLocationData.address);
-
-   if (!hasStructuredAddress) {
-      addTextIfChanged(payload, `${prefix}_city`, nextText, currentText);
-      return;
-   }
-
-   const fields = ['country', 'region', 'city', 'address'];
-
-   fields.forEach((field) => {
-      const nextValue = normalizeText(nextLocationData[field]);
-      const currentValue =
-         currentLocation && typeof currentLocation === 'object'
-            ? normalizeText(currentLocation[field])
-            : '';
-
-      if (nextValue && nextValue !== currentValue) {
-         payload[`${prefix}_${field}`] = nextValue;
-      }
-   });
 }
 
 function getLocationFieldValue(location, key) {

@@ -1,4 +1,5 @@
 import { mockLeads } from '../model/leads.mock';
+import { findTnvedByCodeMock } from '../../customer-tnved/api/tnved.mock-api';
 import { getCurrentUserId } from '../../../shared/helpers/current-user.helpers';
 
 function isOwnDraft(lead, currentUserId) {
@@ -102,6 +103,25 @@ function applyRouteLocationUpdate(lead, prefix, payload) {
    lead[locationField] = nextLocation;
 }
 
+function resolveMockCargoTnved(code, previousCargos) {
+   const previousTnved = previousCargos.find(
+      (cargo) => cargo?.tnved?.code === code,
+   )?.tnved;
+
+   return findTnvedByCodeMock(code) ?? previousTnved ?? { code, name: '' };
+}
+
+export function mapMockCargosTnved(cargos, previousCargos = []) {
+   if (!Array.isArray(cargos)) {
+      return cargos;
+   }
+
+   return cargos.map(({ tnved_code: tnvedCode, ...cargo }) => ({
+      ...cargo,
+      tnved: tnvedCode ? resolveMockCargoTnved(tnvedCode, previousCargos) : null,
+   }));
+}
+
 export async function updateCustomerLeadMock(leadId, payload = {}) {
    const lead = mockLeads.find((item) => item.id === leadId);
 
@@ -119,6 +139,10 @@ export async function updateCustomerLeadMock(leadId, payload = {}) {
          delete rest[`${prefix}_${field}`];
       });
    });
+
+   if (Array.isArray(rest.cargos)) {
+      rest.cargos = mapMockCargosTnved(rest.cargos, lead.cargos ?? []);
+   }
 
    Object.assign(lead, rest);
 

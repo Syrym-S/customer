@@ -120,6 +120,14 @@ export async function fetchTnvedCatalogMock({ q, page = 1, perPage = 100 } = {})
    };
 }
 
+export function findTnvedByCodeMock(code) {
+   const leaf = flattenTnvedLeaves(tnvedTree).find(
+      (item) => item.code === code,
+   );
+
+   return leaf ? { code: leaf.code, name: leaf.name } : null;
+}
+
 export async function searchTnvedCodesMock(q, limit = 10) {
    const normalizedQuery = String(q ?? '').trim().toLowerCase();
    const cappedLimit = Math.min(limit ?? 10, 100);

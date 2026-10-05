@@ -24,6 +24,7 @@ import {
   searchCustomerCargoTypesApi,
 } from "../../../api/cargo-types.api";
 import { CurrencyAutocomplete } from "../../../../../features/create-lead/ui/create-lead-modal/components/CurrencyAutocomplete";
+import { TnvedCodeAutocomplete } from "../../../../customer-tnved/ui/TnvedCodeAutocomplete";
 import {
   isFinishedLead,
   isCancelledLead,
@@ -47,6 +48,7 @@ function createEmptyLeadCargo() {
     length_cm: "",
     volume_m3: "",
     isVolumeManual: false,
+    tnved: null,
   };
 }
 
@@ -94,7 +96,6 @@ export function LeadCargoSection({
   onDeleteCargo,
   deletingCargoIndex = null,
 }) {
-  console.log(lead)
   const [cargoTypes, setCargoTypes] = useState([]);
   const [cargoTypesSearch, setCargoTypesSearch] = useState("");
   const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);
@@ -103,6 +104,7 @@ export function LeadCargoSection({
   const editCargos = getEditCargos(editForm);
 
   const isForwarderCreatedLead = lead?.created_by === "forwarder";
+  const isInternational = Boolean(lead?.is_international);
   const canBeDeleted = lead?.cargos?.length > 1;
   const canDeleteCargo =
     !isFinishedLead(lead) &&
@@ -482,6 +484,25 @@ export function LeadCargoSection({
                       },
                     }}
                   />
+
+                  {isInternational && (
+                    <Box
+                      sx={{
+                        gridColumn: {
+                          xs: "auto",
+                          sm: "1 / -1",
+                        },
+                      }}
+                    >
+                      <TnvedCodeAutocomplete
+                        value={cargo.tnved}
+                        onChange={(nextTnved) =>
+                          handleCargoChange(index, "tnved", nextTnved)
+                        }
+                        label="Код ТН ВЭД"
+                      />
+                    </Box>
+                  )}
                 </Box>
               </Box>
             ))}
@@ -584,7 +605,11 @@ export function LeadCargoSection({
                     {cargo.tnved?.code && (
                       <InfoBadge
                         label="Код ТН ВЭД"
-                        value={`${cargo.tnved.code} — ${cargo.tnved.name}`}
+                        value={
+                          cargo.tnved.name
+                            ? `${cargo.tnved.code} — ${cargo.tnved.name}`
+                            : cargo.tnved.code
+                        }
                       />
                     )}
                   </Box>

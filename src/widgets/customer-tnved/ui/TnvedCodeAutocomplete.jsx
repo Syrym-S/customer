@@ -82,17 +82,14 @@ export function TnvedCodeAutocomplete({
             const { key, ...listItemProps } = optionProps;
 
             return (
-               <Box
-                  key={key}
-                  component="li"
-                  {...listItemProps}
-                  sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
-               >
-                  <Typography fontWeight={600}>{option.code}</Typography>
-                  <Typography fontSize={12} color="text.secondary">
-                     {option.name}
-                  </Typography>
-               </Box>
+               <li key={key} {...listItemProps}>
+                  <Box sx={{ width: '100%', textAlign: 'left' }}>
+                     <Typography fontWeight={600}>{option.code}</Typography>
+                     <Typography fontSize={12} color="text.secondary">
+                        {option.name}
+                     </Typography>
+                  </Box>
+               </li>
             );
          }}
          renderInput={(params) => {
