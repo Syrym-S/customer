@@ -37,6 +37,14 @@ export async function deleteCustomerAvatar() {
   return response.data;
 }
 
+export async function deleteCustomerAccount(password) {
+  const response = await apiClient.post("/customer/profile/v1/delete", {
+    password,
+  });
+
+  return response.data;
+}
+
 export async function getLegalDocumentsApi() {
   const response = await apiClient.get("/customer/profile/v1/documents");
 

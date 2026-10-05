@@ -5,12 +5,21 @@ import {
   Box,
   Button,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  InputAdornment,
   MenuItem,
   Paper,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import {
   DOCUMENT_ISSUED_BY_OPTIONS,
@@ -25,11 +34,13 @@ import {
   updateCustomerProfile,
   uploadCustomerAvatar,
   deleteCustomerAvatar,
+  deleteCustomerAccount,
   updateProfileDocuments,
   getLegalDocumentsApi,
 } from "../../features/profile-edit/profile.api";
 import { notifySuccess } from "../../shared/model/notifications.store";
 import { useContractStore } from "../../shared/model/contract.store";
+import { isStaging } from "../../shared/api/api-client";
 import {
   getAvatarFromUploadResponse,
   notifyProfilePhotoUpdated,
@@ -56,6 +67,15 @@ export function ProfilePage() {
   const [profilePhotoError, setProfilePhotoError] = useState("");
   const [shouldDeleteProfilePhoto, setShouldDeleteProfilePhoto] =
     useState(false);
+
+  const [isDeleteWarningOpen, setIsDeleteWarningOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [isDeletePasswordVisible, setIsDeletePasswordVisible] =
+    useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+  const [deletePasswordError, setDeletePasswordError] = useState("");
+  const [deleteConflictMessage, setDeleteConflictMessage] = useState("");
 
   const [profileDocumentFiles, setProfileDocumentFiles] = useState({
     registrationDocument: null,
@@ -362,6 +382,62 @@ export function ProfilePage() {
       );
     } finally {
       setIsSaving(false);
+    }
+  }
+
+  function handleOpenDeleteWarning() {
+    setDeleteConflictMessage("");
+    setIsDeleteWarningOpen(true);
+  }
+
+  function handleCloseDeleteWarning() {
+    setIsDeleteWarningOpen(false);
+  }
+
+  function handleProceedToDeleteConfirm() {
+    setIsDeleteWarningOpen(false);
+    setDeletePassword("");
+    setDeletePasswordError("");
+    setIsDeletePasswordVisible(false);
+    setIsDeleteConfirmOpen(true);
+  }
+
+  function handleCloseDeleteConfirm() {
+    if (isDeleteLoading) {
+      return;
+    }
+
+    setIsDeleteConfirmOpen(false);
+    setDeletePassword("");
+    setDeletePasswordError("");
+  }
+
+  async function handleConfirmDeleteAccount() {
+    try {
+      setIsDeleteLoading(true);
+      setDeletePasswordError("");
+
+      await deleteCustomerAccount(deletePassword);
+
+      window.location.replace(
+        isStaging ? "/staging/auth/login" : "/auth/login",
+      );
+    } catch (error) {
+      if (error.response?.status === 409) {
+        setIsDeleteConfirmOpen(false);
+        setDeleteConflictMessage(
+          error.response?.data?.message ||
+            "Не удалось удалить аккаунт: есть активные сделки",
+        );
+      } else {
+        setDeletePasswordError(
+          error.response?.data?.message ||
+            error.message ||
+            "Не удалось удалить аккаунт",
+        );
+      }
+    } finally {
+      setIsDeleteLoading(false);
     }
   }
 
@@ -740,6 +816,114 @@ export function ProfilePage() {
           </Box>
         </Stack>
       </Paper>
+
+      <Paper sx={{ p: { xs: 2, md: 3 }, mt: 3 }}>
+        <Stack spacing={2}>
+          <Typography variant="body2" color="text.secondary">
+            Удаление аккаунта необратимо: все данные профиля будут удалены
+            безвозвратно.
+          </Typography>
+
+          {deleteConflictMessage && (
+            <Alert severity="error">{deleteConflictMessage}</Alert>
+          )}
+
+          <Box>
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={handleOpenDeleteWarning}
+            >
+              Удалить аккаунт
+            </Button>
+          </Box>
+        </Stack>
+      </Paper>
+
+      <Dialog open={isDeleteWarningOpen} onClose={handleCloseDeleteWarning}>
+        <DialogTitle>Удаление аккаунта</DialogTitle>
+
+        <DialogContent>
+          <DialogContentText>
+            Вы собираетесь удалить свой аккаунт. Это действие необратимо: все
+            данные профиля, документы и история будут удалены без возможности
+            восстановления. Вы уверены, что хотите продолжить?
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={handleCloseDeleteWarning}>Отмена</Button>
+
+          <Button
+            color="error"
+            variant="contained"
+            onClick={handleProceedToDeleteConfirm}
+          >
+            Продолжить
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={isDeleteConfirmOpen} onClose={handleCloseDeleteConfirm}>
+        <DialogTitle>Подтвердите удаление</DialogTitle>
+
+        <DialogContent>
+          <DialogContentText sx={{ mb: 2 }}>
+            Для подтверждения удаления аккаунта введите свой пароль.
+          </DialogContentText>
+
+          <TextField
+            autoFocus
+            fullWidth
+            label="Пароль"
+            type={isDeletePasswordVisible ? "text" : "password"}
+            value={deletePassword}
+            onChange={(event) => {
+              setDeletePassword(event.target.value);
+              setDeletePasswordError("");
+            }}
+            error={Boolean(deletePasswordError)}
+            helperText={deletePasswordError}
+            disabled={isDeleteLoading}
+            autoComplete="current-password"
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        setIsDeletePasswordVisible((value) => !value)
+                      }
+                      edge="end"
+                    >
+                      {isDeletePasswordVisible ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+        </DialogContent>
+
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={handleCloseDeleteConfirm} disabled={isDeleteLoading}>
+            Отмена
+          </Button>
+
+          <Button
+            color="error"
+            variant="contained"
+            onClick={handleConfirmDeleteAccount}
+            disabled={isDeleteLoading || !deletePassword}
+          >
+            {isDeleteLoading ? "Удаление..." : "Удалить аккаунт"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </PageContainer>
   );
 }

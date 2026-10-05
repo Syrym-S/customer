@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
    Box,
    Button,
@@ -17,8 +17,13 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 
 import { TnvedRow } from './TnvedRow';
+import { LeadsPagination } from '../../customer-leads/ui/LeadsPagination';
 import { fetchTnvedCatalog } from '../api/tnved.repository';
-import { collectAllNodeKeys, getNodeKey } from '../model/tnved-tree.helpers';
+import {
+   collectAllNodeKeys,
+   getNodeKey,
+   mergeTnvedTrees,
+} from '../model/tnved-tree.helpers';
 
 const PAGE_SIZE = 100;
 
@@ -70,6 +75,7 @@ export function TnvedTable() {
    const [appliedQuery, setAppliedQuery] = useState('');
    const [page, setPage] = useState(1);
    const [results, setResults] = useState([]);
+   const [count, setCount] = useState(0);
    const [expandedKeys, setExpandedKeys] = useState(new Set());
    const [isLoading, setIsLoading] = useState(false);
 
@@ -83,6 +89,8 @@ export function TnvedTable() {
          window.clearTimeout(timeoutId);
       };
    }, [searchInput]);
+
+   const previousQueryRef = useRef(appliedQuery);
 
    useEffect(() => {
       let isCancelled = false;
@@ -101,15 +109,30 @@ export function TnvedTable() {
                return;
             }
 
-            // TODO: confirm with backend whether cross-branch ancestor dedup
-            // happens server-side; currently we render whatever shape the
-            // response gives us.
-            setResults(response.results);
-            setExpandedKeys(
-               appliedQuery
-                  ? new Set(collectAllNodeKeys(response.results))
-                  : new Set(),
-            );
+            const isNewQuery = previousQueryRef.current !== appliedQuery;
+            previousQueryRef.current = appliedQuery;
+
+            // The API paginates leaf-level codes, not sections: every page
+            // repeats the same ancestor chain down to a different slice of
+            // codes. So a new page of the same query must be merged into
+            // the already-loaded tree (by id, at every level) — replacing
+            // it would drop codes fetched on earlier pages. A changed
+            // search query starts a fresh tree instead.
+            //
+            // The tree stays fully expanded by default (not just while
+            // searching) — otherwise paging through merges new codes deep
+            // inside already-collapsed nodes, and the next page looks
+            // identical to the previous one.
+            setResults((previousResults) => {
+               const mergedResults = isNewQuery
+                  ? response.results
+                  : mergeTnvedTrees(previousResults, response.results);
+
+               setExpandedKeys(new Set(collectAllNodeKeys(mergedResults)));
+
+               return mergedResults;
+            });
+            setCount(response.count);
          } finally {
             if (!isCancelled) {
                setIsLoading(false);
@@ -142,6 +165,7 @@ export function TnvedTable() {
       setSearchInput('');
    }
 
+   const pageCount = Math.max(1, Math.ceil(count / PAGE_SIZE));
    const normalizedQuery = appliedQuery.trim().toLowerCase();
 
    const rows = renderNodeRows({
@@ -211,11 +235,11 @@ export function TnvedTable() {
             </TableContainer>
          </Paper>
 
-         {/* Pagination hidden: /customer/v1/tnved currently ignores the
-             `page` param for this listing and returns the same results on
-             every page, while `count` reflects the full nested catalog
-             size rather than the number of root items — showing a page
-             control here would be misleading until the backend is fixed. */}
+         <LeadsPagination
+            page={page}
+            count={pageCount}
+            onChange={(_, nextPage) => setPage(nextPage)}
+         />
       </Box>
    );
 }
