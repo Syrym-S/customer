@@ -37,6 +37,7 @@ import {
     validateNotBeforeToday,
     validateStartAtChain,
 } from '../../../lib/point-schedule.helpers';
+import { isInternationalRoute } from '../../../lib/route-international.helpers';
 
 export function RouteStep({ control, errors, form, setValue, trigger }) {
     const map = useCustomerMap();
@@ -172,6 +173,24 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
             clearTimeout(timeoutId);
         };
     }, [toInputValue, form.toLocation]);
+
+    const fromCountry = form.from_location?.country || '';
+    const toCountry = form.to_location?.country || '';
+    const waypointCountries = waypoints
+        .map((waypoint) => waypoint.location_data?.country || '')
+        .join('|');
+
+    useEffect(() => {
+        const computedIsInternational = isInternationalRoute(form);
+
+        if (form.is_international !== computedIsInternational) {
+            setValue('is_international', computedIsInternational, {
+                shouldDirty: true,
+                shouldValidate: true,
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fromCountry, toCountry, waypointCountries]);
 
     const routeFitBoundsKey = buildRouteFitBoundsKey({
         routePoints,
@@ -1004,22 +1023,24 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                 control={control}
                 defaultValue={false}
                 render={({ field }) => (
-                    <FormControlLabel
-                        label="Международная перевозка"
-                        sx={{ display: 'block' }}
-                        control={
-                            <Checkbox
-                                size="small"
-                                name={field.name}
-                                inputRef={field.ref}
-                                checked={Boolean(field.value)}
-                                onBlur={field.onBlur}
-                                onChange={(event) =>
-                                    field.onChange(event.target.checked)
-                                }
-                            />
-                        }
-                    />
+                    <Box>
+                        <FormControlLabel
+                            label="Международная перевозка"
+                            sx={{ display: 'block' }}
+                            control={
+                                <Checkbox
+                                    size="small"
+                                    name={field.name}
+                                    inputRef={field.ref}
+                                    checked={Boolean(field.value)}
+                                    onBlur={field.onBlur}
+                                    onChange={(event) =>
+                                        field.onChange(event.target.checked)
+                                    }
+                                />
+                            }
+                        />
+                    </Box>
                 )}
             />
         </StepSection>

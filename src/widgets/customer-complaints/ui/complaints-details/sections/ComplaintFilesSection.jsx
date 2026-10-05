@@ -9,50 +9,46 @@ import VisibilityOutlined from '@mui/icons-material/VisibilityOutlined';
 import DownloadOutlined from '@mui/icons-material/DownloadOutlined';
 
 import {
-   formatFileSize,
-   isPreviewableImage,
-   isPreviewableVideo,
+   isImageFileName,
+   isPreviewableImageByName,
+   isPreviewableVideoByName,
+   isVideoFileName,
 } from '../../../model/complaints.helpers';
 
-function getFileTypeIcon(mimeType) {
-   if (mimeType?.startsWith('image/')) {
+function getFileTypeIcon(name) {
+   if (isImageFileName(name)) {
       return <ImageOutlined fontSize="small" />;
    }
 
-   if (mimeType?.startsWith('video/')) {
+   if (isVideoFileName(name)) {
       return <VideocamOutlined fontSize="small" />;
    }
 
-   if (mimeType === 'application/pdf') {
+   if (name?.toLowerCase().endsWith('.pdf')) {
       return <PictureAsPdfOutlined fontSize="small" />;
    }
 
    return <DescriptionOutlined fontSize="small" />;
 }
 
-// Already-uploaded files are served from a real URL (not a local File), so
-// there's no object URL to create/revoke here — "lazy" just means the
-// <img>/<video> element itself isn't mounted until the user asks for it,
-// same restraint as ComplaintAttachmentsField applies to pending uploads.
+// Already-uploaded files only ever come back as { index, name, url } — no
+// mime type or size — so icon/preview eligibility goes off the file
+// extension here, unlike ComplaintAttachmentsField's pending (local File)
+// rows, which still have a real mime type to work with.
 function FileRow({ file }) {
    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
    const canPreview =
-      isPreviewableImage(file.mime_type, file.size) ||
-      isPreviewableVideo(file.mime_type);
+      isPreviewableImageByName(file.name) || isPreviewableVideoByName(file.name);
 
    return (
       <Box sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 2, p: 1.25 }}>
          <Stack direction="row" alignItems="center" spacing={1.25}>
-            {getFileTypeIcon(file.mime_type)}
+            {getFileTypeIcon(file.name)}
 
             <Box sx={{ minWidth: 0, flex: 1 }}>
                <Typography noWrap fontSize={13} fontWeight={600}>
-                  {file.filename}
-               </Typography>
-
-               <Typography fontSize={12} color="text.secondary">
-                  {formatFileSize(file.size)}
+                  {file.name}
                </Typography>
             </Box>
 
@@ -70,23 +66,23 @@ function FileRow({ file }) {
                size="small"
                component={Link}
                href={file.url}
-               download={file.filename}
+               download={file.name}
                aria-label="Скачать"
             >
                <DownloadOutlined fontSize="small" />
             </IconButton>
          </Stack>
 
-         {isPreviewOpen && file.mime_type?.startsWith('image/') && (
+         {isPreviewOpen && isImageFileName(file.name) && (
             <Box
                component="img"
                src={file.url}
-               alt={file.filename}
+               alt={file.name}
                sx={{ mt: 1, maxWidth: '100%', maxHeight: 220, borderRadius: 1 }}
             />
          )}
 
-         {isPreviewOpen && file.mime_type?.startsWith('video/') && (
+         {isPreviewOpen && isVideoFileName(file.name) && (
             <Box
                component="video"
                src={file.url}
@@ -100,11 +96,9 @@ function FileRow({ file }) {
 
 FileRow.propTypes = {
    file: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      index: PropTypes.number,
       url: PropTypes.string,
-      filename: PropTypes.string,
-      mime_type: PropTypes.string,
-      size: PropTypes.number,
+      name: PropTypes.string,
    }).isRequired,
 };
 
@@ -121,7 +115,7 @@ export function ComplaintFilesSection({ files }) {
 
          <Stack spacing={1}>
             {files.map((file) => (
-               <FileRow key={file.id} file={file} />
+               <FileRow key={file.index} file={file} />
             ))}
          </Stack>
       </Box>

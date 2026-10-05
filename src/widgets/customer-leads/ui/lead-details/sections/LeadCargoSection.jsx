@@ -104,7 +104,9 @@ export function LeadCargoSection({
   const editCargos = getEditCargos(editForm);
 
   const isForwarderCreatedLead = lead?.created_by === "forwarder";
-  const isInternational = Boolean(lead?.is_international);
+  const isInternational = Boolean(
+    isEditing ? editForm.is_international : lead?.is_international,
+  );
   const canBeDeleted = lead?.cargos?.length > 1;
   const canDeleteCargo =
     !isFinishedLead(lead) &&

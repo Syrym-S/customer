@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { fetchComplaintById } from '../api/complaints.repository';
+import { fetchComplaintById } from '../api/complaints.api';
 import { useComplaintsContext } from '../model/useComplaintsContext';
 
 // Mirrors customer-leads/ui/lead-details/LeadDetailsRouteSync.jsx: turns a

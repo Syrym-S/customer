@@ -2,18 +2,13 @@ import { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Autocomplete, TextField } from '@mui/material';
 
-import { fetchCustomerLeads } from '../../customer-leads/api/leads.repository';
-import { mockComplaintFactoringRefs } from '../model/complaints.mock';
-import {
-   getFactoringTargetLabel,
-   getLeadTargetLabel,
-   isWithinLastDays,
-} from '../model/complaints.helpers';
+import { fetchComplaintTargets } from '../api/complaints.api';
+import { getFactoringTargetLabel, getLeadTargetLabel } from '../model/complaints.helpers';
 
-// Unlike CreateTenderModal's lead picker (debounced server search over a
-// potentially large dataset), this picker's dataset is small and already
-// scoped to "the user's own, last 30 days" — so it's fetched once and
-// filtered client-side, no debounced search needed (per spec).
+// Backend's GET /complaints/targets already scopes this to "the user's
+// own, last 30 days" leads/factorings — unlike CreateTenderModal's lead
+// picker (debounced server search over a potentially large dataset), this
+// one is small enough to fetch once and filter/search client-side.
 export function ComplaintTargetPicker({ value = null, onChange }) {
    const [leadOptions, setLeadOptions] = useState([]);
    const [factoringOptions, setFactoringOptions] = useState([]);
@@ -28,44 +23,39 @@ export function ComplaintTargetPicker({ value = null, onChange }) {
          setError('');
 
          try {
-            const response = await fetchCustomerLeads({ page: 1, perPage: 50 });
-            const leads = Array.isArray(response?.results) ? response.results : [];
+            const response = await fetchComplaintTargets();
+            const leads = Array.isArray(response?.leads) ? response.leads : [];
+            const factorings = Array.isArray(response?.factorings)
+               ? response.factorings
+               : [];
 
             if (!isCancelled) {
                setLeadOptions(
-                  leads
-                     .filter((lead) => isWithinLastDays(lead.created_at))
-                     .map((lead) => ({
-                        type: 'lead',
-                        id: lead.id,
-                        group: 'Перевозки',
-                        label: getLeadTargetLabel(lead),
-                     })),
+                  leads.map((lead) => ({
+                     type: 'lead',
+                     id: lead.id,
+                     group: 'Перевозки',
+                     label: getLeadTargetLabel(lead),
+                  })),
                );
-            }
-         } catch (requestError) {
-            if (!isCancelled) {
-               setError(requestError.message || 'Не удалось загрузить заказы');
-            }
-         }
 
-         // customer-factorings has no mock-api layer (factorings.api.js
-         // always calls the real backend) — this widget uses its own
-         // self-contained mock factoring list instead of calling it, so
-         // the picker works in the mock-only local/demo environment too.
-         if (!isCancelled) {
-            setFactoringOptions(
-               mockComplaintFactoringRefs
-                  .filter((factoring) => isWithinLastDays(factoring.created_at))
-                  .map((factoring) => ({
+               setFactoringOptions(
+                  factorings.map((factoring) => ({
                      type: 'factoring',
                      id: factoring.id,
                      group: 'Факторинг',
                      label: getFactoringTargetLabel(factoring),
                   })),
-            );
-
-            setIsLoading(false);
+               );
+            }
+         } catch (requestError) {
+            if (!isCancelled) {
+               setError(requestError.message || 'Не удалось загрузить список');
+            }
+         } finally {
+            if (!isCancelled) {
+               setIsLoading(false);
+            }
          }
       }
 

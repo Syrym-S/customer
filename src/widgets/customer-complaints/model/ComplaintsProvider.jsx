@@ -1,45 +1,36 @@
 import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { fetchComplaints } from '../api/complaints.repository';
+import { fetchComplaints } from '../api/complaints.api';
 import { ComplaintsContext } from './ComplaintsContext';
 
-const DEFAULT_PER_PAGE = 10;
 
 export function ComplaintsProvider({ children }) {
    const [complaints, setComplaints] = useState([]);
    const [openComplaint, setOpenComplaint] = useState(null);
 
-   const [page, setPage] = useState(1);
-   const [perPage] = useState(DEFAULT_PER_PAGE);
-   const [count, setCount] = useState(0);
-
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
 
-   const loadComplaints = useCallback(
-      async ({ withLoader = true } = {}) => {
-         try {
-            if (withLoader) {
-               setIsLoading(true);
-            }
-
-            setError(null);
-
-            const response = await fetchComplaints({ page, perPage });
-
-            setComplaints(Array.isArray(response.results) ? response.results : []);
-            setCount(response.count ?? 0);
-         } catch (requestError) {
-            setError(requestError.message || 'Не удалось загрузить жалобы');
-         } finally {
-            if (withLoader) {
-               setIsLoading(false);
-            }
+   const loadComplaints = useCallback(async ({ withLoader = true } = {}) => {
+      try {
+         if (withLoader) {
+            setIsLoading(true);
          }
-      },
-      [page, perPage],
-   );
+
+         setError(null);
+
+         const response = await fetchComplaints();
+
+         setComplaints(Array.isArray(response.results) ? response.results : []);
+      } catch (requestError) {
+         setError(requestError.message || 'Не удалось загрузить жалобы');
+      } finally {
+         if (withLoader) {
+            setIsLoading(false);
+         }
+      }
+   }, []);
 
    useEffect(() => {
       loadComplaints({ withLoader: true });
@@ -51,17 +42,12 @@ export function ComplaintsProvider({ children }) {
          openComplaint,
          setOpenComplaint,
 
-         page,
-         setPage,
-         perPage,
-         count,
-
          isLoading,
          error,
 
          reloadComplaints: loadComplaints,
       }),
-      [complaints, openComplaint, page, perPage, count, isLoading, error, loadComplaints],
+      [complaints, openComplaint, isLoading, error, loadComplaints],
    );
 
    return (

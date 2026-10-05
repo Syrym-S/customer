@@ -17,7 +17,6 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 
 import { TnvedRow } from './TnvedRow';
-import { LeadsPagination } from '../../customer-leads/ui/LeadsPagination';
 import { fetchTnvedCatalog } from '../api/tnved.repository';
 import { collectAllNodeKeys, getNodeKey } from '../model/tnved-tree.helpers';
 
@@ -71,7 +70,6 @@ export function TnvedTable() {
    const [appliedQuery, setAppliedQuery] = useState('');
    const [page, setPage] = useState(1);
    const [results, setResults] = useState([]);
-   const [count, setCount] = useState(0);
    const [expandedKeys, setExpandedKeys] = useState(new Set());
    const [isLoading, setIsLoading] = useState(false);
 
@@ -107,7 +105,6 @@ export function TnvedTable() {
             // happens server-side; currently we render whatever shape the
             // response gives us.
             setResults(response.results);
-            setCount(response.count);
             setExpandedKeys(
                appliedQuery
                   ? new Set(collectAllNodeKeys(response.results))
@@ -145,7 +142,6 @@ export function TnvedTable() {
       setSearchInput('');
    }
 
-   const pageCount = Math.max(1, Math.ceil(count / PAGE_SIZE));
    const normalizedQuery = appliedQuery.trim().toLowerCase();
 
    const rows = renderNodeRows({
@@ -215,13 +211,11 @@ export function TnvedTable() {
             </TableContainer>
          </Paper>
 
-         {pageCount > 1 && (
-            <LeadsPagination
-               page={page}
-               count={pageCount}
-               onChange={(_, nextPage) => setPage(nextPage)}
-            />
-         )}
+         {/* Pagination hidden: /customer/v1/tnved currently ignores the
+             `page` param for this listing and returns the same results on
+             every page, while `count` reflects the full nested catalog
+             size rather than the number of root items — showing a page
+             control here would be misleading until the backend is fixed. */}
       </Box>
    );
 }

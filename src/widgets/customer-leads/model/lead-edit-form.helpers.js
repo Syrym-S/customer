@@ -143,7 +143,7 @@ function addNumberIfHasValue(payload, key, value) {
    }
 }
 
-function normalizeCargoForPayload(cargo = {}) {
+function normalizeCargoForPayload(cargo = {}, isInternational) {
    const payload = {};
 
    const name = normalizeText(cargo.name);
@@ -153,7 +153,10 @@ function normalizeCargoForPayload(cargo = {}) {
    addTextIfHasValue(payload, 'name', name);
    addTextIfHasValue(payload, 'description', description);
    addTextIfHasValue(payload, 'type', type);
-   addTextIfHasValue(payload, 'tnved_code', cargo.tnved?.code);
+
+   if (isInternational) {
+      addTextIfHasValue(payload, 'tnved_code', cargo.tnved?.code);
+   }
 
    addNumberIfHasValue(payload, 'weight_kg', cargo.weight_kg);
    addNumberIfHasValue(payload, 'cargo_price', cargo.cargo_price);
@@ -170,14 +173,16 @@ function normalizeCargoForPayload(cargo = {}) {
    return payload;
 }
 
-function normalizeCargosForPayload(cargos) {
+function normalizeCargosForPayload(cargos, isInternational) {
    if (!Array.isArray(cargos)) {
       return [];
    }
 
-   return cargos.map(normalizeCargoForPayload).filter((cargo) => {
-      return Boolean(cargo.name);
-   });
+   return cargos
+      .map((cargo) => normalizeCargoForPayload(cargo, isInternational))
+      .filter((cargo) => {
+         return Boolean(cargo.name);
+      });
 }
 
 function areCargosEqual(nextCargos, currentCargos) {
@@ -211,6 +216,7 @@ export function createLeadEditForm(lead) {
          summ: '',
          currency: 'KZT',
          vat: 'без НДС',
+         is_international: false,
 
          driver: '',
          forwarder: '',
@@ -284,6 +290,7 @@ export function createLeadEditForm(lead) {
 
       currency: normalizeCurrency(lead.currency),
       vat: lead.vat || 'без НДС',
+      is_international: Boolean(lead.is_international),
 
       driver: lead.raw?.driver?.id || lead.driver?.id || '',
       forwarder: lead.forwarder?.id || '',
@@ -683,10 +690,28 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
 
    addTextIfChanged(payload, 'vat', editForm.vat, currentLead.vat);
 
-   const nextCargos = normalizeCargosForPayload(editForm.cargos);
-   const currentCargos = normalizeCargosForPayload(currentLead.cargos);
+   const nextIsInternational = Boolean(editForm.is_international);
+   const hasInternationalChanged =
+      nextIsInternational !== Boolean(currentLead.is_international);
 
-   if (!areCargosEqual(nextCargos, currentCargos)) {
+   if (hasInternationalChanged) {
+      payload.is_international = nextIsInternational;
+   }
+
+   const nextCargos = normalizeCargosForPayload(
+      editForm.cargos,
+      nextIsInternational,
+   );
+   const currentCargos = normalizeCargosForPayload(
+      currentLead.cargos,
+      nextIsInternational,
+   );
+
+   // When toggling internationality off, stale tnved_code values already
+   // saved on the backend must be re-sent (stripped) in the same request —
+   // otherwise the backend still holds cargos with tnved_code and rejects
+   // the is_international:false update on its own.
+   if (!areCargosEqual(nextCargos, currentCargos) || hasInternationalChanged) {
       payload.cargos = nextCargos;
    }
 

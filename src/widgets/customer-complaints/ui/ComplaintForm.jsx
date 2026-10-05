@@ -12,7 +12,7 @@ import {
    Typography,
 } from '@mui/material';
 
-import { createComplaint } from '../api/complaints.repository';
+import { createComplaint } from '../api/complaints.api';
 import { useComplaintsContext } from '../model/useComplaintsContext';
 import {
    COMPLAINT_REQUEST_MAX_LENGTH,
@@ -81,11 +81,7 @@ export function ComplaintForm({ open, onClose }) {
          await createComplaint({
             request: form.request.trim(),
             target: form.target,
-            files: form.attachments.map((attachment) => ({
-               filename: attachment.file.name,
-               mime_type: attachment.file.type,
-               size: attachment.file.size,
-            })),
+            files: form.attachments.map((attachment) => attachment.file),
          });
 
          await reloadComplaints();

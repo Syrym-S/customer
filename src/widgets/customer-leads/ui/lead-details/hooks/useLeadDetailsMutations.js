@@ -177,7 +177,7 @@ export function useLeadDetailsMutations({
       }
 
       const isTnvedMissing =
-         currentLead.is_international &&
+         editForm.is_international &&
          (editForm.cargos ?? []).some(
             (cargo) => String(cargo.name ?? '').trim() && !cargo.tnved?.code,
          );

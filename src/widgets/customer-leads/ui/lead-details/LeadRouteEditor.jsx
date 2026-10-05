@@ -1,6 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Box, TextField } from '@mui/material';
+import {
+   Box,
+   Checkbox,
+   FormControlLabel,
+   FormHelperText,
+   TextField,
+} from '@mui/material';
 import { Controller } from 'react-hook-form';
 
 import { useRouteMapPicker } from '../../../../features/create-lead/model/useRouteMapPicker';
@@ -13,6 +19,7 @@ import {
    validateEndAtOwnStart,
    validateStartAtChain,
 } from '../../../../features/create-lead/lib/point-schedule.helpers';
+import { isInternationalRoute } from '../../../../features/create-lead/lib/route-international.helpers';
 import { useRouteAddressSearch } from './hooks/useRouteAddressSearch';
 import { RoutePointButtons } from './RoutePointButtons';
 import { LeadRouteEditorMap } from './LeadRouteEditorMap';
@@ -125,6 +132,21 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
       setToInputValue(selectedOption.label || selectedOption.address || '');
       setToOptions([]);
    }
+
+   const fromCountry = form.from_location?.country || '';
+   const toCountry = form.to_location?.country || '';
+   const waypointCountries = waypoints
+      .map((waypoint) => waypoint.location_data?.country || '')
+      .join('|');
+
+   useEffect(() => {
+      const computedIsInternational = isInternationalRoute(form);
+
+      if (form.is_international !== computedIsInternational) {
+         setValue('is_international', computedIsInternational, setValueOptions);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [fromCountry, toCountry, waypointCountries]);
 
    return (
       <Box>
@@ -360,6 +382,26 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                   )}
                />
             </Box>
+         </Box>
+
+         <Box sx={{ mt: 1 }}>
+            <FormControlLabel
+               label="Международная перевозка"
+               sx={{ display: 'block' }}
+               control={
+                  <Checkbox
+                     size="small"
+                     checked={Boolean(form.is_international)}
+                     onChange={(event) =>
+                        setValue(
+                           'is_international',
+                           event.target.checked,
+                           setValueOptions,
+                        )
+                     }
+                  />
+               }
+            />
          </Box>
       </Box>
    );

@@ -1,5 +1,10 @@
-import { mockLeads } from '../../customer-leads/model/leads.mock';
-import { mockComplaintFactoringRefs } from './complaints.mock';
+const STATE_STATUS_MAP = {
+   new: 'pending',
+   pending: 'pending',
+   in_work: 'in_progress',
+   completed: 'completed',
+   rejected: 'rejected',
+};
 
 export const COMPLAINT_REQUEST_MAX_LENGTH = 1000;
 
@@ -67,6 +72,10 @@ export function getComplaintStatusKey(complaint) {
       return 'rejected';
    }
 
+   if (complaint?.state && STATE_STATUS_MAP[complaint.state]) {
+      return STATE_STATUS_MAP[complaint.state];
+   }
+
    if (complaint?.acceptance_at) {
       return 'in_progress';
    }
@@ -90,17 +99,10 @@ export function getComplaintResponseLabel(complaint) {
    return complaint?.response ? 'Ответ получен' : 'Ожидает ответа';
 }
 
-function getMockLeadById(leadId) {
-   return mockLeads.find((lead) => lead.id === leadId) || null;
-}
-
-function getMockFactoringById(factoringId) {
-   return (
-      mockComplaintFactoringRefs.find(
-         (factoring) => factoring.id === factoringId,
-      ) || null
-   );
-}
+// The backend embeds full target details directly on the complaint (and on
+// the /complaints/targets picker options) — { num, from_city, to_city, ... }
+// for a lead, { lead_num, factor, summ, currency, ... } for a factoring —
+// so these read straight off that object, no client-side join needed.
 
 // Short "№{num}" label, same convention as
 // customer-tenders/model/tender-lead-option.helpers.js's
@@ -114,7 +116,7 @@ export function getLeadTargetLabel(lead) {
    const number = Number(lead.num);
    const numberLabel = Number.isFinite(number) && number > 0 ? `№${number}` : `#${lead.id}`;
 
-   return `${numberLabel} · ${lead.from_location || '?'} → ${lead.to_location || '?'}`;
+   return `${numberLabel} · ${lead.from_city || '?'} → ${lead.to_city || '?'}`;
 }
 
 // No short-label formatter exists for factoring deals anywhere in the
@@ -125,12 +127,12 @@ export function getFactoringTargetLabel(factoring) {
       return 'Факторинг не найден';
    }
 
-   const amount = Number(factoring.deb_summ);
+   const amount = Number(factoring.summ);
    const amountLabel = Number.isFinite(amount)
       ? `${new Intl.NumberFormat('ru-RU').format(amount)} ${factoring.currency || 'KZT'}`
       : '';
 
-   return [factoring.company_name, amountLabel].filter(Boolean).join(' · ');
+   return [factoring.factor, amountLabel].filter(Boolean).join(' · ');
 }
 
 export function getComplaintTargetLabel(target) {
@@ -139,11 +141,11 @@ export function getComplaintTargetLabel(target) {
    }
 
    if (target.type === 'lead') {
-      return getLeadTargetLabel(getMockLeadById(target.id));
+      return getLeadTargetLabel(target);
    }
 
    if (target.type === 'factoring') {
-      return getFactoringTargetLabel(getMockFactoringById(target.id));
+      return getFactoringTargetLabel(target);
    }
 
    return null;
@@ -245,6 +247,33 @@ export function isPreviewableImage(mimeType, size) {
 
 export function isPreviewableVideo(mimeType) {
    return Boolean(mimeType?.startsWith('video/'));
+}
+
+// Already-uploaded files come back from the backend as { index, name, url }
+// only — no mime type — so previews/icons for them go off the file
+// extension instead of File.type (which pending, not-yet-uploaded
+// attachments use via the mime-based helpers above).
+const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+const VIDEO_EXTENSIONS = ['mp4', 'mov', 'avi', 'webm', 'mkv'];
+
+export function getFileExtension(name) {
+   return String(name || '').split('.').pop()?.toLowerCase() || '';
+}
+
+export function isImageFileName(name) {
+   return IMAGE_EXTENSIONS.includes(getFileExtension(name));
+}
+
+export function isVideoFileName(name) {
+   return VIDEO_EXTENSIONS.includes(getFileExtension(name));
+}
+
+export function isPreviewableImageByName(name, size) {
+   return isImageFileName(name) && (size ?? 0) <= COMPLAINT_PREVIEW_IMAGE_MAX_BYTES;
+}
+
+export function isPreviewableVideoByName(name) {
+   return isVideoFileName(name);
 }
 
 export function validateComplaintAttachments(files) {

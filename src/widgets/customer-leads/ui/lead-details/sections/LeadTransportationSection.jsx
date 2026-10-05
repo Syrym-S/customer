@@ -50,6 +50,16 @@ export function LeadTransportationSection({
       editForm.transportType,
    );
 
+   const hasAnyValue =
+      loadingTypeLabel ||
+      packagingTypeLabel ||
+      compositionTypeLabel ||
+      transportTypeLabel;
+
+   if (!isEditing && !hasAnyValue) {
+      return null;
+   }
+
    return (
       <DetailSection
          icon={<LocalShippingOutlinedIcon />}
