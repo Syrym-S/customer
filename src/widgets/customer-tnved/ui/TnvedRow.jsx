@@ -1,23 +1,11 @@
-import { Box, IconButton, TableCell, TableRow, Typography, alpha } from '@mui/material';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { Box, TableCell, TableRow, Typography, alpha } from '@mui/material';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import PropTypes from 'prop-types';
 
-import { getNodeKey } from '../model/tnved-tree.helpers';
-
 const LEVEL_INDENT_PX = 24;
 
-export function TnvedRow({
-   node,
-   level,
-   expandedKeys,
-   onToggle,
-   isHighlighted,
-   isOdd,
-}) {
-   const nodeKey = getNodeKey(level, node.id);
+export function TnvedRow({ node, level, isHighlighted, isOdd }) {
    const hasChildren = Array.isArray(node.children) && node.children.length > 0;
-   const isExpanded = expandedKeys.has(nodeKey);
 
    return (
       <TableRow
@@ -46,17 +34,17 @@ export function TnvedRow({
                }}
             >
                {hasChildren ? (
-                  <IconButton
-                     size="small"
-                     onClick={() => onToggle(nodeKey)}
-                     aria-label={isExpanded ? 'Свернуть' : 'Развернуть'}
+                  <Box
+                     sx={{
+                        width: 32,
+                        height: 32,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                     }}
                   >
-                     {isExpanded ? (
-                        <ExpandMoreRoundedIcon fontSize="small" />
-                     ) : (
-                        <ChevronRightRoundedIcon fontSize="small" />
-                     )}
-                  </IconButton>
+                     <ExpandMoreRoundedIcon fontSize="small" />
+                  </Box>
                ) : (
                   <Box sx={{ width: 32 }} />
                )}
@@ -83,7 +71,5 @@ TnvedRow.propTypes = {
       children: PropTypes.array,
    }).isRequired,
    level: PropTypes.number.isRequired,
-   expandedKeys: PropTypes.instanceOf(Set).isRequired,
-   onToggle: PropTypes.func.isRequired,
    isHighlighted: PropTypes.bool,
 };

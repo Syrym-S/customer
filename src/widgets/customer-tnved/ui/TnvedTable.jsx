@@ -19,11 +19,7 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import { TnvedRow } from './TnvedRow';
 import { LeadsPagination } from '../../customer-leads/ui/LeadsPagination';
 import { fetchTnvedCatalog } from '../api/tnved.repository';
-import {
-   collectAllNodeKeys,
-   getNodeKey,
-   mergeTnvedTrees,
-} from '../model/tnved-tree.helpers';
+import { mergeTnvedTrees } from '../model/tnved-tree.helpers';
 
 const PAGE_SIZE = 100;
 
@@ -34,33 +30,28 @@ function nodeMatchesQuery(node, normalizedQuery) {
    return Boolean(codeMatches || nameMatches);
 }
 
-function renderNodeRows({ nodes, level, expandedKeys, onToggle, normalizedQuery }) {
+function renderNodeRows({ nodes, level, normalizedQuery }) {
    const rows = [];
 
    nodes.forEach((node) => {
-      const nodeKey = getNodeKey(level, node.id);
       const hasChildren = Array.isArray(node.children) && node.children.length > 0;
       const isHighlighted =
          normalizedQuery.length > 0 && nodeMatchesQuery(node, normalizedQuery);
 
       rows.push(
          <TnvedRow
-            key={nodeKey}
+            key={`${level}:${node.id}`}
             node={node}
             level={level}
-            expandedKeys={expandedKeys}
-            onToggle={onToggle}
             isHighlighted={isHighlighted}
          />,
       );
 
-      if (hasChildren && expandedKeys.has(nodeKey)) {
+      if (hasChildren) {
          rows.push(
             ...renderNodeRows({
                nodes: node.children,
                level: level + 1,
-               expandedKeys,
-               onToggle,
                normalizedQuery,
             }),
          );
@@ -76,7 +67,6 @@ export function TnvedTable() {
    const [page, setPage] = useState(1);
    const [results, setResults] = useState([]);
    const [count, setCount] = useState(0);
-   const [expandedKeys, setExpandedKeys] = useState(new Set());
    const [isLoading, setIsLoading] = useState(false);
 
    useEffect(() => {
@@ -112,26 +102,11 @@ export function TnvedTable() {
             const isNewQuery = previousQueryRef.current !== appliedQuery;
             previousQueryRef.current = appliedQuery;
 
-            // The API paginates leaf-level codes, not sections: every page
-            // repeats the same ancestor chain down to a different slice of
-            // codes. So a new page of the same query must be merged into
-            // the already-loaded tree (by id, at every level) — replacing
-            // it would drop codes fetched on earlier pages. A changed
-            // search query starts a fresh tree instead.
-            //
-            // The tree stays fully expanded by default (not just while
-            // searching) — otherwise paging through merges new codes deep
-            // inside already-collapsed nodes, and the next page looks
-            // identical to the previous one.
-            setResults((previousResults) => {
-               const mergedResults = isNewQuery
+            setResults((previousResults) =>
+               isNewQuery
                   ? response.results
-                  : mergeTnvedTrees(previousResults, response.results);
-
-               setExpandedKeys(new Set(collectAllNodeKeys(mergedResults)));
-
-               return mergedResults;
-            });
+                  : mergeTnvedTrees(previousResults, response.results),
+            );
             setCount(response.count);
          } finally {
             if (!isCancelled) {
@@ -147,20 +122,6 @@ export function TnvedTable() {
       };
    }, [appliedQuery, page]);
 
-   function handleToggle(nodeKey) {
-      setExpandedKeys((previous) => {
-         const next = new Set(previous);
-
-         if (next.has(nodeKey)) {
-            next.delete(nodeKey);
-         } else {
-            next.add(nodeKey);
-         }
-
-         return next;
-      });
-   }
-
    function handleReset() {
       setSearchInput('');
    }
@@ -171,8 +132,6 @@ export function TnvedTable() {
    const rows = renderNodeRows({
       nodes: results,
       level: 0,
-      expandedKeys,
-      onToggle: handleToggle,
       normalizedQuery,
    }).map((row, index) => cloneElement(row, { isOdd: index % 2 === 1 }));
 
