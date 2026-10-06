@@ -1,4 +1,4 @@
-import { Box, IconButton, TableCell, TableRow, Typography } from '@mui/material';
+import { Box, IconButton, TableCell, TableRow, Typography, alpha } from '@mui/material';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import PropTypes from 'prop-types';
@@ -13,6 +13,7 @@ export function TnvedRow({
    expandedKeys,
    onToggle,
    isHighlighted,
+   isOdd,
 }) {
    const nodeKey = getNodeKey(level, node.id);
    const hasChildren = Array.isArray(node.children) && node.children.length > 0;
@@ -21,9 +22,14 @@ export function TnvedRow({
    return (
       <TableRow
          sx={{
+            // Same zebra token the DataGrid tables use (theme.js's
+            // `.row-odd` rule) — kept consistent here since this table is a
+            // plain MUI Table, not a DataGrid, so it can't share that class.
             backgroundColor: isHighlighted
                ? 'rgba(33, 150, 243, 0.08)'
-               : 'transparent',
+               : isOdd
+                 ? (theme) => alpha(theme.palette.divider, 0.32)
+                 : 'transparent',
          }}
       >
          <TableCell sx={{ width: 140, fontWeight: node.code ? 500 : 400 }}>

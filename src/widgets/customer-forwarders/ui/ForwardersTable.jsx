@@ -1,9 +1,10 @@
-import { Box, Paper, Stack } from '@mui/material';
+import { Box, Paper, Stack, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import {
     getZebraRowClassName,
     toSortString,
+    truncateId,
 } from '../../../shared/helpers/data-grid.helpers';
 import {
     getForwarderAccount,
@@ -26,26 +27,28 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
     const columns = [
         {
             field: 'id',
-            headerName: 'ID',
-            width: 200,
+            headerName: '№',
+            width: 130,
             valueGetter: (_, row) => getForwarderId(row),
             renderCell: ({ row }) => {
                 const forwarderId = getForwarderId(row);
 
                 return (
-                    <Box
-                        onClick={() => onOpenDetails(row)}
-                        sx={{
-                            color: 'primary.main',
-                            cursor: 'pointer',
-                            fontWeight: 600,
-                            textDecoration: 'underline',
-                            textUnderlineOffset: 2,
-                            width: 'fit-content',
-                        }}
-                    >
-                        {forwarderId || '—'}
-                    </Box>
+                    <Tooltip title={forwarderId || '—'}>
+                        <Box
+                            onClick={() => onOpenDetails(row)}
+                            sx={{
+                                color: 'primary.main',
+                                cursor: 'pointer',
+                                fontWeight: 600,
+                                textDecoration: 'underline',
+                                textUnderlineOffset: 2,
+                                width: 'fit-content',
+                            }}
+                        >
+                            {forwarderId ? truncateId(forwarderId) : '—'}
+                        </Box>
+                    </Tooltip>
                 );
             },
         },

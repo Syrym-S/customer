@@ -85,7 +85,7 @@ export function TendersTable({ tenders }) {
    const columns = [
       {
          field: 'id',
-         headerName: 'ID',
+         headerName: '№',
          width: 130,
          renderCell: ({ row }) => (
             <Tooltip title={row.id}>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { cloneElement, useEffect, useRef, useState } from 'react';
 import {
    Box,
    Button,
@@ -174,7 +174,7 @@ export function TnvedTable() {
       expandedKeys,
       onToggle: handleToggle,
       normalizedQuery,
-   });
+   }).map((row, index) => cloneElement(row, { isOdd: index % 2 === 1 }));
 
    return (
       <Box sx={{ display: 'grid', gap: 2 }}>

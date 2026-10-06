@@ -820,8 +820,7 @@ export function ProfilePage() {
       <Paper sx={{ p: { xs: 2, md: 3 }, mt: 3 }}>
         <Stack spacing={2}>
           <Typography variant="body2" color="text.secondary">
-            Удаление аккаунта необратимо: все данные профиля будут удалены
-            безвозвратно.
+            После удаления аккаунт будет деактивирован. Чтобы восстановить его, обратитесь в поддержку.
           </Typography>
 
           {deleteConflictMessage && (
@@ -845,9 +844,7 @@ export function ProfilePage() {
 
         <DialogContent>
           <DialogContentText>
-            Это действие необратимо: все
-            данные профиля, документы и история будут удалены без возможности
-            восстановления. Вы уверены, что хотите продолжить?
+            Аккаунт будет деактивирован. Для восстановления обратитесь в поддержку.
           </DialogContentText>
         </DialogContent>
 
