@@ -194,6 +194,7 @@ export function mapCreateLeadFormToApi(form) {
     }
 
     addNumberIfHasValue(payload, 'price', form.price);
+    addNumberIfHasValue(payload, 'grace_period_days', form.gracePeriodDays);
 
     addIfHasValue(
         payload,
@@ -329,6 +330,7 @@ export function mapCreatedLeadToUi(form, response) {
 
         transportation_price: null,
         vat: form.vat ? 'с НДС' : 'без НДС',
+        grace_period_days: toNumber(form.gracePeriodDays),
         gsm: false,
         created_at: responseData?.created_at ?? null,
         updated_at: null,

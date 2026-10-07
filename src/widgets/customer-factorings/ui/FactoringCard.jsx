@@ -178,6 +178,15 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                         )}
                         accent
                     />
+
+                    <InfoBadge
+                        label="Отсрочка платежа"
+                        value={
+                            factoring.grace_period_days
+                                ? `${factoring.grace_period_days} дн.`
+                                : 'Не указано'
+                        }
+                    />
                 </Box>
 
                 <Box

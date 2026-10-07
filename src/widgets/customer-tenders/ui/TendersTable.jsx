@@ -211,6 +211,17 @@ export function TendersTable({ tenders }) {
          },
       },
       {
+         field: 'grace_period_days',
+         headerName: 'Отсрочка платежа',
+         width: 160,
+         valueGetter: (_, row) => getLeadValue(row, 'grace_period_days'),
+         renderCell: ({ row }) => {
+            const gracePeriodDays = getLeadValue(row, 'grace_period_days');
+
+            return <Box>{gracePeriodDays ? `${gracePeriodDays} дн.` : '-'}</Box>;
+         },
+      },
+      {
          field: 'bets',
          headerName: 'Ставки',
          width: 70,

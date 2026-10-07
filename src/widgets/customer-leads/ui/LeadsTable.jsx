@@ -142,6 +142,19 @@ export function LeadsTable({ leads }) {
             return <Box>{getForwarderLabel(row.forwarder)}</Box>;
          },
       },
+      {
+         field: 'grace_period_days',
+         headerName: 'Отсрочка платежа',
+         width: 160,
+         valueGetter: (_, row) => row?.grace_period_days ?? null,
+         renderCell: ({ row }) => {
+            return (
+               <Box>
+                  {row.grace_period_days ? `${row.grace_period_days} дн.` : '-'}
+               </Box>
+            );
+         },
+      },
    ];
 
    return (

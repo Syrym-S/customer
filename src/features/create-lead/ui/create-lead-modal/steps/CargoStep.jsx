@@ -725,6 +725,43 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                      />
                   )}
                />
+
+               <Controller
+                  name="gracePeriodDays"
+                  control={control}
+                  rules={{
+                     validate: (value) => {
+                        if (
+                           value === '' ||
+                           value === null ||
+                           value === undefined
+                        ) {
+                           return true;
+                        }
+
+                        const number = Number(value);
+
+                        return (
+                           (Number.isInteger(number) &&
+                              number > 0 &&
+                              number < 365) ||
+                           'Укажите от 1 до 364 дней'
+                        );
+                     },
+                  }}
+                  render={({ field }) => (
+                     <TextField
+                        {...field}
+                        type="number"
+                        label="Отсрочка платежа, дней"
+                        fullWidth
+                        size="small"
+                        inputProps={{ min: 1, max: 364, step: 1 }}
+                        error={Boolean(errors.gracePeriodDays)}
+                        helperText={errors.gracePeriodDays?.message}
+                     />
+                  )}
+               />
             </Box>
          </Stack>
       </StepSection>

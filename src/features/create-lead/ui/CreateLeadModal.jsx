@@ -69,6 +69,7 @@ function createInitialForm() {
         cargos: [createInitialCargo()],
 
         price: '',
+        gracePeriodDays: '',
         currency: 'KZT',
         vat: true,
         pass_verify: false,
@@ -89,7 +90,7 @@ function createInitialForm() {
 
 const staticStepFields = [
     null,
-    ['cargos', 'price', 'currency'],
+    ['cargos', 'price', 'gracePeriodDays', 'currency'],
     [],
     [],
 ];

@@ -325,6 +325,7 @@ export function mapLeadFromApi(apiLead) {
 
       transportation_price: apiLead.transportation_price ?? null,
       vat: apiLead.vat ?? null,
+      grace_period_days: apiLead.grace_period_days ?? null,
       pass_verify: Boolean(apiLead.pass_verify),
       gsm: apiLead.gsm ?? false,
       created_at: apiLead.created_at ?? null,

@@ -188,6 +188,15 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
             <Box>{formatMoney(row.cred_summ, row.currency)}</Box>
          ),
       },
+      {
+         field: 'grace_period_days',
+         headerName: 'Отсрочка платежа',
+         width: 160,
+         valueGetter: (_, row) => row?.grace_period_days ?? null,
+         renderCell: ({ row }) => (
+            <Box>{row.grace_period_days ? `${row.grace_period_days} дн.` : '-'}</Box>
+         ),
+      },
    ];
 
    return (

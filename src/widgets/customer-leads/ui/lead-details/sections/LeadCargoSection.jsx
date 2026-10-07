@@ -707,6 +707,18 @@ export function LeadCargoSection({
                 <MenuItem value="с НДС">с НДС</MenuItem>
                 <MenuItem value="без НДС">без НДС</MenuItem>
               </TextField>
+
+              <TextField
+                name="gracePeriodDays"
+                label="Отсрочка платежа, дней"
+                type="number"
+                value={editForm.gracePeriodDays ?? ""}
+                onChange={onEditChange}
+                inputProps={{ min: 1, max: 364, step: 1 }}
+                fullWidth
+                size="small"
+                sx={{ minWidth: 0 }}
+              />
             </>
           ) : (
             <>
@@ -725,6 +737,15 @@ export function LeadCargoSection({
               <InfoBadge
                 label="Количество грузов"
                 value={leadCargos.length || "Не указано"}
+              />
+
+              <InfoBadge
+                label="Отсрочка платежа"
+                value={
+                  hasValue(lead.grace_period_days)
+                    ? `${lead.grace_period_days} дн.`
+                    : "Не указано"
+                }
               />
             </>
           )}

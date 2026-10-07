@@ -277,15 +277,24 @@ export function LeadCard({ lead }) {
                </Stack>
             )}
 
-            <InfoBadge
-               label="Цена"
-               value={
-                  hasValue(lead.summ)
-                     ? `${formatAmount(lead.summ)} ${lead.currency}`
-                     : 'Не указано'
-               }
-               accent
-            />
+            <Stack direction="row" spacing={1}>
+               <InfoBadge
+                  label="Цена"
+                  value={
+                     hasValue(lead.summ)
+                        ? `${formatAmount(lead.summ)} ${lead.currency}`
+                        : 'Не указано'
+                  }
+                  accent
+               />
+
+               {hasValue(lead.grace_period_days) && (
+                  <InfoBadge
+                     label="Отсрочка платежа"
+                     value={`${lead.grace_period_days} дн.`}
+                  />
+               )}
+            </Stack>
          </Stack>
       </Box>
    );
@@ -341,6 +350,7 @@ LeadCard.propTypes = {
       cargos: PropTypes.array,
       summ: PropTypes.number,
       currency: PropTypes.string,
+      grace_period_days: PropTypes.number,
       forwarder: PropTypes.shape({
          id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
          fullName: PropTypes.string,

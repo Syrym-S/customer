@@ -217,6 +217,7 @@ export function createLeadEditForm(lead) {
          currency: 'KZT',
          vat: 'без НДС',
          is_international: false,
+         gracePeriodDays: '',
 
          driver: '',
          forwarder: '',
@@ -291,6 +292,7 @@ export function createLeadEditForm(lead) {
       currency: normalizeCurrency(lead.currency),
       vat: lead.vat || 'без НДС',
       is_international: Boolean(lead.is_international),
+      gracePeriodDays: lead.grace_period_days ?? '',
 
       driver: lead.raw?.driver?.id || lead.driver?.id || '',
       forwarder: lead.forwarder?.id || '',
@@ -680,6 +682,13 @@ export function mapLeadEditFormToApi(editForm, currentLead) {
    if (!isForwarderCreatedLead) {
       addNumberIfChanged(payload, 'price', editForm.price, currentLead.price);
    }
+
+   addNumberIfChanged(
+      payload,
+      'grace_period_days',
+      editForm.gracePeriodDays,
+      currentLead.grace_period_days,
+   );
 
    const nextCurrency = normalizeCurrency(editForm.currency);
    const prevCurrency = normalizeCurrency(currentLead.currency);

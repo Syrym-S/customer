@@ -198,6 +198,15 @@ export function TenderTransportSection({ tender }) {
                            : 'Не указано'
                      }
                   />
+
+                  <TenderInfoBadge
+                     label="Отсрочка платежа"
+                     value={
+                        lead.grace_period_days
+                           ? `${lead.grace_period_days} дн.`
+                           : 'Не указано'
+                     }
+                  />
                </Box>
             </Stack>
          </TenderDetailsSection>

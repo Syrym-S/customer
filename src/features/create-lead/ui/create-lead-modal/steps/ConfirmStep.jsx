@@ -224,6 +224,15 @@ export function ConfirmStep({ form }) {
                         }
                         accent
                     />
+
+                    <InfoBadge
+                        label="Отсрочка платежа"
+                        value={
+                            form.gracePeriodDays
+                                ? `${form.gracePeriodDays} дн.`
+                                : 'Не указано'
+                        }
+                    />
                 </Box>
             </StepSection>
 

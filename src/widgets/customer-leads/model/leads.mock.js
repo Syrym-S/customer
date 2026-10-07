@@ -509,6 +509,7 @@ export const mockLeads = Array.from({ length: 60 }, (_, index) => {
       currency: 'KZT',
       transportation_price: index % 4 === 0 ? 0 : 100000 + index * 3000,
       vat: 'с НДС',
+      grace_period_days: index % 5 === 0 ? null : 7 + (index % 10) * 3,
 
       from_location: mockRoute.from_location,
       to_location: mockRoute.to_location,

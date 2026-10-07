@@ -159,6 +159,15 @@ export function isDraftLead(lead) {
    return lead?.is_draft === true;
 }
 
+export function canEditGracePeriod(lead) {
+   return (
+      !isCancelledLead(lead) &&
+      !isFinishedLead(lead) &&
+      !isEmergencyLead(lead) &&
+      !isFinishedEmergencyLead(lead)
+   );
+}
+
 const EMPTY_LOCATION_PLACEHOLDER = 'Не указано';
 
 function hasLocationValue(location) {

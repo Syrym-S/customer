@@ -176,6 +176,22 @@ export function useLeadDetailsMutations({
          return;
       }
 
+      if (editForm.gracePeriodDays !== '' && editForm.gracePeriodDays !== null) {
+         const gracePeriodDays = Number(editForm.gracePeriodDays);
+         const isGracePeriodValid =
+            Number.isInteger(gracePeriodDays) &&
+            gracePeriodDays > 0 &&
+            gracePeriodDays < 365;
+
+         if (!isGracePeriodValid) {
+            const message = 'Отсрочка платежа должна быть от 1 до 364 дней';
+
+            setSaveEditError(message);
+            notifyError(message);
+            return;
+         }
+      }
+
       const isTnvedMissing =
          editForm.is_international &&
          (editForm.cargos ?? []).some(
