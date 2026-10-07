@@ -22,7 +22,7 @@ import { useCustomerMap } from '../../../../../widgets/customer-map/model/useCus
 import { useRouteMapPicker } from '../../../model/useRouteMapPicker';
 import { StepSection } from '../components/StepSection';
 import { searchGeocode } from '../../../api/geocoding.api';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { buildRouteFitBoundsKey } from '../../../lib/route-map.helpers';
 import {
     buildPointScheduleFields,
@@ -49,6 +49,9 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
 
     const [isFromSearchLoading, setIsFromSearchLoading] = useState(false);
     const [isToSearchLoading, setIsToSearchLoading] = useState(false);
+
+    const lastSelectedFromLabelRef = useRef('');
+    const lastSelectedToLabelRef = useRef('');
 
     const waypoints = Array.isArray(form.waypoints) ? form.waypoints : [];
     const pointScheduleFields = buildPointScheduleFields(waypoints);
@@ -107,7 +110,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
     useEffect(() => {
         const query = fromInputValue.trim();
 
-        if (query.length < 2 || query === form.fromLocation) {
+        if (query.length < 2 || query === lastSelectedFromLabelRef.current) {
             setFromOptions([]);
             return;
         }
@@ -137,12 +140,12 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
             controller.abort();
             clearTimeout(timeoutId);
         };
-    }, [fromInputValue, form.fromLocation]);
+    }, [fromInputValue]);
 
     useEffect(() => {
         const query = toInputValue.trim();
 
-        if (query.length < 2 || query === form.toLocation) {
+        if (query.length < 2 || query === lastSelectedToLabelRef.current) {
             setToOptions([]);
             return;
         }
@@ -172,7 +175,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
             controller.abort();
             clearTimeout(timeoutId);
         };
-    }, [toInputValue, form.toLocation]);
+    }, [toInputValue]);
 
     const fromCountry = form.from_location?.country || '';
     const toCountry = form.to_location?.country || '';
@@ -369,11 +372,15 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     'from',
                                     selectedOption,
                                 );
-                                setFromInputValue(
+
+                                const selectedLabel =
                                     selectedOption.label ||
-                                        selectedOption.address ||
-                                        '',
-                                );
+                                    selectedOption.address ||
+                                    '';
+
+                                lastSelectedFromLabelRef.current =
+                                    selectedLabel.trim();
+                                setFromInputValue(selectedLabel);
                                 setFromOptions([]);
                             }}
                             noOptionsText={
@@ -844,11 +851,15 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                 }
 
                                 setSelectedLocationPoint('to', selectedOption);
-                                setToInputValue(
+
+                                const selectedLabel =
                                     selectedOption.label ||
-                                        selectedOption.address ||
-                                        '',
-                                );
+                                    selectedOption.address ||
+                                    '';
+
+                                lastSelectedToLabelRef.current =
+                                    selectedLabel.trim();
+                                setToInputValue(selectedLabel);
                                 setToOptions([]);
                             }}
                             noOptionsText={

@@ -50,35 +50,46 @@ export async function searchGeocode(query, options = {}) {
         return [];
     }
 
-    const url = new URL('https://nominatim.openstreetmap.org/search');
+    try {
+        const url = new URL('https://nominatim.openstreetmap.org/search');
 
-    url.searchParams.set('format', 'jsonv2');
-    url.searchParams.set('q', trimmedQuery);
-    url.searchParams.set('addressdetails', '1');
-    url.searchParams.set('limit', '8');
-    url.searchParams.set('accept-language', 'ru');
+        url.searchParams.set('format', 'jsonv2');
+        url.searchParams.set('q', trimmedQuery);
+        url.searchParams.set('addressdetails', '1');
+        url.searchParams.set('limit', '8');
+        url.searchParams.set('accept-language', 'ru');
 
-    const response = await fetch(url.toString(), {
-        signal: options.signal,
-    });
+        const response = await fetch(url.toString(), {
+            signal: options.signal,
+        });
 
-    if (!response.ok) {
-        throw new Error('Geocoding search failed');
+        if (!response.ok) {
+            throw new Error('Geocoding search failed');
+        }
+
+        const data = await response.json();
+
+        return data
+            .map((item) => {
+                const location = formatNominatimAddress(item);
+
+                return {
+                    ...location,
+                    lat: Number(item.lat),
+                    lng: Number(item.lon),
+                };
+            })
+            .filter(
+                (item) =>
+                    Number.isFinite(item.lat) && Number.isFinite(item.lng),
+            );
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            throw error;
+        }
+
+        console.error(error);
+
+        return [];
     }
-
-    const data = await response.json();
-
-    return data
-        .map((item) => {
-            const location = formatNominatimAddress(item);
-
-            return {
-                ...location,
-                lat: Number(item.lat),
-                lng: Number(item.lon),
-            };
-        })
-        .filter(
-            (item) => Number.isFinite(item.lat) && Number.isFinite(item.lng),
-        );
 }

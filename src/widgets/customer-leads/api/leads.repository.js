@@ -2,12 +2,14 @@ import { apiClient } from '../../../shared/api/api-client';
 import { isMockApi } from '../../../shared/config/api.config';
 import {
    deleteLeadApi,
+   exportLeadsReportApi,
    fetchCustomerLeadByIdApi,
    fetchCustomerLeadsApi,
    publishLeadApi,
 } from './leads.api';
 import {
    deleteLeadMock,
+   exportLeadsReportMock,
    fetchCustomerLeadByIdMock,
    fetchCustomerLeadsMock,
    publishLeadMock,
@@ -61,4 +63,12 @@ export function deleteLead(leadId) {
    }
 
    return deleteLeadApi(leadId);
+}
+
+export function exportLeadsReport(params) {
+   if (isMockApi) {
+      return exportLeadsReportMock(params);
+   }
+
+   return exportLeadsReportApi(params);
 }

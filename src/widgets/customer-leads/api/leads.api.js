@@ -78,3 +78,18 @@ export async function deleteLeadApi(leadId) {
 
    return response.data;
 }
+
+export async function exportLeadsReportApi({ dateFrom, dateTo }) {
+   const response = await apiClient.get('/customer/v1/reports/leads/export', {
+      params: {
+         date_from: dateFrom,
+         date_to: dateTo,
+      },
+      responseType: 'blob',
+   });
+
+   return {
+      blob: response.data,
+      contentDisposition: response.headers?.['content-disposition'] ?? null,
+   };
+}

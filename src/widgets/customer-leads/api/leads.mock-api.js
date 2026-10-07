@@ -171,3 +171,12 @@ export async function deleteLeadMock(leadId) {
 
    return { message: 'Lead deleted' };
 }
+
+export async function exportLeadsReportMock() {
+   const csv = 'num,status,from_location,to_location,price\n';
+
+   return {
+      blob: new Blob([csv], { type: 'text/csv' }),
+      contentDisposition: null,
+   };
+}
