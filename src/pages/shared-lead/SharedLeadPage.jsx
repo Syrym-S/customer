@@ -179,6 +179,7 @@ export function SharedLeadPage() {
                editForm={{}}
                onEditChange={noop}
                onDeleteCargo={noop}
+               hidePrice
             />
 
             <LeadTransportationSection

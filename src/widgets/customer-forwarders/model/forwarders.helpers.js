@@ -45,6 +45,10 @@ export function getForwarderPhone(forwarder) {
     return forwarder?.phone || 'Не указан';
 }
 
+export function getForwarderEmail(forwarder) {
+    return forwarder?.email || 'Не указан';
+}
+
 export function getForwarderAddress(forwarder) {
     return forwarder?.company_address || 'Не указан';
 }

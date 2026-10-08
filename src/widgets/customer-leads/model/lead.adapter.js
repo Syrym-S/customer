@@ -125,6 +125,8 @@ function mapForwarderFromLead(apiLead) {
          forwarder?.tel ??
          apiLead.forwarder_phone ??
          '',
+
+      email: forwarder?.email ?? apiLead.forwarder_email ?? '',
    };
 }
 

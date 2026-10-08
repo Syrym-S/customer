@@ -95,6 +95,7 @@ export function LeadCargoSection({
   onEditChange,
   onDeleteCargo,
   deletingCargoIndex = null,
+  hidePrice = false,
 }) {
   const [cargoTypes, setCargoTypes] = useState([]);
   const [cargoTypesSearch, setCargoTypesSearch] = useState("");
@@ -585,14 +586,16 @@ export function LeadCargoSection({
                       value={getCargoWeightDisplay(cargo)}
                     />
 
-                    <InfoBadge
-                      label="Цена груза"
-                      value={
-                        hasValue(cargo.cargo_price)
-                          ? `${formatAmount(cargo.cargo_price)} ${lead.currency || ""}`.trim()
-                          : "Не указано"
-                      }
-                    />
+                    {!hidePrice && (
+                      <InfoBadge
+                        label="Цена груза"
+                        value={
+                          hasValue(cargo.cargo_price)
+                            ? `${formatAmount(cargo.cargo_price)} ${lead.currency || ""}`.trim()
+                            : "Не указано"
+                        }
+                      />
+                    )}
 
                     <InfoBadge
                       label="Размеры"
@@ -722,15 +725,17 @@ export function LeadCargoSection({
             </>
           ) : (
             <>
-              <InfoBadge
-                label="Цена исполнения"
-                value={
-                  hasValue(lead.price)
-                    ? `${formatAmount(lead.price)} ${lead.currency}`
-                    : "Не указано"
-                }
-                accent
-              />
+              {!hidePrice && (
+                <InfoBadge
+                  label="Цена исполнения"
+                  value={
+                    hasValue(lead.price)
+                      ? `${formatAmount(lead.price)} ${lead.currency}`
+                      : "Не указано"
+                  }
+                  accent
+                />
+              )}
 
               <InfoBadge label="НДС" value={lead.vat || "Не указано"} />
 
@@ -762,4 +767,5 @@ LeadCargoSection.propTypes = {
   onEditChange: PropTypes.func.isRequired,
   onDeleteCargo: PropTypes.func,
   deletingCargoIndex: PropTypes.number,
+  hidePrice: PropTypes.bool,
 };

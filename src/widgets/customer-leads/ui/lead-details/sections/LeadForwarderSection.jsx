@@ -340,6 +340,12 @@ export function LeadForwarderSection({
                   label="Телефон"
                   value={forwarder?.phone || 'Не указан'}
                />
+
+               <InfoBadge
+                  label="Email"
+                  value={forwarder?.email || 'Не указан'}
+                  sx={{ wordBreak: 'break-word' }}
+               />
             </Box>
          )}
       </DetailSection>
@@ -354,6 +360,7 @@ LeadForwarderSection.propTypes = {
          companyName: PropTypes.string,
          companyBin: PropTypes.string,
          phone: PropTypes.string,
+         email: PropTypes.string,
       }),
       is_tender: PropTypes.bool,
    }).isRequired,

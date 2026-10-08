@@ -89,83 +89,91 @@ export function RoutePoint({
             backgroundColor: 'grey.50',
             boxSizing: 'border-box',
             overflow: 'hidden',
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0, 1fr) auto',
+            gridTemplateAreas: '"label chips" "value value"',
+            alignItems: 'center',
+            columnGap: 1,
+            rowGap: 0.5,
+
+            // On narrow screens the date/status chips overlap the address,
+            // so move them onto their own row below it.
+            '@media (max-width: 499.95px)': {
+               gridTemplateColumns: 'minmax(0, 1fr)',
+               gridTemplateAreas: '"label" "value" "chips"',
+               rowGap: 0.75,
+            },
          }}
       >
          <Box
             sx={{
+               gridArea: 'label',
                display: 'flex',
                alignItems: 'center',
-               justifyContent: 'space-between',
-               gap: 1,
-               mb: 0.5,
+               gap: 0.75,
+               minWidth: 0,
             }}
          >
-            <Box
+            <Typography
+               variant='caption'
                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.75,
-                  minWidth: 0,
+                  display: 'block',
+                  color: 'text.secondary',
+                  whiteSpace: 'nowrap',
                }}
             >
-               <Typography
-                  variant='caption'
-                  sx={{
-                     display: 'block',
-                     color: 'text.secondary',
-                     whiteSpace: 'nowrap',
-                  }}
-               >
-                  {label}
-               </Typography>
+               {label}
+            </Typography>
 
-               {typeLabel && (
-                  <Chip
-                     label={typeLabel}
-                     variant='outlined'
-                     size='small'
-                     sx={{
-                        ...routePointChipSx,
-                        ...(typeChipStyles[typeColor] || typeChipStyles.primary),
-                     }}
-                  />
-               )}
-            </Box>
-
-            <Box
-               sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.75,
-                  flexShrink: 0,
-               }}
-            >
+            {typeLabel && (
                <Chip
-                  label={date || '—'}
+                  label={typeLabel}
                   variant='outlined'
                   size='small'
                   sx={{
                      ...routePointChipSx,
-                     ...dateChipStyle,
+                     ...(typeChipStyles[typeColor] || typeChipStyles.primary),
                   }}
                />
-
-               {isPassed !== undefined && (
-                  <Chip
-                     label={isPassed ? 'Пройдена' : 'Не пройдена'}
-                     variant='outlined'
-                     size='small'
-                     sx={{
-                        ...routePointChipSx,
-                        ...(isPassed ? passedChipStyle : notPassedChipStyle),
-                     }}
-                  />
-               )}
-            </Box>
+            )}
          </Box>
 
          <Box
             sx={{
+               gridArea: 'chips',
+               display: 'flex',
+               alignItems: 'center',
+               flexWrap: 'wrap',
+               gap: 0.75,
+            }}
+         >
+            <Chip
+               label={date || '—'}
+               variant='outlined'
+               size='small'
+               sx={{
+                  ...routePointChipSx,
+                  ...dateChipStyle,
+               }}
+            />
+
+            {isPassed !== undefined && (
+               <Chip
+                  label={isPassed ? 'Пройдена' : 'Не пройдена'}
+                  variant='outlined'
+                  size='small'
+                  sx={{
+                     ...routePointChipSx,
+                     ...(isPassed ? passedChipStyle : notPassedChipStyle),
+                  }}
+               />
+            )}
+         </Box>
+
+         <Box
+            sx={{
+               gridArea: 'value',
+               alignSelf: 'start',
                display: 'flex',
                alignItems: 'flex-start',
                gap: {

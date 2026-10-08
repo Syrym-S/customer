@@ -21,6 +21,7 @@ import {
     getForwarderBik,
     getForwarderBin,
     getForwarderCompanyName,
+    getForwarderEmail,
     getForwarderFio,
     getForwarderIin,
     getForwarderPhone,
@@ -51,6 +52,10 @@ function ForwarderDataTable({ forwarder }) {
         {
             label: 'Телефон',
             value: getForwarderPhone(forwarder),
+        },
+        {
+            label: 'Email',
+            value: getForwarderEmail(forwarder),
         },
         {
             label: 'БИК',

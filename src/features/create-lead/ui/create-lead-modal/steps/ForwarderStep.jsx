@@ -294,6 +294,8 @@ export function ForwarderStep({ control, errors, setValue }) {
                                             lastSelectedForwarder.phone ||
                                             '',
 
+                                        email: details.email || '',
+
                                         companyAccount:
                                             details.company_account || '',
                                         companyBik: details.company_bik || '',
@@ -485,6 +487,10 @@ export function ForwarderStep({ control, errors, setValue }) {
                                 <InfoBadge
                                     label="Телефон"
                                     value={selectedForwarder.phone}
+                                />
+                                <InfoBadge
+                                    label="Email"
+                                    value={selectedForwarder.email}
                                 />
                             </Box>
                         )}

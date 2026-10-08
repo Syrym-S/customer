@@ -6,6 +6,7 @@ import {
    getLocationDescription,
    getLocationPosition,
 } from '../../model/lead-details-map.helpers';
+import { formatLeadDate } from '../../model/lead.helpers';
 import { getWaypointTypeLabel } from '../../model/lead-route.helpers';
 
 function getPassedStateLine(location) {
@@ -131,7 +132,7 @@ export function LeadDetailsMap({
               position: [geoCurrentPoint.latitude, geoCurrentPoint.longitude],
               title: 'Текущая позиция водителя',
               description: geoCurrentPoint.recordedAt
-                 ? `Последнее обновление: ${geoCurrentPoint.recordedAt}`
+                 ? `Последнее обновление: ${formatLeadDate(geoCurrentPoint.recordedAt)}`
                  : 'Координаты получены через WebSocket',
            },
         ]
