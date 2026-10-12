@@ -45,38 +45,16 @@ const ACTIVE_SECTIONS = {
 
 const PERIOD_SECTIONS = {
    day: {
-      leads_period: { count: 0, currencies: [] },
       factorings_period: { count: 0, currencies: [] },
    },
-   week: {
-      leads_period: {
-         count: 4,
-         currencies: [{ currency: 'KZT', sum: 18700000, count: 4 }],
-      },
-   },
+   week: {},
    month: {
-      leads_period: {
-         count: 21,
-         currencies: [
-            { currency: 'KZT', sum: 64300000, count: 16 },
-            { currency: 'USD', sum: 27450, count: 5 },
-         ],
-      },
       factorings_period: {
          count: 2,
          currencies: [{ currency: 'KZT', sum: 9200000, count: 2 }],
       },
    },
    year: {
-      leads_period: {
-         count: 187,
-         currencies: [
-            { currency: 'KZT', sum: 742800000, count: 141 },
-            { currency: 'USD', sum: 318900, count: 29 },
-            { currency: 'RUB', sum: 15400000, count: 12 },
-            { currency: 'EUR', sum: 44100, count: 5 },
-         ],
-      },
       factorings_period: {
          count: 19,
          currencies: [
@@ -138,7 +116,6 @@ export async function fetchCustomerStatsMock(params = {}) {
    });
 
    return {
-      leads_period: resolvePeriodSection(params, 'leads_period'),
       factorings_period: resolvePeriodSection(params, 'factorings_period'),
       ...ACTIVE_SECTIONS,
    };

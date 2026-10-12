@@ -3,6 +3,7 @@ import { Box, Paper, Skeleton, Typography } from '@mui/material';
 
 import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
+import { STATS_VIEW_MODE_SUM } from './DashboardStatsViewToggle';
 import { DashboardStatCurrencies } from './DashboardStatCurrencies';
 
 const CARD_HEIGHT = 140;
@@ -13,6 +14,7 @@ export function DashboardStatCard({
    unitForms,
    section,
    showSums,
+   viewMode,
    loading,
    refreshing,
    action,
@@ -20,6 +22,15 @@ export function DashboardStatCard({
 }) {
    const count = section?.count ?? 0;
    const currencies = section?.currencies ?? [];
+
+   const primaryCurrency = showSums && viewMode === STATS_VIEW_MODE_SUM
+      ? currencies[0]
+      : null;
+
+   const headlineValue = primaryCurrency ? primaryCurrency.sum : count;
+   const headlineCaption = primaryCurrency
+      ? primaryCurrency.currency
+      : pluralizeRu(count, unitForms);
 
    return (
       <Paper
@@ -87,7 +98,7 @@ export function DashboardStatCard({
                         letterSpacing: '-0.02em',
                      })}
                   >
-                     {formatAmount(count)}
+                     {formatAmount(headlineValue)}
                   </Typography>
 
                   <Typography
@@ -95,7 +106,7 @@ export function DashboardStatCard({
                      color="text.secondary"
                      sx={{ fontSize: 13, minWidth: 0 }}
                   >
-                     {pluralizeRu(count, unitForms)}
+                     {headlineCaption}
                   </Typography>
                </Box>
             )}
@@ -124,6 +135,7 @@ DashboardStatCard.propTypes = {
       currencies: PropTypes.array,
    }),
    showSums: PropTypes.bool,
+   viewMode: PropTypes.string,
    loading: PropTypes.bool,
    refreshing: PropTypes.bool,
    action: PropTypes.node,

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Box } from "@mui/material";
 import { useLeadsContext } from "../../customer-leads/model/useLeadsContext";
 import { DashboardMap } from "./DashboardMap";
+import { DashboardAnalyticsSection } from "./DashboardAnalyticsSection";
 import { DashboardStats } from "./DashboardStats";
 import { DashboardLeadsList } from "./DashboardLeadsList";
 import { DashboardTendersSection } from "./DashboardTendersSection";
@@ -40,6 +41,8 @@ export function Dashboard() {
         py: 3,
       }}
     >
+      <DashboardAnalyticsSection />
+
       <DashboardStats />
 
       <Box

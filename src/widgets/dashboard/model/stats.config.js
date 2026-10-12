@@ -23,14 +23,6 @@ export const customerStatsConfig = {
          columns: 2,
          cards: [
             {
-               id: 'leads-period',
-               sectionKey: 'leadsPeriod',
-               label: 'Перевозки',
-               periodSelectorLabel: 'Период перевозок',
-               unitForms: ['перевозка', 'перевозки', 'перевозок'],
-               showSums: true,
-            },
-            {
                id: 'factorings-period',
                sectionKey: 'factoringsPeriod',
                label: 'Продажи факторинга',
@@ -43,7 +35,6 @@ export const customerStatsConfig = {
       {
          id: 'active',
          title: 'Активные',
-         // caption: 'Не зависит от периода',
          columns: 3,
          cards: [
             {

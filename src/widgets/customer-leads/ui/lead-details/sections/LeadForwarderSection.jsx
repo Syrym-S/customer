@@ -15,6 +15,7 @@ import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
 import { fetchForwardersApi } from '../../../../../features/create-lead/api/forwarders.api';
 import { FORWARDERS_PER_PAGE } from '../../../../customer-forwarders/model/forwarders.helpers';
+import { TaxationRegimeInfo } from '../../../../../shared/kgd-taxation/ui/TaxationRegimeInfo';
 
 function normalizeForwarderOption(forwarder) {
    if (!forwarder) {
@@ -346,6 +347,12 @@ export function LeadForwarderSection({
                   value={forwarder?.email || 'Не указан'}
                   sx={{ wordBreak: 'break-word' }}
                />
+            </Box>
+         )}
+
+         {!isEditing && forwarder?.id && (
+            <Box sx={{ mt: 1 }}>
+               <TaxationRegimeInfo role="forwarder" entityId={forwarder.id} />
             </Box>
          )}
       </DetailSection>

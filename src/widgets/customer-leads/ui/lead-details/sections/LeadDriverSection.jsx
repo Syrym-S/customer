@@ -6,6 +6,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
 import { normalizePersonValue } from '../../../model/lead-edit-form.helpers';
+import { TaxationRegimeInfo } from '../../../../../shared/kgd-taxation/ui/TaxationRegimeInfo';
 
 function getDriverFields(driver) {
    if (!driver || typeof driver !== 'object') {
@@ -20,7 +21,9 @@ function getDriverFields(driver) {
 }
 
 export function LeadDriverSection({ lead }) {
-   const driverFields = getDriverFields(lead.raw?.driver ?? lead.driver);
+   const driver = lead.raw?.driver ?? lead.driver;
+   const driverFields = getDriverFields(driver);
+   const driverId = driver && typeof driver === 'object' ? driver.id : null;
 
    return (
       <DetailSection icon={<PersonOutlineOutlinedIcon />} title='Водитель'>
@@ -51,6 +54,12 @@ export function LeadDriverSection({ lead }) {
                value={normalizePersonValue(lead.driver)}
                fullWidth
             />
+         )}
+
+         {driverId && (
+            <Box sx={{ mt: 1 }}>
+               <TaxationRegimeInfo role="driver" entityId={driverId} />
+            </Box>
          )}
       </DetailSection>
    );

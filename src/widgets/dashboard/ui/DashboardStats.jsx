@@ -16,9 +16,12 @@ import {
 } from '../model/stats.config';
 import { DashboardStatsGroup } from './DashboardStatsGroup';
 import { DashboardStatsPeriodSelector } from './DashboardStatsPeriodSelector';
+import {
+   DashboardStatsViewToggle,
+   STATS_VIEW_MODE_COUNT,
+} from './DashboardStatsViewToggle';
 
 const DEFAULT_PERIODS = {
-   leadsPeriod: DEFAULT_STATS_PERIOD,
    factoringsPeriod: DEFAULT_STATS_PERIOD,
 };
 
@@ -32,6 +35,7 @@ function getPeriodLabel(value) {
 
 export function DashboardStats({ config = customerStatsConfig }) {
    const [periods, setPeriods] = useState(DEFAULT_PERIODS);
+   const [viewMode, setViewMode] = useState(STATS_VIEW_MODE_COUNT);
 
    const { data, isLoading, isRefreshing, refreshingSections, error, retry } =
       useDashboardStats(periods, config);
@@ -67,9 +71,20 @@ export function DashboardStats({ config = customerStatsConfig }) {
 
    return (
       <Box component="section" sx={{ mb: 2 }} aria-busy={isLoading || isRefreshing}>
-         <Typography variant="h6" sx={{ mb: 1.5 }}>
-            Статистика
-         </Typography>
+         <Box
+            sx={{
+               display: 'flex',
+               alignItems: 'center',
+               justifyContent: 'space-between',
+               flexWrap: 'wrap',
+               gap: 1,
+               mb: 1.5,
+            }}
+         >
+            <Typography variant="h6">Статистика</Typography>
+
+            <DashboardStatsViewToggle value={viewMode} onChange={setViewMode} />
+         </Box>
 
          {error && (
             <Alert
@@ -104,6 +119,7 @@ export function DashboardStats({ config = customerStatsConfig }) {
                      group={group}
                      data={data}
                      loading={isLoading && !data}
+                     viewMode={viewMode}
                      refreshingSections={refreshingSections}
                      renderCardAction={renderPeriodSelector}
                   />

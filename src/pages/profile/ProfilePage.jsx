@@ -47,6 +47,8 @@ import {
 } from "../../widgets/customer-profile/model/profile-photo.helpers";
 import { ProfilePhotoUploader } from "../../widgets/customer-profile/ui/ProfilePhotoUploader";
 import { EmailVerificationStatus } from "../../widgets/customer-verification/ui/EmailVerificationStatus";
+import { TaxationRegimeInfo } from "../../shared/kgd-taxation/ui/TaxationRegimeInfo";
+import { getCurrentUserId } from "../../shared/helpers/current-user.helpers";
 import { ProfileDocumentUpdateField } from "../../widgets/customer-profile/ui/ProfileDocumentUpdateField";
 import { ContractDocumentCard } from "../../widgets/customer-profile/ui/ContractDocumentCard";
 import { PageContainer } from "../../shared/ui/PageContainer";
@@ -497,6 +499,8 @@ export function ProfilePage() {
           {submitError && <Alert severity="error">{submitError}</Alert>}
 
           <EmailVerificationStatus />
+
+          <TaxationRegimeInfo role="customer" entityId={getCurrentUserId()} />
 
           <ProfilePhotoUploader
             value={profilePhoto}

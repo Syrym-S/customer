@@ -7,6 +7,7 @@ export function DashboardStatsGroup({
    group,
    data,
    loading,
+   viewMode,
    refreshingSections,
    renderCardAction,
 }) {
@@ -54,6 +55,7 @@ export function DashboardStatsGroup({
                      label={card.label}
                      unitForms={card.unitForms}
                      showSums={card.showSums}
+                     viewMode={viewMode}
                      section={data?.[card.sectionKey]}
                      loading={loading}
                      refreshing={Boolean(refreshingSections?.[card.sectionKey])}
@@ -80,6 +82,7 @@ DashboardStatsGroup.propTypes = {
    }).isRequired,
    data: PropTypes.object,
    loading: PropTypes.bool,
+   viewMode: PropTypes.string,
    refreshingSections: PropTypes.objectOf(PropTypes.bool),
    renderCardAction: PropTypes.func,
 };

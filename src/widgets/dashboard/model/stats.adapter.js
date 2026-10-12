@@ -1,11 +1,3 @@
-const SECTION_KEYS = [
-   'leads_period',
-   'factorings_period',
-   'leads_active',
-   'tenders_active',
-   'factorings_active',
-];
-
 function toNumber(value) {
    const number = Number(value);
 
@@ -63,8 +55,6 @@ export function mapStatsResponseFromApi(response) {
          : response;
    const source = payload && typeof payload === 'object' ? payload : {};
 
-   const isLegacyShape =
-      !SECTION_KEYS.some((key) => key in source) && 'count' in source;
    const fallback = {
       period: mapPeriod(source.period),
       from: toDateString(source.from),
@@ -72,10 +62,6 @@ export function mapStatsResponseFromApi(response) {
    };
 
    return {
-      leadsPeriod: mapPeriodSection(
-         isLegacyShape ? source : source.leads_period,
-         fallback,
-      ),
       factoringsPeriod: mapPeriodSection(source.factorings_period, fallback),
       leadsActive: mapSection(source.leads_active),
       tendersActive: { count: mapSection(source.tenders_active).count },

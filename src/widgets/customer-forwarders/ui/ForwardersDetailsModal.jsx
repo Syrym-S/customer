@@ -24,15 +24,78 @@ import {
     getForwarderEmail,
     getForwarderFio,
     getForwarderIin,
+    getForwarderId,
     getForwarderPhone,
 } from '../model/forwarders.helpers';
+import { TaxationRegimeInfo } from '../../../shared/kgd-taxation/ui/TaxationRegimeInfo';
 
 function getValue(value) {
     return value || 'Не указан';
 }
 
+function ForwarderDataGroup({ title, rows }) {
+    return (
+        <Box
+            sx={{
+                mb: 2,
+                p: {
+                    xs: 1.25,
+                    sm: 1.5,
+                },
+                backgroundColor: 'background.paper',
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2,
+                '&:last-of-type': {
+                    mb: 0,
+                },
+            }}
+        >
+            <Typography
+                sx={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: 'text.secondary',
+                    mb: 0.5,
+                }}
+            >
+                {title}
+            </Typography>
+
+            <TableContainer component={Box}>
+                <Table size="small">
+                    <TableBody>
+                        {rows.map((row) => (
+                            <TableRow key={row.label}>
+                                <TableCell
+                                    sx={{
+                                        width: '40%',
+                                        color: 'text.secondary',
+                                        pl: 0,
+                                    }}
+                                >
+                                    {row.label}:
+                                </TableCell>
+
+                                <TableCell
+                                    sx={{
+                                        fontWeight: 500,
+                                        pr: 0,
+                                    }}
+                                >
+                                    {getValue(row.value)}
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Box>
+    );
+}
+
 function ForwarderDataTable({ forwarder }) {
-    const rows = [
+    const companyRows = [
         {
             label: 'Компания',
             value: getForwarderCompanyName(forwarder),
@@ -40,22 +103,6 @@ function ForwarderDataTable({ forwarder }) {
         {
             label: 'БИН',
             value: getForwarderBin(forwarder),
-        },
-        {
-            label: 'ИИН',
-            value: getForwarderIin(forwarder),
-        },
-        {
-            label: 'ФИО',
-            value: getForwarderFio(forwarder),
-        },
-        {
-            label: 'Телефон',
-            value: getForwarderPhone(forwarder),
-        },
-        {
-            label: 'Email',
-            value: getForwarderEmail(forwarder),
         },
         {
             label: 'БИК',
@@ -71,35 +118,37 @@ function ForwarderDataTable({ forwarder }) {
         },
     ];
 
-    return (
-        <TableContainer component={Box}>
-            <Table size="small">
-                <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.label}>
-                            <TableCell
-                                sx={{
-                                    width: '40%',
-                                    color: 'text.secondary',
-                                    pl: 0,
-                                }}
-                            >
-                                {row.label}:
-                            </TableCell>
+    const contactRows = [
+        {
+            label: 'ФИО',
+            value: getForwarderFio(forwarder),
+        },
+        {
+            label: 'ИИН',
+            value: getForwarderIin(forwarder),
+        },
+        {
+            label: 'Телефон',
+            value: getForwarderPhone(forwarder),
+        },
+        {
+            label: 'Email',
+            value: getForwarderEmail(forwarder),
+        },
+    ];
 
-                            <TableCell
-                                sx={{
-                                    fontWeight: 500,
-                                    pr: 0,
-                                }}
-                            >
-                                {getValue(row.value)}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+    return (
+        <Box>
+            <ForwarderDataGroup
+                title="Данные экспедитора — компания"
+                rows={companyRows}
+            />
+
+            <ForwarderDataGroup
+                title="Данные контактного лица"
+                rows={contactRows}
+            />
+        </Box>
     );
 }
 
@@ -210,6 +259,13 @@ export function ForwarderDetailsModal({
                         </Typography>
 
                         <ForwarderDataTable forwarder={forwarder} />
+
+                        <Box sx={{ mt: 2 }}>
+                            <TaxationRegimeInfo
+                                role="forwarder"
+                                entityId={getForwarderId(forwarder)}
+                            />
+                        </Box>
                     </Box>
                 )}
             </DialogContent>

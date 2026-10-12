@@ -18,12 +18,11 @@ const REFRESH_EVENT_NAMES = [
 ];
 
 const IDLE_REFRESHING_SECTIONS = {
-   leadsPeriod: false,
    factoringsPeriod: false,
 };
 
 export function useDashboardStats(
-   { leadsPeriod, factoringsPeriod },
+   { factoringsPeriod },
    config = customerStatsConfig,
 ) {
    const [data, setData] = useState(null);
@@ -49,9 +48,6 @@ export function useDashboardStats(
                const loadedPeriods = loadedPeriodsRef.current;
 
                setRefreshingSections((current) => ({
-                  leadsPeriod:
-                     current.leadsPeriod ||
-                     !isSameStatsPeriod(loadedPeriods?.leadsPeriod, leadsPeriod),
                   factoringsPeriod:
                      current.factoringsPeriod ||
                      !isSameStatsPeriod(
@@ -65,17 +61,14 @@ export function useDashboardStats(
          }
 
          try {
-            const response = await config.fetchStats({
-               leadsPeriod,
-               factoringsPeriod,
-            });
+            const response = await config.fetchStats({ factoringsPeriod });
 
             if (requestId !== requestIdRef.current) {
                return;
             }
 
             hasDataRef.current = true;
-            loadedPeriodsRef.current = { leadsPeriod, factoringsPeriod };
+            loadedPeriodsRef.current = { factoringsPeriod };
             setData(config.mapResponse(response));
             setError(null);
          } catch {
@@ -93,7 +86,7 @@ export function useDashboardStats(
             }
          }
       },
-      [leadsPeriod, factoringsPeriod, config],
+      [factoringsPeriod, config],
    );
 
    const retry = useCallback(() => {
@@ -128,8 +121,7 @@ export function useDashboardStats(
       };
    }, [loadStats]);
 
-   const isRefreshing =
-      refreshingSections.leadsPeriod || refreshingSections.factoringsPeriod;
+   const isRefreshing = refreshingSections.factoringsPeriod;
 
    return { data, isLoading, isRefreshing, refreshingSections, error, retry };
 }
