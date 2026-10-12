@@ -2,11 +2,14 @@ import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { Header } from "../header/Header";
 import { AppBreadcrumbs } from "../../router/AppBreadcrumbs";
+import { DocumentTitleManager } from "../../router/DocumentTitleManager";
 import { ChatWidget } from "../chat-widget/ui/ChatWidget";
 
 export function AppLayout() {
   return (
     <Box sx={{ minHeight: "100vh" }}>
+      <DocumentTitleManager />
+
       <Header />
 
       <Box

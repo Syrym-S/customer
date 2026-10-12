@@ -1,8 +1,11 @@
 import { Box, Chip, DialogTitle, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { LeadStatusChip } from "../../../dashboard/ui/DashboardLeadItem";
+import { usePageTitleSegment } from "../../../../shared/lib/usePageTitleSegment";
 
 export function LeadDetailsHeader({ lead }) {
+  usePageTitleSegment(lead.num ? `Перевозки #${lead.num}` : null);
+
   return (
     <DialogTitle
       sx={{
