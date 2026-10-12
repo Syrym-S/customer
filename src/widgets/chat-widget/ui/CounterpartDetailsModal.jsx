@@ -17,29 +17,29 @@ import {
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 import { CounterpartAvatar } from "./CounterpartAvatar";
-import { TaxationRegimeInfo } from "../../../shared/kgd-taxation/ui/TaxationRegimeInfo";
+// import { TaxationRegimeInfo } from "../../../shared/kgd-taxation/ui/TaxationRegimeInfo";
 
-const TAXATION_ROLE_BY_LABEL = {
-  "Экспедитор": "forwarder",
-  "Заказчик": "customer",
-  "Фактор": "factor",
-  "Водитель": "driver",
-};
+// const TAXATION_ROLE_BY_LABEL = {
+//   "Экспедитор": "forwarder",
+//   "Заказчик": "customer",
+//   "Фактор": "factor",
+//   "Водитель": "driver",
+// };
 
-function resolveTaxationRole(label) {
-  return TAXATION_ROLE_BY_LABEL[label] ?? null;
-}
+// function resolveTaxationRole(label) {
+//   return TAXATION_ROLE_BY_LABEL[label] ?? null;
+// }
 
-function resolveTaxationEntityId(counterpart) {
-  return (
-    counterpart?.id ||
-    counterpart?.bin ||
-    counterpart?.iin ||
-    counterpart?.phone ||
-    counterpart?.email ||
-    null
-  );
-}
+// function resolveTaxationEntityId(counterpart) {
+//   return (
+//     counterpart?.id ||
+//     counterpart?.bin ||
+//     counterpart?.iin ||
+//     counterpart?.phone ||
+//     counterpart?.email ||
+//     null
+//   );
+// }
 
 function buildRequisiteRows(counterpart) {
   const candidates = [
@@ -80,8 +80,8 @@ export function CounterpartDetailsModal({ open, counterpart, onClose }) {
 
   const rows = buildRequisiteRows(counterpart);
   const hasContactActions = Boolean(counterpart?.email || counterpart?.phone);
-  const taxationRole = resolveTaxationRole(counterpart?.role);
-  const taxationEntityId = resolveTaxationEntityId(counterpart);
+  // const taxationRole = resolveTaxationRole(counterpart?.role);
+  // const taxationEntityId = resolveTaxationEntityId(counterpart);
 
   async function handleCopyPhone(event) {
     event.stopPropagation();
@@ -219,11 +219,11 @@ export function CounterpartDetailsModal({ open, counterpart, onClose }) {
           </Box>
         )}
 
-        {taxationRole && taxationEntityId && (
+        {/* {taxationRole && taxationEntityId && (
           <Box sx={{ mt: rows.length > 0 || hasContactActions ? 2 : 0 }}>
             <TaxationRegimeInfo role={taxationRole} entityId={taxationEntityId} />
           </Box>
-        )}
+        )} */}
 
         {!hasContactActions && rows.length === 0 && (
           <Typography color="text.secondary" sx={{ fontSize: 13 }}>

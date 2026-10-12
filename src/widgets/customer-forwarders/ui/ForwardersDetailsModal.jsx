@@ -24,10 +24,10 @@ import {
     getForwarderEmail,
     getForwarderFio,
     getForwarderIin,
-    getForwarderId,
+    // getForwarderId,
     getForwarderPhone,
 } from '../model/forwarders.helpers';
-import { TaxationRegimeInfo } from '../../../shared/kgd-taxation/ui/TaxationRegimeInfo';
+// import { TaxationRegimeInfo } from '../../../shared/kgd-taxation/ui/TaxationRegimeInfo';
 
 function getValue(value) {
     return value || 'Не указан';
@@ -185,25 +185,6 @@ export function ForwarderDetailsModal({
                 },
             }}
         >
-            <DialogTitle
-                sx={{
-                    px: {
-                        xs: 1.5,
-                        sm: 3,
-                    },
-                    pt: {
-                        xs: 2,
-                        sm: 3,
-                    },
-                    pb: {
-                        xs: 1,
-                        sm: 1.5,
-                    },
-                }}
-            >
-                <Typography fontWeight={700}>Детали экспедитора</Typography>
-            </DialogTitle>
-
             <DialogContent
                 sx={{
                     px: {
@@ -260,12 +241,12 @@ export function ForwarderDetailsModal({
 
                         <ForwarderDataTable forwarder={forwarder} />
 
-                        <Box sx={{ mt: 2 }}>
+                        {/* <Box sx={{ mt: 2 }}>
                             <TaxationRegimeInfo
                                 role="forwarder"
                                 entityId={getForwarderId(forwarder)}
                             />
-                        </Box>
+                        </Box> */}
                     </Box>
                 )}
             </DialogContent>
