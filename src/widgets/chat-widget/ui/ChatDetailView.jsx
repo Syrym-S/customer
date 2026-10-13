@@ -34,7 +34,7 @@ import {
   validateChatAttachmentFile,
 } from "../model/chat.helpers";
 import { createMockAttachmentId } from "../model/chat.mock";
-import { fetchLeadChatAttachmentBlobApi } from "../api/chat.api";
+import { fetchChatAttachmentBlobApi, fetchSupportChatWsTokenApi } from "../api/chat.api";
 import { openLeadChatConnection } from "../lib/chat-ws";
 import { notifyError } from "../../../shared/model/notifications.store";
 import { CounterpartDetailsModal } from "./CounterpartDetailsModal";
@@ -84,7 +84,7 @@ function computeFactoringSenderLabelFlags(messages) {
 }
 
 function isServerBackedAttachment(attachment) {
-  return Boolean(attachment?.leadId);
+  return Boolean(attachment?.chatType);
 }
 
 function useAttachmentObjectUrl(attachment, { enabled }) {
@@ -104,7 +104,7 @@ function useAttachmentObjectUrl(attachment, { enabled }) {
     setStatus("loading");
     setObjectUrl(null);
 
-    fetchLeadChatAttachmentBlobApi(attachment.leadId, attachment.id, attachment.chatType)
+    fetchChatAttachmentBlobApi(attachment)
       .then((blob) => {
         if (cancelled) {
           return;
@@ -213,11 +213,7 @@ function ServerFileAttachment({ attachment, isMine }) {
     setIsDownloading(true);
 
     try {
-      const blob = await fetchLeadChatAttachmentBlobApi(
-        attachment.leadId,
-        attachment.id,
-        attachment.chatType,
-      );
+      const blob = await fetchChatAttachmentBlobApi(attachment);
       const objectUrl = URL.createObjectURL(blob);
       const link = document.createElement("a");
 
@@ -305,8 +301,9 @@ export function ChatDetailView({ chat }) {
   const pagination = useChatStore((state) => state.chatPagination[chat.id]);
 
   const isFactoring = chat.entityType === "factoring";
+  const isSupport = chat.entityType === "support";
   const isRealChat =
-    chat.entityType === "lead" || isFactoring || chat.entityType === "delivery";
+    chat.entityType === "lead" || isFactoring || chat.entityType === "delivery" || isSupport;
 
   const headerCounterpart = chat.counterparts?.[0] || chat.counterpart;
 
@@ -415,6 +412,7 @@ export function ChatDetailView({ chat }) {
     const connection = openLeadChatConnection({
       leadId: chat.apiEntityId ?? chat.entityId,
       chatType: chat.entityType,
+      fetchToken: isSupport ? fetchSupportChatWsTokenApi : undefined,
       onMessageSent: (message) => {
         receiveLeadMessageSent(chat.entityId, message, chat.entityType);
 

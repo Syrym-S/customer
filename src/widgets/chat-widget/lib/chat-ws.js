@@ -20,6 +20,7 @@ function isChannelAuthError(subscriptionError) {
 export function openLeadChatConnection({
   leadId,
   chatType = "lead",
+  fetchToken,
   onMessageSent,
   onMessageUpdated,
   onMessageDeleted,
@@ -62,9 +63,11 @@ export function openLeadChatConnection({
         return;
       }
 
-      const tokenResponse = await fetchLeadChatWsTokenApi(leadId, chatType, {
-        signal: abortController.signal,
-      });
+      const tokenResponse = fetchToken
+        ? await fetchToken({ signal: abortController.signal })
+        : await fetchLeadChatWsTokenApi(leadId, chatType, {
+            signal: abortController.signal,
+          });
 
       if (isClosed) {
         return;

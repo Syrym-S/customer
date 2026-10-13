@@ -21,6 +21,7 @@ export function ChatListView() {
   const openLeadChat = useChatStore((state) => state.openLeadChat);
   const openFactoringChat = useChatStore((state) => state.openFactoringChat);
   const openDeliveryChat = useChatStore((state) => state.openDeliveryChat);
+  const openSupportChat = useChatStore((state) => state.openSupportChat);
   const leadChatsStatus = useChatStore((state) => state.leadChatsStatus);
   const leadChatsError = useChatStore((state) => state.leadChatsError);
   const loadLeadChats = useChatStore((state) => state.loadLeadChats);
@@ -73,6 +74,11 @@ export function ChatListView() {
 
     if (chat.entityType === "delivery") {
       openDeliveryChat(chat.entityId, chat.counterpart, chat.routeSummary);
+      return;
+    }
+
+    if (chat.entityType === "support") {
+      openSupportChat();
       return;
     }
 

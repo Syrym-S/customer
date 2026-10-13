@@ -3,8 +3,9 @@ import { Box, Button, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
+import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 
-export function SupportContacts({ layout = "column" }) {
+export function SupportContacts({ layout = "column", onOpenChat }) {
   const isRow = layout === "row";
   const iconFontSize = isRow ? 16 : undefined;
 
@@ -44,6 +45,35 @@ export function SupportContacts({ layout = "column" }) {
             }
       }
     >
+      {onOpenChat && (
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={onOpenChat}
+          sx={{
+            borderColor: "primary.main",
+            backgroundColor: "rgba(33, 150, 243, 0.06)",
+            fontSize: isRow ? 11 : 12,
+            textTransform: "none",
+
+            "&:hover": {
+              borderColor: "primary.main",
+              backgroundColor: "rgba(33, 150, 243, 0.12)",
+            },
+            "& .MuiButton-startIcon": {
+              flexShrink: 0,
+            },
+            ...(isRow && {
+              minWidth: 0,
+              flex: "1 1 auto",
+            }),
+          }}
+          startIcon={<ChatBubbleOutlineRoundedIcon sx={{ fontSize: iconFontSize }} />}
+        >
+          Написать в чат
+        </Button>
+      )}
+
       <Tooltip title={supportEmail} placement="top" arrow>
         <Button
           color="inherit"
@@ -133,4 +163,5 @@ export function SupportContacts({ layout = "column" }) {
 
 SupportContacts.propTypes = {
   layout: PropTypes.oneOf(["column", "row"]),
+  onOpenChat: PropTypes.func,
 };

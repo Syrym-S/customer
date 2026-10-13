@@ -39,8 +39,10 @@ import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
 import InventoryOutlined from "@mui/icons-material/InventoryOutlined";
 import ReportProblemOutlined from "@mui/icons-material/ReportProblemOutlined";
 import { SupportContacts } from "../../shared/ui/SupportContacts";
+import { useChatStore } from "../chat-widget/model/chat.store";
 
 export function Header() {
+  const openSupportChat = useChatStore((state) => state.openSupportChat);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
@@ -357,7 +359,12 @@ export function Header() {
               py: 1,
             }}
           >
-            <SupportContacts />
+            <SupportContacts
+              onOpenChat={() => {
+                handleCloseBurger();
+                openSupportChat();
+              }}
+            />
           </Box>
         </Box>
       </Box>

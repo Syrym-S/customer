@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { CHAT_CATEGORIES, createMockMessageId } from "./chat.mock";
+import { CHAT_CATEGORIES, SUPPORT_CHAT_ID, createMockMessageId, createSupportChat } from "./chat.mock";
 import { CHAT_MESSAGES_PAGE_SIZE } from "./chat.helpers";
 import {
   buildLeadChatFromApiMessages,
@@ -14,12 +14,17 @@ import {
 } from "./chat.mappers";
 import {
   deleteLeadChatMessageApi,
+  deleteSupportChatMessageApi,
   editLeadChatMessageApi,
+  editSupportChatMessageApi,
   fetchLeadChatMessagesApi,
   fetchLeadChatParticipantsApi,
   fetchLeadChatsListApi,
+  fetchSupportChatMessagesApi,
   markLeadChatAsReadApi,
+  markSupportChatAsReadApi,
   sendLeadChatMessageApi,
+  sendSupportChatMessageApi,
 } from "../api/chat.api";
 import { notifyError } from "../../../shared/model/notifications.store";
 
@@ -50,8 +55,12 @@ function isDeliveryChat(chat) {
   return chat?.entityType === "delivery";
 }
 
+function isSupportChat(chat) {
+  return chat?.entityType === "support";
+}
+
 function isRealChat(chat) {
-  return isLeadChat(chat) || isFactoringChat(chat) || isDeliveryChat(chat);
+  return isLeadChat(chat) || isFactoringChat(chat) || isDeliveryChat(chat) || isSupportChat(chat);
 }
 
 function applyUpdatedMessageFields(message, apiMessage) {
@@ -142,7 +151,7 @@ export const useChatStore = create((set, get) => ({
   isOpen: false,
   activeCategory: CHAT_CATEGORIES[0].key,
   activeChatId: null,
-  chats: [],
+  chats: [createSupportChat()],
   chatPagination: {},
   chatRequestToken: 0,
 
@@ -289,6 +298,49 @@ export const useChatStore = create((set, get) => ({
   openDeliveryChat: (leadId, counterpart, routeSummary) =>
     get().openEntityChat("delivery", leadId, counterpart, routeSummary),
 
+  openSupportChat: async () => {
+    const requestToken = get().chatRequestToken + 1;
+
+    set({ isOpen: true, activeCategory: "support", chatRequestToken: requestToken });
+
+    try {
+      const messagesResponse = await fetchSupportChatMessagesApi(1);
+      const apiMessages = normalizeLeadChatMessagesResponse(messagesResponse);
+
+      const chat = buildLeadChatFromApiMessages({ chatType: "support" }, apiMessages);
+
+      set((prevState) => {
+        const currentChat = prevState.chats.find((item) => item.id === chat.id);
+        const currentMessages = currentChat?.messagesLoaded ? currentChat.messages : [];
+
+        const reconciledMessages = reconcileFreshMessagesWithCurrent(
+          chat.messages,
+          currentMessages,
+        );
+
+        const reconciledChat = {
+          ...chat,
+          messages: reconciledMessages,
+          lastActivityAt:
+            reconciledMessages[reconciledMessages.length - 1]?.createdAt || chat.lastActivityAt,
+          unreadCount: reconciledMessages.filter(
+            (message) => message.authorType === "them" && message.isViewed === false,
+          ).length,
+        };
+
+        return { chats: mergeLeadChats(prevState.chats, [reconciledChat]) };
+      });
+
+      if (get().chatRequestToken === requestToken) {
+        get().openChatById(SUPPORT_CHAT_ID);
+      }
+    } catch (error) {
+      notifyError(
+        error.response?.data?.message || error.message || "Не удалось загрузить чат с поддержкой",
+      );
+    }
+  },
+
   loadLeadChats: async () => {
     const state = get();
 
@@ -388,7 +440,11 @@ export const useChatStore = create((set, get) => ({
   // UNCONFIRMED: mark-as-read response shape not confirmed (ignored either way).
   markLeadChatAsRead: async (leadId, chatType = "lead") => {
     try {
-      await markLeadChatAsReadApi(leadId, chatType);
+      if (chatType === "support") {
+        await markSupportChatAsReadApi();
+      } else {
+        await markLeadChatAsReadApi(leadId, chatType);
+      }
     } catch (error) {
       console.warn(`Не удалось отметить чат по заказу ${leadId} как прочитанный`, error);
     }
@@ -541,7 +597,10 @@ export const useChatStore = create((set, get) => ({
 
     try {
       const files = attachments.map((attachment) => attachment.file).filter(Boolean);
-      const response = await sendLeadChatMessageApi(entityId, trimmedText, files, chatType);
+      const response =
+        chatType === "support"
+          ? await sendSupportChatMessageApi(trimmedText, files)
+          : await sendLeadChatMessageApi(entityId, trimmedText, files, chatType);
       const apiMessage = normalizeLeadChatMessageResponse(response);
       const realMessage = {
         ...mapLeadChatMessageFromApi(apiMessage, entityId, chatType),
@@ -608,7 +667,11 @@ export const useChatStore = create((set, get) => ({
     }));
 
     try {
-      await deleteLeadChatMessageApi(apiEntityId, messageId, chatType);
+      if (chatType === "support") {
+        await deleteSupportChatMessageApi(messageId);
+      } else {
+        await deleteLeadChatMessageApi(apiEntityId, messageId, chatType);
+      }
     } catch (error) {
       set((state) => ({
         chats: withMessageDeletedFlag(state.chats, chat.id, messageId, false),
@@ -658,7 +721,10 @@ export const useChatStore = create((set, get) => ({
     }));
 
     try {
-      const response = await editLeadChatMessageApi(apiEntityId, messageId, trimmedText, chatType);
+      const response =
+        chatType === "support"
+          ? await editSupportChatMessageApi(messageId, trimmedText)
+          : await editLeadChatMessageApi(apiEntityId, messageId, trimmedText, chatType);
       const apiMessage = normalizeLeadChatMessageResponse(response);
 
       if (apiMessage && typeof apiMessage === "object") {

@@ -105,3 +105,79 @@ export async function fetchLeadChatParticipantsApi(leadId, chatType = "lead") {
 
   return response.data;
 }
+
+export async function fetchSupportChatMessagesApi(page = 1) {
+  const response = await apiClient.get("/customer/v1/support-chat/messages", {
+    params: { page },
+  });
+
+  return response.data;
+}
+
+export async function sendSupportChatMessageApi(text, attachments = []) {
+  const message = (text ?? "").trim();
+
+  if (attachments.length === 0) {
+    const response = await apiClient.post("/customer/v1/support-chat/messages", { message });
+
+    return response.data;
+  }
+
+  const formData = new FormData();
+
+  if (message) {
+    formData.append("message", message);
+  }
+
+  for (const file of attachments) {
+    formData.append("file[]", file);
+  }
+
+  const response = await apiClient.post("/customer/v1/support-chat/messages", formData);
+
+  return response.data;
+}
+
+export async function editSupportChatMessageApi(messageId, newText) {
+  const response = await apiClient.put(
+    `/customer/v1/support-chat/messages/${messageId}`,
+    { message: newText },
+  );
+
+  return response.data;
+}
+
+export async function deleteSupportChatMessageApi(messageId) {
+  const response = await apiClient.delete(`/customer/v1/support-chat/messages/${messageId}`);
+
+  return response.data;
+}
+
+export async function markSupportChatAsReadApi() {
+  const response = await apiClient.post("/customer/v1/support-chat/messages/read");
+
+  return response.data;
+}
+
+export async function fetchSupportChatAttachmentBlobApi(attachmentId) {
+  const response = await apiClient.get(
+    `/customer/v1/support-chat/attachments/${attachmentId}`,
+    { responseType: "blob" },
+  );
+
+  return response.data;
+}
+
+export async function fetchSupportChatWsTokenApi({ signal } = {}) {
+  const response = await apiClient.get("/customer/v1/support-chat/token", { signal });
+
+  return response.data;
+}
+
+export async function fetchChatAttachmentBlobApi(attachment) {
+  if (attachment?.chatType === "support") {
+    return fetchSupportChatAttachmentBlobApi(attachment.id);
+  }
+
+  return fetchLeadChatAttachmentBlobApi(attachment.leadId, attachment.id, attachment.chatType);
+}

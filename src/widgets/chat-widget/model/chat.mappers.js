@@ -1,4 +1,5 @@
 import { truncateId } from "../../../shared/helpers/data-grid.helpers";
+import { SUPPORT_CHAT_ID } from "./chat.mock";
 
 // Confirmed system-wide role_id table.
 export const CHAT_ROLE_ID = {
@@ -6,6 +7,7 @@ export const CHAT_ROLE_ID = {
   CUSTOMER: 2,
   FACTOR: 3,
   DRIVER: 4,
+  SUPPORT_AGENT: 5,
 };
 
 const CUSTOMER_PARTICIPANT_ROLE_ID = CHAT_ROLE_ID.CUSTOMER;
@@ -15,6 +17,7 @@ export const CHAT_ROLE_LABEL_BY_ID = {
   [CHAT_ROLE_ID.CUSTOMER]: "Заказчик",
   [CHAT_ROLE_ID.FACTOR]: "Фактор",
   [CHAT_ROLE_ID.DRIVER]: "Водитель",
+  [CHAT_ROLE_ID.SUPPORT_AGENT]: "Поддержка",
 };
 
 const CHAT_ROLE_ID_BY_ROLE_STRING = {
@@ -337,6 +340,13 @@ function buildDeliveryCounterpartFallback(id) {
   };
 }
 
+function buildSupportCounterpartFallback() {
+  return {
+    name: "Техническая поддержка",
+    role: "Поддержка",
+  };
+}
+
 function resolveChatCategoryKey(chatType) {
   if (chatType === "factoring") {
     return "factorings";
@@ -344,6 +354,10 @@ function resolveChatCategoryKey(chatType) {
 
   if (chatType === "delivery") {
     return "delivery";
+  }
+
+  if (chatType === "support") {
+    return "support";
   }
 
   return "shipments";
@@ -359,7 +373,8 @@ export function buildLeadChatFromApiMessages({
   fallbackActivityAt,
   chatType = "lead",
 }, apiMessages) {
-  const resolvedEntityId = entityId ?? leadId;
+  const isSupport = chatType === "support";
+  const resolvedEntityId = isSupport ? SUPPORT_CHAT_ID : entityId ?? leadId;
 
   const messages = apiMessages
     .map((apiMessage) => mapLeadChatMessageFromApi(apiMessage, leadId, chatType))
@@ -376,22 +391,25 @@ export function buildLeadChatFromApiMessages({
 
   const resolvedCounterpart =
     counterpart ||
-    (isFactoring
-      ? buildFactoringCounterpartFallback(resolvedEntityId)
-      : isDelivery
-        ? buildDeliveryCounterpartFallback(resolvedEntityId)
-        : buildLeadCounterpartFromLead(lead));
+    (isSupport
+      ? buildSupportCounterpartFallback()
+      : isFactoring
+        ? buildFactoringCounterpartFallback(resolvedEntityId)
+        : isDelivery
+          ? buildDeliveryCounterpartFallback(resolvedEntityId)
+          : buildLeadCounterpartFromLead(lead));
 
   return {
-    id: `${chatType}-chat-${resolvedEntityId}`,
+    id: isSupport ? SUPPORT_CHAT_ID : `${chatType}-chat-${resolvedEntityId}`,
     entityType: chatType,
     entityId: resolvedEntityId,
-    apiEntityId: leadId,
+    apiEntityId: isSupport ? null : leadId,
     categoryKey: resolveChatCategoryKey(chatType),
     counterpart: resolvedCounterpart,
     counterparts:
       counterparts && counterparts.length > 0 ? counterparts : [resolvedCounterpart],
-    routeSummary: isFactoring ? "" : routeSummary ?? (lead ? buildLeadRouteSummary(lead) : ""),
+    routeSummary:
+      isFactoring || isSupport ? "" : routeSummary ?? (lead ? buildLeadRouteSummary(lead) : ""),
     unreadCount,
     lastActivityAt: lastMessage?.createdAt || fallbackActivityAt || new Date().toISOString(),
     messages,
@@ -411,6 +429,7 @@ export function normalizeLeadChatsListResponse(response) {
 // GAP: /customer/v1/chats has no participant/forwarder data — list rows show generic fallback names until the chat is opened.
 export function mapLeadChatListEntryFromApi(apiChatEntry) {
   const chatType = apiChatEntry?.chat_type || "lead";
+  const isSupport = chatType === "support";
   const leadId = apiChatEntry?.lead_id ?? apiChatEntry?.lead?.id;
   const lead = apiChatEntry?.lead;
 
@@ -425,17 +444,18 @@ export function mapLeadChatListEntryFromApi(apiChatEntry) {
   // getLastMessage) isn't discarded along with the empty text.
   const hasLastMessage = Boolean(lastMessageAt);
 
-  const counterpart =
-    chatType === "factoring"
+  const counterpart = isSupport
+    ? buildSupportCounterpartFallback()
+    : chatType === "factoring"
       ? buildFactoringCounterpartFallback(leadId)
       : chatType === "delivery"
         ? buildDeliveryCounterpartFallback(leadId)
         : { name: `Заказ #${truncateId(lead?.num ?? leadId)}`, role: "Экспедитор" };
 
   return {
-    id: `${chatType}-chat-${leadId}`,
+    id: isSupport ? SUPPORT_CHAT_ID : `${chatType}-chat-${leadId}`,
     entityType: chatType,
-    entityId: leadId,
+    entityId: isSupport ? SUPPORT_CHAT_ID : leadId,
     categoryKey: resolveChatCategoryKey(chatType),
     counterpart,
     routeSummary:

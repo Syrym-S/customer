@@ -66,7 +66,7 @@ export function ChatWidget() {
         <Paper
           elevation={6}
           sx={{
-            width: 380,
+            width: 460,
             maxWidth: "calc(100vw - 32px)",
             height: 560,
             maxHeight: "calc(100vh - 120px)",
