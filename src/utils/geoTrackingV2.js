@@ -6,13 +6,19 @@ import { decodeRoutePolyline } from '../widgets/customer-leads/lib/route-polylin
 
 window.Pusher = Pusher;
 
-// Fixed geows-v2 Reverb deployment params, confirmed by backend.
-// REVERB_APP_KEY wasn't provided yet — set VITE_REVERB_APP_KEY once backend
-// gives it, this is the only missing piece for live updates.
-const REVERB_WS_HOST = 'geo.v2.360logistics.kz';
 const REVERB_WSS_PORT = 443;
 const REVERB_FORCE_TLS = true;
-const REVERB_APP_KEY = import.meta.env.VITE_REVERB_APP_KEY || null;
+
+// Injected per environment by the backend, like window.APP_DATA, but only
+// after this bundle loads — so read it on use, not at module level.
+function getGeoWsConfig() {
+   const config = window?.GeoWS_Config ?? {};
+
+   return {
+      appKey: config.key || null,
+      wsHost: config.ws || 'geo.v2.360logistics.kz',
+   };
+}
 
 export function normalizePolylinePoints(encodedPolyline) {
    const decodedPoints = decodeRoutePolyline(encodedPolyline).map(
@@ -54,17 +60,19 @@ function subscribeGeoTrackingChannel({ token, routeData, onCoordinate, onError }
       return null;
    }
 
-   if (!REVERB_APP_KEY) {
+   const { appKey, wsHost } = getGeoWsConfig();
+
+   if (!appKey) {
       console.warn(
-         'GeoWS v2: VITE_REVERB_APP_KEY is not configured — live tracking connection skipped.',
+         'GeoWS v2: no app key in window.GeoWS_Config — live tracking connection skipped.',
       );
       return null;
    }
 
    const echo = new Echo({
       broadcaster: 'reverb',
-      key: REVERB_APP_KEY,
-      wsHost: REVERB_WS_HOST,
+      key: appKey,
+      wsHost,
       wssPort: REVERB_WSS_PORT,
       forceTLS: REVERB_FORCE_TLS,
       enabledTransports: ['wss'],
