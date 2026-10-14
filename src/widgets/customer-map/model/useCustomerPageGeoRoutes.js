@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { geoPointToLatLng, mergeGeoPointsById, normalizeGeoPoints } from "../../../utils/geologic";
 import {
-    geoPointToLatLng,
-    mergeGeoPointsById,
-    openLeadGeoConnection,
-} from "../../../utils/geologic";
+    normalizePolylinePoints,
+    openLeadGeoTrackingConnection,
+} from "../../../utils/geoTrackingV2";
 
 import {
     deleteCachedGeoRoute,
@@ -12,11 +12,6 @@ import {
     setCachedEmptyGeoRoute,
     setCachedGeoRoute,
 } from "./geo-routes-cache";
-
-import {
-    notifySuccess,
-    notifyWarning,
-} from "../../../shared/model/notifications.store";
 
 function getLeadId(lead) {
     return lead?.id || lead?._id || lead?.lead_id || lead?.leadId || "";
@@ -81,7 +76,6 @@ export function useCustomerPageGeoRoutes(leads) {
         const connections = [];
         const failedLeadIds = new Set();
 
-        const openedLeadIds = new Set();
         const handledLeadIds = new Set();
 
         const leadsWithId = leads.filter((lead) => Boolean(getLeadId(lead)));
@@ -150,10 +144,6 @@ export function useCustomerPageGeoRoutes(leads) {
 
             handledLeadIds.add(leadId);
 
-            if (status === "opened") {
-                openedLeadIds.add(leadId);
-            }
-
             if (status === "failed") {
                 failedLeadIds.add(leadId);
             }
@@ -161,58 +151,75 @@ export function useCustomerPageGeoRoutes(leads) {
             showGeoRoutesSummaryIfReady();
         }
 
+        function mergeLeadGeoPoints(leadId, lead, newPoints) {
+            if (!newPoints.length) {
+                return;
+            }
+
+            setGeoRoutes((prevRoutes) => {
+                const currentRoute = prevRoutes.find(
+                    (route) => String(route.id) === leadId,
+                );
+
+                const mergedPoints = mergeGeoPointsById(
+                    currentRoute?.rawPoints || [],
+                    newPoints,
+                );
+
+                if (!mergedPoints.length) {
+                    return prevRoutes;
+                }
+
+                const routePoints = mapGeoPointsToRoutePoints(mergedPoints);
+                const currentPoint = routePoints.at(-1) || null;
+
+                const nextRoute = {
+                    id: leadId,
+                    lead,
+                    rawPoints: mergedPoints,
+                    points: routePoints,
+                    currentPoint,
+                };
+
+                setCachedGeoRoute(leadId, nextRoute);
+
+                return upsertGeoRoute(prevRoutes, nextRoute);
+            });
+        }
+
         leadsWithoutFreshCache.forEach((lead) => {
             const leadId = String(getLeadId(lead));
 
-            const connection = openLeadGeoConnection({
+            const connection = openLeadGeoTrackingConnection({
                 leadId,
-                mode: "read",
-                silent: true,
+                type: "read",
 
-                onOpen: () => {
+                onRoute: (routeData) => {
+                    if (isCancelled) {
+                        return;
+                    }
+
+                    mergeLeadGeoPoints(leadId, lead, normalizePolylinePoints(routeData?.polyline));
+                    markLeadHandled(leadId, "opened");
+                },
+
+                onCoordinate: (coords) => {
+                    if (isCancelled) {
+                        return;
+                    }
+
+                    mergeLeadGeoPoints(leadId, lead, normalizeGeoPoints([coords]));
+                },
+
+                // Lead has no geo session (created before the geows-v2
+                // migration) — not a failure, just nothing to show live.
+                onNoSession: () => {
                     if (isCancelled) {
                         return;
                     }
 
                     setCachedEmptyGeoRoute(leadId);
                     markLeadHandled(leadId, "opened");
-                },
-
-                onPoints: (points) => {
-                    if (isCancelled) {
-                        return;
-                    }
-
-                    setGeoRoutes((prevRoutes) => {
-                        const currentRoute = prevRoutes.find(
-                            (route) => String(route.id) === leadId,
-                        );
-
-                        const mergedPoints = mergeGeoPointsById(
-                            currentRoute?.rawPoints || [],
-                            points,
-                        );
-
-                        if (!mergedPoints.length) {
-                            return prevRoutes;
-                        }
-
-                        const routePoints =
-                            mapGeoPointsToRoutePoints(mergedPoints);
-                        const currentPoint = routePoints.at(-1) || null;
-
-                        const nextRoute = {
-                            id: leadId,
-                            lead,
-                            rawPoints: mergedPoints,
-                            points: routePoints,
-                            currentPoint,
-                        };
-
-                        setCachedGeoRoute(leadId, nextRoute);
-
-                        return upsertGeoRoute(prevRoutes, nextRoute);
-                    });
                 },
 
                 onError: (error) => {
@@ -225,21 +232,6 @@ export function useCustomerPageGeoRoutes(leads) {
                     console.warn("Customer page GeoWS failed:", {
                         leadId,
                         error,
-                    });
-
-                    markLeadHandled(leadId, "failed");
-                },
-
-                onAuthFailed: (payload) => {
-                    if (isCancelled) {
-                        return;
-                    }
-
-                    deleteCachedGeoRoute(leadId);
-
-                    console.warn("Customer page GeoWS auth failed:", {
-                        leadId,
-                        payload,
                     });
 
                     markLeadHandled(leadId, "failed");

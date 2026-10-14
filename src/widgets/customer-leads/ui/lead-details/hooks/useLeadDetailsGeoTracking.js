@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { mergeGeoPointsById, normalizeGeoPoints } from '../../../../../utils/geologic';
 import {
-   isGeoWsConfigured,
-   mergeGeoPointsById,
-   openLeadGeoConnection,
-} from '../../../../../utils/geologic';
+   normalizePolylinePoints,
+   openLeadGeoTrackingConnection,
+} from '../../../../../utils/geoTrackingV2';
 
 export function useLeadDetailsGeoTracking(leadId) {
    const [geoPoints, setGeoPoints] = useState([]);
@@ -30,34 +30,45 @@ export function useLeadDetailsGeoTracking(leadId) {
          return;
       }
 
-      if (!isGeoWsConfigured()) {
-         console.info('GeoWS is not configured for this environment');
-         return;
-      }
-
-      const connection = openLeadGeoConnection({
+      const connection = openLeadGeoTrackingConnection({
          leadId,
+         type: 'read',
 
-         onError: (error) => {
-            console.error('Lead GeoWS error:', error);
+         onRoute: (routeData) => {
+            const initialPoints = normalizePolylinePoints(routeData?.polyline);
+
+            if (!initialPoints.length) {
+               return;
+            }
+
+            setGeoPoints(initialPoints);
+            setGeoCurrentPoint(initialPoints.at(-1) ?? null);
          },
 
-         onAuthFailed: (payload) => {
-            console.error('Lead GeoWS auth failed:', payload);
-         },
+         onCoordinate: (coords) => {
+            const [nextPoint] = normalizeGeoPoints([coords]);
 
-         onPoints: (points) => {
-            if (!points?.length) {
+            if (!nextPoint) {
                return;
             }
 
             setGeoPoints((prevPoints) => {
-               const nextPoints = mergeGeoPointsById(prevPoints, points);
+               const nextPoints = mergeGeoPointsById(prevPoints, [nextPoint]);
 
                setGeoCurrentPoint(nextPoints.at(-1) ?? null);
 
                return nextPoints;
             });
+         },
+
+         // Lead created before the geows-v2 migration has no geo session —
+         // just show the static route, same as today.
+         onNoSession: () => {
+            console.info(`Lead ${leadId} has no geo session — live tracking unavailable.`);
+         },
+
+         onError: (error) => {
+            console.error('Lead GeoWS v2 error:', error);
          },
       });
 
