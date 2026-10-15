@@ -30,6 +30,7 @@ import { CurrencyAutocomplete } from '../components/CurrencyAutocomplete';
 import { TnvedCodeAutocomplete } from '../../../../../widgets/customer-tnved/ui/TnvedCodeAutocomplete';
 import { computeCargoVolumeM3 } from '../../../../../widgets/customer-leads/model/lead-transportation.helpers';
 import { useLeadParamsOptions } from '../../../../../widgets/customer-leads/model/lead-params.store';
+import { NumericTextField } from '../../../../../shared/ui/NumericTextField';
 
 function createEmptyCargo() {
    return {
@@ -180,17 +181,17 @@ export function CargoStep({ control, errors, setValue, getValues }) {
    }
 
    function handleDimensionFieldChange(index, onFieldChange) {
-      return (event) => {
-         onFieldChange(event);
+      return (nextValue) => {
+         onFieldChange(nextValue);
          recalcCargoVolume(index);
       };
    }
 
    function handleVolumeFieldChange(index, onFieldChange) {
-      return (event) => {
-         onFieldChange(event);
+      return (nextValue) => {
+         onFieldChange(nextValue);
 
-         const isManual = event.target.value !== '';
+         const isManual = nextValue !== '';
 
          setValue(`cargos.${index}.isVolumeManual`, isManual);
 
@@ -352,8 +353,13 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                               },
                            }}
                            render={({ field }) => (
-                              <TextField
-                                 {...field}
+                              <NumericTextField
+                                 name={field.name}
+                                 value={field.value}
+                                 onChange={field.onChange}
+                                 onBlur={field.onBlur}
+                                 inputRef={field.ref}
+                                 decimals={3}
                                  label="Вес, кг"
                                  fullWidth
                                  size="small"
@@ -383,11 +389,18 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                               },
                            }}
                            render={({ field }) => (
-                              <TextField
-                                 {...field}
+                              <NumericTextField
+                                 name={field.name}
+                                 value={field.value}
+                                 onChange={field.onChange}
+                                 onBlur={field.onBlur}
+                                 inputRef={field.ref}
+                                 decimals={2}
                                  label="Цена груза"
                                  fullWidth
                                  size="small"
+                                 error={Boolean(cargoErrors.cargo_price)}
+                                 helperText={cargoErrors.cargo_price?.message}
                               />
                            )}
                         />
@@ -409,9 +422,29 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                            <Controller
                               name={`cargos.${index}.length_cm`}
                               control={control}
+                              rules={{
+                                 validate: (value) => {
+                                    if (
+                                       value === '' ||
+                                       value === null ||
+                                       value === undefined
+                                    ) {
+                                       return true;
+                                    }
+
+                                    return (
+                                       Number(value) > 0 ||
+                                       'Длина должна быть больше 0'
+                                    );
+                                 },
+                              }}
                               render={({ field }) => (
-                                 <TextField
-                                    {...field}
+                                 <NumericTextField
+                                    name={field.name}
+                                    value={field.value}
+                                    onBlur={field.onBlur}
+                                    inputRef={field.ref}
+                                    decimals={0}
                                     onChange={handleDimensionFieldChange(
                                        index,
                                        field.onChange,
@@ -419,6 +452,8 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                     label="Длина, см"
                                     fullWidth
                                     size="small"
+                                    error={Boolean(cargoErrors.length_cm)}
+                                    helperText={cargoErrors.length_cm?.message}
                                  />
                               )}
                            />
@@ -426,9 +461,29 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                            <Controller
                               name={`cargos.${index}.width_cm`}
                               control={control}
+                              rules={{
+                                 validate: (value) => {
+                                    if (
+                                       value === '' ||
+                                       value === null ||
+                                       value === undefined
+                                    ) {
+                                       return true;
+                                    }
+
+                                    return (
+                                       Number(value) > 0 ||
+                                       'Ширина должна быть больше 0'
+                                    );
+                                 },
+                              }}
                               render={({ field }) => (
-                                 <TextField
-                                    {...field}
+                                 <NumericTextField
+                                    name={field.name}
+                                    value={field.value}
+                                    onBlur={field.onBlur}
+                                    inputRef={field.ref}
+                                    decimals={0}
                                     onChange={handleDimensionFieldChange(
                                        index,
                                        field.onChange,
@@ -436,6 +491,8 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                     label="Ширина, см"
                                     fullWidth
                                     size="small"
+                                    error={Boolean(cargoErrors.width_cm)}
+                                    helperText={cargoErrors.width_cm?.message}
                                  />
                               )}
                            />
@@ -443,9 +500,29 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                            <Controller
                               name={`cargos.${index}.height_cm`}
                               control={control}
+                              rules={{
+                                 validate: (value) => {
+                                    if (
+                                       value === '' ||
+                                       value === null ||
+                                       value === undefined
+                                    ) {
+                                       return true;
+                                    }
+
+                                    return (
+                                       Number(value) > 0 ||
+                                       'Высота должна быть больше 0'
+                                    );
+                                 },
+                              }}
                               render={({ field }) => (
-                                 <TextField
-                                    {...field}
+                                 <NumericTextField
+                                    name={field.name}
+                                    value={field.value}
+                                    onBlur={field.onBlur}
+                                    inputRef={field.ref}
+                                    decimals={0}
                                     onChange={handleDimensionFieldChange(
                                        index,
                                        field.onChange,
@@ -453,6 +530,8 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                     label="Высота, см"
                                     fullWidth
                                     size="small"
+                                    error={Boolean(cargoErrors.height_cm)}
+                                    helperText={cargoErrors.height_cm?.message}
                                  />
                               )}
                            />
@@ -460,9 +539,29 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                            <Controller
                               name={`cargos.${index}.volume_m3`}
                               control={control}
+                              rules={{
+                                 validate: (value) => {
+                                    if (
+                                       value === '' ||
+                                       value === null ||
+                                       value === undefined
+                                    ) {
+                                       return true;
+                                    }
+
+                                    return (
+                                       Number(value) > 0 ||
+                                       'Объем должен быть больше 0'
+                                    );
+                                 },
+                              }}
                               render={({ field }) => (
-                                 <TextField
-                                    {...field}
+                                 <NumericTextField
+                                    name={field.name}
+                                    value={field.value}
+                                    onBlur={field.onBlur}
+                                    inputRef={field.ref}
+                                    decimals={3}
                                     onChange={handleVolumeFieldChange(
                                        index,
                                        field.onChange,
@@ -470,6 +569,8 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                     label="Объем, м³"
                                     fullWidth
                                     size="small"
+                                    error={Boolean(cargoErrors.volume_m3)}
+                                    helperText={cargoErrors.volume_m3?.message}
                                  />
                               )}
                            />
@@ -683,8 +784,13 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                      },
                   }}
                   render={({ field }) => (
-                     <TextField
-                        {...field}
+                     <NumericTextField
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        inputRef={field.ref}
+                        decimals={2}
                         label="Цена исполнения"
                         fullWidth
                         size="small"
@@ -750,13 +856,16 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                      },
                   }}
                   render={({ field }) => (
-                     <TextField
-                        {...field}
-                        type="number"
+                     <NumericTextField
+                        name={field.name}
+                        value={field.value}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        inputRef={field.ref}
+                        decimals={0}
                         label="Отсрочка платежа, дней"
                         fullWidth
                         size="small"
-                        inputProps={{ min: 1, max: 364, step: 1 }}
                         error={Boolean(errors.gracePeriodDays)}
                         helperText={errors.gracePeriodDays?.message}
                      />

@@ -35,6 +35,7 @@ import {
   computeCargoVolumeM3,
   formatCargoVolumeM3,
 } from "../../../model/lead-transportation.helpers";
+import { NumericTextField } from "../../../../../shared/ui/NumericTextField";
 
 function createEmptyLeadCargo() {
   return {
@@ -375,26 +376,24 @@ export function LeadCargoSection({
                     }}
                   />
 
-                  <TextField
+                  <NumericTextField
                     label="Вес, кг"
                     value={cargo.weight_kg || ""}
-                    onChange={(event) =>
-                      handleCargoChange(index, "weight_kg", event.target.value)
+                    onChange={(nextValue) =>
+                      handleCargoChange(index, "weight_kg", nextValue)
                     }
+                    decimals={3}
                     fullWidth
                     size="small"
                   />
 
-                  <TextField
+                  <NumericTextField
                     label="Цена груза"
                     value={cargo.cargo_price || ""}
-                    onChange={(event) =>
-                      handleCargoChange(
-                        index,
-                        "cargo_price",
-                        event.target.value,
-                      )
+                    onChange={(nextValue) =>
+                      handleCargoChange(index, "cargo_price", nextValue)
                     }
+                    decimals={2}
                     fullWidth
                     size="small"
                   />
@@ -413,54 +412,46 @@ export function LeadCargoSection({
                       },
                     }}
                   >
-                    <TextField
+                    <NumericTextField
                       label="Длина, см"
                       value={cargo.length_cm || ""}
-                      onChange={(event) =>
-                        handleCargoChange(
-                          index,
-                          "length_cm",
-                          event.target.value,
-                        )
+                      onChange={(nextValue) =>
+                        handleCargoChange(index, "length_cm", nextValue)
                       }
+                      decimals={0}
                       fullWidth
                       size="small"
                     />
 
-                    <TextField
+                    <NumericTextField
                       label="Ширина, см"
                       value={cargo.width_cm || ""}
-                      onChange={(event) =>
-                        handleCargoChange(index, "width_cm", event.target.value)
+                      onChange={(nextValue) =>
+                        handleCargoChange(index, "width_cm", nextValue)
                       }
+                      decimals={0}
                       fullWidth
                       size="small"
                     />
 
-                    <TextField
+                    <NumericTextField
                       label="Высота, см"
                       value={cargo.height_cm || ""}
-                      onChange={(event) =>
-                        handleCargoChange(
-                          index,
-                          "height_cm",
-                          event.target.value,
-                        )
+                      onChange={(nextValue) =>
+                        handleCargoChange(index, "height_cm", nextValue)
                       }
+                      decimals={0}
                       fullWidth
                       size="small"
                     />
 
-                    <TextField
+                    <NumericTextField
                       label="Объем, м³"
                       value={cargo.volume_m3 || ""}
-                      onChange={(event) =>
-                        handleCargoChange(
-                          index,
-                          "volume_m3",
-                          event.target.value,
-                        )
+                      onChange={(nextValue) =>
+                        handleCargoChange(index, "volume_m3", nextValue)
                       }
+                      decimals={3}
                       fullWidth
                       size="small"
                     />
@@ -658,11 +649,12 @@ export function LeadCargoSection({
                   width: "100%",
                 }}
               >
-                <TextField
+                <NumericTextField
                   name="price"
                   label="Цена исполнения"
                   value={editForm.price ?? ""}
-                  onChange={onEditChange}
+                  onChange={(nextValue) => onEditChange("price", nextValue)}
+                  decimals={2}
                   disabled={isForwarderCreatedLead}
                   helperText={
                     isForwarderCreatedLead ? "Цена задана экспедитором" : ""
@@ -711,13 +703,14 @@ export function LeadCargoSection({
                 <MenuItem value="без НДС">без НДС</MenuItem>
               </TextField>
 
-              <TextField
+              <NumericTextField
                 name="gracePeriodDays"
                 label="Отсрочка платежа, дней"
-                type="number"
                 value={editForm.gracePeriodDays ?? ""}
-                onChange={onEditChange}
-                inputProps={{ min: 1, max: 364, step: 1 }}
+                onChange={(nextValue) =>
+                  onEditChange("gracePeriodDays", nextValue)
+                }
+                decimals={0}
                 fullWidth
                 size="small"
                 sx={{ minWidth: 0 }}
