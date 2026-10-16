@@ -35,12 +35,16 @@ export function LeadRouteLeafletMap({
 
       mapRef.current = L.map(containerRef.current, {
          zoomControl: true,
-         attributionControl: false,
       }).setView(center, zoom);
 
-      L.tileLayer(
-         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      ).addTo(mapRef.current);
+      mapRef.current.attributionControl.setPrefix(
+         '<a href="https://leafletjs.com" title="A JavaScript library for interactive maps">Leaflet</a>',
+      );
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(mapRef.current);
 
       setTimeout(() => {
          mapRef.current?.invalidateSize();

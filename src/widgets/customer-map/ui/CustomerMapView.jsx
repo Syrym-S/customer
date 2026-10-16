@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import {
    MapContainer,
+   AttributionControl,
    TileLayer,
    Marker,
    Popup,
@@ -10,6 +11,7 @@ import {
 import PropTypes from "prop-types";
 import {
    CUSTOMER_MAP_TILE_LAYER,
+   LEAFLET_ATTRIBUTION_PREFIX,
    ROUTE_TOOLTIP_PANE_NAME,
    driverIcon,
    getMarkerIcon,
@@ -133,7 +135,12 @@ export function CustomerMapView({
 
          <MapClickHandler onMapClick={onMapClick} />
 
-         <TileLayer url={CUSTOMER_MAP_TILE_LAYER.url} />
+         <AttributionControl prefix={LEAFLET_ATTRIBUTION_PREFIX} />
+
+         <TileLayer
+            url={CUSTOMER_MAP_TILE_LAYER.url}
+            attribution={CUSTOMER_MAP_TILE_LAYER.attribution}
+         />
 
          {routes.map((mapRoute) => {
             if (!mapRoute.points || mapRoute.points.length < 2) {
