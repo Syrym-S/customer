@@ -37,6 +37,7 @@ import GavelOutlined from "@mui/icons-material/GavelOutlined";
 import AccountBalanceOutlined from "@mui/icons-material/AccountBalanceOutlined";
 import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
 import InventoryOutlined from "@mui/icons-material/InventoryOutlined";
+import FactoryOutlined from "@mui/icons-material/FactoryOutlined";
 import ReportProblemOutlined from "@mui/icons-material/ReportProblemOutlined";
 import { SupportContacts } from "../../shared/ui/SupportContacts";
 import { useChatStore } from "../chat-widget/model/chat.store";
@@ -58,6 +59,7 @@ export function Header() {
   const isTenderPage = location.pathname === "/customer/tenders";
   const isFactoringsPage = location.pathname === "/customer/factorings";
   const isForwardersPage = location.pathname === "/customer/forwarders";
+  const isManufacturersPage = location.pathname === "/customer/manufacturers";
   const isTnvedPage = location.pathname === "/customer/tnved";
   const isComplaintsPage = location.pathname === "/customer/complaints";
   const userEmail = window?.APP_DATA?.user_email || "Пользователь";
@@ -224,6 +226,14 @@ export function Header() {
         selected: isForwardersPage,
         icon: <SwapHorizOutlined />,
         tooltip: "Список экспедиторов и приглашение новых участников",
+      },
+      {
+        label: "Производители",
+        path: "/customer/manufacturers",
+        selected: isManufacturersPage,
+        icon: <FactoryOutlined />,
+        tooltip:
+          "Привязка производителей к перевозкам и справочник производителей",
       },
       {
         label: "ТН ВЭД",

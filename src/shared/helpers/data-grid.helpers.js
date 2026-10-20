@@ -98,3 +98,15 @@ export function toTimestamp(value) {
 
    return parseDateText(value);
 }
+
+export const EMPTY_ROW_SELECTION = { type: 'include', ids: new Set() };
+
+export function getSelectedRowIds(selectionModel, rows, getRowId = (row) => row.id) {
+   const ids = Array.from(selectionModel?.ids ?? []);
+
+   if (selectionModel?.type !== 'exclude') {
+      return ids;
+   }
+
+   return rows.map(getRowId).filter((rowId) => !ids.includes(rowId));
+}

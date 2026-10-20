@@ -148,9 +148,10 @@ export const theme = createTheme({
                // never actually first-of-type among its siblings. Every
                // header carries `aria-colindex` reflecting its real column
                // position (1-indexed), which is immune to that spacer.
-               '& .MuiDataGrid-columnHeader[aria-colindex="1"]': {
-                  paddingLeft: 32,
-               },
+               '& .MuiDataGrid-columnHeader[aria-colindex="1"]:not(.MuiDataGrid-columnHeaderCheckbox)':
+                  {
+                     paddingLeft: 32,
+                  },
             }),
             columnHeaderTitle: ({ theme }) => ({
                fontWeight: 600,
@@ -172,7 +173,7 @@ export const theme = createTheme({
                // first-of-type among its row siblings and the rule silently
                // never matched. `aria-colindex="1"` targets the cell by its
                // real column position instead, which the spacer doesn't have.
-               '&[aria-colindex="1"]': {
+               '&[aria-colindex="1"]:not(.MuiDataGrid-cellCheckbox)': {
                   paddingLeft: 32,
                },
             }),
