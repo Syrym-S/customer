@@ -24,6 +24,7 @@ import {
    getRoutePathStyle,
    getRouteStatusStyle,
 } from "../model/route-status-style";
+import { isLeadTrackingActive } from "../../customer-leads/model/lead.helpers";
 import { DriverMapInfo } from "./DriverMapInfo";
 import { MapResizeHandler } from "./MapResizeHandler";
 import { FitRouteBounds } from "./FitRouteBounds";
@@ -289,7 +290,7 @@ export function CustomerMapView({
                      </RoutePolyline>
                   )}
 
-                  {currentPoint && (
+                  {currentPoint && isLeadTrackingActive(geoRoute.lead?.status) && (
                      <Marker
                         position={currentPoint}
                         icon={driverIcon}

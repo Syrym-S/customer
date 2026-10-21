@@ -1,3 +1,5 @@
+import { MANUFACTURER_REQUEST_DIRECTIONS } from '../model/manufacturers.helpers';
+import { mockManufacturerRequests } from '../model/manufacturer-requests.mock';
 import {
    mockCustomerManufacturerLinks,
    mockLeadManufacturerLinks,
@@ -57,13 +59,18 @@ export async function attachManufacturerMock(manufacturerId) {
       throw new Error('Manufacturer not found');
    }
 
-   mockCustomerManufacturerLinks.set(manufacturerId, new Date().toISOString());
+   mockManufacturerRequests.set(manufacturerId, {
+      direction: MANUFACTURER_REQUEST_DIRECTIONS.OUTGOING,
+      linkedAt: new Date().toISOString(),
+   });
 
    return { message: 'Manufacturer attached' };
 }
 
 export async function detachManufacturerMock(manufacturerId) {
-   if (!mockCustomerManufacturerLinks.delete(manufacturerId)) {
+   const hadRequest = mockManufacturerRequests.delete(manufacturerId);
+
+   if (!mockCustomerManufacturerLinks.delete(manufacturerId) && !hadRequest) {
       throw new Error('Link not found');
    }
 
@@ -92,4 +99,43 @@ export async function detachManufacturerFromLeadMock(leadId) {
    }
 
    return { message: 'Manufacturer detached from lead' };
+}
+
+export async function fetchManufacturerRequestsMock() {
+   const items = [];
+
+   mockManufacturerRequests.forEach(({ direction, linkedAt }, manufacturerId) => {
+      const manufacturer = findInCatalog(manufacturerId);
+
+      if (manufacturer) {
+         items.push({ ...manufacturer, linkedAt, direction });
+      }
+   });
+
+   return { items };
+}
+
+export async function approveManufacturerRequestMock(manufacturerId) {
+   const request = mockManufacturerRequests.get(manufacturerId);
+
+   if (request?.direction !== MANUFACTURER_REQUEST_DIRECTIONS.INCOMING) {
+      throw new Error('Request not found');
+   }
+
+   mockManufacturerRequests.delete(manufacturerId);
+   mockCustomerManufacturerLinks.set(manufacturerId, new Date().toISOString());
+
+   return { message: 'Request approved' };
+}
+
+export async function rejectManufacturerRequestMock(manufacturerId) {
+   const request = mockManufacturerRequests.get(manufacturerId);
+
+   if (request?.direction !== MANUFACTURER_REQUEST_DIRECTIONS.INCOMING) {
+      throw new Error('Request not found');
+   }
+
+   mockManufacturerRequests.delete(manufacturerId);
+
+   return { message: 'Request rejected' };
 }

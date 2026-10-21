@@ -29,6 +29,10 @@ import { useManufacturersSearch } from '../model/useManufacturers';
 export function AddManufacturerModal({
    open,
    attachedIds,
+   title = 'Добавить производителя',
+   submitLabel = 'Добавить',
+   submittingLabel = 'Добавляем...',
+   attachedLabel = 'Уже добавлен',
    isSubmitting = false,
    onClose,
    onSubmit,
@@ -55,7 +59,7 @@ export function AddManufacturerModal({
 
    return (
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-         <DialogTitle>Добавить производителя</DialogTitle>
+         <DialogTitle>{title}</DialogTitle>
 
          <DialogContent>
             <Stack spacing={2} sx={{ pt: 1 }}>
@@ -125,7 +129,7 @@ export function AddManufacturerModal({
                                     primary={getManufacturerName(manufacturer)}
                                     secondary={
                                        isAttached
-                                          ? 'Уже добавлен'
+                                          ? attachedLabel
                                           : `БИН ${getManufacturerBin(manufacturer)}`
                                     }
                                  />
@@ -145,10 +149,18 @@ export function AddManufacturerModal({
 
             <Button
                variant="contained"
-               onClick={() => onSubmit(selectedId)}
+               onClick={() =>
+                  onSubmit(
+                     selectedId,
+                     results.find(
+                        (manufacturer) =>
+                           getManufacturerId(manufacturer) === selectedId,
+                     ) ?? null,
+                  )
+               }
                disabled={isSubmitting || !selectedId}
             >
-               {isSubmitting ? 'Добавляем...' : 'Добавить'}
+               {isSubmitting ? submittingLabel : submitLabel}
             </Button>
          </DialogActions>
       </Dialog>
@@ -158,6 +170,10 @@ export function AddManufacturerModal({
 AddManufacturerModal.propTypes = {
    open: PropTypes.bool.isRequired,
    attachedIds: PropTypes.array.isRequired,
+   title: PropTypes.string,
+   submitLabel: PropTypes.string,
+   submittingLabel: PropTypes.string,
+   attachedLabel: PropTypes.string,
    isSubmitting: PropTypes.bool,
    onClose: PropTypes.func.isRequired,
    onSubmit: PropTypes.func.isRequired,

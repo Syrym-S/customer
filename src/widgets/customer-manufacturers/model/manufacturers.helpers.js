@@ -127,3 +127,114 @@ export function paginate(items, page, perPage) {
 
    return items.slice(startIndex, startIndex + perPage);
 }
+
+export const MANUFACTURER_REQUEST_DIRECTIONS = {
+   INCOMING: 'incoming',
+   OUTGOING: 'outgoing',
+};
+
+export const MANUFACTURER_ROW_STATUSES = {
+   LINKED: 'linked',
+   INCOMING: 'incoming',
+   OUTGOING: 'outgoing',
+};
+
+export const ALL_ROW_STATUSES_VALUE = 'all';
+
+const MANUFACTURER_ROW_STATUS_META = {
+   [MANUFACTURER_ROW_STATUSES.LINKED]: { label: 'Привязан', color: 'success' },
+   [MANUFACTURER_ROW_STATUSES.INCOMING]: {
+      label: 'Входящая заявка',
+      color: 'warning',
+   },
+   [MANUFACTURER_ROW_STATUSES.OUTGOING]: {
+      label: 'Заявка отправлена',
+      color: 'info',
+   },
+};
+
+export function getManufacturerRowStatusOptions() {
+   return Object.values(MANUFACTURER_ROW_STATUSES).map((status) => ({
+      value: status,
+      label: MANUFACTURER_ROW_STATUS_META[status].label,
+   }));
+}
+
+export function getManufacturerRowStatusLabel(status) {
+   return MANUFACTURER_ROW_STATUS_META[status]?.label || 'Неизвестно';
+}
+
+export function getManufacturerRowStatusColor(status) {
+   return MANUFACTURER_ROW_STATUS_META[status]?.color || 'default';
+}
+
+export function normalizeManufacturerRequest(request) {
+   const manufacturer = normalizeManufacturer(request);
+
+   if (!manufacturer?.id) {
+      return null;
+   }
+
+   return {
+      ...manufacturer,
+      direction:
+         request?.direction === MANUFACTURER_REQUEST_DIRECTIONS.OUTGOING
+            ? MANUFACTURER_REQUEST_DIRECTIONS.OUTGOING
+            : MANUFACTURER_REQUEST_DIRECTIONS.INCOMING,
+   };
+}
+
+export function normalizeManufacturerRequestsResponse(response) {
+   const items = Array.isArray(response?.items) ? response.items : [];
+
+   return items.map(normalizeManufacturerRequest).filter(Boolean);
+}
+
+export function buildManufacturerRows(manufacturers, requests) {
+   const rows = manufacturers.map((manufacturer) => ({
+      ...manufacturer,
+      rowStatus: MANUFACTURER_ROW_STATUSES.LINKED,
+   }));
+
+   const knownIds = new Set(rows.map(getManufacturerId));
+
+   requests.forEach((request) => {
+      if (knownIds.has(request.id)) {
+         return;
+      }
+
+      knownIds.add(request.id);
+
+      rows.push({
+         ...request,
+         rowStatus:
+            request.direction === MANUFACTURER_REQUEST_DIRECTIONS.OUTGOING
+               ? MANUFACTURER_ROW_STATUSES.OUTGOING
+               : MANUFACTURER_ROW_STATUSES.INCOMING,
+      });
+   });
+
+   return rows;
+}
+
+export function getManufacturerRowStatus(row) {
+   return row?.rowStatus || MANUFACTURER_ROW_STATUSES.LINKED;
+}
+
+export function filterManufacturerRowsByStatus(rows, status) {
+   if (!status || status === ALL_ROW_STATUSES_VALUE) {
+      return rows;
+   }
+
+   return rows.filter((row) => getManufacturerRowStatus(row) === status);
+}
+
+export function getRowIdsByStatus(rows, ids, statuses) {
+   const allowed = new Set(statuses);
+
+   return ids.filter((rowId) => {
+      const row = rows.find((item) => getManufacturerId(item) === rowId);
+
+      return Boolean(row) && allowed.has(getManufacturerRowStatus(row));
+   });
+}

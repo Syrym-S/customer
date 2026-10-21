@@ -6,7 +6,7 @@ import {
    getLocationDescription,
    getLocationPosition,
 } from '../../model/lead-details-map.helpers';
-import { formatLeadDate } from '../../model/lead.helpers';
+import { formatLeadDate, isLeadTrackingActive } from '../../model/lead.helpers';
 import { getWaypointTypeLabel } from '../../model/lead-route.helpers';
 
 function getPassedStateLine(location) {
@@ -125,7 +125,10 @@ export function LeadDetailsMap({
            ].filter(Boolean)
          : [];
 
-   const geoMarkers = geoCurrentPoint
+   const hasLiveDriverMarker =
+      Boolean(geoCurrentPoint) && isLeadTrackingActive(lead.status);
+
+   const geoMarkers = hasLiveDriverMarker
       ? [
            {
               id: 'geo-current-point',

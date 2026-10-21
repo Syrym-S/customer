@@ -1,20 +1,26 @@
 import { isMockApi } from '../../../shared/config/api.config';
 import { normalizeManufacturer } from '../model/manufacturers.helpers';
 import {
+   approveManufacturerRequestApi,
    attachManufacturerApi,
    attachManufacturerToLeadApi,
    detachManufacturerApi,
    detachManufacturerFromLeadApi,
+   fetchManufacturerRequestsApi,
    fetchMyManufacturersApi,
+   rejectManufacturerRequestApi,
    searchManufacturersApi,
 } from './manufacturers.api';
 import {
+   approveManufacturerRequestMock,
    attachManufacturerMock,
    attachManufacturerToLeadMock,
    detachManufacturerFromLeadMock,
    detachManufacturerMock,
+   fetchManufacturerRequestsMock,
    fetchMyManufacturersMock,
    getMockLeadManufacturer,
+   rejectManufacturerRequestMock,
    searchManufacturersMock,
 } from './manufacturers.mock-api';
 
@@ -32,6 +38,30 @@ export function fetchMyManufacturers() {
    }
 
    return fetchMyManufacturersApi();
+}
+
+export function fetchManufacturerRequests() {
+   if (isMockApi) {
+      return fetchManufacturerRequestsMock();
+   }
+
+   return fetchManufacturerRequestsApi();
+}
+
+export function approveManufacturerRequest(manufacturerId) {
+   if (isMockApi) {
+      return approveManufacturerRequestMock(manufacturerId);
+   }
+
+   return approveManufacturerRequestApi(manufacturerId);
+}
+
+export function rejectManufacturerRequest(manufacturerId) {
+   if (isMockApi) {
+      return rejectManufacturerRequestMock(manufacturerId);
+   }
+
+   return rejectManufacturerRequestApi(manufacturerId);
 }
 
 export function attachManufacturer(manufacturerId) {

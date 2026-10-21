@@ -52,3 +52,25 @@ export async function detachManufacturerFromLeadApi(leadId) {
 
    return response.data;
 }
+
+export async function fetchManufacturerRequestsApi() {
+   const response = await apiClient.get('/customer/v1/manufacturers/requests');
+
+   return response.data;
+}
+
+export async function approveManufacturerRequestApi(manufacturerId) {
+   const response = await apiClient.post(
+      `/customer/v1/manufacturers/${manufacturerId}/approve`,
+   );
+
+   return response.data;
+}
+
+export async function rejectManufacturerRequestApi(manufacturerId) {
+   const response = await apiClient.post(
+      `/customer/v1/manufacturers/${manufacturerId}/reject`,
+   );
+
+   return response.data;
+}
