@@ -25,6 +25,15 @@ function getActiveTab(searchParams) {
 export function ManufacturersPage() {
    const [searchParams, setSearchParams] = useSearchParams();
 
+   const activeTab = getActiveTab(searchParams);
+   const manufacturerFilter =
+      searchParams.get('manufacturer') || ALL_MANUFACTURERS_VALUE;
+
+   const leadsManufacturerId =
+      activeTab === TABS.LEADS && manufacturerFilter !== ALL_MANUFACTURERS_VALUE
+         ? manufacturerFilter
+         : '';
+
    const {
       manufacturers,
       isLoading: isManufacturersLoading,
@@ -37,11 +46,7 @@ export function ManufacturersPage() {
       isLoading: isLeadsLoading,
       error: leadsError,
       reloadLeads,
-   } = useLeadsPool();
-
-   const activeTab = getActiveTab(searchParams);
-   const manufacturerFilter =
-      searchParams.get('manufacturer') || ALL_MANUFACTURERS_VALUE;
+   } = useLeadsPool(leadsManufacturerId);
 
    const updateParams = useCallback(
       (nextTab, nextManufacturerId) => {

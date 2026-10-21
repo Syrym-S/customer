@@ -13,14 +13,16 @@ import {
     setCachedGeoRoute,
 } from "./geo-routes-cache";
 
+import { isLeadTrackingActive } from "../../customer-leads/model/lead.helpers";
+
 function getLeadId(lead) {
     return lead?.id || lead?._id || lead?.lead_id || lead?.leadId || "";
 }
 
 function buildLeadsKey(leads) {
     return leads
-        .map((lead) => getLeadId(lead))
-        .filter(Boolean)
+        .filter((lead) => Boolean(getLeadId(lead)))
+        .map((lead) => `${getLeadId(lead)}:${lead?.status || ""}`)
         .join("|");
 }
 
@@ -193,6 +195,7 @@ export function useCustomerPageGeoRoutes(leads) {
             const connection = openLeadGeoTrackingConnection({
                 leadId,
                 type: "read",
+                liveUpdates: isLeadTrackingActive(lead?.status),
 
                 onRoute: (routeData) => {
                     if (isCancelled) {

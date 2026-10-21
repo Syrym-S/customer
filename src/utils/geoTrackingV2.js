@@ -195,6 +195,7 @@ export function openGeoTrackingConnection({ url, token, onRoute, onCoordinate, o
 export function openLeadGeoTrackingConnection({
    leadId,
    type = 'read',
+   liveUpdates = true,
    onRoute,
    onCoordinate,
    onError,
@@ -226,6 +227,10 @@ export function openLeadGeoTrackingConnection({
          }
 
          onRoute?.(routeData);
+
+         if (!liveUpdates) {
+            return;
+         }
 
          echo = subscribeGeoTrackingChannel({
             token: tokenResponse.token,

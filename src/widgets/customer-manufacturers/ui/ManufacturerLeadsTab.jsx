@@ -137,28 +137,28 @@ export function ManufacturerLeadsTab({
 
    return (
       <Stack spacing={2}>
+         <TextField
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Поиск по номеру, направлению или производителю"
+            fullWidth
+            size="small"
+            slotProps={{
+               input: {
+                  startAdornment: (
+                     <InputAdornment position="start">
+                        <SearchRoundedIcon color="action" fontSize="small" />
+                     </InputAdornment>
+                  ),
+               },
+            }}
+         />
+
          <Stack
             direction={{ xs: 'column', md: 'row' }}
             spacing={1.5}
             sx={{ alignItems: { xs: 'stretch', md: 'center' } }}
          >
-            <TextField
-               value={search}
-               onChange={(event) => setSearch(event.target.value)}
-               placeholder="Поиск по номеру, направлению или производителю"
-               fullWidth
-               size="small"
-               slotProps={{
-                  input: {
-                     startAdornment: (
-                        <InputAdornment position="start">
-                           <SearchRoundedIcon color="action" fontSize="small" />
-                        </InputAdornment>
-                     ),
-                  },
-               }}
-            />
-
             <FormControl size="small" sx={{ minWidth: 180 }}>
                <InputLabel id="manufacturer-leads-status-label">Статус</InputLabel>
 

@@ -13,6 +13,20 @@ export const leadStatusLabels = {
    finished_emergency_situation: 'Завершен (аварийная ситуация)',
 };
 
+const activeTrackingLeadStatuses = new Set([
+   'start_driver',
+   'start_loading',
+   'verification_loading',
+   'start_unloading',
+   'verification_unloading',
+   'sign_avr',
+   'emergency_situation',
+]);
+
+export function isLeadTrackingActive(status) {
+   return activeTrackingLeadStatuses.has(status);
+}
+
 export const leadStatusStyles = {
    new: {
       borderColor: 'primary.main',

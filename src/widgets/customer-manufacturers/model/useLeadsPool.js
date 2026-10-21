@@ -5,7 +5,7 @@ import { mapLeadsResponseFromApi } from '../../customer-leads/model/lead.adapter
 import { withLeadManufacturers } from '../api/manufacturers.repository';
 import { LEADS_POOL_LIMIT } from './manufacturers.helpers';
 
-export function useLeadsPool() {
+export function useLeadsPool(manufacturerId = '') {
    const [leads, setLeads] = useState([]);
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState('');
@@ -18,6 +18,7 @@ export function useLeadsPool() {
          const response = await fetchCustomerLeads({
             page: 1,
             perPage: LEADS_POOL_LIMIT,
+            manufacturerId,
          });
 
          const mappedResponse = mapLeadsResponseFromApi(response);
@@ -32,7 +33,7 @@ export function useLeadsPool() {
       } finally {
          setIsLoading(false);
       }
-   }, []);
+   }, [manufacturerId]);
 
    useEffect(() => {
       loadLeads();

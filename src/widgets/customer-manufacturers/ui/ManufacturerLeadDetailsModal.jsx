@@ -48,7 +48,10 @@ export function ManufacturerLeadDetailsModal({
    const readOnlyEditForm = useMemo(() => createLeadEditForm(null), []);
 
    const { route, routePoints, isRouteLoading } = useLeadDetailsRoute(leadDetails);
-   const { geoPoints, geoCurrentPoint } = useLeadDetailsGeoTracking(lead?.id);
+   const { geoPoints, geoCurrentPoint } = useLeadDetailsGeoTracking(
+      lead?.id,
+      currentLead?.status,
+   );
    const {
       documents,
       isDocumentUploading,

@@ -6,6 +6,7 @@ export async function fetchCustomerLeadsApi({
    status,
    search,
    isDraft,
+   manufacturerId,
 } = {}) {
    const params = {
       page,
@@ -18,6 +19,12 @@ export async function fetchCustomerLeadsApi({
 
    if (isDraft) {
       params.is_draft = 1;
+   }
+
+   const normalizedManufacturerId = String(manufacturerId ?? '').trim();
+
+   if (normalizedManufacturerId) {
+      params.manufacturer_id = normalizedManufacturerId;
    }
 
    const normalizedSearch = String(search ?? '').trim();

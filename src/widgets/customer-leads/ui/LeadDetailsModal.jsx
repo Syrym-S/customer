@@ -49,7 +49,7 @@ export function LeadDetailsModal() {
       useLeadDetailsRoute(leadDetails);
 
    const { geoPoints, geoCurrentPoint, resetGeoTracking } =
-      useLeadDetailsGeoTracking(openLead?.id);
+      useLeadDetailsGeoTracking(openLead?.id, currentLead?.status);
 
    const {
       documents,

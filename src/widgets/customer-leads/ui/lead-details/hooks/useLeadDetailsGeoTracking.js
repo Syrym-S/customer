@@ -5,8 +5,9 @@ import {
    normalizePolylinePoints,
    openLeadGeoTrackingConnection,
 } from '../../../../../utils/geoTrackingV2';
+import { isLeadTrackingActive } from '../../../model/lead.helpers';
 
-export function useLeadDetailsGeoTracking(leadId) {
+export function useLeadDetailsGeoTracking(leadId, leadStatus) {
    const [geoPoints, setGeoPoints] = useState([]);
    const [geoCurrentPoint, setGeoCurrentPoint] = useState(null);
 
@@ -33,6 +34,7 @@ export function useLeadDetailsGeoTracking(leadId) {
       const connection = openLeadGeoTrackingConnection({
          leadId,
          type: 'read',
+         liveUpdates: isLeadTrackingActive(leadStatus),
 
          onRoute: (routeData) => {
             const initialPoints = normalizePolylinePoints(routeData?.polyline);
@@ -81,7 +83,7 @@ export function useLeadDetailsGeoTracking(leadId) {
             geoConnectionRef.current = null;
          }
       };
-   }, [leadId, resetGeoTracking]);
+   }, [leadId, leadStatus, resetGeoTracking]);
 
    return {
       geoPoints,
