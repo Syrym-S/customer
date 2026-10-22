@@ -16,6 +16,7 @@ import {
     getNotificationDescription,
     getNotificationLink,
     getNotificationTitle,
+    resolveCustomerNotificationAppPath,
 } from '../model/notifications.helpers';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,13 +40,11 @@ export function NotificationDetailsModal({
             const normalizedLink = String(link).replaceAll('\\/', '/');
             const url = new URL(normalizedLink, window.location.origin);
 
-            if (
-                url.pathname.startsWith('/customer/leads/') ||
-                url.pathname.startsWith('/customer/tenders/') ||
-                url.pathname.startsWith('/customer/factorings/')
-            ) {
+            const appPath = resolveCustomerNotificationAppPath(url.pathname);
+
+            if (appPath) {
                 onClose?.();
-                navigate(`${url.pathname}${url.search}${url.hash}`);
+                navigate(`${appPath}${url.search}${url.hash}`);
                 return;
             }
 

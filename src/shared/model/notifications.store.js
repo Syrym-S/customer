@@ -23,8 +23,6 @@ function logNotification(notification) {
       console.warn('[notification:warning]', logPayload);
       return;
    }
-
-   console.log(`[notification:${notification.type}]`, logPayload);
 }
 
 export const useNotificationsStore = create((set) => ({

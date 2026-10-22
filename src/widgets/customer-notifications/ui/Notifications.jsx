@@ -19,6 +19,7 @@ import {
     getNotificationId,
     getNotificationTitle,
     isNotificationUnread,
+    isRealtimeOnlyNotification,
     normalizeNotificationDetailsResponse,
     normalizeNotificationsResponse,
 } from '../model/notifications.helpers';
@@ -28,9 +29,9 @@ import {
 } from '../api/notifications.api';
 import { NotificationDetailsModal } from './NotificationDetailsModal';
 import {
-    isNotificationWsConfigured,
-    openNotificationWsConnection,
-} from '../lib/open-notification-ws-connection';
+    isNotificationsRealtimeConfigured,
+    openNotificationsRealtimeConnection,
+} from '../lib/notification-transport';
 import { publishNotificationDomainEvent } from '../../../shared/model/notification-domain-events';
 import {
     notifyRealtimeNotification,
@@ -161,6 +162,15 @@ export function Notifications() {
             setIsDetailsOpen(true);
             setDetailsError('');
 
+            if (isRealtimeOnlyNotification(notification)) {
+                markNotificationAsViewed(notificationId, {
+                    ...notification,
+                    is_viewed: true,
+                });
+
+                return;
+            }
+
             try {
                 setIsDetailsLoading(true);
 
@@ -238,14 +248,14 @@ export function Notifications() {
         notificationWsConnectionRef.current?.close();
         notificationWsConnectionRef.current = null;
 
-        if (!isNotificationWsConfigured()) {
+        if (!isNotificationsRealtimeConfigured()) {
             console.info(
                 'NotificationWS is not configured for this environment',
             );
             return;
         }
 
-        const connection = openNotificationWsConnection({
+        const connection = openNotificationsRealtimeConnection({
             onOpen: () => {
                 // console.info('NotificationWS opened');
             },

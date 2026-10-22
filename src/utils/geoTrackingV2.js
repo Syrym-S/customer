@@ -8,6 +8,7 @@ window.Pusher = Pusher;
 
 const REVERB_WSS_PORT = 443;
 const REVERB_FORCE_TLS = true;
+const REVERB_ENABLED_TRANSPORTS = ['ws', 'wss'];
 
 // Injected per environment by the backend, like window.APP_DATA, but only
 // after this bundle loads — so read it on use, not at module level.
@@ -75,7 +76,7 @@ function subscribeGeoTrackingChannel({ token, routeData, onCoordinate, onError }
       wsHost,
       wssPort: REVERB_WSS_PORT,
       forceTLS: REVERB_FORCE_TLS,
-      enabledTransports: ['wss'],
+      enabledTransports: REVERB_ENABLED_TRANSPORTS,
       authEndpoint: auth_endpoint,
       auth: { headers: { Authorization: `Bearer ${token}` } },
    });

@@ -66,6 +66,34 @@ export function getNotificationLink(notification) {
     return notification?.link || '';
 }
 
+export function isRealtimeOnlyNotification(notification) {
+    return notification?.is_realtime_only === true;
+}
+
+const CUSTOMER_ENTITY_PATH_SEGMENTS = ['leads', 'tenders', 'factorings'];
+
+const CUSTOMER_PATH_PREFIX = '/customer';
+
+export function resolveCustomerNotificationAppPath(pathname) {
+    const normalizedPathname = String(pathname || '');
+
+    for (const segment of CUSTOMER_ENTITY_PATH_SEGMENTS) {
+        if (
+            normalizedPathname.startsWith(
+                `${CUSTOMER_PATH_PREFIX}/${segment}/`,
+            )
+        ) {
+            return normalizedPathname;
+        }
+
+        if (normalizedPathname.startsWith(`/${segment}/`)) {
+            return `${CUSTOMER_PATH_PREFIX}${normalizedPathname}`;
+        }
+    }
+
+    return '';
+}
+
 export function isNotificationUnread(notification) {
     return notification?.is_viewed === false;
 }
