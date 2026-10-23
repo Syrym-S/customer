@@ -223,7 +223,6 @@ export function openReverbNotificationTransport({
                     );
 
                     if (status === 'connected') {
-                        authRetryCount = 0;
                         reconnectAttempt = 0;
                         onOpen?.();
                         return;
@@ -256,6 +255,14 @@ export function openReverbNotificationTransport({
             debugNotificationRealtime(
                 `[NotificationWS reverb subscribed] private-${channelName} / .${eventName}`,
             );
+
+            channel?.subscribed?.(() => {
+                authRetryCount = 0;
+
+                debugNotificationRealtime(
+                    `[NotificationWS reverb subscription succeeded] private-${channelName}`,
+                );
+            });
 
             try {
                 channel?.error?.((subscriptionError) => {
