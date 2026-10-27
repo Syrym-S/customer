@@ -93,30 +93,58 @@ export function DashboardAnalyticsSection() {
          >
             <Typography variant="h6">Перевозки</Typography>
 
-            <Stack direction="row" alignItems="center" spacing={1.5} flexWrap="wrap">
-               <DashboardAnalyticsPreviousToggle
-                  checked={previousEnabled}
-                  onChange={setPreviousEnabled}
-               />
+            <Box
+               sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: 1.5,
+                  width: { xs: '100%', sm: 'auto' },
+               }}
+            >
+               <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1.5}
+                  sx={{
+                     width: { xs: '100%', sm: 'auto' },
+                     justifyContent: { xs: 'space-between', sm: 'flex-start' },
+                  }}
+               >
+                  <DashboardAnalyticsPreviousToggle
+                     checked={previousEnabled}
+                     onChange={setPreviousEnabled}
+                  />
 
-               <DashboardAnalyticsGroupBySelector
-                  value={groupBy}
-                  options={groupByOptions}
-                  onChange={setGroupBy}
-               />
+                  <DashboardAnalyticsGroupBySelector
+                     value={groupBy}
+                     options={groupByOptions}
+                     onChange={setGroupBy}
+                  />
+               </Stack>
 
-               <DashboardStatsViewToggle value={viewMode} onChange={setViewMode} />
+               <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1.5}
+                  sx={{
+                     width: { xs: '100%', sm: 'auto' },
+                     justifyContent: { xs: 'space-between', sm: 'flex-start' },
+                  }}
+               >
+                  <DashboardStatsViewToggle value={viewMode} onChange={setViewMode} />
 
-               <DashboardAnalyticsPeriodSelector
-                  value={period}
-                  periods={ANALYTICS_PERIODS}
-                  fallbackRange={fallbackRange}
-                  label={getPeriodLabel(period)}
-                  tooltip={formatStatsRange(data?.from, data?.to)}
-                  ariaLabel="Период перевозок"
-                  onChange={setPeriod}
-               />
-            </Stack>
+                  <DashboardAnalyticsPeriodSelector
+                     value={period}
+                     periods={ANALYTICS_PERIODS}
+                     fallbackRange={fallbackRange}
+                     label={getPeriodLabel(period)}
+                     tooltip={formatStatsRange(data?.from, data?.to)}
+                     ariaLabel="Период перевозок"
+                     onChange={setPeriod}
+                  />
+               </Stack>
+            </Box>
          </Box>
 
          {error && (

@@ -558,7 +558,7 @@ export function LeadCargoSection({
                     sx={{
                       display: "grid",
                       gridTemplateColumns: {
-                        xs: "1fr 1fr",
+                        xs: "1fr",
                         sm: "repeat(2, 1fr)",
                         md: "repeat(4, 1fr)",
                       },
@@ -633,7 +633,7 @@ export function LeadCargoSection({
                   sm: "minmax(0, 1fr) minmax(160px, 220px) minmax(120px, 160px)",
                 }
               : {
-                  xs: "1fr 1fr",
+                  xs: "1fr",
                   sm: "repeat(3, 1fr)",
                 },
             gap: 1,

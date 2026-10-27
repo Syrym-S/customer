@@ -18,12 +18,13 @@ function PartyDataTable({ rows }) {
                         <TableRow key={row.label}>
                             <TableCell
                                 sx={{
-                                    width: '42%',
+                                    width: { xs: '34%', sm: '42%' },
                                     color: 'text.secondary',
                                     fontSize: 13,
                                     borderBottom: '1px solid',
                                     borderColor: 'divider',
                                     pl: 0,
+                                    pr: { xs: 1, sm: 2 },
                                 }}
                             >
                                 {row.label}:
@@ -35,7 +36,9 @@ function PartyDataTable({ rows }) {
                                     fontWeight: 500,
                                     borderBottom: '1px solid',
                                     borderColor: 'divider',
+                                    pl: { xs: 1, sm: 2 },
                                     pr: 0,
+                                    overflowWrap: 'anywhere',
                                 }}
                             >
                                 {row.value || 'Не указан'}
@@ -174,7 +177,7 @@ export function FactoringPartiesRequisitesSection({
                 sx={{
                     display: 'grid',
                     gridTemplateColumns: {
-                        xs: '1fr',
+                        xs: 'minmax(0, 1fr)',
                         md: 'repeat(2, minmax(0, 1fr))',
                         lg: 'repeat(3, minmax(0, 1fr))',
                     },

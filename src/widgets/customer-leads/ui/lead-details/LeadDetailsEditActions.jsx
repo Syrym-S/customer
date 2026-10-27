@@ -15,6 +15,22 @@ import {
    isSignAvrLead,
 } from '../../model/lead.helpers';
 
+const ACTIONS_ROW_BREAKPOINT = 480;
+
+const ACTIONS_ROW_SX = (theme) => ({
+   display: 'flex',
+   alignItems: 'center',
+   justifyContent: 'flex-end',
+   flexWrap: 'wrap',
+   gap: 1,
+   '&:empty': {
+      display: 'none',
+   },
+   [theme.breakpoints.down(ACTIONS_ROW_BREAKPOINT)]: {
+      width: '100%',
+   },
+});
+
 export function LeadDetailsEditActions({
    lead,
    leadId,
@@ -54,49 +70,57 @@ export function LeadDetailsEditActions({
       <Box
          sx={{
             display: 'flex',
+            alignItems: 'center',
             justifyContent: 'flex-end',
+            flexWrap: 'wrap',
             gap: 1,
             mb: 2,
          }}
       >
-         {!isDraft && !isEditing && lead && <LeadChatButton lead={lead} onClose={onClose} />}
+         {!isDraft && !isEditing && lead && (
+            <Box sx={ACTIONS_ROW_SX}>
+               <LeadChatButton lead={lead} onClose={onClose} />
 
-         {!isDraft && !isEditing && lead && <LeadDeliveryChatButton lead={lead} onClose={onClose} />}
+               <LeadDeliveryChatButton lead={lead} onClose={onClose} />
+            </Box>
+         )}
 
-         {!isDraft && !isEditing && leadId && <LeadShareButton leadId={leadId} />}
+         <Box sx={ACTIONS_ROW_SX}>
+            {!isDraft && !isEditing && leadId && <LeadShareButton leadId={leadId} />}
 
-         {isEditing ? (
-            <Button onClick={onCancelEdit}>Отмена</Button>
-         ) : (
-            <>
-               <Tooltip title={editTooltipTitle}>
-                  <span>
-                     <IconButton
-                        color="primary"
-                        aria-label="Изменить"
-                        onClick={onStartEdit}
-                        disabled={isEditDisabled}
-                     >
-                        <EditOutlinedIcon fontSize="small" />
-                     </IconButton>
-                  </span>
-               </Tooltip>
-
-               {isDraft && (
-                  <Tooltip title={publishTooltipTitle}>
-                     <span>
-                        <Button
-                           variant="contained"
-                           onClick={onPublishDraft}
-                           disabled={isPublishing || !canPublishDraft}
+            {isEditing ? (
+               <Button onClick={onCancelEdit}>Отмена</Button>
+            ) : (
+               <>
+                  <Tooltip title={editTooltipTitle}>
+                     <span style={{ display: 'inline-flex' }}>
+                        <IconButton
+                           color="primary"
+                           aria-label="Изменить"
+                           onClick={onStartEdit}
+                           disabled={isEditDisabled}
                         >
-                           {isPublishing ? 'Публикация...' : 'Опубликовать'}
-                        </Button>
+                           <EditOutlinedIcon fontSize="small" />
+                        </IconButton>
                      </span>
                   </Tooltip>
-               )}
-            </>
-         )}
+
+                  {isDraft && (
+                     <Tooltip title={publishTooltipTitle}>
+                        <span style={{ display: 'inline-flex' }}>
+                           <Button
+                              variant="contained"
+                              onClick={onPublishDraft}
+                              disabled={isPublishing || !canPublishDraft}
+                           >
+                              {isPublishing ? 'Публикация...' : 'Опубликовать'}
+                           </Button>
+                        </span>
+                     </Tooltip>
+                  )}
+               </>
+            )}
+         </Box>
       </Box>
    );
 }

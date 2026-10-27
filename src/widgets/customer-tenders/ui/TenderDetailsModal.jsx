@@ -411,6 +411,9 @@ export function TenderDetailsModal() {
                     sx: {
                         borderRadius: 4,
                         position: 'relative',
+                        m: { xs: 1, sm: 4 },
+                        width: { xs: 'calc(100% - 16px)', sm: 'calc(100% - 64px)' },
+                        maxHeight: { xs: 'calc(100% - 16px)', sm: 'calc(100% - 64px)' },
                     },
                 },
             }}

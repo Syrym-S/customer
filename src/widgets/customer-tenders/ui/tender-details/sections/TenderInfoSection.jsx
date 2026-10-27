@@ -90,7 +90,7 @@ export function TenderInfoSection({
                sx={{
                   display: 'grid',
                   gridTemplateColumns: {
-                     xs: '1fr 1fr',
+                     xs: '1fr',
                      md: 'repeat(3, 1fr)',
                   },
                   gap: 1,

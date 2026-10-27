@@ -69,10 +69,13 @@ export function FactoringDetailsActions({
   return (
     <>
       <DialogActions
+        disableSpacing
         sx={{
-          px: 3,
+          px: { xs: 2, sm: 3 },
           pb: 3,
           pt: 2,
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: { xs: "stretch", sm: "center" },
           justifyContent: "space-between",
           gap: 1,
           flexWrap: "wrap",
@@ -92,7 +95,16 @@ export function FactoringDetailsActions({
           )}
         </Box>
 
-        <Stack direction="row" spacing={1}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1}
+          useFlexGap
+          flexWrap="wrap"
+          sx={{
+            width: { xs: "100%", sm: "auto" },
+            justifyContent: { sm: "flex-end" },
+          }}
+        >
           {factoringId && (
             <FactoringChatButton
               factoringId={factoringId}

@@ -44,7 +44,16 @@ export function LeadChatButton({ lead, onClose }) {
         </Badge>
       }
       onClick={handleClick}
-      sx={{ textTransform: 'none' }}
+      sx={{
+        textTransform: 'none',
+        whiteSpace: 'nowrap',
+        flexShrink: 0,
+        fontSize: { xs: 12, sm: '0.875rem' },
+        px: { xs: 1.25, sm: 2 },
+        '& .MuiButton-startIcon': {
+          mr: { xs: 0.5, sm: 1 },
+        },
+      }}
     >
       Чат с экспедитором
     </Button>
