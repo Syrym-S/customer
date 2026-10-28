@@ -69,6 +69,10 @@ export function getForwarderInviteCode(forwarder) {
     return forwarder?.invite || '';
 }
 
+export function isForwarderRegistered(forwarder) {
+    return Boolean(forwarder?.is_registered ?? forwarder?.isRegistered);
+}
+
 export function hasForwarderInviteLink(forwarder) {
     return Boolean(getForwarderInviteLink(forwarder));
 }

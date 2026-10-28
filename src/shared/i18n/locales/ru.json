@@ -1,0 +1,1231 @@
+{
+   "accountBan": {
+      "contactSupport": "Связаться с поддержкой",
+      "logout": "Выйти из аккаунта",
+      "text": "Доступ к рабочему пространству временно ограничен. Вы не можете создавать заявки, работать с аукционами и выполнять другие действия в системе.",
+      "title": "Аккаунт заблокирован"
+   },
+   "chat": {
+      "attachments": {
+         "allowedTypes": "Разрешены только изображения (JPG, PNG, WEBP), PDF, DOC(X) или XLS(X)",
+         "attach": "Прикрепить файл",
+         "closeImage": "Закрыть просмотр изображения",
+         "fileDownloadFailed": "Не удалось скачать файл «{{name}}»",
+         "fileLoadFailed": "Не удалось загрузить файл «{{name}}»",
+         "imageLoadFailed": "Не удалось загрузить изображение",
+         "label": "Вложение",
+         "loadFailed": "Не удалось загрузить",
+         "maxCount": "Можно прикрепить не более {{count}} файлов к одному сообщению",
+         "maxSize": "Размер файла не должен превышать {{size}} МБ",
+         "remove": "Убрать файл {{name}}",
+         "view": "Просмотр вложения"
+      },
+      "backToList": "Назад к списку чатов",
+      "close": "Закрыть чат",
+      "conversationStart": "Начало переписки",
+      "empty": "Нет активных чатов",
+      "load": {
+         "deliveryFailed": "Не удалось загрузить чат по доставке",
+         "factoringFailed": "Не удалось загрузить чат по факторингу",
+         "leadFailed": "Не удалось загрузить чат по заказу",
+         "listFailed": "Не удалось загрузить чаты",
+         "moreFailed": "Не удалось загрузить дополнительные чаты",
+         "participantsFailed": "Не удалось загрузить участников чата ({{type}}) {{id}}",
+         "supportFailed": "Не удалось загрузить чат с поддержкой"
+      },
+      "message": {
+         "cancelEdit": "Отменить редактирование",
+         "delete": "Удалить сообщение",
+         "deleteConfirm": "Сообщение будет удалено безвозвратно. Продолжить?",
+         "deleteFailed": "Не удалось удалить сообщение",
+         "deleted": "Сообщение удалено",
+         "edit": "Редактировать сообщение",
+         "editFailed": "Не удалось изменить сообщение",
+         "placeholder": "Сообщение...",
+         "read": "Прочитано",
+         "send": "Отправить сообщение",
+         "sendFailed": "Не удалось отправить сообщение"
+      },
+      "open": "Открыть чат",
+      "participant": "Участник",
+      "participantLabel": "Участник чата",
+      "refreshList": "Обновить список чатов",
+      "requisites": {
+         "title": "Реквизиты"
+      },
+      "time": {
+         "days": "{{count}} дн",
+         "hours": "{{count}} ч",
+         "justNow": "только что",
+         "minutes": "{{count}} мин",
+         "yesterday": "вчера"
+      },
+      "title": "Чаты",
+      "types": {
+         "delivery": "Доставка",
+         "deliveryNumber": "Доставка #{{id}}",
+         "factoringNumber": "Факторинг #{{id}}",
+         "orderNumber": "Заказ #{{id}}",
+         "support": "Поддержка",
+         "supportFull": "Техническая поддержка"
+      }
+   },
+   "common": {
+      "actions": {
+         "add": "Добавить",
+         "adding": "Добавление...",
+         "addingShort": "Добавляем...",
+         "back": "Назад",
+         "cancel": "Отмена",
+         "clear": "Очистить",
+         "close": "Закрыть",
+         "confirm": "Подтвердить",
+         "continue": "Продолжить",
+         "copied": "Скопировано",
+         "copy": "Скопировать",
+         "copyNumber": "Скопировать номер",
+         "create": "Создать",
+         "creating": "Создаем...",
+         "creatingProcess": "Создание...",
+         "delete": "Удалить",
+         "deleting": "Удаление...",
+         "download": "Скачать",
+         "edit": "Изменить",
+         "goTo": "Перейти",
+         "gotIt": "Понятно",
+         "hide": "Скрыть",
+         "next": "Дальше",
+         "openInNewTab": "Открыть в новой вкладке",
+         "preview": "Предпросмотр",
+         "refresh": "Обновить",
+         "remove": "Убрать",
+         "retry": "Повторить",
+         "retryAttempt": "Повторить попытку",
+         "save": "Сохранить",
+         "saveChanges": "Сохранить изменения",
+         "saving": "Сохранение...",
+         "select": "Выбрать",
+         "selected": "Выбрано: {{count}}",
+         "send": "Отправить",
+         "sending": "Отправка...",
+         "sendingShort": "Отправляем...",
+         "share": "Поделиться",
+         "showAll": "Показать всех (+{{count}})",
+         "sign": "Подписать",
+         "yes": "Да"
+      },
+      "cargoCount_few": "{{count}} груза",
+      "cargoCount_many": "{{count}} грузов",
+      "cargoCount_one": "{{count}} груз",
+      "cargoCount_other": "{{count}} грузов",
+      "documents": {
+         "add": "Добавить документ",
+         "empty": "Документы не добавлены",
+         "fileSelected": "Файл выбран"
+      },
+      "empty": {
+         "addressNotSpecified": "Адрес не указан",
+         "binNotSpecified": "БИН не указан",
+         "canLeaveBlank": "Можно оставить пустым",
+         "cargoNotSpecified": "Груз не указан",
+         "companyNotSpecified": "Компания не указана",
+         "contactDataNotSpecified": "Контактные данные не указаны",
+         "contactsNotSpecified": "Контакты не указаны",
+         "dataNotFilled": "Данные не заполнены",
+         "dateNotSpecified": "Дата не указана",
+         "descriptionNotSpecified": "Описание не указано",
+         "fullNameNotSpecified": "ФИО не указано",
+         "invalidData": "Некорректные данные",
+         "invalidDate": "Некорректная дата",
+         "nameNotSpecified": "Название не указано",
+         "noCompany": "Без компании",
+         "noData": "Нет данных",
+         "noFullName": "Без ФИО",
+         "noName": "Без имени",
+         "notAdded": "Не добавлены",
+         "notAssigned": "Не назначен",
+         "notSelected": "Не выбран",
+         "notSpecifiedM": "Не указан",
+         "notSpecifiedN": "Не указано",
+         "nothingFound": "Ничего не найдено",
+         "optional": "Необязательно",
+         "priceNotSpecified": "Цена не указана",
+         "typeNotSpecified": "Тип не указан",
+         "unknown": "Неизвестно",
+         "unlimited": "Не ограничено"
+      },
+      "fields": {
+         "actions": "Действия",
+         "amount": "Сумма",
+         "bankName": "Название банка",
+         "bik": "БИК",
+         "bin": "БИН",
+         "bodyType": "Тип состава",
+         "cargo": "Груз",
+         "cargoCountLabel": "Количество грузов",
+         "cargoName": "Наименование груза",
+         "cargoPrice": "Цена груза",
+         "cargoType": "Тип груза",
+         "cargos": "Грузы",
+         "comment": "Комментарий",
+         "company": "Компания",
+         "companyAddress": "Адрес компании",
+         "companyBin": "БИН компании",
+         "companyName": "Название компании",
+         "contactPerson": "Контактное лицо",
+         "currency": "Валюта",
+         "customer": "Заказчик",
+         "date": "Дата",
+         "dateFrom": "Дата от",
+         "dateTo": "Дата до",
+         "description": "Описание",
+         "destination": "Куда",
+         "dimensions": "Размеры",
+         "direction": "Направление",
+         "document": "Документ",
+         "documentName": "Название документа",
+         "documentNumber": "Номер документа",
+         "documents": "Документы",
+         "driver": "Водитель",
+         "email": "Email",
+         "endDate": "Дата окончания",
+         "executionPrice": "Цена исполнения",
+         "factor": "Фактор",
+         "file": "Файл",
+         "files": "Файлы",
+         "forwarder": "Экспедитор",
+         "forwarderBin": "БИН экспедитора",
+         "forwarderFullName": "ФИО экспедитора",
+         "forwarderIin": "ИИН экспедитора",
+         "from": "От",
+         "fullName": "ФИО",
+         "gracePeriod": "Отсрочка платежа",
+         "gracePeriodDays": "Отсрочка платежа, дней",
+         "heightCm": "Высота, см",
+         "iik": "ИИК",
+         "iin": "ИИН",
+         "international": "Международная перевозка",
+         "issuingCountry": "Страна выдачи",
+         "legalAddress": "Юридический адрес",
+         "lengthCm": "Длина, см",
+         "loadingType": "Тип погрузки",
+         "manufacturer": "Производитель",
+         "name": "Название",
+         "number": "Номер",
+         "origin": "Откуда",
+         "packagingType": "Вид упаковки",
+         "participants": "Участники",
+         "password": "Пароль",
+         "phone": "Телефон",
+         "price": "Цена",
+         "quantity": "Количество",
+         "route": "Маршрут",
+         "settlementAccount": "Расчетный счет",
+         "shipments": "Перевозки",
+         "startDate": "Дата начала",
+         "status": "Статус",
+         "timeLeft": "Осталось",
+         "title": "Наименование",
+         "tnvedCode": "Код ТН ВЭД",
+         "to": "До",
+         "transportParams": "Параметры перевозки",
+         "transportType": "Тип транспорта",
+         "type": "Тип",
+         "vat": "НДС",
+         "volume": "Объем",
+         "volumeM3": "Объем, м³",
+         "weight": "Вес",
+         "weightKg": "Вес, кг",
+         "widthCm": "Ширина, см",
+         "withVat": "с НДС",
+         "withoutVat": "без НДС"
+      },
+      "filePreview": {
+         "documentNotFound": "Документ не найден",
+         "noFile": "Для этого документа нет файла для предпросмотра",
+         "unsupported": "Предпросмотр для этого типа файла пока не поддерживается"
+      },
+      "forwarderPicker": {
+         "clickToLoad": "Нажмите, чтобы загрузить экспедиторов",
+         "detailsLoadFailed": "Не удалось загрузить данные экспедитора",
+         "loadFailed": "Не удалось загрузить экспедиторов",
+         "loading": "Загружаем экспедиторов...",
+         "notFound": "Экспедитор не найден",
+         "searchByCompany": "Введите название компании или БИН",
+         "searchHint": "Введите ФИО, ИИН, компанию, БИН или телефон"
+      },
+      "loading": {
+         "default": "Загрузка...",
+         "list": "Загружаем список...",
+         "map": "Загружаем карту...",
+         "preview": "Загрузка предпросмотра..."
+      },
+      "search": {
+         "byDirection": "Поиск по направлению",
+         "minChars": "Введите минимум 2 символа"
+      },
+      "severity": {
+         "error": "Ошибка",
+         "info": "Сообщение",
+         "notice": "Уведомление",
+         "success": "Успешно",
+         "warning": "Предупреждение"
+      },
+      "shipmentCount_few": "{{count}} перевозки",
+      "shipmentCount_many": "{{count}} перевозок",
+      "shipmentCount_one": "{{count}} перевозка",
+      "shipmentCount_other": "{{count}} перевозок",
+      "signing": {
+         "keepPageOpen": "Не закрывайте страницу — окно подписания открыто в новой вкладке. Статус обновится автоматически.",
+         "opening": "Открываем страницу подписания...",
+         "thisLink": "этой ссылке",
+         "unavailable": "Сервис подписания недоступен, попробуйте позже",
+         "waiting": "Ожидаем подписание..."
+      },
+      "units": {
+         "bytes": "{{value}} Б",
+         "cargoSummary": "{{cargoCount}} · {{weight}} кг",
+         "days": "{{count}} дн.",
+         "dimensionsCm": "{{length}} × {{width}} × {{height}} см",
+         "kg": "{{value}} кг",
+         "kilobytes": "{{value}} КБ",
+         "km": "км",
+         "m3": "{{value}} м³",
+         "megabytes": "{{value}} МБ"
+      },
+      "view": {
+         "cards": "Карточки",
+         "showAsCards": "Показать карточками",
+         "showAsTable": "Показать таблицей",
+         "table": "Таблица"
+      },
+      "waypointCount_few": "{{count}} точки",
+      "waypointCount_many": "{{count}} точек",
+      "waypointCount_one": "{{count}} точка",
+      "waypointCount_other": "{{count}} точек"
+   },
+   "complaints": {
+      "answer": {
+         "label": "Ответ",
+         "notAdded": "Ответ пока не добавлен",
+         "pending": "Ответ от администрации пока не получен",
+         "rejected": "Жалоба отклонена",
+         "title": "Ответ администрации"
+      },
+      "attachments": {
+         "allowedTypes": "Разрешены только изображения, видео, PDF или DOCX",
+         "attach": "Прикрепить файлы",
+         "maxCount": "Можно прикрепить не более {{count}} файлов",
+         "maxSize": "Размер файла не должен превышать {{size}} МБ",
+         "removeFile": "Удалить файл"
+      },
+      "create": {
+         "action": "Подать жалобу",
+         "describePlaceholder": "Опишите, что произошло",
+         "failed": "Не удалось отправить жалобу",
+         "maxLength": "Описание не должно превышать {{count}} символов",
+         "subject": "Суть жалобы",
+         "subjectPlaceholder": "Опишите суть жалобы",
+         "submit": "Отправить жалобу"
+      },
+      "emptyLast30Days": "Жалоб за последние 30 дней не найдено",
+      "loadFailed": "Не удалось загрузить жалобы",
+      "notFound": "Жалобы не найдены",
+      "subtitle": "Жалобы за последние 30 дней и ответы администрации",
+      "target": {
+         "empty": "Нет перевозок или факторингов за последние 30 дней",
+         "label": "Относится к",
+         "loadFailed": "Не удалось загрузить список",
+         "question": "К какой перевозке или факторингу относится жалоба"
+      },
+      "title": "Жалобы",
+      "titleSingular": "Жалоба",
+      "viewToggle": "Переключение отображения жалоб"
+   },
+   "contractGate": {
+      "fillProfile": "Заполните в профиле данные",
+      "goToProfile": "Перейти в профиль",
+      "noContracts": "У вас нет договоров или срок подписания истек",
+      "signContract": "Подписать договор"
+   },
+   "createLead": {
+      "cargo": {
+         "description": "Описание груза",
+         "validation": {
+            "cargoPriceNegative": "Цена груза не может быть отрицательной",
+            "gracePeriodRange": "Укажите от 1 до 364 дней",
+            "heightPositive": "Высота должна быть больше 0",
+            "lengthPositive": "Длина должна быть больше 0",
+            "nameRequired": "Укажите наименование груза",
+            "priceNegative": "Цена не может быть отрицательной",
+            "tnvedRequired": "Укажите код ТН ВЭД",
+            "volumePositive": "Объем должен быть больше 0",
+            "weightPositive": "Вес должен быть больше 0",
+            "widthPositive": "Ширина должна быть больше 0"
+         },
+         "withVat": "С НДС"
+      },
+      "customer": {
+         "current": "Текущий заказчик",
+         "required": "Укажите заказчика"
+      },
+      "forwarder": {
+         "hint": "Найдите и выберите экспедитора, который будет закреплен за маршрутом",
+         "loadingDetails": "Загружаем данные экспедитора...",
+         "skippable": "Можно пропустить этот шаг и создать заказ без экспедитора"
+      },
+      "result": {
+         "createError": "Ошибка создания",
+         "createFailed": "Не удалось создать заказ",
+         "created": "Заказ создан",
+         "createdSuccess": "Заказ успешно создан",
+         "createdSuccessWithId": "Заказ успешно создан: {{id}}",
+         "createdWithDocumentErrors": "Заказ создан, но часть документов не загрузилась",
+         "draftSaveFailed": "Не удалось сохранить черновик",
+         "draftSaved": "Черновик сохранен",
+         "saveError": "Ошибка сохранения",
+         "savedAsDraft": "Заказ сохранен как черновик"
+      },
+      "saveDraft": "Сохранить как черновик",
+      "skipVideoRecording": "Пропуск видеофиксации разгрузки/погрузки",
+      "step": "Шаг {{current}} из {{total}}",
+      "steps": {
+         "cargo": "Грузы и оплата",
+         "confirm": "Проверка",
+         "confirmTitle": "Проверьте данные",
+         "customer": "Данные заказчика",
+         "documents": "Документы",
+         "forwarder": "Выбор экспедитора",
+         "route": "Маршрут"
+      },
+      "submit": "Создать заказ",
+      "subtitle": "Заполните данные по заявке",
+      "title": "Создание заказа"
+   },
+   "dashboard": {
+      "analytics": {
+         "amountAxis": "Сумма, {{currency}}",
+         "emptyPeriod": "Нет данных за выбранный период",
+         "loadFailed": "Не удалось загрузить аналитику перевозок",
+         "noShipmentsPeriod": "Нет перевозок за выбранный период",
+         "shipmentNumber": "№ перевозки",
+         "title": "Динамика перевозок",
+         "trips": "рейсов"
+      },
+      "factorings": {
+         "loading": "Загрузка факторингов...",
+         "number": "Факторинг #{{id}}",
+         "title": "Список факторингов"
+      },
+      "groupBy": {
+         "day": "По дням",
+         "month": "По месяцам",
+         "quarter": "По кварталам",
+         "week": "По неделям"
+      },
+      "leads": {
+         "empty": "Активных заказов пока нет",
+         "loading": "Загрузка заказов...",
+         "mapHint": "Выберите заказ, чтобы подсветить маршрут на карте",
+         "orderNumber": "Заказ #{{num}}",
+         "title": "Активные заказы"
+      },
+      "period": {
+         "action": "Выбрать период",
+         "compare": "Сравнить с предыдущим периодом",
+         "halfYear": "Полгода",
+         "month": "Месяц",
+         "quarter": "Квартал",
+         "title": "Выбор периода",
+         "week": "Неделя",
+         "year": "Год"
+      },
+      "saleCount_few": "{{count}} продажи",
+      "saleCount_many": "{{count}} продаж",
+      "saleCount_one": "{{count}} продажа",
+      "saleCount_other": "{{count}} продаж",
+      "stats": {
+         "active": "Активные",
+         "activeFactoringSales": "Активные продажи факторинга",
+         "activeShipments": "Активные перевозки",
+         "activeTenders": "Активные аукционы",
+         "amounts": "Суммы",
+         "factoringSales": "Продажи факторинга",
+         "factoringSalesPeriod": "Период продаж факторинга",
+         "forPeriod": "За период",
+         "loadFailed": "Не удалось загрузить статистику",
+         "shipmentsPeriod": "Период перевозок",
+         "showAllCurrencies": "Показать все валюты",
+         "title": "Статистика",
+         "today": "Сегодня",
+         "viewMode": "Режим отображения статистики"
+      },
+      "tenderCount_few": "{{count}} аукциона",
+      "tenderCount_many": "{{count}} аукционов",
+      "tenderCount_one": "{{count}} аукцион",
+      "tenderCount_other": "{{count}} аукционов",
+      "tenders": {
+         "bids": "Ставки: {{count}}",
+         "loading": "Загрузка аукционов...",
+         "number": "Аукцион #{{id}}",
+         "private": "Приватные",
+         "privateEmpty": "Приватные аукционы пока не найдены",
+         "public": "Публичные",
+         "publicEmpty": "Публичные аукционы пока не найдены",
+         "title": "Список аукционов"
+      },
+      "title": "Главная",
+      "totalCargoWeight": "{{value}} кг"
+   },
+   "enums": {
+      "complaintStatus": {
+         "answered": "Ответ получен",
+         "in_progress": "В работе",
+         "pending_answer": "Ожидает ответа",
+         "pending_review": "Ожидает рассмотрения",
+         "rejected": "Отклонена",
+         "rejectedN": "Отклонено",
+         "resolved": "Решена"
+      },
+      "complaintTarget": {
+         "factoring": "Факторинг",
+         "shipment": "Перевозка"
+      },
+      "factoringLine": {
+         "closed": "Закрытая линия",
+         "open": "Открытая линия"
+      },
+      "factoringStatus": {
+         "await_paid": "Ожидает оплаты",
+         "cancelled": "Отменен",
+         "finished": "Завершен",
+         "new": "Новый",
+         "verified_participant": "Частично подтвержден"
+      },
+      "leadStatus": {
+         "add_driver": "Водитель добавлен",
+         "cancelled": "Отменен",
+         "draft": "Черновик",
+         "emergency_situation": "Аварийная ситуация",
+         "finished": "Завершен",
+         "finished_emergency_situation": "Завершен (аварийная ситуация)",
+         "new": "Новый",
+         "sign_avr": "Подписание АВР",
+         "start_driver": "Поездка начата",
+         "start_loading": "Погрузка",
+         "start_unloading": "Разгрузка",
+         "verification_loading": "Погрузка подтверждена",
+         "verification_unloading": "Разгрузка подтверждена"
+      },
+      "leadStatusFilter": {
+         "all": "Все статусы",
+         "cancelled": "Отменены",
+         "driverAssigned": "Водитель назначен",
+         "driverDeparted": "Водитель выехал",
+         "finished": "Завершены",
+         "inTransit": "В пути",
+         "new": "Новые",
+         "other": "Другие"
+      },
+      "manufacturerStatus": {
+         "attached": "Привязан",
+         "incomingRequest": "Входящая заявка",
+         "notAttached": "Не привязан",
+         "requestSent": "Заявка отправлена"
+      },
+      "participantType": {
+         "forwarder": "Экспедитор"
+      },
+      "publicationType": {
+         "private": "Приватный",
+         "public": "Публичный"
+      },
+      "signature": {
+         "notSigned": "Не подписано",
+         "notSignedM": "Не подписан",
+         "signed": "Подписано",
+         "signedM": "Подписан"
+      },
+      "tenderStatus": {
+         "active": "Активный",
+         "cancelled": "Отменен",
+         "closed": "Закрыт",
+         "finished": "Завершен",
+         "new": "Новый"
+      },
+      "verification": {
+         "confirmed": "Подтверждено",
+         "notConfirmed": "Не подтверждено"
+      },
+      "verificationCheck": {
+         "notPassed": "Не пройдена",
+         "passed": "Пройдена",
+         "passedMark": "✓ Пройдена"
+      },
+      "waypointType": {
+         "check_passes": "Транзит",
+         "loading": "Погрузка",
+         "unloading": "Разгрузка"
+      }
+   },
+   "errorPage": {
+      "title": "Что-то пошло не так"
+   },
+   "errors": {
+      "factoringNotFound": "Факторинг не найден",
+      "generic": "Что-то пошло не так",
+      "genericSupport": "Что-то пошло не так. Обратитесь в поддержку.",
+      "leadNotFound": "Заказ не найден",
+      "notFound": "Запрашиваемая страница не найдена.",
+      "server": "Произошла ошибка на сервере. Попробуйте позже.",
+      "unexpected": "Произошла непредвиденная ошибка."
+   },
+   "exportReport": {
+      "action": "Выгрузить отчет",
+      "dateOrder": "Дата «от» не может быть позже даты «до»",
+      "failed": "Не удалось выгрузить отчет. Попробуйте позже",
+      "hint": "В отчет попадут только завершенные перевозки за выбранный период.",
+      "inProgress": "Выгрузка...",
+      "submit": "Выгрузить"
+   },
+   "factorings": {
+      "cancel": {
+         "action": "Отменить факторинг",
+         "confirm": "Вы уверены, что хотите отменить этот факторинг? Это действие нельзя будет отменить.",
+         "failed": "Не удалось отменить факторинг",
+         "inProgress": "Отменяем факторинг…"
+      },
+      "chat": {
+         "action": "Чат",
+         "leadNotResolved": "Не удалось определить заказ, связанный с факторингом",
+         "openFailed": "Не удалось открыть чат по факторингу"
+      },
+      "confirmParticipation": {
+         "openFailed": "Не удалось открыть окно подписания",
+         "opening": "Открываем подписание...",
+         "text": "Хотите подтвердить свое участие в этом факторинге? Вы будете перенаправлены в окно подписания документов.",
+         "title": "Подтверждение участия"
+      },
+      "confirmations": {
+         "confirmedByCustomer": "Подтверждено заказчиком",
+         "customer": "Подтверждение заказчика",
+         "date": "Дата подтверждения",
+         "factor": "Подтверждение фактора",
+         "factorStatus": "Фактор: {{status}}",
+         "forwarder": "Подтверждение экспедитора",
+         "forwarderStatus": "Экспедитор: {{status}}",
+         "subtitle": "Статусы подтверждения сторон",
+         "title": "Подтверждения",
+         "you": "Вы",
+         "youStatus": "Вы: {{status}}"
+      },
+      "details": {
+         "cargoSection": "Груз и параметры перевозки",
+         "createdAt": "Дата создания",
+         "loadFailed": "Не удалось загрузить детали факторинга",
+         "loading": "Загружаем детали факторинга...",
+         "main": "Основная информация",
+         "mainSubtitle": "Номер заявки, дата создания и связанный заказ",
+         "number": "Факторинг #{{id}}",
+         "title": "Детали факторинга"
+      },
+      "finance": {
+         "creditAmount": "Кредитная сумма",
+         "debtAmount": "Дебиторская сумма",
+         "debtCurrency": "Валюта дебиторской суммы",
+         "factoringCurrency": "Валюта факторинга",
+         "factoringRate": "Ставка факторинга",
+         "serviceRate": "Сервисная ставка",
+         "subtitle": "Суммы, валюта и ставка факторинга",
+         "title": "Финансы"
+      },
+      "line": {
+         "contractNote": "Между экспедитором и фактором, уже подписан обеими сторонами",
+         "contractTitle": "Договор факторинг-линии",
+         "signStartFailed": "Не удалось начать подписание факторинг-линии",
+         "timeout": "Время на подписание факторинг-линии истекло, попробуйте снова",
+         "waitForParties": "Подписание станет доступно после подписания экспедитором и фактором.",
+         "yourSignature": "Факторинг-линия (ваша подпись)"
+      },
+      "loadFailed": "Не удалось загрузить факторинг-покупки",
+      "notFound": "Факторинг-покупки не найдены",
+      "participants": {
+         "customerLoadFailed": "Не удалось загрузить данные заказчика",
+         "subtitle": "Все участники по факторингу"
+      },
+      "purchasesTitle": "Факторинг-покупки",
+      "requisites": {
+         "loadFailed": "Не удалось загрузить реквизиты заказчика",
+         "title": "Реквизиты сторон"
+      },
+      "subtitle": "Список заявок на факторинг",
+      "title": "Факторинги",
+      "titleSingular": "Факторинг",
+      "viewToggle": "Переключение отображения факторингов"
+   },
+   "forwarders": {
+      "invite": {
+         "action": "Пригласить экспедитора",
+         "copyLink": "Скопировать ссылку",
+         "create": "Создать приглашение",
+         "createFailed": "Не удалось создать приглашение",
+         "created": "Приглашение создано",
+         "link": "Пригласительная ссылка",
+         "linkCopied": "Ссылка скопирована",
+         "noActiveLink": "Нет активной ссылки",
+         "success": "Экспедитор создан. Отправьте ему ссылку для завершения заполнения данных.",
+         "title": "Приглашение"
+      },
+      "issuingCountry": "Страна выдачи документа",
+      "notFound": "Экспедиторы не найдены",
+      "registered": "Зарегистрирован",
+      "representative": "Представитель",
+      "searchPlaceholder": "Поиск экспедитора",
+      "sections": {
+         "company": "Данные экспедитора — компания",
+         "contact": "Данные контактного лица",
+         "requisites": "Реквизиты экспедитора"
+      },
+      "subtitle": "Полный список всех экспедиторов",
+      "title": "Экспедиторы",
+      "viewToggle": "Переключение отображения экспедиторов"
+   },
+   "header": {
+      "closeMenu": "Закрыть меню",
+      "logout": {
+         "action": "Выйти",
+         "confirm": "Вы уверены, что хотите выйти?",
+         "failed": "Не удалось выйти из аккаунта",
+         "fromAccount": "Выход из аккаунта",
+         "inProgress": "Выход...",
+         "title": "Выход"
+      },
+      "needHelp": "Нужна помощь?",
+      "settings": "Настройки",
+      "supportAvailable": "Наша служба поддержки на связи 24/7",
+      "user": "Пользователь",
+      "userProfile": "Профиль пользователя {{email}}"
+   },
+   "kgd": {
+      "loadFailed": "Не удалось загрузить данные по КГД",
+      "taxationMode": "Режим налогообложения"
+   },
+   "leads": {
+      "avr": {
+         "checking": "Проверяем статус АВР...",
+         "clickToDownload": "Нажмите, чтобы скачать",
+         "customerSignature": "Подпись заказчика",
+         "devSimulateForwarder": "[dev] Имитировать подписание экспедитором",
+         "forwarderSignature": "Подпись экспедитора",
+         "notReady": "Документ АВР пока не готов, попробуйте позже",
+         "signStartFailed": "Не удалось начать подписание АВР",
+         "statusLoadFailed": "Не удалось загрузить статус АВР",
+         "timeout": "Время на подписание АВР истекло, попробуйте снова",
+         "title": "Акт выполненных работ",
+         "titleShort": "Акт выполненных работ (АВР)",
+         "unavailable": "Документ АВР пока недоступен, попробуйте позже",
+         "waitForForwarder": "Подписание АВР станет доступно после подписания экспедитором."
+      },
+      "cargo": {
+         "add": "Добавить груз",
+         "deleteConfirm": "Удалить груз #{{index}}?",
+         "deleteFailed": "Не удалось удалить груз",
+         "itemNumber": "Груз #{{index}}",
+         "priceSetByForwarder": "Цена задана экспедитором",
+         "volumeM3Value": "{{value}} м³"
+      },
+      "chat": {
+         "withDriver": "Чат с водителем",
+         "withForwarder": "Чат с экспедитором"
+      },
+      "details": {
+         "info": "Информация о заказе",
+         "loadFailed": "Не удалось загрузить заказ",
+         "loading": "Загружаем детали заказа...",
+         "noCustomer": "Без заказчика",
+         "notResolved": "Не удалось определить заказ",
+         "number": "Заказ #{{num}}",
+         "ownerNotSpecified": "Ответственный не указан",
+         "refreshFailed": "Не удалось получить обновленные данные заказа",
+         "saveFailed": "Не удалось сохранить изменения",
+         "shipmentNumber": "Перевозки #{{num}}",
+         "subtitle": "Подробные данные по заявке",
+         "videoDisabled": "Видеофиксация отключена"
+      },
+      "documents": {
+         "deleteFailed": "Не удалось удалить документ",
+         "deleteTargetMissing": "Не удалось определить файл для удаления",
+         "loadFailed": "Не удалось загрузить документы",
+         "ownFilesOnly": "Можно удалить только файлы заказчика",
+         "singleLoadFailed": "Не удалось загрузить документ"
+      },
+      "edit": {
+         "blockedEmergency": "Нельзя редактировать заказ в аварийной ситуации",
+         "blockedFinished": "Нельзя редактировать завершенный или отмененный заказ",
+         "blockedFinishedEmergency": "Нельзя редактировать заказ, завершенный в аварийной ситуации"
+      },
+      "empty": "Нет заказов",
+      "forwarder": {
+         "lockedByTender": "Экспедитор назначен по результатам аукциона и не может быть изменен",
+         "notAssigned": "Экспедитор не назначен"
+      },
+      "loadFailed": "Не удалось загрузить заказы",
+      "map": {
+         "coordsViaWebSocket": "Координаты получены через WebSocket",
+         "driverPosition": "Текущая позиция водителя",
+         "lastUpdate": "Последнее обновление: {{time}}",
+         "loadingRoute": "Загружаем маршрут..."
+      },
+      "notFound": "Заказы не найдены",
+      "publish": {
+         "action": "Опубликовать",
+         "failed": "Не удалось опубликовать заказ",
+         "fillRouteAndCargo": "Заполните маршрут и груз перед публикацией",
+         "inProgress": "Публикация..."
+      },
+      "share": {
+         "confirm": "Вы уверены, что хотите поделиться информацией о заказе с третьими лицами? Информация будет доступна по ссылке любому, у кого она есть.",
+         "creating": "Создание ссылки...",
+         "failed": "Не удалось получить ссылку. Попробуйте позже.",
+         "hint": "Любой, у кого есть эта ссылка, сможет просмотреть информацию о заказе.",
+         "link": "Ссылка на заказ",
+         "title": "Поделиться заказом"
+      },
+      "subtitle": "Список заявок на перевозку",
+      "title": "Заказы",
+      "trip": {
+         "avrSignedFinished": "АВР подписан, рейс завершен",
+         "emergency": "Аварийная ситуация на рейсе",
+         "finishedEmergency": "Рейс был завершен в аварийной ситуации"
+      },
+      "validation": {
+         "gracePeriodRange": "Отсрочка платежа должна быть от 1 до 364 дней",
+         "routeDates": "Проверьте даты маршрута",
+         "routePoints": "Укажите точки отправления и назначения маршрута",
+         "tnvedForAllCargo": "Укажите код ТН ВЭД для всех грузов"
+      },
+      "viewToggle": "Переключение отображения заказов"
+   },
+   "manufacturers": {
+      "add": {
+         "action": "Добавить производителя",
+         "alreadyAdded": "Уже добавлен",
+         "failed": "Не удалось добавить производителя",
+         "inProgress": "Добавляем...",
+         "searchHint": "Поиск по названию или БИН",
+         "searchPlaceholder": "Введите название или БИН производителя",
+         "success": "Производитель добавлен"
+      },
+      "bulk": {
+         "result": "{{action}}: {{done}} из {{total}}. {{reason}}"
+      },
+      "card": {
+         "bin": "БИН {{bin}}",
+         "linkedShipments": "Привязанные перевозки",
+         "linkedToCustomer": "Привязан к заказчику",
+         "nameWithBin": "{{name}} — БИН {{bin}}",
+         "noLinkedShipments": "К производителю не привязано ни одной перевозки",
+         "notLinkedToCustomer": "Производитель не привязан к заказчику",
+         "openLinkedShipments": "Открыть привязанные перевозки",
+         "shipmentsCount": "Перевозок: {{count}}",
+         "shipmentsLabel": "Перевозок",
+         "title": "Данные производителя"
+      },
+      "filters": {
+         "all": "Все",
+         "allManufacturers": "Все производители",
+         "linkColumn": "Привязка",
+         "manufacturerNotLinked": "Производитель не привязан",
+         "notLinked": "Не привязан",
+         "withManufacturer": "С производителем",
+         "withoutManufacturer": "Без производителя"
+      },
+      "link": {
+         "action": "Привязать",
+         "actionWithCount": "Привязать ({{count}})",
+         "changeManufacturer": "Изменить производителя",
+         "failed": "Не удалось привязать производителя",
+         "freeShipmentsHint": "Производитель: {{name}}. Показаны перевозки без производителя.",
+         "freeShipmentsNotFound": "Свободные перевозки не найдены",
+         "inProgress": "Привязываем...",
+         "manufacturerAction": "Привязать производителя",
+         "overwriteWarning": "Выбрано {{shipments}}. У перевозки может быть только один производитель — текущая привязка будет перезаписана.",
+         "shipmentsAction": "Привязать перевозки",
+         "success": "Производитель привязан",
+         "title": "Привязка производителя"
+      },
+      "loadFailed": "Не удалось загрузить производителей",
+      "notFound": "Производители не найдены",
+      "remove": {
+         "failed": "Не удалось удалить производителя",
+         "success": "Производитель удален из списка"
+      },
+      "requestCount_few": "{{count}} заявки",
+      "requestCount_many": "{{count}} заявок",
+      "requestCount_one": "{{count}} заявка",
+      "requestCount_other": "{{count}} заявок",
+      "requests": {
+         "alreadySent": "Заявка уже отправлена",
+         "approve": "Одобрить",
+         "approveFailed": "Не удалось одобрить заявки",
+         "approveMany": "Одобрить заявки",
+         "approved": "Заявки одобрены",
+         "loadFailed": "Не удалось загрузить заявки",
+         "reject": "Отклонить",
+         "rejectFailed": "Не удалось отклонить заявки",
+         "rejectMany": "Отклонить заявки",
+         "rejected": "Заявки отклонены",
+         "send": "Отправить заявку",
+         "sendFailed": "Не удалось отправить заявку",
+         "sendToManufacturer": "Отправить заявку производителю",
+         "withdraw": "Отозвать",
+         "withdrawFailed": "Не удалось отозвать заявки",
+         "withdrawMany": "Отозвать заявки",
+         "withdrawn": "Заявки отозваны"
+      },
+      "searchFailed": "Не удалось выполнить поиск производителей",
+      "shipments": {
+         "loadFailed": "Не удалось загрузить перевозки",
+         "notFound": "Перевозки не найдены",
+         "searchByNumber": "Поиск по номеру или направлению",
+         "searchFull": "Поиск по номеру, направлению или производителю"
+      },
+      "subtitle": "Привязка производителей к перевозкам и список своих производителей",
+      "tabs": {
+         "linked": "Привязка с производителем",
+         "linking": "Привязка перевозок"
+      },
+      "title": "Производители",
+      "unlink": {
+         "action": "Открепить",
+         "actionWithCount": "Открепить ({{count}})",
+         "failed": "Не удалось открепить производителя",
+         "manufacturerAction": "Открепить производителя",
+         "success": "Производитель откреплен"
+      }
+   },
+   "map": {
+      "actualPath": "Фактический путь",
+      "actualPathOrder": "Фактический путь заказа #",
+      "customerPoint": "Точка клиента",
+      "devMarker": "Временный маркер для проверки карты",
+      "driverNotSpecified": "Водитель не указан",
+      "driverPosition": "Текущая позиция водителя",
+      "noCoordinates": "Нет координат",
+      "routesLoadFailed": "Не удалось загрузить маршруты",
+      "routesPartialFailure": "Не удалось загрузить GeoWS-маршруты для {{failed}} из {{total}} заказов"
+   },
+   "mobileNotice": {
+      "text": "Для более комфортной работы с сервисом рекомендуем использовать компьютер. Мобильная версия может отображаться некорректно.",
+      "title": "Рекомендуем использовать компьютерную версию"
+   },
+   "nav": {
+      "complaints": "Жалобы",
+      "dashboard": "Главная",
+      "factoring": "Факторинг",
+      "factorings": "Факторинги",
+      "forwarders": "Экспедиторы",
+      "leads": "Заказы",
+      "manufacturers": "Производители",
+      "profile": "Профиль",
+      "tenders": "Аукционы",
+      "tnved": "ТН ВЭД",
+      "tooltips": {
+         "complaints": "Подача жалоб по заказам и факторингам, история и ответы администрации",
+         "dashboard": "Общая сводка по заказам, маршрутам и аукционам",
+         "factorings": "Список факторингов и финансовых заявок",
+         "forwarders": "Список экспедиторов и приглашение новых участников",
+         "leads": "Список заявок на перевозку и управление заказами",
+         "manufacturers": "Привязка производителей к перевозкам и справочник производителей",
+         "tenders": "Создание и управление аукционами по перевозкам",
+         "tnved": "Справочник товарной номенклатуры внешнеэкономической деятельности"
+      }
+   },
+   "notifications": {
+      "all": "Все уведомления",
+      "empty": "Уведомлений пока нет",
+      "emptyHint": "Здесь будут отображаться новые события",
+      "loadFailed": "Не удалось загрузить уведомления",
+      "newToast": "Новое уведомление",
+      "newToastBody": "У вас новое уведомление",
+      "noDescription": "Нет описания",
+      "refresh": "Обновить уведомления",
+      "singleLoadFailed": "Не удалось загрузить уведомление",
+      "subtitle": "Последние события по вашим заявкам и аукционам",
+      "subtitleDot": "Последние события по вашим заявкам и аукционам.",
+      "title": "Уведомления",
+      "viewAll": "Смотреть все уведомления"
+   },
+   "profile": {
+      "avatar": {
+         "allowedTypes": "Можно загрузить только PNG или JPEG",
+         "delete": "Удалить фото",
+         "maxSize": "Максимальный размер фото — 600×600 px",
+         "minSize": "Минимальный размер фото — 400×400 px",
+         "readFailed": "Не удалось прочитать файл",
+         "sizeCheckFailed": "Не удалось проверить размер изображения",
+         "upload": "Загрузить фото",
+         "uploadFailed": "Не удалось загрузить фото"
+      },
+      "contract": {
+         "notSigned": "Не подписан · нажмите, чтобы подписать",
+         "signStartFailed": "Не удалось начать подписание",
+         "signStartFailedLater": "Не удалось начать подписание, попробуйте позже",
+         "signed": "Подписан",
+         "signedUntil": "Подписан · Действует до {{date}}",
+         "title": "Договор с сервисом",
+         "unavailable": "Документ договора пока недоступен, попробуйте позже"
+      },
+      "delete": {
+         "action": "Удалить аккаунт",
+         "confirmTitle": "Подтвердите удаление",
+         "failed": "Не удалось удалить аккаунт",
+         "failedActiveDeals": "Не удалось удалить аккаунт: есть активные сделки",
+         "passwordPrompt": "Для подтверждения удаления аккаунта введите свой пароль.",
+         "warning": "Аккаунт будет деактивирован. Для восстановления обратитесь в поддержку.",
+         "warningFull": "После удаления аккаунт будет деактивирован. Чтобы восстановить его, обратитесь в поддержку."
+      },
+      "documents": {
+         "allowedTypes": "Разрешены только PDF, JPG, JPEG или PNG",
+         "current": "Текущий документ",
+         "employment": "Документ о трудоустройстве сотрудника",
+         "employmentFull": "Документ о трудоустройстве сотрудника с правом подписи или приказ о назначении первого руководителя",
+         "issuedAt": "Когда выдан документ",
+         "issuedBy": "Кем выдан документ",
+         "issuers": {
+            "mia": "МВД РК",
+            "moj": "МЮ РК"
+         },
+         "legalEntity": "Документ о регистрации юридического лица",
+         "maxSize": "Размер файла не должен превышать {{size}} МБ",
+         "notUploaded": "Документ пока не загружен",
+         "replace": "Заменить документ",
+         "upload": "Загрузить документ"
+      },
+      "load": {
+         "failed": "Не удалось загрузить профиль"
+      },
+      "password": {
+         "current": "Текущий пароль",
+         "enterCurrent": "Введите текущий пароль",
+         "enterNew": "Введите новый пароль",
+         "new": "Новый пароль",
+         "repeatNew": "Повторите новый пароль"
+      },
+      "save": {
+         "failed": "Не удалось обновить профиль",
+         "noChanges": "Нет изменений для сохранения",
+         "success": "Профиль успешно обновлен"
+      },
+      "sections": {
+         "company": "Компания и реквизиты",
+         "companySubtitle": "Данные компании и контактного лица",
+         "deleteAccount": "Удаление аккаунта",
+         "documents": "Регистрационные документы",
+         "password": "Смена пароля"
+      },
+      "title": "Профиль"
+   },
+   "route": {
+      "addWaypoint": "+ Промежуточная",
+      "addressDetecting": "Определяем адрес...",
+      "addressNotFound": "Адрес не найден",
+      "addressSearching": "Поиск адреса...",
+      "clear": "Очистить маршрут",
+      "coordinates": "Координаты: {{lat}}, {{lng}}",
+      "destinationNotSpecified": "Куда не указано",
+      "markerA": "А",
+      "markerB": "Б",
+      "onMap": "На карте",
+      "originNotSpecified": "Откуда не указано",
+      "pickOnMap": "Выберите эту точку и кликните по карте",
+      "point": "Точка {{index}}",
+      "pointA": "Точка А",
+      "pointB": "Точка Б",
+      "pointType": "Тип точки",
+      "removeWaypoint": "Удалить промежуточную точку {{index}}",
+      "validation": {
+         "coordinatesPoint": "Укажите координаты для точки {{index}}: кликните по карте",
+         "destinationRequired": "Укажите место назначения",
+         "endBeforeStart": "Дата окончания не может быть раньше даты начала этой точки",
+         "endDateDestination": "Укажите дату окончания в точке назначения",
+         "endDateOrigin": "Укажите дату окончания в точке отправления",
+         "endDatePoint": "Укажите дату окончания для точки {{index}}",
+         "originRequired": "Укажите место отправления",
+         "startBeforePrevEnd": "Дата начала не может быть раньше даты окончания предыдущей точки",
+         "startDateDestination": "Укажите дату начала в точке назначения",
+         "startDateOrigin": "Укажите дату начала в точке отправления",
+         "startDatePoint": "Укажите дату начала для точки {{index}}"
+      },
+      "waypoint": "Промежуточная точка {{index}}",
+      "waypointHash": "Промежуточная точка #{{index}}"
+   },
+   "sharedLead": {
+      "invalidLink": "Ссылка недействительна или срок ее действия истек.",
+      "loading": "Загружаем информацию о заказе...",
+      "readOnly": "Это страница просмотра заказа по ссылке. Редактирование недоступно.",
+      "title": "Информация о заказе"
+   },
+   "support": {
+      "emailBody": "Здравствуйте! У меня возник вопрос.",
+      "emailSubject": "Обращение в поддержку",
+      "writeToChat": "Написать в чат"
+   },
+   "tenders": {
+      "bids": {
+         "amount": "Сумма ставки",
+         "chooseWinner": "Выбрать победителя",
+         "chooseWinnerFailed": "Не удалось выбрать победителя",
+         "choosing": "Выбор...",
+         "confirmChoice": "Подтвердить выбор",
+         "confirmWinner": "Вы уверены, что хотите выбрать эту ставку победителем?",
+         "empty": "Ставки пока не добавлены",
+         "irreversible": "Это действие нельзя отменить.",
+         "participantUnknown": "Участник не указан",
+         "showAll": "Показать все ставки (+{{count}})",
+         "statusCancelled": "Отменена",
+         "statusWinning": "Победившая",
+         "title": "Ставки"
+      },
+      "countdown": {
+         "daysHours": "{{days}} д {{hours}} ч",
+         "hoursMinutes": "{{hours}} ч {{minutes}} мин",
+         "minutes": "{{minutes}} мин"
+      },
+      "create": {
+         "action": "Создать аукцион",
+         "confirm": "Вы уверены, что хотите создать аукцион по этому заказу?",
+         "failed": "Не удалось создать аукцион",
+         "maxParticipants": "Максимум участников",
+         "privateHint": "Выберите экспедиторов, которые будут приглашены в приватный аукцион",
+         "publicAuction": "Публичный аукцион",
+         "startAfterCreate": "Запустить аукцион после создания",
+         "title": "Создание аукциона"
+      },
+      "dates": {
+         "endAfterNow": "Дата окончания должна быть позже текущего времени",
+         "endInvalid": "Некорректная дата окончания",
+         "endMin30Minutes": "Дата окончания должна быть минимум через 30 минут после даты публикации",
+         "endRequired": "Укажите дату окончания",
+         "publicationDate": "Дата публикации",
+         "publicationInPast": "Дата публикации не может быть в прошлом",
+         "publicationInvalid": "Некорректная дата публикации",
+         "publicationRequired": "Укажите дату публикации"
+      },
+      "details": {
+         "audience": "Для кого",
+         "audienceForwarders": "Для экспедиторов",
+         "audienceShippers": "Для грузоотправителей",
+         "bidsCountLabel": "Ставок",
+         "cargoWeight": "Вес грузов",
+         "editBlocked": "Нельзя редактировать закрытый или отмененный аукцион",
+         "info": "Информация об аукционе",
+         "loadFailed": "Не удалось загрузить детали аукциона",
+         "loading": "Загружаем детали аукциона...",
+         "maxParticipantsShort": "Макс. участников",
+         "orderDocuments": "Документы заказа",
+         "participantsCountLabel": "Участников",
+         "publicationType": "Тип публикации",
+         "totalOrderPrice": "Общая цена заказа"
+      },
+      "leadPicker": {
+         "cargoWithMore": "{{type}} + еще {{count}}",
+         "destination": "Куда: {{to}}",
+         "forwarder": "Экспедитор: {{name}}",
+         "hint": "Выберите заказ, для которого создается аукцион",
+         "notFound": "Заказы не найдены",
+         "order": "Заказ",
+         "orderNumber": "Заказ #{{id}}",
+         "origin": "Откуда: {{from}}",
+         "searchFailed": "Не удалось найти заказы",
+         "searching": "Поиск заказов...",
+         "sectionTitle": "Выбор заказа",
+         "select": "Выберите заказ",
+         "selectAction": "Выбрать заказ"
+      },
+      "loadFailed": "Не удалось загрузить аукционы",
+      "manage": {
+         "cancel": "Отменить аукцион",
+         "cancelConfirm": "Вы уверены, что хотите отменить этот аукцион? После отмены он станет недоступен для участников.",
+         "cancelFailed": "Не удалось отменить аукцион",
+         "cancelling": "Отмена...",
+         "delete": "Удалить аукцион",
+         "deleteConfirm": "Вы уверены, что хотите удалить этот аукцион? Это действие нельзя будет отменить.",
+         "deleteFailed": "Не удалось удалить аукцион",
+         "saveFailed": "Не удалось сохранить изменения аукциона",
+         "start": "Запустить аукцион",
+         "startFailed": "Не удалось запустить аукцион"
+      },
+      "notFound": "Аукционы не найдены",
+      "participantCount_few": "{{count}} участника",
+      "participantCount_many": "{{count}} участников",
+      "participantCount_one": "{{count}} участник",
+      "participantCount_other": "{{count}} участников",
+      "participants": {
+         "add": "Добавить участника",
+         "addFailed": "Не удалось добавить участников",
+         "bin": "БИН: {{bin}}",
+         "empty": "Участники пока не добавлены",
+         "loading": "Загрузка участников...",
+         "remove": "Удалить участника",
+         "removeFailed": "Не удалось удалить участника",
+         "searching": "Поиск экспедиторов...",
+         "title": "Участники"
+      },
+      "searchPlaceholder": "Введите город, груз или направление",
+      "stopCount_few": "{{count}} остановки",
+      "stopCount_many": "{{count}} остановок",
+      "stopCount_one": "{{count}} остановка",
+      "stopCount_other": "{{count}} остановок",
+      "subtitle": "Список аукционов по заявкам",
+      "title": "Аукционы",
+      "titleSingular": "Аукцион",
+      "validation": {
+         "maxParticipantsNegative": "Максимальное количество участников не может быть меньше 0",
+         "privateNeedsForwarder": "Выберите хотя бы одного экспедитора для приватного аукциона"
+      },
+      "viewToggle": "Переключение отображения аукционов"
+   },
+   "tnved": {
+      "code": "Код",
+      "codeNotFound": "Код не найден",
+      "searchPlaceholder": "Поиск по коду или наименованию",
+      "title": "ТН ВЭД"
+   },
+   "validation": {
+      "bik": "БИК должен содержать 8 символов",
+      "bin": "БИН должен содержать 12 цифр",
+      "companyBinRequired": "Укажите БИН компании",
+      "companyNameRequired": "Укажите название компании",
+      "dateNotInFuture": "Дата не может быть позже сегодняшнего дня",
+      "dateNotInPast": "Дата не может быть раньше сегодняшнего дня",
+      "documentIssueDateRequired": "Укажите дату выдачи документа",
+      "documentIssuedByRequired": "Укажите, кем выдан документ",
+      "email": "Некорректный email",
+      "emailRequired": "Укажите email",
+      "iikFormat": "Формат: KZ + 18 символов",
+      "iin": "ИИН должен содержать 12 цифр",
+      "iinRequired": "Укажите ИИН",
+      "max100": "Не больше 100 символов",
+      "max50": "Не больше 50 символов",
+      "min3": "Минимум 3 символа",
+      "min6": "Минимум 6 символов",
+      "passwordsMismatch": "Пароли не совпадают",
+      "phone": "Некорректный формат телефона",
+      "phoneRequired": "Укажите телефон",
+      "range2to100": "От 2 до 100 символов",
+      "range2to255": "От 2 до 255 символов",
+      "representativeRequired": "Укажите ФИО представителя"
+   },
+   "verification": {
+      "banner": "Подтвердите электронную почту. Нажмите на уведомление, чтобы отправить письмо повторно.",
+      "checkFailed": "Не удалось проверить статус email",
+      "checking": "Проверка статуса email…",
+      "cooldown": "Через {{seconds}} сек",
+      "emailConfirmed": "Email подтвержден",
+      "emailNotConfirmed": "Email не подтвержден",
+      "hint": "Мы отправим письмо со ссылкой подтверждения на вашу почту.",
+      "sendFailed": "Не удалось отправить письмо подтверждения",
+      "sent": "Письмо для подтверждения email отправлено. Проверьте почту."
+   }
+}

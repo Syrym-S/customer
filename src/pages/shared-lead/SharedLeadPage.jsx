@@ -24,6 +24,25 @@ const noop = () => {};
 const LOAD_ERROR_MESSAGE =
    'Ссылка недействительна или срок ее действия истек.';
 
+const LEAD_GONE_MESSAGE = 'Заказ удален или ссылка на него отозвана.';
+
+const REQUEST_ERROR_MESSAGE =
+   'Не удалось загрузить информацию о заказе. Попробуйте позже.';
+
+function getLoadErrorMessage(error) {
+   const status = error?.response?.status;
+
+   if (status === 404 || status === 410) {
+      return LEAD_GONE_MESSAGE;
+   }
+
+   if (status === 401 || status === 403) {
+      return LOAD_ERROR_MESSAGE;
+   }
+
+   return REQUEST_ERROR_MESSAGE;
+}
+
 function getStraightLineRoutePoints(lead) {
    const fromPoint = getLocationPosition(lead?.raw?.from_location);
    const toPoint = getLocationPosition(lead?.raw?.to_location);
@@ -73,16 +92,18 @@ export function SharedLeadPage() {
                return;
             }
 
-            if (nextLead) {
+            if (nextLead?.id) {
                setLead(nextLead);
             } else {
                setLead(null);
-               setLoadError(LOAD_ERROR_MESSAGE);
+               setLoadError(LEAD_GONE_MESSAGE);
             }
-         } catch {
+         } catch (error) {
+            console.error('Не удалось загрузить заказ по ссылке:', error);
+
             if (!isCancelled) {
                setLead(null);
-               setLoadError(LOAD_ERROR_MESSAGE);
+               setLoadError(getLoadErrorMessage(error));
             }
          } finally {
             if (!isCancelled) {

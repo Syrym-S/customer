@@ -1,0 +1,1215 @@
+{
+   "accountBan": {
+      "contactSupport": "Contact support",
+      "logout": "Log out of the account",
+      "text": "Access to the workspace is temporarily restricted. You cannot create requests, take part in auctions or perform other actions in the system.",
+      "title": "Account blocked"
+   },
+   "chat": {
+      "attachments": {
+         "allowedTypes": "Only images (JPG, PNG, WEBP), PDF, DOC(X) or XLS(X) files are allowed",
+         "attach": "Attach a file",
+         "closeImage": "Close the image viewer",
+         "fileDownloadFailed": "Failed to download the file “{{name}}”",
+         "fileLoadFailed": "Failed to load the file “{{name}}”",
+         "imageLoadFailed": "Failed to load the image",
+         "label": "Attachment",
+         "loadFailed": "Failed to load",
+         "maxCount": "You can attach no more than {{count}} files to a single message",
+         "maxSize": "The file must not exceed {{size}} MB",
+         "remove": "Remove the file {{name}}",
+         "view": "View the attachment"
+      },
+      "backToList": "Back to the chat list",
+      "close": "Close the chat",
+      "conversationStart": "Start of the conversation",
+      "empty": "No active chats",
+      "load": {
+         "deliveryFailed": "Failed to load the delivery chat",
+         "factoringFailed": "Failed to load the factoring chat",
+         "leadFailed": "Failed to load the order chat",
+         "listFailed": "Failed to load chats",
+         "moreFailed": "Failed to load more chats",
+         "participantsFailed": "Failed to load the chat participants ({{type}}) {{id}}",
+         "supportFailed": "Failed to load the support chat"
+      },
+      "message": {
+         "cancelEdit": "Cancel editing",
+         "delete": "Delete the message",
+         "deleteConfirm": "The message will be permanently deleted. Continue?",
+         "deleteFailed": "Failed to delete the message",
+         "deleted": "The message was deleted",
+         "edit": "Edit the message",
+         "editFailed": "Failed to edit the message",
+         "placeholder": "Message...",
+         "read": "Read",
+         "send": "Send the message",
+         "sendFailed": "Failed to send the message"
+      },
+      "open": "Open the chat",
+      "participant": "Participant",
+      "participantLabel": "Chat participant",
+      "refreshList": "Refresh the chat list",
+      "requisites": {
+         "title": "Bank details"
+      },
+      "time": {
+         "days": "{{count}}d",
+         "hours": "{{count}}h",
+         "justNow": "just now",
+         "minutes": "{{count}}m",
+         "yesterday": "yesterday"
+      },
+      "title": "Chats",
+      "types": {
+         "delivery": "Delivery",
+         "deliveryNumber": "Delivery #{{id}}",
+         "factoringNumber": "Factoring #{{id}}",
+         "orderNumber": "Order #{{id}}",
+         "support": "Support",
+         "supportFull": "Technical support"
+      }
+   },
+   "common": {
+      "actions": {
+         "add": "Add",
+         "adding": "Adding...",
+         "addingShort": "Adding...",
+         "back": "Back",
+         "cancel": "Cancel",
+         "clear": "Clear",
+         "close": "Close",
+         "confirm": "Confirm",
+         "continue": "Continue",
+         "copied": "Copied",
+         "copy": "Copy",
+         "copyNumber": "Copy number",
+         "create": "Create",
+         "creating": "Creating...",
+         "creatingProcess": "Creating...",
+         "delete": "Delete",
+         "deleting": "Deleting...",
+         "download": "Download",
+         "edit": "Edit",
+         "goTo": "Go",
+         "gotIt": "Got it",
+         "hide": "Hide",
+         "next": "Next",
+         "openInNewTab": "Open in a new tab",
+         "preview": "Preview",
+         "refresh": "Refresh",
+         "remove": "Remove",
+         "retry": "Retry",
+         "retryAttempt": "Try again",
+         "save": "Save",
+         "saveChanges": "Save changes",
+         "saving": "Saving...",
+         "select": "Select",
+         "selected": "Selected: {{count}}",
+         "send": "Send",
+         "sending": "Sending...",
+         "sendingShort": "Sending...",
+         "share": "Share",
+         "showAll": "Show all (+{{count}})",
+         "sign": "Sign",
+         "yes": "Yes"
+      },
+      "cargoCount_one": "{{count}} cargo item",
+      "cargoCount_other": "{{count}} cargo items",
+      "documents": {
+         "add": "Add document",
+         "empty": "No documents added",
+         "fileSelected": "File selected"
+      },
+      "empty": {
+         "addressNotSpecified": "Address not specified",
+         "binNotSpecified": "BIN not specified",
+         "canLeaveBlank": "Can be left blank",
+         "cargoNotSpecified": "Cargo not specified",
+         "companyNotSpecified": "Company not specified",
+         "contactDataNotSpecified": "No contact details",
+         "contactsNotSpecified": "No contacts",
+         "dataNotFilled": "Data not filled in",
+         "dateNotSpecified": "Date not specified",
+         "descriptionNotSpecified": "No description",
+         "fullNameNotSpecified": "Name not specified",
+         "invalidData": "Invalid data",
+         "invalidDate": "Invalid date",
+         "nameNotSpecified": "Name not specified",
+         "noCompany": "No company",
+         "noData": "No data",
+         "noFullName": "No name",
+         "noName": "No name",
+         "notAdded": "Not added",
+         "notAssigned": "Not assigned",
+         "notSelected": "Not selected",
+         "notSpecifiedM": "Not specified",
+         "notSpecifiedN": "Not specified",
+         "nothingFound": "Nothing found",
+         "optional": "Optional",
+         "priceNotSpecified": "Price not specified",
+         "typeNotSpecified": "Type not specified",
+         "unknown": "Unknown",
+         "unlimited": "Unlimited"
+      },
+      "fields": {
+         "actions": "Actions",
+         "amount": "Amount",
+         "bankName": "Bank name",
+         "bik": "BIC",
+         "bin": "BIN",
+         "bodyType": "Trailer type",
+         "cargo": "Cargo",
+         "cargoCountLabel": "Cargo items",
+         "cargoName": "Cargo name",
+         "cargoPrice": "Cargo price",
+         "cargoType": "Cargo type",
+         "cargos": "Cargo",
+         "comment": "Comment",
+         "company": "Company",
+         "companyAddress": "Company address",
+         "companyBin": "Company BIN",
+         "companyName": "Company name",
+         "contactPerson": "Contact person",
+         "currency": "Currency",
+         "customer": "Customer",
+         "date": "Date",
+         "dateFrom": "Date from",
+         "dateTo": "Date to",
+         "description": "Description",
+         "destination": "To",
+         "dimensions": "Dimensions",
+         "direction": "Direction",
+         "document": "Document",
+         "documentName": "Document name",
+         "documentNumber": "Document number",
+         "documents": "Documents",
+         "driver": "Driver",
+         "email": "Email",
+         "endDate": "End date",
+         "executionPrice": "Execution price",
+         "factor": "Factor",
+         "file": "File",
+         "files": "Files",
+         "forwarder": "Forwarder",
+         "forwarderBin": "Forwarder BIN",
+         "forwarderFullName": "Forwarder name",
+         "forwarderIin": "Forwarder IIN",
+         "from": "From",
+         "fullName": "Full name",
+         "gracePeriod": "Payment deferral",
+         "gracePeriodDays": "Payment deferral, days",
+         "heightCm": "Height, cm",
+         "iik": "IBAN",
+         "iin": "IIN",
+         "international": "International shipment",
+         "issuingCountry": "Issuing country",
+         "legalAddress": "Registered address",
+         "lengthCm": "Length, cm",
+         "loadingType": "Loading type",
+         "manufacturer": "Manufacturer",
+         "name": "Title",
+         "number": "Number",
+         "origin": "From",
+         "packagingType": "Packaging type",
+         "participants": "Participants",
+         "password": "Password",
+         "phone": "Phone",
+         "price": "Price",
+         "quantity": "Quantity",
+         "route": "Route",
+         "settlementAccount": "Bank account",
+         "shipments": "Shipments",
+         "startDate": "Start date",
+         "status": "Status",
+         "timeLeft": "Time left",
+         "title": "Name",
+         "tnvedCode": "HS code",
+         "to": "To",
+         "transportParams": "Shipment parameters",
+         "transportType": "Vehicle type",
+         "type": "Type",
+         "vat": "VAT",
+         "volume": "Volume",
+         "volumeM3": "Volume, m³",
+         "weight": "Weight",
+         "weightKg": "Weight, kg",
+         "widthCm": "Width, cm",
+         "withVat": "incl. VAT",
+         "withoutVat": "excl. VAT"
+      },
+      "filePreview": {
+         "documentNotFound": "Document not found",
+         "noFile": "There is no file to preview for this document",
+         "unsupported": "Preview is not supported for this file type yet"
+      },
+      "forwarderPicker": {
+         "clickToLoad": "Click to load forwarders",
+         "detailsLoadFailed": "Failed to load the forwarder details",
+         "loadFailed": "Failed to load forwarders",
+         "loading": "Loading forwarders...",
+         "notFound": "No forwarder found",
+         "searchByCompany": "Enter a company name or BIN",
+         "searchHint": "Enter a name, IIN, company, BIN or phone number"
+      },
+      "loading": {
+         "default": "Loading...",
+         "list": "Loading list...",
+         "map": "Loading map...",
+         "preview": "Loading preview..."
+      },
+      "search": {
+         "byDirection": "Search by direction",
+         "minChars": "Enter at least 2 characters"
+      },
+      "severity": {
+         "error": "Error",
+         "info": "Info",
+         "notice": "Notification",
+         "success": "Success",
+         "warning": "Warning"
+      },
+      "shipmentCount_one": "{{count}} shipment",
+      "shipmentCount_other": "{{count}} shipments",
+      "signing": {
+         "keepPageOpen": "Do not close this page — the signing window is open in a new tab. The status will update automatically.",
+         "opening": "Opening the signing page...",
+         "thisLink": "this link",
+         "unavailable": "The signing service is unavailable, please try again later",
+         "waiting": "Waiting for the signature..."
+      },
+      "units": {
+         "bytes": "{{value}} B",
+         "cargoSummary": "{{cargoCount}} · {{weight}} kg",
+         "days": "{{count}} d.",
+         "dimensionsCm": "{{length}} × {{width}} × {{height}} cm",
+         "kg": "{{value}} kg",
+         "kilobytes": "{{value}} KB",
+         "km": "km",
+         "m3": "{{value}} m³",
+         "megabytes": "{{value}} MB"
+      },
+      "view": {
+         "cards": "Cards",
+         "showAsCards": "Show as cards",
+         "showAsTable": "Show as table",
+         "table": "Table"
+      },
+      "waypointCount_one": "{{count}} point",
+      "waypointCount_other": "{{count}} points"
+   },
+   "complaints": {
+      "answer": {
+         "label": "Reply",
+         "notAdded": "No reply added yet",
+         "pending": "No reply from the administration yet",
+         "rejected": "The complaint was rejected",
+         "title": "Admin reply"
+      },
+      "attachments": {
+         "allowedTypes": "Only images, videos, PDF or DOCX files are allowed",
+         "attach": "Attach files",
+         "maxCount": "You can attach no more than {{count}} files",
+         "maxSize": "The file must not exceed {{size}} MB",
+         "removeFile": "Remove the file"
+      },
+      "create": {
+         "action": "File a complaint",
+         "describePlaceholder": "Describe what happened",
+         "failed": "Failed to submit the complaint",
+         "maxLength": "The description must not exceed {{count}} characters",
+         "subject": "Complaint subject",
+         "subjectPlaceholder": "Describe the complaint",
+         "submit": "Submit the complaint"
+      },
+      "emptyLast30Days": "No complaints in the last 30 days",
+      "loadFailed": "Failed to load complaints",
+      "notFound": "No complaints found",
+      "subtitle": "Complaints from the last 30 days and admin replies",
+      "target": {
+         "empty": "No shipments or factoring in the last 30 days",
+         "label": "Related to",
+         "loadFailed": "Failed to load the list",
+         "question": "Which shipment or factoring does the complaint relate to"
+      },
+      "title": "Complaints",
+      "titleSingular": "Complaint",
+      "viewToggle": "Switch the complaints view"
+   },
+   "contractGate": {
+      "fillProfile": "Fill in your profile details",
+      "goToProfile": "Go to the profile",
+      "noContracts": "You have no agreements, or the signing period has expired",
+      "signContract": "Sign the agreement"
+   },
+   "createLead": {
+      "cargo": {
+         "description": "Cargo description",
+         "validation": {
+            "cargoPriceNegative": "The cargo price cannot be negative",
+            "gracePeriodRange": "Enter a value between 1 and 364 days",
+            "heightPositive": "The height must be greater than 0",
+            "lengthPositive": "The length must be greater than 0",
+            "nameRequired": "Enter the cargo name",
+            "priceNegative": "The price cannot be negative",
+            "tnvedRequired": "Enter an HS code",
+            "volumePositive": "The volume must be greater than 0",
+            "weightPositive": "The weight must be greater than 0",
+            "widthPositive": "The width must be greater than 0"
+         },
+         "withVat": "Incl. VAT"
+      },
+      "customer": {
+         "current": "Current customer",
+         "required": "Select a customer"
+      },
+      "forwarder": {
+         "hint": "Find and select the forwarder to be assigned to this route",
+         "loadingDetails": "Loading the forwarder details...",
+         "skippable": "You can skip this step and create the order without a forwarder"
+      },
+      "result": {
+         "createError": "Creation error",
+         "createFailed": "Failed to create the order",
+         "created": "Order created",
+         "createdSuccess": "The order was created",
+         "createdSuccessWithId": "The order was created: {{id}}",
+         "createdWithDocumentErrors": "The order was created, but some documents failed to upload",
+         "draftSaveFailed": "Failed to save the draft",
+         "draftSaved": "Draft saved",
+         "saveError": "Save error",
+         "savedAsDraft": "The order was saved as a draft"
+      },
+      "saveDraft": "Save as draft",
+      "skipVideoRecording": "Skip loading/unloading video recording",
+      "step": "Step {{current}} of {{total}}",
+      "steps": {
+         "cargo": "Cargo and payment",
+         "confirm": "Review",
+         "confirmTitle": "Review the details",
+         "customer": "Customer details",
+         "documents": "Documents",
+         "forwarder": "Choose a forwarder",
+         "route": "Route"
+      },
+      "submit": "Create order",
+      "subtitle": "Fill in the request details",
+      "title": "Create an order"
+   },
+   "dashboard": {
+      "analytics": {
+         "amountAxis": "Amount, {{currency}}",
+         "emptyPeriod": "No data for the selected period",
+         "loadFailed": "Failed to load shipment analytics",
+         "noShipmentsPeriod": "No shipments in the selected period",
+         "shipmentNumber": "Shipment no.",
+         "title": "Shipment dynamics",
+         "trips": "trips"
+      },
+      "factorings": {
+         "loading": "Loading factoring...",
+         "number": "Factoring #{{id}}",
+         "title": "Factoring list"
+      },
+      "groupBy": {
+         "day": "By day",
+         "month": "By month",
+         "quarter": "By quarter",
+         "week": "By week"
+      },
+      "leads": {
+         "empty": "No active orders yet",
+         "loading": "Loading orders...",
+         "mapHint": "Select an order to highlight its route on the map",
+         "orderNumber": "Order #{{num}}",
+         "title": "Active orders"
+      },
+      "period": {
+         "action": "Select period",
+         "compare": "Compare with the previous period",
+         "halfYear": "Half-year",
+         "month": "Month",
+         "quarter": "Quarter",
+         "title": "Select a period",
+         "week": "Week",
+         "year": "Year"
+      },
+      "saleCount_one": "{{count}} sale",
+      "saleCount_other": "{{count}} sales",
+      "stats": {
+         "active": "Active",
+         "activeFactoringSales": "Active factoring sales",
+         "activeShipments": "Active shipments",
+         "activeTenders": "Active auctions",
+         "amounts": "Amounts",
+         "factoringSales": "Factoring sales",
+         "factoringSalesPeriod": "Factoring sales period",
+         "forPeriod": "For the period",
+         "loadFailed": "Failed to load statistics",
+         "shipmentsPeriod": "Shipment period",
+         "showAllCurrencies": "Show all currencies",
+         "title": "Statistics",
+         "today": "Today",
+         "viewMode": "Statistics display mode"
+      },
+      "tenderCount_one": "{{count}} auction",
+      "tenderCount_other": "{{count}} auctions",
+      "tenders": {
+         "bids": "Bids: {{count}}",
+         "loading": "Loading auctions...",
+         "number": "Auction #{{id}}",
+         "private": "Private",
+         "privateEmpty": "No private auctions found yet",
+         "public": "Public",
+         "publicEmpty": "No public auctions found yet",
+         "title": "Auction list"
+      },
+      "title": "Dashboard",
+      "totalCargoWeight": "{{value}} kg"
+   },
+   "enums": {
+      "complaintStatus": {
+         "answered": "Answered",
+         "in_progress": "In progress",
+         "pending_answer": "Awaiting a reply",
+         "pending_review": "Pending review",
+         "rejected": "Rejected",
+         "rejectedN": "Rejected",
+         "resolved": "Resolved"
+      },
+      "complaintTarget": {
+         "factoring": "Factoring",
+         "shipment": "Shipment"
+      },
+      "factoringLine": {
+         "closed": "Closed line",
+         "open": "Open line"
+      },
+      "factoringStatus": {
+         "await_paid": "Awaiting payment",
+         "cancelled": "Cancelled",
+         "finished": "Completed",
+         "new": "New",
+         "verified_participant": "Partially confirmed"
+      },
+      "leadStatus": {
+         "add_driver": "Driver added",
+         "cancelled": "Cancelled",
+         "draft": "Draft",
+         "emergency_situation": "Emergency",
+         "finished": "Completed",
+         "finished_emergency_situation": "Completed (emergency)",
+         "new": "New",
+         "sign_avr": "Signing the acceptance act",
+         "start_driver": "Trip started",
+         "start_loading": "Loading",
+         "start_unloading": "Unloading",
+         "verification_loading": "Loading confirmed",
+         "verification_unloading": "Unloading confirmed"
+      },
+      "leadStatusFilter": {
+         "all": "All statuses",
+         "cancelled": "Cancelled",
+         "driverAssigned": "Driver assigned",
+         "driverDeparted": "Driver departed",
+         "finished": "Completed",
+         "inTransit": "In transit",
+         "new": "New",
+         "other": "Other"
+      },
+      "manufacturerStatus": {
+         "attached": "Linked",
+         "incomingRequest": "Incoming request",
+         "notAttached": "Not linked",
+         "requestSent": "Request sent"
+      },
+      "participantType": {
+         "forwarder": "Forwarder"
+      },
+      "publicationType": {
+         "private": "Private",
+         "public": "Public"
+      },
+      "signature": {
+         "notSigned": "Not signed",
+         "notSignedM": "Not signed",
+         "signed": "Signed",
+         "signedM": "Signed"
+      },
+      "tenderStatus": {
+         "active": "Active",
+         "cancelled": "Cancelled",
+         "closed": "Closed",
+         "finished": "Completed",
+         "new": "New"
+      },
+      "verification": {
+         "confirmed": "Confirmed",
+         "notConfirmed": "Not confirmed"
+      },
+      "verificationCheck": {
+         "notPassed": "Not passed",
+         "passed": "Passed",
+         "passedMark": "✓ Passed"
+      },
+      "waypointType": {
+         "check_passes": "Transit",
+         "loading": "Loading",
+         "unloading": "Unloading"
+      }
+   },
+   "errorPage": {
+      "title": "Something went wrong"
+   },
+   "errors": {
+      "factoringNotFound": "Factoring not found",
+      "generic": "Something went wrong",
+      "genericSupport": "Something went wrong. Please contact support.",
+      "leadNotFound": "Order not found",
+      "notFound": "The requested page was not found.",
+      "server": "A server error occurred. Please try again later.",
+      "unexpected": "An unexpected error occurred."
+   },
+   "exportReport": {
+      "action": "Export report",
+      "dateOrder": "The “from” date cannot be later than the “to” date",
+      "failed": "Failed to export the report. Please try again later",
+      "hint": "Only completed shipments within the selected period will be included.",
+      "inProgress": "Exporting...",
+      "submit": "Export"
+   },
+   "factorings": {
+      "cancel": {
+         "action": "Cancel the factoring",
+         "confirm": "Are you sure you want to cancel this factoring? This action cannot be undone.",
+         "failed": "Failed to cancel the factoring",
+         "inProgress": "Cancelling the factoring…"
+      },
+      "chat": {
+         "action": "Chat",
+         "leadNotResolved": "Could not identify the order linked to this factoring",
+         "openFailed": "Failed to open the factoring chat"
+      },
+      "confirmParticipation": {
+         "openFailed": "Failed to open the signing window",
+         "opening": "Opening the signing window...",
+         "text": "Do you want to confirm your participation in this factoring? You will be redirected to the document signing window.",
+         "title": "Confirm participation"
+      },
+      "confirmations": {
+         "confirmedByCustomer": "Confirmed by the customer",
+         "customer": "Customer confirmation",
+         "date": "Confirmation date",
+         "factor": "Factor confirmation",
+         "factorStatus": "Factor: {{status}}",
+         "forwarder": "Forwarder confirmation",
+         "forwarderStatus": "Forwarder: {{status}}",
+         "subtitle": "Confirmation status of each party",
+         "title": "Confirmations",
+         "you": "You",
+         "youStatus": "You: {{status}}"
+      },
+      "details": {
+         "cargoSection": "Cargo and shipment parameters",
+         "createdAt": "Created on",
+         "loadFailed": "Failed to load the factoring details",
+         "loading": "Loading factoring details...",
+         "main": "General information",
+         "mainSubtitle": "Request number, creation date and linked order",
+         "number": "Factoring #{{id}}",
+         "title": "Factoring details"
+      },
+      "finance": {
+         "creditAmount": "Credit amount",
+         "debtAmount": "Receivable amount",
+         "debtCurrency": "Receivable currency",
+         "factoringCurrency": "Factoring currency",
+         "factoringRate": "Factoring rate",
+         "serviceRate": "Service fee",
+         "subtitle": "Amounts, currency and factoring rate",
+         "title": "Finance"
+      },
+      "line": {
+         "contractNote": "Between the forwarder and the factor, already signed by both parties",
+         "contractTitle": "Factoring line agreement",
+         "signStartFailed": "Failed to start signing the factoring line",
+         "timeout": "The signing window for the factoring line has expired, please try again",
+         "waitForParties": "You will be able to sign once the forwarder and the factor have signed.",
+         "yourSignature": "Factoring line (your signature)"
+      },
+      "loadFailed": "Failed to load factoring purchases",
+      "notFound": "No factoring purchases found",
+      "participants": {
+         "customerLoadFailed": "Failed to load the customer details",
+         "subtitle": "All factoring participants"
+      },
+      "purchasesTitle": "Factoring purchases",
+      "requisites": {
+         "loadFailed": "Failed to load the customer bank details",
+         "title": "Party details"
+      },
+      "subtitle": "Factoring requests",
+      "title": "Factoring",
+      "titleSingular": "Factoring",
+      "viewToggle": "Switch the factoring view"
+   },
+   "forwarders": {
+      "invite": {
+         "action": "Invite a forwarder",
+         "copyLink": "Copy the link",
+         "create": "Create an invitation",
+         "createFailed": "Failed to create the invitation",
+         "created": "The invitation was created",
+         "link": "Invitation link",
+         "linkCopied": "The link was copied",
+         "noActiveLink": "No active link",
+         "success": "The forwarder was created. Send them the link so they can finish filling in their details.",
+         "title": "Invitation"
+      },
+      "issuingCountry": "Document issuing country",
+      "notFound": "No forwarders found",
+      "registered": "Registered",
+      "representative": "Representative",
+      "searchPlaceholder": "Search for a forwarder",
+      "sections": {
+         "company": "Forwarder details — company",
+         "contact": "Contact person details",
+         "requisites": "Forwarder bank details"
+      },
+      "subtitle": "The full list of forwarders",
+      "title": "Forwarders",
+      "viewToggle": "Switch the forwarders view"
+   },
+   "header": {
+      "closeMenu": "Close menu",
+      "logout": {
+         "action": "Log out",
+         "confirm": "Are you sure you want to log out?",
+         "failed": "Failed to log out",
+         "fromAccount": "Log out of the account",
+         "inProgress": "Logging out...",
+         "title": "Log out"
+      },
+      "needHelp": "Need help?",
+      "settings": "Settings",
+      "supportAvailable": "Our support team is available 24/7",
+      "user": "User",
+      "userProfile": "Profile of {{email}}"
+   },
+   "kgd": {
+      "loadFailed": "Failed to load the tax authority data",
+      "taxationMode": "Taxation mode"
+   },
+   "leads": {
+      "avr": {
+         "checking": "Checking the act status...",
+         "clickToDownload": "Click to download",
+         "customerSignature": "Customer signature",
+         "devSimulateForwarder": "[dev] Simulate the forwarder signature",
+         "forwarderSignature": "Forwarder signature",
+         "notReady": "The act document is not ready yet, please try again later",
+         "signStartFailed": "Failed to start signing the act",
+         "statusLoadFailed": "Failed to load the act status",
+         "timeout": "The signing window for the act has expired, please try again",
+         "title": "Work acceptance act",
+         "titleShort": "Work acceptance act",
+         "unavailable": "The act document is not available yet, please try again later",
+         "waitForForwarder": "You will be able to sign the act once the forwarder has signed it."
+      },
+      "cargo": {
+         "add": "Add cargo",
+         "deleteConfirm": "Delete cargo #{{index}}?",
+         "deleteFailed": "Failed to delete the cargo",
+         "itemNumber": "Cargo #{{index}}",
+         "priceSetByForwarder": "The price was set by the forwarder",
+         "volumeM3Value": "{{value}} m³"
+      },
+      "chat": {
+         "withDriver": "Chat with the driver",
+         "withForwarder": "Chat with the forwarder"
+      },
+      "details": {
+         "info": "Order details",
+         "loadFailed": "Failed to load the order",
+         "loading": "Loading order details...",
+         "noCustomer": "No customer",
+         "notResolved": "Could not identify the order",
+         "number": "Order #{{num}}",
+         "ownerNotSpecified": "No owner specified",
+         "refreshFailed": "Failed to fetch the updated order data",
+         "saveFailed": "Failed to save the changes",
+         "shipmentNumber": "Shipment #{{num}}",
+         "subtitle": "Detailed request data",
+         "videoDisabled": "Video recording disabled"
+      },
+      "documents": {
+         "deleteFailed": "Failed to delete the document",
+         "deleteTargetMissing": "Could not identify the file to delete",
+         "loadFailed": "Failed to load documents",
+         "ownFilesOnly": "Only the customer’s own files can be deleted",
+         "singleLoadFailed": "Failed to load the document"
+      },
+      "edit": {
+         "blockedEmergency": "An order in an emergency cannot be edited",
+         "blockedFinished": "A completed or cancelled order cannot be edited",
+         "blockedFinishedEmergency": "An order completed in an emergency cannot be edited"
+      },
+      "empty": "No orders",
+      "forwarder": {
+         "lockedByTender": "The forwarder was assigned by the auction result and cannot be changed",
+         "notAssigned": "No forwarder assigned"
+      },
+      "loadFailed": "Failed to load orders",
+      "map": {
+         "coordsViaWebSocket": "Coordinates received over WebSocket",
+         "driverPosition": "Current driver position",
+         "lastUpdate": "Last update: {{time}}",
+         "loadingRoute": "Loading the route..."
+      },
+      "notFound": "No orders found",
+      "publish": {
+         "action": "Publish",
+         "failed": "Failed to publish the order",
+         "fillRouteAndCargo": "Fill in the route and cargo before publishing",
+         "inProgress": "Publishing..."
+      },
+      "share": {
+         "confirm": "Are you sure you want to share this order with third parties? Anyone with the link will be able to see the information.",
+         "creating": "Creating the link...",
+         "failed": "Failed to get the link. Please try again later.",
+         "hint": "Anyone with this link will be able to view the order details.",
+         "link": "Order link",
+         "title": "Share the order"
+      },
+      "subtitle": "Shipment requests",
+      "title": "Orders",
+      "trip": {
+         "avrSignedFinished": "The act is signed, the trip is complete",
+         "emergency": "Emergency on the trip",
+         "finishedEmergency": "The trip was completed in an emergency"
+      },
+      "validation": {
+         "gracePeriodRange": "The payment deferral must be between 1 and 364 days",
+         "routeDates": "Check the route dates",
+         "routePoints": "Set the origin and destination of the route",
+         "tnvedForAllCargo": "Enter an HS code for every cargo item"
+      },
+      "viewToggle": "Switch the orders view"
+   },
+   "manufacturers": {
+      "add": {
+         "action": "Add a manufacturer",
+         "alreadyAdded": "Already added",
+         "failed": "Failed to add the manufacturer",
+         "inProgress": "Adding...",
+         "searchHint": "Search by name or BIN",
+         "searchPlaceholder": "Enter the manufacturer name or BIN",
+         "success": "Manufacturer added"
+      },
+      "bulk": {
+         "result": "{{action}}: {{done}} of {{total}}. {{reason}}"
+      },
+      "card": {
+         "bin": "BIN {{bin}}",
+         "linkedShipments": "Linked shipments",
+         "linkedToCustomer": "Linked to the customer",
+         "nameWithBin": "{{name}} — BIN {{bin}}",
+         "noLinkedShipments": "No shipments are linked to this manufacturer",
+         "notLinkedToCustomer": "The manufacturer is not linked to the customer",
+         "openLinkedShipments": "Open the linked shipments",
+         "shipmentsCount": "Shipments: {{count}}",
+         "shipmentsLabel": "Shipments",
+         "title": "Manufacturer details"
+      },
+      "filters": {
+         "all": "All",
+         "allManufacturers": "All manufacturers",
+         "linkColumn": "Link",
+         "manufacturerNotLinked": "No manufacturer linked",
+         "notLinked": "Not linked",
+         "withManufacturer": "With a manufacturer",
+         "withoutManufacturer": "Without a manufacturer"
+      },
+      "link": {
+         "action": "Link",
+         "actionWithCount": "Link ({{count}})",
+         "changeManufacturer": "Change the manufacturer",
+         "failed": "Failed to link the manufacturer",
+         "freeShipmentsHint": "Manufacturer: {{name}}. Showing shipments without a manufacturer.",
+         "freeShipmentsNotFound": "No available shipments found",
+         "inProgress": "Linking...",
+         "manufacturerAction": "Link a manufacturer",
+         "overwriteWarning": "{{shipments}} selected. A shipment can have only one manufacturer — the current link will be overwritten.",
+         "shipmentsAction": "Link shipments",
+         "success": "Manufacturer linked",
+         "title": "Link a manufacturer"
+      },
+      "loadFailed": "Failed to load manufacturers",
+      "notFound": "No manufacturers found",
+      "remove": {
+         "failed": "Failed to remove the manufacturer",
+         "success": "Manufacturer removed from the list"
+      },
+      "requestCount_one": "{{count}} request",
+      "requestCount_other": "{{count}} requests",
+      "requests": {
+         "alreadySent": "The request has already been sent",
+         "approve": "Approve",
+         "approveFailed": "Failed to approve the requests",
+         "approveMany": "Approve requests",
+         "approved": "Requests approved",
+         "loadFailed": "Failed to load requests",
+         "reject": "Reject",
+         "rejectFailed": "Failed to reject the requests",
+         "rejectMany": "Reject requests",
+         "rejected": "Requests rejected",
+         "send": "Send a request",
+         "sendFailed": "Failed to send the request",
+         "sendToManufacturer": "Send a request to the manufacturer",
+         "withdraw": "Withdraw",
+         "withdrawFailed": "Failed to withdraw the requests",
+         "withdrawMany": "Withdraw requests",
+         "withdrawn": "Requests withdrawn"
+      },
+      "searchFailed": "Manufacturer search failed",
+      "shipments": {
+         "loadFailed": "Failed to load shipments",
+         "notFound": "No shipments found",
+         "searchByNumber": "Search by number or direction",
+         "searchFull": "Search by number, direction or manufacturer"
+      },
+      "subtitle": "Link manufacturers to shipments and manage your manufacturer list",
+      "tabs": {
+         "linked": "Manufacturer links",
+         "linking": "Shipment linking"
+      },
+      "title": "Manufacturers",
+      "unlink": {
+         "action": "Unlink",
+         "actionWithCount": "Unlink ({{count}})",
+         "failed": "Failed to unlink the manufacturer",
+         "manufacturerAction": "Unlink the manufacturer",
+         "success": "Manufacturer unlinked"
+      }
+   },
+   "map": {
+      "actualPath": "Actual path",
+      "actualPathOrder": "Actual path of order #",
+      "customerPoint": "Customer location",
+      "devMarker": "Temporary marker for map testing",
+      "driverNotSpecified": "Driver not specified",
+      "driverPosition": "Current driver position",
+      "noCoordinates": "No coordinates",
+      "routesLoadFailed": "Failed to load routes",
+      "routesPartialFailure": "Failed to load GeoWS routes for {{failed}} of {{total}} orders"
+   },
+   "mobileNotice": {
+      "text": "For a better experience we recommend using a computer. The mobile version may not display correctly.",
+      "title": "We recommend using the desktop version"
+   },
+   "nav": {
+      "complaints": "Complaints",
+      "dashboard": "Dashboard",
+      "factoring": "Factoring",
+      "factorings": "Factoring",
+      "forwarders": "Forwarders",
+      "leads": "Orders",
+      "manufacturers": "Manufacturers",
+      "profile": "Profile",
+      "tenders": "Auctions",
+      "tnved": "HS codes",
+      "tooltips": {
+         "complaints": "File complaints about orders and factoring, view history and admin replies",
+         "dashboard": "Overview of orders, routes and auctions",
+         "factorings": "Factoring and finance requests",
+         "forwarders": "Forwarder list and invitations for new participants",
+         "leads": "Shipment requests and order management",
+         "manufacturers": "Link manufacturers to shipments and browse the manufacturer directory",
+         "tenders": "Create and manage shipment auctions",
+         "tnved": "Harmonized System commodity code directory"
+      }
+   },
+   "notifications": {
+      "all": "All notifications",
+      "empty": "No notifications yet",
+      "emptyHint": "New events will appear here",
+      "loadFailed": "Failed to load notifications",
+      "newToast": "New notification",
+      "newToastBody": "You have a new notification",
+      "noDescription": "No description",
+      "refresh": "Refresh notifications",
+      "singleLoadFailed": "Failed to load the notification",
+      "subtitle": "Latest events for your requests and auctions",
+      "subtitleDot": "Latest events for your requests and auctions.",
+      "title": "Notifications",
+      "viewAll": "View all notifications"
+   },
+   "profile": {
+      "avatar": {
+         "allowedTypes": "Only PNG or JPEG files can be uploaded",
+         "delete": "Delete photo",
+         "maxSize": "The maximum photo size is 600×600 px",
+         "minSize": "The minimum photo size is 400×400 px",
+         "readFailed": "Failed to read the file",
+         "sizeCheckFailed": "Failed to check the image size",
+         "upload": "Upload photo",
+         "uploadFailed": "Failed to upload the photo"
+      },
+      "contract": {
+         "notSigned": "Not signed · click to sign",
+         "signStartFailed": "Failed to start signing",
+         "signStartFailedLater": "Failed to start signing, please try again later",
+         "signed": "Signed",
+         "signedUntil": "Signed · Valid until {{date}}",
+         "title": "Service agreement",
+         "unavailable": "The agreement document is not available yet, please try again later"
+      },
+      "delete": {
+         "action": "Delete account",
+         "confirmTitle": "Confirm deletion",
+         "failed": "Failed to delete the account",
+         "failedActiveDeals": "Failed to delete the account: there are active deals",
+         "passwordPrompt": "Enter your password to confirm the account deletion.",
+         "warning": "The account will be deactivated. Contact support to restore it.",
+         "warningFull": "Once deleted, the account will be deactivated. Contact support to restore it."
+      },
+      "documents": {
+         "allowedTypes": "Only PDF, JPG, JPEG or PNG files are allowed",
+         "current": "Current document",
+         "employment": "Employment document",
+         "employmentFull": "Employment document for an authorised signatory, or the order appointing the chief executive",
+         "issuedAt": "Issue date",
+         "issuedBy": "Issued by",
+         "issuers": {
+            "mia": "MIA of Kazakhstan",
+            "moj": "MoJ of Kazakhstan"
+         },
+         "legalEntity": "Legal entity registration document",
+         "maxSize": "The file must not exceed {{size}} MB",
+         "notUploaded": "No document uploaded yet",
+         "replace": "Replace document",
+         "upload": "Upload document"
+      },
+      "load": {
+         "failed": "Failed to load the profile"
+      },
+      "password": {
+         "current": "Current password",
+         "enterCurrent": "Enter your current password",
+         "enterNew": "Enter a new password",
+         "new": "New password",
+         "repeatNew": "Repeat the new password"
+      },
+      "save": {
+         "failed": "Failed to update the profile",
+         "noChanges": "No changes to save",
+         "success": "The profile was updated"
+      },
+      "sections": {
+         "company": "Company and bank details",
+         "companySubtitle": "Company and contact person details",
+         "deleteAccount": "Delete account",
+         "documents": "Registration documents",
+         "password": "Change password"
+      },
+      "title": "Profile"
+   },
+   "route": {
+      "addWaypoint": "+ Waypoint",
+      "addressDetecting": "Detecting the address...",
+      "addressNotFound": "Address not found",
+      "addressSearching": "Searching for an address...",
+      "clear": "Clear route",
+      "coordinates": "Coordinates: {{lat}}, {{lng}}",
+      "destinationNotSpecified": "Destination not specified",
+      "markerA": "A",
+      "markerB": "B",
+      "onMap": "On the map",
+      "originNotSpecified": "Origin not specified",
+      "pickOnMap": "Select this point and click on the map",
+      "point": "Point {{index}}",
+      "pointA": "Point A",
+      "pointB": "Point B",
+      "pointType": "Point type",
+      "removeWaypoint": "Remove waypoint {{index}}",
+      "validation": {
+         "coordinatesPoint": "Set the coordinates for point {{index}}: click on the map",
+         "destinationRequired": "Enter the destination",
+         "endBeforeStart": "The end date cannot be earlier than the start date of this point",
+         "endDateDestination": "Enter the end date at the destination",
+         "endDateOrigin": "Enter the end date at the origin",
+         "endDatePoint": "Enter the end date for point {{index}}",
+         "originRequired": "Enter the origin",
+         "startBeforePrevEnd": "The start date cannot be earlier than the end date of the previous point",
+         "startDateDestination": "Enter the start date at the destination",
+         "startDateOrigin": "Enter the start date at the origin",
+         "startDatePoint": "Enter the start date for point {{index}}"
+      },
+      "waypoint": "Waypoint {{index}}",
+      "waypointHash": "Waypoint #{{index}}"
+   },
+   "sharedLead": {
+      "invalidLink": "The link is invalid or has expired.",
+      "loading": "Loading the order details...",
+      "readOnly": "This is a read-only view of the order shared via link. Editing is not available.",
+      "title": "Order details"
+   },
+   "support": {
+      "emailBody": "Hello! I have a question.",
+      "emailSubject": "Support request",
+      "writeToChat": "Open the chat"
+   },
+   "tenders": {
+      "bids": {
+         "amount": "Bid amount",
+         "chooseWinner": "Choose the winner",
+         "chooseWinnerFailed": "Failed to choose the winner",
+         "choosing": "Choosing...",
+         "confirmChoice": "Confirm the choice",
+         "confirmWinner": "Are you sure you want to choose this bid as the winner?",
+         "empty": "No bids yet",
+         "irreversible": "This action cannot be undone.",
+         "participantUnknown": "Participant not specified",
+         "showAll": "Show all bids (+{{count}})",
+         "statusCancelled": "Cancelled",
+         "statusWinning": "Winning",
+         "title": "Bids"
+      },
+      "countdown": {
+         "daysHours": "{{days}}d {{hours}}h",
+         "hoursMinutes": "{{hours}}h {{minutes}}m",
+         "minutes": "{{minutes}}m"
+      },
+      "create": {
+         "action": "Create an auction",
+         "confirm": "Are you sure you want to create an auction for this order?",
+         "failed": "Failed to create the auction",
+         "maxParticipants": "Maximum participants",
+         "privateHint": "Select the forwarders to invite to the private auction",
+         "publicAuction": "Public auction",
+         "startAfterCreate": "Start the auction after creating it",
+         "title": "Create an auction"
+      },
+      "dates": {
+         "endAfterNow": "The end date must be later than the current time",
+         "endInvalid": "Invalid end date",
+         "endMin30Minutes": "The end date must be at least 30 minutes after the publication date",
+         "endRequired": "Enter the end date",
+         "publicationDate": "Publication date",
+         "publicationInPast": "The publication date cannot be in the past",
+         "publicationInvalid": "Invalid publication date",
+         "publicationRequired": "Enter the publication date"
+      },
+      "details": {
+         "audience": "Audience",
+         "audienceForwarders": "For forwarders",
+         "audienceShippers": "For shippers",
+         "bidsCountLabel": "Bids",
+         "cargoWeight": "Cargo weight",
+         "editBlocked": "A closed or cancelled auction cannot be edited",
+         "info": "Auction details",
+         "loadFailed": "Failed to load the auction details",
+         "loading": "Loading auction details...",
+         "maxParticipantsShort": "Max participants",
+         "orderDocuments": "Order documents",
+         "participantsCountLabel": "Participants",
+         "publicationType": "Publication type",
+         "totalOrderPrice": "Total order price"
+      },
+      "leadPicker": {
+         "cargoWithMore": "{{type}} + {{count}} more",
+         "destination": "To: {{to}}",
+         "forwarder": "Forwarder: {{name}}",
+         "hint": "Select the order this auction is created for",
+         "notFound": "No orders found",
+         "order": "Order",
+         "orderNumber": "Order #{{id}}",
+         "origin": "From: {{from}}",
+         "searchFailed": "Failed to find orders",
+         "searching": "Searching orders...",
+         "sectionTitle": "Order selection",
+         "select": "Select an order",
+         "selectAction": "Select order"
+      },
+      "loadFailed": "Failed to load auctions",
+      "manage": {
+         "cancel": "Cancel the auction",
+         "cancelConfirm": "Are you sure you want to cancel this auction? Once cancelled, it will no longer be available to participants.",
+         "cancelFailed": "Failed to cancel the auction",
+         "cancelling": "Cancelling...",
+         "delete": "Delete the auction",
+         "deleteConfirm": "Are you sure you want to delete this auction? This action cannot be undone.",
+         "deleteFailed": "Failed to delete the auction",
+         "saveFailed": "Failed to save the auction changes",
+         "start": "Start the auction",
+         "startFailed": "Failed to start the auction"
+      },
+      "notFound": "No auctions found",
+      "participantCount_one": "{{count}} participant",
+      "participantCount_other": "{{count}} participants",
+      "participants": {
+         "add": "Add a participant",
+         "addFailed": "Failed to add participants",
+         "bin": "BIN: {{bin}}",
+         "empty": "No participants added yet",
+         "loading": "Loading participants...",
+         "remove": "Remove the participant",
+         "removeFailed": "Failed to remove the participant",
+         "searching": "Searching forwarders...",
+         "title": "Participants"
+      },
+      "searchPlaceholder": "Enter a city, cargo or direction",
+      "stopCount_one": "{{count}} stop",
+      "stopCount_other": "{{count}} stops",
+      "subtitle": "Auctions for shipment requests",
+      "title": "Auctions",
+      "titleSingular": "Auction",
+      "validation": {
+         "maxParticipantsNegative": "The maximum number of participants cannot be less than 0",
+         "privateNeedsForwarder": "Select at least one forwarder for the private auction"
+      },
+      "viewToggle": "Switch the auctions view"
+   },
+   "tnved": {
+      "code": "Code",
+      "codeNotFound": "Code not found",
+      "searchPlaceholder": "Search by code or name",
+      "title": "HS codes"
+   },
+   "validation": {
+      "bik": "The BIC must contain 8 characters",
+      "bin": "The BIN must contain 12 digits",
+      "companyBinRequired": "Enter the company BIN",
+      "companyNameRequired": "Enter the company name",
+      "dateNotInFuture": "The date cannot be later than today",
+      "dateNotInPast": "The date cannot be earlier than today",
+      "documentIssueDateRequired": "Enter the document issue date",
+      "documentIssuedByRequired": "Enter who issued the document",
+      "email": "Invalid email address",
+      "emailRequired": "Enter an email address",
+      "iikFormat": "Format: KZ + 18 characters",
+      "iin": "The IIN must contain 12 digits",
+      "iinRequired": "Enter an IIN",
+      "max100": "No more than 100 characters",
+      "max50": "No more than 50 characters",
+      "min3": "At least 3 characters",
+      "min6": "At least 6 characters",
+      "passwordsMismatch": "Passwords do not match",
+      "phone": "Invalid phone number format",
+      "phoneRequired": "Enter a phone number",
+      "range2to100": "From 2 to 100 characters",
+      "range2to255": "From 2 to 255 characters",
+      "representativeRequired": "Enter the representative's name"
+   },
+   "verification": {
+      "banner": "Please confirm your email address. Click this notice to resend the email.",
+      "checkFailed": "Failed to check the email status",
+      "checking": "Checking the email status…",
+      "cooldown": "In {{seconds}} s",
+      "emailConfirmed": "Email confirmed",
+      "emailNotConfirmed": "Email not confirmed",
+      "hint": "We will send a confirmation link to your email address.",
+      "sendFailed": "Failed to send the confirmation email",
+      "sent": "The confirmation email has been sent. Please check your inbox."
+   }
+}

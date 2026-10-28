@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { Button, Stack, TextField, Typography } from '@mui/material';
-import { getForwarderInviteLink } from '../model/forwarders.helpers';
+import { Button, Chip, Stack, TextField, Typography } from '@mui/material';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import {
+    getForwarderInviteLink,
+    isForwarderRegistered,
+} from '../model/forwarders.helpers';
 
 export function ForwarderInviteLink({
     forwarder,
@@ -9,6 +13,7 @@ export function ForwarderInviteLink({
 }) {
     const [isCopied, setIsCopied] = useState(false);
     const inviteLink = getForwarderInviteLink(forwarder);
+    const isRegistered = isForwarderRegistered(forwarder);
 
     async function handleCopy(event) {
         event.stopPropagation();
@@ -26,6 +31,29 @@ export function ForwarderInviteLink({
         }, 1500);
     }
 
+    if (isRegistered) {
+        return (
+            <Chip
+                icon={<CheckCircleRoundedIcon />}
+                label="Зарегистрирован"
+                color="success"
+                variant="outlined"
+                size="small"
+                sx={{
+                    maxWidth: '100%',
+                    height: 22,
+                    fontSize: 12,
+                    '& .MuiChip-icon': {
+                        fontSize: 14,
+                    },
+                    '& .MuiChip-label': {
+                        px: 0.75,
+                    },
+                }}
+            />
+        );
+    }
+
     if (!inviteLink) {
         return (
             <Typography color="text.secondary" fontSize={13}>
@@ -40,9 +68,16 @@ export function ForwarderInviteLink({
                 size="small"
                 variant="outlined"
                 onClick={handleCopy}
-                sx={{ whiteSpace: 'nowrap' }}
+                sx={{
+                    whiteSpace: 'nowrap',
+                    px: 1,
+                    py: 0.25,
+                    minWidth: 0,
+                    fontSize: 12,
+                    lineHeight: 1.4,
+                }}
             >
-                {isCopied ? 'Скопировано' : 'Скопировать ссылку'}
+                {isCopied ? 'Скопировано' : 'Скопировать'}
             </Button>
         );
     }

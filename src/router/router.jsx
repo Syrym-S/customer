@@ -11,7 +11,7 @@ import { ManufacturersPage } from "../pages/manufacturers/ManufacturersPage";
 import { TnvedPage } from "../pages/tnved/TnvedPage";
 import { ComplaintsPage } from "../pages/complaints/ComplaintsPage";
 import { ErrorPage } from "../pages/error/ErrorPage";
-import { isStaging } from "../shared/api/api-client";
+import { appBasename } from "../shared/api/api-client";
 
 export const router = createBrowserRouter(
   [
@@ -141,6 +141,6 @@ export const router = createBrowserRouter(
     },
   ],
   {
-    basename: isStaging ? "/staging" : "/",
+    basename: appBasename,
   },
 );
