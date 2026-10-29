@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import i18n from "../../../shared/i18n";
+import { useTranslation } from "react-i18next";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
@@ -26,10 +28,10 @@ function classifySigningError(error) {
   const message = error.response?.data?.message;
 
   if (status === 422 || status === 502) {
-    return "Не удалось начать подписание, попробуйте позже";
+    return i18n.t("profile.contract.signStartFailedLater");
   }
 
-  return message || error.message || "Не удалось начать подписание";
+  return message || error.message || i18n.t("profile.contract.signStartFailed");
 }
 
 // The signed contract has no separate download endpoint — its content comes
@@ -37,7 +39,7 @@ function classifySigningError(error) {
 // used for the registration/employer documents (context: "contract").
 function downloadContractDocument(contractDocument) {
   if (!contractDocument?.content) {
-    notifyError("Документ договора пока недоступен, попробуйте позже");
+    notifyError(i18n.t("profile.contract.unavailable"));
     return;
   }
 
@@ -64,6 +66,8 @@ function downloadContractDocument(contractDocument) {
 }
 
 export function ContractDocumentCard({ documents }) {
+  const { t } = useTranslation();
+
   const hasValidContract = useContractStore((state) => state.hasValidContract);
   const contractExpiresAt = useContractStore((state) => state.contractExpiresAt);
 
@@ -151,15 +155,17 @@ export function ContractDocumentCard({ documents }) {
 
       <Box sx={{ minWidth: 0, flex: 1 }}>
         <Typography variant="body2" sx={{ fontWeight: 500 }}>
-          Договор с сервисом
+          {t("profile.contract.title")}
         </Typography>
 
         <Typography variant="caption" color="text.secondary">
           {isSigning
-            ? "Открываем страницу подписания..."
+            ? t("common.signing.opening")
             : isSigned
-              ? `Подписан${expiresLabel ? ` · Действует до ${expiresLabel}` : ""}`
-              : "Не подписан · нажмите, чтобы подписать"}
+              ? expiresLabel
+                ? t("profile.contract.signedUntil", { date: expiresLabel })
+                : t("profile.contract.signed")
+              : t("profile.contract.notSigned")}
         </Typography>
       </Box>
     </Box>

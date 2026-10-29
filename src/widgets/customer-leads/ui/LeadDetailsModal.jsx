@@ -7,6 +7,7 @@ import {
    DialogTitle,
    Typography,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -28,6 +29,8 @@ import { useLeadDetailsMutations } from './lead-details/hooks/useLeadDetailsMuta
 import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
 
 export function LeadDetailsModal() {
+   const { t } = useTranslation();
+
    const navigate = useNavigate();
    const { leadId } = useParams();
 
@@ -159,7 +162,7 @@ export function LeadDetailsModal() {
                      lineHeight: 1.3,
                   }}
                >
-                  Заказ #{openLead?.id}
+                  {t("leads.details.number", { num: openLead?.id })}
                </Typography>
 
                <Typography
@@ -167,7 +170,7 @@ export function LeadDetailsModal() {
                   color="text.secondary"
                   sx={{ mt: 0.5 }}
                >
-                  Загружаем детали заказа...
+                  {t("leads.details.loading")}
                </Typography>
             </DialogTitle>
          )}
@@ -187,14 +190,14 @@ export function LeadDetailsModal() {
                   <CircularProgress />
 
                   <Typography color="text.secondary">
-                     Загружаем детали заказа...
+                     {t("leads.details.loading")}
                   </Typography>
                </Box>
             )}
 
             {!shouldShowRouteLeadLoader && isLeadDetailsLoading && (
                <Typography color="text.secondary" sx={{ mb: 2 }}>
-                  Загружаем детали заказа...
+                  {t("leads.details.loading")}
                </Typography>
             )}
 
@@ -207,12 +210,12 @@ export function LeadDetailsModal() {
             {currentLead?.status === 'emergency_situation' && (
                <Alert severity="error" sx={{ mb: 2 }}>
                   <Typography sx={{ fontWeight: 600 }}>
-                     Аварийная ситуация на рейсе
+                     {t("leads.trip.emergency")}
                   </Typography>
 
                   {currentLead?.emergency_situation_comment && (
                      <Typography variant="body2" sx={{ mt: 0.5 }}>
-                        Комментарий водителя: {currentLead.emergency_situation_comment}
+                        {t("leads.details.driverComment", { comment: currentLead.emergency_situation_comment })}
                      </Typography>
                   )}
                </Alert>
@@ -221,12 +224,12 @@ export function LeadDetailsModal() {
             {currentLead?.status === 'finished_emergency_situation' && (
                <Alert severity="warning" sx={{ mb: 2 }}>
                   <Typography sx={{ fontWeight: 600 }}>
-                     Рейс был завершен в аварийной ситуации
+                     {t("leads.trip.finishedEmergency")}
                   </Typography>
 
                   {currentLead?.emergency_situation_comment && (
                      <Typography variant="body2" sx={{ mt: 0.5 }}>
-                        Комментарий водителя: {currentLead.emergency_situation_comment}
+                        {t("leads.details.driverComment", { comment: currentLead.emergency_situation_comment })}
                      </Typography>
                   )}
                </Alert>
@@ -235,7 +238,7 @@ export function LeadDetailsModal() {
             {currentLead?.status === 'finished' && (
                <Alert severity="success" sx={{ mb: 2 }}>
                   <Typography sx={{ fontWeight: 600 }}>
-                     АВР подписан, рейс завершен
+                     {t("leads.trip.avrSignedFinished")}
                   </Typography>
                </Alert>
             )}

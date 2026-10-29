@@ -3,6 +3,7 @@ import {
    cargoVolumeField,
    leadTransportationFields,
 } from '../../customer-leads/model/lead-transportation.helpers';
+import i18n from '../../../shared/i18n';
 
 function formatTenderLocation(location) {
    if (!location) {
@@ -115,12 +116,12 @@ function normalizeTenderCargoFromApi(cargo = {}) {
 
    return {
       id: cargo.id ?? null,
-      name: cargo.name || cargo.type || 'Не указан',
+      name: cargo.name || cargo.type || i18n.t("common.empty.notSpecifiedM"),
       description,
       context: description,
       weight_kg: cargo.weight_kg ?? null,
       cargo_price: cargo.cargo_price ?? null,
-      type: cargo.type || 'Не указан',
+      type: cargo.type || i18n.t("common.empty.notSpecifiedM"),
       width_cm: cargo.width_cm ?? null,
       height_cm: cargo.height_cm ?? null,
       length_cm: cargo.length_cm ?? null,
@@ -242,7 +243,7 @@ export function mapTenderLeadSearchItemFromApi(item) {
    const cargoNames = (Array.isArray(item.cargos) ? item.cargos : [])
       .map((cargoItem) => String(cargoItem?.name || cargoItem?.type || '').trim())
       .filter(Boolean);
-   const cargo = item.cargo || cargoNames[0] || 'Груз не указан';
+   const cargo = item.cargo || cargoNames[0] || i18n.t("common.empty.cargoNotSpecified");
    const shortId = getShortLeadId(item.id);
    const waypointsCount = (
       Array.isArray(item.waypoints) ? item.waypoints : []
@@ -252,10 +253,10 @@ export function mapTenderLeadSearchItemFromApi(item) {
       from && to
          ? `${from} → ${to}`
          : to
-           ? `Куда: ${to}`
+           ? i18n.t("tenders.leadPicker.destination", { to: to })
            : from
-             ? `Откуда: ${from}`
-             : `Заказ #${shortId || item.id}`;
+             ? i18n.t("tenders.leadPicker.origin", { from: from })
+             : i18n.t("leads.details.number", { num: shortId || item.id });
 
    return {
       id: item.id,
@@ -278,7 +279,7 @@ export function mapTenderLeadSearchItemFromApi(item) {
 
       title,
       label: title,
-      subtitle: [cargo, item.forwarder ? `Экспедитор: ${item.forwarder}` : '']
+      subtitle: [cargo, item.forwarder ? i18n.t("tenders.leadPicker.forwarder", { name: item.forwarder }) : '']
          .filter(Boolean)
          .join(' • '),
    };
@@ -332,7 +333,7 @@ function mapTenderLeadFileFromApi(apiFile, index) {
          apiFile.fileUrl ||
          apiFile.url ||
          `file-${index}`,
-      name: apiFile.name || apiFile.title || fileName || 'Документ',
+      name: apiFile.name || apiFile.title || fileName || i18n.t("common.fields.document"),
       context: apiFile.context || '',
       fileName,
       fileUrl: sourceUrl || sourcePath || '#',

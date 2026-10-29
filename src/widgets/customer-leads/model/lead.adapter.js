@@ -3,6 +3,7 @@ import {
    cargoVolumeField,
    leadTransportationFields,
 } from './lead-transportation.helpers';
+import i18n from '../../../shared/i18n';
 
 function isBinLike(value) {
    return /^\d{12}$/.test(String(value ?? '').trim());
@@ -19,16 +20,16 @@ function getFileNameFromPath(value) {
 
 function normalizeCargoTypeValue(value) {
    if (!value) {
-      return 'Не указан';
+      return i18n.t("common.empty.notSpecifiedM");
    }
 
    if (typeof value === 'string') {
-      return value.trim() || 'Не указан';
+      return value.trim() || i18n.t("common.empty.notSpecifiedM");
    }
 
    if (typeof value === 'object') {
       return (
-         value.name || value.title || value.label || value.type || 'Не указан'
+         value.name || value.title || value.label || value.type || i18n.t("common.empty.notSpecifiedM")
       );
    }
 
@@ -65,7 +66,7 @@ function mapForwarderFromLead(apiLead) {
 
       return {
          id: apiLead.forwarder_id ?? null,
-         fullName: trimmed || 'Не указан',
+         fullName: trimmed || i18n.t("common.empty.notSpecifiedM"),
          companyName: '',
          companyBin: '',
          phone: '',
@@ -104,7 +105,7 @@ function mapForwarderFromLead(apiLead) {
          forwarder?.contactPerson ??
          forwarder?.person?.name ??
          apiLead.forwarder_name ??
-         'Не указан',
+         i18n.t("common.empty.notSpecifiedM"),
 
       companyName:
          rawCompanyName ||
@@ -147,7 +148,7 @@ function mapLeadFileFromApi(apiFile, index) {
 
    return {
       id: apiFile.path ?? apiFile.url ?? apiFile.id ?? `file-${index}`,
-      name: apiFile.name ?? apiFile.title ?? 'Документ',
+      name: apiFile.name ?? apiFile.title ?? i18n.t("common.fields.document"),
       context: apiFile.context ?? '',
       fileName,
       fileUrl: apiFile.url ?? apiFile.path ?? '#',
@@ -206,7 +207,7 @@ function normalizeTnvedFromApi(apiCargo) {
 
 function normalizeCargoFromApi(apiCargo = {}) {
    const type = normalizeCargoTypeValue(apiCargo.type);
-   const name = normalizeText(apiCargo.name) || type || 'Не указан';
+   const name = normalizeText(apiCargo.name) || type || i18n.t("common.empty.notSpecifiedM");
    const description = getCargoDescription(apiCargo);
 
    return {
@@ -290,7 +291,7 @@ export function mapLeadFromApi(apiLead) {
          apiLead.customer?.name ||
          apiLead.customer ||
          apiLead.creator?.name ||
-         'Без заказчика',
+         i18n.t("leads.details.noCustomer"),
 
       forwarder: mapForwarderFromLead(apiLead),
 
@@ -301,14 +302,14 @@ export function mapLeadFromApi(apiLead) {
          apiLead.route?.from?.address ||
          apiLead.route?.from?.city ||
          apiLead.from ||
-         'Не указано',
+         i18n.t("common.empty.notSpecifiedN"),
 
       to_location:
          apiLead.to_location ||
          apiLead.route?.to?.address ||
          apiLead.route?.to?.city ||
          apiLead.to ||
-         'Не указано',
+         i18n.t("common.empty.notSpecifiedN"),
 
       waypoints,
       point_schedules: Array.isArray(apiLead.point_schedules)
@@ -336,7 +337,7 @@ export function mapLeadFromApi(apiLead) {
       cargo: firstCargo,
       cargos,
 
-      driver: apiLead.driver ?? 'Не назначен',
+      driver: apiLead.driver ?? i18n.t("common.empty.notAssigned"),
 
       creator: apiLead.creator ?? null,
       person: apiLead.person ?? null,

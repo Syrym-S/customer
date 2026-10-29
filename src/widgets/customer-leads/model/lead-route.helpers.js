@@ -1,4 +1,5 @@
 import { normalizeLocationValue } from './lead-edit-form.helpers';
+import i18n from '../../../shared/i18n';
 import { getPointScheduleByIndex } from '../../../features/create-lead/lib/point-schedule.helpers';
 
 export { getPointScheduleByIndex };
@@ -8,18 +9,20 @@ export function getWaypointLabel(waypoint) {
       normalizeLocationValue(waypoint) ||
       waypoint?.address ||
       waypoint?.label ||
-      'Не указано'
+      i18n.t("common.empty.notSpecifiedN")
    );
 }
 
-export const waypointTypeLabels = {
-   loading: 'Погрузка',
-   unloading: 'Разгрузка',
-   check_passes: 'Транзит',
+const WAYPOINT_TYPE_LABEL_KEYS = {
+   loading: 'enums.waypointType.loading',
+   unloading: 'enums.waypointType.unloading',
+   check_passes: 'enums.waypointType.check_passes',
 };
 
 export function getWaypointTypeLabel(type) {
-   return waypointTypeLabels[type] || null;
+   const key = WAYPOINT_TYPE_LABEL_KEYS[type];
+
+   return key ? i18n.t(key) : null;
 }
 
 // Reuses the same palette/rgba pairing as leadStatusStyles in lead.helpers.js

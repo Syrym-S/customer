@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { useParams } from 'react-router-dom';
 import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material';
 
@@ -21,26 +22,24 @@ import { useSharedLeadGeoTracking } from '../../widgets/customer-leads/ui/lead-d
 
 const noop = () => {};
 
-const LOAD_ERROR_MESSAGE =
-   'Ссылка недействительна или срок ее действия истек.';
+const LOAD_ERROR_KEY = 'sharedLead.invalidLink';
 
-const LEAD_GONE_MESSAGE = 'Заказ удален или ссылка на него отозвана.';
+const LEAD_GONE_KEY = 'sharedLead.gone';
 
-const REQUEST_ERROR_MESSAGE =
-   'Не удалось загрузить информацию о заказе. Попробуйте позже.';
+const REQUEST_ERROR_KEY = 'sharedLead.requestFailed';
 
-function getLoadErrorMessage(error) {
+function getLoadErrorKey(error) {
    const status = error?.response?.status;
 
    if (status === 404 || status === 410) {
-      return LEAD_GONE_MESSAGE;
+      return LEAD_GONE_KEY;
    }
 
    if (status === 401 || status === 403) {
-      return LOAD_ERROR_MESSAGE;
+      return LOAD_ERROR_KEY;
    }
 
-   return REQUEST_ERROR_MESSAGE;
+   return REQUEST_ERROR_KEY;
 }
 
 function getStraightLineRoutePoints(lead) {
@@ -69,10 +68,12 @@ function getSharedLeadRoute(lead) {
 }
 
 export function SharedLeadPage() {
+   const { t } = useTranslation();
+
    const { leadId, token } = useParams();
    const [lead, setLead] = useState(null);
    const [isLoading, setIsLoading] = useState(true);
-   const [loadError, setLoadError] = useState('');
+   const [loadErrorKey, setLoadErrorKey] = useState('');
 
    const map = useCustomerMap();
    const { geoPoints, geoCurrentPoint } = useSharedLeadGeoTracking(lead);
@@ -82,7 +83,7 @@ export function SharedLeadPage() {
 
       async function loadSharedLead() {
          setIsLoading(true);
-         setLoadError('');
+         setLoadErrorKey('');
 
          try {
             const response = await getSharedLeadApi(leadId, token);
@@ -96,14 +97,14 @@ export function SharedLeadPage() {
                setLead(nextLead);
             } else {
                setLead(null);
-               setLoadError(LEAD_GONE_MESSAGE);
+               setLoadErrorKey(LEAD_GONE_KEY);
             }
          } catch (error) {
             console.error('Не удалось загрузить заказ по ссылке:', error);
 
             if (!isCancelled) {
                setLead(null);
-               setLoadError(getLoadErrorMessage(error));
+               setLoadErrorKey(getLoadErrorKey(error));
             }
          } finally {
             if (!isCancelled) {
@@ -134,15 +135,15 @@ export function SharedLeadPage() {
             <CircularProgress />
 
             <Typography color="text.secondary">
-               Загружаем информацию о заказе...
+               {t("sharedLead.loading")}
             </Typography>
          </Box>
       );
    }
 
-   if (loadError || !lead) {
+   if (loadErrorKey || !lead) {
       return (
-         <Alert severity="error">{loadError || LOAD_ERROR_MESSAGE}</Alert>
+         <Alert severity="error">{t(loadErrorKey || LOAD_ERROR_KEY)}</Alert>
       );
    }
 
@@ -162,11 +163,13 @@ export function SharedLeadPage() {
          >
             <Box>
                <Typography sx={{ fontSize: { xs: 18, sm: 20 }, fontWeight: 600 }}>
-                  Информация о заказе
+                  {t("sharedLead.title")}
                </Typography>
 
                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                  Заказ #{lead.num || lead.id}
+                  {t("leads.details.number", {
+                     num: lead.num || lead.id,
+                  })}
                </Typography>
             </Box>
 
@@ -174,7 +177,7 @@ export function SharedLeadPage() {
          </Box>
 
          <Alert severity="info" sx={{ mb: 2 }}>
-            Это страница просмотра заказа по ссылке. Редактирование недоступно.
+            {t("sharedLead.readOnly")}
          </Alert>
 
          <LeadDetailsMap

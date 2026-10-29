@@ -5,6 +5,7 @@ import {
    MenuItem,
    Select,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
@@ -26,6 +27,8 @@ export function LeadTransportationSection({
    editForm,
    onEditChange,
 }) {
+   const { t } = useTranslation();
+
    const transportationOptions = useLeadParamsOptions();
 
    const loadingTypeLabel = getLoadingTypeLabel(lead.loadingType);
@@ -63,7 +66,7 @@ export function LeadTransportationSection({
    return (
       <DetailSection
          icon={<LocalShippingOutlinedIcon />}
-         title="Параметры перевозки"
+         title={t("common.fields.transportParams")}
       >
          <Box
             sx={{
@@ -80,16 +83,16 @@ export function LeadTransportationSection({
                <>
                   <FormControl fullWidth size="small">
                      <InputLabel id="lead-loading-type-label">
-                        Тип погрузки
+                        {t("common.fields.loadingType")}
                      </InputLabel>
                      <Select
                         labelId="lead-loading-type-label"
-                        label="Тип погрузки"
+                        label={t("common.fields.loadingType")}
                         name="loadingType"
                         value={editForm.loadingType || ''}
                         onChange={onEditChange}
                      >
-                        <MenuItem value="">Не указан</MenuItem>
+                        <MenuItem value="">{t("common.empty.notSpecifiedM")}</MenuItem>
                         {loadingTypeSelectOptions.map((option) => (
                            <MenuItem key={option.value} value={option.value}>
                               {option.label}
@@ -100,16 +103,16 @@ export function LeadTransportationSection({
 
                   <FormControl fullWidth size="small">
                      <InputLabel id="lead-packaging-type-label">
-                        Вид упаковки
+                        {t("common.fields.packagingType")}
                      </InputLabel>
                      <Select
                         labelId="lead-packaging-type-label"
-                        label="Вид упаковки"
+                        label={t("common.fields.packagingType")}
                         name="packagingType"
                         value={editForm.packagingType || ''}
                         onChange={onEditChange}
                      >
-                        <MenuItem value="">Не указан</MenuItem>
+                        <MenuItem value="">{t("common.empty.notSpecifiedM")}</MenuItem>
                         {packagingTypeSelectOptions.map((option) => (
                            <MenuItem key={option.value} value={option.value}>
                               {option.label}
@@ -120,16 +123,16 @@ export function LeadTransportationSection({
 
                   <FormControl fullWidth size="small">
                      <InputLabel id="lead-composition-type-label">
-                        Тип состава
+                        {t("common.fields.bodyType")}
                      </InputLabel>
                      <Select
                         labelId="lead-composition-type-label"
-                        label="Тип состава"
+                        label={t("common.fields.bodyType")}
                         name="compositionType"
                         value={editForm.compositionType || ''}
                         onChange={onEditChange}
                      >
-                        <MenuItem value="">Не указан</MenuItem>
+                        <MenuItem value="">{t("common.empty.notSpecifiedM")}</MenuItem>
                         {compositionTypeSelectOptions.map((option) => (
                            <MenuItem key={option.value} value={option.value}>
                               {option.label}
@@ -140,16 +143,16 @@ export function LeadTransportationSection({
 
                   <FormControl fullWidth size="small">
                      <InputLabel id="lead-transport-type-label">
-                        Тип транспорта
+                        {t("common.fields.transportType")}
                      </InputLabel>
                      <Select
                         labelId="lead-transport-type-label"
-                        label="Тип транспорта"
+                        label={t("common.fields.transportType")}
                         name="transportType"
                         value={editForm.transportType || ''}
                         onChange={onEditChange}
                      >
-                        <MenuItem value="">Не указан</MenuItem>
+                        <MenuItem value="">{t("common.empty.notSpecifiedM")}</MenuItem>
                         {transportTypeSelectOptions.map((option) => (
                            <MenuItem key={option.value} value={option.value}>
                               {option.label}
@@ -161,26 +164,26 @@ export function LeadTransportationSection({
             ) : (
                <>
                   {loadingTypeLabel && (
-                     <InfoBadge label="Тип погрузки" value={loadingTypeLabel} />
+                     <InfoBadge label={t("common.fields.loadingType")} value={loadingTypeLabel} />
                   )}
 
                   {packagingTypeLabel && (
                      <InfoBadge
-                        label="Вид упаковки"
+                        label={t("common.fields.packagingType")}
                         value={packagingTypeLabel}
                      />
                   )}
 
                   {compositionTypeLabel && (
                      <InfoBadge
-                        label="Тип состава"
+                        label={t("common.fields.bodyType")}
                         value={compositionTypeLabel}
                      />
                   )}
 
                   {transportTypeLabel && (
                      <InfoBadge
-                        label="Тип транспорта"
+                        label={t("common.fields.transportType")}
                         value={transportTypeLabel}
                      />
                   )}

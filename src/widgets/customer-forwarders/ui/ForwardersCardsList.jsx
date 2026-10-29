@@ -1,8 +1,11 @@
 import { Box, Paper, Stack, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import { ForwarderCard } from './ForwarderCard';
 import { getForwarderId } from '../model/forwarders.helpers';
 
 export function ForwardersCardsList({ forwarders, onOpenDetails }) {
+    const { t } = useTranslation();
+
     if (forwarders.length === 0) {
         return (
             <Paper
@@ -14,7 +17,7 @@ export function ForwardersCardsList({ forwarders, onOpenDetails }) {
                 }}
             >
                 <Typography color='text.secondary'>
-                    Экспедиторы не найдены
+                    {t("forwarders.notFound")}
                 </Typography>
             </Paper>
         );

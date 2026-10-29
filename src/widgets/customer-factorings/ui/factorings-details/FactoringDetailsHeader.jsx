@@ -1,4 +1,5 @@
 import { Box, Chip, DialogTitle, Stack, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import {
     getFactoringStatusColor,
     getFactoringStatusLabel,
@@ -7,6 +8,8 @@ import { paletteKeyToColorPath } from '../../../../shared/helpers/status-color.h
 import { StatusDot } from '../../../../shared/ui/StatusDot';
 
 export function FactoringDetailsHeader({ factoring }) {
+    const { t } = useTranslation();
+
     return (
         <DialogTitle
             sx={{
@@ -52,7 +55,7 @@ export function FactoringDetailsHeader({ factoring }) {
                             lineHeight: 1.3,
                         }}
                     >
-                        Детали факторинга
+                        {t("factorings.details.title")}
                     </Typography>
                 </Box>
                 {factoring && (
@@ -80,7 +83,7 @@ export function FactoringDetailsHeader({ factoring }) {
                         }}
                     >
                         <Chip
-                            label={`Факторинг #${factoring?.id ?? '—'}`}
+                            label={t("factorings.details.number", { id: factoring?.id ?? '—' })}
                             color='primary'
                             variant='outlined'
                             size='small'

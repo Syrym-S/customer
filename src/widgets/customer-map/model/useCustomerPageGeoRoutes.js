@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import i18n from "../../../shared/i18n";
 
 import { geoPointToLatLng, mergeGeoPointsById, normalizeGeoPoints } from "../../../utils/geologic";
 import {
@@ -134,7 +135,7 @@ export function useCustomerPageGeoRoutes(leads) {
 
             if (failedCount > 0) {
                 setGeoRoutesError(
-                    `Не удалось загрузить GeoWS-маршруты для ${failedCount} из ${leadsWithoutFreshCache.length} заказов`,
+                    i18n.t("map.routesPartialFailure", { failed: failedCount, total: leadsWithoutFreshCache.length }),
                 );
             }
         }

@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 export const MANUFACTURERS_PER_PAGE = 10;
 export const MANUFACTURER_LEADS_PER_PAGE = 10;
 export const LEADS_POOL_LIMIT = 100;
@@ -32,11 +34,11 @@ export function getManufacturerId(manufacturer) {
 }
 
 export function getManufacturerName(manufacturer) {
-   return manufacturer?.companyName || 'Название не указано';
+   return manufacturer?.companyName || i18n.t("common.empty.nameNotSpecified");
 }
 
 export function getManufacturerBin(manufacturer) {
-   return manufacturer?.companyBin || 'Не указан';
+   return manufacturer?.companyBin || i18n.t("common.empty.notSpecifiedM");
 }
 
 export function getManufacturerLinkedAt(manufacturer) {
@@ -142,13 +144,16 @@ export const MANUFACTURER_ROW_STATUSES = {
 export const ALL_ROW_STATUSES_VALUE = 'all';
 
 const MANUFACTURER_ROW_STATUS_META = {
-   [MANUFACTURER_ROW_STATUSES.LINKED]: { label: 'Привязан', color: 'success' },
+   [MANUFACTURER_ROW_STATUSES.LINKED]: {
+      labelKey: 'enums.manufacturerStatus.attached',
+      color: 'success',
+   },
    [MANUFACTURER_ROW_STATUSES.INCOMING]: {
-      label: 'Входящая заявка',
+      labelKey: 'enums.manufacturerStatus.incomingRequest',
       color: 'warning',
    },
    [MANUFACTURER_ROW_STATUSES.OUTGOING]: {
-      label: 'Заявка отправлена',
+      labelKey: 'enums.manufacturerStatus.requestSent',
       color: 'info',
    },
 };
@@ -156,12 +161,12 @@ const MANUFACTURER_ROW_STATUS_META = {
 export function getManufacturerRowStatusOptions() {
    return Object.values(MANUFACTURER_ROW_STATUSES).map((status) => ({
       value: status,
-      label: MANUFACTURER_ROW_STATUS_META[status].label,
+      label: i18n.t(MANUFACTURER_ROW_STATUS_META[status].labelKey),
    }));
 }
 
 export function getManufacturerRowStatusLabel(status) {
-   return MANUFACTURER_ROW_STATUS_META[status]?.label || 'Неизвестно';
+   return MANUFACTURER_ROW_STATUS_META[status]?.label || i18n.t("common.empty.unknown");
 }
 
 export function getManufacturerRowStatusColor(status) {

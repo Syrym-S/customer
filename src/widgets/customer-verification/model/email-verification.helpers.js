@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 export const EMAIL_VERIFICATION_MODAL_OPEN_EVENT =
    'customer-email-verification:modal-open';
 
@@ -82,6 +84,6 @@ export function getResendVerificationMessage(response) {
    return (
       response?.message ||
       response?.data?.message ||
-      'Письмо для подтверждения email отправлено. Проверьте почту.'
+      i18n.t("verification.sent")
    );
 }

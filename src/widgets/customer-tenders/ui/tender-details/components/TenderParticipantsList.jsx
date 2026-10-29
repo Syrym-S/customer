@@ -1,4 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 import { getParticipantForwarderId } from './tender-participants.helpers';
 import { TenderParticipantItem } from './TenderParticipantItem';
@@ -14,10 +15,12 @@ export function TenderParticipantsList({
     onToggleExpanded,
     onDeleteParticipant,
 }) {
+    const { t } = useTranslation();
+
     if (participants.length === 0) {
         return (
             <Typography color="text.secondary" sx={{ py: 2 }}>
-                Участники пока не добавлены
+                {t("tenders.participants.empty")}
             </Typography>
         );
     }
@@ -52,8 +55,8 @@ export function TenderParticipantsList({
                     }}
                 >
                     {isExpanded
-                        ? 'Скрыть'
-                        : `Показать всех (+${hiddenItemsCount})`}
+                        ? t("common.actions.hide")
+                        : t("common.actions.showAll", { count: hiddenItemsCount })}
                 </Button>
             )}
         </Stack>

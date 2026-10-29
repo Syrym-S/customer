@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import i18n from '../../../../../shared/i18n';
 
 import {
    deleteLeadDocument,
@@ -53,7 +54,7 @@ export function useLeadDetailsDocuments(leadId) {
          const message =
             error.response?.data?.message ||
             error.message ||
-            'Не удалось загрузить документ';
+            i18n.t("leads.documents.singleLoadFailed");
 
          setDocumentUploadError(message);
          notifyError(message);
@@ -70,7 +71,7 @@ export function useLeadDetailsDocuments(leadId) {
       const document = documents.find((item) => item.id === documentId);
 
       if (!document?.path) {
-         const message = 'Не удалось определить файл для удаления';
+         const message = i18n.t("leads.documents.deleteTargetMissing");
 
          setDocumentUploadError(message);
          notifyError(message);
@@ -78,7 +79,7 @@ export function useLeadDetailsDocuments(leadId) {
       }
 
       if (document.source && document.source !== 'customer') {
-         const message = 'Можно удалить только файлы заказчика';
+         const message = i18n.t("leads.documents.ownFilesOnly");
 
          setDocumentUploadError(message);
          notifyError(message);
@@ -96,7 +97,7 @@ export function useLeadDetailsDocuments(leadId) {
          const message =
             error.response?.data?.message ||
             error.message ||
-            'Не удалось удалить документ';
+            i18n.t("leads.documents.deleteFailed");
 
          setDocumentUploadError(message);
          notifyError(message);
@@ -131,7 +132,7 @@ export function useLeadDetailsDocuments(leadId) {
                const message =
                   error.response?.data?.message ||
                   error.message ||
-                  'Не удалось загрузить документы';
+                  i18n.t("leads.documents.loadFailed");
 
                setDocuments([]);
                setDocumentUploadError(message);

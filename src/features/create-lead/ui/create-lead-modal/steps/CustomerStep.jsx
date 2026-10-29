@@ -1,12 +1,15 @@
 import { Box, TextField } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 
 import { StepSection } from '../components/StepSection';
 
 export function CustomerStep({ control, errors }) {
+   const { t } = useTranslation();
+
    return (
-      <StepSection title='Данные заказчика'>
+      <StepSection title={t("createLead.steps.customer")}>
          <Box
             sx={{
                display: 'grid',
@@ -21,16 +24,16 @@ export function CustomerStep({ control, errors }) {
                name='customer'
                control={control}
                rules={{
-                  required: 'Укажите заказчика',
+                  required: t("createLead.customer.required"),
                   minLength: {
                      value: 3,
-                     message: 'Минимум 3 символа',
+                     message: t("validation.min3"),
                   },
                }}
                render={({ field }) => (
                   <TextField
                      {...field}
-                     label='Заказчик'
+                     label={t("common.fields.customer")}
                      fullWidth
                      size='small'
                      error={Boolean(errors.customer)}
@@ -45,7 +48,7 @@ export function CustomerStep({ control, errors }) {
                render={({ field }) => (
                   <TextField
                      {...field}
-                     label='Контактное лицо'
+                     label={t("common.fields.contactPerson")}
                      fullWidth
                      size='small'
                   />
@@ -56,16 +59,16 @@ export function CustomerStep({ control, errors }) {
                name='phone'
                control={control}
                rules={{
-                  required: 'Укажите телефон',
+                  required: t("validation.phoneRequired"),
                   pattern: {
                      value: /^\+?[0-9\s()-]{10,20}$/,
-                     message: 'Некорректный формат телефона',
+                     message: t("validation.phone"),
                   },
                }}
                render={({ field }) => (
                   <TextField
                      {...field}
-                     label='Телефон'
+                     label={t("common.fields.phone")}
                      fullWidth
                      size='small'
                      error={Boolean(errors.phone)}

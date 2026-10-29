@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { Box, Typography } from '@mui/material';
 
 import { DashboardStatCard } from './DashboardStatCard';
@@ -11,6 +12,8 @@ export function DashboardStatsGroup({
    refreshingSections,
    renderCardAction,
 }) {
+   const { t } = useTranslation();
+
    const spanLastCard = group.cards.length % 2 === 1;
 
    return (
@@ -26,7 +29,7 @@ export function DashboardStatsGroup({
                mb: 1,
             }}
          >
-            <Typography variant="subtitle1">{group.title}</Typography>
+            <Typography variant="subtitle1">{t(group.titleKey)}</Typography>
 
             {group.caption && (
                <Typography color="text.secondary" sx={{ fontSize: 13 }}>
@@ -52,8 +55,8 @@ export function DashboardStatsGroup({
                return (
                   <DashboardStatCard
                      key={card.id}
-                     label={card.label}
-                     unitForms={card.unitForms}
+                     label={t(card.labelKey)}
+                     countKey={card.countKey}
                      showSums={card.showSums}
                      viewMode={viewMode}
                      section={data?.[card.sectionKey]}

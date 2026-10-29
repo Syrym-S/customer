@@ -1,4 +1,5 @@
 import { Box, MenuItem, TextField } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 import { TenderDetailsSection } from './TenderDetailsSection';
@@ -7,12 +8,12 @@ import {
    tenderEditFormPropType,
    tenderPropType,
 } from '../../../model/tenders.prop-types';
-import { publicationTypeLabels } from '../../../model/tender.helpers';
+import { getPublicationTypeLabel } from '../../../model/tender.helpers';
 import PropTypes from 'prop-types';
 
-const tenderTypeLabels = {
-   forwarder: 'Для экспедиторов',
-   shipper: 'Для грузоотправителей',
+const TENDER_TYPE_LABEL_KEYS = {
+   forwarder: 'tenders.details.audienceForwarders',
+   shipper: 'tenders.details.audienceShippers',
 };
 
 export function TenderInfoSection({
@@ -21,10 +22,12 @@ export function TenderInfoSection({
    editForm,
    onEditChange,
 }) {
+   const { t } = useTranslation();
+
    return (
       <TenderDetailsSection
          icon={<InfoOutlinedIcon />}
-         title='Информация об аукционе'
+         title={t("tenders.details.info")}
       >
          {isEditing ? (
             <Box
@@ -38,7 +41,7 @@ export function TenderInfoSection({
                }}
             >
                <TextField
-                  label='Дата окончания'
+                  label={t("common.fields.endDate")}
                   type='datetime-local'
                   value={editForm?.endDateTime || ''}
                   onChange={(event) =>
@@ -55,7 +58,7 @@ export function TenderInfoSection({
 
                <TextField
                   select
-                  label='Тип публикации'
+                  label={t("tenders.details.publicationType")}
                   value={editForm?.publicationType || 'public'}
                   onChange={(event) =>
                      onEditChange('publicationType', event.target.value)
@@ -63,13 +66,13 @@ export function TenderInfoSection({
                   fullWidth
                   size='small'
                >
-                  <MenuItem value='public'>Публичный</MenuItem>
-                  <MenuItem value='private'>Приватный</MenuItem>
+                  <MenuItem value='public'>{t("enums.publicationType.public")}</MenuItem>
+                  <MenuItem value='private'>{t("enums.publicationType.private")}</MenuItem>
                </TextField>
 
                {(editForm?.publicationType || 'public') === 'public' && (
                   <TextField
-                     label='Макс. участников'
+                     label={t("tenders.details.maxParticipantsShort")}
                      type='number'
                      value={editForm?.maxParticipants ?? 0}
                      onChange={(event) =>
@@ -97,33 +100,37 @@ export function TenderInfoSection({
                }}
             >
                <TenderInfoBadge
-                  label='Для кого'
-                  value={tenderTypeLabels[tender.type] || 'Не указано'}
-               />
-
-               <TenderInfoBadge
-                  label='Тип публикации'
+                  label={t("tenders.details.audience")}
                   value={
-                     publicationTypeLabels[tender.publication_type] ||
-                     'Не указано'
+                     TENDER_TYPE_LABEL_KEYS[tender.type]
+                        ? t(TENDER_TYPE_LABEL_KEYS[tender.type])
+                        : t("common.empty.notSpecifiedN")
                   }
                />
 
                <TenderInfoBadge
-                  label='Макс. участников'
+                  label={t("tenders.details.publicationType")}
+                  value={
+                     getPublicationTypeLabel(tender.publication_type) ||
+                     t("common.empty.notSpecifiedN")
+                  }
+               />
+
+               <TenderInfoBadge
+                  label={t("tenders.details.maxParticipantsShort")}
                   value={
                      tender.max_participants === 0
-                        ? 'Не ограничено'
-                        : tender.max_participants || 'Не указано'
+                        ? t("common.empty.unlimited")
+                        : tender.max_participants || t("common.empty.notSpecifiedN")
                   }
                />
 
                <TenderInfoBadge
-                  label='Участников'
+                  label={t("tenders.details.participantsCountLabel")}
                   value={tender.participants_count ?? 0}
                />
 
-               <TenderInfoBadge label='Ставок' value={tender.bets_count ?? 0} />
+               <TenderInfoBadge label={t("tenders.details.bidsCountLabel")} value={tender.bets_count ?? 0} />
             </Box>
          )}
       </TenderDetailsSection>

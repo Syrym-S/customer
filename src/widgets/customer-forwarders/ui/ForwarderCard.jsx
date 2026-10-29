@@ -1,4 +1,5 @@
 import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import {
     getForwarderAccount,
     getForwarderAddress,
@@ -13,6 +14,8 @@ import {
 import { ForwarderInviteLink } from './ForwarderInviteLink';
 
 export function ForwarderCard({ forwarder, onOpenDetails }) {
+    const { t } = useTranslation();
+
     const forwarderId = getForwarderId(forwarder);
 
     return (
@@ -88,7 +91,7 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
                     </Box>
 
                     <Chip
-                        label="Экспедитор"
+                        label={t("common.fields.forwarder")}
                         color="primary"
                         variant="outlined"
                         size="small"
@@ -110,29 +113,29 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
                         gap: 1,
                     }}
                 >
-                    <InfoBadge label="БИН" value={getForwarderBin(forwarder)} />
+                    <InfoBadge label={t("common.fields.bin")} value={getForwarderBin(forwarder)} />
 
-                    <InfoBadge label="ИИН" value={getForwarderIin(forwarder)} />
+                    <InfoBadge label={t("common.fields.iin")} value={getForwarderIin(forwarder)} />
 
                     <InfoBadge
-                        label="Представитель"
+                        label={t("forwarders.representative")}
                         value={getForwarderFio(forwarder)}
                     />
 
                     <InfoBadge
-                        label="Телефон"
+                        label={t("common.fields.phone")}
                         value={getForwarderPhone(forwarder)}
                     />
 
-                    <InfoBadge label="БИК" value={getForwarderBik(forwarder)} />
+                    <InfoBadge label={t("common.fields.bik")} value={getForwarderBik(forwarder)} />
 
                     <InfoBadge
-                        label="Расчетный счет"
+                        label={t("common.fields.settlementAccount")}
                         value={getForwarderAccount(forwarder)}
                     />
 
                     <InfoBadge
-                        label="Адрес компании"
+                        label={t("common.fields.companyAddress")}
                         value={getForwarderAddress(forwarder)}
                         sx={{
                             gridColumn: {
@@ -157,7 +160,7 @@ export function ForwarderCard({ forwarder, onOpenDetails }) {
                             mb: 0.75,
                         }}
                     >
-                        Приглашение
+                        {t("forwarders.invite.title")}
                     </Typography>
 
                     <ForwarderInviteLink forwarder={forwarder} compact />

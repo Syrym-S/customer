@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import {
     Alert,
     Badge,
@@ -40,6 +41,8 @@ import {
 import { NotificationsColumn } from './NotificationsColumn';
 
 export function Notifications() {
+    const { t } = useTranslation();
+
     const [anchorEl, setAnchorEl] = useState(null);
 
     const [notifications, setNotifications] = useState([]);
@@ -94,7 +97,7 @@ export function Notifications() {
                 error.response?.data?.message ||
                     error.response?.data?.error ||
                     error.message ||
-                    'Не удалось загрузить уведомления',
+                    t("notifications.loadFailed"),
             );
         } finally {
             if (withLoader) {
@@ -196,13 +199,13 @@ export function Notifications() {
                     error.response?.data?.message ||
                         error.response?.data?.error ||
                         error.message ||
-                        'Не удалось загрузить уведомление',
+                        t("notifications.singleLoadFailed"),
                 );
             } finally {
                 setIsDetailsLoading(false);
             }
         },
-        [markNotificationAsViewed],
+        [markNotificationAsViewed, t],
     );
 
     function handleCloseDetails() {
@@ -231,7 +234,7 @@ export function Notifications() {
                         error.response?.data?.message ||
                             error.response?.data?.error ||
                             error.message ||
-                            'Не удалось загрузить уведомления',
+                            t("notifications.loadFailed"),
                     );
                 }
             }
@@ -242,7 +245,7 @@ export function Notifications() {
         return () => {
             isCancelled = true;
         };
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         notificationWsConnectionRef.current?.close();
@@ -349,7 +352,7 @@ export function Notifications() {
             <IconButton
                 color='inherit'
                 onClick={handleOpenMenu}
-                aria-label='Уведомления'
+                aria-label={t("notifications.title")}
             >
                 <Badge
                     badgeContent={unreadNotificationsCount}
@@ -395,10 +398,10 @@ export function Notifications() {
                     }}
                 >
                     <Box sx={{ px: 2, py: 1.5, flexShrink: 0 }}>
-                        <Typography fontWeight={700}>Уведомления</Typography>
+                        <Typography fontWeight={700}>{t("notifications.title")}</Typography>
 
                         <Typography variant='body2' color='text.secondary'>
-                            Последние события по вашим заявкам и аукционам.
+                            {t("notifications.subtitleDot")}
                         </Typography>
                     </Box>
 
@@ -435,8 +438,8 @@ export function Notifications() {
                         ) : notifications.length === 0 ? (
                             <MenuItem disabled>
                                 <ListItemText
-                                    primary='Уведомлений пока нет'
-                                    secondary='Здесь будут отображаться новые события'
+                                    primary={t("notifications.empty")}
+                                    secondary={t("notifications.emptyHint")}
                                 />
                             </MenuItem>
                         ) : (
@@ -554,7 +557,7 @@ export function Notifications() {
                                 },
                             }}
                         >
-                            Смотреть все уведомления
+                            {t("notifications.viewAll")}
                         </Typography>
                     </MenuItem>
                 </Box>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Button,
@@ -38,6 +39,8 @@ const ENABLE_PARTIES_SIGNED_GATE = false;
 // sign action, no polling — distinct from FactoringLineCard below, which is
 // the customer's OWN document that still needs their signature.
 function FactoringLineDocumentCard({ document: lineDocument }) {
+  const { t } = useTranslation();
+
   return (
     <Box
       sx={{
@@ -51,10 +54,10 @@ function FactoringLineDocumentCard({ document: lineDocument }) {
     >
       <Stack spacing={1.25}>
         <Box>
-          <Typography fontWeight={700}>Договор факторинг-линии</Typography>
+          <Typography fontWeight={700}>{t("factorings.line.contractTitle")}</Typography>
 
           <Typography fontSize={12} color="text.secondary">
-            Между экспедитором и фактором, уже подписан обеими сторонами
+            {t("factorings.line.contractNote")}
           </Typography>
         </Box>
 
@@ -65,6 +68,8 @@ function FactoringLineDocumentCard({ document: lineDocument }) {
 }
 
 function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
+  const { t } = useTranslation();
+
   const [lineDocument, setLineDocument] = useState(line?.document || null);
   const [isSigned, setIsSigned] = useState(Boolean(line?.signed));
   const [isSigning, setIsSigning] = useState(false);
@@ -105,7 +110,7 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
         setIsSigning(false);
         setSignUrl(null);
         notifyError(
-          "Время на подписание факторинг-линии истекло, попробуйте снова",
+          t("factorings.line.timeout"),
         );
         return;
       }
@@ -156,7 +161,7 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
       notifyError(
         error.response?.data?.message ||
           error.message ||
-          "Не удалось начать подписание факторинг-линии",
+          t("factorings.line.signStartFailed"),
       );
     }
   }
@@ -186,10 +191,10 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
             flexWrap: "wrap",
           }}
         >
-          <Typography fontWeight={700}>Факторинг-линия (ваша подпись)</Typography>
+          <Typography fontWeight={700}>{t("factorings.line.yourSignature")}</Typography>
 
           <StatusDot
-            label={isSigned ? "Подписано" : "Не подписано"}
+            label={isSigned ? t("enums.signature.signed") : t("enums.signature.notSigned")}
             color={paletteKeyToColorPath(
               getVerificationColor(isSigned),
             )}
@@ -198,8 +203,7 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
 
         {isLockedByParties && (
           <Typography fontSize={12} color="text.secondary">
-            Подписание станет доступно после подписания экспедитором и
-            фактором.
+            {t("factorings.line.waitForParties")}
           </Typography>
         )}
 
@@ -214,23 +218,21 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
             sx={{ alignSelf: "flex-start" }}
             startIcon={isSigning ? <CircularProgress size={16} /> : undefined}
           >
-            {isSigning ? "Ожидаем подписание..." : "Подписать"}
+            {isSigning ? t("common.signing.waiting") : t("common.actions.sign")}
           </Button>
         )}
 
         {isSigning && (
           <Typography fontSize={12} color="text.secondary">
-            Не закрывайте страницу — окно подписания открыто в новой
-            вкладке. Статус обновится автоматически.
+            {t("common.signing.keepPageOpen")}
           </Typography>
         )}
 
         {isSigning && signUrl && (
           <Typography fontSize={12} color="text.secondary">
-            Если окно для подписания не открылось автоматически, откройте
-            его по{" "}
+            {t("common.signing.windowHint")}{" "}
             <Link href={signUrl} target="_blank" rel="noopener noreferrer">
-              этой ссылке
+              {t("common.signing.thisLink")}
             </Link>
             .
           </Typography>
@@ -241,11 +243,13 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
 }
 
 export function FactoringVerificationSection({ factoring }) {
+  const { t } = useTranslation();
+
   return (
     <DetailSection
       icon={<FactCheckOutlinedIcon />}
-      title="Подтверждения"
-      subtitle="Статусы подтверждения сторон"
+      title={t("factorings.confirmations.title")}
+      subtitle={t("factorings.confirmations.subtitle")}
     >
       {factoring?.factoringLineDocument && (
         <FactoringLineDocumentCard document={factoring.factoringLineDocument} />
@@ -290,7 +294,7 @@ export function FactoringVerificationSection({ factoring }) {
                 flexWrap: "wrap",
               }}
             >
-              <Typography fontWeight={700}>Подтверждение заказчика</Typography>
+              <Typography fontWeight={700}>{t("factorings.confirmations.customer")}</Typography>
 
               <StatusDot
                 label={getVerificationLabel(factoring.verified_customer)}
@@ -299,7 +303,7 @@ export function FactoringVerificationSection({ factoring }) {
             </Box>
 
             <InfoBadge
-              label="Дата подтверждения"
+              label={t("factorings.confirmations.date")}
               value={formatDate(factoring.date_verified_customer)}
               fullWidth
             />
@@ -326,7 +330,7 @@ export function FactoringVerificationSection({ factoring }) {
               }}
             >
               <Typography fontWeight={700}>
-                Подтверждение экспедитора
+                {t("factorings.confirmations.forwarder")}
               </Typography>
 
               <StatusDot
@@ -336,7 +340,7 @@ export function FactoringVerificationSection({ factoring }) {
             </Box>
 
             <InfoBadge
-              label="Дата подтверждения"
+              label={t("factorings.confirmations.date")}
               value={formatDate(factoring.date_verified_forwarder)}
               fullWidth
             />
@@ -362,7 +366,7 @@ export function FactoringVerificationSection({ factoring }) {
                 flexWrap: "wrap",
               }}
             >
-              <Typography fontWeight={700}>Подтверждение фактора</Typography>
+              <Typography fontWeight={700}>{t("factorings.confirmations.factor")}</Typography>
 
               <StatusDot
                 label={getVerificationLabel(factoring.verified_factor)}
@@ -371,7 +375,7 @@ export function FactoringVerificationSection({ factoring }) {
             </Box>
 
             <InfoBadge
-              label="Дата подтверждения"
+              label={t("factorings.confirmations.date")}
               value={formatDate(factoring.verified_factor)}
               fullWidth
             />

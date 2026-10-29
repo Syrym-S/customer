@@ -1,42 +1,42 @@
 export const LEAD_KANBAN_COLUMNS = [
    {
       status: 'new',
-      title: 'Новые',
+      titleKey: 'enums.leadStatusFilter.new',
       accentColor: 'success',
    },
    {
       status: 'add_driver',
-      title: 'Водитель назначен',
+      titleKey: 'enums.leadStatusFilter.driverAssigned',
       accentColor: 'info',
    },
    {
       status: 'start_driver',
-      title: 'Водитель выехал',
+      titleKey: 'enums.leadStatusFilter.driverDeparted',
       accentColor: 'primary',
    },
    {
       status: 'loading',
-      title: 'Погрузка',
+      titleKey: 'enums.leadStatus.start_loading',
       accentColor: 'warning',
    },
    {
       status: 'in_progress',
-      title: 'В пути',
+      titleKey: 'enums.leadStatusFilter.inTransit',
       accentColor: 'secondary',
    },
    {
       status: 'unloading',
-      title: 'Разгрузка',
+      titleKey: 'enums.leadStatus.start_unloading',
       accentColor: 'info',
    },
    {
       status: 'finished',
-      title: 'Завершены',
+      titleKey: 'enums.leadStatusFilter.finished',
       accentColor: 'success',
    },
    {
       status: 'cancelled',
-      title: 'Отменены',
+      titleKey: 'enums.leadStatusFilter.cancelled',
       accentColor: 'error',
    },
 ];

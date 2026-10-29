@@ -1,4 +1,5 @@
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
+import i18n from '../../../shared/i18n';
 import {
    getPointScheduleByIndex,
    getPointScheduleLabel,
@@ -6,8 +7,6 @@ import {
 
 const COUNTRY_PREFIX = 'Казахстан ';
 const COUNTRY_SUFFIX = ', Казахстан';
-
-const STOP_FORMS = ['остановка', 'остановки', 'остановок'];
 
 export function stripCountryFromAddress(address) {
    if (typeof address !== 'string') {
@@ -27,31 +26,12 @@ export function stripCountryFromAddress(address) {
    return result || address;
 }
 
-export function getRussianPlural(count, forms) {
-   const abs = Math.abs(count) % 100;
-   const last = abs % 10;
-
-   if (abs > 10 && abs < 20) {
-      return forms[2];
-   }
-
-   if (last > 1 && last < 5) {
-      return forms[1];
-   }
-
-   if (last === 1) {
-      return forms[0];
-   }
-
-   return forms[2];
-}
-
 export function getStopsHint(count) {
    if (!count || count < 1) {
       return '';
    }
 
-   return `+${count} ${getRussianPlural(count, STOP_FORMS)}`;
+   return `+${i18n.t('tenders.stopCount', { count })}`;
 }
 
 export function getLeadOptionNumberLabel(option) {

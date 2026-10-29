@@ -1,4 +1,5 @@
 import { alpha, Box, Tooltip, Typography, useTheme } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 import { LeadStatusChip } from '../../dashboard/ui/DashboardLeadItem';
@@ -43,6 +44,8 @@ RouteBadge.propTypes = {
 };
 
 function RouteAddress({ line }) {
+   const { t } = useTranslation();
+
    return (
       <Tooltip
          title={line.full}
@@ -58,7 +61,7 @@ function RouteAddress({ line }) {
                minWidth: 0,
             }}
          >
-            {line.text || 'Не указано'}
+            {line.text || t("common.empty.notSpecifiedN")}
          </Typography>
       </Tooltip>
    );
@@ -72,6 +75,8 @@ RouteAddress.propTypes = {
 };
 
 export function TenderLeadOption({ option }) {
+   const { t } = useTranslation();
+
    const theme = useTheme();
 
    const color = getRouteStatusStyle(option.status, theme).color;
@@ -152,7 +157,7 @@ export function TenderLeadOption({ option }) {
                columnGap: 1.25,
             }}
          >
-            <RouteBadge letter={'А'} color={color} />
+            <RouteBadge letter={t("route.markerA")} color={color} />
             <RouteAddress line={fromLine} />
 
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -174,7 +179,7 @@ export function TenderLeadOption({ option }) {
                {stopsHint}
             </Typography>
 
-            <RouteBadge letter={'Б'} color={color} />
+            <RouteBadge letter={t("route.markerB")} color={color} />
             <RouteAddress line={toLine} />
          </Box>
       </Box>

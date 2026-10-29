@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 export const leadTransportationFields = {
    loadingType: 'type_loading',
    packagingType: 'type_packaging',
@@ -74,7 +76,7 @@ export function getTransportationSelectOptions(options = [], selectedValue) {
 
 // Converts a Select's value into the payload value. Empty/not selected
 // means the field is omitted from the payload entirely — the caller must
-// skip the key on null, it is never sent as null or the text 'Не указан'.
+// skip the key on null, it is never sent as null or the text "Не указан".
 export function getTransportationPayloadValue(selectedValue) {
    return normalizeTransportationValue(selectedValue);
 }
@@ -152,5 +154,5 @@ export function formatCargoVolumeM3(volumeM3) {
 
    const number = Number(volumeM3);
 
-   return Number.isNaN(number) ? null : `${number} м³`;
+   return Number.isNaN(number) ? null : i18n.t("common.units.m3", { value: number });
 }

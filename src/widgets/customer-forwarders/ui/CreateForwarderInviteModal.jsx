@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import {
     Alert,
     Box,
@@ -28,6 +29,8 @@ export function CreateForwarderInviteModal({
     onClose,
     onSubmit,
 }) {
+    const { t } = useTranslation();
+
     const [form, setForm] = useState(() => createForwarderInviteInitialForm());
     const [validationError, setValidationError] = useState('');
     const [isCopied, setIsCopied] = useState(false);
@@ -91,8 +94,8 @@ export function CreateForwarderInviteModal({
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
             <DialogTitle>
                 {createdInvite
-                    ? 'Приглашение создано'
-                    : 'Пригласить экспедитора'}
+                    ? t("forwarders.invite.created")
+                    : t("forwarders.invite.action")}
             </DialogTitle>
 
             <DialogContent>
@@ -107,12 +110,11 @@ export function CreateForwarderInviteModal({
                         {createdInvite ? (
                             <Stack spacing={2}>
                                 <Alert severity="success">
-                                    Экспедитор создан. Отправьте ему ссылку для
-                                    завершения заполнения данных.
+                                    {t("forwarders.invite.success")}
                                 </Alert>
 
                                 <TextField
-                                    label="Пригласительная ссылка"
+                                    label={t("forwarders.invite.link")}
                                     value={createdInvite.invite_link || ''}
                                     fullWidth
                                     multiline
@@ -128,8 +130,8 @@ export function CreateForwarderInviteModal({
                                     disabled={!createdInvite.invite_link}
                                 >
                                     {isCopied
-                                        ? 'Ссылка скопирована'
-                                        : 'Скопировать ссылку'}
+                                        ? t("forwarders.invite.linkCopied")
+                                        : t("forwarders.invite.copyLink")}
                                 </Button>
                             </Stack>
                         ) : (
@@ -138,12 +140,12 @@ export function CreateForwarderInviteModal({
                                     fontWeight={700}
                                     sx={{ fontSize: 14 }}
                                 >
-                                    Представитель
+                                    {t("forwarders.representative")}
                                 </Typography>
 
                                 <TextField
                                     name="fio"
-                                    label="ФИО"
+                                    label={t("common.fields.fullName")}
                                     value={form.fio}
                                     onChange={handleFieldChange}
                                     fullWidth
@@ -153,7 +155,7 @@ export function CreateForwarderInviteModal({
 
                                 <TextField
                                     name="phone"
-                                    label="Телефон"
+                                    label={t("common.fields.phone")}
                                     value={formatPhoneInput(form.phone).display}
                                     onChange={handlePhoneChange}
                                     fullWidth
@@ -163,7 +165,7 @@ export function CreateForwarderInviteModal({
 
                                 <TextField
                                     name="iin"
-                                    label="ИИН"
+                                    label={t("common.fields.iin")}
                                     value={form.iin}
                                     onChange={handleFieldChange}
                                     fullWidth
@@ -183,7 +185,7 @@ export function CreateForwarderInviteModal({
 
                                 <TextField
                                     name="document_number"
-                                    label="Номер документа"
+                                    label={t("common.fields.documentNumber")}
                                     value={form.document_number}
                                     onChange={handleFieldChange}
                                     fullWidth
@@ -192,7 +194,7 @@ export function CreateForwarderInviteModal({
 
                                 <TextField
                                     name="issue_country"
-                                    label="Страна выдачи документа"
+                                    label={t("forwarders.issuingCountry")}
                                     value={form.issue_country}
                                     onChange={handleFieldChange}
                                     fullWidth
@@ -205,12 +207,12 @@ export function CreateForwarderInviteModal({
                                     fontWeight={700}
                                     sx={{ fontSize: 14 }}
                                 >
-                                    Компания
+                                    {t("common.fields.company")}
                                 </Typography>
 
                                 <TextField
                                     name="company_name"
-                                    label="Название компании"
+                                    label={t("common.fields.companyName")}
                                     value={form.company_name}
                                     onChange={handleFieldChange}
                                     fullWidth
@@ -220,7 +222,7 @@ export function CreateForwarderInviteModal({
 
                                 <TextField
                                     name="company_bin"
-                                    label="БИН компании"
+                                    label={t("common.fields.companyBin")}
                                     value={form.company_bin}
                                     onChange={handleFieldChange}
                                     fullWidth
@@ -230,7 +232,7 @@ export function CreateForwarderInviteModal({
 
                                 <TextField
                                     name="company_account"
-                                    label="Расчетный счет"
+                                    label={t("common.fields.settlementAccount")}
                                     value={form.company_account}
                                     onChange={handleFieldChange}
                                     fullWidth
@@ -239,7 +241,7 @@ export function CreateForwarderInviteModal({
 
                                 <TextField
                                     name="company_bik"
-                                    label="БИК"
+                                    label={t("common.fields.bik")}
                                     value={form.company_bik}
                                     onChange={handleFieldChange}
                                     fullWidth
@@ -248,7 +250,7 @@ export function CreateForwarderInviteModal({
 
                                 <TextField
                                     name="company_address"
-                                    label="Адрес компании"
+                                    label={t("common.fields.companyAddress")}
                                     value={form.company_address}
                                     onChange={handleFieldChange}
                                     fullWidth
@@ -264,7 +266,7 @@ export function CreateForwarderInviteModal({
 
             <DialogActions sx={{ px: 3, pb: 2 }}>
                 <Button onClick={handleClose} disabled={loading}>
-                    Закрыть
+                    {t("common.actions.close")}
                 </Button>
 
                 {!createdInvite && (
@@ -273,7 +275,7 @@ export function CreateForwarderInviteModal({
                         onClick={handleSubmit}
                         disabled={loading}
                     >
-                        {loading ? 'Создаем...' : 'Создать приглашение'}
+                        {loading ? t("common.actions.creating") : t("forwarders.invite.create")}
                     </Button>
                 )}
             </DialogActions>

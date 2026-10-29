@@ -1,4 +1,5 @@
 import { Box, Button, IconButton, Tooltip } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import PropTypes from 'prop-types';
 
@@ -41,6 +42,8 @@ export function LeadDetailsEditActions({
    onPublishDraft,
    isPublishing = false,
 }) {
+   const { t } = useTranslation();
+
    const isDraft = isDraftLead(lead);
    const canPublishDraft = isDraftPublishable(lead);
 
@@ -53,18 +56,18 @@ export function LeadDetailsEditActions({
          isSignAvrLead(lead));
 
    const editTooltipTitle = isDraft
-      ? 'Изменить'
+      ? t("common.actions.edit")
       : isEmergencyLead(lead)
-        ? 'Нельзя редактировать заказ в аварийной ситуации'
+        ? t("leads.edit.blockedEmergency")
         : isFinishedEmergencyLead(lead)
-          ? 'Нельзя редактировать заказ, завершенный в аварийной ситуации'
+          ? t("leads.edit.blockedFinishedEmergency")
           : isEditDisabled
-            ? 'Нельзя редактировать завершенный или отмененный заказ'
-            : 'Изменить';
+            ? t("leads.edit.blockedFinished")
+            : t("common.actions.edit");
 
    const publishTooltipTitle = canPublishDraft
       ? ''
-      : 'Заполните маршрут и груз перед публикацией';
+      : t("leads.publish.fillRouteAndCargo");
 
    return (
       <Box
@@ -89,14 +92,14 @@ export function LeadDetailsEditActions({
             {!isDraft && !isEditing && leadId && <LeadShareButton leadId={leadId} />}
 
             {isEditing ? (
-               <Button onClick={onCancelEdit}>Отмена</Button>
+               <Button onClick={onCancelEdit}>{t("common.actions.cancel")}</Button>
             ) : (
                <>
                   <Tooltip title={editTooltipTitle}>
                      <span style={{ display: 'inline-flex' }}>
                         <IconButton
                            color="primary"
-                           aria-label="Изменить"
+                           aria-label={t("common.actions.edit")}
                            onClick={onStartEdit}
                            disabled={isEditDisabled}
                         >
@@ -113,7 +116,7 @@ export function LeadDetailsEditActions({
                               onClick={onPublishDraft}
                               disabled={isPublishing || !canPublishDraft}
                            >
-                              {isPublishing ? 'Публикация...' : 'Опубликовать'}
+                              {isPublishing ? t("leads.publish.inProgress") : t("leads.publish.action")}
                            </Button>
                         </span>
                      </Tooltip>

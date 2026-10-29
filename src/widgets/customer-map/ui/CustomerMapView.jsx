@@ -1,4 +1,5 @@
 import { Fragment, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Box, useTheme } from "@mui/material";
 import {
    MapContainer,
@@ -54,6 +55,8 @@ export function CustomerMapView({
    onMapClick,
    onMarkerDragEnd,
 }) {
+   const { t } = useTranslation();
+
    const theme = useTheme();
    const [tooltipPaneContainer, setTooltipPaneContainer] = useState(null);
 
@@ -154,12 +157,12 @@ export function CustomerMapView({
 
             const fromLocation = formatMapLocation(
                mapRoute.lead?.from_location,
-               "Откуда не указано",
+               t("route.originNotSpecified"),
             );
 
             const toLocation = formatMapLocation(
                mapRoute.lead?.to_location,
-               "Куда не указано",
+               t("route.destinationNotSpecified"),
             );
 
             const routeMarkers = buildLeadRouteMarkers(
@@ -186,7 +189,11 @@ export function CustomerMapView({
                   >
                      <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                         <div>
-                           <b>Заказ #{mapRoute.lead?.num ?? mapRoute.lead?.id}</b>
+                           <b>
+                              {t("leads.details.number", {
+                                 num: mapRoute.lead?.num ?? mapRoute.lead?.id,
+                              })}
+                           </b>
                            <br />
                            {fromLocation} → {toLocation}
                            <DriverMapInfo driver={mapRoute.lead?.driver} />
@@ -196,7 +203,7 @@ export function CustomerMapView({
                                  {(
                                     mapRoute.route.distanceMeters / 1000
                                  ).toFixed(1)}{" "}
-                                 км
+                                 {t("common.units.km")}
                               </>
                            )}
                         </div>
@@ -225,7 +232,9 @@ export function CustomerMapView({
                         <Popup>
                            <strong>{marker.title}</strong>
                            <br />
-                           Заказ #{mapRoute.lead?.num ?? mapRoute.lead?.id}
+                           {t("leads.details.number", {
+                              num: mapRoute.lead?.num ?? mapRoute.lead?.id,
+                           })}
                            <br />
                            {marker.description}
                         </Popup>
@@ -269,22 +278,22 @@ export function CustomerMapView({
                         <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                            <div>
                               <b>
-                                 Фактический путь заказа #
+                                 {t("map.actualPathOrder")}
                                  {geoRoute.lead?.num ?? geoRoute.lead?.id}
                               </b>
                               <br />
                               {formatMapLocation(
                                  geoRoute.lead?.from_location,
-                                 "Откуда не указано",
+                                 t("route.originNotSpecified"),
                               )}{" "}
                               →{" "}
                               {formatMapLocation(
                                  geoRoute.lead?.to_location,
-                                 "Куда не указано",
+                                 t("route.destinationNotSpecified"),
                               )}
                               <DriverMapInfo driver={geoRoute.lead?.driver} />
                               <br />
-                              Точек: {points.length}
+                              {t("map.pointsCount", { count: points.length })}
                            </div>
                         </Tooltip>
                      </RoutePolyline>
@@ -302,7 +311,7 @@ export function CustomerMapView({
                         }}
                      >
                         <Popup>
-                           <strong>Текущая позиция водителя</strong>
+                           <strong>{t("map.driverPosition")}</strong>
                            <br />
                         </Popup>
                      </Marker>
@@ -316,19 +325,24 @@ export function CustomerMapView({
                <RoutePolyline positions={routePoints} style={singleRouteStyle}>
                   <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                      <div>
-                        <b>Маршрут</b>
+                        <b>{t("common.fields.route")}</b>
 
                         {route?.distanceMeters && (
                            <>
                               <br />
-                              {(route.distanceMeters / 1000).toFixed(1)} км
+                              {(route.distanceMeters / 1000).toFixed(1)}{" "}
+                              {t("common.units.km")}
                            </>
                         )}
 
                         {route?.duration && (
                            <>
                               <br />
-                              {Math.round(parseInt(route.duration, 10) / 60)} мин
+                              {t("chat.time.minutes", {
+                                 count: Math.round(
+                                    parseInt(route.duration, 10) / 60,
+                                 ),
+                              })}
                            </>
                         )}
                      </div>
@@ -349,9 +363,9 @@ export function CustomerMapView({
             >
                <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                   <div>
-                     <b>Фактический путь</b>
+                     <b>{t("map.actualPath")}</b>
                      <br />
-                     Точек: {geoRoutePoints.length}
+                     {t("map.pointsCount", { count: geoRoutePoints.length })}
                   </div>
                </Tooltip>
             </RoutePolyline>

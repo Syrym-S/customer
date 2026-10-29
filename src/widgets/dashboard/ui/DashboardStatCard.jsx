@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Box, Paper, Skeleton, Typography } from '@mui/material';
 
-import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
+import { useTranslation } from 'react-i18next';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 import { STATS_VIEW_MODE_SUM } from './DashboardStatsViewToggle';
 import { DashboardStatCurrencies } from './DashboardStatCurrencies';
@@ -11,7 +11,7 @@ const HEADER_HEIGHT = 24;
 
 export function DashboardStatCard({
    label,
-   unitForms,
+   countKey,
    section,
    showSums,
    viewMode,
@@ -20,6 +20,8 @@ export function DashboardStatCard({
    action,
    sx,
 }) {
+   const { t } = useTranslation();
+
    const count = section?.count ?? 0;
    const currencies = section?.currencies ?? [];
 
@@ -30,7 +32,7 @@ export function DashboardStatCard({
    const headlineValue = primaryCurrency ? primaryCurrency.sum : count;
    const headlineCaption = primaryCurrency
       ? primaryCurrency.currency
-      : pluralizeRu(count, unitForms);
+      : t(countKey, { count });
 
    return (
       <Paper
@@ -129,7 +131,7 @@ export function DashboardStatCard({
 
 DashboardStatCard.propTypes = {
    label: PropTypes.string.isRequired,
-   unitForms: PropTypes.arrayOf(PropTypes.string).isRequired,
+   countKey: PropTypes.string.isRequired,
    section: PropTypes.shape({
       count: PropTypes.number,
       currencies: PropTypes.array,

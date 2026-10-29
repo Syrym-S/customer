@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 import PropTypes from 'prop-types';
 
@@ -11,11 +12,11 @@ import {
 } from '../model/notifications.store';
 import { EMAIL_VERIFICATION_MODAL_OPEN_EVENT } from '../../widgets/customer-verification/model/email-verification.helpers';
 
-const notificationTitleMap = {
-   error: 'Ошибка',
-   warning: 'Предупреждение',
-   success: 'Успешно',
-   info: 'Уведомление',
+const NOTIFICATION_TITLE_KEYS = {
+   error: 'common.severity.error',
+   warning: 'common.severity.warning',
+   success: 'common.severity.success',
+   info: 'common.severity.notice',
 };
 
 const TRANSITION_DURATION_MS = 300;
@@ -51,6 +52,8 @@ function NotificationToast({
    isClickable,
    isEmailVerificationNotification,
 }) {
+   const { t } = useTranslation();
+
    const [hasEntered, setHasEntered] = useState(false);
    const onExitedRef = useRef(onExited);
    onExitedRef.current = onExited;
@@ -118,8 +121,10 @@ function NotificationToast({
             }}
          >
             {notification.title ||
-               notificationTitleMap[notification.type] ||
-               'Сообщение'}
+               t(
+                  NOTIFICATION_TITLE_KEYS[notification.type] ||
+                     'common.severity.info',
+               )}
          </Typography>
 
          <Typography

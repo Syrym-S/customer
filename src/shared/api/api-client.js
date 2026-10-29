@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContractStore } from "../model/contract.store";
-import { getLanguage } from "../i18n/language";
+import i18n from "../i18n";
 
 const DEFAULT_BASE_URL = "https://customer.360logistics.kz/wp-json/";
 
@@ -45,10 +45,11 @@ export class ContractGateBlockedError extends Error {
   }
 }
 
-// Язык читаем на каждом запросе, а не при создании клиента: иначе он
-// зафиксируется на момент загрузки бандла и переключение не подхватится.
 apiClient.interceptors.request.use((config) => {
-  config.headers.set("Accept-Language", getLanguage());
+  config.headers.set(
+    "Accept-Language",
+    i18n.resolvedLanguage || i18n.language || "ru",
+  );
 
   return config;
 });

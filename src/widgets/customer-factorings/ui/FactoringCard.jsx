@@ -1,4 +1,5 @@
 import { Box, Button, Chip, Stack, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import {
     formatDate,
     formatMoney,
@@ -14,6 +15,8 @@ import { StatusDot } from '../../../shared/ui/StatusDot';
 import { InfoBadge } from './InfoBadge';
 
 export function FactoringCard({ factoring, onOpenDetails }) {
+    const { t } = useTranslation();
+
     return (
         <Box
             onClick={() => onOpenDetails(factoring)}
@@ -53,7 +56,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                             color="text.secondary"
                             sx={{ mb: 0.75 }}
                         >
-                            Фактор
+                            {t("common.fields.factor")}
                         </Typography>
 
                         <Typography
@@ -76,7 +79,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                                 color: 'text.secondary',
                             }}
                         >
-                            БИН: {factoring.factor?.bin || '—'}
+                            {t("common.fields.binValue", { bin: factoring.factor?.bin || '—' })}
                         </Typography>
                     </Box>
 
@@ -129,24 +132,24 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     }}
                 >
                     <InfoBadge
-                        label="Экспедитор"
+                        label={t("enums.participantType.forwarder")}
                         value={factoring.forwarder?.company_name || '—'}
                     />
 
                     <InfoBadge
-                        label="БИН экспедитора"
+                        label={t("common.fields.forwarderBin")}
                         value={factoring.forwarder?.bin || '—'}
                     />
 
                     {factoring.forwarder?.fio && (
                         <InfoBadge
-                            label="ФИО экспедитора"
+                            label={t("common.fields.forwarderFullName")}
                             value={factoring.forwarder.fio}
                         />
                     )}
 
                     <InfoBadge
-                        label="Дата создания"
+                        label={t("factorings.details.createdAt")}
                         value={formatDate(factoring.created_at)}
                     />
                 </Box>
@@ -162,7 +165,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     }}
                 >
                     <InfoBadge
-                        label="Дебиторская сумма"
+                        label={t("factorings.finance.debtAmount")}
                         value={formatMoney(
                             factoring.deb_summ,
                             factoring.deb_currency,
@@ -171,7 +174,7 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     />
 
                     <InfoBadge
-                        label="Кредитная сумма"
+                        label={t("factorings.finance.creditAmount")}
                         value={formatMoney(
                             factoring.cred_summ,
                             factoring.currency,
@@ -180,11 +183,11 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                     />
 
                     <InfoBadge
-                        label="Отсрочка платежа"
+                        label={t("common.fields.gracePeriod")}
                         value={
                             factoring.grace_period_days
-                                ? `${factoring.grace_period_days} дн.`
-                                : 'Не указано'
+                                ? t("common.units.days", { count: factoring.grace_period_days })
+                                : t("common.empty.notSpecifiedN")
                         }
                     />
                 </Box>
@@ -213,9 +216,11 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                         }}
                     >
                         <StatusDot
-                            label={`Вы: ${getVerificationLabel(
-                                factoring.verified_customer,
-                            )}`}
+                            label={t('factorings.confirmations.youStatus', {
+                                status: getVerificationLabel(
+                                    factoring.verified_customer,
+                                ),
+                            })}
                             color={paletteKeyToColorPath(
                                 getVerificationColor(
                                     factoring.verified_customer,
@@ -224,9 +229,11 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                         />
 
                         <StatusDot
-                            label={`Экспедитор: ${getVerificationLabel(
-                                factoring.verified_forwarder,
-                            )}`}
+                            label={t('factorings.confirmations.forwarderStatus', {
+                                status: getVerificationLabel(
+                                    factoring.verified_forwarder,
+                                ),
+                            })}
                             color={paletteKeyToColorPath(
                                 getVerificationColor(
                                     factoring.verified_forwarder,
@@ -235,9 +242,11 @@ export function FactoringCard({ factoring, onOpenDetails }) {
                         />
 
                         <StatusDot
-                            label={`Фактор: ${getVerificationLabel(
-                                factoring.verified_factor,
-                            )}`}
+                            label={t('factorings.confirmations.factorStatus', {
+                                status: getVerificationLabel(
+                                    factoring.verified_factor,
+                                ),
+                            })}
                             color={paletteKeyToColorPath(
                                 getVerificationColor(
                                     factoring.verified_factor,

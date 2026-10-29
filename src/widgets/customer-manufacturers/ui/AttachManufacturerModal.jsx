@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Button,
@@ -19,7 +20,6 @@ import {
    getManufacturerId,
    getManufacturerName,
 } from '../model/manufacturers.helpers';
-import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
 
 export function AttachManufacturerModal({
    open,
@@ -30,6 +30,8 @@ export function AttachManufacturerModal({
    onClose,
    onSubmit,
 }) {
+   const { t } = useTranslation();
+
    const [manufacturerId, setManufacturerId] = useState('');
 
    useEffect(() => {
@@ -58,26 +60,24 @@ export function AttachManufacturerModal({
 
    return (
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
-         <DialogTitle>Привязка производителя</DialogTitle>
+         <DialogTitle>{t("manufacturers.link.title")}</DialogTitle>
 
          <DialogContent>
             <Stack spacing={2} sx={{ pt: 1 }}>
                <Typography color="text.secondary" fontSize={14}>
-                  {`Выбрано ${leadsCount} ${pluralizeRu(leadsCount, [
-                     'перевозка',
-                     'перевозки',
-                     'перевозок',
-                  ])}. У перевозки может быть только один производитель — текущая привязка будет перезаписана.`}
+                  {t('manufacturers.link.overwriteWarning', {
+                     shipments: t('common.shipmentCount', { count: leadsCount }),
+                  })}
                </Typography>
 
                <FormControl size="small" fullWidth>
                   <InputLabel id="attach-manufacturer-label">
-                     Производитель
+                     {t("common.fields.manufacturer")}
                   </InputLabel>
 
                   <Select
                      labelId="attach-manufacturer-label"
-                     label="Производитель"
+                     label={t("common.fields.manufacturer")}
                      value={manufacturerId}
                      onChange={(event) => setManufacturerId(event.target.value)}
                   >
@@ -86,7 +86,7 @@ export function AttachManufacturerModal({
                            key={getManufacturerId(manufacturer)}
                            value={getManufacturerId(manufacturer)}
                         >
-                           {`${getManufacturerName(manufacturer)} — БИН ${getManufacturerBin(manufacturer)}`}
+                           {t("manufacturers.card.nameWithBin", { name: getManufacturerName(manufacturer), bin: getManufacturerBin(manufacturer) })}
                         </MenuItem>
                      ))}
                   </Select>
@@ -96,7 +96,7 @@ export function AttachManufacturerModal({
 
          <DialogActions sx={{ px: 3, pb: 2 }}>
             <Button onClick={handleClose} disabled={isSubmitting}>
-               Отмена
+               {t("common.actions.cancel")}
             </Button>
 
             <Button
@@ -104,7 +104,7 @@ export function AttachManufacturerModal({
                onClick={handleSubmit}
                disabled={isSubmitting || !manufacturerId || leadsCount === 0}
             >
-               {isSubmitting ? 'Привязываем...' : 'Привязать'}
+               {isSubmitting ? t("manufacturers.link.inProgress") : t("manufacturers.link.action")}
             </Button>
          </DialogActions>
       </Dialog>

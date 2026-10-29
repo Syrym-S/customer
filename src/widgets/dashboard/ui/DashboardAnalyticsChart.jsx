@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { Box, Paper, Tab, Tabs, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { BarChart } from '@mui/x-charts/BarChart';
@@ -12,6 +13,8 @@ export function DashboardAnalyticsChart({
    onSelectCurrency,
    viewMode,
 }) {
+   const { t } = useTranslation();
+
    const theme = useTheme();
 
    if (!currencies.length) {
@@ -30,7 +33,7 @@ export function DashboardAnalyticsChart({
    return (
       <Paper variant="outlined" sx={{ p: 2, mt: 2 }}>
          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-            <Typography variant="subtitle2">Динамика перевозок</Typography>
+            <Typography variant="subtitle2">{t("dashboard.analytics.title")}</Typography>
 
             {currencies.length > 1 && (
                <Tabs
@@ -56,7 +59,7 @@ export function DashboardAnalyticsChart({
             series={[
                {
                   data: buckets.map((bucket) => (isSumMode ? bucket.sum : bucket.count)),
-                  label: isSumMode ? `Сумма, ${activeCurrency.currency}` : 'Количество',
+                  label: isSumMode ? t("dashboard.analytics.amountAxis", { currency: activeCurrency.currency }) : t("common.fields.quantity"),
                   color: theme.palette.primary.main,
                   valueFormatter: (value) => (isSumMode ? formatAmount(value) : String(value)),
                },

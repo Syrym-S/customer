@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 const STATE_STATUS_MAP = {
    new: 'pending',
    pending: 'pending',
@@ -51,10 +53,10 @@ export function isWithinLastDays(value, days = COMPLAINT_WINDOW_DAYS) {
 }
 
 const STATUS_META = {
-   completed: { label: 'Решена', color: 'success.main' },
-   rejected: { label: 'Отклонена', color: 'error.main' },
-   pending: { label: 'Ожидает рассмотрения', color: 'warning.main' },
-   in_progress: { label: 'В работе', color: 'info.main' },
+   completed: { labelKey: 'enums.complaintStatus.resolved', color: 'success.main' },
+   rejected: { labelKey: 'enums.complaintStatus.rejected', color: 'error.main' },
+   pending: { labelKey: 'enums.complaintStatus.pending_review', color: 'warning.main' },
+   in_progress: { labelKey: 'enums.complaintStatus.in_progress', color: 'info.main' },
 };
 
 // final_status is authoritative; acceptance_at (without a final_status yet)
@@ -84,7 +86,7 @@ export function getComplaintStatusKey(complaint) {
 }
 
 export function getComplaintStatusLabel(complaint) {
-   return STATUS_META[getComplaintStatusKey(complaint)].label;
+   return i18n.t(STATUS_META[getComplaintStatusKey(complaint)].labelKey);
 }
 
 export function getComplaintStatusColor(complaint) {
@@ -93,10 +95,10 @@ export function getComplaintStatusColor(complaint) {
 
 export function getComplaintResponseLabel(complaint) {
    if (complaint?.final_status === 'rejected') {
-      return 'Отклонено';
+      return i18n.t("enums.complaintStatus.rejectedN");
    }
 
-   return complaint?.response ? 'Ответ получен' : 'Ожидает ответа';
+   return complaint?.response ? i18n.t("enums.complaintStatus.answered") : i18n.t("enums.complaintStatus.pending_answer");
 }
 
 // The backend embeds full target details directly on the complaint (and on
@@ -110,7 +112,7 @@ export function getComplaintResponseLabel(complaint) {
 // for displaying "which shipment" on a complaint card/modal.
 export function getLeadTargetLabel(lead) {
    if (!lead) {
-      return 'Заказ не найден';
+      return i18n.t("errors.leadNotFound");
    }
 
    const number = Number(lead.num);
@@ -124,7 +126,7 @@ export function getLeadTargetLabel(lead) {
 // to the complaints widget only, per the audit's finding #4.
 export function getFactoringTargetLabel(factoring) {
    if (!factoring) {
-      return 'Факторинг не найден';
+      return i18n.t("errors.factoringNotFound");
    }
 
    const amount = Number(factoring.summ);
@@ -153,11 +155,11 @@ export function getComplaintTargetLabel(target) {
 
 export function getComplaintTargetTypeLabel(target) {
    if (target?.type === 'lead') {
-      return 'Перевозка';
+      return i18n.t("enums.complaintTarget.shipment");
    }
 
    if (target?.type === 'factoring') {
-      return 'Факторинг';
+      return i18n.t("enums.complaintTarget.factoring");
    }
 
    return null;
@@ -205,14 +207,14 @@ export function formatFileSize(size) {
    }
 
    if (size < 1024) {
-      return `${size} Б`;
+      return i18n.t("common.units.bytes", { value: size });
    }
 
    if (size < 1024 * 1024) {
-      return `${(size / 1024).toFixed(0)} КБ`;
+      return i18n.t("common.units.kilobytes", { value: (size / 1024).toFixed(0) });
    }
 
-   return `${(size / 1024 / 1024).toFixed(1)} МБ`;
+   return i18n.t("common.units.megabytes", { value: (size / 1024 / 1024).toFixed(1) });
 }
 
 // Shared by both the attachments field (on selection) and the form's
@@ -220,11 +222,13 @@ export function formatFileSize(size) {
 // rules" requirement.
 export function validateComplaintAttachmentFile(file) {
    if (!isAllowedComplaintAttachmentType(file)) {
-      return 'Разрешены только изображения, видео, PDF или DOCX';
+      return i18n.t("complaints.attachments.allowedTypes");
    }
 
    if (file.size > COMPLAINT_ATTACHMENT_MAX_SIZE_BYTES) {
-      return `Размер файла не должен превышать ${COMPLAINT_ATTACHMENT_MAX_SIZE_MB} МБ`;
+      return i18n.t("complaints.attachments.maxSize", {
+         size: COMPLAINT_ATTACHMENT_MAX_SIZE_MB,
+      });
    }
 
    return '';
@@ -278,7 +282,7 @@ export function isPreviewableVideoByName(name) {
 
 export function validateComplaintAttachments(files) {
    if (files.length > COMPLAINT_ATTACHMENT_MAX_COUNT) {
-      return `Можно прикрепить не более ${COMPLAINT_ATTACHMENT_MAX_COUNT} файлов`;
+      return i18n.t("complaints.attachments.maxCount", { count: COMPLAINT_ATTACHMENT_MAX_COUNT });
    }
 
    for (const file of files) {

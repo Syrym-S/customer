@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import i18n from "../../../shared/i18n";
 
 import { generateRoute } from "../../customer-leads/api/lead-route.repository";
 import {
@@ -92,7 +93,7 @@ export function useCustomerPageRoutes(leads) {
             }
          } catch (error) {
             if (!isCancelled) {
-               setRoutesError(error.message || "Не удалось загрузить маршруты");
+               setRoutesError(error.message || i18n.t("map.routesLoadFailed"));
                setRoutes([]);
             }
          } finally {

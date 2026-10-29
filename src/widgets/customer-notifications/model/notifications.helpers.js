@@ -1,3 +1,10 @@
+import i18n from '../../../shared/i18n';
+
+import {
+    getNotificationMessageText,
+    getNotificationThemeText,
+} from '../lib/notification-texts';
+
 export function normalizeNotificationsResponse(response) {
     if (Array.isArray(response)) {
         return response;
@@ -51,11 +58,17 @@ export function getNotificationId(notification) {
 }
 
 export function getNotificationTitle(notification) {
-    return notification?.theme || 'Уведомление';
+    return (
+        getNotificationThemeText(notification) ||
+        i18n.t("common.severity.notice")
+    );
 }
 
 export function getNotificationDescription(notification) {
-    return notification?.message || 'Нет описания';
+    return (
+        getNotificationMessageText(notification) ||
+        i18n.t("notifications.noDescription")
+    );
 }
 
 export function getNotificationCreatedAt(notification) {
@@ -68,6 +81,18 @@ export function getNotificationLink(notification) {
 
 export function isRealtimeOnlyNotification(notification) {
     return notification?.is_realtime_only === true;
+}
+
+const DATE_LOCALE_BY_LANGUAGE = {
+    ru: 'ru-RU',
+    kk: 'kk-KZ',
+    en: 'en-US',
+};
+
+function getDateLocale() {
+    const language = i18n.resolvedLanguage || i18n.language || 'ru';
+
+    return DATE_LOCALE_BY_LANGUAGE[language] || DATE_LOCALE_BY_LANGUAGE.ru;
 }
 
 const CUSTOMER_ENTITY_PATH_SEGMENTS = ['leads', 'tenders', 'factorings'];
@@ -100,7 +125,7 @@ export function isNotificationUnread(notification) {
 
 export function formatNotificationDate(value) {
     if (!value) {
-        return 'Дата не указана';
+        return i18n.t("common.empty.dateNotSpecified");
     }
 
     let dateValue = value;
@@ -109,7 +134,7 @@ export function formatNotificationDate(value) {
         dateValue = value.date || value.datetime || value.value || '';
 
         if (!dateValue) {
-            return 'Дата не указана';
+            return i18n.t("common.empty.dateNotSpecified");
         }
     }
 
@@ -121,10 +146,10 @@ export function formatNotificationDate(value) {
     const date = new Date(normalizedValue);
 
     if (Number.isNaN(date.getTime())) {
-        return String(dateValue || 'Дата не указана');
+        return String(dateValue || i18n.t("common.empty.dateNotSpecified"));
     }
 
-    return date.toLocaleString('ru-RU', {
+    return date.toLocaleString(getDateLocale(), {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',

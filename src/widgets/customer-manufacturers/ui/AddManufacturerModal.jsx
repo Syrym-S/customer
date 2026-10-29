@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Alert,
@@ -29,14 +31,16 @@ import { useManufacturersSearch } from '../model/useManufacturers';
 export function AddManufacturerModal({
    open,
    attachedIds,
-   title = 'Добавить производителя',
-   submitLabel = 'Добавить',
-   submittingLabel = 'Добавляем...',
-   attachedLabel = 'Уже добавлен',
+   title = i18n.t("manufacturers.add.action"),
+   submitLabel = i18n.t("common.actions.add"),
+   submittingLabel = i18n.t("manufacturers.add.inProgress"),
+   attachedLabel = i18n.t("manufacturers.add.alreadyAdded"),
    isSubmitting = false,
    onClose,
    onSubmit,
 }) {
+   const { t } = useTranslation();
+
    const [query, setQuery] = useState('');
    const [selectedId, setSelectedId] = useState('');
 
@@ -66,7 +70,7 @@ export function AddManufacturerModal({
                <TextField
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Поиск по названию или БИН"
+                  placeholder={t("manufacturers.add.searchHint")}
                   fullWidth
                   size="small"
                   autoFocus
@@ -108,8 +112,8 @@ export function AddManufacturerModal({
                      <Box sx={{ p: 2 }}>
                         <Typography color="text.secondary" fontSize={14}>
                            {query.trim()
-                              ? 'Производители не найдены'
-                              : 'Введите название или БИН производителя'}
+                              ? t("manufacturers.notFound")
+                              : t("manufacturers.add.searchPlaceholder")}
                         </Typography>
                      </Box>
                   ) : (
@@ -130,7 +134,7 @@ export function AddManufacturerModal({
                                     secondary={
                                        isAttached
                                           ? attachedLabel
-                                          : `БИН ${getManufacturerBin(manufacturer)}`
+                                          : t("manufacturers.card.bin", { bin: getManufacturerBin(manufacturer) })
                                     }
                                  />
                               </ListItemButton>
@@ -144,7 +148,7 @@ export function AddManufacturerModal({
 
          <DialogActions sx={{ px: 3, pb: 2 }}>
             <Button onClick={handleClose} disabled={isSubmitting}>
-               Отмена
+               {t("common.actions.cancel")}
             </Button>
 
             <Button

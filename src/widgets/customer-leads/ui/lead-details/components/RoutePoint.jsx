@@ -1,4 +1,5 @@
 import { Box, Chip, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 const passedChipStyle = {
@@ -60,6 +61,8 @@ export function RoutePoint({
    typeColor,
    date,
 }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          sx={{
@@ -159,7 +162,7 @@ export function RoutePoint({
 
             {isPassed !== undefined && (
                <Chip
-                  label={isPassed ? 'Пройдена' : 'Не пройдена'}
+                  label={isPassed ? t("enums.verificationCheck.passed") : t("enums.verificationCheck.notPassed")}
                   variant='outlined'
                   size='small'
                   sx={{
@@ -202,7 +205,7 @@ export function RoutePoint({
             </Box>
 
             <Typography
-               title={value || 'Не указано'}
+               title={value || t("common.empty.notSpecifiedN")}
                sx={{
                   minWidth: 0,
                   fontSize: {
@@ -224,7 +227,7 @@ export function RoutePoint({
                   WebkitBoxOrient: 'vertical',
                }}
             >
-               {value || 'Не указано'}
+               {value || t("common.empty.notSpecifiedN")}
             </Typography>
          </Box>
       </Box>

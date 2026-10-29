@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import i18n from '../../../shared/i18n';
 
 import { publishLead } from '../api/leads.repository';
 import { useLeadsContext } from './useLeadsContext';
@@ -25,7 +26,7 @@ export function useLeadPublish() {
             const message =
                error.response?.data?.message ||
                error.message ||
-               'Не удалось опубликовать заказ';
+               i18n.t("leads.publish.failed");
 
             notifyError(message);
 

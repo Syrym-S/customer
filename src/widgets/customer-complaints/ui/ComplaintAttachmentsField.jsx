@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Alert,
@@ -46,6 +47,8 @@ function getFileTypeIcon(file) {
 // soon as the row unmounts/is removed, so selecting files never eagerly
 // allocates blob URLs for large videos/images (per spec).
 function PendingAttachmentRow({ attachment, onRemove }) {
+   const { t } = useTranslation();
+
    const [previewUrl, setPreviewUrl] = useState(null);
    const previewUrlRef = useRef(null);
 
@@ -101,7 +104,7 @@ function PendingAttachmentRow({ attachment, onRemove }) {
                <IconButton
                   size="small"
                   onClick={handleTogglePreview}
-                  aria-label="Предпросмотр"
+                  aria-label={t("common.actions.preview")}
                >
                   <VisibilityOutlined fontSize="small" />
                </IconButton>
@@ -110,7 +113,7 @@ function PendingAttachmentRow({ attachment, onRemove }) {
             <IconButton
                size="small"
                onClick={() => onRemove(attachment.id)}
-               aria-label="Удалить файл"
+               aria-label={t("complaints.attachments.removeFile")}
             >
                <CloseOutlined fontSize="small" />
             </IconButton>
@@ -148,6 +151,8 @@ PendingAttachmentRow.propTypes = {
 let attachmentIdCounter = 0;
 
 export function ComplaintAttachmentsField({ attachments, onChange }) {
+   const { t } = useTranslation();
+
    const [fieldError, setFieldError] = useState('');
    const inputRef = useRef(null);
 
@@ -162,7 +167,7 @@ export function ComplaintAttachmentsField({ attachments, onChange }) {
 
       if (attachments.length + selectedFiles.length > COMPLAINT_ATTACHMENT_MAX_COUNT) {
          setFieldError(
-            `Можно прикрепить не более ${COMPLAINT_ATTACHMENT_MAX_COUNT} файлов`,
+            t("complaints.attachments.maxCount", { count: COMPLAINT_ATTACHMENT_MAX_COUNT }),
          );
          return;
       }
@@ -204,7 +209,7 @@ export function ComplaintAttachmentsField({ attachments, onChange }) {
                startIcon={<AttachFileOutlined />}
                disabled={attachments.length >= COMPLAINT_ATTACHMENT_MAX_COUNT}
             >
-               Прикрепить файлы
+               {t("complaints.attachments.attach")}
                <input
                   ref={inputRef}
                   type="file"
@@ -220,8 +225,10 @@ export function ComplaintAttachmentsField({ attachments, onChange }) {
                sx={{ ml: 1.5, fontSize: 12 }}
                color="text.secondary"
             >
-               Не более {COMPLAINT_ATTACHMENT_MAX_COUNT} файлов, до{' '}
-               {COMPLAINT_ATTACHMENT_MAX_SIZE_MB} МБ каждый
+               {t('complaints.attachments.limits', {
+                  count: COMPLAINT_ATTACHMENT_MAX_COUNT,
+                  size: COMPLAINT_ATTACHMENT_MAX_SIZE_MB,
+               })}
             </Typography>
          </Box>
 

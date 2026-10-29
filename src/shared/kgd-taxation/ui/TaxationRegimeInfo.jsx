@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 import {
@@ -13,6 +14,8 @@ import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlin
 import { fetchTaxationRegime } from '../api/kgd-taxation.repository';
 
 export function TaxationRegimeInfo({ role, entityId, label }) {
+   const { t } = useTranslation();
+
    const [typeTaxation, setTypeTaxation] = useState(null);
    const [isLoading, setIsLoading] = useState(false);
    const [loadError, setLoadError] = useState('');
@@ -41,7 +44,7 @@ export function TaxationRegimeInfo({ role, entityId, label }) {
                   error.response?.data?.message ||
                      error.response?.data?.error ||
                      error.message ||
-                     'Не удалось загрузить данные по КГД',
+                     t("kgd.loadFailed"),
                );
             }
          } finally {
@@ -56,7 +59,7 @@ export function TaxationRegimeInfo({ role, entityId, label }) {
       return () => {
          isCancelled = true;
       };
-   }, [role, entityId]);
+   }, [role, entityId, t]);
 
    return (
       <Box
@@ -73,7 +76,7 @@ export function TaxationRegimeInfo({ role, entityId, label }) {
             <AccountBalanceOutlinedIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
 
             <Typography sx={{ fontSize: 12, color: 'text.secondary' }}>
-               {label}
+               {label ?? t("kgd.taxationMode")}
             </Typography>
          </Stack>
 
@@ -87,7 +90,7 @@ export function TaxationRegimeInfo({ role, entityId, label }) {
 
          {!isLoading && !loadError && (!typeTaxation || typeTaxation.length === 0) && (
             <Typography color="text.secondary" sx={{ fontSize: 14 }}>
-               Нет данных
+               {t("common.empty.noData")}
             </Typography>
          )}
 
@@ -110,5 +113,5 @@ TaxationRegimeInfo.propTypes = {
 
 TaxationRegimeInfo.defaultProps = {
    entityId: null,
-   label: 'Режим налогообложения',
+   label: null,
 };

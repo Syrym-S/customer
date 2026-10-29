@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 export const PROFILE_PHOTO_UPDATED_EVENT = 'customer-profile-photo-updated';
 
 const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg'];
@@ -7,7 +9,7 @@ function readFileAsDataUrl(file) {
         const reader = new FileReader();
 
         reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error('Не удалось прочитать файл'));
+        reader.onerror = () => reject(new Error(i18n.t("profile.avatar.readFailed")));
 
         reader.readAsDataURL(file);
     });
@@ -25,7 +27,7 @@ function getImageSize(dataUrl) {
         };
 
         image.onerror = () => {
-            reject(new Error('Не удалось проверить размер изображения'));
+            reject(new Error(i18n.t("profile.avatar.sizeCheckFailed")));
         };
 
         image.src = dataUrl;
@@ -38,18 +40,18 @@ export async function validateAndReadProfilePhoto(file) {
     }
 
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-        throw new Error('Можно загрузить только PNG или JPEG');
+        throw new Error(i18n.t("profile.avatar.allowedTypes"));
     }
 
     const dataUrl = await readFileAsDataUrl(file);
     const { width, height } = await getImageSize(dataUrl);
 
     if (width < 400 || height < 400) {
-        throw new Error('Минимальный размер фото — 400×400 px');
+        throw new Error(i18n.t("profile.avatar.minSize"));
     }
 
     if (width > 600 || height > 600) {
-        throw new Error('Максимальный размер фото — 600×600 px');
+        throw new Error(i18n.t("profile.avatar.maxSize"));
     }
 
     return dataUrl;

@@ -1,10 +1,10 @@
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { useTranslation } from "react-i18next";
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { INITIAL_VISIBLE_COUNT } from '../components/tender-participants.helpers';
 import { TenderDetailsSection } from './TenderDetailsSection';
-import { pluralizeRu } from '../../../../../shared/helpers/plural.helpers';
 import { TenderParticipantsAddForm } from '../components/TenderParticipantsAddForm';
 import { TenderParticipantsList } from '../components/TenderParticipantsList';
 import { useTenderParticipantForwarders } from '../components/useTenderParticipantForwarders';
@@ -18,6 +18,8 @@ export function TenderParticipantsSection({
     onDeleteParticipant,
     onAddParticipants,
 }) {
+    const { t } = useTranslation();
+
     const [isExpanded, setIsExpanded] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
     const [inputValue, setInputValue] = useState('');
@@ -101,7 +103,7 @@ export function TenderParticipantsSection({
     return (
         <TenderDetailsSection
             icon={<GroupsOutlinedIcon />}
-            title="Участники"
+            title={t("tenders.participants.title")}
             subtitle={
                 isLoading ? (
                     <Stack direction="row" alignItems="center" spacing={0.75}>
@@ -110,11 +112,11 @@ export function TenderParticipantsSection({
                             color="text.secondary"
                             sx={{ fontSize: 13 }}
                         >
-                            Загрузка участников...
+                            {t("tenders.participants.loading")}
                         </Typography>
                     </Stack>
                 ) : (
-                    `${participants.length} ${pluralizeRu(participants.length, ['участник', 'участника', 'участников'])}`
+                    t('tenders.participantCount', { count: participants.length })
                 )
             }
             action={
@@ -125,8 +127,8 @@ export function TenderParticipantsSection({
                         startIcon={<AddOutlinedIcon />}
                         onClick={handleStartAdding}
                         disabled={isActionLoading}
-                        aria-label="Добавить участника"
-                        title="Добавить участника"
+                        aria-label={t("tenders.participants.add")}
+                        title={t("tenders.participants.add")}
                         sx={{
                             textTransform: 'none',
                             flexShrink: 0,
@@ -152,7 +154,7 @@ export function TenderParticipantsSection({
                                 },
                             }}
                         >
-                            Добавить участника
+                            {t("tenders.participants.add")}
                         </Box>
                     </Button>
                 ) : null

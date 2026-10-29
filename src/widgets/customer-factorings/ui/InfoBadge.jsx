@@ -1,6 +1,9 @@
 import { Box, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 export function InfoBadge({ label, value, accent = false, sx = {} }) {
+    const { t } = useTranslation();
+
     return (
         <Box
             sx={{
@@ -34,7 +37,7 @@ export function InfoBadge({ label, value, accent = false, sx = {} }) {
                     overflowWrap: 'anywhere',
                 }}
             >
-                {value || 'Не указано'}
+                {value || t("common.empty.notSpecifiedN")}
             </Typography>
         </Box>
     );

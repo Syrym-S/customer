@@ -1,9 +1,12 @@
 import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
+import { useTranslation } from "react-i18next";
 import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 
 export function BannedScreen({ onLogout, onAppeal }) {
+    const { t } = useTranslation();
+
     return (
         <Box
             sx={{
@@ -49,7 +52,7 @@ export function BannedScreen({ onLogout, onAppeal }) {
                 </Box>
 
                 <Typography variant='h5' fontWeight={700}>
-                    Аккаунт заблокирован
+                    {t("accountBan.title")}
                 </Typography>
 
                 <Typography
@@ -60,9 +63,7 @@ export function BannedScreen({ onLogout, onAppeal }) {
                         lineHeight: 1.6,
                     }}
                 >
-                    Доступ к рабочему пространству временно ограничен. Вы не
-                    можете создавать заявки, работать с аукционами и выполнять
-                    другие действия в системе.
+                    {t("accountBan.text")}
                 </Typography>
 
                 <Stack
@@ -80,7 +81,7 @@ export function BannedScreen({ onLogout, onAppeal }) {
                         startIcon={<LogoutOutlinedIcon />}
                         onClick={onLogout}
                     >
-                        Выйти из аккаунта
+                        {t("accountBan.logout")}
                     </Button>
 
                     <Button
@@ -88,7 +89,7 @@ export function BannedScreen({ onLogout, onAppeal }) {
                         startIcon={<SupportAgentOutlinedIcon />}
                         onClick={onAppeal}
                     >
-                        Связаться с поддержкой
+                        {t("accountBan.contactSupport")}
                     </Button>
                 </Stack>
             </Paper>

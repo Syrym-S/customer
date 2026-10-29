@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 import {
     Alert,
@@ -24,6 +25,8 @@ const FACTORINGS_VIEW_MODES = {
 };
 
 export function FactoringsContent() {
+    const { t } = useTranslation();
+
     const {
         factorings,
 
@@ -86,11 +89,11 @@ export function FactoringsContent() {
                 >
                     <Box>
                         <Typography variant="h6" fontWeight={600}>
-                            Факторинг-покупки
+                            {t("factorings.purchasesTitle")}
                         </Typography>
 
                         <Typography color="text.secondary" fontSize={14}>
-                            Список заявок на факторинг
+                            {t("factorings.subtitle")}
                         </Typography>
                     </Box>
 
@@ -117,7 +120,7 @@ export function FactoringsContent() {
                             onChange={handleViewModeChange}
                             size="small"
                             color="primary"
-                            aria-label="Переключение отображения факторингов"
+                            aria-label={t("factorings.viewToggle")}
                             sx={{
                                 alignSelf: {
                                     xs: 'stretch',
@@ -131,16 +134,16 @@ export function FactoringsContent() {
                         >
                             <ToggleButton
                                 value={FACTORINGS_VIEW_MODES.TABLE}
-                                aria-label="Показать таблицей"
-                                title="Таблица"
+                                aria-label={t("common.view.showAsTable")}
+                                title={t("common.view.table")}
                             >
                                 <ViewListRoundedIcon fontSize="small" />
                             </ToggleButton>
 
                             <ToggleButton
                                 value={FACTORINGS_VIEW_MODES.CARDS}
-                                aria-label="Показать карточками"
-                                title="Карточки"
+                                aria-label={t("common.view.showAsCards")}
+                                title={t("common.view.cards")}
                             >
                                 <GridViewRoundedIcon fontSize="small" />
                             </ToggleButton>

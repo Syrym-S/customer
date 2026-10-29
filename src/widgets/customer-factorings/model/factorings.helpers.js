@@ -1,10 +1,11 @@
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
+import i18n from '../../../shared/i18n';
 
 export function formatMoney(amount, currency = 'KZT') {
     const formattedAmount = formatAmount(amount);
 
     if (!formattedAmount) {
-        return 'Не указано';
+        return i18n.t("common.empty.notSpecifiedN");
     }
 
     return `${formattedAmount} ${currency || 'KZT'}`;
@@ -32,7 +33,7 @@ export function normalizeLeadsResponse(response) {
 
 export function formatPercent(value) {
     if (value === null || value === undefined || value === '') {
-        return 'Не указано';
+        return i18n.t("common.empty.notSpecifiedN");
     }
 
     return `${(Number(value) * 100).toFixed(1)}%`;
@@ -40,7 +41,7 @@ export function formatPercent(value) {
 
 export function formatDate(value) {
     if (!value) {
-        return 'Не указано';
+        return i18n.t("common.empty.notSpecifiedN");
     }
 
     let dateValue = value;
@@ -54,7 +55,7 @@ export function formatDate(value) {
             '';
 
         if (!dateValue) {
-            return 'Не указано';
+            return i18n.t("common.empty.notSpecifiedN");
         }
     }
 
@@ -64,7 +65,7 @@ export function formatDate(value) {
     const date = new Date(normalizedDateValue);
 
     if (Number.isNaN(date.getTime())) {
-        return String(dateValue || 'Не указано');
+        return String(dateValue || i18n.t("common.empty.notSpecifiedN"));
     }
 
     return date.toLocaleString('ru-RU', {
@@ -78,14 +79,14 @@ export function formatDate(value) {
 
 export function getFactoringStatusLabel(status) {
     const labels = {
-        new: 'Новый',
-        verified_participant: 'Частично подтвержден',
-        await_paid: 'Ожидает оплаты',
-        finished: 'Завершен',
-        cancelled: 'Отменен',
+        new: i18n.t("enums.factoringStatus.new"),
+        verified_participant: i18n.t("enums.factoringStatus.verified_participant"),
+        await_paid: i18n.t("enums.factoringStatus.await_paid"),
+        finished: i18n.t("enums.factoringStatus.finished"),
+        cancelled: i18n.t("enums.factoringStatus.cancelled"),
     };
 
-    return labels[status] || status || 'Не указано';
+    return labels[status] || status || i18n.t("common.empty.notSpecifiedN");
 }
 
 export function getFactoringStatusColor(status) {
@@ -101,7 +102,7 @@ export function getFactoringStatusColor(status) {
 }
 
 export function getVerificationLabel(value) {
-    return value ? 'Подтверждено' : 'Не подтверждено';
+    return value ? i18n.t("enums.verification.confirmed") : i18n.t("enums.verification.notConfirmed");
 }
 
 export function getVerificationColor(value) {
@@ -133,7 +134,7 @@ export function getForwarderName(forwarder) {
 // `is_line: true` marks a closed factoring (it has its own factoring-line
 // document/signature), returned both in the factorings list and details.
 export function getFactoringLineTypeLabel(isLine) {
-    return isLine ? 'Закрытая линия' : 'Открытая линия';
+    return isLine ? i18n.t("enums.factoringLine.closed") : i18n.t("enums.factoringLine.open");
 }
 
 export function getFactoringLineTypeColor(isLine) {

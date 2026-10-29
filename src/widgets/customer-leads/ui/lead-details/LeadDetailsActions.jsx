@@ -1,7 +1,10 @@
 import { Button, DialogActions } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 export function LeadDetailsActions({ isEditing, isSaving = false, onSave }) {
+   const { t } = useTranslation();
+
    if (!isEditing) {
       return null;
    }
@@ -17,7 +20,7 @@ export function LeadDetailsActions({ isEditing, isSaving = false, onSave }) {
          }}
       >
          <Button variant='contained' onClick={onSave} disabled={isSaving}>
-            {isSaving ? 'Сохранение...' : 'Сохранить'}
+            {isSaving ? t("common.actions.saving") : t("common.actions.save")}
          </Button>
       </DialogActions>
    );

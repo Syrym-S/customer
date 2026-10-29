@@ -1,4 +1,5 @@
 import { formatDateToTenderApiDateTime } from '../../../widgets/customer-tenders/model/tender.helpers';
+import i18n from '../../../shared/i18n';
 
 export function getFormFieldValue(form, fieldPath) {
     return fieldPath
@@ -107,7 +108,7 @@ export function validateNotBeforeToday(value) {
 
     return (
         value >= getTodayDateInputValue() ||
-        'Дата не может быть раньше сегодняшнего дня'
+        i18n.t("validation.dateNotInPast")
     );
 }
 
@@ -132,7 +133,7 @@ export function validateStartAtChain(form, pointScheduleFields, fieldName) {
 
         return (
             value >= previousEndValue ||
-            'Дата начала не может быть раньше даты окончания предыдущей точки'
+            i18n.t("route.validation.startBeforePrevEnd")
         );
     };
 }
@@ -158,7 +159,7 @@ export function validateEndAtOwnStart(form, pointScheduleFields, fieldName) {
 
         return (
             value >= ownStartValue ||
-            'Дата окончания не может быть раньше даты начала этой точки'
+            i18n.t("route.validation.endBeforeStart")
         );
     };
 }

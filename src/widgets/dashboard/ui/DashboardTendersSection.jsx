@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import {
     Alert,
     Box,
@@ -21,6 +22,8 @@ function getTenderPublicationType(tender) {
 }
 
 export function DashboardTendersSection() {
+    const { t } = useTranslation();
+
     const { tenders, isLoading, error } = useTendersContext();
 
     const [page, setPage] = useState(1);
@@ -86,19 +89,19 @@ export function DashboardTendersSection() {
             >
                 <Box>
                     <Typography variant="h6" fontWeight={600}>
-                        Аукционы
+                        {t("nav.tenders")}
                     </Typography>
 
                     <Typography color="text.secondary" fontSize={14}>
-                        Список аукционов
+                        {t("dashboard.tenders.title")}
                     </Typography>
                 </Box>
 
                 <FormControlLabel
                     label={
                         publicationType === 'private'
-                            ? 'Приватные'
-                            : 'Публичные'
+                            ? t("dashboard.tenders.private")
+                            : t("dashboard.tenders.public")
                     }
                     labelPlacement="start"
                     control={
@@ -137,15 +140,15 @@ export function DashboardTendersSection() {
             >
                 {isLoading && (
                     <Typography color="text.secondary" sx={{ py: 2 }}>
-                        Загрузка аукционов...
+                        {t("dashboard.tenders.loading")}
                     </Typography>
                 )}
 
                 {!isLoading && !filteredTenders.length && (
                     <Typography color="text.secondary" sx={{ py: 2 }}>
                         {publicationType === 'private'
-                            ? 'Приватные аукционы пока не найдены'
-                            : 'Публичные аукционы пока не найдены'}
+                            ? t("dashboard.tenders.privateEmpty")
+                            : t("dashboard.tenders.publicEmpty")}
                     </Typography>
                 )}
 

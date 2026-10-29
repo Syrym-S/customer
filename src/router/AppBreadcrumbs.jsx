@@ -1,9 +1,11 @@
 import { Breadcrumbs, Link, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import { Link as RouterLink, useMatches, useNavigate } from "react-router-dom";
 import { PageContainer } from "../shared/ui/PageContainer";
 
 export function AppBreadcrumbs() {
+  const { t } = useTranslation();
   const matches = useMatches();
   const navigate = useNavigate();
 
@@ -38,7 +40,7 @@ export function AppBreadcrumbs() {
                   },
                 }}
               />
-              Назад
+              {t("common.actions.back")}
             </Link>
           )}
 
@@ -48,7 +50,7 @@ export function AppBreadcrumbs() {
             const label =
               typeof match.handle.breadcrumb === "function"
                 ? match.handle.breadcrumb(match)
-                : match.handle.breadcrumb;
+                : t(match.handle.breadcrumb);
 
             return last ? (
               <Typography

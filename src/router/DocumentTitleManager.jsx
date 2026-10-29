@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useMatches } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useTitleStore } from '../shared/model/title.store';
 
 const BRAND = '360Logistics';
@@ -7,21 +8,22 @@ const BRAND = '360Logistics';
 // Побеждает самый глубокий совпавший роут с handle.title — то же правило,
 // что в AppBreadcrumbs.jsx для handle.breadcrumb, так что дочерний роут
 // может переопределить заголовок родителя.
-function resolveRouteTitle(matches) {
+function resolveRouteTitle(matches, t) {
    for (let i = matches.length - 1; i >= 0; i--) {
       const { handle } = matches[i];
       if (!handle?.title) continue;
 
-      return typeof handle.title === 'function' ? handle.title(matches[i]) : handle.title;
+      return typeof handle.title === 'function' ? handle.title(matches[i]) : t(handle.title);
    }
 
    return null;
 }
 
 export function DocumentTitleManager() {
+   const { t } = useTranslation();
    const matches = useMatches();
    const segments = useTitleStore((state) => state.segments);
-   const routeTitle = resolveRouteTitle(matches);
+   const routeTitle = resolveRouteTitle(matches, t);
 
    useEffect(() => {
       const extraSegments = Object.values(segments)

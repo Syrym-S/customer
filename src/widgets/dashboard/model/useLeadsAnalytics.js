@@ -8,7 +8,9 @@ import { fetchLeadsAnalytics } from '../api/analytics.repository';
 import { mapAnalyticsResponseFromApi } from './analytics.adapter';
 
 const REFETCH_DEBOUNCE_MS = 400;
-const LOAD_ERROR_MESSAGE = 'Не удалось загрузить аналитику перевозок';
+import i18n from '../../../shared/i18n';
+
+const LOAD_ERROR_KEY = 'dashboard.analytics.loadFailed';
 
 const REFRESH_EVENT_NAMES = [
    notificationDomainEventNames.leadsChanged,
@@ -53,7 +55,7 @@ export function useLeadsAnalytics({ period, from, to, groupBy, page, perPage }) 
                return;
             }
 
-            setError(LOAD_ERROR_MESSAGE);
+            setError(i18n.t(LOAD_ERROR_KEY));
          } finally {
             if (requestId === requestIdRef.current) {
                setIsLoading(false);

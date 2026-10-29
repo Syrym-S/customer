@@ -1,7 +1,10 @@
 import { Box, Stack, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import { FactoringCard } from './FactoringCard';
 
 export function FactoringCardsList({ factorings, onOpenDetails }) {
+    const { t } = useTranslation();
+
     if (factorings.length === 0) {
         return (
             <Box
@@ -12,7 +15,7 @@ export function FactoringCardsList({ factorings, onOpenDetails }) {
                 }}
             >
                 <Typography color="text.secondary">
-                    Факторинг-покупки не найдены
+                    {t("factorings.notFound")}
                 </Typography>
             </Box>
         );

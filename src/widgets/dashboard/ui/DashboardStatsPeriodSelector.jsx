@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { useState } from 'react';
 import {
    Box,
@@ -18,7 +19,7 @@ import { isCustomStatsPeriod } from '../model/stats.helpers';
 
 const PERIOD_OPTIONS = [
    ...STATS_PERIODS,
-   { value: CUSTOM_STATS_PERIOD, label: 'Выбрать период' },
+   { value: CUSTOM_STATS_PERIOD, labelKey: 'dashboard.period.action' },
 ];
 
 export function DashboardStatsPeriodSelector({
@@ -29,6 +30,8 @@ export function DashboardStatsPeriodSelector({
    ariaLabel,
    onChange,
 }) {
+   const { t } = useTranslation();
+
    const [anchorEl, setAnchorEl] = useState(null);
    const [pendingValue, setPendingValue] = useState('');
    const [pendingFrom, setPendingFrom] = useState('');
@@ -123,7 +126,7 @@ export function DashboardStatsPeriodSelector({
                variant="subtitle2"
                sx={{ px: 2, pt: 1.5, pb: 0.5 }}
             >
-               Выбор периода
+               {t("dashboard.period.title")}
             </Typography>
 
             <MenuList
@@ -138,7 +141,7 @@ export function DashboardStatsPeriodSelector({
                      selected={option.value === pendingValue}
                      onClick={() => setPendingValue(option.value)}
                   >
-                     {option.label}
+                     {t(option.labelKey)}
                   </MenuItem>
                ))}
             </MenuList>
@@ -146,7 +149,7 @@ export function DashboardStatsPeriodSelector({
             {isCustom && (
                <Box sx={{ display: 'flex', gap: 1, px: 1.5, pt: 1 }}>
                   <TextField
-                     label="От"
+                     label={t("common.fields.from")}
                      type="date"
                      size="small"
                      value={pendingFrom}
@@ -159,7 +162,7 @@ export function DashboardStatsPeriodSelector({
                   />
 
                   <TextField
-                     label="До"
+                     label={t("common.fields.to")}
                      type="date"
                      size="small"
                      value={pendingTo}
@@ -180,7 +183,7 @@ export function DashboardStatsPeriodSelector({
                   onClick={handleSave}
                   disabled={!canSave}
                >
-                  Сохранить
+                  {t("common.actions.save")}
                </Button>
             </Box>
          </Popover>

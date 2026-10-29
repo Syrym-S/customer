@@ -1,16 +1,29 @@
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
+import i18n from '../../../shared/i18n';
 
-export const tenderStatusLabels = {
-   new: 'Новый',
-   active: 'Активный',
-   closed: 'Закрыт',
-   cancelled: 'Отменен',
+const TENDER_STATUS_LABEL_KEYS = {
+   new: 'enums.tenderStatus.new',
+   active: 'enums.tenderStatus.active',
+   closed: 'enums.tenderStatus.closed',
+   cancelled: 'enums.tenderStatus.cancelled',
 };
 
-export const publicationTypeLabels = {
-   public: 'Публичный',
-   private: 'Приватный',
+const PUBLICATION_TYPE_LABEL_KEYS = {
+   public: 'enums.publicationType.public',
+   private: 'enums.publicationType.private',
 };
+
+export function getTenderStatusLabel(status) {
+   const key = TENDER_STATUS_LABEL_KEYS[status];
+
+   return key ? i18n.t(key) : '';
+}
+
+export function getPublicationTypeLabel(type) {
+   const key = PUBLICATION_TYPE_LABEL_KEYS[type];
+
+   return key ? i18n.t(key) : '';
+}
 
 export const tenderStatusStyles = {
    new: {
@@ -113,20 +126,20 @@ export function parseTenderApiDateTime(value) {
 }
 
 export function getTimeLeft(endDateTime, status) {
-   if (status === 'cancelled') return 'Отменен';
-   if (status === 'closed') return 'Завершен';
+   if (status === 'cancelled') return i18n.t("enums.factoringStatus.cancelled");
+   if (status === 'closed') return i18n.t("enums.factoringStatus.finished");
 
-   if (!endDateTime) return 'Не указано';
+   if (!endDateTime) return i18n.t("common.empty.notSpecifiedN");
 
    const endDate = parseTenderApiDateTime(endDateTime);
 
-   if (!endDate) return 'Некорректная дата';
+   if (!endDate) return i18n.t("common.empty.invalidDate");
 
    const endTime = endDate.getTime();
 
    const diffMs = endTime - Date.now();
 
-   if (diffMs <= 0) return 'Завершен';
+   if (diffMs <= 0) return i18n.t("enums.factoringStatus.finished");
 
    const totalMinutes = Math.floor(diffMs / 1000 / 60);
    const days = Math.floor(totalMinutes / 60 / 24);
@@ -134,14 +147,14 @@ export function getTimeLeft(endDateTime, status) {
    const minutes = totalMinutes % 60;
 
    if (days > 0) {
-      return `${days} д ${hours} ч`;
+      return i18n.t("tenders.countdown.daysHours", { days, hours });
    }
 
    if (hours > 0) {
-      return `${hours} ч ${minutes} мин`;
+      return i18n.t("tenders.countdown.hoursMinutes", { hours, minutes });
    }
 
-   return `${minutes} мин`;
+   return i18n.t("tenders.countdown.minutes", { minutes });
 }
 
 export function getTenderCargos(tender) {
@@ -168,21 +181,24 @@ export function getTenderCargoTypeLabel(tender) {
    const cargos = getTenderCargos(tender);
 
    if (!cargos.length) {
-      return 'Не указан';
+      return i18n.t("common.empty.notSpecifiedM");
    }
 
    if (cargos.length === 1) {
-      return cargos[0]?.type || 'Не указан';
+      return cargos[0]?.type || i18n.t("common.empty.notSpecifiedM");
    }
 
-   return `${cargos[0]?.type || 'Не указан'} + еще ${cargos.length - 1}`;
+   return i18n.t("tenders.leadPicker.cargoWithMore", {
+      type: cargos[0]?.type || i18n.t("common.empty.notSpecifiedM"),
+      count: cargos.length - 1,
+   });
 }
 
 export function getTenderCargoPriceLabel(cargo, currency = 'KZT') {
    const formattedAmount = formatAmount(cargo?.cargo_price);
 
    if (!formattedAmount) {
-      return 'Не указано';
+      return i18n.t("common.empty.notSpecifiedN");
    }
 
    return `${formattedAmount} ${currency}`.trim();

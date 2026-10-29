@@ -1,4 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import i18n from "../../../shared/i18n";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Button,
@@ -23,7 +25,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import DoneAllRoundedIcon from "@mui/icons-material/DoneAllRounded";
 import { useChatStore } from "../model/chat.store";
-import { CHAT_ROLE_ID, CHAT_ROLE_LABEL_BY_ID } from "../model/chat.mappers";
+import { CHAT_ROLE_ID, getChatRoleLabelById } from "../model/chat.mappers";
 import {
   CHAT_ATTACHMENT_MAX_COUNT,
   formatFileSize,
@@ -123,7 +125,7 @@ function useAttachmentObjectUrl(attachment, { enabled }) {
         notifyError(
           error.response?.data?.message ||
             error.message ||
-            `Не удалось загрузить файл "${attachment.fileName}"`,
+            i18n.t("chat.attachments.fileLoadFailed", { name: attachment.fileName }),
         );
       });
 
@@ -141,6 +143,8 @@ function useAttachmentObjectUrl(attachment, { enabled }) {
 }
 
 function ServerImageAttachment({ attachment, onOpen }) {
+  const { t } = useTranslation();
+
   const { objectUrl, status } = useAttachmentObjectUrl(attachment, { enabled: true });
 
   if (status === "error") {
@@ -160,7 +164,7 @@ function ServerImageAttachment({ attachment, onOpen }) {
       >
         <InsertDriveFileOutlinedIcon fontSize="small" color="disabled" />
         <Typography sx={{ fontSize: 11 }} color="text.secondary">
-          Не удалось загрузить
+          {t("chat.attachments.loadFailed")}
         </Typography>
       </Box>
     );
@@ -227,7 +231,7 @@ function ServerFileAttachment({ attachment, isMine }) {
       notifyError(
         error.response?.data?.message ||
           error.message ||
-          `Не удалось скачать файл "${attachment.fileName}"`,
+          i18n.t("chat.attachments.fileDownloadFailed", { name: attachment.fileName }),
       );
     } finally {
       setIsDownloading(false);
@@ -287,6 +291,8 @@ function ServerFileAttachment({ attachment, isMine }) {
 }
 
 export function ChatDetailView({ chat }) {
+  const { t } = useTranslation();
+
   const backToList = useChatStore((state) => state.backToList);
   const sendMessage = useChatStore((state) => state.sendMessage);
   const loadOlderMessages = useChatStore((state) => state.loadOlderMessages);
@@ -527,7 +533,7 @@ export function ChatDetailView({ chat }) {
       for (const file of files) {
         if (nextAttachments.length >= CHAT_ATTACHMENT_MAX_COUNT) {
           notifyError(
-            `Можно прикрепить не более ${CHAT_ATTACHMENT_MAX_COUNT} файлов к одному сообщению`,
+            t("chat.attachments.maxCount", { count: CHAT_ATTACHMENT_MAX_COUNT }),
           );
           break;
         }
@@ -602,7 +608,7 @@ export function ChatDetailView({ chat }) {
           flexShrink: 0,
         }}
       >
-        <IconButton size="small" onClick={backToList} aria-label="Назад к списку чатов">
+        <IconButton size="small" onClick={backToList} aria-label={t("chat.backToList")}>
           <ArrowBackRoundedIcon fontSize="small" />
         </IconButton>
 
@@ -691,7 +697,7 @@ export function ChatDetailView({ chat }) {
             color="text.secondary"
             sx={{ fontSize: 11, textAlign: "center", py: 0.5 }}
           >
-            Начало переписки
+            {t("chat.conversationStart")}
           </Typography>
         )}
 
@@ -708,7 +714,7 @@ export function ChatDetailView({ chat }) {
           const senderLabel =
             isFactoring && !isMine
               ? senderCounterpart?.name ||
-                CHAT_ROLE_LABEL_BY_ID[message.participantRoleId] ||
+                getChatRoleLabelById(message.participantRoleId) ||
                 null
               : null;
           const showSenderLabel = senderLabel && Boolean(factoringSenderLabelFlags?.[index]);
@@ -776,7 +782,7 @@ export function ChatDetailView({ chat }) {
                     <IconButton
                       size="small"
                       onClick={() => handleStartEditMessage(message)}
-                      aria-label="Редактировать сообщение"
+                      aria-label={t("chat.message.edit")}
                       sx={{ color: "text.secondary", p: 0.4 }}
                     >
                       <EditOutlinedIcon sx={{ fontSize: 15 }} />
@@ -784,7 +790,7 @@ export function ChatDetailView({ chat }) {
                     <IconButton
                       size="small"
                       onClick={() => setMessagePendingDeletion(message)}
-                      aria-label="Удалить сообщение"
+                      aria-label={t("chat.message.delete")}
                       sx={{ color: "text.secondary", p: 0.4 }}
                     >
                       <DeleteOutlineRoundedIcon sx={{ fontSize: 15 }} />
@@ -801,7 +807,7 @@ export function ChatDetailView({ chat }) {
                         color: isMine ? "rgba(255,255,255,0.75)" : "text.disabled",
                       }}
                     >
-                      Сообщение удалено
+                      {t("chat.message.deleted")}
                     </Typography>
                   </Box>
                 ) : (
@@ -928,7 +934,7 @@ export function ChatDetailView({ chat }) {
                             size="small"
                             onClick={handleCancelEditMessage}
                             disabled={isSavingEdit}
-                            aria-label="Отменить редактирование"
+                            aria-label={t("chat.message.cancelEdit")}
                             sx={{
                               color: isMine ? "primary.contrastText" : "text.secondary",
                               p: 0.4,
@@ -940,7 +946,7 @@ export function ChatDetailView({ chat }) {
                             size="small"
                             onClick={handleSaveEditMessage}
                             disabled={isSavingEdit || !editingDraft.trim()}
-                            aria-label="Сохранить изменения"
+                            aria-label={t("common.actions.saveChanges")}
                             sx={{
                               color: isMine ? "primary.contrastText" : "text.secondary",
                               p: 0.4,
@@ -970,7 +976,7 @@ export function ChatDetailView({ chat }) {
                   }}
                 >
                   {isMine && !isDeleted && message.isViewed === true && (
-                    <Tooltip title="Прочитано" placement="top" arrow>
+                    <Tooltip title={t("chat.message.read")} placement="top" arrow>
                       <DoneAllRoundedIcon
                         sx={{ fontSize: 13, color: "rgba(255,255,255,0.85)" }}
                       />
@@ -1059,7 +1065,7 @@ export function ChatDetailView({ chat }) {
                 <IconButton
                   size="small"
                   onClick={() => handleRemovePendingAttachment(attachment.id)}
-                  aria-label={`Убрать файл ${attachment.fileName}`}
+                  aria-label={t("chat.attachments.remove", { name: attachment.fileName })}
                   sx={{ p: 0.25 }}
                 >
                   <CloseRoundedIcon sx={{ fontSize: 14 }} />
@@ -1081,7 +1087,7 @@ export function ChatDetailView({ chat }) {
           <IconButton
             component="label"
             size="small"
-            aria-label="Прикрепить файл"
+            aria-label={t("chat.attachments.attach")}
             sx={{ mt: -0.2 }}
           >
             <AttachFileRoundedIcon fontSize="small" />
@@ -1100,7 +1106,7 @@ export function ChatDetailView({ chat }) {
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Сообщение..."
+            placeholder={t("chat.message.placeholder")}
             size="small"
             fullWidth
             multiline
@@ -1112,7 +1118,7 @@ export function ChatDetailView({ chat }) {
             size="small"
             onClick={handleSend}
             disabled={!canSend}
-            aria-label="Отправить сообщение"
+            aria-label={t("chat.message.send")}
           >
             <SendRoundedIcon fontSize="small" />
           </IconButton>
@@ -1138,7 +1144,7 @@ export function ChatDetailView({ chat }) {
         >
           <IconButton
             onClick={() => setLightboxAttachment(null)}
-            aria-label="Закрыть просмотр изображения"
+            aria-label={t("chat.attachments.closeImage")}
             sx={{
               position: "absolute",
               top: 4,
@@ -1157,7 +1163,7 @@ export function ChatDetailView({ chat }) {
 
           {lightboxIsServerBacked && lightboxStatus === "error" && (
             <Typography sx={{ color: "common.white", p: 4 }}>
-              Не удалось загрузить изображение
+              {t("chat.attachments.imageLoadFailed")}
             </Typography>
           )}
 
@@ -1165,7 +1171,7 @@ export function ChatDetailView({ chat }) {
             <Box
               component="img"
               src={lightboxDisplayUrl}
-              alt="Просмотр вложения"
+              alt={t("chat.attachments.view")}
               sx={{ display: "block", maxWidth: "100%", maxHeight: "80vh" }}
             />
           )}
@@ -1183,15 +1189,15 @@ export function ChatDetailView({ chat }) {
         onClose={() => setMessagePendingDeletion(null)}
         sx={{ zIndex: (theme) => theme.zIndex.snackbar + 1 }}
       >
-        <DialogTitle>Удалить сообщение</DialogTitle>
+        <DialogTitle>{t("chat.message.delete")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Сообщение будет удалено безвозвратно. Продолжить?
+            {t("chat.message.deleteConfirm")}
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={() => setMessagePendingDeletion(null)} disabled={isDeletingMessage}>
-            Отмена
+            {t("common.actions.cancel")}
           </Button>
           <Button
             color="error"
@@ -1199,7 +1205,7 @@ export function ChatDetailView({ chat }) {
             onClick={handleConfirmDeleteMessage}
             disabled={isDeletingMessage}
           >
-            {isDeletingMessage ? "Удаление..." : "Удалить"}
+            {isDeletingMessage ? t("common.actions.deleting") : t("common.actions.delete")}
           </Button>
         </DialogActions>
       </Dialog>

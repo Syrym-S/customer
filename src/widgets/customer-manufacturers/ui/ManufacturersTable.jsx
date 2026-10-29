@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { Box, Button, Chip, Paper, Stack, Tooltip } from '@mui/material';
 import { DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF } from '@mui/x-data-grid';
 import LinkOffRoundedIcon from '@mui/icons-material/LinkOffRounded';
@@ -36,10 +37,12 @@ export function ManufacturersTable({
    onWithdraw,
    isSubmitting = false,
 }) {
+   const { t } = useTranslation();
+
    const columns = [
       {
          field: 'companyName',
-         headerName: 'Производитель',
+         headerName: t("common.fields.manufacturer"),
          flex: 1,
          minWidth: 260,
          valueGetter: (_, row) => toSortString(getManufacturerName(row)),
@@ -69,15 +72,15 @@ export function ManufacturersTable({
       },
       {
          field: 'companyBin',
-         headerName: 'БИН',
+         headerName: t("common.fields.bin"),
          width: 170,
          cellClassName: 'tabular-nums',
-         valueGetter: (_, row) => toSortString(getManufacturerBin(row), 'Не указан'),
+         valueGetter: (_, row) => toSortString(getManufacturerBin(row), t("common.empty.notSpecifiedM")),
          renderCell: ({ row }) => <Box>{getManufacturerBin(row)}</Box>,
       },
       {
          field: 'rowStatus',
-         headerName: 'Статус',
+         headerName: t("common.fields.status"),
          width: 180,
          valueGetter: (_, row) =>
             getManufacturerRowStatusLabel(getManufacturerRowStatus(row)),
@@ -96,7 +99,7 @@ export function ManufacturersTable({
       },
       {
          field: 'linkedAt',
-         headerName: 'Дата',
+         headerName: t("common.fields.date"),
          width: 190,
          valueGetter: (_, row) => toTimestamp(getManufacturerLinkedAt(row)),
          renderCell: ({ row }) => {
@@ -107,7 +110,7 @@ export function ManufacturersTable({
       },
       {
          field: 'leadsCount',
-         headerName: 'Перевозок',
+         headerName: t("manufacturers.card.shipmentsLabel"),
          width: 130,
          valueGetter: (_, row) => leadsCounts.get(getManufacturerId(row)) ?? 0,
          renderCell: ({ row }) => {
@@ -118,7 +121,7 @@ export function ManufacturersTable({
             }
 
             return (
-               <Tooltip title="Открыть привязанные перевозки">
+               <Tooltip title={t("manufacturers.card.openLinkedShipments")}>
                   <Box
                      onClick={() => onOpenLeads(row)}
                      sx={{
@@ -138,7 +141,7 @@ export function ManufacturersTable({
       },
       {
          field: 'actions',
-         headerName: 'Действия',
+         headerName: t("common.fields.actions"),
          width: 240,
          sortable: false,
          filterable: false,
@@ -156,7 +159,7 @@ export function ManufacturersTable({
                         onClick={() => onApprove([manufacturerId])}
                         disabled={isSubmitting}
                      >
-                        Одобрить
+                        {t("manufacturers.requests.approve")}
                      </Button>
 
                      <Button
@@ -166,7 +169,7 @@ export function ManufacturersTable({
                         onClick={() => onReject([manufacturerId])}
                         disabled={isSubmitting}
                      >
-                        Отклонить
+                        {t("manufacturers.requests.reject")}
                      </Button>
                   </Stack>
                );
@@ -181,7 +184,7 @@ export function ManufacturersTable({
                      onClick={() => onWithdraw([manufacturerId])}
                      disabled={isSubmitting}
                   >
-                     Отозвать
+                     {t("manufacturers.requests.withdraw")}
                   </Button>
                );
             }
@@ -194,7 +197,7 @@ export function ManufacturersTable({
                   onClick={() => onRemove(row)}
                   disabled={isSubmitting}
                >
-                  Убрать
+                  {t("common.actions.remove")}
                </Button>
             );
          },
@@ -229,7 +232,7 @@ export function ManufacturersTable({
             onCellClick={handleCellClick}
             getRowClassName={getZebraRowClassName}
             hideFooter
-            localeText={{ noRowsLabel: 'Производители не найдены' }}
+            localeText={{ noRowsLabel: t("manufacturers.notFound") }}
             sx={{ border: 0 }}
          />
       </Paper>

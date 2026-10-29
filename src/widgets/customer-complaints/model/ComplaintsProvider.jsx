@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { fetchComplaints } from '../api/complaints.api';
@@ -6,6 +7,8 @@ import { ComplaintsContext } from './ComplaintsContext';
 
 
 export function ComplaintsProvider({ children }) {
+   const { t } = useTranslation();
+
    const [complaints, setComplaints] = useState([]);
    const [openComplaint, setOpenComplaint] = useState(null);
 
@@ -24,13 +27,13 @@ export function ComplaintsProvider({ children }) {
 
          setComplaints(Array.isArray(response.results) ? response.results : []);
       } catch (requestError) {
-         setError(requestError.message || 'Не удалось загрузить жалобы');
+         setError(requestError.message || t("complaints.loadFailed"));
       } finally {
          if (withLoader) {
             setIsLoading(false);
          }
       }
-   }, []);
+   }, [t]);
 
    useEffect(() => {
       loadComplaints({ withLoader: true });

@@ -1,4 +1,5 @@
 import { Alert, Box, CircularProgress, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 import { CustomerMapView } from './CustomerMapView';
 import { useCustomerMap } from '../model/useCustomerMap';
@@ -7,6 +8,8 @@ import { useCustomerPageRoutes } from '../model/useCustomerPageRoutes';
 import { useCustomerPageGeoRoutes } from '../model/useCustomerPageGeoRoutes';
 
 export function CustomerMap() {
+   const { t } = useTranslation();
+
    const map = useCustomerMap();
    const { leads, isLoading, setOpenLead } = useLeadsContext();
 
@@ -92,7 +95,7 @@ export function CustomerMap() {
                         fontWeight: 500,
                      }}
                   >
-                     Загружаем карту...
+                     {t("common.loading.map")}
                   </Typography>
                </Box>
             )}

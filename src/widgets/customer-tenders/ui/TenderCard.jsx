@@ -1,12 +1,14 @@
 import { alpha, Box, Stack, Tooltip, Typography } from '@mui/material';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import {
    getTimeLeft,
-   publicationTypeLabels,
-   tenderStatusLabels,
+   getPublicationTypeLabel,
+   getTenderStatusLabel,
    tenderStatusStyles,
 } from '../model/tender.helpers';
 import { useTendersContext } from '../model/useTendersContext';
@@ -14,7 +16,6 @@ import PropTypes from 'prop-types';
 import { tenderPropType } from '../model/tenders.prop-types';
 import { normalizeLocationValue } from '../model/tender-edit-form.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
-import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
 import { getShortLocationLabel } from '../../../shared/helpers/data-grid.helpers';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 
@@ -32,21 +33,6 @@ function getShortTenderId(id) {
    return `${value.slice(0, 4)}...${value.slice(-5)}`;
 }
 
-function getCargoCountLabel(count) {
-   const mod10 = count % 10;
-   const mod100 = count % 100;
-
-   if (mod10 === 1 && mod100 !== 11) {
-      return `${count} груз`;
-   }
-
-   if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100)) {
-      return `${count} груза`;
-   }
-
-   return `${count} грузов`;
-}
-
 function getCargoSummaryLabel(cargos) {
    if (!Array.isArray(cargos) || cargos.length === 0) {
       return null;
@@ -57,28 +43,23 @@ function getCargoSummaryLabel(cargos) {
       0,
    );
 
-   const countLabel = getCargoCountLabel(cargos.length);
+   const countLabel = i18n.t('common.cargoCount', { count: cargos.length });
 
-   return totalWeight > 0 ? `${countLabel} · ${totalWeight} кг` : countLabel;
+   return totalWeight > 0
+      ? i18n.t('common.units.cargoSummary', {
+           cargoCount: countLabel,
+           weight: totalWeight,
+        })
+      : countLabel;
 }
 
 function getParticipantsCountLabel(count) {
-   const value = Number(count) || 0;
-   const mod10 = value % 10;
-   const mod100 = value % 100;
-
-   if (mod10 === 1 && mod100 !== 11) {
-      return `${value} участник`;
-   }
-
-   if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100)) {
-      return `${value} участника`;
-   }
-
-   return `${value} участников`;
+   return i18n.t('tenders.participantCount', { count: Number(count) || 0 });
 }
 
 export function TenderCard({ tender }) {
+   const { t } = useTranslation();
+
    const { openTenderDetails } = useTendersContext();
 
    const isCancelled = tender.status === 'cancelled';
@@ -95,7 +76,7 @@ export function TenderCard({ tender }) {
    const cargoSummaryLabel = getCargoSummaryLabel(tender.cargos);
    const participantsLabel = getParticipantsCountLabel(tender.participants_count);
    const publicationTypeLabel =
-      publicationTypeLabels[tender.publication_type] || tender.publication_type;
+      getPublicationTypeLabel(tender.publication_type) || tender.publication_type;
 
    const fullTenderIdLabel = tender.id ? `#${tender.id}` : '#—';
    const shortTenderIdLabel = tender.id
@@ -192,7 +173,7 @@ export function TenderCard({ tender }) {
                   </Typography>
 
                   <StatusDot
-                     label={tenderStatusLabels[tender.status] || tender.status}
+                     label={getTenderStatusLabel(tender.status) || tender.status}
                      color={
                         (tenderStatusStyles[tender.status] ||
                            tenderStatusStyles.new).color
@@ -237,7 +218,7 @@ export function TenderCard({ tender }) {
                         flexShrink: 1,
                      }}
                   >
-                     {fromShortLabel || 'Не указано'}
+                     {fromShortLabel || t("common.empty.notSpecifiedN")}
                   </Typography>
                </Tooltip>
 
@@ -248,7 +229,7 @@ export function TenderCard({ tender }) {
                {waypointsCount > 0 && (
                   <>
                      <MiniPill
-                        label={`+${waypointsCount} ${pluralizeRu(waypointsCount, ['точка', 'точки', 'точек'])}`}
+                        label={`+${t('common.waypointCount', { count: waypointsCount })}`}
                      />
 
                      <ArrowRightAltRoundedIcon
@@ -273,7 +254,7 @@ export function TenderCard({ tender }) {
                         flexShrink: 1,
                      }}
                   >
-                     {toShortLabel || 'Не указано'}
+                     {toShortLabel || t("common.empty.notSpecifiedN")}
                   </Typography>
                </Tooltip>
             </Stack>
@@ -296,11 +277,11 @@ export function TenderCard({ tender }) {
             </Stack>
 
             <InfoBadge
-               label="Цена"
+               label={t("common.fields.price")}
                value={
                   hasValue(tender.summ)
                      ? `${formatAmount(tender.summ)} ${tender.currency}`
-                     : 'Не указано'
+                     : t("common.empty.notSpecifiedN")
                }
                accent
             />
@@ -338,6 +319,8 @@ function MiniPill({ label }) {
 }
 
 function InfoBadge({ label, value, accent = false, sx = {} }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          sx={{
@@ -368,13 +351,15 @@ function InfoBadge({ label, value, accent = false, sx = {} }) {
                color: accent ? 'primary.main' : 'text.primary',
             }}
          >
-            {value || 'Не указано'}
+            {value || t("common.empty.notSpecifiedN")}
          </Typography>
       </Box>
    );
 }
 
 function TimeLeftBadge({ value }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          sx={{
@@ -396,7 +381,7 @@ function TimeLeftBadge({ value }) {
                color: 'text.secondary',
             }}
          >
-            Осталось
+            {t("common.fields.timeLeft")}
          </Typography>
 
          <Typography
@@ -407,7 +392,7 @@ function TimeLeftBadge({ value }) {
                color: 'text.primary',
             }}
          >
-            {value || 'Не указано'}
+            {value || t("common.empty.notSpecifiedN")}
          </Typography>
       </Box>
    );

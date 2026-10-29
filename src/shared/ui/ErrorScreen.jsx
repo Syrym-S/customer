@@ -1,14 +1,19 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 
 export function ErrorScreen({
   code = null,
-  title = "Что-то пошло не так",
+  title = null,
   message,
   onBack = null,
 }) {
+  const { t } = useTranslation();
+
+  const resolvedTitle = title ?? t("errorPage.title");
+
   return (
     <Box
       sx={{
@@ -75,7 +80,7 @@ export function ErrorScreen({
               },
             }}
           >
-            {title}
+            {resolvedTitle}
           </Typography>
 
           <Typography
@@ -110,7 +115,7 @@ export function ErrorScreen({
               },
             }}
           >
-            Обновить
+            {t("common.actions.refresh")}
           </Button>
 
           {onBack && (
@@ -134,7 +139,7 @@ export function ErrorScreen({
                 },
               }}
             >
-              Назад
+              {t("common.actions.back")}
             </Button>
           )}
         </Stack>

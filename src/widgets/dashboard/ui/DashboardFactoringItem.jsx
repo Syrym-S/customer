@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Box, Chip, Divider, Paper, Stack, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import {
   getFactoringStatusColor,
   getFactoringStatusLabel,
@@ -10,6 +11,8 @@ import { paletteKeyToColorPath } from "../../../shared/helpers/status-color.help
 import { StatusDot } from "../../../shared/ui/StatusDot";
 
 function InfoText({ label, value }) {
+  const { t } = useTranslation();
+
   return (
     <Box sx={{ minWidth: 0 }}>
       <Typography variant="caption" color="text.secondary">
@@ -24,13 +27,15 @@ function InfoText({ label, value }) {
           overflowWrap: "anywhere",
         }}
       >
-        {value || "Не указано"}
+        {value || t("common.empty.notSpecifiedN")}
       </Typography>
     </Box>
   );
 }
 
 export function DashboardFactoringItem({ factoring }) {
+  const { t } = useTranslation();
+
   const { openFactoringDetails } = useFactoringsContext();
 
   const isCancelled = factoring?.status === "cancelled";
@@ -83,12 +88,12 @@ export function DashboardFactoringItem({ factoring }) {
             }}
           >
             <Chip
-              label={`Факторинг #${factoring?.id}`}
+              label={t("factorings.details.number", { id: factoring?.id })}
               size="small"
               color="primary"
               variant="outlined"
               title={
-                factoring?.id ? `Факторинг #${factoring.id}` : "Факторинг #—"
+                t("factorings.details.number", { id: factoring?.id ?? "—" })
               }
               sx={{
                 fontWeight: 600,
@@ -110,26 +115,26 @@ export function DashboardFactoringItem({ factoring }) {
         </Box>
         <Box>
           <InfoText
-            label="Экспедитор"
+            label={t("common.fields.forwarder")}
             value={factoring.forwarder.company_name}
           />
         </Box>
         <Divider />
         <Box>
-          <InfoText label="БИН экспедитора" value={factoring.forwarder.bin} />
+          <InfoText label={t("common.fields.forwarderBin")} value={factoring.forwarder.bin} />
         </Box>
         <Box>
-          <InfoText label="ФИО экспедитора" value={factoring.forwarder.fio} />
+          <InfoText label={t("common.fields.forwarderFullName")} value={factoring.forwarder.fio} />
         </Box>
         <Box>
           <InfoText
-            label="Дебиторская сумма"
+            label={t("factorings.finance.debtAmount")}
             value={formatAmount(factoring.deb_summ)}
           />
         </Box>{" "}
         <Box>
           <InfoText
-            label="Кредитная сумма"
+            label={t("factorings.finance.creditAmount")}
             value={formatAmount(factoring.cred_summ)}
           />
         </Box>

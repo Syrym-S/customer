@@ -1,16 +1,18 @@
-export const leadStatusLabels = {
-   new: 'Новый',
-   add_driver: 'Водитель добавлен',
-   start_driver: 'Поездка начата',
-   start_loading: 'Погрузка',
-   verification_loading: 'Погрузка подтверждена',
-   start_unloading: 'Разгрузка',
-   verification_unloading: 'Разгрузка подтверждена',
-   sign_avr: 'Подписание АВР',
-   finished: 'Завершен',
-   cancelled: 'Отменен',
-   emergency_situation: 'Аварийная ситуация',
-   finished_emergency_situation: 'Завершен (аварийная ситуация)',
+import i18n from '../../../shared/i18n';
+
+export const LEAD_STATUS_LABEL_KEYS = {
+   new: 'enums.leadStatus.new',
+   add_driver: 'enums.leadStatus.add_driver',
+   start_driver: 'enums.leadStatus.start_driver',
+   start_loading: 'enums.leadStatus.start_loading',
+   verification_loading: 'enums.leadStatus.verification_loading',
+   start_unloading: 'enums.leadStatus.start_unloading',
+   verification_unloading: 'enums.leadStatus.verification_unloading',
+   sign_avr: 'enums.leadStatus.sign_avr',
+   finished: 'enums.leadStatus.finished',
+   cancelled: 'enums.leadStatus.cancelled',
+   emergency_situation: 'enums.leadStatus.emergency_situation',
+   finished_emergency_situation: 'enums.leadStatus.finished_emergency_situation',
 };
 
 const activeTrackingLeadStatuses = new Set([
@@ -102,12 +104,14 @@ export const leadStatusStyles = {
 };
 
 export function getLeadStatusLabel(status) {
-   return leadStatusLabels[status] || status || 'Не указан';
+   const key = LEAD_STATUS_LABEL_KEYS[status];
+
+   return (key && i18n.t(key)) || status || i18n.t("common.empty.notSpecifiedM");
 }
 
 export function getLeadStatusFilterOptions() {
-   return Object.entries(leadStatusLabels).map(([value, label]) => ({
-      label,
+   return Object.entries(LEAD_STATUS_LABEL_KEYS).map(([value, key]) => ({
+      label: i18n.t(key),
       value,
    }));
 }
@@ -116,7 +120,7 @@ export function getLeadStatusStyles(status) {
    return leadStatusStyles[status] || leadStatusStyles.new;
 }
 
-export const DRAFT_STATUS_LABEL = 'Черновик';
+export const DRAFT_STATUS_LABEL_KEY = 'enums.leadStatus.draft';
 
 const draftStatusStyle = {
    borderColor: 'grey.500',
@@ -125,7 +129,9 @@ const draftStatusStyle = {
 };
 
 export function getDisplayLeadStatusLabel(lead) {
-   return isDraftLead(lead) ? DRAFT_STATUS_LABEL : getLeadStatusLabel(lead?.status);
+   return isDraftLead(lead)
+      ? i18n.t(DRAFT_STATUS_LABEL_KEY)
+      : getLeadStatusLabel(lead?.status);
 }
 
 export function getDisplayLeadStatusStyles(lead) {
@@ -182,7 +188,7 @@ export function canEditGracePeriod(lead) {
    );
 }
 
-const EMPTY_LOCATION_PLACEHOLDER = 'Не указано';
+const EMPTY_LOCATION_PLACEHOLDER_KEY = 'common.empty.notSpecifiedN';
 
 function hasLocationValue(location) {
    if (!location) {
@@ -192,7 +198,7 @@ function hasLocationValue(location) {
    if (typeof location === 'string') {
       const trimmed = location.trim();
 
-      return trimmed !== '' && trimmed !== EMPTY_LOCATION_PLACEHOLDER;
+      return trimmed !== '' && trimmed !== i18n.t(EMPTY_LOCATION_PLACEHOLDER_KEY);
    }
 
    if (typeof location === 'object') {
@@ -214,7 +220,7 @@ export function isDraftPublishable(lead) {
 
 export function formatLeadDate(value) {
    if (!value) {
-      return 'Не указано';
+      return i18n.t("common.empty.notSpecifiedN");
    }
 
    let dateValue = value;
@@ -223,7 +229,7 @@ export function formatLeadDate(value) {
       dateValue = value.date || value.datetime || value.value || '';
 
       if (!dateValue) {
-         return 'Не указано';
+         return i18n.t("common.empty.notSpecifiedN");
       }
    }
 
@@ -233,7 +239,7 @@ export function formatLeadDate(value) {
    const date = new Date(normalizedDateValue);
 
    if (Number.isNaN(date.getTime())) {
-      return String(dateValue || 'Не указано');
+      return String(dateValue || i18n.t("common.empty.notSpecifiedN"));
    }
 
    return date.toLocaleString('ru-RU', {

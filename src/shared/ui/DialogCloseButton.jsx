@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -22,11 +23,13 @@ import CloseIcon from '@mui/icons-material/Close';
 // 13px of clearance on both sides, so right = 13 sits the button in the
 // middle of the gutter instead of flush against the Paper edge.
 export function DialogCloseButton({ onClick, disabled = false }) {
+   const { t } = useTranslation();
+
    return (
       <IconButton
          onClick={onClick}
          disabled={disabled}
-         aria-label="Закрыть"
+         aria-label={t("common.actions.close")}
          size="small"
          sx={{
             position: 'absolute',

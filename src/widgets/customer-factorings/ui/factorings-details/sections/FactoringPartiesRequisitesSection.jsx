@@ -8,8 +8,11 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 function PartyDataTable({ rows }) {
+    const { t } = useTranslation();
+
     return (
         <TableContainer component={Box}>
             <Table size='small'>
@@ -41,7 +44,7 @@ function PartyDataTable({ rows }) {
                                     overflowWrap: 'anywhere',
                                 }}
                             >
-                                {row.value || 'Не указан'}
+                                {row.value || t("common.empty.notSpecifiedM")}
                             </TableCell>
                         </TableRow>
                     ))}
@@ -57,20 +60,22 @@ export function FactoringPartiesRequisitesSection({
     isCustomerProfileLoading,
     customerProfileLoadFailed,
 }) {
+    const { t } = useTranslation();
+
     const forwarder = factoring.forwarder || {};
     const factor = factoring.factor || {};
 
     const forwarderRows = [
         {
-            label: 'Компания',
+            label: t("common.fields.company"),
             value: forwarder.company_name || forwarder.companyName,
         },
         {
-            label: 'БИН',
+            label: t("common.fields.bin"),
             value: forwarder.bin || forwarder.company_bin,
         },
         {
-            label: 'ФИО',
+            label: t("common.fields.fullName"),
             value: forwarder.fio || forwarder.fullname || forwarder.fullName,
         },
         {
@@ -78,30 +83,30 @@ export function FactoringPartiesRequisitesSection({
             value: forwarder.personEmail || forwarder.email,
         },
         {
-            label: 'ИИН',
+            label: t("common.fields.iin"),
             value: forwarder.personIin || forwarder.iin,
         },
         {
-            label: 'Номер',
+            label: t("common.fields.number"),
             value: forwarder.phone,
         },
         {
-            label: 'Адрес компании',
+            label: t("common.fields.companyAddress"),
             value: forwarder.companyAddress || forwarder.company_address,
         },
     ];
 
     const factorRows = [
         {
-            label: 'Компания',
+            label: t("common.fields.company"),
             value: factor.company_name || factor.companyName,
         },
         {
-            label: 'БИН',
+            label: t("common.fields.bin"),
             value: factor.bin || factor.company_bin,
         },
         {
-            label: 'ФИО',
+            label: t("common.fields.fullName"),
             value: factor.fio || factor.fullname || factor.fullName,
         },
         {
@@ -109,30 +114,30 @@ export function FactoringPartiesRequisitesSection({
             value: factor.personEmail || factor.email,
         },
         {
-            label: 'ИИН',
+            label: t("common.fields.iin"),
             value: factor.personIin || factor.iin,
         },
         {
-            label: 'Номер',
+            label: t("common.fields.number"),
             value: factor.phone,
         },
         {
-            label: 'Адрес компании',
+            label: t("common.fields.companyAddress"),
             value: factor.companyAddress || factor.company_address,
         },
     ];
 
     const customerRows = [
         {
-            label: 'Компания',
+            label: t("common.fields.company"),
             value: customerProfile?.fullName,
         },
         {
-            label: 'БИН',
+            label: t("common.fields.bin"),
             value: customerProfile?.bin,
         },
         {
-            label: 'ФИО',
+            label: t("common.fields.fullName"),
             value: customerProfile?.personFio,
         },
         {
@@ -140,15 +145,15 @@ export function FactoringPartiesRequisitesSection({
             value: customerProfile?.personEmail,
         },
         {
-            label: 'ИИН',
+            label: t("common.fields.iin"),
             value: customerProfile?.personIin,
         },
         {
-            label: 'Номер',
+            label: t("common.fields.number"),
             value: customerProfile?.personPhone,
         },
         {
-            label: 'Адрес компании',
+            label: t("common.fields.companyAddress"),
             value: customerProfile?.legalAddress,
         },
     ];
@@ -170,7 +175,7 @@ export function FactoringPartiesRequisitesSection({
                     mb: 2,
                 }}
             >
-                Реквизиты сторон
+                {t("factorings.requisites.title")}
             </Typography>
 
             <Box
@@ -200,7 +205,7 @@ export function FactoringPartiesRequisitesSection({
                             mb: 1,
                         }}
                     >
-                        Экспедитор
+                        {t("enums.participantType.forwarder")}
                     </Typography>
 
                     <PartyDataTable rows={forwarderRows} />
@@ -222,7 +227,7 @@ export function FactoringPartiesRequisitesSection({
                             mb: 1,
                         }}
                     >
-                        Фактор
+                        {t("common.fields.factor")}
                     </Typography>
 
                     <PartyDataTable rows={factorRows} />
@@ -244,7 +249,7 @@ export function FactoringPartiesRequisitesSection({
                             mb: 1,
                         }}
                     >
-                        Заказчик
+                        {t("common.fields.customer")}
                     </Typography>
 
                     {isCustomerProfileLoading ? (
@@ -260,7 +265,7 @@ export function FactoringPartiesRequisitesSection({
                         </Box>
                     ) : customerProfileLoadFailed ? (
                         <Typography fontSize={13} color="text.secondary">
-                            Не удалось загрузить реквизиты заказчика
+                            {t("factorings.requisites.loadFailed")}
                         </Typography>
                     ) : (
                         <PartyDataTable rows={customerRows} />

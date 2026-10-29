@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import {
    Alert,
    Button,
@@ -44,6 +45,8 @@ function parseApiDate(value) {
 }
 
 export function LeadShareButton({ leadId }) {
+   const { t } = useTranslation();
+
    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
    const [isSharing, setIsSharing] = useState(false);
    const [shareError, setShareError] = useState('');
@@ -85,7 +88,7 @@ export function LeadShareButton({ leadId }) {
          const message =
             error.response?.data?.message ||
             error.message ||
-            'Не удалось получить ссылку. Попробуйте позже.';
+            t("leads.share.failed");
 
          setShareError(message);
          notifyError(message);
@@ -117,10 +120,10 @@ export function LeadShareButton({ leadId }) {
 
    return (
       <>
-         <Tooltip title="Поделиться">
+         <Tooltip title={t("common.actions.share")}>
             <IconButton
                color="primary"
-               aria-label="Поделиться"
+               aria-label={t("common.actions.share")}
                onClick={handleOpenConfirm}
             >
                <IosShareRoundedIcon fontSize="small" />
@@ -128,13 +131,11 @@ export function LeadShareButton({ leadId }) {
          </Tooltip>
 
          <Dialog open={isConfirmOpen} onClose={handleCloseConfirm}>
-            <DialogTitle>Поделиться заказом</DialogTitle>
+            <DialogTitle>{t("leads.share.title")}</DialogTitle>
 
             <DialogContent>
                <DialogContentText>
-                  Вы уверены, что хотите поделиться информацией о заказе с
-                  третьими лицами? Информация будет доступна по ссылке любому,
-                  у кого она есть.
+                  {t("leads.share.confirm")}
                </DialogContentText>
 
                {shareError && (
@@ -146,7 +147,7 @@ export function LeadShareButton({ leadId }) {
 
             <DialogActions sx={{ px: 3, pb: 2 }}>
                <Button onClick={handleCloseConfirm} disabled={isSharing}>
-                  Отмена
+                  {t("common.actions.cancel")}
                </Button>
 
                <Button
@@ -154,7 +155,7 @@ export function LeadShareButton({ leadId }) {
                   onClick={handleConfirmShare}
                   disabled={isSharing}
                >
-                  {isSharing ? 'Создание ссылки...' : 'Поделиться'}
+                  {isSharing ? t("leads.share.creating") : t("common.actions.share")}
                </Button>
             </DialogActions>
          </Dialog>
@@ -165,12 +166,11 @@ export function LeadShareButton({ leadId }) {
             fullWidth
             maxWidth="sm"
          >
-            <DialogTitle>Ссылка на заказ</DialogTitle>
+            <DialogTitle>{t("leads.share.link")}</DialogTitle>
 
             <DialogContent>
                <DialogContentText sx={{ mb: 2 }}>
-                  Любой, у кого есть эта ссылка, сможет просмотреть информацию
-                  о заказе.
+                  {t("leads.share.hint")}
                </DialogContentText>
 
                <TextField value={shareLink} fullWidth size="small" disabled />
@@ -181,21 +181,21 @@ export function LeadShareButton({ leadId }) {
                      color="text.secondary"
                      sx={{ mt: 1.5 }}
                   >
-                     Ссылка действительна до{' '}
+                     {t("leads.share.validUntil")}{' '}
                      {formatShareExpiryDate(shareExpiresAt)}
                   </Typography>
                )}
             </DialogContent>
 
             <DialogActions sx={{ px: 3, pb: 2 }}>
-               <Button onClick={handleCloseLinkDialog}>Закрыть</Button>
+               <Button onClick={handleCloseLinkDialog}>{t("common.actions.close")}</Button>
 
                <Button variant="outlined" onClick={handleCopyLink}>
-                  {isCopied ? 'Скопировано' : 'Скопировать'}
+                  {isCopied ? t("common.actions.copied") : t("common.actions.copy")}
                </Button>
 
                <Button variant="contained" onClick={handleOpenLink}>
-                  Перейти
+                  {t("common.actions.goTo")}
                </Button>
             </DialogActions>
          </Dialog>

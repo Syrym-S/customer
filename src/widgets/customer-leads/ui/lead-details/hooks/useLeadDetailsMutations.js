@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import i18n from '../../../../../shared/i18n';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -133,14 +134,14 @@ export function useLeadDetailsMutations({
 
    async function reloadCurrentLead() {
       if (!currentLead?.id) {
-         throw new Error('Не удалось определить заказ');
+         throw new Error(i18n.t("leads.details.notResolved"));
       }
 
       const response = await fetchCustomerLeadById(currentLead.id);
       const mappedLead = mapLeadDetailsResponseFromApi(response);
 
       if (!mappedLead) {
-         throw new Error('Не удалось получить обновленные данные заказа');
+         throw new Error(i18n.t("leads.details.refreshFailed"));
       }
 
       const nextForm = createLeadEditForm(mappedLead);
@@ -161,7 +162,7 @@ export function useLeadDetailsMutations({
       const isRouteValid = await triggerRoute();
 
       if (!isRouteValid) {
-         const message = 'Проверьте даты маршрута';
+         const message = i18n.t("leads.validation.routeDates");
 
          setSaveEditError(message);
          notifyError(message);
@@ -169,7 +170,7 @@ export function useLeadDetailsMutations({
       }
 
       if (!editForm.fromLocation?.trim() || !editForm.toLocation?.trim()) {
-         const message = 'Укажите точки отправления и назначения маршрута';
+         const message = i18n.t("leads.validation.routePoints");
 
          setSaveEditError(message);
          notifyError(message);
@@ -184,7 +185,7 @@ export function useLeadDetailsMutations({
             gracePeriodDays < 365;
 
          if (!isGracePeriodValid) {
-            const message = 'Отсрочка платежа должна быть от 1 до 364 дней';
+            const message = i18n.t("leads.validation.gracePeriodRange");
 
             setSaveEditError(message);
             notifyError(message);
@@ -199,7 +200,7 @@ export function useLeadDetailsMutations({
          );
 
       if (isTnvedMissing) {
-         const message = 'Укажите код ТН ВЭД для всех грузов';
+         const message = i18n.t("leads.validation.tnvedForAllCargo");
 
          setSaveEditError(message);
          notifyError(message);
@@ -228,7 +229,7 @@ export function useLeadDetailsMutations({
          const message =
             error.response?.data?.message ||
             error.message ||
-            'Не удалось сохранить изменения';
+            i18n.t("leads.details.saveFailed");
 
          setSaveEditError(message);
          notifyError(message);
@@ -242,7 +243,7 @@ export function useLeadDetailsMutations({
          return;
       }
 
-      const isConfirmed = window.confirm(`Удалить груз #${cargoIndex + 1}?`);
+      const isConfirmed = window.confirm(i18n.t("leads.cargo.deleteConfirm", { index: cargoIndex + 1 }));
 
       if (!isConfirmed) {
          return;
@@ -260,7 +261,7 @@ export function useLeadDetailsMutations({
          const message =
             error.response?.data?.message ||
             error.message ||
-            'Не удалось удалить груз';
+            i18n.t("leads.cargo.deleteFailed");
 
          setDeleteCargoError(message);
          notifyError(message);

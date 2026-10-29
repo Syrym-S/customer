@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslation } from "react-i18next";
 import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
 
@@ -23,6 +24,8 @@ function getActiveTab(searchParams) {
 }
 
 export function ManufacturersPage() {
+   const { t } = useTranslation();
+
    const [searchParams, setSearchParams] = useSearchParams();
 
    const activeTab = getActiveTab(searchParams);
@@ -82,11 +85,11 @@ export function ManufacturersPage() {
          <Stack spacing={3}>
             <Box>
                <Typography variant="h6" fontWeight={600}>
-                  Производители
+                  {t("manufacturers.title")}
                </Typography>
 
                <Typography color="text.secondary" fontSize={14}>
-                  Привязка производителей к перевозкам и список своих производителей
+                  {t("manufacturers.subtitle")}
                </Typography>
             </Box>
 
@@ -97,9 +100,9 @@ export function ManufacturersPage() {
                scrollButtons="auto"
                sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
             >
-               <Tab value={TABS.LEADS} label="Привязка перевозок" />
+               <Tab value={TABS.LEADS} label={t("manufacturers.tabs.linking")} />
 
-               <Tab value={TABS.MANUFACTURERS} label="Привязка с производителем" />
+               <Tab value={TABS.MANUFACTURERS} label={t("manufacturers.tabs.linked")} />
             </Tabs>
 
             {activeTab === TABS.LEADS ? (

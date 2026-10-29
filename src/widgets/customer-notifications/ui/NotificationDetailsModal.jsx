@@ -9,6 +9,7 @@ import {
     DialogTitle,
     Typography,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import {
     formatNotificationDate,
@@ -27,6 +28,8 @@ export function NotificationDetailsModal({
     error,
     onClose,
 }) {
+    const { t } = useTranslation();
+
     const navigate = useNavigate();
 
     function handleOpenNotificationLink() {
@@ -81,7 +84,7 @@ export function NotificationDetailsModal({
                 >
                     {notification
                         ? getNotificationTitle(notification)
-                        : 'Уведомление'}
+                        : t("common.severity.notice")}
                 </Typography>
 
                 {notification && (
@@ -171,7 +174,7 @@ export function NotificationDetailsModal({
                                         },
                                     }}
                                 >
-                                    Перейти
+                                    {t("common.actions.goTo")}
                                     <OpenInNewOutlinedIcon
                                         sx={{ fontSize: 16 }}
                                     />
@@ -191,7 +194,7 @@ export function NotificationDetailsModal({
                 }}
             >
                 <Button onClick={onClose} disabled={loading}>
-                    Закрыть
+                    {t("common.actions.close")}
                 </Button>
             </DialogActions>
         </Dialog>

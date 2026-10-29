@@ -1,4 +1,9 @@
 import { create } from 'zustand';
+import i18n from '../i18n';
+import {
+   getNotificationMessageText,
+   getNotificationThemeText,
+} from '../../widgets/customer-notifications/lib/notification-texts';
 
 export const REALTIME_NOTIFICATION_TOAST_OPEN_EVENT =
    'realtime-notification-toast:open';
@@ -98,8 +103,12 @@ export function notifyRealtimeNotification(notification) {
 
    return useNotificationsStore.getState().addNotification({
       type: 'info',
-      title: notification.theme || 'Новое уведомление',
-      message: notification.message || 'У вас новое уведомление',
+      title:
+         getNotificationThemeText(notification) ||
+         i18n.t('notifications.newToast'),
+      message:
+         getNotificationMessageText(notification) ||
+         i18n.t('notifications.newToastBody'),
       autoCloseMs: 8000,
       meta: {
          source: 'realtime-notification',
@@ -121,9 +130,9 @@ export function notifyEmailVerificationRequired() {
 
    return addNotification({
       type: 'warning',
-      title: 'Email не подтвержден',
+      title: i18n.t('verification.emailNotConfirmed'),
       message:
-         'Подтвердите электронную почту. Нажмите на уведомление, чтобы отправить письмо повторно.',
+         i18n.t('verification.banner'),
       autoCloseMs: 0,
       meta: {
          source: 'email-verification',

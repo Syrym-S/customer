@@ -5,6 +5,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import UploadFileOutlinedIcon from "@mui/icons-material/UploadFileOutlined";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
@@ -28,6 +29,8 @@ export function ProfileDocumentUpdateField({
   onChange,
   onCancel,
 }) {
+  const { t } = useTranslation();
+
   return (
     <Box
       sx={{
@@ -57,7 +60,7 @@ export function ProfileDocumentUpdateField({
           }}
         >
           <Typography variant="caption" color="text.secondary">
-            Текущий документ
+            {t("profile.documents.current")}
           </Typography>
 
           <LegalDocumentViewer file={currentDocument} />
@@ -104,7 +107,7 @@ export function ProfileDocumentUpdateField({
             </Typography>
 
             <Typography variant="caption" color="text.secondary">
-              Новый файл · {formatFileSize(file.size)}
+              {t("profile.documents.newFile", { size: formatFileSize(file.size) })}
             </Typography>
           </Box>
 
@@ -116,7 +119,7 @@ export function ProfileDocumentUpdateField({
 
       {!currentDocument && !file && (
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
-          Документ пока не загружен
+          {t("profile.documents.notUploaded")}
         </Typography>
       )}
 
@@ -126,7 +129,7 @@ export function ProfileDocumentUpdateField({
         startIcon={<UploadFileOutlinedIcon />}
         disabled={disabled}
       >
-        {currentDocument || file ? "Заменить документ" : "Загрузить документ"}
+        {currentDocument || file ? t("profile.documents.replace") : t("profile.documents.upload")}
 
         <input
           key={inputKey}

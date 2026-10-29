@@ -1,8 +1,11 @@
 import { Box, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import { sxPropType } from '../../../model/tenders.prop-types';
 
 export function TenderInfoBadge({ label, value, accent = false, sx = {} }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          sx={{
@@ -34,7 +37,7 @@ export function TenderInfoBadge({ label, value, accent = false, sx = {} }) {
                color: accent ? 'primary.main' : 'text.primary',
             }}
          >
-            {value || 'Не указано'}
+            {value || t("common.empty.notSpecifiedN")}
          </Typography>
       </Box>
    );

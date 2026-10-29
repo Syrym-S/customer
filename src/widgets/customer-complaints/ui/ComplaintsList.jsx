@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import {
    Alert,
    Box,
@@ -23,6 +24,8 @@ const COMPLAINTS_VIEW_MODES = {
 };
 
 export function ComplaintsList() {
+   const { t } = useTranslation();
+
    const { complaints, isLoading, error, setOpenComplaint } =
       useComplaintsContext();
 
@@ -57,11 +60,11 @@ export function ComplaintsList() {
                >
                   <Box>
                      <Typography variant="h6" fontWeight={600}>
-                        Жалобы
+                        {t("complaints.title")}
                      </Typography>
 
                      <Typography color="text.secondary" fontSize={14}>
-                        Жалобы за последние 30 дней и ответы администрации
+                        {t("complaints.subtitle")}
                      </Typography>
                   </Box>
 
@@ -71,7 +74,7 @@ export function ComplaintsList() {
                      onChange={handleViewModeChange}
                      size="small"
                      color="primary"
-                     aria-label="Переключение отображения жалоб"
+                     aria-label={t("complaints.viewToggle")}
                      sx={{
                         flexShrink: 0,
                         alignSelf: {
@@ -86,16 +89,16 @@ export function ComplaintsList() {
                   >
                      <ToggleButton
                         value={COMPLAINTS_VIEW_MODES.TABLE}
-                        aria-label="Показать таблицей"
-                        title="Таблица"
+                        aria-label={t("common.view.showAsTable")}
+                        title={t("common.view.table")}
                      >
                         <ViewListRoundedIcon fontSize="small" />
                      </ToggleButton>
 
                      <ToggleButton
                         value={COMPLAINTS_VIEW_MODES.CARDS}
-                        aria-label="Показать карточками"
-                        title="Карточки"
+                        aria-label={t("common.view.showAsCards")}
+                        title={t("common.view.cards")}
                      >
                         <GridViewRoundedIcon fontSize="small" />
                      </ToggleButton>
@@ -125,7 +128,7 @@ export function ComplaintsList() {
             ) : complaints.length === 0 ? (
                <Box sx={{ py: 6, textAlign: 'center' }}>
                   <Typography color="text.secondary">
-                     Жалоб за последние 30 дней не найдено
+                     {t("complaints.emptyLast30Days")}
                   </Typography>
                </Box>
             ) : (

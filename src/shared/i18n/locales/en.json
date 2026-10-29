@@ -158,6 +158,7 @@
          "bankName": "Bank name",
          "bik": "BIC",
          "bin": "BIN",
+         "binValue": "BIN: {{bin}}",
          "bodyType": "Trailer type",
          "cargo": "Cargo",
          "cargoCountLabel": "Cargo items",
@@ -241,7 +242,8 @@
       "filePreview": {
          "documentNotFound": "Document not found",
          "noFile": "There is no file to preview for this document",
-         "unsupported": "Preview is not supported for this file type yet"
+         "unsupported": "Preview is not supported for this file type yet",
+         "unsupportedType": "Preview of {{mime}} files is not supported"
       },
       "forwarderPicker": {
          "clickToLoad": "Click to load forwarders",
@@ -276,7 +278,8 @@
          "opening": "Opening the signing page...",
          "thisLink": "this link",
          "unavailable": "The signing service is unavailable, please try again later",
-         "waiting": "Waiting for the signature..."
+         "waiting": "Waiting for the signature...",
+         "windowHint": "If the signing window did not open automatically, open it via"
       },
       "units": {
          "bytes": "{{value}} B",
@@ -309,6 +312,7 @@
       "attachments": {
          "allowedTypes": "Only images, videos, PDF or DOCX files are allowed",
          "attach": "Attach files",
+         "limits": "No more than {{count}} files, up to {{size}} MB each",
          "maxCount": "You can attach no more than {{count}} files",
          "maxSize": "The file must not exceed {{size}} MB",
          "removeFile": "Remove the file"
@@ -399,6 +403,7 @@
    "dashboard": {
       "analytics": {
          "amountAxis": "Amount, {{currency}}",
+         "emergencyCount": "Emergencies: {{count}}",
          "emptyPeriod": "No data for the selected period",
          "loadFailed": "Failed to load shipment analytics",
          "noShipmentsPeriod": "No shipments in the selected period",
@@ -559,7 +564,8 @@
       }
    },
    "errorPage": {
-      "title": "Something went wrong"
+      "title": "Something went wrong",
+      "unexpectedReload": "An unexpected error occurred. Refresh the page or try again later."
    },
    "errors": {
       "factoringNotFound": "Factoring not found",
@@ -729,6 +735,7 @@
          "withForwarder": "Chat with the forwarder"
       },
       "details": {
+         "driverComment": "Driver comment: {{comment}}",
          "info": "Order details",
          "loadFailed": "Failed to load the order",
          "loading": "Loading order details...",
@@ -779,7 +786,8 @@
          "failed": "Failed to get the link. Please try again later.",
          "hint": "Anyone with this link will be able to view the order details.",
          "link": "Order link",
-         "title": "Share the order"
+         "title": "Share the order",
+         "validUntil": "The link is valid until"
       },
       "subtitle": "Shipment requests",
       "title": "Orders",
@@ -793,6 +801,10 @@
          "routeDates": "Check the route dates",
          "routePoints": "Set the origin and destination of the route",
          "tnvedForAllCargo": "Enter an HS code for every cargo item"
+      },
+      "view": {
+         "kanban": "Kanban",
+         "showAsKanban": "Show as a kanban board"
       },
       "viewToggle": "Switch the orders view"
    },
@@ -876,7 +888,8 @@
          "loadFailed": "Failed to load shipments",
          "notFound": "No shipments found",
          "searchByNumber": "Search by number or direction",
-         "searchFull": "Search by number, direction or manufacturer"
+         "searchFull": "Search by number, direction or manufacturer",
+         "total": "Shipments in total: {{count}}"
       },
       "subtitle": "Link manufacturers to shipments and manage your manufacturer list",
       "tabs": {
@@ -897,9 +910,12 @@
       "actualPathOrder": "Actual path of order #",
       "customerPoint": "Customer location",
       "devMarker": "Temporary marker for map testing",
+      "driverName": "Driver: {{name}}",
       "driverNotSpecified": "Driver not specified",
+      "driverPhone": "Phone:",
       "driverPosition": "Current driver position",
       "noCoordinates": "No coordinates",
+      "pointsCount": "Points: {{count}}",
       "routesLoadFailed": "Failed to load routes",
       "routesPartialFailure": "Failed to load GeoWS routes for {{failed}} of {{total}} orders"
    },
@@ -916,6 +932,7 @@
       "leads": "Orders",
       "manufacturers": "Manufacturers",
       "profile": "Profile",
+      "settings": "Settings",
       "tenders": "Auctions",
       "tnved": "HS codes",
       "tooltips": {
@@ -925,6 +942,7 @@
          "forwarders": "Forwarder list and invitations for new participants",
          "leads": "Shipment requests and order management",
          "manufacturers": "Link manufacturers to shipments and browse the manufacturer directory",
+         "settings": "Interface language and other account settings",
          "tenders": "Create and manage shipment auctions",
          "tnved": "Harmonized System commodity code directory"
       }
@@ -942,6 +960,148 @@
       "subtitle": "Latest events for your requests and auctions",
       "subtitleDot": "Latest events for your requests and auctions.",
       "title": "Notifications",
+      "types": {
+         "factor": {
+            "cancelled_by_factor": {
+               "message": "The factor cancelled the factoring",
+               "theme": "Factoring cancelled"
+            },
+            "cancelled_by_forwarder": {
+               "message": "The forwarder cancelled the factoring",
+               "theme": "Factoring cancelled"
+            },
+            "created_by_factor": {
+               "message": "The factor created a factoring",
+               "theme": "Factoring created"
+            },
+            "created_by_forwarder": {
+               "message": "The forwarder created a factoring",
+               "theme": "Factoring created"
+            },
+            "finished_by_factor": {
+               "message": "The factor completed the factoring",
+               "theme": "Factoring completed"
+            },
+            "paid_by_customer": {
+               "message": "The factor confirmed the payment from the customer. The deal is closed.",
+               "theme": "Payment confirmed"
+            },
+            "signed_by_factor": {
+               "message": "The factor signed the factoring agreement",
+               "theme": "Factoring agreement signed"
+            },
+            "signed_by_forwarder": {
+               "message": "The forwarder signed the factoring agreement",
+               "theme": "Factoring agreement signed"
+            },
+            "updated_by_factor": {
+               "message": "The factor updated the factoring",
+               "theme": "Factoring updated"
+            },
+            "verified_by_factor": {
+               "message": "The factor confirmed the factoring",
+               "theme": "Factoring confirmed"
+            },
+            "verified_by_forwarder": {
+               "message": "The forwarder confirmed the factoring",
+               "theme": "Factoring confirmed"
+            }
+         },
+         "lead": {
+            "created_by_forwarder": {
+               "message": "The trip has been created and you were linked to it as the customer.",
+               "theme": "Trip created"
+            },
+            "customer_detached": {
+               "message": "The forwarder unlinked you from the trip.",
+               "theme": "You were unlinked from the trip"
+            },
+            "manufacturer": {
+               "approved_by_manufacturer": {
+                  "message": "Manufacturer {{name}} approved the link",
+                  "theme": "Request approved"
+               },
+               "cancelled_by_manufacturer": {
+                  "message": "Manufacturer {{name}} withdrew the request",
+                  "theme": "Request withdrawn"
+               },
+               "detached_by_manufacturer": {
+                  "message": "Manufacturer {{name}} unlinked from you",
+                  "theme": "Link removed"
+               },
+               "rejected_by_manufacturer": {
+                  "message": "Manufacturer {{name}} rejected the request",
+                  "theme": "Request rejected"
+               },
+               "request_by_manufacturer": {
+                  "message": "Manufacturer {{name}} wants to link to you",
+                  "theme": "New link request"
+               }
+            },
+            "point_end_deadline": {
+               "message": "The planned end time of the work at the route point has arrived.",
+               "theme": "A route point deadline has arrived"
+            },
+            "point_start_deadline": {
+               "message": "The planned start time of the work at the route point has arrived.",
+               "theme": "A route point deadline has arrived"
+            },
+            "rejected": {
+               "message": "The trip has been cancelled",
+               "theme": "Trip cancelled"
+            },
+            "updated_by_forwarder": {
+               "message": "The trip has been updated",
+               "theme": "Trip updated"
+            }
+         },
+         "shipping": {
+            "delivered": {
+               "message": "Delivery confirmed. The trip is completed.",
+               "theme": "Trip completed"
+            },
+            "emergency-situation": {
+               "theme": "An emergency has been declared."
+            },
+            "finished": {
+               "theme": "Trip completed"
+            },
+            "finished-emergency-situation": {
+               "message": "The forwarder completed the trip ahead of schedule.",
+               "theme": "The trip was completed ahead of schedule."
+            },
+            "last_point_passed": {
+               "message": "The driver has passed the unloading point.",
+               "theme": "Trip No. {{num}}: the point has been passed"
+            },
+            "loading_started": {
+               "message": "The driver has started the trip.",
+               "theme": "The trip has started."
+            },
+            "loading_verified": {
+               "message": "The driver has confirmed the loading.",
+               "theme": "Trip No. {{num}}: the driver has confirmed loading"
+            },
+            "point_passed": {
+               "message": "The driver has passed the point.",
+               "theme": "Trip No. {{num}}: the driver has passed a point"
+            },
+            "unloading_verified": {
+               "message": "The driver has confirmed the unloading.",
+               "theme": "Trip No. {{num}}: the driver has confirmed unloading"
+            }
+         },
+         "tender": {
+            "bet_cancelled": {
+               "message": "A participant has cancelled their bid on your auction.",
+               "theme": "Bid cancelled"
+            },
+            "bet_placed": {
+               "message": "A participant has placed a bid on your auction.",
+               "theme": "New bid on the auction"
+            }
+         }
+      },
       "viewAll": "View all notifications"
    },
    "profile": {
@@ -986,6 +1146,7 @@
          },
          "legalEntity": "Legal entity registration document",
          "maxSize": "The file must not exceed {{size}} MB",
+         "newFile": "New file · {{size}}",
          "notUploaded": "No document uploaded yet",
          "replace": "Replace document",
          "upload": "Upload document"
@@ -1048,10 +1209,28 @@
       "waypoint": "Waypoint {{index}}",
       "waypointHash": "Waypoint #{{index}}"
    },
+   "settings": {
+      "language": {
+         "description": "Choose the language used for the interface and notifications.",
+         "label": "Language",
+         "saved": "The interface language has been changed",
+         "switcherLabel": "Select the interface language",
+         "title": "Interface language"
+      },
+      "languages": {
+         "en": "English",
+         "kk": "Қазақша",
+         "ru": "Русский"
+      },
+      "title": "Settings"
+   },
    "sharedLead": {
+      "gone": "The order has been deleted or its link has been revoked.",
       "invalidLink": "The link is invalid or has expired.",
       "loading": "Loading the order details...",
+      "notFound": "The requested page was not found. Check that the link has been copied in full.",
       "readOnly": "This is a read-only view of the order shared via link. Editing is not available.",
+      "requestFailed": "Failed to load the order details. Please try again later.",
       "title": "Order details"
    },
    "support": {
@@ -1117,6 +1296,7 @@
          "totalOrderPrice": "Total order price"
       },
       "leadPicker": {
+         "cargoLabel": "Cargo: {{cargo}}",
          "cargoWithMore": "{{type}} + {{count}} more",
          "destination": "To: {{to}}",
          "forwarder": "Forwarder: {{name}}",
@@ -1125,6 +1305,7 @@
          "order": "Order",
          "orderNumber": "Order #{{id}}",
          "origin": "From: {{from}}",
+         "priceLabel": "Price: {{price}}",
          "searchFailed": "Failed to find orders",
          "searching": "Searching orders...",
          "sectionTitle": "Order selection",
@@ -1150,6 +1331,7 @@
       "participants": {
          "add": "Add a participant",
          "addFailed": "Failed to add participants",
+         "added": "Added: {{date}}",
          "bin": "BIN: {{bin}}",
          "empty": "No participants added yet",
          "loading": "Loading participants...",
@@ -1209,6 +1391,7 @@
       "emailConfirmed": "Email confirmed",
       "emailNotConfirmed": "Email not confirmed",
       "hint": "We will send a confirmation link to your email address.",
+      "resendAvailable": "You will be able to send it again in {{seconds}} sec.",
       "sendFailed": "Failed to send the confirmation email",
       "sent": "The confirmation email has been sent. Please check your inbox."
    }

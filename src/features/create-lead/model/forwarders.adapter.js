@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 function getForwardersList(response) {
     if (Array.isArray(response)) {
         return response;
@@ -27,7 +29,7 @@ export function mapForwarderFromApi(apiForwarder) {
             apiForwarder.full_name ??
             apiForwarder.fio ??
             apiForwarder.name ??
-            'Без ФИО',
+            i18n.t("common.empty.noFullName"),
 
         iin: apiForwarder.iin ?? apiForwarder.IIN ?? '',
 
@@ -37,7 +39,7 @@ export function mapForwarderFromApi(apiForwarder) {
             apiForwarder.company?.name ??
             apiForwarder.organization?.name ??
             apiForwarder.name ??
-            'Без компании',
+            i18n.t("common.empty.noCompany"),
 
         companyBin:
             apiForwarder.bin ??

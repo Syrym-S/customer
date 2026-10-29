@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Alert,
@@ -53,6 +54,8 @@ export function ManufacturerLeadsTab({
    manufacturerFilter,
    onManufacturerFilterChange,
 }) {
+   const { t } = useTranslation();
+
    const [search, setSearch] = useState('');
    const [statusValue, setStatusValue] = useState(ALL_STATUSES_VALUE);
    const [linkState, setLinkState] = useState(MANUFACTURER_LINK_FILTERS.ALL);
@@ -140,7 +143,7 @@ export function ManufacturerLeadsTab({
          <TextField
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Поиск по номеру, направлению или производителю"
+            placeholder={t("manufacturers.shipments.searchFull")}
             fullWidth
             size="small"
             slotProps={{
@@ -160,15 +163,15 @@ export function ManufacturerLeadsTab({
             sx={{ alignItems: { xs: 'stretch', md: 'center' } }}
          >
             <FormControl size="small" sx={{ minWidth: 180 }}>
-               <InputLabel id="manufacturer-leads-status-label">Статус</InputLabel>
+               <InputLabel id="manufacturer-leads-status-label">{t("common.fields.status")}</InputLabel>
 
                <Select
                   labelId="manufacturer-leads-status-label"
-                  label="Статус"
+                  label={t("common.fields.status")}
                   value={statusValue}
                   onChange={(event) => setStatusValue(event.target.value)}
                >
-                  <MenuItem value={ALL_STATUSES_VALUE}>Все статусы</MenuItem>
+                  <MenuItem value={ALL_STATUSES_VALUE}>{t("enums.leadStatusFilter.all")}</MenuItem>
 
                   {statusFilterOptions.map((option) => (
                      <MenuItem key={option.value} value={option.value}>
@@ -180,17 +183,17 @@ export function ManufacturerLeadsTab({
 
             <FormControl size="small" sx={{ minWidth: 220 }}>
                <InputLabel id="manufacturer-leads-manufacturer-label">
-                  Производитель
+                  {t("common.fields.manufacturer")}
                </InputLabel>
 
                <Select
                   labelId="manufacturer-leads-manufacturer-label"
-                  label="Производитель"
+                  label={t("common.fields.manufacturer")}
                   value={manufacturerFilter}
                   onChange={(event) => onManufacturerFilterChange(event.target.value)}
                >
                   <MenuItem value={ALL_MANUFACTURERS_VALUE}>
-                     Все производители
+                     {t("manufacturers.filters.allManufacturers")}
                   </MenuItem>
 
                   {manufacturerOptions.map((manufacturer) => (
@@ -206,23 +209,23 @@ export function ManufacturerLeadsTab({
 
             <FormControl size="small" sx={{ minWidth: 180 }}>
                <InputLabel id="manufacturer-leads-link-state-label">
-                  Привязка
+                  {t("manufacturers.filters.linkColumn")}
                </InputLabel>
 
                <Select
                   labelId="manufacturer-leads-link-state-label"
-                  label="Привязка"
+                  label={t("manufacturers.filters.linkColumn")}
                   value={linkState}
                   onChange={(event) => setLinkState(event.target.value)}
                >
-                  <MenuItem value={MANUFACTURER_LINK_FILTERS.ALL}>Все</MenuItem>
+                  <MenuItem value={MANUFACTURER_LINK_FILTERS.ALL}>{t("manufacturers.filters.all")}</MenuItem>
 
                   <MenuItem value={MANUFACTURER_LINK_FILTERS.ATTACHED}>
-                     С производителем
+                     {t("manufacturers.filters.withManufacturer")}
                   </MenuItem>
 
                   <MenuItem value={MANUFACTURER_LINK_FILTERS.FREE}>
-                     Без производителя
+                     {t("manufacturers.filters.withoutManufacturer")}
                   </MenuItem>
                </Select>
             </FormControl>
@@ -236,7 +239,7 @@ export function ManufacturerLeadsTab({
             <Chip
                size="small"
                variant="outlined"
-               label={`Выбрано: ${selectedLeadIds.length}`}
+               label={t("common.actions.selected", { count: selectedLeadIds.length })}
             />
 
             <Button
@@ -246,7 +249,7 @@ export function ManufacturerLeadsTab({
                disabled={selectedLeadIds.length === 0 || isSubmitting}
                onClick={() => handleOpenAttachModal(selectedLeadIds)}
             >
-               Привязать производителя
+               {t("manufacturers.link.manufacturerAction")}
             </Button>
 
             <Button
@@ -257,7 +260,7 @@ export function ManufacturerLeadsTab({
                disabled={selectedAttachedIds.length === 0 || isSubmitting}
                onClick={() => detachLeads(selectedAttachedIds)}
             >
-               Открепить
+               {t("manufacturers.unlink.action")}
             </Button>
          </Stack>
 
@@ -304,7 +307,7 @@ export function ManufacturerLeadsTab({
                fontSize={13}
                sx={{ textAlign: 'center' }}
             >
-               Всего перевозок: {filteredLeads.length}
+               {t("manufacturers.shipments.total", { count: filteredLeads.length })}
             </Typography>
          )}
 

@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import 'leaflet/dist/leaflet.css';
 import './shared/config/leaflet-icons.js';
+import './shared/i18n';
 import App from './App.jsx';
 import './index.css';
 

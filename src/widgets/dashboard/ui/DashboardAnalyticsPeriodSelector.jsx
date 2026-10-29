@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { useState } from 'react';
 import {
    Box,
@@ -25,12 +26,17 @@ export function DashboardAnalyticsPeriodSelector({
    ariaLabel,
    onChange,
 }) {
+   const { t } = useTranslation();
+
    const [anchorEl, setAnchorEl] = useState(null);
    const [pendingValue, setPendingValue] = useState('');
    const [pendingFrom, setPendingFrom] = useState('');
    const [pendingTo, setPendingTo] = useState('');
 
-   const options = [...periods, { value: CUSTOM_ANALYTICS_PERIOD, label: 'Выбрать период' }];
+   const options = [
+      ...periods,
+      { value: CUSTOM_ANALYTICS_PERIOD, labelKey: 'dashboard.period.action' },
+   ];
    const isPopoverOpen = Boolean(anchorEl);
    const isCustom = pendingValue === CUSTOM_ANALYTICS_PERIOD;
    const isRangeValid = Boolean(
@@ -117,7 +123,7 @@ export function DashboardAnalyticsPeriodSelector({
             }}
          >
             <Typography variant="subtitle2" sx={{ px: 2, pt: 1.5, pb: 0.5 }}>
-               Выбор периода
+               {t("dashboard.period.title")}
             </Typography>
 
             <MenuList
@@ -132,7 +138,7 @@ export function DashboardAnalyticsPeriodSelector({
                      selected={option.value === pendingValue}
                      onClick={() => setPendingValue(option.value)}
                   >
-                     {option.label}
+                     {t(option.labelKey)}
                   </MenuItem>
                ))}
             </MenuList>
@@ -140,7 +146,7 @@ export function DashboardAnalyticsPeriodSelector({
             {isCustom && (
                <Box sx={{ display: 'flex', gap: 1, px: 1.5, pt: 1 }}>
                   <TextField
-                     label="От"
+                     label={t("common.fields.from")}
                      type="date"
                      size="small"
                      value={pendingFrom}
@@ -153,7 +159,7 @@ export function DashboardAnalyticsPeriodSelector({
                   />
 
                   <TextField
-                     label="До"
+                     label={t("common.fields.to")}
                      type="date"
                      size="small"
                      value={pendingTo}
@@ -174,7 +180,7 @@ export function DashboardAnalyticsPeriodSelector({
                   onClick={handleSave}
                   disabled={!canSave}
                >
-                  Сохранить
+                  {t("common.actions.save")}
                </Button>
             </Box>
          </Popover>
@@ -192,7 +198,7 @@ DashboardAnalyticsPeriodSelector.propTypes = {
    periods: PropTypes.arrayOf(
       PropTypes.shape({
          value: PropTypes.string.isRequired,
-         label: PropTypes.string.isRequired,
+         labelKey: PropTypes.string.isRequired,
       }),
    ).isRequired,
    fallbackRange: analyticsRangeShape,

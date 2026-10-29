@@ -6,6 +6,8 @@ import {
    DialogContentText,
    DialogTitle,
 } from '@mui/material';
+import i18n from '../../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -13,22 +15,24 @@ import PropTypes from 'prop-types';
 import { tenderPropType } from '../../model/tenders.prop-types';
 import { useState } from 'react';
 
-const confirmActionConfig = {
-   cancel: {
-      title: 'Отменить аукцион',
-      text: 'Вы уверены, что хотите отменить этот аукцион? После отмены он станет недоступен для участников.',
-      confirmText: 'Отменить аукцион',
-      loadingText: 'Отмена...',
-      color: 'warning',
-   },
-   delete: {
-      title: 'Удалить аукцион',
-      text: 'Вы уверены, что хотите удалить этот аукцион? Это действие нельзя будет отменить.',
-      confirmText: 'Удалить аукцион',
-      loadingText: 'Удаление...',
-      color: 'error',
-   },
-};
+function getConfirmActionConfig() {
+   return {
+      cancel: {
+         title: i18n.t("tenders.manage.cancel"),
+         text: i18n.t("tenders.manage.cancelConfirm"),
+         confirmText: i18n.t("tenders.manage.cancel"),
+         loadingText: i18n.t("tenders.manage.cancelling"),
+         color: 'warning',
+      },
+      delete: {
+         title: i18n.t("tenders.manage.delete"),
+         text: i18n.t("tenders.manage.deleteConfirm"),
+         confirmText: i18n.t("tenders.manage.delete"),
+         loadingText: i18n.t("common.actions.deleting"),
+         color: 'error',
+      },
+   };
+}
 
 export function TenderDetailsActions({
    tender,
@@ -40,11 +44,13 @@ export function TenderDetailsActions({
    onCancelTender,
    onDeleteTender,
 }) {
+   const { t } = useTranslation();
+
    const [confirmAction, setConfirmAction] = useState(null);
    const isTenderEditableActionAvailable =
       tender?.status !== 'closed' && tender?.status !== 'cancelled';
 
-   const confirmConfig = confirmActionConfig[confirmAction];
+   const confirmConfig = getConfirmActionConfig()[confirmAction];
 
    function handleOpenConfirm(action, event) {
       event?.currentTarget?.blur?.();
@@ -104,7 +110,7 @@ export function TenderDetailsActions({
                      onClick={onStartTender}
                      disabled={isActionLoading}
                   >
-                     Запустить аукцион
+                     {t("tenders.manage.start")}
                   </Button>
                )}
 
@@ -116,7 +122,7 @@ export function TenderDetailsActions({
                      onClick={(event) => handleOpenConfirm('cancel', event)}
                      disabled={isActionLoading}
                   >
-                     Отменить аукцион
+                     {t("tenders.manage.cancel")}
                   </Button>
                )}
 
@@ -128,7 +134,7 @@ export function TenderDetailsActions({
                      onClick={(event) => handleOpenConfirm('delete', event)}
                      disabled={isActionLoading}
                   >
-                     Удалить аукцион
+                     {t("tenders.manage.delete")}
                   </Button>
                )}
             </div>
@@ -146,7 +152,7 @@ export function TenderDetailsActions({
                      onClick={onSave}
                      disabled={isSaving}
                   >
-                     {isSaving ? 'Сохранение...' : 'Сохранить'}
+                     {isSaving ? t("common.actions.saving") : t("common.actions.save")}
                   </Button>
                </div>
             )}
@@ -160,7 +166,7 @@ export function TenderDetailsActions({
 
             <DialogActions sx={{ px: 3, pb: 2 }}>
                <Button onClick={handleCloseConfirm} disabled={isActionLoading}>
-                  Отмена
+                  {t("common.actions.cancel")}
                </Button>
 
                <Button

@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Box, Typography } from "@mui/material";
 
 const LegalDocumentViewer = ({ file }) => {
+  const { t } = useTranslation();
+
   const [fileUrl, setFileUrl] = useState(null);
 
   useEffect(() => {
@@ -43,12 +46,12 @@ const LegalDocumentViewer = ({ file }) => {
   }, [file?.content, file?.mime]);
 
   if (!file) {
-    return <Typography color="text.secondary">Документ не найден</Typography>;
+    return <Typography color="text.secondary">{t("common.filePreview.documentNotFound")}</Typography>;
   }
 
   if (!fileUrl) {
     return (
-      <Typography color="text.secondary">Загрузка предпросмотра...</Typography>
+      <Typography color="text.secondary">{t("common.loading.preview")}</Typography>
     );
   }
 
@@ -73,7 +76,7 @@ const LegalDocumentViewer = ({ file }) => {
 
   return (
     <Typography color="text.secondary">
-      Предпросмотр файла типа {file.mime} не поддерживается
+      {t("common.filePreview.unsupportedType", { mime: file.mime })}
     </Typography>
   );
 };

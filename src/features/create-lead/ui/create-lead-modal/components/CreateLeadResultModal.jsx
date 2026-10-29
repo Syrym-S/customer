@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import {
    Box,
    Button,
@@ -22,6 +23,8 @@ const modalStyles = {
 };
 
 export function CreateLeadResultModal({ open, type, title, message, onClose }) {
+   const { t } = useTranslation();
+
    const styles = modalStyles[type] ?? modalStyles.success;
 
    return (
@@ -74,7 +77,7 @@ export function CreateLeadResultModal({ open, type, title, message, onClose }) {
                onClick={onClose}
                color={type === 'error' ? 'error' : 'success'}
             >
-               Понятно
+               {t("common.actions.gotIt")}
             </Button>
          </DialogActions>
       </Dialog>

@@ -1,4 +1,5 @@
 import { Box, Button } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import { getWaypointPointKey } from '../../model/lead-route-editor.helpers';
 
 export function RoutePointButtons({
@@ -9,6 +10,8 @@ export function RoutePointButtons({
    handleAddWaypoint,
    handleClearRoute,
 }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          sx={{
@@ -32,7 +35,7 @@ export function RoutePointButtons({
                variant={activeMapPoint === 'from' ? 'contained' : 'outlined'}
                onClick={() => setActiveMapPoint('from')}
             >
-               Откуда
+               {t("common.fields.origin")}
             </Button>
 
             {waypoints.map((_, index) => {
@@ -47,7 +50,7 @@ export function RoutePointButtons({
                      }
                      onClick={() => setActiveMapPoint(pointKey)}
                   >
-                     Точка {index + 1}
+                     {t("route.point", { index: index + 1 })}
                   </Button>
                );
             })}
@@ -57,11 +60,11 @@ export function RoutePointButtons({
                variant={activeMapPoint === 'to' ? 'contained' : 'outlined'}
                onClick={() => setActiveMapPoint('to')}
             >
-               Куда
+               {t("common.fields.destination")}
             </Button>
 
             <Button size="small" variant="outlined" onClick={handleAddWaypoint}>
-               + Промежуточная
+               {t("route.addWaypoint")}
             </Button>
          </Box>
 
@@ -72,7 +75,7 @@ export function RoutePointButtons({
             onClick={handleClearRoute}
             disabled={isClearDisabled}
          >
-            Очистить маршрут
+            {t("route.clear")}
          </Button>
       </Box>
    );

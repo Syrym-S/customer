@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Box,
@@ -35,14 +36,16 @@ import { CompactLeadsGrid } from './CompactLeadsGrid';
 import { AttachLeadsModal } from './AttachLeadsModal';
 
 function ManufacturerDataTable({ manufacturer }) {
+   const { t } = useTranslation();
+
    const linkedAt = getManufacturerLinkedAt(manufacturer);
 
    const rows = [
-      { label: 'Название', value: getManufacturerName(manufacturer) },
-      { label: 'БИН', value: getManufacturerBin(manufacturer) },
+      { label: t("common.fields.name"), value: getManufacturerName(manufacturer) },
+      { label: t("common.fields.bin"), value: getManufacturerBin(manufacturer) },
       { label: 'ID', value: getManufacturerId(manufacturer) || '—' },
       {
-         label: 'Привязан к заказчику',
+         label: t("manufacturers.card.linkedToCustomer"),
          value: linkedAt ? formatLeadDate(linkedAt) : '—',
       },
    ];
@@ -65,7 +68,7 @@ function ManufacturerDataTable({ manufacturer }) {
                mb: 0.5,
             }}
          >
-            Данные производителя
+            {t("manufacturers.card.title")}
          </Typography>
 
          <TableContainer component={Box}>
@@ -101,6 +104,8 @@ export function ManufacturerDetailsModal({
    onAttachLeads,
    onDetachLeads,
 }) {
+   const { t } = useTranslation();
+
    const [selectionModel, setSelectionModel] = useState(EMPTY_ROW_SELECTION);
    const [isAttachLeadsOpen, setIsAttachLeadsOpen] = useState(false);
 
@@ -163,13 +168,13 @@ export function ManufacturerDetailsModal({
                <Chip
                   size="small"
                   variant="outlined"
-                  label={`БИН ${getManufacturerBin(manufacturer)}`}
+                  label={t("manufacturers.card.bin", { bin: getManufacturerBin(manufacturer) })}
                />
 
                <Chip
                   size="small"
                   variant="outlined"
-                  label={`Перевозок: ${attachedLeads.length}`}
+                  label={t("manufacturers.card.shipmentsCount", { count: attachedLeads.length })}
                />
             </Stack>
          </DialogTitle>
@@ -189,7 +194,7 @@ export function ManufacturerDetailsModal({
                      }}
                   >
                      <Typography sx={{ fontSize: 15, fontWeight: 600 }}>
-                        Привязанные перевозки
+                        {t("manufacturers.card.linkedShipments")}
                      </Typography>
 
                      <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
@@ -200,7 +205,7 @@ export function ManufacturerDetailsModal({
                            onClick={() => setIsAttachLeadsOpen(true)}
                            disabled={isSubmitting}
                         >
-                           Привязать перевозки
+                           {t("manufacturers.link.shipmentsAction")}
                         </Button>
 
                         <Button
@@ -211,7 +216,7 @@ export function ManufacturerDetailsModal({
                            onClick={() => handleDetach(selectedLeadIds)}
                            disabled={isSubmitting || selectedLeadIds.length === 0}
                         >
-                           {`Открепить (${selectedLeadIds.length})`}
+                           {t("manufacturers.unlink.actionWithCount", { count: selectedLeadIds.length })}
                         </Button>
                      </Stack>
                   </Stack>
@@ -220,10 +225,10 @@ export function ManufacturerDetailsModal({
                      leads={attachedLeads}
                      selectionModel={selectionModel}
                      onSelectionModelChange={setSelectionModel}
-                     rowActionLabel="Открепить"
+                     rowActionLabel={t("manufacturers.unlink.action")}
                      onRowAction={(lead) => handleDetach([lead.id])}
                      isRowActionDisabled={isSubmitting}
-                     noRowsLabel="К производителю не привязано ни одной перевозки"
+                     noRowsLabel={t("manufacturers.card.noLinkedShipments")}
                   />
                </Box>
             </Stack>
@@ -231,7 +236,7 @@ export function ManufacturerDetailsModal({
 
          <DialogActions sx={{ px: 3, pb: 2 }}>
             <Button onClick={onClose} disabled={isSubmitting}>
-               Закрыть
+               {t("common.actions.close")}
             </Button>
          </DialogActions>
 

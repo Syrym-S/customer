@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { Box, Paper, Skeleton, Typography } from '@mui/material';
 
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
@@ -7,6 +8,8 @@ import { STATS_VIEW_MODE_SUM } from './DashboardStatsViewToggle';
 import { DashboardAnalyticsDelta } from './DashboardAnalyticsDelta';
 
 export function DashboardAnalyticsCurrencyCards({ currencies, previous, viewMode, loading }) {
+   const { t } = useTranslation();
+
    if (loading) {
       return (
          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
@@ -20,7 +23,7 @@ export function DashboardAnalyticsCurrencyCards({ currencies, previous, viewMode
    if (!currencies.length) {
       return (
          <Typography color="text.disabled" sx={{ fontSize: 14 }}>
-            Нет данных за выбранный период
+            {t("dashboard.analytics.emptyPeriod")}
          </Typography>
       );
    }
@@ -55,7 +58,7 @@ export function DashboardAnalyticsCurrencyCards({ currencies, previous, viewMode
 
                      {isSumMode ? null : (
                         <Typography color="text.secondary" sx={{ fontSize: 13 }}>
-                           рейсов
+                           {t("dashboard.analytics.trips")}
                         </Typography>
                      )}
 
@@ -64,7 +67,7 @@ export function DashboardAnalyticsCurrencyCards({ currencies, previous, viewMode
 
                   {currency.emergencyCount > 0 && (
                      <Typography color="warning.main" sx={{ fontSize: 12, mt: 0.5 }}>
-                        Аварийных: {currency.emergencyCount}
+                        {t("dashboard.analytics.emergencyCount", { count: currency.emergencyCount })}
                      </Typography>
                   )}
                </Paper>

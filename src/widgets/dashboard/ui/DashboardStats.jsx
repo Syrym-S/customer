@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { useState } from 'react';
 import { Alert, Box, Button, Typography } from '@mui/material';
 
@@ -25,15 +26,19 @@ const DEFAULT_PERIODS = {
    factoringsPeriod: DEFAULT_STATS_PERIOD,
 };
 
-function getPeriodLabel(value) {
+function getPeriodLabel(value, t) {
    if (isCustomStatsPeriod(value)) {
       return formatStatsRangeShort(value.from, value.to);
    }
 
-   return STATS_PERIODS.find((item) => item.value === value)?.label ?? '';
+   const period = STATS_PERIODS.find((item) => item.value === value);
+
+   return period ? t(period.labelKey) : '';
 }
 
 export function DashboardStats({ config = customerStatsConfig }) {
+   const { t } = useTranslation();
+
    const [periods, setPeriods] = useState(DEFAULT_PERIODS);
    const [viewMode, setViewMode] = useState(STATS_VIEW_MODE_COUNT);
 
@@ -47,7 +52,7 @@ export function DashboardStats({ config = customerStatsConfig }) {
    }
 
    function renderPeriodSelector(card) {
-      if (!card.periodSelectorLabel) {
+      if (!card.periodSelectorLabelKey) {
          return null;
       }
 
@@ -61,9 +66,9 @@ export function DashboardStats({ config = customerStatsConfig }) {
                from: toIsoDateOnly(section?.from),
                to: toIsoDateOnly(section?.to),
             }}
-            label={getPeriodLabel(value)}
+            label={getPeriodLabel(value, t)}
             tooltip={formatStatsRange(section?.from, section?.to)}
-            ariaLabel={card.periodSelectorLabel}
+            ariaLabel={t(card.periodSelectorLabelKey)}
             onChange={(nextValue) => handlePeriodChange(card.sectionKey, nextValue)}
          />
       );
@@ -81,7 +86,7 @@ export function DashboardStats({ config = customerStatsConfig }) {
                mb: 1.5,
             }}
          >
-            <Typography variant="h6">Статистика</Typography>
+            <Typography variant="h6">{t("dashboard.stats.title")}</Typography>
 
             <DashboardStatsViewToggle value={viewMode} onChange={setViewMode} />
          </Box>
@@ -92,7 +97,7 @@ export function DashboardStats({ config = customerStatsConfig }) {
                sx={{ mb: 1.5 }}
                action={
                   <Button color="inherit" size="small" onClick={retry}>
-                     Повторить
+                     {t("common.actions.retry")}
                   </Button>
                }
             >

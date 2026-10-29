@@ -9,6 +9,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 export function TenderParticipantsAddForm({
     inputValue,
@@ -23,6 +24,8 @@ export function TenderParticipantsAddForm({
     onSubmit,
     onCancel,
 }) {
+    const { t } = useTranslation();
+
     return (
         <Stack spacing={1}>
             {searchError && <Alert severity="error">{searchError}</Alert>}
@@ -43,10 +46,10 @@ export function TenderParticipantsAddForm({
                 filterSelectedOptions
                 noOptionsText={
                     isForwardersLoaded
-                        ? 'Экспедитор не найден'
-                        : 'Загружаем экспедиторов...'
+                        ? t("common.forwarderPicker.notFound")
+                        : t("common.forwarderPicker.loading")
                 }
-                loadingText="Поиск экспедиторов..."
+                loadingText={t("tenders.participants.searching")}
                 onInputChange={(_, newInputValue, reason) => {
                     if (reason === 'reset') {
                         return;
@@ -94,7 +97,7 @@ export function TenderParticipantsAddForm({
                         >
                             <Box sx={{ minWidth: 0 }}>
                                 <Typography fontWeight={700}>
-                                    {option.fullName || 'ФИО не указано'}
+                                    {option.fullName || t("common.empty.fullNameNotSpecified")}
                                 </Typography>
 
                                 <Typography
@@ -103,7 +106,7 @@ export function TenderParticipantsAddForm({
                                 >
                                     {option.phone ||
                                         option.iin ||
-                                        'Контакты не указаны'}
+                                        t("common.empty.contactsNotSpecified")}
                                 </Typography>
                             </Box>
 
@@ -127,8 +130,8 @@ export function TenderParticipantsAddForm({
                     return (
                         <TextField
                             {...params}
-                            label="Экспедиторы"
-                            placeholder="Введите ФИО, ИИН, компанию, БИН или телефон"
+                            label={t("forwarders.title")}
+                            placeholder={t("common.forwarderPicker.searchHint")}
                             size="small"
                             fullWidth
                             InputProps={{
@@ -159,11 +162,11 @@ export function TenderParticipantsAddForm({
                         isActionLoading || selectedForwarders.length === 0
                     }
                 >
-                    Добавить
+                    {t("common.actions.add")}
                 </Button>
 
                 <Button onClick={onCancel} disabled={isActionLoading}>
-                    Отмена
+                    {t("common.actions.cancel")}
                 </Button>
             </Stack>
         </Stack>

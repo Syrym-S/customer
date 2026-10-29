@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { Box, Button, Paper, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -11,14 +13,14 @@ import {
 
 function getLocationLabel(location) {
    if (!location) {
-      return 'Некорректные данные';
+      return i18n.t("common.empty.invalidData");
    }
 
    if (typeof location === 'string') {
       return location;
    }
 
-   return location.address || location.name || location.title || 'Некорректные данные';
+   return location.address || location.name || location.title || i18n.t("common.empty.invalidData");
 }
 
 export function CompactLeadsGrid({
@@ -28,9 +30,11 @@ export function CompactLeadsGrid({
    rowActionLabel = '',
    onRowAction,
    isRowActionDisabled = false,
-   noRowsLabel = 'Перевозки не найдены',
+   noRowsLabel = i18n.t("manufacturers.shipments.notFound"),
    height = 320,
 }) {
+   const { t } = useTranslation();
+
    const columns = [
       {
          field: 'num',
@@ -40,7 +44,7 @@ export function CompactLeadsGrid({
       },
       {
          field: 'status',
-         headerName: 'Статус',
+         headerName: t("common.fields.status"),
          width: 160,
          valueGetter: (_, row) => getDisplayLeadStatusLabel(row),
          renderCell: ({ row }) => (
@@ -52,7 +56,7 @@ export function CompactLeadsGrid({
       },
       {
          field: 'route',
-         headerName: 'Направление',
+         headerName: t("common.fields.direction"),
          flex: 1,
          minWidth: 200,
          sortable: false,
@@ -80,7 +84,7 @@ export function CompactLeadsGrid({
    if (rowActionLabel && onRowAction) {
       columns.push({
          field: 'actions',
-         headerName: 'Действия',
+         headerName: t("common.fields.actions"),
          width: 130,
          sortable: false,
          filterable: false,

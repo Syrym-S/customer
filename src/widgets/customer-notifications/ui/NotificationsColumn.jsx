@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 import {
     Alert,
@@ -36,6 +37,8 @@ export function NotificationsColumn({
     onOpenNotificationDetails,
     refreshKey = 0,
 }) {
+    const { t } = useTranslation();
+
     const [notifications, setNotifications] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
@@ -73,7 +76,7 @@ export function NotificationsColumn({
                     requestError.response?.data?.message ||
                         requestError.response?.data?.error ||
                         requestError.message ||
-                        'Не удалось загрузить уведомления',
+                        t("notifications.loadFailed"),
                 );
             } finally {
                 if (withLoader) {
@@ -81,7 +84,7 @@ export function NotificationsColumn({
                 }
             }
         },
-        [page],
+        [page, t],
     );
 
     function handlePageChange(_, nextPage) {
@@ -111,7 +114,7 @@ export function NotificationsColumn({
             nextPage: page,
             withLoader: true,
         });
-    }, [open, page, refreshKey, loadNotifications]);
+    }, [open, page, refreshKey, loadNotifications, t]);
 
     return (
         <Drawer
@@ -149,11 +152,11 @@ export function NotificationsColumn({
                 >
                     <Box>
                         <Typography fontWeight={700}>
-                            Все уведомления
+                            {t("notifications.all")}
                         </Typography>
 
                         <Typography variant='body2' color='text.secondary'>
-                            Последние события по вашим заявкам и аукционам
+                            {t("notifications.subtitle")}
                         </Typography>
                     </Box>
 
@@ -162,7 +165,7 @@ export function NotificationsColumn({
                             size='small'
                             onClick={handleRefresh}
                             disabled={isLoading}
-                            aria-label='Обновить уведомления'
+                            aria-label={t("notifications.refresh")}
                         >
                             <RefreshRoundedIcon fontSize='small' />
                         </IconButton>
@@ -170,7 +173,7 @@ export function NotificationsColumn({
                         <IconButton
                             size='small'
                             onClick={onClose}
-                            aria-label='Закрыть'
+                            aria-label={t("common.actions.close")}
                         >
                             <CloseRoundedIcon fontSize='small' />
                         </IconButton>
@@ -202,7 +205,7 @@ export function NotificationsColumn({
                     ) : notifications.length === 0 ? (
                         <Box sx={{ p: 2 }}>
                             <Typography color='text.secondary'>
-                                Уведомлений пока нет
+                                {t("notifications.empty")}
                             </Typography>
                         </Box>
                     ) : (

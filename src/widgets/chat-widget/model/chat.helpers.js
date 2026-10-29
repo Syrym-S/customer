@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 export function truncateText(text, maxLength = 60) {
   if (!text) {
     return "";
@@ -25,27 +27,27 @@ export function formatRelativeTime(value) {
   const diffMin = Math.floor(diffMs / 60000);
 
   if (diffMin < 1) {
-    return "только что";
+    return i18n.t("chat.time.justNow");
   }
 
   if (diffMin < 60) {
-    return `${diffMin} мин`;
+    return i18n.t("chat.time.minutes", { count: diffMin });
   }
 
   const diffHours = Math.floor(diffMin / 60);
 
   if (diffHours < 24) {
-    return `${diffHours} ч`;
+    return i18n.t("chat.time.hours", { count: diffHours });
   }
 
   const diffDays = Math.floor(diffHours / 24);
 
   if (diffDays === 1) {
-    return "вчера";
+    return i18n.t("chat.time.yesterday");
   }
 
   if (diffDays < 7) {
-    return `${diffDays} дн`;
+    return i18n.t("chat.time.days", { count: diffDays });
   }
 
   return date.toLocaleDateString("ru-RU", {
@@ -181,14 +183,14 @@ export function formatFileSize(size) {
   }
 
   if (size < 1024) {
-    return `${size} Б`;
+    return i18n.t("common.units.bytes", { value: size });
   }
 
   if (size < 1024 * 1024) {
-    return `${(size / 1024).toFixed(0)} КБ`;
+    return i18n.t("common.units.kilobytes", { value: (size / 1024).toFixed(0) });
   }
 
-  return `${(size / 1024 / 1024).toFixed(2)} МБ`;
+  return i18n.t("common.units.megabytes", { value: (size / 1024 / 1024).toFixed(2) });
 }
 
 export function validateChatAttachmentFile(file) {
@@ -204,11 +206,11 @@ export function validateChatAttachmentFile(file) {
     CHAT_ATTACHMENT_ALLOWED_EXTENSIONS.includes(fileExtension);
 
   if (!hasAllowedType && !hasAllowedExtension) {
-    return "Разрешены только изображения (JPG, PNG, WEBP), PDF, DOC(X) или XLS(X)";
+    return i18n.t("chat.attachments.allowedTypes");
   }
 
   if (file.size > CHAT_ATTACHMENT_MAX_SIZE_BYTES) {
-    return `Размер файла не должен превышать ${CHAT_ATTACHMENT_MAX_SIZE_MB} МБ`;
+    return i18n.t("chat.attachments.maxSize", { size: CHAT_ATTACHMENT_MAX_SIZE_MB });
   }
 
   return "";

@@ -1,7 +1,13 @@
+import i18n from '../../../shared/i18n';
+
 import {
     formatCoordinatesLabel,
     formatNominatimAddress,
 } from '../lib/geocoding.helpers';
+
+function getGeocodingLanguage() {
+    return i18n.resolvedLanguage || i18n.language || 'ru';
+}
 
 export async function reverseGeocode(lat, lng, options = {}) {
     try {
@@ -11,7 +17,7 @@ export async function reverseGeocode(lat, lng, options = {}) {
         url.searchParams.set('lat', lat);
         url.searchParams.set('lon', lng);
         url.searchParams.set('addressdetails', '1');
-        url.searchParams.set('accept-language', 'ru');
+        url.searchParams.set('accept-language', getGeocodingLanguage());
 
         const response = await fetch(url.toString(), {
             signal: options.signal,
@@ -57,7 +63,7 @@ export async function searchGeocode(query, options = {}) {
         url.searchParams.set('q', trimmedQuery);
         url.searchParams.set('addressdetails', '1');
         url.searchParams.set('limit', '8');
-        url.searchParams.set('accept-language', 'ru');
+        url.searchParams.set('accept-language', getGeocodingLanguage());
 
         const response = await fetch(url.toString(), {
             signal: options.signal,

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import {
    Alert,
    Button,
@@ -13,7 +14,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { useContractStore, attemptContractSigning } from '../model/contract.store';
 
-const MISSING_PROFILE_FIELDS_MESSAGE_PREFIX = 'Заполните в профиле данные';
+const MISSING_PROFILE_FIELDS_MESSAGE_PREFIX = 'Заполните профиль';
 
 function classifySigningError(error) {
    const status = error.response?.status;
@@ -42,6 +43,8 @@ function classifySigningError(error) {
 }
 
 export function ContractGateModal() {
+   const { t } = useTranslation();
+
    const hasValidContract = useContractStore((state) => state.hasValidContract);
    const contractGateSuspendedForProfile = useContractStore(
       (state) => state.contractGateSuspendedForProfile,
@@ -84,7 +87,7 @@ export function ContractGateModal() {
       >
          <DialogContent>
             <Typography>
-               У вас нет договоров или срок подписания истек
+               {t("contractGate.noContracts")}
             </Typography>
 
             {signingError?.type === 'missing-profile-fields' && (
@@ -96,20 +99,20 @@ export function ContractGateModal() {
                      to="/customer/profile"
                      onClick={suspendGateForProfile}
                   >
-                     Перейти в профиль
+                     {t("contractGate.goToProfile")}
                   </MuiLink>
                </Alert>
             )}
 
             {signingError?.type === 'config-error' && (
                <Alert severity="error" sx={{ mt: 2 }}>
-                  Что-то пошло не так. Обратитесь в поддержку.
+                  {t("errors.genericSupport")}
                </Alert>
             )}
 
             {signingError?.type === 'service-unavailable' && (
                <Alert severity="error" sx={{ mt: 2 }}>
-                  Сервис подписания недоступен, попробуйте позже
+                  {t("common.signing.unavailable")}
                </Alert>
             )}
 
@@ -128,10 +131,10 @@ export function ContractGateModal() {
                startIcon={isSigning ? <CircularProgress size={16} /> : null}
             >
                {isSigning
-                  ? 'Открываем страницу подписания...'
+                  ? t("common.signing.opening")
                   : signingError
-                     ? 'Повторить попытку'
-                     : 'Подписать договор'}
+                     ? t("common.actions.retryAttempt")
+                     : t("contractGate.signContract")}
             </Button>
          </DialogActions>
       </Dialog>

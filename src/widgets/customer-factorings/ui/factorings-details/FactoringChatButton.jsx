@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Badge, Button, CircularProgress } from "@mui/material";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import PropTypes from "prop-types";
@@ -14,6 +15,8 @@ import { notifyError } from "../../../../shared/model/notifications.store";
 import { truncateId } from "../../../../shared/helpers/data-grid.helpers";
 
 export function FactoringChatButton({ factoringId, factoring, onClose }) {
+  const { t } = useTranslation();
+
   const chats = useChatStore((state) => state.chats);
   const openFactoringChat = useChatStore((state) => state.openFactoringChat);
   const [isResolvingChat, setIsResolvingChat] = useState(false);
@@ -31,7 +34,7 @@ export function FactoringChatButton({ factoringId, factoring, onClose }) {
 
     if (knownLeadId) {
       onClose?.();
-      openFactoringChat(knownLeadId, { name: `Факторинг #${truncateId(knownLeadId)}`, role: "Факторинг" });
+      openFactoringChat(knownLeadId, { name: t("factorings.details.number", { id: truncateId(knownLeadId) }), role: t("factorings.titleSingular") });
       return;
     }
 
@@ -42,16 +45,16 @@ export function FactoringChatButton({ factoringId, factoring, onClose }) {
       const leadId = getFactoringLeadId(details);
 
       if (!leadId) {
-        throw new Error("Не удалось определить заказ, связанный с факторингом");
+        throw new Error(t("factorings.chat.leadNotResolved"));
       }
 
       onClose?.();
-      openFactoringChat(leadId, { name: `Факторинг #${truncateId(leadId)}`, role: "Факторинг" });
+      openFactoringChat(leadId, { name: t("factorings.details.number", { id: truncateId(leadId) }), role: t("factorings.titleSingular") });
     } catch (error) {
       notifyError(
         error.response?.data?.message ||
           error.message ||
-          "Не удалось открыть чат по факторингу",
+          t("factorings.chat.openFailed"),
       );
     } finally {
       setIsResolvingChat(false);
@@ -77,7 +80,7 @@ export function FactoringChatButton({ factoringId, factoring, onClose }) {
       onClick={handleClick}
       disabled={isResolvingChat}
     >
-      Чат
+      {t("factorings.chat.action")}
     </Button>
   );
 }

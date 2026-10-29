@@ -1,4 +1,5 @@
 import { Alert, Box, CircularProgress, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useCustomerMap } from "../../customer-map/model/useCustomerMap";
 import { useCustomerPageRoutes } from "../../customer-map/model/useCustomerPageRoutes";
 import { useCustomerPageGeoRoutes } from "../../customer-map/model/useCustomerPageGeoRoutes";
@@ -27,6 +28,8 @@ export function DashboardMap({
     highlightedLeadId,
     onSelectLead,
 }) {
+    const { t } = useTranslation();
+
     const map = useCustomerMap();
 
     const { routes, isRoutesLoading, routesError } =
@@ -116,7 +119,7 @@ export function DashboardMap({
                                 fontWeight: 500,
                             }}
                         >
-                            Загружаем карту...
+                            {t("common.loading.map")}
                         </Typography>
                     </Box>
                 )}

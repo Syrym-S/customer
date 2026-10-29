@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import { Autocomplete, TextField } from '@mui/material';
 
@@ -10,6 +11,8 @@ import { getFactoringTargetLabel, getLeadTargetLabel } from '../model/complaints
 // picker (debounced server search over a potentially large dataset), this
 // one is small enough to fetch once and filter/search client-side.
 export function ComplaintTargetPicker({ value = null, onChange }) {
+   const { t } = useTranslation();
+
    const [leadOptions, setLeadOptions] = useState([]);
    const [factoringOptions, setFactoringOptions] = useState([]);
    const [isLoading, setIsLoading] = useState(false);
@@ -34,7 +37,7 @@ export function ComplaintTargetPicker({ value = null, onChange }) {
                   leads.map((lead) => ({
                      type: 'lead',
                      id: lead.id,
-                     group: 'Перевозки',
+                     group: t("common.fields.shipments"),
                      label: getLeadTargetLabel(lead),
                   })),
                );
@@ -43,14 +46,14 @@ export function ComplaintTargetPicker({ value = null, onChange }) {
                   factorings.map((factoring) => ({
                      type: 'factoring',
                      id: factoring.id,
-                     group: 'Факторинг',
+                     group: t("enums.complaintTarget.factoring"),
                      label: getFactoringTargetLabel(factoring),
                   })),
                );
             }
          } catch (requestError) {
             if (!isCancelled) {
-               setError(requestError.message || 'Не удалось загрузить список');
+               setError(requestError.message || t("complaints.target.loadFailed"));
             }
          } finally {
             if (!isCancelled) {
@@ -64,7 +67,7 @@ export function ComplaintTargetPicker({ value = null, onChange }) {
       return () => {
          isCancelled = true;
       };
-   }, []);
+   }, [t]);
 
    const options = useMemo(
       () => [...leadOptions, ...factoringOptions],
@@ -86,18 +89,18 @@ export function ComplaintTargetPicker({ value = null, onChange }) {
          isOptionEqualToValue={(option, optionValue) =>
             option.type === optionValue.type && option.id === optionValue.id
          }
-         noOptionsText="Нет перевозок или факторингов за последние 30 дней"
-         loadingText="Загружаем список..."
+         noOptionsText={t("complaints.target.empty")}
+         loadingText={t("common.loading.list")}
          onChange={(_, newValue) => {
             onChange(newValue ? { type: newValue.type, id: newValue.id } : null);
          }}
          renderInput={(params) => (
             <TextField
                {...params}
-               label="К какой перевозке или факторингу относится жалоба"
-               placeholder="Необязательно"
+               label={t("complaints.target.question")}
+               placeholder={t("common.empty.optional")}
                error={Boolean(error)}
-               helperText={error || 'Можно оставить пустым'}
+               helperText={error || t("common.empty.canLeaveBlank")}
             />
          )}
       />

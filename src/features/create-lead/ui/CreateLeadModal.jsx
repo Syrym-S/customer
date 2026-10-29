@@ -1,4 +1,6 @@
 import { Box, Dialog, DialogContent } from '@mui/material';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
@@ -21,14 +23,20 @@ import { DocumentsStep } from './create-lead-modal/steps/DocumentsStep';
 import { uploadLeadDocument } from '../../../widgets/customer-leads/api/lead-documents.api';
 import { buildPointScheduleFields } from '../lib/point-schedule.helpers';
 
-const steps = ['Маршрут', 'Груз', 'Экспедитор', 'Документы', 'Проверка'];
+const STEP_KEYS = [
+    'createLead.steps.route',
+    'common.fields.cargo',
+    'common.fields.forwarder',
+    'createLead.steps.documents',
+    'createLead.steps.confirm',
+];
 
 function createInitialCargo() {
     return {
         name: '',
         description: '',
         weight_kg: '',
-        type: 'Не указан',
+        type: i18n.t("common.empty.notSpecifiedM"),
         width_cm: '',
         height_cm: '',
         length_cm: '',
@@ -148,6 +156,8 @@ async function uploadCreateLeadDocuments(leadId, documents = []) {
 }
 
 export function CreateLeadModal({ open, onClose }) {
+    const { t } = useTranslation();
+
     const [activeStep, setActiveStep] = useState(0);
     const [maxAvailableStep, setMaxAvailableStep] = useState(0);
     const stepContentRef = useRef(null);
@@ -195,6 +205,8 @@ export function CreateLeadModal({ open, onClose }) {
     }, []);
 
     const isFirstStep = activeStep === 0;
+    const steps = STEP_KEYS.map((key) => t(key));
+
     const isLastStep = activeStep === steps.length - 1;
 
     const currentStepFields = getStepFields(activeStep, formValues);
@@ -275,18 +287,18 @@ export function CreateLeadModal({ open, onClose }) {
             setResultModal({
                 open: true,
                 type: 'success',
-                title: 'Черновик сохранен',
-                message: 'Заказ сохранен как черновик',
+                title: t("createLead.result.draftSaved"),
+                message: t("createLead.result.savedAsDraft"),
             });
         } catch (error) {
             setResultModal({
                 open: true,
                 type: 'error',
-                title: 'Ошибка сохранения',
+                title: t("createLead.result.saveError"),
                 message:
                     error.response?.data?.message ||
                     error.message ||
-                    'Не удалось сохранить черновик',
+                    t("createLead.result.draftSaveFailed"),
             });
         } finally {
             setIsSavingDraft(false);
@@ -333,20 +345,24 @@ export function CreateLeadModal({ open, onClose }) {
             setResultModal({
                 open: true,
                 type: documentsUploadFailed ? 'warning' : 'success',
-                title: 'Заказ создан',
+                title: t("createLead.result.created"),
                 message: documentsUploadFailed
-                    ? 'Заказ создан, но часть документов не загрузилась'
-                    : `Заказ успешно создан${createdLeadId ? `: ${createdLeadId}` : ''}`,
+                    ? t("createLead.result.createdWithDocumentErrors")
+                    : createdLeadId
+                      ? t('createLead.result.createdSuccessWithId', {
+                           id: createdLeadId,
+                        })
+                      : t('createLead.result.createdSuccess'),
             });
         } catch (error) {
             setResultModal({
                 open: true,
                 type: 'error',
-                title: 'Ошибка создания',
+                title: t("createLead.result.createError"),
                 message:
                     error.response?.data?.message ||
                     error.message ||
-                    'Не удалось создать заказ',
+                    t("createLead.result.createFailed"),
             });
         } finally {
             setIsSubmitting(false);

@@ -1,11 +1,19 @@
+import i18n from '../../../../../shared/i18n';
+
 export const INITIAL_VISIBLE_COUNT = 3;
 
-export const participantTypeLabels = {
-    forwarder: 'Экспедитор',
+const PARTICIPANT_TYPE_LABEL_KEYS = {
+    forwarder: 'enums.participantType.forwarder',
 };
 
+export function getParticipantTypeLabel(type) {
+    const key = PARTICIPANT_TYPE_LABEL_KEYS[type];
+
+    return key ? i18n.t(key) : '';
+}
+
 export function formatDateTime(value) {
-    if (!value) return 'Не указано';
+    if (!value) return i18n.t("common.empty.notSpecifiedN");
 
     const date = new Date(value);
 
@@ -45,7 +53,7 @@ export function normalizeForwarderOption(forwarder) {
             forwarder.full_name ||
             forwarder.fio ||
             forwarder.name ||
-            'Без имени',
+            i18n.t("common.empty.noName"),
 
         iin: forwarder.iin || forwarder.personIin || '',
 
@@ -53,7 +61,7 @@ export function normalizeForwarderOption(forwarder) {
             forwarder.companyName ||
             forwarder.company_name ||
             forwarder.name ||
-            'Без компании',
+            i18n.t("common.empty.noCompany"),
 
         companyBin:
             forwarder.companyBin ||

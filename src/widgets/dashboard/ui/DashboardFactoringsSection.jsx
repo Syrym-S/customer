@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   Box,
@@ -16,6 +17,8 @@ import { FactoringDetailsModal } from "../../customer-factorings/ui/FactoringDet
 const DASHBOARD_FACTORING_PER_PAGE = 5;
 
 export function DashboardFactoringsSection() {
+  const { t } = useTranslation();
+
   const {
     factorings,
 
@@ -90,11 +93,11 @@ export function DashboardFactoringsSection() {
       >
         <Box>
           <Typography variant="h6" fontWeight={600}>
-            Факторинги
+            {t("factorings.title")}
           </Typography>
 
           <Typography color="text.secondary" fontSize={14}>
-            Список факторингов
+            {t("dashboard.factorings.title")}
           </Typography>
         </Box>
       </Box>
@@ -117,7 +120,7 @@ export function DashboardFactoringsSection() {
       >
         {isLoading && (
           <Typography color="text.secondary" sx={{ py: 2 }}>
-            Загрузка факторингов...
+            {t("dashboard.factorings.loading")}
           </Typography>
         )}
 

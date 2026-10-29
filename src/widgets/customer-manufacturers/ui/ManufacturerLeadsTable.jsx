@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { Box, Button, Paper, Stack, Tooltip } from '@mui/material';
 import { DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF } from '@mui/x-data-grid';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
@@ -20,14 +22,14 @@ import {
 
 function getLocationLabel(location) {
    if (!location) {
-      return 'Некорректные данные';
+      return i18n.t("common.empty.invalidData");
    }
 
    if (typeof location === 'string') {
       return location;
    }
 
-   return location.address || location.name || location.title || 'Некорректные данные';
+   return location.address || location.name || location.title || i18n.t("common.empty.invalidData");
 }
 
 export function ManufacturerLeadsTable({
@@ -39,6 +41,8 @@ export function ManufacturerLeadsTable({
    onDetachLead,
    isSubmitting = false,
 }) {
+   const { t } = useTranslation();
+
    const columns = [
       {
          field: 'num',
@@ -63,7 +67,7 @@ export function ManufacturerLeadsTable({
       },
       {
          field: 'status',
-         headerName: 'Статус',
+         headerName: t("common.fields.status"),
          width: 170,
          valueGetter: (_, row) => getDisplayLeadStatusLabel(row),
          renderCell: ({ row }) => (
@@ -75,7 +79,7 @@ export function ManufacturerLeadsTable({
       },
       {
          field: 'from_location',
-         headerName: 'Откуда',
+         headerName: t("common.fields.origin"),
          flex: 1,
          minWidth: 140,
          valueGetter: (_, row) => getLocationLabel(row?.from_location),
@@ -91,7 +95,7 @@ export function ManufacturerLeadsTable({
       },
       {
          field: 'to_location',
-         headerName: 'Куда',
+         headerName: t("common.fields.destination"),
          flex: 1,
          minWidth: 140,
          valueGetter: (_, row) => getLocationLabel(row?.to_location),
@@ -107,7 +111,7 @@ export function ManufacturerLeadsTable({
       },
       {
          field: 'manufacturer',
-         headerName: 'Производитель',
+         headerName: t("common.fields.manufacturer"),
          flex: 1,
          minWidth: 220,
          valueGetter: (_, row) => toSortString(getLeadManufacturerName(row)),
@@ -115,12 +119,12 @@ export function ManufacturerLeadsTable({
             hasAttachedManufacturer(row) ? (
                <Box>{getLeadManufacturerName(row)}</Box>
             ) : (
-               <Box sx={{ color: 'text.secondary' }}>Не привязан</Box>
+               <Box sx={{ color: 'text.secondary' }}>{t("manufacturers.filters.notLinked")}</Box>
             ),
       },
       {
          field: 'actions',
-         headerName: 'Действия',
+         headerName: t("common.fields.actions"),
          width: 190,
          sortable: false,
          filterable: false,
@@ -132,11 +136,11 @@ export function ManufacturerLeadsTable({
                   onClick={() => onAttachLead(row)}
                   disabled={isSubmitting}
                >
-                  {hasAttachedManufacturer(row) ? 'Изменить' : 'Привязать'}
+                  {hasAttachedManufacturer(row) ? t("common.actions.edit") : t("manufacturers.link.action")}
                </Button>
 
                {hasAttachedManufacturer(row) && (
-                  <Tooltip title="Открепить производителя">
+                  <Tooltip title={t("manufacturers.unlink.manufacturerAction")}>
                      <span>
                         <Button
                            size="small"
@@ -180,7 +184,7 @@ export function ManufacturerLeadsTable({
             onCellClick={handleCellClick}
             getRowClassName={getZebraRowClassName}
             hideFooter
-            localeText={{ noRowsLabel: 'Перевозки не найдены' }}
+            localeText={{ noRowsLabel: t("manufacturers.shipments.notFound") }}
             sx={{ border: 0 }}
          />
       </Paper>

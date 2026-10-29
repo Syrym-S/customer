@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 import {
@@ -25,6 +26,8 @@ import {
 } from '../model/export-leads-report.helpers';
 
 export function ExportLeadsReportModal({ open, onClose }) {
+   const { t } = useTranslation();
+
    const [dateFrom, setDateFrom] = useState('');
    const [dateTo, setDateTo] = useState('');
    const [isExporting, setIsExporting] = useState(false);
@@ -66,7 +69,7 @@ export function ExportLeadsReportModal({ open, onClose }) {
          setExportError(
             await parseBlobErrorMessage(
                error,
-               'Не удалось выгрузить отчет. Попробуйте позже',
+               t("exportReport.failed"),
             ),
          );
       } finally {
@@ -99,7 +102,7 @@ export function ExportLeadsReportModal({ open, onClose }) {
                   component='div'
                   sx={{ fontWeight: 500, fontSize: { xs: 18, sm: 20 } }}
                >
-                  Выгрузить отчет
+                  {t("exportReport.action")}
                </Typography>
             </Stack>
          </DialogTitle>
@@ -107,12 +110,11 @@ export function ExportLeadsReportModal({ open, onClose }) {
          <DialogContent>
             <Stack spacing={2}>
                <Alert severity='info' variant='outlined' sx={{ borderRadius: 2 }}>
-                  В отчет попадут только завершенные перевозки за выбранный
-                  период.
+                  {t("exportReport.hint")}
                </Alert>
 
                <TextField
-                  label='Дата от'
+                  label={t("common.fields.dateFrom")}
                   type='date'
                   value={dateFrom}
                   onChange={(event) => setDateFrom(event.target.value)}
@@ -125,7 +127,7 @@ export function ExportLeadsReportModal({ open, onClose }) {
                />
 
                <TextField
-                  label='Дата до'
+                  label={t("common.fields.dateTo")}
                   type='date'
                   value={dateTo}
                   onChange={(event) => setDateTo(event.target.value)}
@@ -139,7 +141,7 @@ export function ExportLeadsReportModal({ open, onClose }) {
 
                {dateFrom && dateTo && !isRangeValid && (
                   <Alert severity='warning'>
-                     Дата «от» не может быть позже даты «до»
+                     {t("exportReport.dateOrder")}
                   </Alert>
                )}
 
@@ -149,7 +151,7 @@ export function ExportLeadsReportModal({ open, onClose }) {
 
          <DialogActions sx={{ px: 3, pb: 2 }}>
             <Button onClick={handleClose} disabled={isExporting}>
-               Отмена
+               {t("common.actions.cancel")}
             </Button>
 
             <Button
@@ -158,7 +160,7 @@ export function ExportLeadsReportModal({ open, onClose }) {
                disabled={!isRangeValid || isExporting}
                sx={{ minWidth: 156 }}
             >
-               {isExporting ? 'Выгрузка...' : 'Выгрузить'}
+               {isExporting ? t("exportReport.inProgress") : t("exportReport.submit")}
             </Button>
          </DialogActions>
       </Dialog>

@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 // TODO(backend): `forwarder_avr_signed` is an assumed/placeholder field name
 // — no real lead API response has ever included an AVR-related field (none
 // of forwarder_avr_signed / avr_signed / avr_status / AWAIT_AVR* exist in
@@ -9,7 +11,7 @@ export function isForwarderAvrSigned(lead) {
 }
 
 export function getAvrPartyStatusLabel(signed) {
-   return signed ? 'Подписан' : 'Не подписан';
+   return signed ? i18n.t("enums.signature.signedM") : i18n.t("enums.signature.notSignedM");
 }
 
 export function getAvrPartyStatusColor(signed) {

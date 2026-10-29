@@ -1,4 +1,5 @@
 import { Badge, Button } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import PropTypes from "prop-types";
 
@@ -13,6 +14,8 @@ import {
 } from "../../../chat-widget/model/chat.mappers";
 
 export function LeadChatButton({ lead, onClose }) {
+  const { t } = useTranslation();
+
   const leadId = lead?.id;
   const chats = useChatStore((state) => state.chats);
   const openLeadChat = useChatStore((state) => state.openLeadChat);
@@ -55,7 +58,7 @@ export function LeadChatButton({ lead, onClose }) {
         },
       }}
     >
-      Чат с экспедитором
+      {t("leads.chat.withForwarder")}
     </Button>
   );
 }

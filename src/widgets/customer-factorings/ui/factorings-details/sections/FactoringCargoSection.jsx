@@ -1,4 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
+import i18n from '../../../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
@@ -24,13 +26,19 @@ function getCargoDimensionsDisplay(cargo) {
     const height = cargo.height_cm;
 
     if (!hasValue(length) && !hasValue(width) && !hasValue(height)) {
-        return 'Не указано';
+        return i18n.t("common.empty.notSpecifiedN");
     }
 
-    return `${length || '—'} × ${width || '—'} × ${height || '—'} см`;
+    return i18n.t('common.units.dimensionsCm', {
+      length: length || '—',
+      width: width || '—',
+      height: height || '—',
+   });
 }
 
 export function FactoringCargoSection({ factoring }) {
+    const { t } = useTranslation();
+
     const lead = factoring?.lead || {};
     const cargos = Array.isArray(lead.cargos) ? lead.cargos : [];
 
@@ -42,7 +50,7 @@ export function FactoringCargoSection({ factoring }) {
     return (
         <DetailSection
             icon={<LocalShippingOutlinedIcon />}
-            title="Груз и параметры перевозки"
+            title={t("factorings.details.cargoSection")}
         >
             <Stack spacing={1.5}>
                 {cargos.length ? (
@@ -58,7 +66,7 @@ export function FactoringCargoSection({ factoring }) {
                             }}
                         >
                             <Typography fontWeight={600} sx={{ mb: 1 }}>
-                                Груз #{index + 1}
+                                {t("leads.cargo.itemNumber", { index: index + 1 })}
                             </Typography>
 
                             <Box
@@ -73,49 +81,49 @@ export function FactoringCargoSection({ factoring }) {
                                 }}
                             >
                                 <InfoBadge
-                                    label="Наименование"
-                                    value={cargo.name || 'Не указано'}
+                                    label={t("common.fields.title")}
+                                    value={cargo.name || t("common.empty.notSpecifiedN")}
                                 />
 
                                 <InfoBadge
-                                    label="Тип"
-                                    value={cargo.type || 'Не указан'}
+                                    label={t("common.fields.type")}
+                                    value={cargo.type || t("common.empty.notSpecifiedM")}
                                 />
 
                                 <InfoBadge
-                                    label="Вес"
+                                    label={t("common.fields.weight")}
                                     value={
                                         hasValue(cargo.weight_kg)
-                                            ? `${cargo.weight_kg} кг`
-                                            : 'Не указано'
+                                            ? t("common.units.kg", { value: cargo.weight_kg })
+                                            : t("common.empty.notSpecifiedN")
                                     }
                                 />
 
                                 <InfoBadge
-                                    label="Цена груза"
+                                    label={t("common.fields.cargoPrice")}
                                     value={
                                         hasValue(cargo.cargo_price)
                                             ? `${formatAmount(cargo.cargo_price)} ${lead.currency || ''}`.trim()
-                                            : 'Не указано'
+                                            : t("common.empty.notSpecifiedN")
                                     }
                                 />
 
                                 <InfoBadge
-                                    label="Размеры"
+                                    label={t("common.fields.dimensions")}
                                     value={getCargoDimensionsDisplay(cargo)}
                                 />
 
                                 <InfoBadge
-                                    label="Объем"
+                                    label={t("common.fields.volume")}
                                     value={
                                         formatCargoVolumeM3(cargo.volume_m3) ||
-                                        'Не указано'
+                                        t("common.empty.notSpecifiedN")
                                     }
                                 />
 
                                 {cargo.tnved?.code && (
                                     <InfoBadge
-                                        label="Код ТН ВЭД"
+                                        label={t("common.fields.tnvedCode")}
                                         value={`${cargo.tnved.code} — ${cargo.tnved.name}`}
                                     />
                                 )}
@@ -123,7 +131,7 @@ export function FactoringCargoSection({ factoring }) {
                         </Box>
                     ))
                 ) : (
-                    <InfoBadge label="Груз" value="Не указан" fullWidth />
+                    <InfoBadge label={t("common.fields.cargo")} value={t("common.empty.notSpecifiedM")} fullWidth />
                 )}
 
                 <Box
@@ -139,28 +147,28 @@ export function FactoringCargoSection({ factoring }) {
                 >
                     {loadingTypeLabel && (
                         <InfoBadge
-                            label="Тип погрузки"
+                            label={t("common.fields.loadingType")}
                             value={loadingTypeLabel}
                         />
                     )}
 
                     {packagingTypeLabel && (
                         <InfoBadge
-                            label="Вид упаковки"
+                            label={t("common.fields.packagingType")}
                             value={packagingTypeLabel}
                         />
                     )}
 
                     {compositionTypeLabel && (
                         <InfoBadge
-                            label="Тип состава"
+                            label={t("common.fields.bodyType")}
                             value={compositionTypeLabel}
                         />
                     )}
 
                     {transportTypeLabel && (
                         <InfoBadge
-                            label="Тип транспорта"
+                            label={t("common.fields.transportType")}
                             value={transportTypeLabel}
                         />
                     )}

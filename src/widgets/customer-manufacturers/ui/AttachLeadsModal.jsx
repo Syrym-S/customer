@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Button,
@@ -28,6 +29,8 @@ export function AttachLeadsModal({
    onClose,
    onSubmit,
 }) {
+   const { t } = useTranslation();
+
    const [search, setSearch] = useState('');
    const [selectionModel, setSelectionModel] = useState(EMPTY_ROW_SELECTION);
 
@@ -52,18 +55,18 @@ export function AttachLeadsModal({
 
    return (
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-         <DialogTitle>Привязка перевозок</DialogTitle>
+         <DialogTitle>{t("manufacturers.tabs.linking")}</DialogTitle>
 
          <DialogContent>
             <Stack spacing={2} sx={{ pt: 1 }}>
                <Typography color="text.secondary" fontSize={14}>
-                  {`Производитель: ${manufacturerName}. Показаны перевозки без производителя.`}
+                  {t("manufacturers.link.freeShipmentsHint", { name: manufacturerName })}
                </Typography>
 
                <TextField
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Поиск по номеру или направлению"
+                  placeholder={t("manufacturers.shipments.searchByNumber")}
                   fullWidth
                   size="small"
                   slotProps={{
@@ -81,7 +84,7 @@ export function AttachLeadsModal({
                   leads={visibleLeads}
                   selectionModel={selectionModel}
                   onSelectionModelChange={setSelectionModel}
-                  noRowsLabel="Свободные перевозки не найдены"
+                  noRowsLabel={t("manufacturers.link.freeShipmentsNotFound")}
                   height={360}
                />
             </Stack>
@@ -89,7 +92,7 @@ export function AttachLeadsModal({
 
          <DialogActions sx={{ px: 3, pb: 2 }}>
             <Button onClick={handleClose} disabled={isSubmitting}>
-               Отмена
+               {t("common.actions.cancel")}
             </Button>
 
             <Button
@@ -98,8 +101,8 @@ export function AttachLeadsModal({
                disabled={isSubmitting || selectedLeadIds.length === 0}
             >
                {isSubmitting
-                  ? 'Привязываем...'
-                  : `Привязать (${selectedLeadIds.length})`}
+                  ? t("manufacturers.link.inProgress")
+                  : t("manufacturers.link.actionWithCount", { count: selectedLeadIds.length })}
             </Button>
          </DialogActions>
       </Dialog>

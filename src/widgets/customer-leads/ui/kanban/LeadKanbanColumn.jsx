@@ -1,4 +1,5 @@
 import { Box, Stack, Typography, useTheme } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 import { LeadKanbanCard } from './LeadKanbanCard';
 
@@ -12,6 +13,8 @@ export function LeadKanbanColumn({
    accentColor = 'primary',
    onOpenLead,
 }) {
+   const { t } = useTranslation();
+
    const theme = useTheme();
    const columnColor = getColumnAccentColor(theme, accentColor);
 
@@ -92,7 +95,7 @@ export function LeadKanbanColumn({
                      color: 'text.secondary',
                   }}
                >
-                  Нет заказов
+                  {t("leads.empty")}
                </Typography>
             ) : (
                leads.map((lead) => (

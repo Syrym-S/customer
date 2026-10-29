@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   Alert,
@@ -54,6 +55,8 @@ import { ContractDocumentCard } from "../../widgets/customer-profile/ui/Contract
 import { PageContainer } from "../../shared/ui/PageContainer";
 
 export function ProfilePage() {
+  const { t } = useTranslation();
+
   const [form, setForm] = useState(initialProfileForm);
   const [errors, setErrors] = useState({});
   const [isSaving, setIsSaving] = useState(false);
@@ -154,7 +157,7 @@ export function ProfilePage() {
         setProfileLoadError(
           error.response?.data?.message ||
             error.message ||
-            "Не удалось загрузить профиль",
+            t("profile.load.failed"),
         );
       }
     } finally {
@@ -185,11 +188,11 @@ export function ProfilePage() {
     const hasAllowedExtension = allowedExtensions.includes(fileExtension);
 
     if (!hasAllowedType && !hasAllowedExtension) {
-      return "Разрешены только PDF, JPG, JPEG или PNG";
+      return t("profile.documents.allowedTypes");
     }
 
     if (file.size > maxSizeBytes) {
-      return `Размер файла не должен превышать ${maxSizeMb} МБ`;
+      return t("profile.documents.maxSize", { size: maxSizeMb });
     }
 
     return "";
@@ -304,7 +307,7 @@ export function ProfilePage() {
       !hasPhotoDelete &&
       !hasDocumentUploads
     ) {
-      setSubmitError("Нет изменений для сохранения");
+      setSubmitError(t("profile.save.noChanges"));
       return;
     }
 
@@ -374,13 +377,13 @@ export function ProfilePage() {
 
       await getProfileData();
 
-      notifySuccess("Профиль успешно обновлен");
+      notifySuccess(t("profile.save.success"));
     } catch (error) {
       setSubmitError(
         error.response?.data?.message ||
           error.response?.data?.error ||
           error.message ||
-          "Не удалось обновить профиль",
+          t("profile.save.failed"),
       );
     } finally {
       setIsSaving(false);
@@ -429,13 +432,13 @@ export function ProfilePage() {
         setIsDeleteConfirmOpen(false);
         setDeleteConflictMessage(
           error.response?.data?.message ||
-            "Не удалось удалить аккаунт: есть активные сделки",
+            t("profile.delete.failedActiveDeals"),
         );
       } else {
         setDeletePasswordError(
           error.response?.data?.message ||
             error.message ||
-            "Не удалось удалить аккаунт",
+            t("profile.delete.failed"),
         );
       }
     } finally {
@@ -484,11 +487,11 @@ export function ProfilePage() {
         <Stack spacing={3}>
           <Box>
             <Typography variant="h6" fontWeight={600}>
-              Профиль
+              {t("profile.title")}
             </Typography>
 
             <Typography color="text.secondary" fontSize={14}>
-              Данные компании и контактного лица
+              {t("profile.sections.companySubtitle")}
             </Typography>
           </Box>
 
@@ -538,11 +541,11 @@ export function ProfilePage() {
           ) : (
             <>
               <Stack spacing={2}>
-                <Typography fontWeight={600}>Компания и реквизиты</Typography>
+                <Typography fontWeight={600}>{t("profile.sections.company")}</Typography>
 
                 <TextField
                   name="fullName"
-                  label="Название"
+                  label={t("common.fields.name")}
                   value={form.fullName}
                   onChange={handleChange}
                   error={Boolean(errors.fullName)}
@@ -552,7 +555,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="bin"
-                  label="БИН"
+                  label={t("common.fields.bin")}
                   value={form.bin}
                   onChange={handleChange}
                   error={Boolean(errors.bin)}
@@ -562,7 +565,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="bik"
-                  label="БИК"
+                  label={t("common.fields.bik")}
                   value={form.bik}
                   onChange={handleChange}
                   error={Boolean(errors.bik)}
@@ -572,7 +575,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="accountNumber"
-                  label="ИИК"
+                  label={t("common.fields.iik")}
                   value={form.accountNumber}
                   onChange={handleChange}
                   error={Boolean(errors.accountNumber)}
@@ -582,7 +585,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="legalAddress"
-                  label="Юридический адрес"
+                  label={t("common.fields.legalAddress")}
                   value={form.legalAddress}
                   onChange={handleChange}
                   error={Boolean(errors.legalAddress)}
@@ -592,7 +595,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="bankName"
-                  label="Название банка"
+                  label={t("common.fields.bankName")}
                   value={form.bankName}
                   onChange={handleChange}
                   error={Boolean(errors.bankName)}
@@ -602,11 +605,11 @@ export function ProfilePage() {
               </Stack>
 
               <Stack spacing={2}>
-                <Typography fontWeight={600}>Контактное лицо</Typography>
+                <Typography fontWeight={600}>{t("common.fields.contactPerson")}</Typography>
 
                 <TextField
                   name="personFio"
-                  label="ФИО"
+                  label={t("common.fields.fullName")}
                   value={form.personFio}
                   onChange={handleChange}
                   fullWidth
@@ -614,7 +617,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="personPhone"
-                  label="Телефон"
+                  label={t("common.fields.phone")}
                   value={form.personPhone}
                   onChange={handleChange}
                   fullWidth
@@ -632,7 +635,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="personIin"
-                  label="ИИН"
+                  label={t("common.fields.iin")}
                   value={form.personIin}
                   onChange={handleChange}
                   error={Boolean(errors.personIin)}
@@ -642,11 +645,11 @@ export function ProfilePage() {
               </Stack>
 
               <Stack spacing={2}>
-                <Typography fontWeight={600}>Смена пароля</Typography>
+                <Typography fontWeight={600}>{t("profile.sections.password")}</Typography>
 
                 <TextField
                   name="profileCurrentPassword"
-                  label="Текущий пароль"
+                  label={t("profile.password.current")}
                   type="password"
                   value={form.currentPassword}
                   onChange={(event) => {
@@ -672,7 +675,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="newPassword"
-                  label="Новый пароль"
+                  label={t("profile.password.new")}
                   type="password"
                   value={form.newPassword}
                   onChange={handleChange}
@@ -687,7 +690,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="newPasswordConfirm"
-                  label="Повторите новый пароль"
+                  label={t("profile.password.repeatNew")}
                   type="password"
                   value={form.newPasswordConfirm}
                   onChange={handleChange}
@@ -702,11 +705,11 @@ export function ProfilePage() {
               </Stack>
 
               <Stack spacing={2}>
-                <Typography fontWeight={600}>Документ</Typography>
+                <Typography fontWeight={600}>{t("common.fields.document")}</Typography>
 
                 <TextField
                   name="documentNumber"
-                  label="Номер документа"
+                  label={t("common.fields.documentNumber")}
                   value={form.documentNumber}
                   onChange={handleChange}
                   error={Boolean(errors.documentNumber)}
@@ -716,7 +719,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="issueCountry"
-                  label="Страна выдачи"
+                  label={t("common.fields.issuingCountry")}
                   value={form.issueCountry}
                   onChange={handleChange}
                   error={Boolean(errors.issueCountry)}
@@ -726,7 +729,7 @@ export function ProfilePage() {
 
                 <TextField
                   name="documentIssueDate"
-                  label="Когда выдан документ"
+                  label={t("profile.documents.issuedAt")}
                   type="date"
                   value={form.documentIssueDate}
                   onChange={handleChange}
@@ -742,7 +745,7 @@ export function ProfilePage() {
                 <TextField
                   select
                   name="documentIssuedBy"
-                  label="Кем выдан документ"
+                  label={t("profile.documents.issuedBy")}
                   value={form.documentIssuedBy}
                   onChange={handleChange}
                   error={Boolean(errors.documentIssuedBy)}
@@ -760,7 +763,7 @@ export function ProfilePage() {
               <Stack spacing={2}>
                 <Box>
                   <Typography fontWeight={600}>
-                    Регистрационные документы
+                    {t("profile.sections.documents")}
                   </Typography>
                 </Box>
 
@@ -775,7 +778,7 @@ export function ProfilePage() {
                   }}
                 >
                   <ProfileDocumentUpdateField
-                    label="Документ о регистрации юридического лица"
+                    label={t("profile.documents.legalEntity")}
                     currentDocument={form.registrationDocument}
                     file={profileDocumentFiles.registrationDocument}
                     inputKey={profileDocumentInputKeys.registrationDocument}
@@ -789,7 +792,7 @@ export function ProfilePage() {
                     }
                   />
                   <ProfileDocumentUpdateField
-                    label="Документ о трудоустройстве сотрудника"
+                    label={t("profile.documents.employment")}
                     currentDocument={form.employerDocument}
                     file={profileDocumentFiles.employerDocument}
                     inputKey={profileDocumentInputKeys.employerDocument}
@@ -815,7 +818,7 @@ export function ProfilePage() {
               variant="contained"
               disabled={isSaving || isProfileLoading}
             >
-              {isSaving ? "Сохранение..." : "Сохранить"}
+              {isSaving ? t("common.actions.saving") : t("common.actions.save")}
             </Button>
           </Box>
         </Stack>
@@ -824,7 +827,7 @@ export function ProfilePage() {
       <Paper sx={{ p: { xs: 2, md: 3 }, mt: 3 }}>
         <Stack spacing={2}>
           <Typography variant="body2" color="text.secondary">
-            После удаления аккаунт будет деактивирован. Чтобы восстановить его, обратитесь в поддержку.
+            {t("profile.delete.warningFull")}
           </Typography>
 
           {deleteConflictMessage && (
@@ -837,46 +840,46 @@ export function ProfilePage() {
               variant="outlined"
               onClick={handleOpenDeleteWarning}
             >
-              Удалить аккаунт
+              {t("profile.delete.action")}
             </Button>
           </Box>
         </Stack>
       </Paper>
 
       <Dialog open={isDeleteWarningOpen} onClose={handleCloseDeleteWarning}>
-        <DialogTitle>Удаление аккаунта</DialogTitle>
+        <DialogTitle>{t("profile.sections.deleteAccount")}</DialogTitle>
 
         <DialogContent>
           <DialogContentText>
-            Аккаунт будет деактивирован. Для восстановления обратитесь в поддержку.
+            {t("profile.delete.warning")}
           </DialogContentText>
         </DialogContent>
 
         <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={handleCloseDeleteWarning}>Отмена</Button>
+          <Button onClick={handleCloseDeleteWarning}>{t("common.actions.cancel")}</Button>
 
           <Button
             color="error"
             variant="contained"
             onClick={handleProceedToDeleteConfirm}
           >
-            Продолжить
+            {t("common.actions.continue")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={isDeleteConfirmOpen} onClose={handleCloseDeleteConfirm}>
-        <DialogTitle>Подтвердите удаление</DialogTitle>
+        <DialogTitle>{t("profile.delete.confirmTitle")}</DialogTitle>
 
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
-            Для подтверждения удаления аккаунта введите свой пароль.
+            {t("profile.delete.passwordPrompt")}
           </DialogContentText>
 
           <TextField
             autoFocus
             fullWidth
-            label="Пароль"
+            label={t("common.fields.password")}
             type={isDeletePasswordVisible ? "text" : "password"}
             value={deletePassword}
             onChange={(event) => {
@@ -912,7 +915,7 @@ export function ProfilePage() {
 
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={handleCloseDeleteConfirm} disabled={isDeleteLoading}>
-            Отмена
+            {t("common.actions.cancel")}
           </Button>
 
           <Button
@@ -921,7 +924,7 @@ export function ProfilePage() {
             onClick={handleConfirmDeleteAccount}
             disabled={isDeleteLoading || !deletePassword}
           >
-            {isDeleteLoading ? "Удаление..." : "Удалить аккаунт"}
+            {isDeleteLoading ? t("common.actions.deleting") : t("profile.delete.action")}
           </Button>
         </DialogActions>
       </Dialog>

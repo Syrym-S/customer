@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
@@ -23,6 +24,8 @@ import { getFactoringLeadId } from './factorings.helpers';
 const DEFAULT_PER_PAGE = 10;
 
 export function FactoringsProvider({ children }) {
+    const { t } = useTranslation();
+
     const [factorings, setFactorings] = useState([]);
 
     const [page, setPage] = useState(1);
@@ -86,7 +89,7 @@ export function FactoringsProvider({ children }) {
                     error.response?.data?.message ||
                         error.response?.data?.error ||
                         error.message ||
-                        'Не удалось загрузить факторинг-покупки',
+                        t("factorings.loadFailed"),
                 );
             } finally {
                 if (withLoader) {
@@ -94,7 +97,7 @@ export function FactoringsProvider({ children }) {
                 }
             }
         },
-        [page, perPage],
+        [page, perPage, t],
     );
 
     // Closed factorings carry their own factoring-line document. Absence of
@@ -203,13 +206,13 @@ export function FactoringsProvider({ children }) {
                     error.response?.data?.message ||
                         error.response?.data?.error ||
                         error.message ||
-                        'Не удалось загрузить детали факторинга',
+                        t("factorings.details.loadFailed"),
                 );
             } finally {
                 setIsDetailsLoading(false);
             }
         },
-        [loadFactoringDetailsWithLead],
+        [loadFactoringDetailsWithLead, t],
     );
 
     const closeFactoringDetails = useCallback(() => {
@@ -251,12 +254,12 @@ export function FactoringsProvider({ children }) {
                 error.response?.data?.message ||
                     error.response?.data?.error ||
                     error.message ||
-                    'Не удалось открыть окно подписания',
+                    t("factorings.confirmParticipation.openFailed"),
             );
         } finally {
             setIsInitiatingSigning(false);
         }
-    }, [selectedFactoring]);
+    }, [selectedFactoring, t]);
 
     const cancelFactoring = useCallback(async () => {
         const factoringId = getFactoringId(selectedFactoring);
@@ -282,12 +285,12 @@ export function FactoringsProvider({ children }) {
                 error.response?.data?.message ||
                     error.response?.data?.error ||
                     error.message ||
-                    'Не удалось отменить факторинг',
+                    t("factorings.cancel.failed"),
             );
         } finally {
             setIsCancelling(false);
         }
-    }, [selectedFactoring, loadFactoringDetailsWithLead, loadFactorings, page]);
+    }, [selectedFactoring, loadFactoringDetailsWithLead, loadFactorings, page, t]);
 
     useEffect(() => {
         loadFactorings(page, { withLoader: true });

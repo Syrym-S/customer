@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import i18n from '../../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { Box, CircularProgress, Typography } from '@mui/material';
 
 import { CustomerMapView } from '../../../customer-map/ui/CustomerMapView';
@@ -10,7 +12,7 @@ import { formatLeadDate, isLeadTrackingActive } from '../../model/lead.helpers';
 import { getWaypointTypeLabel } from '../../model/lead-route.helpers';
 
 function getPassedStateLine(location) {
-   return location?.is_passed ? '✓ Пройдена' : 'Не пройдена';
+   return location?.is_passed ? i18n.t("enums.verificationCheck.passedMark") : i18n.t("enums.verificationCheck.notPassed");
 }
 
 function withPassedState(description, location) {
@@ -26,6 +28,8 @@ export function LeadDetailsMap({
    geoCurrentPoint = null,
    isRouteLoading = false,
 }) {
+   const { t } = useTranslation();
+
    const hasRoutePoints = routePoints.length >= 2;
    const hasGeoPoints = geoPoints.length > 0;
 
@@ -47,7 +51,7 @@ export function LeadDetailsMap({
             return null;
          }
 
-         const baseTitle = `Промежуточная точка ${index + 1}`;
+         const baseTitle = t("route.waypoint", { index: index + 1 });
          const typeLabel = getWaypointTypeLabel(waypoint.type);
 
          return {
@@ -69,11 +73,11 @@ export function LeadDetailsMap({
                  ? {
                       id: 'route-start',
                       position: fromPosition,
-                      title: 'Откуда',
+                      title: t("common.fields.origin"),
                       description: withPassedState(
                          getLocationDescription(
                             lead.from_location,
-                            'Не указано',
+                            t("common.empty.notSpecifiedN"),
                          ),
                          lead.from_location,
                       ),
@@ -82,11 +86,11 @@ export function LeadDetailsMap({
                    ? {
                         id: 'route-start',
                         position: routePoints[0],
-                        title: 'Откуда',
+                        title: t("common.fields.origin"),
                         description: withPassedState(
                            getLocationDescription(
                               lead.from_location,
-                              'Не указано',
+                              t("common.empty.notSpecifiedN"),
                            ),
                            lead.from_location,
                         ),
@@ -99,11 +103,11 @@ export function LeadDetailsMap({
                  ? {
                       id: 'route-end',
                       position: toPosition,
-                      title: 'Куда',
+                      title: t("common.fields.destination"),
                       description: withPassedState(
                          getLocationDescription(
                             lead.to_location,
-                            'Не указано',
+                            t("common.empty.notSpecifiedN"),
                          ),
                          lead.to_location,
                       ),
@@ -112,11 +116,11 @@ export function LeadDetailsMap({
                    ? {
                         id: 'route-end',
                         position: routePoints[routePoints.length - 1],
-                        title: 'Куда',
+                        title: t("common.fields.destination"),
                         description: withPassedState(
                            getLocationDescription(
                               lead.to_location,
-                              'Не указано',
+                              t("common.empty.notSpecifiedN"),
                            ),
                            lead.to_location,
                         ),
@@ -133,10 +137,10 @@ export function LeadDetailsMap({
            {
               id: 'geo-current-point',
               position: [geoCurrentPoint.latitude, geoCurrentPoint.longitude],
-              title: 'Текущая позиция водителя',
+              title: t("leads.map.driverPosition"),
               description: geoCurrentPoint.recordedAt
-                 ? `Последнее обновление: ${formatLeadDate(geoCurrentPoint.recordedAt)}`
-                 : 'Координаты получены через WebSocket',
+                 ? t("leads.map.lastUpdate", { time: formatLeadDate(geoCurrentPoint.recordedAt) })
+                 : t("leads.map.coordsViaWebSocket"),
            },
         ]
       : [];
@@ -204,7 +208,7 @@ export function LeadDetailsMap({
                      fontWeight: 500,
                   }}
                >
-                  Загружаем маршрут...
+                  {t("leads.map.loadingRoute")}
                </Typography>
             </Box>
          )}

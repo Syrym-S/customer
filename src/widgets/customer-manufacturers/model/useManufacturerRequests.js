@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import i18n from '../../../shared/i18n';
 
 import {
    approveManufacturerRequest,
@@ -11,7 +12,6 @@ import {
    notifyError,
    notifySuccess,
 } from '../../../shared/model/notifications.store';
-import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
 import { normalizeManufacturerRequestsResponse } from './manufacturers.helpers';
 
 function getRequestErrorMessage(error, fallback) {
@@ -24,7 +24,7 @@ function getRequestErrorMessage(error, fallback) {
 }
 
 function getRequestsLabel(count) {
-   return `${count} ${pluralizeRu(count, ['заявка', 'заявки', 'заявок'])}`;
+   return i18n.t('manufacturers.requestCount', { count });
 }
 
 function getFirstRejectionMessage(results, fallback) {
@@ -49,7 +49,7 @@ export function useManufacturerRequests({ onSuccess } = {}) {
          setRequests(normalizeManufacturerRequestsResponse(response));
       } catch (requestError) {
          setError(
-            getRequestErrorMessage(requestError, 'Не удалось загрузить заявки'),
+            getRequestErrorMessage(requestError, i18n.t("manufacturers.requests.loadFailed")),
          );
       } finally {
          setIsLoading(false);
@@ -85,10 +85,12 @@ export function useManufacturerRequests({ onSuccess } = {}) {
 
             if (fulfilled < manufacturerIds.length) {
                notifyError(
-                  `${successVerb}: ${fulfilled} из ${manufacturerIds.length}. ${getFirstRejectionMessage(
-                     results,
-                     errorFallback,
-                  )}`,
+                  i18n.t('manufacturers.bulk.result', {
+                     action: successVerb,
+                     done: fulfilled,
+                     total: manufacturerIds.length,
+                     reason: getFirstRejectionMessage(results, errorFallback),
+                  }),
                );
             } else {
                notifySuccess(`${successVerb}: ${getRequestsLabel(fulfilled)}`);
@@ -108,8 +110,8 @@ export function useManufacturerRequests({ onSuccess } = {}) {
    const approveRequests = useCallback(
       (manufacturerIds) =>
          runRequests(manufacturerIds, approveManufacturerRequest, {
-            successVerb: 'Заявки одобрены',
-            errorFallback: 'Не удалось одобрить заявки',
+            successVerb: i18n.t("manufacturers.requests.approved"),
+            errorFallback: i18n.t("manufacturers.requests.approveFailed"),
          }),
       [runRequests],
    );
@@ -117,8 +119,8 @@ export function useManufacturerRequests({ onSuccess } = {}) {
    const rejectRequests = useCallback(
       (manufacturerIds) =>
          runRequests(manufacturerIds, rejectManufacturerRequest, {
-            successVerb: 'Заявки отклонены',
-            errorFallback: 'Не удалось отклонить заявки',
+            successVerb: i18n.t("manufacturers.requests.rejected"),
+            errorFallback: i18n.t("manufacturers.requests.rejectFailed"),
          }),
       [runRequests],
    );
@@ -126,8 +128,8 @@ export function useManufacturerRequests({ onSuccess } = {}) {
    const withdrawRequests = useCallback(
       (manufacturerIds) =>
          runRequests(manufacturerIds, detachManufacturer, {
-            successVerb: 'Заявки отозваны',
-            errorFallback: 'Не удалось отозвать заявки',
+            successVerb: i18n.t("manufacturers.requests.withdrawn"),
+            errorFallback: i18n.t("manufacturers.requests.withdrawFailed"),
          }),
       [runRequests],
    );
@@ -143,7 +145,7 @@ export function useManufacturerRequests({ onSuccess } = {}) {
 
             await attachManufacturer(manufacturerId);
 
-            notifySuccess('Заявка отправлена');
+            notifySuccess(i18n.t("enums.manufacturerStatus.requestSent"));
 
             await loadRequests();
             await onSuccess?.();
@@ -153,7 +155,7 @@ export function useManufacturerRequests({ onSuccess } = {}) {
             notifyError(
                getRequestErrorMessage(
                   requestError,
-                  'Не удалось отправить заявку',
+                  i18n.t("manufacturers.requests.sendFailed"),
                ),
             );
 

@@ -1,4 +1,6 @@
 import { truncateId } from "../../../shared/helpers/data-grid.helpers";
+import i18n from "../../../shared/i18n";
+import { getParticipantTypeLabel } from "../../customer-tenders/ui/tender-details/components/tender-participants.helpers";
 import { SUPPORT_CHAT_ID } from "./chat.mock";
 
 // Confirmed system-wide role_id table.
@@ -12,13 +14,19 @@ export const CHAT_ROLE_ID = {
 
 const CUSTOMER_PARTICIPANT_ROLE_ID = CHAT_ROLE_ID.CUSTOMER;
 
-export const CHAT_ROLE_LABEL_BY_ID = {
-  [CHAT_ROLE_ID.FORWARDER]: "Экспедитор",
-  [CHAT_ROLE_ID.CUSTOMER]: "Заказчик",
-  [CHAT_ROLE_ID.FACTOR]: "Фактор",
-  [CHAT_ROLE_ID.DRIVER]: "Водитель",
-  [CHAT_ROLE_ID.SUPPORT_AGENT]: "Поддержка",
+const CHAT_ROLE_LABEL_KEY_BY_ID = {
+  [CHAT_ROLE_ID.FORWARDER]: 'common.fields.forwarder',
+  [CHAT_ROLE_ID.CUSTOMER]: 'common.fields.customer',
+  [CHAT_ROLE_ID.FACTOR]: 'common.fields.factor',
+  [CHAT_ROLE_ID.DRIVER]: 'common.fields.driver',
+  [CHAT_ROLE_ID.SUPPORT_AGENT]: 'chat.types.support',
 };
+
+export function getChatRoleLabelById(roleId) {
+  const key = CHAT_ROLE_LABEL_KEY_BY_ID[roleId];
+
+  return key ? i18n.t(key) : '';
+}
 
 const CHAT_ROLE_ID_BY_ROLE_STRING = {
   forwarder: CHAT_ROLE_ID.FORWARDER,
@@ -132,12 +140,14 @@ export function normalizeLeadChatMessageResponse(response) {
 
 function getParticipantRoleLabel(role) {
   if (!role) {
-    return "Участник";
+    return i18n.t("chat.participant");
   }
 
   const roleId = resolveChatRoleIdFromRoleString(role);
 
-  return (roleId && CHAT_ROLE_LABEL_BY_ID[roleId]) || participantTypeLabels[role] || role;
+  return (
+    (roleId && getChatRoleLabelById(roleId)) || getParticipantTypeLabel(role) || role
+  );
 }
 
 function warnIfUnexpectedParticipantCount(apiParticipants, chatType) {
@@ -154,7 +164,7 @@ function mapLeadChatParticipantFromApi(apiParticipant) {
   const companyName = apiParticipant?.company_name || undefined;
 
   return {
-    name: fullName || companyName || "Участник чата",
+    name: fullName || companyName || i18n.t("chat.participantLabel"),
     role: getParticipantRoleLabel(apiParticipant?.role),
     roleId: resolveChatRoleIdFromRoleString(apiParticipant?.role),
     fullName,
@@ -205,7 +215,7 @@ export function buildLeadCounterpartFromLead(lead) {
   if (hasForwarderInfo) {
     return {
       name: forwarder.companyName || forwarder.fullName,
-      role: "Экспедитор",
+      role: i18n.t("common.fields.forwarder"),
       phone: forwarder.phone || undefined,
       fullName: forwarder.fullName && forwarder.fullName !== "Не указан" ? forwarder.fullName : undefined,
       companyName: forwarder.companyName || undefined,
@@ -213,12 +223,12 @@ export function buildLeadCounterpartFromLead(lead) {
   }
 
   return {
-    name: `Заказ #${truncateId(lead?.num ?? lead?.id)}`,
-    role: "Экспедитор",
+    name: i18n.t("leads.details.number", { num: truncateId(lead?.num ?? lead?.id) }),
+    role: i18n.t("common.fields.forwarder"),
   };
 }
 
-// lead.driver is either { id, fio } or the string 'Не назначен' when unassigned.
+// lead.driver is either { id, fio } or the string "Не назначен" when unassigned.
 export function buildDriverCounterpartFromLead(lead) {
   const driver = lead?.driver;
 
@@ -228,7 +238,7 @@ export function buildDriverCounterpartFromLead(lead) {
 
   return {
     name: driver.fio,
-    role: CHAT_ROLE_LABEL_BY_ID[CHAT_ROLE_ID.DRIVER],
+    role: getChatRoleLabelById(CHAT_ROLE_ID.DRIVER),
     fullName: driver.fio,
   };
 }
@@ -328,22 +338,22 @@ export function buildLeadRouteSummary(lead) {
 
 function buildFactoringCounterpartFallback(factoringId) {
   return {
-    name: `Факторинг #${truncateId(factoringId)}`,
-    role: "Факторинг",
+    name: i18n.t("factorings.details.number", { id: truncateId(factoringId) }),
+    role: i18n.t("enums.complaintTarget.factoring"),
   };
 }
 
 function buildDeliveryCounterpartFallback(id) {
   return {
-    name: `Доставка #${truncateId(id)}`,
-    role: "Доставка",
+    name: i18n.t("chat.types.deliveryNumber", { id: truncateId(id) }),
+    role: i18n.t("chat.types.delivery"),
   };
 }
 
 function buildSupportCounterpartFallback() {
   return {
-    name: "Техническая поддержка",
-    role: "Поддержка",
+    name: i18n.t("chat.types.supportFull"),
+    role: i18n.t("chat.types.support"),
   };
 }
 
@@ -450,7 +460,7 @@ export function mapLeadChatListEntryFromApi(apiChatEntry) {
       ? buildFactoringCounterpartFallback(leadId)
       : chatType === "delivery"
         ? buildDeliveryCounterpartFallback(leadId)
-        : { name: `Заказ #${truncateId(lead?.num ?? leadId)}`, role: "Экспедитор" };
+        : { name: i18n.t("leads.details.number", { num: truncateId(lead?.num ?? leadId) }), role: i18n.t("common.fields.forwarder") };
 
   return {
     id: isSupport ? SUPPORT_CHAT_ID : `${chatType}-chat-${leadId}`,

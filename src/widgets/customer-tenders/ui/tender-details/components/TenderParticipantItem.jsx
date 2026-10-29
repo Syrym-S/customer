@@ -1,10 +1,11 @@
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { useTranslation } from "react-i18next";
 import { Box, Chip, IconButton, Stack, Typography } from '@mui/material';
 
 import {
     formatDateTime,
     getParticipantForwarderId,
-    participantTypeLabels,
+    getParticipantTypeLabel,
 } from './tender-participants.helpers';
 
 export function TenderParticipantItem({
@@ -13,6 +14,8 @@ export function TenderParticipantItem({
     isActionLoading,
     onDeleteParticipant,
 }) {
+    const { t } = useTranslation();
+
     const participantId = getParticipantForwarderId(participant);
 
     const canDeleteParticipant =
@@ -66,7 +69,7 @@ export function TenderParticipantItem({
                             wordBreak: 'break-word',
                         }}
                     >
-                        {participant.company_name || 'Компания не указана'}
+                        {participant.company_name || t("common.empty.companyNotSpecified")}
                     </Typography>
 
                     <Typography
@@ -77,8 +80,8 @@ export function TenderParticipantItem({
                         }}
                     >
                         {participant.company_bin
-                            ? `БИН: ${participant.company_bin}`
-                            : 'БИН не указан'}
+                            ? t("tenders.participants.bin", { bin: participant.company_bin })
+                            : t("common.empty.binNotSpecified")}
                     </Typography>
 
                     <Typography
@@ -88,14 +91,14 @@ export function TenderParticipantItem({
                             mt: 0.25,
                         }}
                     >
-                        Добавлен: {formatDateTime(participant.date)}
+                        {t("tenders.participants.added", { date: formatDateTime(participant.date) })}
                     </Typography>
 
                     <Chip
                         label={
-                            participantTypeLabels[participant.type] ||
+                            getParticipantTypeLabel(participant.type) ||
                             participant.type ||
-                            'Не указано'
+                            t("common.empty.notSpecifiedN")
                         }
                         size="small"
                         sx={{
@@ -114,8 +117,8 @@ export function TenderParticipantItem({
                         color="error"
                         disabled={isActionLoading || !participantId}
                         onClick={() => onDeleteParticipant?.(participantId)}
-                        aria-label="Удалить участника"
-                        title="Удалить участника"
+                        aria-label={t("tenders.participants.remove")}
+                        title={t("tenders.participants.remove")}
                         sx={{
                             flexShrink: 0,
 

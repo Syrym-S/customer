@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import i18n from '../../../shared/i18n';
 
 import { reverseGeocode } from '../api/geocoding.api';
 import { formatCoordinatesLabel } from '../lib/geocoding.helpers';
@@ -133,7 +134,7 @@ export function useRouteMapPicker({ form, setValue }) {
     async function setFromPoint(lat, lng) {
         setValue('fromLat', lat, setValueOptions);
         setValue('fromLng', lng, setValueOptions);
-        setValue('fromLocation', 'Определяем адрес...', setValueOptions);
+        setValue('fromLocation', i18n.t("route.addressDetecting"), setValueOptions);
         setValue('from_location', emptyLocation, setValueOptions);
 
         const geocodeResult = await getAddressForPoint('from', lat, lng);
@@ -153,7 +154,7 @@ export function useRouteMapPicker({ form, setValue }) {
     async function setToPoint(lat, lng) {
         setValue('toLat', lat, setValueOptions);
         setValue('toLng', lng, setValueOptions);
-        setValue('toLocation', 'Определяем адрес...', setValueOptions);
+        setValue('toLocation', i18n.t("route.addressDetecting"), setValueOptions);
         setValue('to_location', emptyLocation, setValueOptions);
 
         const geocodeResult = await getAddressForPoint('to', lat, lng);
@@ -177,7 +178,7 @@ export function useRouteMapPicker({ form, setValue }) {
         setValue(`waypoints.${index}.lng`, lng, setValueOptions);
         setValue(
             `waypoints.${index}.location`,
-            'Определяем адрес...',
+            i18n.t("route.addressDetecting"),
             setValueOptions,
         );
         setValue(

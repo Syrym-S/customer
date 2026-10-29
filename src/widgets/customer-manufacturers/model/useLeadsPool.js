@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import i18n from '../../../shared/i18n';
 
 import { fetchCustomerLeads } from '../../customer-leads/api/leads.repository';
 import { mapLeadsResponseFromApi } from '../../customer-leads/model/lead.adapter';
@@ -28,7 +29,7 @@ export function useLeadsPool(manufacturerId = '') {
          setError(
             requestError.response?.data?.message ||
                requestError.message ||
-               'Не удалось загрузить перевозки',
+               i18n.t("manufacturers.shipments.loadFailed"),
          );
       } finally {
          setIsLoading(false);

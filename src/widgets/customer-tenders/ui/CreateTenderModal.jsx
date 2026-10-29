@@ -15,6 +15,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import i18n from "../../../shared/i18n";
+import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { useTendersContext } from "../model/useTendersContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -110,7 +112,7 @@ function formatMoney(value) {
   const formattedAmount = formatAmount(value);
 
   if (!formattedAmount) {
-    return "Цена не указана";
+    return i18n.t("common.empty.priceNotSpecified");
   }
 
   return `${formattedAmount} KZT`;
@@ -133,7 +135,7 @@ function normalizeForwarderOption(forwarder) {
       forwarder.full_name ||
       forwarder.fio ||
       forwarder.name ||
-      "Без имени",
+      i18n.t("common.empty.noName"),
 
     iin: forwarder.iin || forwarder.personIin || "",
 
@@ -141,7 +143,7 @@ function normalizeForwarderOption(forwarder) {
       forwarder.companyName ||
       forwarder.company_name ||
       forwarder.name ||
-      "Без компании",
+      i18n.t("common.empty.noCompany"),
 
     companyBin:
       forwarder.companyBin || forwarder.company_bin || forwarder.bin || "",
@@ -206,6 +208,8 @@ function filterForwardersLocally(forwarders, query) {
 }
 
 export function CreateTenderModal({ open, onClose }) {
+  const { t } = useTranslation();
+
   const { createTender, reloadTenders, startTender } = useTendersContext();
 
   const [form, setForm] = useState(() => createInitialForm());
@@ -257,14 +261,14 @@ export function CreateTenderModal({ open, onClose }) {
         error.response?.data?.message ||
           error.response?.data?.error ||
           error.message ||
-          "Не удалось загрузить экспедиторов",
+          t("common.forwarderPicker.loadFailed"),
       );
 
       setAllForwarders([]);
     } finally {
       setIsForwardersLoading(false);
     }
-  }, [form.isPublic, isForwardersLoaded, isForwardersLoading]);
+  }, [form.isPublic, isForwardersLoaded, isForwardersLoading, t]);
 
   function handleRequestLeadChange(_, newValue, reason) {
     if (reason === "clear" || !newValue) {
@@ -341,55 +345,55 @@ export function CreateTenderModal({ open, onClose }) {
 
   function validateForm() {
     if (!selectedLead?.id) {
-      return "Выберите заказ";
+      return t("tenders.leadPicker.select");
     }
 
     if (!form.publicationDateTime) {
-      return "Укажите дату публикации";
+      return t("tenders.dates.publicationRequired");
     }
 
     const publicationDate = new Date(form.publicationDateTime);
     const now = new Date();
 
     if (Number.isNaN(publicationDate.getTime())) {
-      return "Некорректная дата публикации";
+      return t("tenders.dates.publicationInvalid");
     }
 
     if (publicationDate < now) {
-      return "Дата публикации не может быть в прошлом";
+      return t("tenders.dates.publicationInPast");
     }
 
     if (!form.endDateTime) {
-      return "Укажите дату окончания";
+      return t("tenders.dates.endRequired");
     }
 
     const endDate = new Date(form.endDateTime);
 
     if (Number.isNaN(endDate.getTime())) {
-      return "Некорректная дата окончания";
+      return t("tenders.dates.endInvalid");
     }
 
     if (endDate <= now) {
-      return "Дата окончания должна быть позже текущего времени";
+      return t("tenders.dates.endAfterNow");
     }
 
     if (
       endDate.getTime() - publicationDate.getTime() <
       MIN_GAP_AFTER_PUBLICATION_MS
     ) {
-      return "Дата окончания должна быть минимум через 30 минут после даты публикации";
+      return t("tenders.dates.endMin30Minutes");
     }
 
     if (form.isPublic) {
       const maxParticipants = Number(form.maxParticipants);
 
       if (Number.isNaN(maxParticipants) || maxParticipants < 0) {
-        return "Максимальное количество участников не может быть меньше 0";
+        return t("tenders.validation.maxParticipantsNegative");
       }
     }
 
     if (!form.isPublic && selectedForwarders.length === 0) {
-      return "Выберите хотя бы одного экспедитора для приватного аукциона";
+      return t("tenders.validation.privateNeedsForwarder");
     }
 
     return "";
@@ -444,7 +448,7 @@ export function CreateTenderModal({ open, onClose }) {
       setSubmitError(
         error.response?.data?.message ||
           error.message ||
-          "Не удалось создать аукцион",
+          t("tenders.create.failed"),
       );
     } finally {
       setIsSubmitting(false);
@@ -488,7 +492,7 @@ export function CreateTenderModal({ open, onClose }) {
           setLeadsSearchError(
             error.response?.data?.message ||
               error.message ||
-              "Не удалось найти заказы",
+              t("tenders.leadPicker.searchFailed"),
           );
         }
       } finally {
@@ -502,7 +506,7 @@ export function CreateTenderModal({ open, onClose }) {
       isCancelled = true;
       clearTimeout(timeoutId);
     };
-  }, [leadInputValue, selectedLead]);
+  }, [leadInputValue, selectedLead, t]);
 
   useEffect(() => {
     if (!form.isPublic) {
@@ -581,7 +585,7 @@ export function CreateTenderModal({ open, onClose }) {
   return (
     <>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-        <DialogTitle>Создание аукциона</DialogTitle>
+        <DialogTitle>{t("tenders.create.title")}</DialogTitle>
 
         <DialogContent>
           <Box component="form" onSubmit={handleSubmit} sx={{ pt: 1 }}>
@@ -600,10 +604,10 @@ export function CreateTenderModal({ open, onClose }) {
                 }
                 noOptionsText={
                   leadInputValue.trim().length < 2
-                    ? "Введите минимум 2 символа"
-                    : "Заказы не найдены"
+                    ? t("common.search.minChars")
+                    : t("tenders.leadPicker.notFound")
                 }
-                loadingText="Поиск заказов..."
+                loadingText={t("tenders.leadPicker.searching")}
                 onInputChange={(_, newInputValue, reason) => {
                   if (reason === "reset") {
                     setLeadInputValue(newInputValue);
@@ -651,19 +655,19 @@ export function CreateTenderModal({ open, onClose }) {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Заказ"
-                    placeholder="Введите город, груз или направление"
+                    label={t("tenders.leadPicker.order")}
+                    placeholder={t("tenders.searchPlaceholder")}
                     error={Boolean(leadsSearchError)}
                     helperText={
                       leadsSearchError ||
-                      "Выберите заказ, для которого создается аукцион"
+                      t("tenders.leadPicker.hint")
                     }
                   />
                 )}
               />
 
               <TextField
-                label="Дата публикации"
+                label={t("tenders.dates.publicationDate")}
                 type="datetime-local"
                 value={form.publicationDateTime}
                 onChange={(event) =>
@@ -684,7 +688,7 @@ export function CreateTenderModal({ open, onClose }) {
               />
 
               <TextField
-                label="Дата окончания"
+                label={t("common.fields.endDate")}
                 type="datetime-local"
                 value={form.endDateTime}
                 onChange={(event) =>
@@ -718,12 +722,12 @@ export function CreateTenderModal({ open, onClose }) {
                     }}
                   />
                 }
-                label="Публичный аукцион"
+                label={t("tenders.create.publicAuction")}
               />
 
               {form.isPublic && (
                 <TextField
-                  label="Максимум участников"
+                  label={t("tenders.create.maxParticipants")}
                   type="number"
                   value={form.maxParticipants}
                   onChange={(event) =>
@@ -751,7 +755,7 @@ export function CreateTenderModal({ open, onClose }) {
                       }
                     />
                   }
-                  label="Запустить аукцион после создания"
+                  label={t("tenders.create.startAfterCreate")}
                 />
               )}
 
@@ -777,10 +781,10 @@ export function CreateTenderModal({ open, onClose }) {
                   onOpen={loadForwarders}
                   noOptionsText={
                     isForwardersLoaded
-                      ? "Экспедитор не найден"
-                      : "Нажмите, чтобы загрузить экспедиторов"
+                      ? t("common.forwarderPicker.notFound")
+                      : t("common.forwarderPicker.clickToLoad")
                   }
-                  loadingText="Загружаем экспедиторов..."
+                  loadingText={t("common.forwarderPicker.loading")}
                   onInputChange={(_, newInputValue, reason) => {
                     if (reason === "reset") {
                       return;
@@ -849,7 +853,7 @@ export function CreateTenderModal({ open, onClose }) {
                       >
                         <Box sx={{ minWidth: 0 }}>
                           <Typography fontWeight={700}>
-                            {option.fullName || "ФИО не указано"}
+                            {option.fullName || t("common.empty.fullNameNotSpecified")}
                           </Typography>
 
                           <Typography
@@ -859,7 +863,7 @@ export function CreateTenderModal({ open, onClose }) {
                             {option.phone ||
                               option.iin ||
                               option.companyBin ||
-                              "Контакты не указаны"}
+                              t("common.empty.contactsNotSpecified")}
                           </Typography>
                         </Box>
 
@@ -880,17 +884,17 @@ export function CreateTenderModal({ open, onClose }) {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      label="Экспедиторы"
+                      label={t("forwarders.title")}
                       placeholder={
                         selectedForwarders.length > 0
                           ? ""
-                          : "Введите ФИО, ИИН, компанию, БИН или телефон"
+                          : t("common.forwarderPicker.searchHint")
                       }
                       onFocus={loadForwarders}
                       error={Boolean(forwardersSearchError)}
                       helperText={
                         forwardersSearchError ||
-                        "Выберите экспедиторов, которые будут приглашены в приватный аукцион"
+                        t("tenders.create.privateHint")
                       }
                     />
                   )}
@@ -902,23 +906,23 @@ export function CreateTenderModal({ open, onClose }) {
 
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={onClose} disabled={isSubmitting}>
-            Отмена
+            {t("common.actions.cancel")}
           </Button>
           <Button
             variant="contained"
             onClick={handleSubmit}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Создаем..." : "Создать аукцион"}
+            {isSubmitting ? t("common.actions.creating") : t("tenders.create.action")}
           </Button>
         </DialogActions>
       </Dialog>
       <Dialog open={isLeadConfirmOpen} onClose={handleCloseLeadConfirm}>
-        <DialogTitle>Выбор заказа</DialogTitle>
+        <DialogTitle>{t("tenders.leadPicker.sectionTitle")}</DialogTitle>
 
         <DialogContent>
           <DialogContentText>
-            Вы уверены, что хотите создать аукцион по этому заказу?
+            {t("tenders.create.confirm")}
           </DialogContentText>
 
           {pendingLead && (
@@ -926,31 +930,31 @@ export function CreateTenderModal({ open, onClose }) {
               <Typography fontWeight={700}>
                 {pendingLead.title ||
                   pendingLead.label ||
-                  `Заказ #${pendingLead.id}`}
+                  t("leads.details.number", { num: pendingLead.id })}
               </Typography>
 
               <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-                Груз: {pendingLead.cargo || "Не указан"}
+                {t("tenders.leadPicker.cargoLabel", { cargo: pendingLead.cargo || t("common.empty.notSpecifiedM") })}
               </Typography>
 
               {pendingLead.forwarder && (
                 <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-                  Экспедитор: {pendingLead.forwarder}
+                  {t("tenders.leadPicker.forwarder", { name: pendingLead.forwarder })}
                 </Typography>
               )}
 
               <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-                Цена: {formatMoney(pendingLead.price)}
+                {t("tenders.leadPicker.priceLabel", { price: formatMoney(pendingLead.price) })}
               </Typography>
             </Box>
           )}
         </DialogContent>
 
         <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={handleCloseLeadConfirm}>Отмена</Button>
+          <Button onClick={handleCloseLeadConfirm}>{t("common.actions.cancel")}</Button>
 
           <Button variant="contained" onClick={handleConfirmLeadSelection}>
-            Выбрать заказ
+            {t("tenders.leadPicker.selectAction")}
           </Button>
         </DialogActions>
       </Dialog>

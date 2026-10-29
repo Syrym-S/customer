@@ -14,6 +14,8 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 
 import {
     getForwarderAccount,
@@ -30,7 +32,7 @@ import {
 // import { TaxationRegimeInfo } from '../../../shared/kgd-taxation/ui/TaxationRegimeInfo';
 
 function getValue(value) {
-    return value || 'Не указан';
+    return value || i18n.t("common.empty.notSpecifiedM");
 }
 
 function ForwarderDataGroup({ title, rows }) {
@@ -95,40 +97,42 @@ function ForwarderDataGroup({ title, rows }) {
 }
 
 function ForwarderDataTable({ forwarder }) {
+    const { t } = useTranslation();
+
     const companyRows = [
         {
-            label: 'Компания',
+            label: t("common.fields.company"),
             value: getForwarderCompanyName(forwarder),
         },
         {
-            label: 'БИН',
+            label: t("common.fields.bin"),
             value: getForwarderBin(forwarder),
         },
         {
-            label: 'БИК',
+            label: t("common.fields.bik"),
             value: getForwarderBik(forwarder),
         },
         {
-            label: 'Расчетный счет',
+            label: t("common.fields.settlementAccount"),
             value: getForwarderAccount(forwarder),
         },
         {
-            label: 'Адрес компании',
+            label: t("common.fields.companyAddress"),
             value: getForwarderAddress(forwarder),
         },
     ];
 
     const contactRows = [
         {
-            label: 'ФИО',
+            label: t("common.fields.fullName"),
             value: getForwarderFio(forwarder),
         },
         {
-            label: 'ИИН',
+            label: t("common.fields.iin"),
             value: getForwarderIin(forwarder),
         },
         {
-            label: 'Телефон',
+            label: t("common.fields.phone"),
             value: getForwarderPhone(forwarder),
         },
         {
@@ -140,12 +144,12 @@ function ForwarderDataTable({ forwarder }) {
     return (
         <Box>
             <ForwarderDataGroup
-                title="Данные экспедитора — компания"
+                title={t("forwarders.sections.company")}
                 rows={companyRows}
             />
 
             <ForwarderDataGroup
-                title="Данные контактного лица"
+                title={t("forwarders.sections.contact")}
                 rows={contactRows}
             />
         </Box>
@@ -159,6 +163,8 @@ export function ForwarderDetailsModal({
     error,
     onClose,
 }) {
+    const { t } = useTranslation();
+
     return (
         <Dialog
             open={open}
@@ -236,7 +242,7 @@ export function ForwarderDetailsModal({
                                 mb: 1.5,
                             }}
                         >
-                            Реквизиты экспедитора
+                            {t("forwarders.sections.requisites")}
                         </Typography>
 
                         <ForwarderDataTable forwarder={forwarder} />
@@ -264,7 +270,7 @@ export function ForwarderDetailsModal({
                 }}
             >
                 <Button onClick={onClose} disabled={loading}>
-                    Закрыть
+                    {t("common.actions.close")}
                 </Button>
             </DialogActions>
         </Dialog>

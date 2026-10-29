@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { TendersContext } from "./TendersContext";
 import PropTypes from "prop-types";
 import {
@@ -32,6 +33,8 @@ export function TendersProvider({
   initialPublicationType = "all",
   initialPerPage = DEFAULT_PER_PAGE,
 }) {
+  const { t } = useTranslation();
+
   const [tenders, setTenders] = useState([]);
   const [openTender, setOpenTender] = useState(null);
 
@@ -78,7 +81,7 @@ export function TendersProvider({
         setError(
           error.response?.data?.message ||
             error.message ||
-            "Не удалось загрузить аукционы",
+            t("tenders.loadFailed"),
         );
       } finally {
         if (withLoader) {
@@ -86,7 +89,7 @@ export function TendersProvider({
         }
       }
     },
-    [page, perPage, status, publicationType, debouncedSearch],
+    [page, perPage, status, publicationType, debouncedSearch, t],
   );
 
   const loadTenderDetailsWithFiles = useCallback(async (tenderId) => {
@@ -181,13 +184,13 @@ export function TendersProvider({
         setDetailsError(
           error.response?.data?.message ||
             error.message ||
-            "Не удалось загрузить детали аукциона",
+            t("tenders.details.loadFailed"),
         );
       } finally {
         setIsDetailsLoading(false);
       }
     },
-    [loadTenderDetailsWithFiles],
+    [loadTenderDetailsWithFiles, t],
   );
 
   const closeTenderDetails = useCallback(async () => {

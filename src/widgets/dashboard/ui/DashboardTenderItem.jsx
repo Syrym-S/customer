@@ -1,10 +1,12 @@
 import { Box, Chip, Divider, Paper, Stack, Typography } from '@mui/material';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { normalizeLocationValue } from '../../customer-tenders/model/tender-edit-form.helpers';
 import {
     getTenderCargoTypeLabel,
     getTenderTotalCargoWeight,
     getTimeLeft,
-    tenderStatusLabels,
+    getTenderStatusLabel,
     tenderStatusStyles,
 } from '../../customer-tenders/model/tender.helpers';
 import { useTendersContext } from '../../customer-tenders/model/useTendersContext';
@@ -15,7 +17,7 @@ function getLocationLabel(tender, field) {
     return (
         normalizeLocationValue(tender?.lead?.[field]) ||
         normalizeLocationValue(tender?.[field]) ||
-        'Не указано'
+        i18n.t("common.empty.notSpecifiedN")
     );
 }
 
@@ -26,7 +28,7 @@ function getMoneyLabel(tender) {
     const formattedAmount = formatAmount(amount);
 
     if (!formattedAmount) {
-        return 'Цена не указана';
+        return i18n.t("common.empty.priceNotSpecified");
     }
 
     return `${formattedAmount} ${currency}`.trim();
@@ -38,14 +40,14 @@ function getBetsCount(tender) {
 
 function getPublicationTypeLabel(publicationType) {
     if (publicationType === 'public') {
-        return 'Публичный';
+        return i18n.t("enums.publicationType.public");
     }
 
     if (publicationType === 'private') {
-        return 'Приватный';
+        return i18n.t("enums.publicationType.private");
     }
 
-    return 'Тип не указан';
+    return i18n.t("common.empty.typeNotSpecified");
 }
 
 function getShortTenderId(id) {
@@ -63,13 +65,16 @@ function getShortTenderId(id) {
 }
 
 function TenderStatusChip({ status }) {
-    const label = tenderStatusLabels[status] || status || 'Не указан';
+    const label =
+        getTenderStatusLabel(status) || status || i18n.t("common.empty.notSpecifiedM");
     const styles = tenderStatusStyles[status] || tenderStatusStyles.new;
 
     return <StatusDot label={label} color={styles.color} />;
 }
 
 function TimeLeftBadge({ value }) {
+    const { t } = useTranslation();
+
     return (
         <Box
             sx={{
@@ -91,7 +96,7 @@ function TimeLeftBadge({ value }) {
                     lineHeight: 1.2,
                 }}
             >
-                Осталось
+                {t("common.fields.timeLeft")}
             </Typography>
 
             <Typography
@@ -102,13 +107,15 @@ function TimeLeftBadge({ value }) {
                     lineHeight: 1.2,
                 }}
             >
-                {value || 'Не указано'}
+                {value || t("common.empty.notSpecifiedN")}
             </Typography>
         </Box>
     );
 }
 
 function InfoText({ label, value }) {
+    const { t } = useTranslation();
+
     return (
         <Box sx={{ minWidth: 0 }}>
             <Typography variant="caption" color="text.secondary">
@@ -123,13 +130,15 @@ function InfoText({ label, value }) {
                     overflowWrap: 'anywhere',
                 }}
             >
-                {value || 'Не указано'}
+                {value || t("common.empty.notSpecifiedN")}
             </Typography>
         </Box>
     );
 }
 
 export function DashboardTenderItem({ tender }) {
+    const { t } = useTranslation();
+
     const { openTenderDetails } = useTendersContext();
 
     const isCancelled = tender?.status === 'cancelled';
@@ -188,15 +197,13 @@ export function DashboardTenderItem({ tender }) {
                         }}
                     >
                         <Chip
-                            label={`Аукцион #${getShortTenderId(tender?.id)}`}
+                            label={t("dashboard.tenders.number", { id: getShortTenderId(tender?.id) })}
                             size="small"
                             color="primary"
                             variant="outlined"
-                            title={
-                                tender?.id
-                                    ? `Аукцион #${tender.id}`
-                                    : 'Аукцион #—'
-                            }
+                            title={t("dashboard.tenders.number", {
+                                id: tender?.id ?? "—",
+                            })}
                             sx={{
                                 fontWeight: 600,
                                 borderRadius: 999,
@@ -242,7 +249,7 @@ export function DashboardTenderItem({ tender }) {
 
                 <Box>
                     <InfoText
-                        label="Откуда"
+                        label={t("common.fields.origin")}
                         value={getLocationLabel(tender, 'from_location')}
                     />
                 </Box>
@@ -251,7 +258,7 @@ export function DashboardTenderItem({ tender }) {
 
                 <Box>
                     <InfoText
-                        label="Куда"
+                        label={t("common.fields.destination")}
                         value={getLocationLabel(tender, 'to_location')}
                     />
                 </Box>
@@ -266,14 +273,14 @@ export function DashboardTenderItem({ tender }) {
                         gap: 1,
                     }}
                 >
-                    <InfoText label="Тип груза" value={cargoTypeLabel} />
+                    <InfoText label={t("common.fields.cargoType")} value={cargoTypeLabel} />
 
                     <InfoText
-                        label="Вес"
+                        label={t("common.fields.weight")}
                         value={
                             totalCargoWeight > 0
-                                ? `${totalCargoWeight} кг`
-                                : 'Не указано'
+                                ? t("common.units.kg", { value: totalCargoWeight })
+                                : t("common.empty.notSpecifiedN")
                         }
                     />
                 </Box>
@@ -298,7 +305,7 @@ export function DashboardTenderItem({ tender }) {
                     </Typography>
 
                     <Chip
-                        label={`Ставки: ${betsCount}`}
+                        label={t("dashboard.tenders.bids", { count: betsCount })}
                         size="small"
                         variant="outlined"
                         sx={{

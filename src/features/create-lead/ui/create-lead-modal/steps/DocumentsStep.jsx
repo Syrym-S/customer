@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 
 import {
    Box,
@@ -28,6 +29,8 @@ function createLocalDocument({ name, context, file }) {
 }
 
 export function DocumentsStep({ form, setValue }) {
+   const { t } = useTranslation();
+
    const [selectedFileName, setSelectedFileName] = useState('');
 
    function handleFileChange(event) {
@@ -76,7 +79,7 @@ export function DocumentsStep({ form, setValue }) {
 
    return (
       <Box sx={{ display: 'grid', gap: 2 }}>
-         <StepSection title='Документы'>
+         <StepSection title={t("createLead.steps.documents")}>
             <Stack spacing={2}>
                <Box
                   component='form'
@@ -93,14 +96,14 @@ export function DocumentsStep({ form, setValue }) {
                >
                   <TextField
                      name='name'
-                     label='Название документа'
+                     label={t("common.fields.documentName")}
                      size='small'
                      fullWidth
                   />
 
                   <TextField
                      name='context'
-                     label='Описание'
+                     label={t("common.fields.description")}
                      size='small'
                      fullWidth
                   />
@@ -118,7 +121,7 @@ export function DocumentsStep({ form, setValue }) {
                            },
                         }}
                      >
-                        {selectedFileName ? 'Файл выбран' : 'Файл'}
+                        {selectedFileName ? t("common.documents.fileSelected") : t("common.fields.file")}
 
                         <input
                            name='file'
@@ -162,7 +165,7 @@ export function DocumentsStep({ form, setValue }) {
                         justifySelf: 'flex-start',
                      }}
                   >
-                     Добавить документ
+                     {t("common.documents.add")}
                   </Button>
                </Box>
 
@@ -210,7 +213,7 @@ export function DocumentsStep({ form, setValue }) {
                                     lineHeight: 1.35,
                                  }}
                               >
-                                 {document.name || 'Документ'}
+                                 {document.name || t("common.fields.document")}
                               </Typography>
 
                               <Typography
@@ -222,7 +225,7 @@ export function DocumentsStep({ form, setValue }) {
                                     lineHeight: 1.35,
                                  }}
                               >
-                                 {document.context || 'Описание не указано'}
+                                 {document.context || t("common.empty.descriptionNotSpecified")}
                               </Typography>
 
                               <Typography
@@ -235,7 +238,7 @@ export function DocumentsStep({ form, setValue }) {
                                     wordBreak: 'break-word',
                                  }}
                               >
-                                 {document.fileName || 'Файл'}
+                                 {document.fileName || t("common.fields.file")}
                               </Typography>
                            </Box>
 
@@ -257,7 +260,7 @@ export function DocumentsStep({ form, setValue }) {
                         color: 'grey.600',
                      }}
                   >
-                     Документы не добавлены
+                     {t("common.documents.empty")}
                   </Typography>
                )}
             </Stack>

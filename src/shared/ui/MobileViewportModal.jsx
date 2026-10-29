@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 import {
    Box,
@@ -14,6 +15,8 @@ import {
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 export function MobileViewportModal() {
+   const { t } = useTranslation();
+
    const theme = useTheme();
    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
    const [open, setOpen] = useState(isMobile);
@@ -54,13 +57,11 @@ export function MobileViewportModal() {
                      mb: 1,
                   }}
                >
-                  Рекомендуем использовать компьютерную версию 
+                  {t("mobileNotice.title")} 
                </Typography>
 
                <Typography color='text.secondary'>
-                  Для более комфортной работы с сервисом рекомендуем
-                  использовать компьютер. Мобильная версия может отображаться
-                  некорректно.
+                  {t("mobileNotice.text")}
                </Typography>
             </Box>
          </DialogContent>
@@ -72,7 +73,7 @@ export function MobileViewportModal() {
             }}
          >
             <Button variant='contained' onClick={handleClose}>
-               Понятно
+               {t("common.actions.gotIt")}
             </Button>
          </DialogActions>
       </Dialog>

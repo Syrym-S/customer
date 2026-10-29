@@ -13,6 +13,7 @@ import {
     Select,
     TextField,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
@@ -40,6 +41,8 @@ import {
 import { isInternationalRoute } from '../../../lib/route-international.helpers';
 
 export function RouteStep({ control, errors, form, setValue, trigger }) {
+    const { t } = useTranslation();
+
     const map = useCustomerMap();
     const [fromInputValue, setFromInputValue] = useState('');
     const [toInputValue, setToInputValue] = useState('');
@@ -204,7 +207,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
     const mapZoom = routePoints.length >= 2 ? 7 : map.zoom;
 
     return (
-        <StepSection title="Маршрут">
+        <StepSection title={t("createLead.steps.route")}>
             <Box
                 sx={{
                     display: 'flex',
@@ -229,7 +232,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         }
                         onClick={() => setActiveMapPoint('from')}
                     >
-                        Откуда
+                        {t("common.fields.origin")}
                     </Button>
 
                     {waypoints.map((_, index) => {
@@ -246,7 +249,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                 }
                                 onClick={() => setActiveMapPoint(pointKey)}
                             >
-                                Точка {index + 1}
+                                {t("route.point", { index: index + 1 })}
                             </Button>
                         );
                     })}
@@ -258,7 +261,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         }
                         onClick={() => setActiveMapPoint('to')}
                     >
-                        Куда
+                        {t("common.fields.destination")}
                     </Button>
 
                     <Button
@@ -266,7 +269,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         variant="outlined"
                         onClick={handleAddWaypoint}
                     >
-                        + Промежуточная
+                        {t("route.addWaypoint")}
                     </Button>
                 </Box>
 
@@ -277,7 +280,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                     onClick={handleClearRoute}
                     disabled={isClearDisabled}
                 >
-                    Очистить маршрут
+                    {t("route.clear")}
                 </Button>
             </Box>
 
@@ -320,10 +323,10 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                     name="fromLocation"
                     control={control}
                     rules={{
-                        required: 'Укажите место отправления',
+                        required: t("route.validation.originRequired"),
                         minLength: {
                             value: 3,
-                            message: 'Минимум 3 символа',
+                            message: t("validation.min3"),
                         },
                     }}
                     render={({ field }) => (
@@ -385,17 +388,17 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                             }}
                             noOptionsText={
                                 fromInputValue.trim().length < 2
-                                    ? 'Введите минимум 2 символа'
-                                    : 'Адрес не найден'
+                                    ? t("common.search.minChars")
+                                    : t("route.addressNotFound")
                             }
-                            loadingText="Поиск адреса..."
+                            loadingText={t("route.addressSearching")}
                             renderInput={(params) => {
                                 const inputProps = params.InputProps || {};
 
                                 return (
                                     <TextField
                                         {...params}
-                                        label="Откуда"
+                                        label={t("common.fields.origin")}
                                         fullWidth
                                         size="small"
                                         error={Boolean(errors.fromLocation)}
@@ -440,7 +443,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         name="fromStartAt"
                         control={control}
                         rules={{
-                            required: 'Укажите дату начала в точке отправления',
+                            required: t("route.validation.startDateOrigin"),
                             validate: validateNotBeforeToday,
                         }}
                         render={({ field }) => (
@@ -450,7 +453,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     'fromStartAt',
                                     field.onChange,
                                 )}
-                                label="Дата начала"
+                                label={t("common.fields.startDate")}
                                 type="date"
                                 size="small"
                                 disabled={isDateFieldDisabled(
@@ -475,7 +478,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         name="fromEndAt"
                         control={control}
                         rules={{
-                            required: 'Укажите дату окончания в точке отправления',
+                            required: t("route.validation.endDateOrigin"),
                             validate: validateEndAtOwnStart(
                                 form,
                                 pointScheduleFields,
@@ -489,7 +492,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     'fromEndAt',
                                     field.onChange,
                                 )}
-                                label="Дата окончания"
+                                label={t("common.fields.endDate")}
                                 type="date"
                                 size="small"
                                 disabled={isDateFieldDisabled(
@@ -566,17 +569,17 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     control={control}
                                     rules={{
                                         required:
-                                            'Выберите эту точку и кликните по карте',
+                                            t("route.pickOnMap"),
                                         validate: () =>
                                             hasWaypointCoordinates(
                                                 waypoint,
                                             ) ||
-                                            `Укажите координаты для точки ${index + 1}: кликните по карте`,
+                                            t("route.validation.coordinatesPoint", { index: index + 1 }),
                                     }}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
-                                            label={`Промежуточная точка #${index + 1}`}
+                                            label={t("route.waypointHash", { index: index + 1 })}
                                             value={waypoint.location || ''}
                                             onFocus={() =>
                                                 setActiveMapPoint(pointKey)
@@ -599,8 +602,8 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                             helperText={
                                                 waypointLocationError?.message ||
                                                 (loadingPoints[pointKey]
-                                                    ? 'Определяем адрес...'
-                                                    : 'Выберите эту точку и кликните по карте')
+                                                    ? t("route.addressDetecting")
+                                                    : t("route.pickOnMap"))
                                             }
                                             InputProps={{
                                                 endAdornment: loadingPoints[
@@ -629,7 +632,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                         minHeight: 40,
                                     }}
                                 >
-                                    На карте
+                                    {t("route.onMap")}
                                 </Button>
 
                                 <IconButton
@@ -640,8 +643,8 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                         mt: 0.25,
                                         flexShrink: 0,
                                     }}
-                                    aria-label={`Удалить промежуточную точку ${index + 1}`}
-                                    title={`Удалить промежуточную точку ${index + 1}`}
+                                    aria-label={t("route.removeWaypoint", { index: index + 1 })}
+                                    title={t("route.removeWaypoint", { index: index + 1 })}
                                 >
                                     <DeleteOutlineRoundedIcon fontSize="small" />
                                 </IconButton>
@@ -670,25 +673,25 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                             <InputLabel
                                                 id={`${pointKey}-type-label`}
                                             >
-                                                Тип точки
+                                                {t("route.pointType")}
                                             </InputLabel>
                                             <Select
                                                 {...field}
                                                 labelId={`${pointKey}-type-label`}
-                                                label="Тип точки"
+                                                label={t("route.pointType")}
                                                 value={
                                                     field.value ||
                                                     'check_passes'
                                                 }
                                             >
                                                 <MenuItem value="loading">
-                                                    Погрузка
+                                                    {t("enums.leadStatus.start_loading")}
                                                 </MenuItem>
                                                 <MenuItem value="unloading">
-                                                    Разгрузка
+                                                    {t("enums.leadStatus.start_unloading")}
                                                 </MenuItem>
                                                 <MenuItem value="check_passes">
-                                                    Транзит
+                                                    {t("enums.waypointType.check_passes")}
                                                 </MenuItem>
                                             </Select>
                                             <FormHelperText>
@@ -702,7 +705,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     name={waypointStartAtFieldName}
                                     control={control}
                                     rules={{
-                                        required: `Укажите дату начала для точки ${index + 1}`,
+                                        required: t("route.validation.startDatePoint", { index: index + 1 }),
                                         validate: validateStartAtChain(
                                             form,
                                             pointScheduleFields,
@@ -716,7 +719,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                                 waypointStartAtFieldName,
                                                 field.onChange,
                                             )}
-                                            label="Дата начала"
+                                            label={t("common.fields.startDate")}
                                             type="date"
                                             size="small"
                                             disabled={isDateFieldDisabled(
@@ -750,7 +753,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     name={waypointEndAtFieldName}
                                     control={control}
                                     rules={{
-                                        required: `Укажите дату окончания для точки ${index + 1}`,
+                                        required: t("route.validation.endDatePoint", { index: index + 1 }),
                                         validate: validateEndAtOwnStart(
                                             form,
                                             pointScheduleFields,
@@ -764,7 +767,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                                 waypointEndAtFieldName,
                                                 field.onChange,
                                             )}
-                                            label="Дата окончания"
+                                            label={t("common.fields.endDate")}
                                             type="date"
                                             size="small"
                                             disabled={isDateFieldDisabled(
@@ -802,10 +805,10 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                     name="toLocation"
                     control={control}
                     rules={{
-                        required: 'Укажите место назначения',
+                        required: t("route.validation.destinationRequired"),
                         minLength: {
                             value: 3,
-                            message: 'Минимум 3 символа',
+                            message: t("validation.min3"),
                         },
                     }}
                     render={({ field }) => (
@@ -864,17 +867,17 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                             }}
                             noOptionsText={
                                 toInputValue.trim().length < 2
-                                    ? 'Введите минимум 2 символа'
-                                    : 'Адрес не найден'
+                                    ? t("common.search.minChars")
+                                    : t("route.addressNotFound")
                             }
-                            loadingText="Поиск адреса..."
+                            loadingText={t("route.addressSearching")}
                             renderInput={(params) => {
                                 const inputProps = params.InputProps || {};
 
                                 return (
                                     <TextField
                                         {...params}
-                                        label="Куда"
+                                        label={t("common.fields.destination")}
                                         fullWidth
                                         size="small"
                                         error={Boolean(errors.toLocation)}
@@ -917,7 +920,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         name="toStartAt"
                         control={control}
                         rules={{
-                            required: 'Укажите дату начала в точке назначения',
+                            required: t("route.validation.startDateDestination"),
                             validate: validateStartAtChain(
                                 form,
                                 pointScheduleFields,
@@ -931,7 +934,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     'toStartAt',
                                     field.onChange,
                                 )}
-                                label="Дата начала"
+                                label={t("common.fields.startDate")}
                                 type="date"
                                 size="small"
                                 disabled={isDateFieldDisabled(
@@ -962,7 +965,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                         name="toEndAt"
                         control={control}
                         rules={{
-                            required: 'Укажите дату окончания в точке назначения',
+                            required: t("route.validation.endDateDestination"),
                             validate: validateEndAtOwnStart(
                                 form,
                                 pointScheduleFields,
@@ -976,7 +979,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                                     'toEndAt',
                                     field.onChange,
                                 )}
-                                label="Дата окончания"
+                                label={t("common.fields.endDate")}
                                 type="date"
                                 size="small"
                                 disabled={isDateFieldDisabled(
@@ -1011,7 +1014,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                 defaultValue={false}
                 render={({ field }) => (
                     <FormControlLabel
-                        label="Пропуск видеофиксации разгрузки/погрузки"
+                        label={t("createLead.skipVideoRecording")}
                         sx={{ mt: 1, display: 'block' }}
                         control={
                             <Checkbox
@@ -1036,7 +1039,7 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                 render={({ field }) => (
                     <Box>
                         <FormControlLabel
-                            label="Международная перевозка"
+                            label={t("common.fields.international")}
                             sx={{ display: 'block' }}
                             control={
                                 <Checkbox

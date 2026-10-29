@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 import {
@@ -31,6 +32,8 @@ export function LeadDocumentsSection({
    uploadError = '',
    deletingDocumentIds = [],
 }) {
+   const { t } = useTranslation();
+
    const canManageDocuments =
       !isFinishedLead(lead) &&
       !isCancelledLead(lead) &&
@@ -67,7 +70,7 @@ export function LeadDocumentsSection({
    }
 
    return (
-      <DetailSection icon={<DescriptionOutlinedIcon />} title='Документы'>
+      <DetailSection icon={<DescriptionOutlinedIcon />} title={t("common.fields.documents")}>
          <Stack spacing={2}>
             {canManageDocuments && (
                <Box
@@ -85,14 +88,14 @@ export function LeadDocumentsSection({
                >
                   <TextField
                      name='name'
-                     label='Название документа'
+                     label={t("common.fields.documentName")}
                      size='small'
                      fullWidth
                   />
 
                   <TextField
                      name='context'
-                     label='Описание'
+                     label={t("common.fields.description")}
                      size='small'
                      fullWidth
                   />
@@ -110,7 +113,7 @@ export function LeadDocumentsSection({
                            },
                         }}
                      >
-                        {selectedFileName ? 'Файл выбран' : 'Файл'}
+                        {selectedFileName ? t("common.documents.fileSelected") : t("common.fields.file")}
 
                         <input
                            name='file'
@@ -155,7 +158,7 @@ export function LeadDocumentsSection({
                         justifySelf: 'flex-start',
                      }}
                   >
-                     {isUploading ? 'Добавление...' : 'Добавить документ'}
+                     {isUploading ? t("common.actions.adding") : t("common.documents.add")}
                   </Button>
                </Box>
             )}
@@ -164,7 +167,7 @@ export function LeadDocumentsSection({
 
             {documents.length === 0 ? (
                <Typography color='text.secondary' fontSize={14}>
-                  Документы не добавлены
+                  {t("common.documents.empty")}
                </Typography>
             ) : (
                <Stack spacing={1}>

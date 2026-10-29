@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import i18n from '../../../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 import {
@@ -30,7 +32,7 @@ function normalizeForwarderOption(forwarder) {
          forwarder.full_name ||
          forwarder.fio ||
          forwarder.name ||
-         'Без имени',
+         i18n.t("common.empty.noName"),
 
       iin: forwarder.iin || forwarder.personIin || '',
 
@@ -38,7 +40,7 @@ function normalizeForwarderOption(forwarder) {
          forwarder.companyName ||
          forwarder.company_name ||
          forwarder.name ||
-         'Без компании',
+         i18n.t("common.empty.noCompany"),
 
       companyBin:
          forwarder.companyBin || forwarder.company_bin || forwarder.bin || '',
@@ -120,6 +122,8 @@ export function LeadForwarderSection({
    editForm,
    onEditChange,
 }) {
+   const { t } = useTranslation();
+
    const forwarder = lead.forwarder;
    const isForwarderLocked = lead.is_tender === true;
 
@@ -155,14 +159,14 @@ export function LeadForwarderSection({
             error.response?.data?.message ||
                error.response?.data?.error ||
                error.message ||
-               'Не удалось загрузить экспедиторов',
+               t("common.forwarderPicker.loadFailed"),
          );
 
          setAllForwarders([]);
       } finally {
          setIsLoading(false);
       }
-   }, [isEditing, isForwardersLoaded, isLoading]);
+   }, [isEditing, isForwardersLoaded, isLoading, t]);
 
    useEffect(() => {
       if (!isEditing) {
@@ -198,7 +202,7 @@ export function LeadForwarderSection({
    }, [allForwarders, inputValue, selectedForwarder]);
 
    return (
-      <DetailSection icon={<BusinessOutlinedIcon />} title="Экспедитор">
+      <DetailSection icon={<BusinessOutlinedIcon />} title={t("enums.participantType.forwarder")}>
          {isEditing ? (
             <Autocomplete
                disabled={isForwarderLocked}
@@ -214,10 +218,10 @@ export function LeadForwarderSection({
                onOpen={loadForwarders}
                noOptionsText={
                   isForwardersLoaded
-                     ? 'Экспедитор не найден'
-                     : 'Нажмите, чтобы загрузить экспедиторов'
+                     ? t("common.forwarderPicker.notFound")
+                     : t("common.forwarderPicker.clickToLoad")
                }
-               loadingText="Загружаем экспедиторов..."
+               loadingText={t("common.forwarderPicker.loading")}
                onInputChange={(_, newInputValue, reason) => {
                   if (reason === 'reset') {
                      return;
@@ -253,17 +257,17 @@ export function LeadForwarderSection({
                      >
                         <Box>
                            <Typography fontWeight={700}>
-                              {option.fullName || 'Без имени'}
+                              {option.fullName || t("common.empty.noName")}
                            </Typography>
 
                            <Typography fontSize={12} color="text.secondary">
-                              БИН: {option.companyBin || '—'}
+                              {t("common.fields.binValue", { bin: option.companyBin || '—' })}
                            </Typography>
                         </Box>
 
                         <Chip
                            size="small"
-                           label={option.companyName || 'Без компании'}
+                           label={option.companyName || t("common.empty.noCompany")}
                            sx={{
                               height: 22,
                               fontSize: '0.7rem',
@@ -279,13 +283,13 @@ export function LeadForwarderSection({
                   return (
                      <TextField
                         {...params}
-                        label="Экспедитор"
-                        placeholder="Введите название компании или БИН"
+                        label={t("enums.participantType.forwarder")}
+                        placeholder={t("common.forwarderPicker.searchByCompany")}
                         error={Boolean(searchError)}
                         helperText={
                            searchError ||
                            (isForwarderLocked
-                              ? 'Экспедитор назначен по результатам аукциона и не может быть изменен'
+                              ? t("leads.forwarder.lockedByTender")
                               : '')
                         }
                         size="small"
@@ -323,28 +327,28 @@ export function LeadForwarderSection({
                }}
             >
                <InfoBadge
-                  label="ФИО"
-                  value={forwarder?.fullName || 'Не указан'}
+                  label={t("common.fields.fullName")}
+                  value={forwarder?.fullName || t("common.empty.notSpecifiedM")}
                />
 
                <InfoBadge
-                  label="Компания"
-                  value={forwarder?.companyName || 'Не указано'}
+                  label={t("common.fields.company")}
+                  value={forwarder?.companyName || t("common.empty.notSpecifiedN")}
                />
 
                <InfoBadge
-                  label="БИН"
-                  value={forwarder?.companyBin || 'Не указан'}
+                  label={t("common.fields.bin")}
+                  value={forwarder?.companyBin || t("common.empty.notSpecifiedM")}
                />
 
                <InfoBadge
-                  label="Телефон"
-                  value={forwarder?.phone || 'Не указан'}
+                  label={t("common.fields.phone")}
+                  value={forwarder?.phone || t("common.empty.notSpecifiedM")}
                />
 
                <InfoBadge
                   label="Email"
-                  value={forwarder?.email || 'Не указан'}
+                  value={forwarder?.email || t("common.empty.notSpecifiedM")}
                   sx={{ wordBreak: 'break-word' }}
                />
             </Box>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
@@ -58,13 +59,15 @@ function hasPreviewUrl(document) {
 }
 
 function TenderDocumentPreview({ document }) {
+   const { t } = useTranslation();
+
    if (!document) {
       return null;
    }
 
    if (!hasPreviewUrl(document)) {
       return (
-         <PreviewFallback text='Для этого документа нет файла для предпросмотра' />
+         <PreviewFallback text={t("common.filePreview.noFile")} />
       );
    }
 
@@ -116,7 +119,7 @@ function TenderDocumentPreview({ document }) {
             <Box
                component='img'
                src={document.fileUrl}
-               alt={document.name || document.fileName || 'Документ'}
+               alt={document.name || document.fileName || t("common.fields.document")}
                sx={{
                   maxWidth: '100%',
                   height: 'auto',
@@ -154,7 +157,7 @@ function TenderDocumentPreview({ document }) {
    }
 
    return (
-      <PreviewFallback text='Предпросмотр для этого типа файла пока не поддерживается' />
+      <PreviewFallback text={t("common.filePreview.unsupported")} />
    );
 }
 
@@ -182,6 +185,8 @@ function PreviewFallback({ text }) {
 }
 
 function TenderDocumentPreviewDialog({ document, onClose }) {
+   const { t } = useTranslation();
+
    return (
       <Dialog
          open={Boolean(document)}
@@ -198,7 +203,7 @@ function TenderDocumentPreviewDialog({ document, onClose }) {
             },
          }}
       >
-         <DialogTitle>{document?.name || 'Документ'}</DialogTitle>
+         <DialogTitle>{document?.name || t("common.fields.document")}</DialogTitle>
 
          <DialogContent
             sx={{
@@ -214,7 +219,7 @@ function TenderDocumentPreviewDialog({ document, onClose }) {
                   mb: 2,
                }}
             >
-               {document?.context || 'Описание не указано'}
+               {document?.context || t("common.empty.descriptionNotSpecified")}
             </Typography>
 
             <TenderDocumentPreview document={document} />
@@ -231,24 +236,24 @@ function TenderDocumentPreviewDialog({ document, onClose }) {
             <Box sx={{ display: 'flex', gap: 1 }}>
                {document?.fileUrl && document.fileUrl !== '#' && (
                   <>
-                     <Tooltip title='Открыть в новой вкладке'>
+                     <Tooltip title={t("common.actions.openInNewTab")}>
                         <IconButton
                            component='a'
                            href={document.fileUrl}
                            target='_blank'
                            rel='noreferrer'
-                           aria-label='Открыть в новой вкладке'
+                           aria-label={t("common.actions.openInNewTab")}
                         >
                            <OpenInNewOutlinedIcon />
                         </IconButton>
                      </Tooltip>
 
-                     <Tooltip title='Скачать'>
+                     <Tooltip title={t("common.actions.download")}>
                         <IconButton
                            component='a'
                            href={document.fileUrl}
                            download={document.fileName || document.name || true}
-                           aria-label='Скачать'
+                           aria-label={t("common.actions.download")}
                         >
                            <DownloadOutlinedIcon />
                         </IconButton>
@@ -257,13 +262,15 @@ function TenderDocumentPreviewDialog({ document, onClose }) {
                )}
             </Box>
 
-            <Button onClick={onClose}>Закрыть</Button>
+            <Button onClick={onClose}>{t("common.actions.close")}</Button>
          </DialogActions>
       </Dialog>
    );
 }
 
 function TenderDocumentCard({ document, onOpen }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          component='button'
@@ -318,7 +325,7 @@ function TenderDocumentCard({ document, onOpen }) {
                   lineHeight: 1.35,
                }}
             >
-               {document.name || 'Документ'}
+               {document.name || t("common.fields.document")}
             </Typography>
 
             <Typography
@@ -329,7 +336,7 @@ function TenderDocumentCard({ document, onOpen }) {
                   lineHeight: 1.35,
                }}
             >
-               {document.context || 'Описание не указано'}
+               {document.context || t("common.empty.descriptionNotSpecified")}
             </Typography>
 
             <Typography
@@ -341,7 +348,7 @@ function TenderDocumentCard({ document, onOpen }) {
                   wordBreak: 'break-word',
                }}
             >
-               {document.fileName || 'Файл'}
+               {document.fileName || t("common.fields.file")}
             </Typography>
          </Box>
       </Box>
@@ -349,16 +356,18 @@ function TenderDocumentCard({ document, onOpen }) {
 }
 
 export function TenderDocumentsSection({ documents = [] }) {
+   const { t } = useTranslation();
+
    const [selectedDocument, setSelectedDocument] = useState(null);
 
    return (
       <TenderDetailsSection
          icon={<DescriptionOutlinedIcon />}
-         title='Документы заказа'
+         title={t("tenders.details.orderDocuments")}
       >
          {documents.length === 0 ? (
             <Typography color='text.secondary' fontSize={14}>
-               Документы не добавлены
+               {t("common.documents.empty")}
             </Typography>
          ) : (
             <Stack spacing={1}>

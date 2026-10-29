@@ -1,4 +1,5 @@
 import { Box, Paper, Stack, Tooltip } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import { DataGrid } from '@mui/x-data-grid';
 
 import {
@@ -30,6 +31,8 @@ function getCompanyBin(company) {
 }
 
 export function FactoringsTable({ factorings, onOpenDetails }) {
+   const { t } = useTranslation();
+
    const columns = [
       {
          field: 'index',
@@ -61,7 +64,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'is_line',
-         headerName: 'Тип',
+         headerName: t("common.fields.type"),
          width: 150,
          valueGetter: (_, row) => getFactoringLineTypeLabel(row?.is_line),
          renderCell: ({ row }) => (
@@ -73,7 +76,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'created_at',
-         headerName: 'Дата',
+         headerName: t("common.fields.date"),
          width: 160,
          cellClassName: 'tabular-nums',
          valueGetter: (_, row) => toTimestamp(row?.created_at),
@@ -81,7 +84,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'status',
-         headerName: 'Статус',
+         headerName: t("common.fields.status"),
          width: 160,
          valueGetter: (_, row) =>
             row?.status ? getFactoringStatusLabel(row.status) : '',
@@ -94,21 +97,21 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'factor',
-         headerName: 'Фактор',
+         headerName: t("common.fields.factor"),
          width: 220,
          valueGetter: (_, row) => toSortString(getCompanyLabel(row?.factor), '-'),
          renderCell: ({ row }) => (
             <Stack spacing={0.25}>
                <Box>{getCompanyLabel(row.factor)}</Box>
                <Box sx={{ fontSize: 12, color: 'text.secondary' }}>
-                  БИН: {getCompanyBin(row.factor)}
+                  {t("common.fields.binValue", { bin: getCompanyBin(row.factor) })}
                </Box>
             </Stack>
          ),
       },
       {
          field: 'forwarder',
-         headerName: 'Экспедитор',
+         headerName: t("enums.participantType.forwarder"),
          width: 200,
          valueGetter: (_, row) =>
             toSortString(getCompanyLabel(row?.forwarder), '-'),
@@ -117,7 +120,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
                <Box>{getCompanyLabel(row.forwarder)}</Box>
 
                <Box sx={{ fontSize: 12, color: 'text.secondary' }}>
-                  БИН: {getCompanyBin(row.forwarder)}
+                  {t("common.fields.binValue", { bin: getCompanyBin(row.forwarder) })}
                </Box>
 
                {row.forwarder?.fio && (
@@ -130,7 +133,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'verified_customer',
-         headerName: 'Вы',
+         headerName: t("factorings.confirmations.you"),
          width: 150,
          valueGetter: (_, row) => getVerificationLabel(row?.verified_customer),
          renderCell: ({ row }) => (
@@ -142,7 +145,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'verified_forwarder',
-         headerName: 'Экспедитор',
+         headerName: t("enums.participantType.forwarder"),
          width: 150,
          valueGetter: (_, row) => getVerificationLabel(row?.verified_forwarder),
          renderCell: ({ row }) => (
@@ -154,7 +157,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'verified_factor',
-         headerName: 'Фактор',
+         headerName: t("common.fields.factor"),
          width: 150,
          valueGetter: (_, row) => getVerificationLabel(row?.verified_factor),
          renderCell: ({ row }) => (
@@ -166,7 +169,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'deb_summ',
-         headerName: 'Дебиторская сумма',
+         headerName: t("factorings.finance.debtAmount"),
          width: 190,
          align: 'right',
          headerAlign: 'right',
@@ -178,7 +181,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'cred_summ',
-         headerName: 'Кредитная сумма',
+         headerName: t("factorings.finance.creditAmount"),
          width: 190,
          align: 'right',
          headerAlign: 'right',
@@ -190,11 +193,11 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       },
       {
          field: 'grace_period_days',
-         headerName: 'Отсрочка платежа',
+         headerName: t("common.fields.gracePeriod"),
          width: 160,
          valueGetter: (_, row) => row?.grace_period_days ?? null,
          renderCell: ({ row }) => (
-            <Box>{row.grace_period_days ? `${row.grace_period_days} дн.` : '-'}</Box>
+            <Box>{row.grace_period_days ? t("common.units.days", { count: row.grace_period_days }) : '-'}</Box>
          ),
       },
    ];
@@ -207,7 +210,7 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
             columns={columns}
             getRowClassName={getZebraRowClassName}
             hideFooter
-            localeText={{ noRowsLabel: 'Факторинг-покупки не найдены' }}
+            localeText={{ noRowsLabel: t("factorings.notFound") }}
             sx={{ border: 0 }}
          />
       </Paper>

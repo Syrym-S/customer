@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     Alert,
     Box,
@@ -22,6 +23,8 @@ export function DashboardLeadsList({
     onHoverLead,
     onLeaveLead,
 }) {
+    const { t } = useTranslation();
+
     const [page, setPage] = useState(1);
 
     const pageCount = Math.max(
@@ -61,11 +64,11 @@ export function DashboardLeadsList({
         >
             <Box sx={{ mb: 1.5 }}>
                 <Typography variant="h6" fontWeight={600}>
-                    Активные заказы
+                    {t("dashboard.leads.title")}
                 </Typography>
 
                 <Typography color="text.secondary" fontSize={14}>
-                    Выберите заказ, чтобы подсветить маршрут на карте
+                    {t("dashboard.leads.mapHint")}
                 </Typography>
             </Box>
 
@@ -86,13 +89,13 @@ export function DashboardLeadsList({
             >
                 {isLoading && (
                     <Typography color="text.secondary" sx={{ py: 2 }}>
-                        Загрузка заказов...
+                        {t("dashboard.leads.loading")}
                     </Typography>
                 )}
 
                 {!isLoading && !leads.length && (
                     <Typography color="text.secondary" sx={{ py: 2 }}>
-                        Активных заказов пока нет
+                        {t("dashboard.leads.empty")}
                     </Typography>
                 )}
 

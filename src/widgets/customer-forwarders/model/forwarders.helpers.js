@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 export const FORWARDERS_PER_PAGE = 10;
 
 export function normalizeForwardersListResponse(response) {
@@ -20,16 +22,16 @@ export function getForwarderCompanyName(forwarder) {
         forwarder?.name ||
         forwarder?.company_name ||
         forwarder?.companyName ||
-        'Компания не указана'
+        i18n.t("common.empty.companyNotSpecified")
     );
 }
 
 export function getForwarderBin(forwarder) {
-    return forwarder?.company_bin || 'Не указан';
+    return forwarder?.company_bin || i18n.t("common.empty.notSpecifiedM");
 }
 
 export function getForwarderIin(forwarder) {
-    return forwarder?.iin || 'Не указан';
+    return forwarder?.iin || i18n.t("common.empty.notSpecifiedM");
 }
 
 export function getForwarderFio(forwarder) {
@@ -37,28 +39,28 @@ export function getForwarderFio(forwarder) {
         forwarder?.fio ||
         forwarder?.fullname ||
         forwarder?.fullName ||
-        'Не указан'
+        i18n.t("common.empty.notSpecifiedM")
     );
 }
 
 export function getForwarderPhone(forwarder) {
-    return forwarder?.phone || 'Не указан';
+    return forwarder?.phone || i18n.t("common.empty.notSpecifiedM");
 }
 
 export function getForwarderEmail(forwarder) {
-    return forwarder?.email || 'Не указан';
+    return forwarder?.email || i18n.t("common.empty.notSpecifiedM");
 }
 
 export function getForwarderAddress(forwarder) {
-    return forwarder?.company_address || 'Не указан';
+    return forwarder?.company_address || i18n.t("common.empty.notSpecifiedM");
 }
 
 export function getForwarderBik(forwarder) {
-    return forwarder?.company_bik || 'Не указан';
+    return forwarder?.company_bik || i18n.t("common.empty.notSpecifiedM");
 }
 
 export function getForwarderAccount(forwarder) {
-    return forwarder?.company_account || 'Не указан';
+    return forwarder?.company_account || i18n.t("common.empty.notSpecifiedM");
 }
 
 export function getForwarderInviteLink(forwarder) {

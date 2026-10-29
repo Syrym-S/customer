@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 import {
     Alert,
@@ -40,6 +41,8 @@ const FORWARDERS_VIEW_MODES = {
 };
 
 export function ForwardersPage() {
+    const { t } = useTranslation();
+
     const [forwarders, setForwarders] = useState([]);
 
     const [page, setPage] = useState(1);
@@ -109,12 +112,12 @@ export function ForwardersPage() {
                 requestError.response?.data?.message ||
                     requestError.response?.data?.error ||
                     requestError.message ||
-                    'Не удалось загрузить экспедиторов',
+                    t("common.forwarderPicker.loadFailed"),
             );
         } finally {
             setIsLoading(false);
         }
-    }, [debouncedSearch, isSearchMode, page]);
+    }, [debouncedSearch, isSearchMode, page, t]);
 
     function handleSearchChange(event) {
         setSearch(event.target.value);
@@ -145,7 +148,7 @@ export function ForwardersPage() {
                 requestError.response?.data?.message ||
                     requestError.response?.data?.error ||
                     requestError.message ||
-                    'Не удалось загрузить данные экспедитора',
+                    t("common.forwarderPicker.detailsLoadFailed"),
             );
         } finally {
             setIsDetailsLoading(false);
@@ -193,7 +196,7 @@ export function ForwardersPage() {
                 requestError.response?.data?.message ||
                     requestError.response?.data?.error ||
                     requestError.message ||
-                    'Не удалось создать приглашение',
+                    t("forwarders.invite.createFailed"),
             );
         } finally {
             setIsCreating(false);
@@ -236,11 +239,11 @@ export function ForwardersPage() {
                     >
                         <Box sx={{ minWidth: 0 }}>
                             <Typography variant="h6" fontWeight={600}>
-                                Экспедиторы
+                                {t("forwarders.title")}
                             </Typography>
 
                             <Typography color="text.secondary" fontSize={14}>
-                                Полный список всех экспедиторов
+                                {t("forwarders.subtitle")}
                             </Typography>
                         </Box>
 
@@ -250,7 +253,7 @@ export function ForwardersPage() {
                             onChange={handleViewModeChange}
                             size="small"
                             color="primary"
-                            aria-label="Переключение отображения экспедиторов"
+                            aria-label={t("forwarders.viewToggle")}
                             sx={{
                                 flexShrink: 0,
                                 alignSelf: {
@@ -265,16 +268,16 @@ export function ForwardersPage() {
                         >
                             <ToggleButton
                                 value={FORWARDERS_VIEW_MODES.TABLE}
-                                aria-label="Показать таблицей"
-                                title="Таблица"
+                                aria-label={t("common.view.showAsTable")}
+                                title={t("common.view.table")}
                             >
                                 <ViewListRoundedIcon fontSize="small" />
                             </ToggleButton>
 
                             <ToggleButton
                                 value={FORWARDERS_VIEW_MODES.CARDS}
-                                aria-label="Показать карточками"
-                                title="Карточки"
+                                aria-label={t("common.view.showAsCards")}
+                                title={t("common.view.cards")}
                             >
                                 <GridViewRoundedIcon fontSize="small" />
                             </ToggleButton>
@@ -288,14 +291,14 @@ export function ForwardersPage() {
                             alignSelf: 'flex-start',
                         }}
                     >
-                        Пригласить экспедитора
+                        {t("forwarders.invite.action")}
                     </Button>
                 </Stack>
 
                 <TextField
                     value={search}
                     onChange={handleSearchChange}
-                    placeholder="Поиск экспедитора"
+                    placeholder={t("forwarders.searchPlaceholder")}
                     fullWidth
                     size="small"
                     slotProps={{

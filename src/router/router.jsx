@@ -10,6 +10,7 @@ import { ForwardersPage } from "../pages/forwarders/ForwardersPage";
 import { ManufacturersPage } from "../pages/manufacturers/ManufacturersPage";
 import { TnvedPage } from "../pages/tnved/TnvedPage";
 import { ComplaintsPage } from "../pages/complaints/ComplaintsPage";
+import { SettingsPage } from "../pages/settings/SettingsPage";
 import { ErrorPage } from "../pages/error/ErrorPage";
 import { appBasename } from "../shared/api/api-client";
 
@@ -20,7 +21,7 @@ export const router = createBrowserRouter(
       element: <AppLayout />,
       errorElement: <ErrorPage />,
       handle: {
-        breadcrumb: "Главная",
+        breadcrumb: "nav.dashboard",
       },
       children: [
         {
@@ -31,61 +32,61 @@ export const router = createBrowserRouter(
           path: "customer/dashboard",
           element: <DashboardPage />,
           handle: {
-            title: "Главная",
+            title: "nav.dashboard",
           },
         },
         {
           path: "customer",
           element: <LeadsPage />,
           handle: {
-            breadcrumb: "Заказы",
-            title: "Заказы",
+            breadcrumb: "nav.leads",
+            title: "nav.leads",
           },
         },
         {
           path: "customer/leads/:leadId",
           element: <LeadsPage />,
           handle: {
-            breadcrumb: "Заказы",
-            title: "Заказы",
+            breadcrumb: "nav.leads",
+            title: "nav.leads",
           },
         },
         {
           path: "customer/profile",
           element: <ProfilePage />,
           handle: {
-            breadcrumb: "Профиль",
-            title: "Профиль",
+            breadcrumb: "nav.profile",
+            title: "nav.profile",
           },
         },
         {
           path: "customer/tenders",
           element: <TenderPage />,
           handle: {
-            breadcrumb: "Аукционы",
-            title: "Аукционы",
+            breadcrumb: "nav.tenders",
+            title: "nav.tenders",
           },
         },
         {
           path: "customer/tenders/:tenderId",
           element: <TenderPage />,
           handle: {
-            title: "Аукционы",
+            title: "nav.tenders",
           },
         },
         {
           path: "customer/factorings",
           element: <FactoringsPage />,
           handle: {
-            breadcrumb: "Факторинги",
-            title: "Факторинги",
+            breadcrumb: "nav.factorings",
+            title: "nav.factorings",
           },
         },
         {
           path: "customer/factorings/:factoringId",
           element: <FactoringsPage />,
           handle: {
-            title: "Факторинги",
+            title: "nav.factorings",
           },
         },
         {
@@ -95,46 +96,54 @@ export const router = createBrowserRouter(
           path: "customer/factoring/:factoringId",
           element: <FactoringsPage />,
           handle: {
-            title: "Факторинги",
+            title: "nav.factorings",
           },
         },
         {
           path: "customer/forwarders",
           element: <ForwardersPage />,
           handle: {
-            breadcrumb: "Экспедиторы",
-            title: "Экспедиторы",
+            breadcrumb: "nav.forwarders",
+            title: "nav.forwarders",
           },
         },
         {
           path: "customer/manufacturers",
           element: <ManufacturersPage />,
           handle: {
-            breadcrumb: "Производители",
-            title: "Производители",
+            breadcrumb: "nav.manufacturers",
+            title: "nav.manufacturers",
           },
         },
         {
           path: "customer/tnved",
           element: <TnvedPage />,
           handle: {
-            breadcrumb: "ТН ВЭД",
-            title: "ТН ВЭД",
+            breadcrumb: "nav.tnved",
+            title: "nav.tnved",
+          },
+        },
+        {
+          path: "customer/settings",
+          element: <SettingsPage />,
+          handle: {
+            breadcrumb: "nav.settings",
+            title: "nav.settings",
           },
         },
         {
           path: "customer/complaints",
           element: <ComplaintsPage />,
           handle: {
-            breadcrumb: "Жалобы",
-            title: "Жалобы",
+            breadcrumb: "nav.complaints",
+            title: "nav.complaints",
           },
         },
         {
           path: "customer/complaints/:complaintId",
           element: <ComplaintsPage />,
           handle: {
-            title: "Жалобы",
+            title: "nav.complaints",
           },
         },
       ],

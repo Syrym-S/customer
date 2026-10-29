@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { Button } from '@mui/material';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 
 import { ExportLeadsReportModal } from './ExportLeadsReportModal';
 
 export function ExportLeadsReportButton() {
+   const { t } = useTranslation();
+
    const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
    const handleOpenExportModal = () => setIsExportModalOpen(true);
@@ -18,7 +21,7 @@ export function ExportLeadsReportButton() {
             startIcon={<FileDownloadOutlinedIcon />}
             onClick={handleOpenExportModal}
          >
-            Выгрузить отчет
+            {t("exportReport.action")}
          </Button>
 
          <ExportLeadsReportModal

@@ -2,6 +2,7 @@ import {
    formatDateToTenderApiDateTime,
    parseTenderApiDateTime,
 } from './tender.helpers';
+import i18n from '../../../shared/i18n';
 
 function padDatePart(value) {
    return String(value).padStart(2, '0');
@@ -126,7 +127,7 @@ export function createTenderEditForm(tender) {
 
          summ: '',
          currency: 'KZT',
-         vat: 'без НДС',
+         vat: i18n.t("common.fields.withoutVat"),
       };
    }
 
@@ -146,7 +147,7 @@ export function createTenderEditForm(tender) {
 
       summ: lead.summ ?? '',
       currency: normalizeCurrency(lead.currency),
-      vat: lead.vat || 'без НДС',
+      vat: lead.vat || i18n.t("common.fields.withoutVat"),
    };
 }
 

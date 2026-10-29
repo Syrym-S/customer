@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import i18n from '../../../shared/i18n';
 
 import {
    attachManufacturer,
@@ -10,7 +11,6 @@ import {
    notifyError,
    notifySuccess,
 } from '../../../shared/model/notifications.store';
-import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
 
 function getRequestErrorMessage(error, fallback) {
    return (
@@ -22,7 +22,7 @@ function getRequestErrorMessage(error, fallback) {
 }
 
 function getLeadsLabel(count) {
-   return `${count} ${pluralizeRu(count, ['перевозка', 'перевозки', 'перевозок'])}`;
+   return i18n.t('common.shipmentCount', { count });
 }
 
 function getFirstRejectionMessage(results, fallback) {
@@ -57,10 +57,12 @@ export function useManufacturerLinkActions({ onSuccess } = {}) {
 
             if (fulfilled < leadIds.length) {
                notifyError(
-                  `${successVerb}: ${fulfilled} из ${leadIds.length}. ${getFirstRejectionMessage(
-                     results,
-                     errorFallback,
-                  )}`,
+                  i18n.t('manufacturers.bulk.result', {
+                     action: successVerb,
+                     done: fulfilled,
+                     total: leadIds.length,
+                     reason: getFirstRejectionMessage(results, errorFallback),
+                  }),
                );
             } else {
                notifySuccess(`${successVerb}: ${getLeadsLabel(fulfilled)}`);
@@ -86,8 +88,8 @@ export function useManufacturerLinkActions({ onSuccess } = {}) {
             leadIds,
             (leadId) => attachManufacturerToLead(leadId, manufacturerId),
             {
-               successVerb: 'Производитель привязан',
-               errorFallback: 'Не удалось привязать производителя',
+               successVerb: i18n.t("manufacturers.link.success"),
+               errorFallback: i18n.t("manufacturers.link.failed"),
             },
          );
       },
@@ -97,8 +99,8 @@ export function useManufacturerLinkActions({ onSuccess } = {}) {
    const detachLeads = useCallback(
       (leadIds) =>
          runLeadRequests(leadIds, (leadId) => detachManufacturerFromLead(leadId), {
-            successVerb: 'Производитель откреплен',
-            errorFallback: 'Не удалось открепить производителя',
+            successVerb: i18n.t("manufacturers.unlink.success"),
+            errorFallback: i18n.t("manufacturers.unlink.failed"),
          }),
       [runLeadRequests],
    );
@@ -110,14 +112,14 @@ export function useManufacturerLinkActions({ onSuccess } = {}) {
 
             await attachManufacturer(manufacturerId);
 
-            notifySuccess('Производитель добавлен');
+            notifySuccess(i18n.t("manufacturers.add.success"));
 
             await onSuccess?.();
 
             return true;
          } catch (error) {
             notifyError(
-               getRequestErrorMessage(error, 'Не удалось добавить производителя'),
+               getRequestErrorMessage(error, i18n.t("manufacturers.add.failed")),
             );
 
             return false;
@@ -135,14 +137,14 @@ export function useManufacturerLinkActions({ onSuccess } = {}) {
 
             await detachManufacturer(manufacturerId);
 
-            notifySuccess('Производитель удален из списка');
+            notifySuccess(i18n.t("manufacturers.remove.success"));
 
             await onSuccess?.();
 
             return true;
          } catch (error) {
             notifyError(
-               getRequestErrorMessage(error, 'Не удалось удалить производителя'),
+               getRequestErrorMessage(error, i18n.t("manufacturers.remove.failed")),
             );
 
             return false;

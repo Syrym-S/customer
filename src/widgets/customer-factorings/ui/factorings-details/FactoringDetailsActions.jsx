@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Button,
@@ -25,6 +26,8 @@ export function FactoringDetailsActions({
   onInitiateSigning,
   onCancelFactoring,
 }) {
+  const { t } = useTranslation();
+
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isCancelConfirmOpen, setIsCancelConfirmOpen] = useState(false);
 
@@ -84,7 +87,7 @@ export function FactoringDetailsActions({
         <Box>
           {factoring?.verified_customer && (
             <Chip
-              label="Подтверждено заказчиком"
+              label={t("factorings.confirmations.confirmedByCustomer")}
               color="success"
               size="small"
               sx={{
@@ -121,7 +124,7 @@ export function FactoringDetailsActions({
               onClick={handleOpenCancelConfirm}
               disabled={initiatingSigning || isCancelling}
             >
-              {isCancelling ? "Отменяем факторинг…" : "Отменить факторинг"}
+              {isCancelling ? t("factorings.cancel.inProgress") : t("factorings.cancel.action")}
             </Button>
           )}
 
@@ -131,25 +134,24 @@ export function FactoringDetailsActions({
               onClick={handleOpenConfirm}
               disabled={initiatingSigning || isCancelling}
             >
-              {initiatingSigning ? "Открываем подписание..." : "Подтвердить"}
+              {initiatingSigning ? t("factorings.confirmParticipation.opening") : t("common.actions.confirm")}
             </Button>
           )}
         </Stack>
       </DialogActions>
 
       <Dialog open={isConfirmOpen} onClose={handleCloseConfirm}>
-        <DialogTitle>Подтверждение участия</DialogTitle>
+        <DialogTitle>{t("factorings.confirmParticipation.title")}</DialogTitle>
 
         <DialogContent>
           <DialogContentText>
-            Хотите подтвердить свое участие в этом факторинге? Вы будете
-            перенаправлены в окно подписания документов.
+            {t("factorings.confirmParticipation.text")}
           </DialogContentText>
         </DialogContent>
 
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={handleCloseConfirm} disabled={initiatingSigning}>
-            Отмена
+            {t("common.actions.cancel")}
           </Button>
 
           <Button
@@ -157,24 +159,23 @@ export function FactoringDetailsActions({
             onClick={handleConfirmSigning}
             disabled={initiatingSigning}
           >
-            {initiatingSigning ? "Открываем подписание..." : "Подтвердить"}
+            {initiatingSigning ? t("factorings.confirmParticipation.opening") : t("common.actions.confirm")}
           </Button>
         </DialogActions>
       </Dialog>
 
       <Dialog open={isCancelConfirmOpen} onClose={handleCloseCancelConfirm}>
-        <DialogTitle>Отменить факторинг</DialogTitle>
+        <DialogTitle>{t("factorings.cancel.action")}</DialogTitle>
 
         <DialogContent>
           <DialogContentText>
-            Вы уверены, что хотите отменить этот факторинг? Это действие
-            нельзя будет отменить.
+            {t("factorings.cancel.confirm")}
           </DialogContentText>
         </DialogContent>
 
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={handleCloseCancelConfirm} disabled={isCancelling}>
-            Отмена
+            {t("common.actions.cancel")}
           </Button>
 
           <Button
@@ -183,7 +184,7 @@ export function FactoringDetailsActions({
             onClick={handleConfirmCancel}
             disabled={isCancelling}
           >
-            {isCancelling ? "Отменяем факторинг…" : "Отменить факторинг"}
+            {isCancelling ? t("factorings.cancel.inProgress") : t("factorings.cancel.action")}
           </Button>
         </DialogActions>
       </Dialog>

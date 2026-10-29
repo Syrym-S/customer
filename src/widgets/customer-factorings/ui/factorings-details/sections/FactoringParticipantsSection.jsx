@@ -1,4 +1,5 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
 
@@ -14,11 +15,13 @@ export function FactoringParticipantsSection({
     isCustomerProfileLoading,
     customerProfileLoadFailed,
 }) {
+    const { t } = useTranslation();
+
     return (
         <DetailSection
             icon={<BusinessOutlinedIcon />}
-            title='Участники'
-            subtitle='Все участники по факторингу'
+            title={t("common.fields.participants")}
+            subtitle={t("factorings.participants.subtitle")}
         >
             <Box
                 sx={{
@@ -41,7 +44,7 @@ export function FactoringParticipantsSection({
                     }}
                 >
                     <Typography fontWeight={700} sx={{ mb: 1 }}>
-                        Фактор
+                        {t("common.fields.factor")}
                     </Typography>
 
                     <Box
@@ -55,22 +58,22 @@ export function FactoringParticipantsSection({
                         }}
                     >
                         <InfoBadge
-                            label='Компания'
+                            label={t("common.fields.company")}
                             value={factoring.factor?.company_name || '—'}
                         />
 
                         <InfoBadge
-                            label='БИН'
+                            label={t("common.fields.bin")}
                             value={factoring.factor?.bin || '—'}
                         />
 
                         <InfoBadge
-                            label='ФИО'
+                            label={t("common.fields.fullName")}
                             value={factoring.factor?.fio || '—'}
                         />
 
                         <InfoBadge
-                            label='Телефон'
+                            label={t("common.fields.phone")}
                             value={factoring.factor?.phone || '—'}
                         />
                     </Box>
@@ -86,7 +89,7 @@ export function FactoringParticipantsSection({
                     }}
                 >
                     <Typography fontWeight={700} sx={{ mb: 1 }}>
-                        Экспедитор
+                        {t("enums.participantType.forwarder")}
                     </Typography>
 
                     <Box
@@ -100,22 +103,22 @@ export function FactoringParticipantsSection({
                         }}
                     >
                         <InfoBadge
-                            label='Компания'
+                            label={t("common.fields.company")}
                             value={factoring.forwarder?.company_name || '—'}
                         />
 
                         <InfoBadge
-                            label='БИН'
+                            label={t("common.fields.bin")}
                             value={factoring.forwarder?.bin || '—'}
                         />
 
                         <InfoBadge
-                            label='ФИО'
+                            label={t("common.fields.fullName")}
                             value={factoring.forwarder?.fio || '—'}
                         />
 
                         <InfoBadge
-                            label='Телефон'
+                            label={t("common.fields.phone")}
                             value={factoring.forwarder?.phone || '—'}
                         />
                     </Box>
@@ -131,7 +134,7 @@ export function FactoringParticipantsSection({
                     }}
                 >
                     <Typography fontWeight={700} sx={{ mb: 1 }}>
-                        Заказчик
+                        {t("common.fields.customer")}
                     </Typography>
 
                     {isCustomerProfileLoading ? (
@@ -147,7 +150,7 @@ export function FactoringParticipantsSection({
                         </Box>
                     ) : customerProfileLoadFailed ? (
                         <Typography fontSize={13} color='text.secondary'>
-                            Не удалось загрузить данные заказчика
+                            {t("factorings.participants.customerLoadFailed")}
                         </Typography>
                     ) : (
                         <Box
@@ -161,22 +164,22 @@ export function FactoringParticipantsSection({
                             }}
                         >
                             <InfoBadge
-                                label='Компания'
+                                label={t("common.fields.company")}
                                 value={customerProfile?.fullName || '—'}
                             />
 
                             <InfoBadge
-                                label='БИН'
+                                label={t("common.fields.bin")}
                                 value={customerProfile?.bin || '—'}
                             />
 
                             <InfoBadge
-                                label='ФИО'
+                                label={t("common.fields.fullName")}
                                 value={customerProfile?.personFio || '—'}
                             />
 
                             <InfoBadge
-                                label='Телефон'
+                                label={t("common.fields.phone")}
                                 value={customerProfile?.personPhone || '—'}
                             />
                         </Box>

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import i18n from "../../../shared/i18n";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Button,
@@ -43,13 +45,13 @@ import { CounterpartAvatar } from "./CounterpartAvatar";
 
 function buildRequisiteRows(counterpart) {
   const candidates = [
-    { label: "Компания", value: counterpart?.companyName },
-    { label: "БИН", value: counterpart?.bin },
-    { label: "ИИН", value: counterpart?.iin },
-    { label: "ФИО", value: counterpart?.fullName },
-    { label: "БИК", value: counterpart?.bik },
-    { label: "Расчетный счет", value: counterpart?.account },
-    { label: "Адрес компании", value: counterpart?.address },
+    { label: i18n.t("common.fields.company"), value: counterpart?.companyName },
+    { label: i18n.t("common.fields.bin"), value: counterpart?.bin },
+    { label: i18n.t("common.fields.iin"), value: counterpart?.iin },
+    { label: i18n.t("common.fields.fullName"), value: counterpart?.fullName },
+    { label: i18n.t("common.fields.bik"), value: counterpart?.bik },
+    { label: i18n.t("common.fields.settlementAccount"), value: counterpart?.account },
+    { label: i18n.t("common.fields.companyAddress"), value: counterpart?.address },
   ];
 
   return candidates.filter((row) => row.value);
@@ -76,6 +78,8 @@ function RequisitesTable({ rows }) {
 }
 
 export function CounterpartDetailsModal({ open, counterpart, onClose }) {
+  const { t } = useTranslation();
+
   const [copied, setCopied] = useState(false);
 
   const rows = buildRequisiteRows(counterpart);
@@ -177,7 +181,7 @@ export function CounterpartDetailsModal({ open, counterpart, onClose }) {
 
             {counterpart?.phone && (
               <Tooltip
-                title={copied ? "Скопировано" : "Скопировать номер"}
+                title={copied ? t("common.actions.copied") : t("common.actions.copyNumber")}
                 placement="top"
                 arrow
                 open={copied ? true : undefined}
@@ -212,7 +216,7 @@ export function CounterpartDetailsModal({ open, counterpart, onClose }) {
             }}
           >
             <Typography sx={{ fontSize: 15, fontWeight: 600, mb: 1.5 }}>
-              Реквизиты
+              {t("chat.requisites.title")}
             </Typography>
 
             <RequisitesTable rows={rows} />
@@ -227,13 +231,13 @@ export function CounterpartDetailsModal({ open, counterpart, onClose }) {
 
         {!hasContactActions && rows.length === 0 && (
           <Typography color="text.secondary" sx={{ fontSize: 13 }}>
-            Контактные данные не указаны
+            {t("common.empty.contactDataNotSpecified")}
           </Typography>
         )}
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 3 }}>
-        <Button onClick={onClose}>Закрыть</Button>
+        <Button onClick={onClose}>{t("common.actions.close")}</Button>
       </DialogActions>
     </Dialog>
   );

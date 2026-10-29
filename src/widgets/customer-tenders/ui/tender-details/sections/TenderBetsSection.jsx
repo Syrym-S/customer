@@ -1,4 +1,6 @@
 import { useState } from "react";
+import i18n from "../../../../../shared/i18n";
+import { useTranslation } from "react-i18next";
 import {
   Box,
   Button,
@@ -23,7 +25,7 @@ function formatMoney(amount, currency = "KZT") {
   const formattedAmount = formatAmount(amount);
 
   if (!formattedAmount) {
-    return "Не указано";
+    return i18n.t("common.empty.notSpecifiedN");
   }
 
   return `${formattedAmount} ${currency}`;
@@ -35,6 +37,8 @@ export function TenderBetsSection({
   isActionLoading = false,
   onAcceptWinner,
 }) {
+  const { t } = useTranslation();
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [confirmBet, setConfirmBet] = useState(null);
 
@@ -89,12 +93,12 @@ export function TenderBetsSection({
     <>
       <TenderDetailsSection
         icon={<PaidOutlinedIcon />}
-        title="Ставки"
+        title={t("tenders.bids.title")}
         subtitle={`${bets.length}`}
       >
         {bets.length === 0 ? (
           <Typography color="text.secondary" sx={{ py: 2 }}>
-            Ставки пока не добавлены
+            {t("tenders.bids.empty")}
           </Typography>
         ) : (
           <Stack
@@ -174,7 +178,7 @@ export function TenderBetsSection({
                       >
                         {bet.company_name ||
                           bet.participant_id ||
-                          "Участник не указан"}
+                          t("tenders.bids.participantUnknown")}
                       </Typography>
                     </Box>
 
@@ -190,7 +194,7 @@ export function TenderBetsSection({
                     >
                       {isCancelledBet && (
                         <Chip
-                          label="Отменена"
+                          label={t("tenders.bids.statusCancelled")}
                           variant="outlined"
                           size="small"
                           color="error"
@@ -199,7 +203,7 @@ export function TenderBetsSection({
 
                       {isWinningBet && (
                         <Chip
-                          label="Победившая"
+                          label={t("tenders.bids.statusWinning")}
                           variant="outlined"
                           size="small"
                           color="success"
@@ -223,7 +227,7 @@ export function TenderBetsSection({
                             whiteSpace: "nowrap",
                           }}
                         >
-                          Выбрать победителя
+                          {t("tenders.bids.chooseWinner")}
                         </Button>
                       )}
                     </Stack>
@@ -254,8 +258,8 @@ export function TenderBetsSection({
                 }}
               >
                 {isExpanded
-                  ? "Скрыть"
-                  : `Показать все ставки (+${hiddenItemsCount})`}
+                  ? t("common.actions.hide")
+                  : t("tenders.bids.showAll", { count: hiddenItemsCount })}
               </Button>
             )}
           </Stack>
@@ -268,13 +272,13 @@ export function TenderBetsSection({
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle>Выбрать победителя</DialogTitle>
+        <DialogTitle>{t("tenders.bids.chooseWinner")}</DialogTitle>
 
         <DialogContent>
           <Typography sx={{ mb: 2 }}>
-            Вы уверены, что хотите выбрать эту ставку победителем?
+            {t("tenders.bids.confirmWinner")}
             <br />
-            Это действие нельзя отменить.
+            {t("tenders.bids.irreversible")}
           </Typography>
 
           <Box
@@ -287,17 +291,17 @@ export function TenderBetsSection({
             }}
           >
             <Typography color="text.secondary" sx={{ fontSize: 12 }}>
-              Компания
+              {t("common.fields.company")}
             </Typography>
 
             <Typography fontWeight={600} sx={{ mb: 1 }}>
               {confirmBet?.bet.participant_name ||
                 confirmBet?.bet.participant_id ||
-                "Участник не указан"}
+                t("tenders.bids.participantUnknown")}
             </Typography>
 
             <Typography color="text.secondary" sx={{ fontSize: 12 }}>
-              Сумма ставки
+              {t("tenders.bids.amount")}
             </Typography>
 
             <Typography fontWeight={700} sx={{ mb: 1 }}>
@@ -307,7 +311,7 @@ export function TenderBetsSection({
             {confirmBet?.bet.comment && (
               <>
                 <Typography color="text.secondary" sx={{ fontSize: 12 }}>
-                  Комментарий
+                  {t("common.fields.comment")}
                 </Typography>
 
                 <Typography sx={{ fontSize: 14 }}>
@@ -319,7 +323,7 @@ export function TenderBetsSection({
         </DialogContent>
 
         <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={handleCloseConfirm}>Отмена</Button>
+          <Button onClick={handleCloseConfirm}>{t("common.actions.cancel")}</Button>
 
           <Button
             variant="contained"
@@ -327,7 +331,7 @@ export function TenderBetsSection({
             onClick={handleConfirmWinner}
             disabled={isActionLoading}
           >
-            {isActionLoading ? "Выбор..." : "Подтвердить выбор"}
+            {isActionLoading ? t("tenders.bids.choosing") : t("tenders.bids.confirmChoice")}
           </Button>
         </DialogActions>
       </Dialog>

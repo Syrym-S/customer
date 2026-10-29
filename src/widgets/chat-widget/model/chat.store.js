@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import i18n from "../../../shared/i18n";
 import { CHAT_CATEGORIES, SUPPORT_CHAT_ID, createMockMessageId, createSupportChat } from "./chat.mock";
 import { CHAT_MESSAGES_PAGE_SIZE } from "./chat.helpers";
 import {
@@ -280,10 +281,10 @@ export const useChatStore = create((set, get) => ({
         error.response?.data?.message ||
           error.message ||
           (chatType === "factoring"
-            ? "Не удалось загрузить чат по факторингу"
+            ? i18n.t("chat.load.factoringFailed")
             : chatType === "delivery"
-              ? "Не удалось загрузить чат по доставке"
-              : "Не удалось загрузить чат по заказу"),
+              ? i18n.t("chat.load.deliveryFailed")
+              : i18n.t("chat.load.leadFailed")),
       );
     }
   },
@@ -336,7 +337,7 @@ export const useChatStore = create((set, get) => ({
       }
     } catch (error) {
       notifyError(
-        error.response?.data?.message || error.message || "Не удалось загрузить чат с поддержкой",
+        error.response?.data?.message || error.message || i18n.t("chat.load.supportFailed"),
       );
     }
   },
@@ -367,7 +368,7 @@ export const useChatStore = create((set, get) => ({
       set({
         leadChatsStatus: "error",
         leadChatsError:
-          error.response?.data?.message || error.message || "Не удалось загрузить чаты",
+          error.response?.data?.message || error.message || i18n.t("chat.load.listFailed"),
       });
     }
   },
@@ -404,7 +405,7 @@ export const useChatStore = create((set, get) => ({
       notifyError(
         error.response?.data?.message ||
           error.message ||
-          "Не удалось загрузить дополнительные чаты",
+          i18n.t("chat.load.moreFailed"),
       );
     }
   },
@@ -646,7 +647,7 @@ export const useChatStore = create((set, get) => ({
       }));
 
       notifyError(
-        error.response?.data?.message || error.message || "Не удалось отправить сообщение",
+        error.response?.data?.message || error.message || i18n.t("chat.message.sendFailed"),
       );
     }
   },
@@ -678,7 +679,7 @@ export const useChatStore = create((set, get) => ({
       }));
 
       notifyError(
-        error.response?.data?.message || error.message || "Не удалось удалить сообщение",
+        error.response?.data?.message || error.message || i18n.t("chat.message.deleteFailed"),
       );
     }
   },
@@ -760,7 +761,7 @@ export const useChatStore = create((set, get) => ({
       }));
 
       notifyError(
-        error.response?.data?.message || error.message || "Не удалось изменить сообщение",
+        error.response?.data?.message || error.message || i18n.t("chat.message.editFailed"),
       );
     }
   },

@@ -1,7 +1,10 @@
 import { Box, Chip, DialogTitle, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 export function CreateLeadHeader({ activeStep, stepsCount }) {
+   const { t } = useTranslation();
+
    return (
       <DialogTitle
          sx={{
@@ -30,7 +33,7 @@ export function CreateLeadHeader({ activeStep, stepsCount }) {
                      lineHeight: 1.3,
                   }}
                >
-                  Создание заказа
+                  {t("createLead.title")}
                </Typography>
 
                <Typography
@@ -38,12 +41,12 @@ export function CreateLeadHeader({ activeStep, stepsCount }) {
                   color='text.secondary'
                   sx={{ mt: 0.5 }}
                >
-                  Заполните данные по заявке
+                  {t("createLead.subtitle")}
                </Typography>
             </Box>
 
             <Chip
-               label={`Шаг ${activeStep + 1} из ${stepsCount}`}
+               label={t("createLead.step", { current: activeStep + 1, total: stepsCount })}
                color='primary'
                variant='outlined'
                size='small'

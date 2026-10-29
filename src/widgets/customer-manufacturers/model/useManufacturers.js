@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import i18n from '../../../shared/i18n';
 
 import {
    fetchMyManufacturers,
@@ -23,7 +24,7 @@ export function useMyManufacturers() {
          setError(
             requestError.response?.data?.message ||
                requestError.message ||
-               'Не удалось загрузить производителей',
+               i18n.t("manufacturers.loadFailed"),
          );
       } finally {
          setIsLoading(false);
@@ -78,7 +79,7 @@ export function useManufacturersSearch(query) {
                setError(
                   requestError.response?.data?.message ||
                      requestError.message ||
-                     'Не удалось выполнить поиск производителей',
+                     i18n.t("manufacturers.searchFailed"),
                );
             }
          } finally {

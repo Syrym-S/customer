@@ -2,6 +2,7 @@ import { Component } from "react";
 import PropTypes from "prop-types";
 
 import { ErrorScreen } from "./ErrorScreen";
+import i18n from "../i18n";
 
 export class AppErrorBoundary extends Component {
   constructor(props) {
@@ -21,10 +22,7 @@ export class AppErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <ErrorScreen
-          title="Что-то пошло не так"
-          message="Произошла непредвиденная ошибка. Обновите страницу или попробуйте позже."
-        />
+        <ErrorScreen message={i18n.t("errorPage.unexpectedReload")} />
       );
     }
 

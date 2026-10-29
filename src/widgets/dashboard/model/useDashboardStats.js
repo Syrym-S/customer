@@ -8,7 +8,9 @@ import { customerStatsConfig } from './stats.config';
 import { isSameStatsPeriod } from './stats.helpers';
 
 const REFETCH_DEBOUNCE_MS = 400;
-const LOAD_ERROR_MESSAGE = 'Не удалось загрузить статистику';
+import i18n from '../../../shared/i18n';
+
+const LOAD_ERROR_KEY = 'dashboard.stats.loadFailed';
 
 const REFRESH_EVENT_NAMES = [
    notificationDomainEventNames.leadsChanged,
@@ -77,7 +79,7 @@ export function useDashboardStats(
             }
 
             if (!silent) {
-               setError(LOAD_ERROR_MESSAGE);
+               setError(i18n.t(LOAD_ERROR_KEY));
             }
          } finally {
             if (requestId === requestIdRef.current) {

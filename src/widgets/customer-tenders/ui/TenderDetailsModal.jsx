@@ -7,6 +7,7 @@ import {
     DialogTitle,
     Typography,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 import { useTendersContext } from '../model/useTendersContext';
 import { useEffect, useMemo, useState } from 'react';
@@ -45,6 +46,8 @@ function getTenderRouteKey(lead) {
 }
 
 export function TenderDetailsModal() {
+    const { t } = useTranslation();
+
     const navigate = useNavigate();
     const { tenderId } = useParams();
 
@@ -147,7 +150,7 @@ export function TenderDetailsModal() {
             setActionError(
                 error.response?.data?.message ||
                     error.message ||
-                    'Не удалось запустить аукцион',
+                    t("tenders.manage.startFailed"),
             );
         } finally {
             setIsActionLoading(false);
@@ -170,7 +173,7 @@ export function TenderDetailsModal() {
             setActionError(
                 error.response?.data?.message ||
                     error.message ||
-                    'Не удалось выбрать победителя',
+                    t("tenders.bids.chooseWinnerFailed"),
             );
 
             return false;
@@ -191,7 +194,7 @@ export function TenderDetailsModal() {
             await cancelTender(openTender.id);
         } catch (error) {
             setActionError(
-                error.response?.data?.message || 'Не удалось отменить аукцион',
+                error.response?.data?.message || t("tenders.manage.cancelFailed"),
             );
         } finally {
             setIsActionLoading(false);
@@ -212,7 +215,7 @@ export function TenderDetailsModal() {
             setActionError(
                 error.response?.data?.message ||
                     error.message ||
-                    'Не удалось удалить аукцион',
+                    t("tenders.manage.deleteFailed"),
             );
         } finally {
             setIsActionLoading(false);
@@ -233,7 +236,7 @@ export function TenderDetailsModal() {
             setActionError(
                 error.response?.data?.message ||
                     error.message ||
-                    'Не удалось удалить участника',
+                    t("tenders.participants.removeFailed"),
             );
         } finally {
             setIsActionLoading(false);
@@ -261,7 +264,7 @@ export function TenderDetailsModal() {
             setActionError(
                 error.response?.data?.message ||
                     error.message ||
-                    'Не удалось добавить участников',
+                    t("tenders.participants.addFailed"),
             );
         } finally {
             setIsActionLoading(false);
@@ -292,7 +295,7 @@ export function TenderDetailsModal() {
             setSaveEditError(
                 error.response?.data?.message ||
                     error.message ||
-                    'Не удалось сохранить изменения аукциона',
+                    t("tenders.manage.saveFailed"),
             );
         } finally {
             setIsSavingEdit(false);
@@ -435,7 +438,7 @@ export function TenderDetailsModal() {
                             lineHeight: 1.3,
                         }}
                     >
-                        Аукцион #{openTender?.id}
+                        {t("dashboard.tenders.number", { id: openTender?.id })}
                     </Typography>
 
                     <Typography
@@ -443,7 +446,7 @@ export function TenderDetailsModal() {
                         color="text.secondary"
                         sx={{ mt: 0.5 }}
                     >
-                        Загружаем детали аукциона...
+                        {t("tenders.details.loading")}
                     </Typography>
                 </DialogTitle>
             ) : (
@@ -492,7 +495,7 @@ export function TenderDetailsModal() {
                         <CircularProgress size={32} />
 
                         <Typography color="text.secondary">
-                            Загружаем детали аукциона...
+                            {t("tenders.details.loading")}
                         </Typography>
                     </Box>
                 ) : (

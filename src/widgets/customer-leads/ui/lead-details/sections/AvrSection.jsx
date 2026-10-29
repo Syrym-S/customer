@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import i18n from '../../../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 import {
@@ -27,7 +29,7 @@ const POLL_INTERVAL_MS = 4000;
 
 function downloadAvrDocument(avrDocument) {
    if (!avrDocument?.content) {
-      notifyError('Документ АВР пока недоступен, попробуйте позже');
+      notifyError(i18n.t("leads.avr.unavailable"));
       return;
    }
 
@@ -54,6 +56,8 @@ function downloadAvrDocument(avrDocument) {
 }
 
 function ForwarderAvrCard({ signed }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          sx={{
@@ -73,7 +77,7 @@ function ForwarderAvrCard({ signed }) {
                flexWrap: 'wrap',
             }}
          >
-            <Typography fontWeight={700}>Подпись экспедитора</Typography>
+            <Typography fontWeight={700}>{t("leads.avr.forwarderSignature")}</Typography>
 
             <Chip
                size='small'
@@ -88,8 +92,7 @@ function ForwarderAvrCard({ signed }) {
                sx={{ mt: 0.5, fontSize: 12 }}
                color='text.secondary'
             >
-               Подписание АВР станет доступно после подписания
-               экспедитором.
+               {t("leads.avr.waitForForwarder")}
             </Typography>
          )}
       </Box>
@@ -101,6 +104,8 @@ ForwarderAvrCard.propTypes = {
 };
 
 export function AvrSection({ lead }) {
+   const { t } = useTranslation();
+
    const [forwarderSigned, setForwarderSigned] = useState(() =>
       isForwarderAvrSigned(lead),
    );
@@ -163,13 +168,13 @@ export function AvrSection({ lead }) {
                   // rather than as a disruptive global toast.
                   setServiceUnavailableMessage(
                      error.response?.data?.message ||
-                        'Сервис подписания недоступен, попробуйте позже',
+                        t("common.signing.unavailable"),
                   );
                } else {
                   notifyError(
                      error.response?.data?.message ||
                         error.message ||
-                        'Не удалось загрузить статус АВР',
+                        t("leads.avr.statusLoadFailed"),
                   );
                }
             }
@@ -200,7 +205,7 @@ export function AvrSection({ lead }) {
             stopPolling();
             setIsSigning(false);
             setSignUrl(null);
-            notifyError('Время на подписание АВР истекло, попробуйте снова');
+            notifyError(t("leads.avr.timeout"));
             return;
          }
 
@@ -251,7 +256,7 @@ export function AvrSection({ lead }) {
          notifyError(
             error.response?.data?.message ||
                error.message ||
-               'Не удалось начать подписание АВР',
+               t("leads.avr.signStartFailed"),
          );
       }
    }
@@ -259,7 +264,7 @@ export function AvrSection({ lead }) {
    return (
       <DetailSection
          icon={<FactCheckOutlinedIcon />}
-         title='Акт выполненных работ (АВР)'
+         title={t("leads.avr.titleShort")}
       >
          <Stack spacing={1.5}>
             {!hasLoadedStatus ? (
@@ -267,7 +272,7 @@ export function AvrSection({ lead }) {
                   <CircularProgress size={18} />
 
                   <Typography fontSize={13} color='text.secondary'>
-                     Проверяем статус АВР...
+                     {t("leads.avr.checking")}
                   </Typography>
                </Box>
             ) : (
@@ -288,7 +293,7 @@ export function AvrSection({ lead }) {
                         onClick={() => setForwarderSigned(true)}
                         sx={{ alignSelf: 'flex-start' }}
                      >
-                        [dev] Имитировать подписание экспедитором
+                        {t("leads.avr.devSimulateForwarder")}
                      </Button>
                   )}
 
@@ -306,7 +311,7 @@ export function AvrSection({ lead }) {
                      }}
                   >
                      <Stack spacing={1}>
-                        <Typography fontWeight={700}>Подпись заказчика</Typography>
+                        <Typography fontWeight={700}>{t("leads.avr.customerSignature")}</Typography>
 
                         {avrDocument && (
                            <Box
@@ -337,14 +342,14 @@ export function AvrSection({ lead }) {
                               <Box sx={{ minWidth: 0, flex: 1 }}>
                                  <Typography variant='body2' fontWeight={500}>
                                     {avrDocument.name ||
-                                       'Акт выполненных работ'}
+                                       t("leads.avr.title")}
                                  </Typography>
 
                                  <Typography
                                     variant='caption'
                                     color='text.secondary'
                                  >
-                                    Нажмите, чтобы скачать
+                                    {t("leads.avr.clickToDownload")}
                                  </Typography>
                               </Box>
 
@@ -359,7 +364,7 @@ export function AvrSection({ lead }) {
 
                         {!avrDocument && forwarderSigned && (
                            <Typography fontSize={13} color='text.secondary'>
-                              Документ АВР пока не готов, попробуйте позже
+                              {t("leads.avr.notReady")}
                            </Typography>
                         )}
 
@@ -376,28 +381,25 @@ export function AvrSection({ lead }) {
                                  ) : undefined
                               }
                            >
-                              {isSigning ? 'Ожидаем подписание...' : 'Подписать'}
+                              {isSigning ? t("common.signing.waiting") : t("common.actions.sign")}
                            </Button>
                         )}
 
                         {isSigning && (
                            <Typography fontSize={12} color='text.secondary'>
-                              Не закрывайте страницу — окно подписания открыто
-                              в новой вкладке. Статус обновится
-                              автоматически.
+                              {t("common.signing.keepPageOpen")}
                            </Typography>
                         )}
 
                         {isSigning && signUrl && (
                            <Typography fontSize={12} color='text.secondary'>
-                              Если окно для подписания не открылось
-                              автоматически, откройте его по{' '}
+                              {t('common.signing.windowHint')}{' '}
                               <Link
                                  href={signUrl}
                                  target='_blank'
                                  rel='noopener noreferrer'
                               >
-                                 этой ссылке
+                                 {t("common.signing.thisLink")}
                               </Link>
                               .
                            </Typography>

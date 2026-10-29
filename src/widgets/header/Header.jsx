@@ -23,6 +23,7 @@ import logoSrc from "../../../assets/logo.png";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logoutApi } from "../../shared/api/auth.api";
 import { Notifications } from "../customer-notifications/ui/Notifications";
@@ -39,10 +40,13 @@ import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
 import InventoryOutlined from "@mui/icons-material/InventoryOutlined";
 import FactoryOutlined from "@mui/icons-material/FactoryOutlined";
 import ReportProblemOutlined from "@mui/icons-material/ReportProblemOutlined";
+import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import { SupportContacts } from "../../shared/ui/SupportContacts";
+import { LanguageSwitcher } from "../../shared/ui/LanguageSwitcher";
 import { useChatStore } from "../chat-widget/model/chat.store";
 
 export function Header() {
+  const { t } = useTranslation();
   const openSupportChat = useChatStore((state) => state.openSupportChat);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -62,7 +66,8 @@ export function Header() {
   const isManufacturersPage = location.pathname === "/customer/manufacturers";
   const isTnvedPage = location.pathname === "/customer/tnved";
   const isComplaintsPage = location.pathname === "/customer/complaints";
-  const userEmail = window?.APP_DATA?.user_email || "Пользователь";
+  const isSettingsPage = location.pathname === "/customer/settings";
+  const userEmail = window?.APP_DATA?.user_email || t("header.user");
   const userEmailLabel = getCompactEmail(userEmail);
   const [profilePhoto, setProfilePhoto] = useState("");
 
@@ -79,6 +84,11 @@ export function Header() {
   function handleNavigateProfile() {
     handleCloseProfileMenu();
     handleNavigate("/customer/profile");
+  }
+
+  function handleNavigateSettings() {
+    handleCloseProfileMenu();
+    handleNavigate("/customer/settings");
   }
 
   function handleOpenProfileMenu(event) {
@@ -145,7 +155,7 @@ export function Header() {
       setLogoutError(
         error.response?.data?.message ||
           error.message ||
-          "Не удалось выйти из аккаунта",
+          t("header.logout.failed"),
       );
     } finally {
       setIsLogoutLoading(false);
@@ -193,61 +203,67 @@ export function Header() {
   function renderDrawerContent({ showCloseButton = false } = {}) {
     const menuItems = [
       {
-        label: "Главная",
+        label: t("nav.dashboard"),
         path: "/customer/dashboard",
         selected: isDashboardPage,
         icon: <DashboardOutlined />,
-        tooltip: "Общая сводка по заказам, маршрутам и аукционам",
+        tooltip: t("nav.tooltips.dashboard"),
       },
       {
-        label: "Заказы",
+        label: t("nav.leads"),
         path: "/customer",
         selected: isLeadsPage,
         icon: <PersonAddAltOutlined />,
-        tooltip: "Список заявок на перевозку и управление заказами",
+        tooltip: t("nav.tooltips.leads"),
       },
       {
-        label: "Аукционы",
+        label: t("nav.tenders"),
         path: "/customer/tenders",
         selected: isTenderPage,
         icon: <GavelOutlined />,
-        tooltip: "Создание и управление аукционами по перевозкам",
+        tooltip: t("nav.tooltips.tenders"),
       },
       {
-        label: "Факторинг",
+        label: t("nav.factoring"),
         path: "/customer/factorings",
         selected: isFactoringsPage,
         icon: <AccountBalanceOutlined />,
-        tooltip: "Список факторингов и финансовых заявок",
+        tooltip: t("nav.tooltips.factorings"),
       },
       {
-        label: "Экспедиторы",
+        label: t("nav.forwarders"),
         path: "/customer/forwarders",
         selected: isForwardersPage,
         icon: <SwapHorizOutlined />,
-        tooltip: "Список экспедиторов и приглашение новых участников",
+        tooltip: t("nav.tooltips.forwarders"),
       },
       {
-        label: "Производители",
+        label: t("nav.manufacturers"),
         path: "/customer/manufacturers",
         selected: isManufacturersPage,
         icon: <FactoryOutlined />,
-        tooltip:
-          "Привязка производителей к перевозкам и справочник производителей",
+        tooltip: t("nav.tooltips.manufacturers"),
       },
       {
-        label: "ТН ВЭД",
+        label: t("nav.tnved"),
         path: "/customer/tnved",
         selected: isTnvedPage,
         icon: <InventoryOutlined />,
-        tooltip: "Справочник товарной номенклатуры внешнеэкономической деятельности",
+        tooltip: t("nav.tooltips.tnved"),
       },
       {
-        label: "Жалобы",
+        label: t("nav.complaints"),
         path: "/customer/complaints",
         selected: isComplaintsPage,
         icon: <ReportProblemOutlined />,
-        tooltip: "Подача жалоб по заказам и факторингам, история и ответы администрации",
+        tooltip: t("nav.tooltips.complaints"),
+      },
+      {
+        label: t("nav.settings"),
+        path: "/customer/settings",
+        selected: isSettingsPage,
+        icon: <SettingsOutlined />,
+        tooltip: t("nav.tooltips.settings"),
       },
     ];
 
@@ -271,7 +287,7 @@ export function Header() {
               mb: 2,
             }}
           >
-            <IconButton onClick={handleCloseBurger} aria-label="Закрыть меню">
+            <IconButton onClick={handleCloseBurger} aria-label={t("header.closeMenu")}>
               <CloseIcon />
             </IconButton>
           </Box>
@@ -356,9 +372,9 @@ export function Header() {
             borderRadius: `${theme.radius.lg}px`,
           })}
         >
-          <Typography variant="subtitle2">Нужна помощь?</Typography>
+          <Typography variant="subtitle2">{t("header.needHelp")}</Typography>
           <Typography variant="body2" color="text.secondary">
-            Наша служба поддержки на связи 24/7
+            {t("header.supportAvailable")}
           </Typography>
 
           <Box
@@ -451,13 +467,22 @@ export function Header() {
             ml: "auto",
           }}
         >
+          <LanguageSwitcher
+            sx={{
+              display: {
+                xs: "none",
+                sm: "inline-flex",
+              },
+            }}
+          />
+
           <Notifications />
 
           <Button
             variant="outlined"
             onClick={handleOpenProfileMenu}
             title={userEmail}
-            aria-label={`Профиль пользователя ${userEmail}`}
+            aria-label={t("header.userProfile", { email: userEmail })}
             sx={{
               minWidth: 0,
               maxWidth: {
@@ -584,18 +609,22 @@ export function Header() {
         open={isProfileMenuOpen}
         onClose={handleCloseProfileMenu}
       >
-        <MenuItem onClick={handleNavigateProfile}>Профиль</MenuItem>
+        <MenuItem onClick={handleNavigateProfile}>{t("nav.profile")}</MenuItem>
 
-        <MenuItem disabled>Настройки</MenuItem>
+        <MenuItem onClick={handleNavigateSettings}>
+          {t("header.settings")}
+        </MenuItem>
 
-        <MenuItem onClick={handleOpenLogoutModal}>Выход</MenuItem>
+        <MenuItem onClick={handleOpenLogoutModal}>
+          {t("header.logout.title")}
+        </MenuItem>
       </Menu>
 
       <Dialog open={isLogoutModalOpen} onClose={handleCloseLogoutModal}>
-        <DialogTitle>Выход из аккаунта</DialogTitle>
+        <DialogTitle>{t("header.logout.fromAccount")}</DialogTitle>
 
         <DialogContent>
-          <DialogContentText>Вы уверены, что хотите выйти?</DialogContentText>
+          <DialogContentText>{t("header.logout.confirm")}</DialogContentText>
 
           {logoutError && (
             <DialogContentText color="error" sx={{ mt: 2 }}>
@@ -606,7 +635,7 @@ export function Header() {
 
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={handleCloseLogoutModal} disabled={isLogoutLoading}>
-            Отмена
+            {t("common.actions.cancel")}
           </Button>
 
           <Button
@@ -615,7 +644,9 @@ export function Header() {
             onClick={handleConfirmLogout}
             disabled={isLogoutLoading}
           >
-            {isLogoutLoading ? "Выход..." : "Выйти"}
+            {isLogoutLoading
+              ? t("header.logout.inProgress")
+              : t("header.logout.action")}
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 
 import { Box, Typography } from '@mui/material';
 
@@ -42,13 +43,15 @@ function hasPreviewUrl(document) {
 }
 
 export function DocumentPreview({ document }) {
+   const { t } = useTranslation();
+
    if (!document) {
       return null;
    }
 
    if (!hasPreviewUrl(document)) {
       return (
-         <PreviewFallback text='Для этого документа нет файла для предпросмотра' />
+         <PreviewFallback text={t("common.filePreview.noFile")} />
       );
    }
 
@@ -100,7 +103,7 @@ export function DocumentPreview({ document }) {
             <Box
                component='img'
                src={document.fileUrl}
-               alt={document.name || document.fileName || 'Документ'}
+               alt={document.name || document.fileName || t("common.fields.document")}
                sx={{
                   maxWidth: '100%',
                   height: 'auto',
@@ -138,7 +141,7 @@ export function DocumentPreview({ document }) {
    }
 
    return (
-      <PreviewFallback text='Предпросмотр для этого типа файла пока не поддерживается' />
+      <PreviewFallback text={t("common.filePreview.unsupported")} />
    );
 }
 

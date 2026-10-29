@@ -4,6 +4,7 @@ import {
    getScheduleDateOnly,
    havePointSchedulesChanged,
 } from '../../../features/create-lead/lib/point-schedule.helpers';
+import i18n from '../../../shared/i18n';
 import {
    cargoVolumeField,
    cargoVolumeM3ToBackend,
@@ -18,7 +19,7 @@ function createEmptyLeadCargoEditForm() {
       description: '',
       weight_kg: '',
       cargo_price: '',
-      type: 'Не указан',
+      type: i18n.t("common.empty.notSpecifiedM"),
       width_cm: '',
       height_cm: '',
       length_cm: '',
@@ -215,7 +216,7 @@ export function createLeadEditForm(lead) {
          price: '',
          summ: '',
          currency: 'KZT',
-         vat: 'без НДС',
+         vat: i18n.t("common.fields.withoutVat"),
          is_international: false,
          gracePeriodDays: '',
 
@@ -290,7 +291,7 @@ export function createLeadEditForm(lead) {
       summ: lead.price ?? '',
 
       currency: normalizeCurrency(lead.currency),
-      vat: lead.vat || 'без НДС',
+      vat: lead.vat || i18n.t("common.fields.withoutVat"),
       is_international: Boolean(lead.is_international),
       gracePeriodDays: lead.grace_period_days ?? '',
 
@@ -320,7 +321,7 @@ function normalizeText(value) {
 function normalizeCargoTypeForUi(value) {
    const normalizedValue = normalizeText(value);
 
-   return normalizedValue || 'Не указан';
+   return normalizedValue || i18n.t("common.empty.notSpecifiedM");
 }
 
 function normalizeCargoTypeForPayload(value) {
@@ -382,11 +383,11 @@ export function normalizeLocationValue(value) {
 
 export function normalizePersonValue(value) {
    if (value === null || value === undefined) {
-      return 'Не указан';
+      return i18n.t("common.empty.notSpecifiedM");
    }
 
    if (typeof value === 'string') {
-      return value.trim() || 'Не указан';
+      return value.trim() || i18n.t("common.empty.notSpecifiedM");
    }
 
    if (typeof value === 'number') {
@@ -414,10 +415,10 @@ export function normalizePersonValue(value) {
          return id;
       }
 
-      return 'Не указан';
+      return i18n.t("common.empty.notSpecifiedM");
    }
 
-   return 'Не указан';
+   return i18n.t("common.empty.notSpecifiedM");
 }
 
 function normalizeCurrency(value) {

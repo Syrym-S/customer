@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { Button, Chip, Stack, TextField, Typography } from '@mui/material';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import {
@@ -11,6 +12,8 @@ export function ForwarderInviteLink({
     compact = false,
     onActionClick,
 }) {
+    const { t } = useTranslation();
+
     const [isCopied, setIsCopied] = useState(false);
     const inviteLink = getForwarderInviteLink(forwarder);
     const isRegistered = isForwarderRegistered(forwarder);
@@ -35,7 +38,7 @@ export function ForwarderInviteLink({
         return (
             <Chip
                 icon={<CheckCircleRoundedIcon />}
-                label="Зарегистрирован"
+                label={t("forwarders.registered")}
                 color="success"
                 variant="outlined"
                 size="small"
@@ -57,7 +60,7 @@ export function ForwarderInviteLink({
     if (!inviteLink) {
         return (
             <Typography color="text.secondary" fontSize={13}>
-                Нет активной ссылки
+                {t("forwarders.invite.noActiveLink")}
             </Typography>
         );
     }
@@ -77,7 +80,7 @@ export function ForwarderInviteLink({
                     lineHeight: 1.4,
                 }}
             >
-                {isCopied ? 'Скопировано' : 'Скопировать'}
+                {isCopied ? t("common.actions.copied") : t("common.actions.copy")}
             </Button>
         );
     }
@@ -85,7 +88,7 @@ export function ForwarderInviteLink({
     return (
         <Stack spacing={1}>
             <TextField
-                label="Пригласительная ссылка"
+                label={t("forwarders.invite.link")}
                 value={inviteLink}
                 fullWidth
                 size="small"
@@ -102,7 +105,7 @@ export function ForwarderInviteLink({
                 onClick={handleCopy}
                 sx={{ alignSelf: 'flex-start' }}
             >
-                {isCopied ? 'Ссылка скопирована' : 'Скопировать ссылку'}
+                {isCopied ? t("forwarders.invite.linkCopied") : t("forwarders.invite.copyLink")}
             </Button>
         </Stack>
     );

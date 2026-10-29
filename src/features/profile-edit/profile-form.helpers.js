@@ -1,7 +1,8 @@
 import { getTodayDateInputValue } from "../create-lead/lib/point-schedule.helpers";
+import i18n from "../../shared/i18n";
 
 // Sent to the backend exactly as written (same convention as driver-mobile).
-export const DOCUMENT_ISSUED_BY_OPTIONS = ["МЮ РК", "МВД РК"];
+export const DOCUMENT_ISSUED_BY_OPTIONS = ['МЮ РК', 'МВД РК'];
 
 export function validateNotAfterToday(value) {
   if (!value) {
@@ -10,7 +11,7 @@ export function validateNotAfterToday(value) {
 
   return (
     value <= getTodayDateInputValue() ||
-    "Дата не может быть позже сегодняшнего дня"
+    i18n.t("validation.dateNotInFuture")
   );
 }
 
@@ -266,43 +267,43 @@ export function validateProfileForm(form, initialForm) {
     currentPassword || newPassword || newPasswordConfirm;
 
   if (fullName && (fullName.length < 2 || fullName.length > 100)) {
-    errors.fullName = "От 2 до 100 символов";
+    errors.fullName = i18n.t("validation.range2to100");
   }
 
   if (bin && !/^\d{12}$/.test(bin)) {
-    errors.bin = "БИН должен содержать 12 цифр";
+    errors.bin = i18n.t("validation.bin");
   }
 
   if (legalAddress && (legalAddress.length < 2 || legalAddress.length > 255)) {
-    errors.legalAddress = "От 2 до 255 символов";
+    errors.legalAddress = i18n.t("validation.range2to255");
   }
 
   if (accountNumber && !/^KZ[A-Z0-9]{18}$/i.test(accountNumber)) {
-    errors.accountNumber = "Формат: KZ + 18 символов";
+    errors.accountNumber = i18n.t("validation.iikFormat");
   }
 
   if (bik && bik.length !== 8) {
-    errors.bik = "БИК должен содержать 8 символов";
+    errors.bik = i18n.t("validation.bik");
   }
 
   if (bankName && (bankName.length < 2 || bankName.length > 100)) {
-    errors.bankName = "От 2 до 100 символов";
+    errors.bankName = i18n.t("validation.range2to100");
   }
 
   if (personEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(personEmail)) {
-    errors.personEmail = "Некорректный email";
+    errors.personEmail = i18n.t("validation.email");
   }
 
   if (personIin && !/^\d{12}$/.test(personIin)) {
-    errors.personIin = "ИИН должен содержать 12 цифр";
+    errors.personIin = i18n.t("validation.iin");
   }
 
   if (documentNumber && documentNumber.length > 50) {
-    errors.documentNumber = "Не больше 50 символов";
+    errors.documentNumber = i18n.t("validation.max50");
   }
 
   if (issueCountry && issueCountry.length > 100) {
-    errors.issueCountry = "Не больше 100 символов";
+    errors.issueCountry = i18n.t("validation.max100");
   }
 
   const documentIssueDate = normalizeText(form.documentIssueDate);
@@ -316,28 +317,28 @@ export function validateProfileForm(form, initialForm) {
       errors.documentIssueDate = issueDateValidation;
     }
   } else if (documentSectionChanged) {
-    errors.documentIssueDate = "Укажите дату выдачи документа";
+    errors.documentIssueDate = i18n.t("validation.documentIssueDateRequired");
   }
 
   if (!documentIssuedBy && documentSectionChanged) {
-    errors.documentIssuedBy = "Укажите, кем выдан документ";
+    errors.documentIssuedBy = i18n.t("validation.documentIssuedByRequired");
   }
 
   if (wantsPasswordChange) {
     if (!currentPassword) {
-      errors.currentPassword = "Введите текущий пароль";
+      errors.currentPassword = i18n.t("profile.password.enterCurrent");
     }
 
     if (!newPassword) {
-      errors.newPassword = "Введите новый пароль";
+      errors.newPassword = i18n.t("profile.password.enterNew");
     } else if (newPassword.length < 6) {
-      errors.newPassword = "Минимум 6 символов";
+      errors.newPassword = i18n.t("validation.min6");
     }
 
     if (!newPasswordConfirm) {
-      errors.newPasswordConfirm = "Повторите новый пароль";
+      errors.newPasswordConfirm = i18n.t("profile.password.repeatNew");
     } else if (newPasswordConfirm !== newPassword) {
-      errors.newPasswordConfirm = "Пароли не совпадают";
+      errors.newPasswordConfirm = i18n.t("validation.passwordsMismatch");
     }
   }
 

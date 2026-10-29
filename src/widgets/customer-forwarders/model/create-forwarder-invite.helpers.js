@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 export function createForwarderInviteInitialForm() {
     return {
         fio: '',
@@ -20,27 +22,27 @@ function normalizeText(value) {
 
 export function validateForwarderInviteForm(form) {
     if (!normalizeText(form.fio)) {
-        return 'Укажите ФИО представителя';
+        return i18n.t("validation.representativeRequired");
     }
 
     if (!normalizeText(form.phone)) {
-        return 'Укажите телефон';
+        return i18n.t("validation.phoneRequired");
     }
 
     if (!normalizeText(form.iin)) {
-        return 'Укажите ИИН';
+        return i18n.t("validation.iinRequired");
     }
 
     if (!normalizeText(form.email)) {
-        return 'Укажите email';
+        return i18n.t("validation.emailRequired");
     }
 
     if (!normalizeText(form.company_name)) {
-        return 'Укажите название компании';
+        return i18n.t("validation.companyNameRequired");
     }
 
     if (!normalizeText(form.company_bin)) {
-        return 'Укажите БИН компании';
+        return i18n.t("validation.companyBinRequired");
     }
 
     return '';

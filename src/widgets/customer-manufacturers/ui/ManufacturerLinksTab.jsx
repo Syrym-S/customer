@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Alert,
@@ -51,6 +52,8 @@ export function ManufacturerLinksTab({
    reloadLeads,
    onOpenManufacturerLeads,
 }) {
+   const { t } = useTranslation();
+
    const [search, setSearch] = useState('');
    const [statusValue, setStatusValue] = useState(ALL_ROW_STATUSES_VALUE);
    const [selectionModel, setSelectionModel] = useState(EMPTY_ROW_SELECTION);
@@ -156,7 +159,7 @@ export function ManufacturerLinksTab({
          <TextField
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Поиск по названию или БИН"
+            placeholder={t("manufacturers.add.searchHint")}
             fullWidth
             size="small"
             slotProps={{
@@ -176,15 +179,15 @@ export function ManufacturerLinksTab({
             sx={{ alignItems: { xs: 'stretch', sm: 'center' } }}
          >
             <FormControl size="small" sx={{ minWidth: 220 }}>
-               <InputLabel id="manufacturer-links-status-label">Статус</InputLabel>
+               <InputLabel id="manufacturer-links-status-label">{t("common.fields.status")}</InputLabel>
 
                <Select
                   labelId="manufacturer-links-status-label"
-                  label="Статус"
+                  label={t("common.fields.status")}
                   value={statusValue}
                   onChange={(event) => setStatusValue(event.target.value)}
                >
-                  <MenuItem value={ALL_ROW_STATUSES_VALUE}>Все статусы</MenuItem>
+                  <MenuItem value={ALL_ROW_STATUSES_VALUE}>{t("enums.leadStatusFilter.all")}</MenuItem>
 
                   {statusOptions.map((option) => (
                      <MenuItem key={option.value} value={option.value}>
@@ -203,7 +206,7 @@ export function ManufacturerLinksTab({
                disabled={isSubmitting}
                sx={{ flexShrink: 0 }}
             >
-               Отправить заявку
+               {t("manufacturers.requests.send")}
             </Button>
          </Stack>
 
@@ -215,7 +218,7 @@ export function ManufacturerLinksTab({
             <Chip
                size="small"
                variant="outlined"
-               label={`Выбрано: ${selectedIds.length}`}
+               label={t("common.actions.selected", { count: selectedIds.length })}
             />
 
             <Button
@@ -226,7 +229,7 @@ export function ManufacturerLinksTab({
                disabled={selectedIncomingIds.length === 0 || isSubmitting}
                onClick={() => runSelectionAction(approveRequests, selectedIncomingIds)}
             >
-               Одобрить заявки
+               {t("manufacturers.requests.approveMany")}
             </Button>
 
             <Button
@@ -237,7 +240,7 @@ export function ManufacturerLinksTab({
                disabled={selectedIncomingIds.length === 0 || isSubmitting}
                onClick={() => runSelectionAction(rejectRequests, selectedIncomingIds)}
             >
-               Отклонить заявки
+               {t("manufacturers.requests.rejectMany")}
             </Button>
 
             <Button
@@ -249,7 +252,7 @@ export function ManufacturerLinksTab({
                   runSelectionAction(withdrawRequests, selectedOutgoingIds)
                }
             >
-               Отозвать заявки
+               {t("manufacturers.requests.withdrawMany")}
             </Button>
          </Stack>
 
@@ -302,10 +305,10 @@ export function ManufacturerLinksTab({
          <AddManufacturerModal
             open={isSendOpen}
             attachedIds={rows.map(getManufacturerId)}
-            title="Отправить заявку производителю"
-            submitLabel="Отправить"
-            submittingLabel="Отправляем..."
-            attachedLabel="Заявка уже отправлена"
+            title={t("manufacturers.requests.sendToManufacturer")}
+            submitLabel={t("common.actions.send")}
+            submittingLabel={t("common.actions.sendingShort")}
+            attachedLabel={t("manufacturers.requests.alreadySent")}
             isSubmitting={isSubmitting}
             onClose={() => setIsSendOpen(false)}
             onSubmit={handleSendRequest}

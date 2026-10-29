@@ -5,6 +5,7 @@ import {
    Stack,
    Typography,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
@@ -20,6 +21,8 @@ import { ComplaintResponseSection } from './complaints-details/sections/Complain
 import { ComplaintFilesSection } from './complaints-details/sections/ComplaintFilesSection';
 
 export function ComplaintDetailsModal() {
+   const { t } = useTranslation();
+
    const navigate = useNavigate();
    const { complaintId } = useParams();
    const { openComplaint, setOpenComplaint } = useComplaintsContext();
@@ -59,7 +62,7 @@ export function ComplaintDetailsModal() {
                      lineHeight: 1.3,
                   }}
                >
-                  Жалоба
+                  {t("complaints.titleSingular")}
                </Typography>
 
                <StatusDot

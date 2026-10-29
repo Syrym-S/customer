@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 
 import { alpha, Box, Stack, Tooltip, Typography } from '@mui/material';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
@@ -18,24 +20,7 @@ import {
 } from '../model/lead.helpers';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
-import { pluralizeRu } from '../../../shared/helpers/plural.helpers';
 import { getShortLocationLabel } from '../../../shared/helpers/data-grid.helpers';
-
-// Russian plural rules for "груз" (1 груз / 2-4 груза / 5-20, 0 грузов).
-function getCargoCountLabel(count) {
-   const mod10 = count % 10;
-   const mod100 = count % 100;
-
-   if (mod10 === 1 && mod100 !== 11) {
-      return `${count} груз`;
-   }
-
-   if ([2, 3, 4].includes(mod10) && ![12, 13, 14].includes(mod100)) {
-      return `${count} груза`;
-   }
-
-   return `${count} грузов`;
-}
 
 function getCargoSummaryLabel(cargos) {
    if (!Array.isArray(cargos) || cargos.length === 0) {
@@ -47,9 +32,14 @@ function getCargoSummaryLabel(cargos) {
       0,
    );
 
-   const countLabel = getCargoCountLabel(cargos.length);
+   const countLabel = i18n.t('common.cargoCount', { count: cargos.length });
 
-   return totalWeight > 0 ? `${countLabel} · ${totalWeight} кг` : countLabel;
+   return totalWeight > 0
+      ? i18n.t('common.units.cargoSummary', {
+           cargoCount: countLabel,
+           weight: totalWeight,
+        })
+      : countLabel;
 }
 
 const cardContainerSx = {
@@ -68,6 +58,8 @@ const cardContainerSx = {
 };
 
 export function LeadCard({ lead }) {
+   const { t } = useTranslation();
+
    const { setOpenLead } = useLeadsContext();
 
    function handleOpenLead() {
@@ -114,7 +106,7 @@ export function LeadCard({ lead }) {
    }
 
    const forwarderLabel =
-      lead.forwarder?.fullName || lead.forwarder?.companyName || 'Не указан';
+      lead.forwarder?.fullName || lead.forwarder?.companyName || t("common.empty.notSpecifiedM");
 
    const fromFullLabel = normalizeLocationValue(lead.from_location);
    const toFullLabel = normalizeLocationValue(lead.to_location);
@@ -234,7 +226,7 @@ export function LeadCard({ lead }) {
                               whiteSpace: 'nowrap',
                            }}
                         >
-                           +{waypointsCount} {pluralizeRu(waypointsCount, ['точка', 'точки', 'точек'])}
+                           +{t('common.waypointCount', { count: waypointsCount })}
                         </Typography>
                      </Box>
 
@@ -279,19 +271,19 @@ export function LeadCard({ lead }) {
 
             <Stack direction="row" spacing={1}>
                <InfoBadge
-                  label="Цена"
+                  label={t("common.fields.price")}
                   value={
                      hasValue(lead.summ)
                         ? `${formatAmount(lead.summ)} ${lead.currency}`
-                        : 'Не указано'
+                        : t("common.empty.notSpecifiedN")
                   }
                   accent
                />
 
                {hasValue(lead.grace_period_days) && (
                   <InfoBadge
-                     label="Отсрочка платежа"
-                     value={`${lead.grace_period_days} дн.`}
+                     label={t("common.fields.gracePeriod")}
+                     value={t("common.units.days", { count: lead.grace_period_days })}
                   />
                )}
             </Stack>
@@ -301,6 +293,8 @@ export function LeadCard({ lead }) {
 }
 
 function InfoBadge({ label, value, accent = false, sx = {} }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          sx={{
@@ -331,7 +325,7 @@ function InfoBadge({ label, value, accent = false, sx = {} }) {
                color: accent ? 'primary.main' : 'text.primary',
             }}
          >
-            {value || 'Не указано'}
+            {value || t("common.empty.notSpecifiedN")}
          </Typography>
       </Box>
    );

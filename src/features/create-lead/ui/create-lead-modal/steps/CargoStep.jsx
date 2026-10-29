@@ -14,6 +14,8 @@ import {
    Stack,
    Typography,
 } from '@mui/material';
+import i18n from '../../../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import PropTypes from 'prop-types';
@@ -37,7 +39,7 @@ function createEmptyCargo() {
       name: '',
       description: '',
       weight_kg: '',
-      type: 'Не указан',
+      type: i18n.t("common.empty.notSpecifiedM"),
       width_cm: '',
       height_cm: '',
       length_cm: '',
@@ -49,6 +51,8 @@ function createEmptyCargo() {
 }
 
 export function CargoStep({ control, errors, setValue, getValues }) {
+   const { t } = useTranslation();
+
    const [cargoTypes, setCargoTypes] = useState([]);
    const [cargoTypesSearch, setCargoTypesSearch] = useState('');
    const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);
@@ -145,7 +149,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
    const cargoTypeOptions = useMemo(() => {
       const defaultOption = {
          id: '',
-         name: 'Не указан',
+         name: t("common.empty.notSpecifiedM"),
       };
 
       const uniqueMap = new Map();
@@ -159,7 +163,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
       });
 
       return Array.from(uniqueMap.values());
-   }, [cargoTypes]);
+   }, [cargoTypes, t]);
 
    function recalcCargoVolume(index) {
       const cargo = getValues(`cargos.${index}`) || {};
@@ -202,7 +206,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
    }
 
    return (
-      <StepSection title="Грузы и оплата">
+      <StepSection title={t("createLead.steps.cargo")}>
          <Stack spacing={2}>
             {fields.map((fieldItem, index) => {
                const cargoErrors = errors.cargos?.[index] || {};
@@ -228,7 +232,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                         }}
                      >
                         <Typography fontWeight={600}>
-                           Груз #{index + 1}
+                           {t("leads.cargo.itemNumber", { index: index + 1 })}
                         </Typography>
 
                         <IconButton
@@ -255,12 +259,12 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                            name={`cargos.${index}.name`}
                            control={control}
                            rules={{
-                              required: 'Укажите наименование груза',
+                              required: t("createLead.cargo.validation.nameRequired"),
                            }}
                            render={({ field }) => (
                               <TextField
                                  {...field}
-                                 label="Наименование груза"
+                                 label={t("common.fields.cargoName")}
                                  fullWidth
                                  size="small"
                                  error={Boolean(cargoErrors.name)}
@@ -297,7 +301,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                     }}
                                     onChange={(_, option) => {
                                        field.onChange(
-                                          option?.name || 'Не указан',
+                                          option?.name || t("common.empty.notSpecifiedM"),
                                        );
                                     }}
                                     renderInput={(params) => {
@@ -307,7 +311,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                        return (
                                           <TextField
                                              {...params}
-                                             label="Тип груза"
+                                             label={t("common.fields.cargoType")}
                                              fullWidth
                                              size="small"
                                              InputProps={{
@@ -348,7 +352,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
 
                                  return (
                                     Number(value) > 0 ||
-                                    'Вес должен быть больше 0'
+                                    t("createLead.cargo.validation.weightPositive")
                                  );
                               },
                            }}
@@ -360,7 +364,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                  onBlur={field.onBlur}
                                  inputRef={field.ref}
                                  decimals={3}
-                                 label="Вес, кг"
+                                 label={t("common.fields.weightKg")}
                                  fullWidth
                                  size="small"
                                  error={Boolean(cargoErrors.weight_kg)}
@@ -384,7 +388,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
 
                                  return (
                                     Number(value) >= 0 ||
-                                    'Цена груза не может быть отрицательной'
+                                    t("createLead.cargo.validation.cargoPriceNegative")
                                  );
                               },
                            }}
@@ -396,7 +400,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                  onBlur={field.onBlur}
                                  inputRef={field.ref}
                                  decimals={2}
-                                 label="Цена груза"
+                                 label={t("common.fields.cargoPrice")}
                                  fullWidth
                                  size="small"
                                  error={Boolean(cargoErrors.cargo_price)}
@@ -434,7 +438,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
 
                                     return (
                                        Number(value) > 0 ||
-                                       'Длина должна быть больше 0'
+                                       t("createLead.cargo.validation.lengthPositive")
                                     );
                                  },
                               }}
@@ -449,7 +453,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                        index,
                                        field.onChange,
                                     )}
-                                    label="Длина, см"
+                                    label={t("common.fields.lengthCm")}
                                     fullWidth
                                     size="small"
                                     error={Boolean(cargoErrors.length_cm)}
@@ -473,7 +477,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
 
                                     return (
                                        Number(value) > 0 ||
-                                       'Ширина должна быть больше 0'
+                                       t("createLead.cargo.validation.widthPositive")
                                     );
                                  },
                               }}
@@ -488,7 +492,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                        index,
                                        field.onChange,
                                     )}
-                                    label="Ширина, см"
+                                    label={t("common.fields.widthCm")}
                                     fullWidth
                                     size="small"
                                     error={Boolean(cargoErrors.width_cm)}
@@ -512,7 +516,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
 
                                     return (
                                        Number(value) > 0 ||
-                                       'Высота должна быть больше 0'
+                                       t("createLead.cargo.validation.heightPositive")
                                     );
                                  },
                               }}
@@ -527,7 +531,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                        index,
                                        field.onChange,
                                     )}
-                                    label="Высота, см"
+                                    label={t("common.fields.heightCm")}
                                     fullWidth
                                     size="small"
                                     error={Boolean(cargoErrors.height_cm)}
@@ -551,7 +555,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
 
                                     return (
                                        Number(value) > 0 ||
-                                       'Объем должен быть больше 0'
+                                       t("createLead.cargo.validation.volumePositive")
                                     );
                                  },
                               }}
@@ -566,7 +570,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                        index,
                                        field.onChange,
                                     )}
-                                    label="Объем, м³"
+                                    label={t("common.fields.volumeM3")}
                                     fullWidth
                                     size="small"
                                     error={Boolean(cargoErrors.volume_m3)}
@@ -582,7 +586,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                            render={({ field }) => (
                               <TextField
                                  {...field}
-                                 label="Описание груза"
+                                 label={t("createLead.cargo.description")}
                                  fullWidth
                                  multiline
                                  minRows={2}
@@ -605,7 +609,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                  validate: (value) =>
                                     !isInternational ||
                                     Boolean(value?.code) ||
-                                    'Укажите код ТН ВЭД',
+                                    t("createLead.cargo.validation.tnvedRequired"),
                               }}
                               render={({ field }) => (
                                  <Box
@@ -619,7 +623,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                                     <TnvedCodeAutocomplete
                                        value={field.value}
                                        onChange={field.onChange}
-                                       label="Код ТН ВЭД"
+                                       label={t("common.fields.tnvedCode")}
                                        error={Boolean(cargoErrors.tnved)}
                                        helperText={cargoErrors.tnved?.message}
                                     />
@@ -639,7 +643,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                onClick={() => append(createEmptyCargo())}
                sx={{ alignSelf: 'flex-start' }}
             >
-               Добавить груз
+               {t("leads.cargo.add")}
             </Button>
 
             <Box
@@ -659,15 +663,15 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                   render={({ field }) => (
                      <FormControl fullWidth size="small">
                         <InputLabel id="loading-type-label">
-                           Тип погрузки
+                           {t("common.fields.loadingType")}
                         </InputLabel>
                         <Select
                            {...field}
                            labelId="loading-type-label"
-                           label="Тип погрузки"
+                           label={t("common.fields.loadingType")}
                            value={field.value || ''}
                         >
-                           <MenuItem value="">Не указан</MenuItem>
+                           <MenuItem value="">{t("common.empty.notSpecifiedM")}</MenuItem>
                            {transportationOptions.loadingType.map((option) => (
                               <MenuItem key={option.value} value={option.value}>
                                  {option.label}
@@ -684,15 +688,15 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                   render={({ field }) => (
                      <FormControl fullWidth size="small">
                         <InputLabel id="packaging-type-label">
-                           Вид упаковки
+                           {t("common.fields.packagingType")}
                         </InputLabel>
                         <Select
                            {...field}
                            labelId="packaging-type-label"
-                           label="Вид упаковки"
+                           label={t("common.fields.packagingType")}
                            value={field.value || ''}
                         >
-                           <MenuItem value="">Не указан</MenuItem>
+                           <MenuItem value="">{t("common.empty.notSpecifiedM")}</MenuItem>
                            {transportationOptions.packagingType.map((option) => (
                               <MenuItem key={option.value} value={option.value}>
                                  {option.label}
@@ -709,15 +713,15 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                   render={({ field }) => (
                      <FormControl fullWidth size="small">
                         <InputLabel id="composition-type-label">
-                           Тип состава
+                           {t("common.fields.bodyType")}
                         </InputLabel>
                         <Select
                            {...field}
                            labelId="composition-type-label"
-                           label="Тип состава"
+                           label={t("common.fields.bodyType")}
                            value={field.value || ''}
                         >
-                           <MenuItem value="">Не указан</MenuItem>
+                           <MenuItem value="">{t("common.empty.notSpecifiedM")}</MenuItem>
                            {transportationOptions.compositionType.map((option) => (
                               <MenuItem key={option.value} value={option.value}>
                                  {option.label}
@@ -734,15 +738,15 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                   render={({ field }) => (
                      <FormControl fullWidth size="small">
                         <InputLabel id="transport-type-label">
-                           Тип транспорта
+                           {t("common.fields.transportType")}
                         </InputLabel>
                         <Select
                            {...field}
                            labelId="transport-type-label"
-                           label="Тип транспорта"
+                           label={t("common.fields.transportType")}
                            value={field.value || ''}
                         >
-                           <MenuItem value="">Не указан</MenuItem>
+                           <MenuItem value="">{t("common.empty.notSpecifiedM")}</MenuItem>
                            {transportationOptions.transportType.map((option) => (
                               <MenuItem key={option.value} value={option.value}>
                                  {option.label}
@@ -779,7 +783,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
 
                         return (
                            Number(value) >= 0 ||
-                           'Цена не может быть отрицательной'
+                           t("createLead.cargo.validation.priceNegative")
                         );
                      },
                   }}
@@ -791,7 +795,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                         onBlur={field.onBlur}
                         inputRef={field.ref}
                         decimals={2}
-                        label="Цена исполнения"
+                        label={t("common.fields.executionPrice")}
                         fullWidth
                         size="small"
                         error={Boolean(errors.price)}
@@ -807,7 +811,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                      <CurrencyAutocomplete
                         value={field.value || 'KZT'}
                         onChange={field.onChange}
-                        label="Валюта"
+                        label={t("common.fields.currency")}
                         fullWidth
                         size="small"
                      />
@@ -827,7 +831,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                               }
                            />
                         }
-                        label="С НДС"
+                        label={t("createLead.cargo.withVat")}
                      />
                   )}
                />
@@ -851,7 +855,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                            (Number.isInteger(number) &&
                               number > 0 &&
                               number < 365) ||
-                           'Укажите от 1 до 364 дней'
+                           t("createLead.cargo.validation.gracePeriodRange")
                         );
                      },
                   }}
@@ -863,7 +867,7 @@ export function CargoStep({ control, errors, setValue, getValues }) {
                         onBlur={field.onBlur}
                         inputRef={field.ref}
                         decimals={0}
-                        label="Отсрочка платежа, дней"
+                        label={t("common.fields.gracePeriodDays")}
                         fullWidth
                         size="small"
                         error={Boolean(errors.gracePeriodDays)}

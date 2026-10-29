@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 import {
    Box,
@@ -30,6 +31,8 @@ import { setValueOptions } from '../../model/lead-route-editor.helpers';
 const dateFieldSx = { flex: 1, minWidth: 160 };
 
 export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
+   const { t } = useTranslation();
+
    const [fromInputValue, setFromInputValue] = useState('');
    const [toInputValue, setToInputValue] = useState('');
 
@@ -177,7 +180,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
             }}
          >
             <RouteAddressAutocomplete
-               label="Откуда"
+               label={t("common.fields.origin")}
                value={form.fromLocation || ''}
                inputValue={fromInputValue || form.fromLocation || ''}
                options={fromOptions}
@@ -201,7 +204,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                   name="fromStartAt"
                   control={control}
                   rules={{
-                     required: 'Укажите дату начала в точке отправления',
+                     required: t("route.validation.startDateOrigin"),
                      validate: validateStartAtChain(
                         form,
                         pointScheduleFields,
@@ -215,7 +218,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                            'fromStartAt',
                            field.onChange,
                         )}
-                        label="Дата начала"
+                        label={t("common.fields.startDate")}
                         type="date"
                         size="small"
                         error={Boolean(errors?.fromStartAt)}
@@ -232,7 +235,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                   name="fromEndAt"
                   control={control}
                   rules={{
-                     required: 'Укажите дату окончания в точке отправления',
+                     required: t("route.validation.endDateOrigin"),
                      validate: validateEndAtOwnStart(
                         form,
                         pointScheduleFields,
@@ -246,7 +249,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                            'fromEndAt',
                            field.onChange,
                         )}
-                        label="Дата окончания"
+                        label={t("common.fields.endDate")}
                         type="date"
                         size="small"
                         error={Boolean(errors?.fromEndAt)}
@@ -285,7 +288,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
             />
 
             <RouteAddressAutocomplete
-               label="Куда"
+               label={t("common.fields.destination")}
                value={form.toLocation || ''}
                inputValue={toInputValue || form.toLocation || ''}
                options={toOptions}
@@ -309,7 +312,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                   name="toStartAt"
                   control={control}
                   rules={{
-                     required: 'Укажите дату начала в точке назначения',
+                     required: t("route.validation.startDateDestination"),
                      validate: validateStartAtChain(
                         form,
                         pointScheduleFields,
@@ -323,7 +326,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                            'toStartAt',
                            field.onChange,
                         )}
-                        label="Дата начала"
+                        label={t("common.fields.startDate")}
                         type="date"
                         size="small"
                         error={Boolean(errors?.toStartAt)}
@@ -349,7 +352,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                   name="toEndAt"
                   control={control}
                   rules={{
-                     required: 'Укажите дату окончания в точке назначения',
+                     required: t("route.validation.endDateDestination"),
                      validate: validateEndAtOwnStart(
                         form,
                         pointScheduleFields,
@@ -360,7 +363,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
                      <TextField
                         {...field}
                         onChange={handleEndAtChange('toEndAt', field.onChange)}
-                        label="Дата окончания"
+                        label={t("common.fields.endDate")}
                         type="date"
                         size="small"
                         error={Boolean(errors?.toEndAt)}
@@ -386,7 +389,7 @@ export function LeadRouteEditor({ form, setValue, control, errors, trigger }) {
 
          <Box sx={{ mt: 1 }}>
             <FormControlLabel
-               label="Международная перевозка"
+               label={t("common.fields.international")}
                sx={{ display: 'block' }}
                control={
                   <Checkbox

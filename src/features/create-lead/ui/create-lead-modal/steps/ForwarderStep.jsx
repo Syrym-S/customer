@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import i18n from '../../../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { Controller, useWatch } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import {
@@ -32,7 +34,7 @@ function normalizeForwarderOption(forwarder) {
             forwarder.full_name ||
             forwarder.fio ||
             forwarder.name ||
-            'Без имени',
+            i18n.t("common.empty.noName"),
 
         iin: forwarder.iin || forwarder.personIin || '',
 
@@ -40,7 +42,7 @@ function normalizeForwarderOption(forwarder) {
             forwarder.companyName ||
             forwarder.company_name ||
             forwarder.name ||
-            'Без компании',
+            i18n.t("common.empty.noCompany"),
 
         companyBin:
             forwarder.companyBin ||
@@ -108,6 +110,8 @@ function filterForwardersLocally(forwarders, query) {
 }
 
 export function ForwarderStep({ control, errors, setValue }) {
+    const { t } = useTranslation();
+
     const selectedForwarderId = useWatch({
         control,
         name: 'forwarderId',
@@ -143,14 +147,14 @@ export function ForwarderStep({ control, errors, setValue }) {
                 error.response?.data?.message ||
                     error.response?.data?.error ||
                     error.message ||
-                    'Не удалось загрузить экспедиторов',
+                    t("common.forwarderPicker.loadFailed"),
             );
 
             setAllForwarders([]);
         } finally {
             setIsLoading(false);
         }
-    }, [isForwardersLoaded, isLoading]);
+    }, [isForwardersLoaded, isLoading, t]);
 
     useEffect(() => {
         if (!selectedForwarderId) {
@@ -179,8 +183,8 @@ export function ForwarderStep({ control, errors, setValue }) {
 
     return (
         <StepSection
-            title="Выбор экспедитора"
-            description="Найдите и выберите экспедитора, который будет закреплен за маршрутом"
+            title={t("createLead.steps.forwarder")}
+            description={t("createLead.forwarder.hint")}
         >
             <Controller
                 name="forwarderId"
@@ -206,10 +210,10 @@ export function ForwarderStep({ control, errors, setValue }) {
                             onOpen={loadForwarders}
                             noOptionsText={
                                 isForwardersLoaded
-                                    ? 'Экспедитор не найден'
-                                    : 'Нажмите, чтобы загрузить экспедиторов'
+                                    ? t("common.forwarderPicker.notFound")
+                                    : t("common.forwarderPicker.clickToLoad")
                             }
-                            loadingText="Загружаем экспедиторов..."
+                            loadingText={t("common.forwarderPicker.loading")}
                             filterSelectedOptions
                             onInputChange={(_, newInputValue, reason) => {
                                 if (reason === 'reset') {
@@ -328,7 +332,7 @@ export function ForwarderStep({ control, errors, setValue }) {
                                     });
 
                                     setSearchError(
-                                        'Не удалось загрузить данные экспедитора',
+                                        t("common.forwarderPicker.detailsLoadFailed"),
                                     );
                                 } finally {
                                     setIsDetailsLoading(false);
@@ -347,7 +351,7 @@ export function ForwarderStep({ control, errors, setValue }) {
                                                 option.fullName ||
                                                 option.fio ||
                                                 option.name ||
-                                                'Без имени'
+                                                t("common.empty.noName")
                                             }
                                             {...itemProps}
                                             sx={{
@@ -394,7 +398,7 @@ export function ForwarderStep({ control, errors, setValue }) {
                                             {option.fullName ||
                                                 option.fio ||
                                                 option.name ||
-                                                'Без имени'}
+                                                t("common.empty.noName")}
                                         </Typography>
 
                                         <Chip
@@ -402,7 +406,7 @@ export function ForwarderStep({ control, errors, setValue }) {
                                             label={
                                                 option.companyName ||
                                                 option.name ||
-                                                'Без компании'
+                                                t("common.empty.noCompany")
                                             }
                                             sx={{
                                                 height: 22,
@@ -416,11 +420,11 @@ export function ForwarderStep({ control, errors, setValue }) {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    label="Экспедитор"
+                                    label={t("common.fields.forwarder")}
                                     placeholder={
                                         selectedForwarder
                                             ? ''
-                                            : 'Введите ФИО, ИИН, компанию, БИН или телефон'
+                                            : t("common.forwarderPicker.searchHint")
                                     }
                                     onFocus={loadForwarders}
                                     error={
@@ -430,7 +434,7 @@ export function ForwarderStep({ control, errors, setValue }) {
                                     helperText={
                                         errors.forwarderId?.message ||
                                         searchError ||
-                                        'Можно пропустить этот шаг и создать заказ без экспедитора'
+                                        t("createLead.forwarder.skippable")
                                     }
                                 />
                             )}
@@ -452,7 +456,7 @@ export function ForwarderStep({ control, errors, setValue }) {
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    Загружаем данные экспедитора...
+                                    {t("createLead.forwarder.loadingDetails")}
                                 </Typography>
                             </Box>
                         )}
@@ -469,23 +473,23 @@ export function ForwarderStep({ control, errors, setValue }) {
                                 }}
                             >
                                 <InfoBadge
-                                    label="ФИО экспедитора"
+                                    label={t("common.fields.forwarderFullName")}
                                     value={selectedForwarder.fullName}
                                 />
                                 <InfoBadge
-                                    label="ИИН экспедитора"
+                                    label={t("common.fields.forwarderIin")}
                                     value={selectedForwarder.iin}
                                 />
                                 <InfoBadge
-                                    label="Компания"
+                                    label={t("common.fields.company")}
                                     value={selectedForwarder.companyName}
                                 />
                                 <InfoBadge
-                                    label="БИН компании"
+                                    label={t("common.fields.companyBin")}
                                     value={selectedForwarder.companyBin}
                                 />
                                 <InfoBadge
-                                    label="Телефон"
+                                    label={t("common.fields.phone")}
                                     value={selectedForwarder.phone}
                                 />
                                 <InfoBadge

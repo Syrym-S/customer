@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import i18n from '../../../../../shared/i18n';
 import {
    Autocomplete,
    Box,
@@ -18,7 +19,7 @@ function getCurrencyLabel(option) {
 export function CurrencyAutocomplete({
    value,
    onChange,
-   label = 'Валюта',
+   label = i18n.t("common.fields.currency"),
    disabled = false,
    size = 'small',
    fullWidth = true,

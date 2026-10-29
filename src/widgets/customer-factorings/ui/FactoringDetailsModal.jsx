@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Alert,
   Box,
@@ -63,6 +64,8 @@ export function FactoringDetailsModal({
   onInitiateSigning,
   onCancelFactoring,
 }) {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const { factoringId } = useParams();
 
@@ -268,11 +271,11 @@ export function FactoringDetailsModal({
               lineHeight: 1.3,
             }}
           >
-            Факторинг #{factoringDisplayId || ""}
+            {t("factorings.details.number", { id: factoringDisplayId || "" })}
           </Typography>
 
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            Загружаем детали факторинга...
+            {t("factorings.details.loading")}
           </Typography>
         </DialogTitle>
       )}
@@ -292,7 +295,7 @@ export function FactoringDetailsModal({
             <CircularProgress size={32} />
 
             <Typography color="text.secondary">
-              Загружаем детали факторинга...
+              {t("factorings.details.loading")}
             </Typography>
           </Box>
         )}

@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import i18n from '../../../../../shared/i18n';
 import { fetchForwardersApi } from '../../../../../features/create-lead/api/forwarders.api';
 import { FORWARDERS_PER_PAGE } from '../../../../customer-forwarders/model/forwarders.helpers';
 import {
@@ -39,7 +40,7 @@ export function useTenderParticipantForwarders({
                 error.response?.data?.message ||
                     error.response?.data?.error ||
                     error.message ||
-                    'Не удалось загрузить экспедиторов',
+                    i18n.t("common.forwarderPicker.loadFailed"),
             );
         } finally {
             setIsForwardersLoading(false);

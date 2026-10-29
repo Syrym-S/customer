@@ -9,6 +9,7 @@ import {
    ToggleButtonGroup,
    Typography,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -27,6 +28,8 @@ const TENDERS_VIEW_MODES = {
 };
 
 export function TendersList() {
+   const { t } = useTranslation();
+
    const {
       tenders,
       page,
@@ -86,11 +89,11 @@ export function TendersList() {
                >
                   <Box>
                      <Typography variant="h6" fontWeight={600}>
-                        Аукционы
+                        {t("tenders.title")}
                      </Typography>
 
                      <Typography color="text.secondary" fontSize={14}>
-                        Список аукционов по заявкам
+                        {t("tenders.subtitle")}
                      </Typography>
                   </Box>
 
@@ -117,7 +120,7 @@ export function TendersList() {
                         onChange={handleViewModeChange}
                         size="small"
                         color="primary"
-                        aria-label="Переключение отображения аукционов"
+                        aria-label={t("tenders.viewToggle")}
                         sx={{
                            alignSelf: {
                               xs: 'stretch',
@@ -131,16 +134,16 @@ export function TendersList() {
                      >
                         <ToggleButton
                            value={TENDERS_VIEW_MODES.TABLE}
-                           aria-label="Показать таблицей"
-                           title="Таблица"
+                           aria-label={t("common.view.showAsTable")}
+                           title={t("common.view.table")}
                         >
                            <ViewListRoundedIcon fontSize="small" />
                         </ToggleButton>
 
                         <ToggleButton
                            value={TENDERS_VIEW_MODES.CARDS}
-                           aria-label="Показать карточками"
-                           title="Карточки"
+                           aria-label={t("common.view.showAsCards")}
+                           title={t("common.view.cards")}
                         >
                            <GridViewRoundedIcon fontSize="small" />
                         </ToggleButton>
@@ -156,7 +159,7 @@ export function TendersList() {
             <TextField
                value={search}
                onChange={handleSearchChange}
-               placeholder="Поиск по направлению"
+               placeholder={t("common.search.byDirection")}
                fullWidth
                size="small"
                slotProps={{
@@ -201,7 +204,7 @@ export function TendersList() {
                            }}
                         >
                            <Typography color="text.secondary">
-                              Аукционы не найдены
+                              {t("tenders.notFound")}
                            </Typography>
                         </Box>
                      ) : (

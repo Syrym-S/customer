@@ -1,4 +1,6 @@
 import { Box, Paper, Tooltip } from '@mui/material';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { DataGrid } from '@mui/x-data-grid';
 import { useTendersContext } from '../model/useTendersContext';
 import {
@@ -12,21 +14,21 @@ import { StatusDot } from '../../../shared/ui/StatusDot';
 import {
    getTenderCargoTypeLabel,
    getTenderTotalCargoWeight,
-   tenderStatusLabels,
+   getTenderStatusLabel,
    tenderStatusStyles,
 } from '../model/tender.helpers';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 
 function getLocationLabel(location) {
    if (!location) {
-      return 'Некорректные данные';
+      return i18n.t("common.empty.invalidData");
    }
 
    if (typeof location === 'string') {
-      return location || 'Некорректные данные';
+      return location || i18n.t("common.empty.invalidData");
    }
 
-   return location.address || location.name || location.title || 'Некорректные данные';
+   return location.address || location.name || location.title || i18n.t("common.empty.invalidData");
 }
 
 function getMoneyLabel(amount, currency) {
@@ -62,7 +64,7 @@ function getTenderShortLocation(tender, field) {
 
    return toSortString(
       getShortLocationLabel(location, getLocationLabel(location)),
-      'Некорректные данные',
+      i18n.t("common.empty.invalidData"),
    );
 }
 
@@ -73,13 +75,16 @@ function getTenderTotalWeightSortValue(tender) {
 }
 
 function TenderStatusChip({ status }) {
-   const label = tenderStatusLabels[status] || status || 'Не указан';
+   const label =
+      getTenderStatusLabel(status) || status || i18n.t("common.empty.notSpecifiedM");
    const styles = tenderStatusStyles[status] || tenderStatusStyles.new;
 
    return <StatusDot label={label} color={styles.color} />;
 }
 
 export function TendersTable({ tenders }) {
+   const { t } = useTranslation();
+
    const { openTenderDetails } = useTendersContext();
 
    const columns = [
@@ -107,17 +112,17 @@ export function TendersTable({ tenders }) {
       },
       {
          field: 'status',
-         headerName: 'Статус',
+         headerName: t("common.fields.status"),
          width: 140,
          valueGetter: (_, row) =>
-            row?.status ? tenderStatusLabels[row.status] || row.status : '',
+            row?.status ? getTenderStatusLabel(row.status) || row.status : '',
          renderCell: ({ row }) => {
             return <TenderStatusChip status={row.status} />;
          },
       },
       {
          field: 'from_location',
-         headerName: 'Откуда',
+         headerName: t("common.fields.origin"),
          flex: 1,
          minWidth: 140,
          valueGetter: (_, row) => getTenderShortLocation(row, 'from_location'),
@@ -134,7 +139,7 @@ export function TendersTable({ tenders }) {
       },
       {
          field: 'to_location',
-         headerName: 'Куда',
+         headerName: t("common.fields.destination"),
          flex: 1,
          minWidth: 140,
          valueGetter: (_, row) => getTenderShortLocation(row, 'to_location'),
@@ -156,10 +161,10 @@ export function TendersTable({ tenders }) {
          // from_location/to_location compete for. Ellipsis + title as a
          // safety net now that it's tighter than the longest possible label.
          field: 'cargoTypes',
-         headerName: 'Тип груза',
+         headerName: t("common.fields.cargoType"),
          width: 160,
          valueGetter: (_, row) =>
-            toSortString(getTenderCargoTypeLabel(row), 'Не указан'),
+            toSortString(getTenderCargoTypeLabel(row), t("common.empty.notSpecifiedM")),
          renderCell: ({ row }) => {
             const label = getTenderCargoTypeLabel(row);
 
@@ -179,7 +184,7 @@ export function TendersTable({ tenders }) {
       },
       {
          field: 'cargoTotalWeight',
-         headerName: 'Вес грузов',
+         headerName: t("tenders.details.cargoWeight"),
          width: 120,
          align: 'right',
          headerAlign: 'right',
@@ -188,12 +193,12 @@ export function TendersTable({ tenders }) {
          renderCell: ({ row }) => {
             const totalWeight = getTenderTotalCargoWeight(row);
 
-            return <Box>{totalWeight > 0 ? `${totalWeight} кг` : '-'}</Box>;
+            return <Box>{totalWeight > 0 ? t("common.units.kg", { value: totalWeight }) : '-'}</Box>;
          },
       },
       {
          field: 'price',
-         headerName: 'Цена',
+         headerName: t("common.fields.price"),
          width: 140,
          align: 'right',
          headerAlign: 'right',
@@ -212,18 +217,18 @@ export function TendersTable({ tenders }) {
       },
       {
          field: 'grace_period_days',
-         headerName: 'Отсрочка платежа',
+         headerName: t("common.fields.gracePeriod"),
          width: 160,
          valueGetter: (_, row) => getLeadValue(row, 'grace_period_days'),
          renderCell: ({ row }) => {
             const gracePeriodDays = getLeadValue(row, 'grace_period_days');
 
-            return <Box>{gracePeriodDays ? `${gracePeriodDays} дн.` : '-'}</Box>;
+            return <Box>{gracePeriodDays ? t("common.units.days", { count: gracePeriodDays }) : '-'}</Box>;
          },
       },
       {
          field: 'bets',
-         headerName: 'Ставки',
+         headerName: t("tenders.bids.title"),
          width: 70,
          align: 'right',
          headerAlign: 'right',
@@ -243,7 +248,7 @@ export function TendersTable({ tenders }) {
             columns={columns}
             getRowClassName={getZebraRowClassName}
             hideFooter
-            localeText={{ noRowsLabel: 'Аукционы не найдены' }}
+            localeText={{ noRowsLabel: t("tenders.notFound") }}
             sx={{ border: 0 }}
          />
       </Paper>

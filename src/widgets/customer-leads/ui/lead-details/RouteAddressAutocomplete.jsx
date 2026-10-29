@@ -1,4 +1,5 @@
 import { Autocomplete, CircularProgress, TextField } from '@mui/material';
+import { useTranslation } from "react-i18next";
 
 export function RouteAddressAutocomplete({
    label,
@@ -9,6 +10,8 @@ export function RouteAddressAutocomplete({
    onInputChange,
    onSelect,
 }) {
+   const { t } = useTranslation();
+
    return (
       <Autocomplete
          freeSolo
@@ -50,10 +53,10 @@ export function RouteAddressAutocomplete({
          }}
          noOptionsText={
             inputValue.trim().length < 2
-               ? 'Введите минимум 2 символа'
-               : 'Адрес не найден'
+               ? t("common.search.minChars")
+               : t("route.addressNotFound")
          }
-         loadingText="Поиск адреса..."
+         loadingText={t("route.addressSearching")}
          renderInput={(params) => {
             const inputProps = params.InputProps || {};
 

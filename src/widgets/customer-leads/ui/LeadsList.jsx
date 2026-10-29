@@ -13,6 +13,7 @@ import {
    ToggleButtonGroup,
    Typography,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
@@ -36,6 +37,8 @@ const LEADS_VIEW_MODES = {
 };
 
 export function LeadsList() {
+   const { t } = useTranslation();
+
    const {
       leads,
       page,
@@ -108,11 +111,11 @@ export function LeadsList() {
             >
                <Box>
                   <Typography variant="h6" fontWeight={600}>
-                     Заказы
+                     {t("leads.title")}
                   </Typography>
 
                   <Typography color="text.secondary" fontSize={14}>
-                     Список заявок на перевозку
+                     {t("leads.subtitle")}
                   </Typography>
                </Box>
 
@@ -144,17 +147,17 @@ export function LeadsList() {
                      }}
                   >
                      <InputLabel id="leads-status-filter-label">
-                        Статус
+                        {t("common.fields.status")}
                      </InputLabel>
 
                      <Select
                         labelId="leads-status-filter-label"
-                        label="Статус"
+                        label={t("common.fields.status")}
                         value={selectedStatusValue}
                         onChange={handleStatusFilterChange}
                      >
                         <MenuItem value={ALL_STATUSES_VALUE}>
-                           Все статусы
+                           {t("enums.leadStatusFilter.all")}
                         </MenuItem>
 
                         {statusFilterOptions.map((option) => (
@@ -171,7 +174,7 @@ export function LeadsList() {
                      onChange={handleViewModeChange}
                      size="small"
                      color="primary"
-                     aria-label="Переключение отображения заказов"
+                     aria-label={t("leads.viewToggle")}
                      sx={{
                         alignSelf: {
                            xs: 'stretch',
@@ -185,24 +188,24 @@ export function LeadsList() {
                   >
                      <ToggleButton
                         value={LEADS_VIEW_MODES.TABLE}
-                        aria-label="Показать таблицей"
-                        title="Таблица"
+                        aria-label={t("common.view.showAsTable")}
+                        title={t("common.view.table")}
                      >
                         <ViewListRoundedIcon fontSize="small" />
                      </ToggleButton>
 
                      <ToggleButton
                         value={LEADS_VIEW_MODES.CARDS}
-                        aria-label="Показать карточками"
-                        title="Карточки"
+                        aria-label={t("common.view.showAsCards")}
+                        title={t("common.view.cards")}
                      >
                         <GridViewRoundedIcon fontSize="small" />
                      </ToggleButton>
 
                      {/* <ToggleButton
                         value={LEADS_VIEW_MODES.KANBAN}
-                        aria-label="Показать канбаном"
-                        title="Канбан"
+                        aria-label={t("leads.view.showAsKanban")}
+                        title={t("leads.view.kanban")}
                      >
                         <ViewKanbanRoundedIcon fontSize="small" />
                      </ToggleButton> */}
@@ -213,7 +216,7 @@ export function LeadsList() {
             <TextField
                value={search}
                onChange={handleSearchChange}
-               placeholder="Поиск по направлению"
+               placeholder={t("common.search.byDirection")}
                fullWidth
                size="small"
                slotProps={{
@@ -259,7 +262,7 @@ export function LeadsList() {
                               }}
                            >
                               <Typography color="text.secondary">
-                                 Заказы не найдены
+                                 {t("leads.notFound")}
                               </Typography>
                            </Box>
                         ) : (

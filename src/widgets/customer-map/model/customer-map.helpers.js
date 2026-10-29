@@ -1,4 +1,5 @@
 import { normalizeLocationValue } from '../../customer-leads/model/lead-edit-form.helpers';
+import i18n from '../../../shared/i18n';
 
 export function getMarkerVisual(marker) {
    const id = String(marker?.id ?? '');
@@ -8,11 +9,11 @@ export function getMarkerVisual(marker) {
    }
 
    if (id === 'from' || /route-start$/.test(id)) {
-      return { kind: 'start', label: 'А' };
+      return { kind: 'start', label: i18n.t("route.markerA") };
    }
 
    if (id === 'to' || /route-end$/.test(id)) {
-      return { kind: 'end', label: 'Б' };
+      return { kind: 'end', label: i18n.t("route.markerB") };
    }
 
    const waypointMatch = id.match(/waypoint-(\d+)$/);
@@ -63,7 +64,7 @@ export function formatDriverName(driver) {
       driver?.name ||
       driver?.fullName ||
       driver?.full_name ||
-      'Водитель не указан'
+      i18n.t("map.driverNotSpecified")
    );
 }
 
@@ -98,20 +99,20 @@ export function buildLeadRouteMarkers(lead, routePoints = []) {
       markers.push({
          id: `${leadId}-route-start`,
          position: fromPoint,
-         title: 'Точка А',
+         title: i18n.t("route.pointA"),
          description: formatMapLocation(
             lead.from_location,
-            'Откуда не указано',
+            i18n.t("route.originNotSpecified"),
          ),
       });
    } else if (routePoints.length >= 2) {
       markers.push({
          id: `${leadId}-route-start`,
          position: routePoints[0],
-         title: 'Точка А',
+         title: i18n.t("route.pointA"),
          description: formatMapLocation(
             lead?.from_location,
-            'Откуда не указано',
+            i18n.t("route.originNotSpecified"),
          ),
       });
    }
@@ -126,10 +127,10 @@ export function buildLeadRouteMarkers(lead, routePoints = []) {
       markers.push({
          id: `${leadId}-route-waypoint-${index}`,
          position: point,
-         title: `Промежуточная точка ${index + 1}`,
+         title: i18n.t("route.waypoint", { index: index + 1 }),
          description: formatMapLocation(
             waypoint,
-            `Промежуточная точка ${index + 1}`,
+            i18n.t("route.waypoint", { index: index + 1 }),
          ),
       });
    });
@@ -138,15 +139,15 @@ export function buildLeadRouteMarkers(lead, routePoints = []) {
       markers.push({
          id: `${leadId}-route-end`,
          position: toPoint,
-         title: 'Точка Б',
-         description: formatMapLocation(lead.to_location, 'Куда не указано'),
+         title: i18n.t("route.pointB"),
+         description: formatMapLocation(lead.to_location, i18n.t("route.destinationNotSpecified")),
       });
    } else if (routePoints.length >= 2) {
       markers.push({
          id: `${leadId}-route-end`,
          position: routePoints[routePoints.length - 1],
-         title: 'Точка Б',
-         description: formatMapLocation(lead?.to_location, 'Куда не указано'),
+         title: i18n.t("route.pointB"),
+         description: formatMapLocation(lead?.to_location, i18n.t("route.destinationNotSpecified")),
       });
    }
 

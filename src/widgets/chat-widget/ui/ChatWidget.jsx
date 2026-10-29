@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Badge, Box, CircularProgress, Fab, Grow, IconButton, Paper, Typography, useTheme } from "@mui/material";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -11,6 +12,8 @@ import { ChatDetailView } from "./ChatDetailView";
 const UNREAD_CHATS_POLL_INTERVAL_MS = 60 * 1000;
 
 export function ChatWidget() {
+  const { t } = useTranslation();
+
   const theme = useTheme();
   const isOpen = useChatStore((state) => state.isOpen);
   const toggleWidget = useChatStore((state) => state.toggleWidget);
@@ -91,13 +94,13 @@ export function ChatWidget() {
                 flexShrink: 0,
               }}
             >
-              <Typography sx={{ fontSize: 15, fontWeight: 700 }}>Чаты</Typography>
+              <Typography sx={{ fontSize: 15, fontWeight: 700 }}>{t("chat.title")}</Typography>
 
               <IconButton
                 size="small"
                 onClick={() => loadLeadChats()}
                 disabled={isLoadingLeadChats}
-                aria-label="Обновить список чатов"
+                aria-label={t("chat.refreshList")}
               >
                 <RefreshRoundedIcon fontSize="small" />
               </IconButton>
@@ -128,7 +131,7 @@ export function ChatWidget() {
       <Fab
         color="primary"
         onClick={toggleWidget}
-        aria-label={isOpen ? "Закрыть чат" : "Открыть чат"}
+        aria-label={isOpen ? t("chat.close") : t("chat.open")}
       >
         <Badge
           badgeContent={totalUnreadCount}

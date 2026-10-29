@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { Box, Paper, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -43,12 +44,14 @@ ComplaintStatusChip.propTypes = {
 };
 
 export function ComplaintsTable({ complaints }) {
+   const { t } = useTranslation();
+
    const { setOpenComplaint } = useComplaintsContext();
 
    const columns = [
       {
          field: 'request',
-         headerName: 'Жалоба',
+         headerName: t("complaints.titleSingular"),
          flex: 1,
          minWidth: 220,
          valueGetter: (_, row) => toSortString(row?.request, ''),
@@ -74,7 +77,7 @@ export function ComplaintsTable({ complaints }) {
       },
       {
          field: 'target',
-         headerName: 'Относится к',
+         headerName: t("complaints.target.label"),
          flex: 1,
          minWidth: 180,
          valueGetter: (_, row) =>
@@ -103,21 +106,21 @@ export function ComplaintsTable({ complaints }) {
       },
       {
          field: 'status',
-         headerName: 'Статус',
+         headerName: t("common.fields.status"),
          width: 190,
          valueGetter: (_, row) => getComplaintStatusLabel(row),
          renderCell: ({ row }) => <ComplaintStatusChip complaint={row} />,
       },
       {
          field: 'response',
-         headerName: 'Ответ',
+         headerName: t("complaints.answer.label"),
          width: 150,
          valueGetter: (_, row) => getComplaintResponseLabel(row),
          renderCell: ({ row }) => <Box>{getComplaintResponseLabel(row)}</Box>,
       },
       {
          field: 'created_at',
-         headerName: 'Дата',
+         headerName: t("common.fields.date"),
          width: 150,
          valueGetter: (_, row) => toTimestamp(row?.created_at),
          renderCell: ({ row }) => <Box>{formatDate(row.created_at)}</Box>,
@@ -132,7 +135,7 @@ export function ComplaintsTable({ complaints }) {
             columns={columns}
             getRowClassName={getZebraRowClassName}
             hideFooter
-            localeText={{ noRowsLabel: 'Жалобы не найдены' }}
+            localeText={{ noRowsLabel: t("complaints.notFound") }}
             sx={{ border: 0 }}
          />
       </Paper>

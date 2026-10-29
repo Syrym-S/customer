@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 import {
    Box,
@@ -22,6 +23,8 @@ import {
 } from '../model/email-verification.helpers';
 
 export function EmailVerificationModal({ open, onClose }) {
+   const { t } = useTranslation();
+
    const [isSending, setIsSending] = useState(false);
    const [sendError, setSendError] = useState('');
    const [sendSuccess, setSendSuccess] = useState('');
@@ -46,7 +49,7 @@ export function EmailVerificationModal({ open, onClose }) {
             error.response?.data?.message ||
                error.response?.data?.error ||
                error.message ||
-               'Не удалось отправить письмо подтверждения',
+               t("verification.sendFailed"),
          );
       } finally {
          setIsSending(false);
@@ -109,7 +112,7 @@ export function EmailVerificationModal({ open, onClose }) {
                         lineHeight: 1,
                      }}
                   >
-                     Email не подтвержден
+                     {t("verification.emailNotConfirmed")}
                   </Typography>
                </Box>
             </Stack>
@@ -124,12 +127,12 @@ export function EmailVerificationModal({ open, onClose }) {
                      borderRadius: 2,
                   }}
                >
-                  Мы отправим письмо со ссылкой подтверждения на вашу почту.
+                  {t("verification.hint")}
                </Alert>
 
                {cooldownLeft > 0 && (
                   <Typography color='text.secondary' fontSize={13}>
-                     Повторная отправка будет доступна через {cooldownLeft} сек.
+                     {t("verification.resendAvailable", { seconds: cooldownLeft })}
                   </Typography>
                )}
 
@@ -141,7 +144,7 @@ export function EmailVerificationModal({ open, onClose }) {
 
          <DialogActions sx={{ px: 3, pb: 2 }}>
             <Button onClick={onClose} disabled={isSending}>
-               Закрыть
+               {t("common.actions.close")}
             </Button>
 
             <Button
@@ -153,10 +156,10 @@ export function EmailVerificationModal({ open, onClose }) {
                }}
             >
                {isSending
-                  ? 'Отправка...'
+                  ? t("common.actions.sending")
                   : cooldownLeft > 0
-                    ? `Через ${cooldownLeft} сек`
-                    : 'Отправить'}
+                    ? t("verification.cooldown", { seconds: cooldownLeft })
+                    : t("common.actions.send")}
             </Button>
          </DialogActions>
       </Dialog>

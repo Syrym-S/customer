@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { Alert, Box, Button, Stack, Typography } from '@mui/material';
 
 import { useLeadsAnalytics } from '../model/useLeadsAnalytics';
@@ -25,10 +27,14 @@ function getPeriodLabel(value) {
       return formatStatsRangeShort(value.from, value.to);
    }
 
-   return ANALYTICS_PERIODS.find((item) => item.value === value)?.label ?? '';
+   const period = ANALYTICS_PERIODS.find((item) => item.value === value);
+
+   return period ? i18n.t(period.labelKey) : '';
 }
 
 export function DashboardAnalyticsSection() {
+   const { t } = useTranslation();
+
    const [period, setPeriod] = useState(DEFAULT_ANALYTICS_PERIOD);
    const [groupBy, setGroupBy] = useState(null);
    const [previousEnabled, setPreviousEnabled] = useState(false);
@@ -91,7 +97,7 @@ export function DashboardAnalyticsSection() {
                mb: 1.5,
             }}
          >
-            <Typography variant="h6">Перевозки</Typography>
+            <Typography variant="h6">{t("common.fields.shipments")}</Typography>
 
             <Box
                sx={{
@@ -140,7 +146,7 @@ export function DashboardAnalyticsSection() {
                      fallbackRange={fallbackRange}
                      label={getPeriodLabel(period)}
                      tooltip={formatStatsRange(data?.from, data?.to)}
-                     ariaLabel="Период перевозок"
+                     ariaLabel={t("dashboard.stats.shipmentsPeriod")}
                      onChange={setPeriod}
                   />
                </Stack>
@@ -153,7 +159,7 @@ export function DashboardAnalyticsSection() {
                sx={{ mb: 1.5 }}
                action={
                   <Button color="inherit" size="small" onClick={retry}>
-                     Повторить
+                     {t("common.actions.retry")}
                   </Button>
                }
             >

@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
 
@@ -12,11 +13,13 @@ import { paletteKeyToColorPath } from '../../../../../shared/helpers/status-colo
 import { StatusDot } from '../../../../../shared/ui/StatusDot';
 
 export function FactoringSummarySection({ factoring }) {
+    const { t } = useTranslation();
+
     return (
         <DetailSection
             icon={<AssignmentOutlinedIcon />}
-            title="Основная информация"
-            subtitle="Номер заявки, дата создания и связанный заказ"
+            title={t("factorings.details.main")}
+            subtitle={t("factorings.details.mainSubtitle")}
         >
             <Box
                 sx={{
@@ -29,10 +32,10 @@ export function FactoringSummarySection({ factoring }) {
                     gap: 1,
                 }}
             >
-                <InfoBadge label="Номер" value={factoring.id} />
+                <InfoBadge label={t("common.fields.number")} value={factoring.id} />
 
                 <InfoBadge
-                    label="Дата создания"
+                    label={t("factorings.details.createdAt")}
                     value={formatDate(factoring.created_at)}
                 />
 
@@ -43,7 +46,7 @@ export function FactoringSummarySection({ factoring }) {
                 />
 
                 <InfoBadge
-                    label="Статус"
+                    label={t("common.fields.status")}
                     value={
                         <StatusDot
                             label={getFactoringStatusLabel(factoring.status)}

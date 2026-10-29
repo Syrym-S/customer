@@ -1,10 +1,15 @@
 import { Box, Chip, DialogTitle, Stack, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { LeadStatusChip } from "../../../dashboard/ui/DashboardLeadItem";
 import { usePageTitleSegment } from "../../../../shared/lib/usePageTitleSegment";
 
 export function LeadDetailsHeader({ lead }) {
-  usePageTitleSegment(lead.num ? `Перевозки #${lead.num}` : null);
+  const { t } = useTranslation();
+
+  usePageTitleSegment(
+    lead.num ? t("leads.details.shipmentNumber", { num: lead.num }) : null,
+  );
 
   return (
     <DialogTitle
@@ -35,11 +40,11 @@ export function LeadDetailsHeader({ lead }) {
               lineHeight: 1.3,
             }}
           >
-            Информация о заказе
+            {t("leads.details.info")}
           </Typography>
 
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            Подробные данные по заявке
+            {t("leads.details.subtitle")}
           </Typography>
         </Box>
 
@@ -52,7 +57,7 @@ export function LeadDetailsHeader({ lead }) {
           useFlexGap
         >
           <Chip
-            label={`Заказ #${lead.num || "—"}`}
+            label={t("leads.details.number", { num: lead.num || "—" })}
             color="primary"
             variant="outlined"
             size="small"
@@ -65,7 +70,7 @@ export function LeadDetailsHeader({ lead }) {
 
           {lead.pass_verify && (
             <Chip
-              label="Видеофиксация отключена"
+              label={t("leads.details.videoDisabled")}
               color="warning"
               variant="outlined"
               size="small"

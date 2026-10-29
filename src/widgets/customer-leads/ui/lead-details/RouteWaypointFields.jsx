@@ -10,6 +10,7 @@ import {
    Select,
    TextField,
 } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import { Controller } from 'react-hook-form';
 
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
@@ -41,6 +42,8 @@ export function RouteWaypointFields({
    pointScheduleFields,
    trigger,
 }) {
+   const { t } = useTranslation();
+
    function handleStartAtChange(fieldName, onChange) {
       return (event) => {
          onChange(event);
@@ -121,15 +124,15 @@ export function RouteWaypointFields({
                         control={control}
                         rules={{
                            required:
-                              'Выберите эту точку и кликните по карте',
+                              t("route.pickOnMap"),
                            validate: () =>
                               hasWaypointCoordinates(waypoint) ||
-                              `Укажите координаты для точки ${index + 1}: кликните по карте`,
+                              t("route.validation.coordinatesPoint", { index: index + 1 }),
                         }}
                         render={({ field }) => (
                            <TextField
                               {...field}
-                              label={`Промежуточная точка #${index + 1}`}
+                              label={t("route.waypointHash", { index: index + 1 })}
                               value={waypoint.location || ''}
                               onFocus={() => setActiveMapPoint(pointKey)}
                               onChange={(event) => {
@@ -150,8 +153,8 @@ export function RouteWaypointFields({
                               helperText={
                                  locationError?.message ||
                                  (loadingPoints[pointKey]
-                                    ? 'Определяем адрес...'
-                                    : 'Выберите эту точку и кликните по карте')
+                                    ? t("route.addressDetecting")
+                                    : t("route.pickOnMap"))
                               }
                               InputProps={{
                                  endAdornment: loadingPoints[pointKey] ? (
@@ -176,7 +179,7 @@ export function RouteWaypointFields({
                            minHeight: 40,
                         }}
                      >
-                        На карте
+                        {t("route.onMap")}
                      </Button>
 
                      <IconButton
@@ -187,8 +190,8 @@ export function RouteWaypointFields({
                            mt: 0.25,
                            flexShrink: 0,
                         }}
-                        aria-label={`Удалить промежуточную точку ${index + 1}`}
-                        title={`Удалить промежуточную точку ${index + 1}`}
+                        aria-label={t("route.removeWaypoint", { index: index + 1 })}
+                        title={t("route.removeWaypoint", { index: index + 1 })}
                      >
                         <DeleteOutlineRoundedIcon fontSize="small" />
                      </IconButton>
@@ -215,12 +218,12 @@ export function RouteWaypointFields({
                               }}
                            >
                               <InputLabel id={`${pointKey}-type-label`}>
-                                 Тип точки
+                                 {t("route.pointType")}
                               </InputLabel>
                               <Select
                                  {...field}
                                  labelId={`${pointKey}-type-label`}
-                                 label="Тип точки"
+                                 label={t("route.pointType")}
                                  value={field.value || 'check_passes'}
                                  onChange={(event) => {
                                     field.onChange(event);
@@ -231,12 +234,12 @@ export function RouteWaypointFields({
                                     );
                                  }}
                               >
-                                 <MenuItem value="loading">Погрузка</MenuItem>
+                                 <MenuItem value="loading">{t("enums.leadStatus.start_loading")}</MenuItem>
                                  <MenuItem value="unloading">
-                                    Разгрузка
+                                    {t("enums.leadStatus.start_unloading")}
                                  </MenuItem>
                                  <MenuItem value="check_passes">
-                                    Транзит
+                                    {t("enums.waypointType.check_passes")}
                                  </MenuItem>
                               </Select>
                               <FormHelperText>
@@ -250,7 +253,7 @@ export function RouteWaypointFields({
                         name={startAtFieldName}
                         control={control}
                         rules={{
-                           required: `Укажите дату начала для точки ${index + 1}`,
+                           required: t("route.validation.startDatePoint", { index: index + 1 }),
                            validate: validateStartAtChain(
                               form,
                               pointScheduleFields,
@@ -264,7 +267,7 @@ export function RouteWaypointFields({
                                  startAtFieldName,
                                  field.onChange,
                               )}
-                              label="Дата начала"
+                              label={t("common.fields.startDate")}
                               type="date"
                               size="small"
                               error={Boolean(startAtError)}
@@ -284,7 +287,7 @@ export function RouteWaypointFields({
                         name={endAtFieldName}
                         control={control}
                         rules={{
-                           required: `Укажите дату окончания для точки ${index + 1}`,
+                           required: t("route.validation.endDatePoint", { index: index + 1 }),
                            validate: validateEndAtOwnStart(
                               form,
                               pointScheduleFields,
@@ -298,7 +301,7 @@ export function RouteWaypointFields({
                                  endAtFieldName,
                                  field.onChange,
                               )}
-                              label="Дата окончания"
+                              label={t("common.fields.endDate")}
                               type="date"
                               size="small"
                               error={Boolean(endAtError)}

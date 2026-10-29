@@ -1,5 +1,7 @@
+import i18n from '../../../shared/i18n';
+
 export function formatCoordinatesLabel(lat, lng) {
-    return `Координаты: ${lat}, ${lng}`;
+    return i18n.t("route.coordinates", { lat: lat, lng: lng });
 }
 
 function normalizeText(value) {
@@ -41,7 +43,7 @@ export function formatNominatimAddress(data) {
         country,
     ]).join(', ');
 
-    const displayAddress = fullAddress || compactAddress || 'Адрес не найден';
+    const displayAddress = fullAddress || compactAddress || i18n.t("route.addressNotFound");
 
     return {
         country,

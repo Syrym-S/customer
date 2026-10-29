@@ -2,6 +2,7 @@ import {
    LEAD_KANBAN_COLUMNS,
    UNKNOWN_LEAD_STATUS,
 } from './lead-kanban.constants';
+import i18n from '../../../../shared/i18n';
 import { formatAmount } from '../../../../shared/helpers/currency-format.helpers';
 
 export function getLeadStatus(lead) {
@@ -32,21 +33,21 @@ export function getUnknownStatusLeads(leads) {
 
 export function getLocationLabel(location) {
    if (!location) {
-      return 'Не указано';
+      return i18n.t("common.empty.notSpecifiedN");
    }
 
    if (typeof location === 'string') {
-      return location || 'Не указано';
+      return location || i18n.t("common.empty.notSpecifiedN");
    }
 
-   return location.address || location.name || location.title || 'Не указано';
+   return location.address || location.name || location.title || i18n.t("common.empty.notSpecifiedN");
 }
 
 export function getLeadForwarderName(lead) {
    const forwarder = lead?.forwarder;
 
    if (!forwarder) {
-      return 'Экспедитор не назначен';
+      return i18n.t("leads.forwarder.notAssigned");
    }
 
    if (typeof forwarder === 'string') {
@@ -61,7 +62,7 @@ export function getLeadForwarderName(lead) {
       forwarder.fio ||
       forwarder.name ||
       forwarder.title ||
-      'Экспедитор не назначен'
+      i18n.t("leads.forwarder.notAssigned")
    );
 }
 
@@ -72,14 +73,14 @@ export function getLeadRouteLabel(lead) {
 }
 
 export function getLeadCargoLabel(lead) {
-   return lead?.cargo?.type || lead?.cargo?.name || 'Груз не указан';
+   return lead?.cargo?.type || lead?.cargo?.name || i18n.t("common.empty.cargoNotSpecified");
 }
 
 export function getLeadPriceLabel(lead) {
    const formattedAmount = formatAmount(lead?.summ);
 
    if (!formattedAmount) {
-      return 'Цена не указана';
+      return i18n.t("common.empty.priceNotSpecified");
    }
 
    return `${formattedAmount} ${lead.currency || ''}`.trim();
@@ -109,7 +110,7 @@ export function getLeadResponsibleLabel(lead) {
       forwarder?.name ||
       '';
 
-   return forwarderName || 'Ответственный не указан';
+   return forwarderName || i18n.t("leads.details.ownerNotSpecified");
 }
 
 export function getLeadColumnTotal(leads) {

@@ -1,4 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
@@ -30,6 +31,8 @@ import {
 import { formatAmount } from '../../../../../shared/helpers/currency-format.helpers';
 
 export function TenderTransportSection({ tender }) {
+   const { t } = useTranslation();
+
    const lead = tender.lead || {};
    const cargos = getTenderCargos(tender);
 
@@ -48,10 +51,10 @@ export function TenderTransportSection({ tender }) {
 
    return (
       <Stack spacing={2}>
-         <TenderDetailsSection icon={<RouteOutlinedIcon />} title="Маршрут">
+         <TenderDetailsSection icon={<RouteOutlinedIcon />} title={t("common.fields.route")}>
             <Stack spacing={1.25}>
                <RoutePoint
-                  label="Откуда"
+                  label={t("common.fields.origin")}
                   value={normalizeLocationValue(fromLocation)}
                   icon={<TripOriginIcon />}
                   date={getPointScheduleLabel(
@@ -62,7 +65,7 @@ export function TenderTransportSection({ tender }) {
                {waypoints.map((waypoint, index) => (
                   <RoutePoint
                      key={waypoint.id || index}
-                     label={`Промежуточная точка #${index + 1}`}
+                     label={t("route.waypointHash", { index: index + 1 })}
                      value={normalizeLocationValue(waypoint)}
                      icon={<LocationOnOutlinedIcon />}
                      date={getPointScheduleLabel(
@@ -72,7 +75,7 @@ export function TenderTransportSection({ tender }) {
                ))}
 
                <RoutePoint
-                  label="Куда"
+                  label={t("common.fields.destination")}
                   value={normalizeLocationValue(toLocation)}
                   icon={<LocationOnOutlinedIcon />}
                   date={getPointScheduleLabel(
@@ -84,7 +87,7 @@ export function TenderTransportSection({ tender }) {
 
          <TenderDetailsSection
             icon={<LocalShippingOutlinedIcon />}
-            title="Грузы"
+            title={t("common.fields.cargos")}
          >
             <Stack spacing={1.5}>
                {cargos.length ? (
@@ -100,7 +103,7 @@ export function TenderTransportSection({ tender }) {
                         }}
                      >
                         <Typography fontWeight={600} sx={{ mb: 1 }}>
-                           Груз #{index + 1}
+                           {t("leads.cargo.itemNumber", { index: index + 1 })}
                         </Typography>
 
                         <Box
@@ -115,26 +118,26 @@ export function TenderTransportSection({ tender }) {
                            }}
                         >
                            <TenderInfoBadge
-                              label="Наименование"
-                              value={cargo.name || 'Не указано'}
+                              label={t("common.fields.title")}
+                              value={cargo.name || t("common.empty.notSpecifiedN")}
                            />
 
                            <TenderInfoBadge
-                              label="Тип"
-                              value={cargo.type || 'Не указан'}
+                              label={t("common.fields.type")}
+                              value={cargo.type || t("common.empty.notSpecifiedM")}
                            />
 
                            <TenderInfoBadge
-                              label="Вес"
+                              label={t("common.fields.weight")}
                               value={
                                  hasValue(cargo.weight_kg)
-                                    ? `${cargo.weight_kg} кг`
-                                    : 'Не указан'
+                                    ? t("common.units.kg", { value: cargo.weight_kg })
+                                    : t("common.empty.notSpecifiedM")
                               }
                            />
 
                            <TenderInfoBadge
-                              label="Цена груза"
+                              label={t("common.fields.cargoPrice")}
                               value={getTenderCargoPriceLabel(
                                  cargo,
                                  lead.currency,
@@ -142,31 +145,31 @@ export function TenderTransportSection({ tender }) {
                            />
 
                            <TenderInfoBadge
-                              label="Объем"
+                              label={t("common.fields.volume")}
                               value={
                                  formatCargoVolumeM3(cargo.volume_m3) ||
-                                 'Не указано'
+                                 t("common.empty.notSpecifiedN")
                               }
                            />
 
                            {cargo.tnved?.code && (
                               <TenderInfoBadge
-                                 label="Код ТН ВЭД"
+                                 label={t("common.fields.tnvedCode")}
                                  value={`${cargo.tnved.code} — ${cargo.tnved.name}`}
                               />
                            )}
                         </Box>
 
                         <TenderInfoBadge
-                           label="Описание"
-                           value={cargo.description || 'Не указано'}
+                           label={t("common.fields.description")}
+                           value={cargo.description || t("common.empty.notSpecifiedN")}
                            fullWidth
                            sx={{ mt: 1 }}
                         />
                      </Box>
                   ))
                ) : (
-                  <TenderInfoBadge label="Груз" value="Не указан" fullWidth />
+                  <TenderInfoBadge label={t("common.fields.cargo")} value={t("common.empty.notSpecifiedM")} fullWidth />
                )}
 
                <Box
@@ -181,30 +184,30 @@ export function TenderTransportSection({ tender }) {
                   }}
                >
                   <TenderInfoBadge
-                     label="Количество грузов"
-                     value={cargos.length || 'Не указано'}
+                     label={t("common.fields.cargoCountLabel")}
+                     value={cargos.length || t("common.empty.notSpecifiedN")}
                   />
 
                   <TenderInfoBadge
-                     label="НДС"
-                     value={lead.vat || 'Не указан'}
+                     label={t("common.fields.vat")}
+                     value={lead.vat || t("common.empty.notSpecifiedM")}
                   />
 
                   <TenderInfoBadge
-                     label="Общая цена заказа"
+                     label={t("tenders.details.totalOrderPrice")}
                      value={
                         formatAmount(lead.summ)
                            ? `${formatAmount(lead.summ)} ${lead.currency || ''}`.trim()
-                           : 'Не указано'
+                           : t("common.empty.notSpecifiedN")
                      }
                   />
 
                   <TenderInfoBadge
-                     label="Отсрочка платежа"
+                     label={t("common.fields.gracePeriod")}
                      value={
                         lead.grace_period_days
-                           ? `${lead.grace_period_days} дн.`
-                           : 'Не указано'
+                           ? t("common.units.days", { count: lead.grace_period_days })
+                           : t("common.empty.notSpecifiedN")
                      }
                   />
                </Box>
@@ -213,7 +216,7 @@ export function TenderTransportSection({ tender }) {
 
          <TenderDetailsSection
             icon={<LocalShippingOutlinedIcon />}
-            title="Параметры перевозки"
+            title={t("common.fields.transportParams")}
          >
             <Box
                sx={{
@@ -228,28 +231,28 @@ export function TenderTransportSection({ tender }) {
             >
                {loadingTypeLabel && (
                   <TenderInfoBadge
-                     label="Тип погрузки"
+                     label={t("common.fields.loadingType")}
                      value={loadingTypeLabel}
                   />
                )}
 
                {packagingTypeLabel && (
                   <TenderInfoBadge
-                     label="Вид упаковки"
+                     label={t("common.fields.packagingType")}
                      value={packagingTypeLabel}
                   />
                )}
 
                {compositionTypeLabel && (
                   <TenderInfoBadge
-                     label="Тип состава"
+                     label={t("common.fields.bodyType")}
                      value={compositionTypeLabel}
                   />
                )}
 
                {transportTypeLabel && (
                   <TenderInfoBadge
-                     label="Тип транспорта"
+                     label={t("common.fields.transportType")}
                      value={transportTypeLabel}
                   />
                )}

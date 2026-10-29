@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { Box, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 import { getZebraRowClassName } from '../../../shared/helpers/data-grid.helpers';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 
-const columns = [
-   { field: 'num', headerName: '№ перевозки', width: 140 },
+function getColumns() {
+   return [
+   { field: 'num', headerName: i18n.t("dashboard.analytics.shipmentNumber"), width: 140 },
    {
       field: 'route',
-      headerName: 'Маршрут',
+      headerName: i18n.t("common.fields.route"),
       flex: 1,
       minWidth: 240,
       renderCell: ({ row }) => (
@@ -23,12 +26,13 @@ const columns = [
    },
    {
       field: 'sum',
-      headerName: 'Сумма',
+      headerName: i18n.t("common.fields.amount"),
       width: 180,
       cellClassName: 'tabular-nums',
       renderCell: ({ row }) => `${formatAmount(row.sum)} ${row.currency}`,
    },
-];
+   ];
+}
 
 export function DashboardAnalyticsLeadsTable({
    rows,
@@ -38,11 +42,13 @@ export function DashboardAnalyticsLeadsTable({
    loading,
    onPageChange,
 }) {
+   const { t } = useTranslation();
+
    return (
       <Paper variant="outlined" sx={{ height: 420 }}>
          <DataGrid
             rows={rows}
-            columns={columns}
+            columns={getColumns()}
             getRowId={(row) => row.id}
             loading={loading}
             getRowClassName={getZebraRowClassName}
@@ -51,7 +57,7 @@ export function DashboardAnalyticsLeadsTable({
             paginationModel={{ page: page - 1, pageSize: perPage }}
             pageSizeOptions={[perPage]}
             onPaginationModelChange={(model) => onPageChange(model.page + 1)}
-            localeText={{ noRowsLabel: 'Нет перевозок за выбранный период' }}
+            localeText={{ noRowsLabel: t("dashboard.analytics.noShipmentsPeriod") }}
             sx={{ border: 0 }}
          />
       </Paper>

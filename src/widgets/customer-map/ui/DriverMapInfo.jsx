@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import {
    formatDriverName,
    formatDriverPhone,
@@ -6,6 +7,8 @@ import {
 } from '../model/customer-map.helpers';
 
 export function DriverMapInfo({ driver }) {
+   const { t } = useTranslation();
+
    const driverName = formatDriverName(driver);
    const driverPhone = formatDriverPhone(driver);
    const driverPhoneHref = normalizePhoneHref(driverPhone);
@@ -13,11 +16,11 @@ export function DriverMapInfo({ driver }) {
    return (
       <>
          <br />
-         Водитель: {driverName}
+         {t("map.driverName", { name: driverName })}
          {driverPhone && (
             <>
                <br />
-               Телефон:{' '}
+               {t("map.driverPhone")}{' '}
                {driverPhoneHref ? (
                   <a href={`tel:${driverPhoneHref}`}>{driverPhone}</a>
                ) : (

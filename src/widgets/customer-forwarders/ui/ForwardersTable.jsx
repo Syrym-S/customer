@@ -1,4 +1,6 @@
 import { Box, Paper, Stack, Tooltip } from '@mui/material';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { DataGrid } from '@mui/x-data-grid';
 
 import {
@@ -20,10 +22,16 @@ import {
 import { ForwarderInviteLink } from './ForwarderInviteLink';
 
 function getForwarderSortValue(value) {
-    return toSortString(value, 'Не указан', 'Компания не указана');
+    return toSortString(
+        value,
+        i18n.t("common.empty.notSpecifiedM"),
+        i18n.t("common.empty.companyNotSpecified"),
+    );
 }
 
 export function ForwardersTable({ forwarders, onOpenDetails }) {
+    const { t } = useTranslation();
+
     const columns = [
         {
             field: 'id',
@@ -54,7 +62,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         },
         {
             field: 'company',
-            headerName: 'Компания',
+            headerName: t("common.fields.company"),
             width: 240,
             valueGetter: (_, row) => getForwarderSortValue(getForwarderCompanyName(row)),
             renderCell: ({ row }) => (
@@ -74,7 +82,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         },
         {
             field: 'bin',
-            headerName: 'БИН',
+            headerName: t("common.fields.bin"),
             width: 160,
             cellClassName: 'tabular-nums',
             valueGetter: (_, row) => getForwarderSortValue(getForwarderBin(row)),
@@ -82,7 +90,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         },
         {
             field: 'iin',
-            headerName: 'ИИН',
+            headerName: t("common.fields.iin"),
             width: 160,
             cellClassName: 'tabular-nums',
             valueGetter: (_, row) => getForwarderSortValue(getForwarderIin(row)),
@@ -90,14 +98,14 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         },
         {
             field: 'fio',
-            headerName: 'Представитель',
+            headerName: t("forwarders.representative"),
             width: 220,
             valueGetter: (_, row) => getForwarderSortValue(getForwarderFio(row)),
             renderCell: ({ row }) => <Box>{getForwarderFio(row)}</Box>,
         },
         {
             field: 'phone',
-            headerName: 'Телефон',
+            headerName: t("common.fields.phone"),
             width: 160,
             cellClassName: 'tabular-nums',
             valueGetter: (_, row) => getForwarderSortValue(getForwarderPhone(row)),
@@ -105,7 +113,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         },
         {
             field: 'invite_link',
-            headerName: 'Приглашение',
+            headerName: t("forwarders.invite.title"),
             width: 170,
             sortable: false,
             filterable: false,
@@ -115,7 +123,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         },
         {
             field: 'bik',
-            headerName: 'БИК',
+            headerName: t("common.fields.bik"),
             width: 140,
             cellClassName: 'tabular-nums',
             valueGetter: (_, row) => getForwarderSortValue(getForwarderBik(row)),
@@ -123,7 +131,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         },
         {
             field: 'account',
-            headerName: 'Расчетный счет',
+            headerName: t("common.fields.settlementAccount"),
             width: 220,
             cellClassName: 'tabular-nums',
             valueGetter: (_, row) => getForwarderSortValue(getForwarderAccount(row)),
@@ -131,7 +139,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
         },
         {
             field: 'address',
-            headerName: 'Адрес компании',
+            headerName: t("common.fields.companyAddress"),
             width: 280,
             valueGetter: (_, row) => getForwarderSortValue(getForwarderAddress(row)),
             renderCell: ({ row }) => {
@@ -163,7 +171,7 @@ export function ForwardersTable({ forwarders, onOpenDetails }) {
                 getRowClassName={getZebraRowClassName}
                 hideFooter
                 localeText={{
-                    noRowsLabel: 'Экспедиторы не найдены',
+                    noRowsLabel: t("forwarders.notFound"),
                 }}
                 sx={{ border: 0 }}
             />

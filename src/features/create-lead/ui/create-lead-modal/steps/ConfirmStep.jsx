@@ -1,4 +1,6 @@
 import { Box, Divider, Stack } from '@mui/material';
+import i18n from '../../../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
@@ -25,7 +27,7 @@ function getLocationDisplay(location, fallback) {
         return location.address;
     }
 
-    return fallback || 'Не указано';
+    return fallback || i18n.t("common.empty.notSpecifiedN");
 }
 
 function getFormCargos(form) {
@@ -53,13 +55,19 @@ function getDimensionsDisplay(cargo) {
     const height = cargo.height_cm;
 
     if (!length && !width && !height) {
-        return 'Не указано';
+        return i18n.t("common.empty.notSpecifiedN");
     }
 
-    return `${length || '—'} × ${width || '—'} × ${height || '—'} см`;
+    return i18n.t('common.units.dimensionsCm', {
+      length: length || '—',
+      width: width || '—',
+      height: height || '—',
+   });
 }
 
 export function ConfirmStep({ form }) {
+    const { t } = useTranslation();
+
     const selectedForwarder = form.forwarder;
     const cargos = getFormCargos(form);
     const waypoints = getFormWaypoints(form);
@@ -71,10 +79,10 @@ export function ConfirmStep({ form }) {
 
     return (
         <Box sx={{ display: 'grid', gap: 2 }}>
-            <StepSection title="Маршрут">
+            <StepSection title={t("createLead.steps.route")}>
                 <Stack spacing={1.25}>
                     <RoutePoint
-                        label="Откуда"
+                        label={t("common.fields.origin")}
                         value={getLocationDisplay(
                             form.from_location,
                             form.fromLocation,
@@ -89,8 +97,8 @@ export function ConfirmStep({ form }) {
                     {waypoints.map((waypoint, index) => (
                         <RoutePoint
                             key={waypoint.id || index}
-                            label={`Промежуточная точка #${index + 1}`}
-                            value={waypoint.location || 'Не указано'}
+                            label={t("route.waypointHash", { index: index + 1 })}
+                            value={waypoint.location || t("common.empty.notSpecifiedN")}
                             icon={<LocationOnOutlinedIcon />}
                             typeLabel={getWaypointTypeLabel(waypoint.type)}
                             typeColor={getWaypointTypeChipColor(waypoint.type)}
@@ -102,7 +110,7 @@ export function ConfirmStep({ form }) {
                     ))}
 
                     <RoutePoint
-                        label="Куда"
+                        label={t("common.fields.destination")}
                         value={getLocationDisplay(
                             form.to_location,
                             form.toLocation,
@@ -118,14 +126,14 @@ export function ConfirmStep({ form }) {
                 {form.is_international && (
                     <Box sx={{ mt: 1.25 }}>
                         <InfoBadge
-                            label="Международная перевозка"
-                            value="Да"
+                            label={t("common.fields.international")}
+                            value={t("common.actions.yes")}
                         />
                     </Box>
                 )}
             </StepSection>
 
-            <StepSection title="Проверьте данные">
+            <StepSection title={t("createLead.steps.confirmTitle")}>
                 <Box
                     sx={{
                         display: 'grid',
@@ -159,50 +167,50 @@ export function ConfirmStep({ form }) {
                                     }}
                                 >
                                     <InfoBadge
-                                        label={`Груз #${index + 1}`}
-                                        value={cargo.name || 'Не указано'}
+                                        label={t("leads.cargo.itemNumber", { index: index + 1 })}
+                                        value={cargo.name || t("common.empty.notSpecifiedN")}
                                     />
 
                                     <InfoBadge
-                                        label="Тип груза"
-                                        value={cargo.type || 'Не указан'}
+                                        label={t("common.fields.cargoType")}
+                                        value={cargo.type || t("common.empty.notSpecifiedM")}
                                     />
 
                                     <InfoBadge
-                                        label="Вес"
+                                        label={t("common.fields.weight")}
                                         value={
                                             cargo.weight_kg
-                                                ? `${cargo.weight_kg} кг`
-                                                : 'Не указано'
+                                                ? t("common.units.kg", { value: cargo.weight_kg })
+                                                : t("common.empty.notSpecifiedN")
                                         }
                                     />
 
                                     <InfoBadge
-                                        label="Цена груза"
+                                        label={t("common.fields.cargoPrice")}
                                         value={
                                             cargo.cargo_price
                                                 ? `${formatAmount(cargo.cargo_price)} ${form.currency || ''}`.trim()
-                                                : 'Не указано'
+                                                : t("common.empty.notSpecifiedN")
                                         }
                                     />
 
                                     <InfoBadge
-                                        label="Размеры"
+                                        label={t("common.fields.dimensions")}
                                         value={getDimensionsDisplay(cargo)}
                                     />
 
                                     <InfoBadge
-                                        label="Объем"
+                                        label={t("common.fields.volume")}
                                         value={
                                             formatCargoVolumeM3(
                                                 cargo.volume_m3,
-                                            ) || 'Не указано'
+                                            ) || t("common.empty.notSpecifiedN")
                                         }
                                     />
 
                                     {cargo.tnved?.code && (
                                         <InfoBadge
-                                            label="Код ТН ВЭД"
+                                            label={t("common.fields.tnvedCode")}
                                             value={`${cargo.tnved.code} — ${cargo.tnved.name}`}
                                         />
                                     )}
@@ -216,27 +224,27 @@ export function ConfirmStep({ form }) {
                     </Box>
 
                     <InfoBadge
-                        label="Цена исполнения"
+                        label={t("common.fields.executionPrice")}
                         value={
                             form.price
                                 ? `${formatAmount(form.price)} ${form.currency || ''}`.trim()
-                                : 'Не указано'
+                                : t("common.empty.notSpecifiedN")
                         }
                         accent
                     />
 
                     <InfoBadge
-                        label="Отсрочка платежа"
+                        label={t("common.fields.gracePeriod")}
                         value={
                             form.gracePeriodDays
-                                ? `${form.gracePeriodDays} дн.`
-                                : 'Не указано'
+                                ? t("common.units.days", { count: form.gracePeriodDays })
+                                : t("common.empty.notSpecifiedN")
                         }
                     />
                 </Box>
             </StepSection>
 
-            <StepSection title="Параметры перевозки">
+            <StepSection title={t("common.fields.transportParams")}>
                 <Box
                     sx={{
                         display: 'grid',
@@ -249,35 +257,35 @@ export function ConfirmStep({ form }) {
                 >
                     {loadingTypeLabel && (
                         <InfoBadge
-                            label="Тип погрузки"
+                            label={t("common.fields.loadingType")}
                             value={loadingTypeLabel}
                         />
                     )}
 
                     {packagingTypeLabel && (
                         <InfoBadge
-                            label="Вид упаковки"
+                            label={t("common.fields.packagingType")}
                             value={packagingTypeLabel}
                         />
                     )}
 
                     {compositionTypeLabel && (
                         <InfoBadge
-                            label="Тип состава"
+                            label={t("common.fields.bodyType")}
                             value={compositionTypeLabel}
                         />
                     )}
 
                     {transportTypeLabel && (
                         <InfoBadge
-                            label="Тип транспорта"
+                            label={t("common.fields.transportType")}
                             value={transportTypeLabel}
                         />
                     )}
                 </Box>
             </StepSection>
 
-            <StepSection title="Экспедитор">
+            <StepSection title={t("common.fields.forwarder")}>
                 <Box
                     sx={{
                         display: 'grid',
@@ -289,29 +297,29 @@ export function ConfirmStep({ form }) {
                     }}
                 >
                     <InfoBadge
-                        label="ФИО экспедитора"
-                        value={selectedForwarder?.fullName || 'Не выбран'}
+                        label={t("common.fields.forwarderFullName")}
+                        value={selectedForwarder?.fullName || t("common.empty.notSelected")}
                     />
                     <InfoBadge
-                        label="ИИН экспедитора"
+                        label={t("common.fields.forwarderIin")}
                         value={selectedForwarder?.iin || '—'}
                     />
                     <InfoBadge
-                        label="Компания"
+                        label={t("common.fields.company")}
                         value={selectedForwarder?.companyName || '—'}
                     />
                     <InfoBadge
-                        label="БИН компании"
+                        label={t("common.fields.companyBin")}
                         value={selectedForwarder?.companyBin || '—'}
                     />
                     <InfoBadge
-                        label="Телефон"
+                        label={t("common.fields.phone")}
                         value={selectedForwarder?.phone || '—'}
                     />
                 </Box>
             </StepSection>
 
-            <StepSection title="Документы">
+            <StepSection title={t("createLead.steps.documents")}>
                 {form.documents?.length ? (
                     <Box
                         sx={{
@@ -322,13 +330,13 @@ export function ConfirmStep({ form }) {
                         {form.documents.map((document) => (
                             <InfoBadge
                                 key={document.id}
-                                label={document.name || 'Документ'}
-                                value={document.fileName || 'Файл'}
+                                label={document.name || t("common.fields.document")}
+                                value={document.fileName || t("common.fields.file")}
                             />
                         ))}
                     </Box>
                 ) : (
-                    <InfoBadge label="Документы" value="Не добавлены" />
+                    <InfoBadge label={t("createLead.steps.documents")} value={t("common.empty.notAdded")} />
                 )}
             </StepSection>
         </Box>

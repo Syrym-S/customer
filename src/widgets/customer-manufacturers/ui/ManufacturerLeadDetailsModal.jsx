@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Alert,
@@ -38,6 +39,8 @@ export function ManufacturerLeadDetailsModal({
    onAttach,
    onDetach,
 }) {
+   const { t } = useTranslation();
+
    const map = useCustomerMap();
 
    const { leadDetails, isLeadDetailsLoading, leadDetailsError } =
@@ -103,7 +106,7 @@ export function ManufacturerLeadDetailsModal({
                   <CircularProgress size={18} />
 
                   <Typography color="text.secondary">
-                     Загружаем детали заказа...
+                     {t("leads.details.loading")}
                   </Typography>
                </Stack>
             )}
@@ -131,7 +134,7 @@ export function ManufacturerLeadDetailsModal({
                      mb: 0.75,
                   }}
                >
-                  Производитель
+                  {t("common.fields.manufacturer")}
                </Typography>
 
                {isAttached ? (
@@ -147,12 +150,12 @@ export function ManufacturerLeadDetailsModal({
                      <Chip
                         size="small"
                         variant="outlined"
-                        label={`БИН ${getManufacturerBin(lead.manufacturer)}`}
+                        label={t("manufacturers.card.bin", { bin: getManufacturerBin(lead.manufacturer) })}
                      />
                   </Stack>
                ) : (
                   <Typography color="text.secondary">
-                     Производитель не привязан
+                     {t("manufacturers.filters.manufacturerNotLinked")}
                   </Typography>
                )}
             </Box>
@@ -189,7 +192,7 @@ export function ManufacturerLeadDetailsModal({
                   onClick={() => onDetach(lead)}
                   disabled={isSubmitting}
                >
-                  Открепить
+                  {t("manufacturers.unlink.action")}
                </Button>
             )}
 
@@ -199,7 +202,7 @@ export function ManufacturerLeadDetailsModal({
                onClick={() => onAttach(lead)}
                disabled={isSubmitting}
             >
-               {isAttached ? 'Изменить производителя' : 'Привязать производителя'}
+               {isAttached ? t("manufacturers.link.changeManufacturer") : t("manufacturers.link.manufacturerAction")}
             </Button>
          </DialogActions>
       </Dialog>

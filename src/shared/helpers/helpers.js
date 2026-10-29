@@ -1,5 +1,6 @@
+import i18n from '../i18n';
 export function getCompactEmail(email) {
-    const normalizedEmail = String(email || 'Пользователь').trim();
+    const normalizedEmail = String(email || i18n.t('header.user')).trim();
 
     if (!normalizedEmail.includes('@')) {
         return normalizedEmail.length > 28

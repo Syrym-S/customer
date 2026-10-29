@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import {
    Autocomplete,
    Box,
@@ -13,12 +14,14 @@ import { searchTnvedCodes } from '../api/tnved.repository';
 export function TnvedCodeAutocomplete({
    value,
    onChange,
-   label = 'Код ТН ВЭД',
+   label = null,
    error = false,
    helperText = '',
    size = 'small',
    fullWidth = true,
 }) {
+   const { t } = useTranslation();
+
    const [options, setOptions] = useState([]);
    const [search, setSearch] = useState('');
    const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +80,7 @@ export function TnvedCodeAutocomplete({
          onChange={(_, option) => {
             onChange(option ? { code: option.code, name: option.name } : null);
          }}
-         noOptionsText="Код не найден"
+         noOptionsText={t("tnved.codeNotFound")}
          renderOption={(optionProps, option) => {
             const { key, ...listItemProps } = optionProps;
 
@@ -98,7 +101,7 @@ export function TnvedCodeAutocomplete({
             return (
                <TextField
                   {...params}
-                  label={label}
+                  label={label ?? t("common.fields.tnvedCode")}
                   fullWidth={fullWidth}
                   size={size}
                   error={error}

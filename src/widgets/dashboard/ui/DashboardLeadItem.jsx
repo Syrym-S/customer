@@ -1,4 +1,6 @@
 import { Box, Chip, Divider, Paper, Stack, Typography } from "@mui/material";
+import i18n from "../../../shared/i18n";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { normalizeLocationValue } from "../../customer-leads/model/lead-edit-form.helpers";
@@ -10,7 +12,7 @@ import { formatAmount } from "../../../shared/helpers/currency-format.helpers";
 import { StatusDot } from "../../../shared/ui/StatusDot";
 
 function formatLocation(location) {
-  return normalizeLocationValue(location) || "Адрес не указан";
+  return normalizeLocationValue(location) || i18n.t("common.empty.addressNotSpecified");
 }
 
 function hasValue(value) {
@@ -22,7 +24,7 @@ function formatLeadPrice(lead) {
   const formattedAmount = formatAmount(price);
 
   if (!formattedAmount) {
-    return "Цена не указана";
+    return i18n.t("common.empty.priceNotSpecified");
   }
 
   return `${formattedAmount} ${lead?.currency || ""}`.trim();
@@ -54,6 +56,8 @@ export function DashboardLeadItem({
   onHoverLead,
   onLeaveLead,
 }) {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const leadId = lead?.id;
@@ -118,7 +122,7 @@ export function DashboardLeadItem({
           }}
         >
           <Chip
-            label={`Заказ #${lead?.num || lead?.id || "—"}`}
+            label={t("leads.details.number", { num: lead?.num || lead?.id || "—" })}
             size="small"
             color={isSelected ? "primary" : "default"}
             variant={isSelected ? "filled" : "outlined"}
@@ -133,7 +137,7 @@ export function DashboardLeadItem({
 
         <Box>
           <Typography variant="caption" color="text.secondary">
-            Откуда
+            {t("common.fields.origin")}
           </Typography>
 
           <Typography
@@ -151,7 +155,7 @@ export function DashboardLeadItem({
 
         <Box>
           <Typography variant="caption" color="text.secondary">
-            Куда
+            {t("common.fields.destination")}
           </Typography>
 
           <Typography
@@ -185,7 +189,7 @@ export function DashboardLeadItem({
 
           {!hasRoute && (
             <Chip
-              label="Нет координат"
+              label={t("map.noCoordinates")}
               size="small"
               color="warning"
               variant="outlined"

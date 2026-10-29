@@ -1,4 +1,5 @@
 import { cloneElement, useEffect, useRef, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import {
    Box,
    Button,
@@ -62,6 +63,8 @@ function renderNodeRows({ nodes, level, normalizedQuery }) {
 }
 
 export function TnvedTable() {
+   const { t } = useTranslation();
+
    const [searchInput, setSearchInput] = useState('');
    const [appliedQuery, setAppliedQuery] = useState('');
    const [page, setPage] = useState(1);
@@ -141,7 +144,7 @@ export function TnvedTable() {
             <TextField
                value={searchInput}
                onChange={(event) => setSearchInput(event.target.value)}
-               placeholder="Поиск по коду или наименованию"
+               placeholder={t("tnved.searchPlaceholder")}
                size="small"
                sx={{ flex: 1, minWidth: 260 }}
                InputProps={{
@@ -159,7 +162,7 @@ export function TnvedTable() {
                onClick={handleReset}
                disabled={!searchInput}
             >
-               Очистить
+               {t("common.actions.clear")}
             </Button>
          </Box>
 
@@ -168,8 +171,8 @@ export function TnvedTable() {
                <Table stickyHeader size="small">
                   <TableHead>
                      <TableRow>
-                        <TableCell sx={{ width: 140 }}>Код</TableCell>
-                        <TableCell>Наименование</TableCell>
+                        <TableCell sx={{ width: 140 }}>{t("tnved.code")}</TableCell>
+                        <TableCell>{t("common.fields.title")}</TableCell>
                      </TableRow>
                   </TableHead>
 
@@ -185,7 +188,7 @@ export function TnvedTable() {
                      ) : (
                         <TableRow>
                            <TableCell colSpan={2} align="center" sx={{ py: 4 }}>
-                              Ничего не найдено
+                              {t("common.empty.nothingFound")}
                            </TableCell>
                         </TableRow>
                      )}

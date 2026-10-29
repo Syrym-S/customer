@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { useState } from 'react';
 import { Box, Chip, Popover, Tooltip, Typography } from '@mui/material';
 
@@ -12,6 +13,8 @@ function formatCurrencyLine({ sum, currency }) {
 }
 
 export function DashboardStatCurrencies({ currencies }) {
+   const { t } = useTranslation();
+
    const [anchorEl, setAnchorEl] = useState(null);
 
    if (!currencies.length) {
@@ -20,7 +23,7 @@ export function DashboardStatCurrencies({ currencies }) {
             color="text.disabled"
             sx={{ fontSize: 14, lineHeight: `${LINE_HEIGHT}px` }}
          >
-            Нет данных
+            {t("common.empty.noData")}
          </Typography>
       );
    }
@@ -84,7 +87,7 @@ export function DashboardStatCurrencies({ currencies }) {
                         role="button"
                         clickable
                         label={`+${rest.length}`}
-                        aria-label="Показать все валюты"
+                        aria-label={t("dashboard.stats.showAllCurrencies")}
                         aria-haspopup="dialog"
                         aria-expanded={isPopoverOpen}
                         onClick={handleOpen}

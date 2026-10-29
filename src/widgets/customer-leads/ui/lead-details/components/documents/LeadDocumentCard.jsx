@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 import { Box, IconButton, Typography } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -11,6 +12,8 @@ export function LeadDocumentCard({
   isDeleting = false,
   canDelete = true,
 }) {
+  const { t } = useTranslation();
+
   return (
     <Box
       component="button"
@@ -66,7 +69,7 @@ export function LeadDocumentCard({
             lineHeight: 1.35,
           }}
         >
-          {document.name || "Документ"}
+          {document.name || t("common.fields.document")}
         </Typography>
 
         <Typography
@@ -78,7 +81,7 @@ export function LeadDocumentCard({
             lineHeight: 1.35,
           }}
         >
-          {document.context || "Описание не указано"}
+          {document.context || t("common.empty.descriptionNotSpecified")}
         </Typography>
 
         <Typography
@@ -91,7 +94,7 @@ export function LeadDocumentCard({
             wordBreak: "break-word",
           }}
         >
-          {document.fileName || "Файл"}
+          {document.fileName || t("common.fields.file")}
         </Typography>
       </Box>
 

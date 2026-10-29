@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Box, Button, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
@@ -6,6 +7,8 @@ import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 
 export function SupportContacts({ layout = "column", onOpenChat }) {
+  const { t } = useTranslation();
+
   const isRow = layout === "row";
   const iconFontSize = isRow ? 16 : undefined;
 
@@ -70,7 +73,7 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
           }}
           startIcon={<ChatBubbleOutlineRoundedIcon sx={{ fontSize: iconFontSize }} />}
         >
-          Написать в чат
+          {t("support.writeToChat")}
         </Button>
       )}
 
@@ -80,8 +83,8 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
           variant="outlined"
           component="a"
           href={`mailto:${supportEmail}?subject=${encodeURIComponent(
-            "Обращение в поддержку",
-          )}&body=${encodeURIComponent("Здравствуйте! У меня возник вопрос.")}`}
+            t("support.emailSubject"),
+          )}&body=${encodeURIComponent(t("support.emailBody"))}`}
           sx={{
             color: "text.secondary",
             borderColor: "divider",
@@ -116,7 +119,7 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
       </Tooltip>
 
       <Tooltip
-        title={copied ? "Скопировано" : "Скопировать номер"}
+        title={copied ? t("common.actions.copied") : t("common.actions.copyNumber")}
         placement="top"
         arrow
         open={copied ? true : undefined}

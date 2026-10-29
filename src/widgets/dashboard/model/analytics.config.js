@@ -1,20 +1,22 @@
+import i18n from '../../../shared/i18n';
+
 export const ANALYTICS_PERIODS = [
-   { value: 'week', label: 'Неделя' },
-   { value: 'month', label: 'Месяц' },
-   { value: 'quarter', label: 'Квартал' },
-   { value: 'half_year', label: 'Полгода' },
-   { value: 'year', label: 'Год' },
+   { value: 'week', labelKey: 'dashboard.period.week' },
+   { value: 'month', labelKey: 'dashboard.period.month' },
+   { value: 'quarter', labelKey: 'dashboard.period.quarter' },
+   { value: 'half_year', labelKey: 'dashboard.period.halfYear' },
+   { value: 'year', labelKey: 'dashboard.period.year' },
 ];
 
 export const DEFAULT_ANALYTICS_PERIOD = 'month';
 
 export const CUSTOM_ANALYTICS_PERIOD = 'custom';
 
-const GROUP_BY_LABELS = {
-   day: 'По дням',
-   week: 'По неделям',
-   month: 'По месяцам',
-   quarter: 'По кварталам',
+const GROUP_BY_LABEL_KEYS = {
+   day: 'dashboard.groupBy.day',
+   week: 'dashboard.groupBy.week',
+   month: 'dashboard.groupBy.month',
+   quarter: 'dashboard.groupBy.quarter',
 };
 
 const GROUP_BY_VALUES_BY_PERIOD = {
@@ -51,6 +53,6 @@ export function getGroupByOptions(period, range) {
 
    return values.map((value) => ({
       value,
-      label: GROUP_BY_LABELS[value] ?? value,
+      label: GROUP_BY_LABEL_KEYS[value] ? i18n.t(GROUP_BY_LABEL_KEYS[value]) : value,
    }));
 }

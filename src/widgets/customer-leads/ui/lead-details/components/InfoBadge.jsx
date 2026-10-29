@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 export function InfoBadge({
@@ -8,6 +9,8 @@ export function InfoBadge({
    fullWidth = false,
    sx = {},
 }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          sx={{
@@ -41,7 +44,7 @@ export function InfoBadge({
                fontWeight: accent ? 600 : 500,
             }}
          >
-            {value || 'Не указано'}
+            {value || t("common.empty.notSpecifiedN")}
          </Typography>
       </Box>
    );

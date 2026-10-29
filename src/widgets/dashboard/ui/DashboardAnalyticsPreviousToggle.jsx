@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { FormControlLabel, Switch } from '@mui/material';
 
 export function DashboardAnalyticsPreviousToggle({ checked, onChange }) {
+   const { t } = useTranslation();
+
    return (
       <FormControlLabel
          control={
@@ -11,7 +14,7 @@ export function DashboardAnalyticsPreviousToggle({ checked, onChange }) {
                onChange={(event) => onChange(event.target.checked)}
             />
          }
-         label="Сравнить с предыдущим периодом"
+         label={t("dashboard.period.compare")}
          sx={{ '& .MuiFormControlLabel-label': { fontSize: 13 } }}
       />
    );

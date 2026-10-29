@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import { Box, IconButton, Link, Stack, Typography } from '@mui/material';
 import DescriptionOutlined from '@mui/icons-material/DescriptionOutlined';
@@ -36,6 +37,8 @@ function getFileTypeIcon(name) {
 // extension here, unlike ComplaintAttachmentsField's pending (local File)
 // rows, which still have a real mime type to work with.
 function FileRow({ file }) {
+   const { t } = useTranslation();
+
    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
    const canPreview =
@@ -56,7 +59,7 @@ function FileRow({ file }) {
                <IconButton
                   size="small"
                   onClick={() => setIsPreviewOpen((prev) => !prev)}
-                  aria-label="Предпросмотр"
+                  aria-label={t("common.actions.preview")}
                >
                   <VisibilityOutlined fontSize="small" />
                </IconButton>
@@ -67,7 +70,7 @@ function FileRow({ file }) {
                component={Link}
                href={file.url}
                download={file.name}
-               aria-label="Скачать"
+               aria-label={t("common.actions.download")}
             >
                <DownloadOutlined fontSize="small" />
             </IconButton>
@@ -103,6 +106,8 @@ FileRow.propTypes = {
 };
 
 export function ComplaintFilesSection({ files }) {
+   const { t } = useTranslation();
+
    if (!files || files.length === 0) {
       return null;
    }
@@ -110,7 +115,7 @@ export function ComplaintFilesSection({ files }) {
    return (
       <Box>
          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 0.75 }}>
-            Файлы
+            {t("common.fields.files")}
          </Typography>
 
          <Stack spacing={1}>

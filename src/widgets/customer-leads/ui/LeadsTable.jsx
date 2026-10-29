@@ -1,4 +1,6 @@
 import { Box, Paper, Tooltip } from '@mui/material';
+import i18n from '../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { DataGrid } from '@mui/x-data-grid';
 
 import { useLeadsContext } from '../model/useLeadsContext';
@@ -16,14 +18,14 @@ import { StatusDot } from '../../../shared/ui/StatusDot';
 
 function getLocationLabel(location) {
    if (!location) {
-      return 'Некорректные данные';
+      return i18n.t("common.empty.invalidData");
    }
 
    if (typeof location === 'string') {
-      return location || 'Некорректные данные';
+      return location || i18n.t("common.empty.invalidData");
    }
 
-   return location.address || location.name || location.title || 'Некорректные данные';
+   return location.address || location.name || location.title || i18n.t("common.empty.invalidData");
 }
 
 function getForwarderLabel(forwarder) {
@@ -33,8 +35,8 @@ function getForwarderLabel(forwarder) {
 function getLocationSortValue(location) {
    return toSortString(
       getShortLocationLabel(location, getLocationLabel(location)),
-      'Некорректные данные',
-      'Не указано',
+      i18n.t("common.empty.invalidData"),
+      i18n.t("common.empty.notSpecifiedN"),
    );
 }
 
@@ -56,6 +58,8 @@ function LeadStatusChip({ lead }) {
 }
 
 export function LeadsTable({ leads }) {
+   const { t } = useTranslation();
+
    const { setOpenLead } = useLeadsContext();
 
    const columns = [
@@ -83,7 +87,7 @@ export function LeadsTable({ leads }) {
       },
       {
          field: 'status',
-         headerName: 'Статус',
+         headerName: t("common.fields.status"),
          width: 180,
          valueGetter: (_, row) => getDisplayLeadStatusLabel(row),
          renderCell: ({ row }) => {
@@ -92,7 +96,7 @@ export function LeadsTable({ leads }) {
       },
       {
          field: 'from_location',
-         headerName: 'Откуда',
+         headerName: t("common.fields.origin"),
          flex: 1,
          minWidth: 140,
          colSpan: (_value, row) => (isDraftLead(row) ? 3 : undefined),
@@ -101,7 +105,7 @@ export function LeadsTable({ leads }) {
             if (isDraftLead(row)) {
                return (
                   <Box sx={{ color: 'text.secondary' }}>
-                     Данные не заполнены
+                     {t("common.empty.dataNotFilled")}
                   </Box>
                );
             }
@@ -117,7 +121,7 @@ export function LeadsTable({ leads }) {
       },
       {
          field: 'to_location',
-         headerName: 'Куда',
+         headerName: t("common.fields.destination"),
          flex: 1,
          minWidth: 140,
          valueGetter: (_, row) => getLocationSortValue(row?.to_location),
@@ -133,24 +137,24 @@ export function LeadsTable({ leads }) {
       },
       {
          field: 'forwarder',
-         headerName: 'Экспедитор',
+         headerName: t("enums.participantType.forwarder"),
          flex: 1,
          minWidth: 180,
          valueGetter: (_, row) =>
-            toSortString(getForwarderLabel(row?.forwarder), '-', 'Не указан'),
+            toSortString(getForwarderLabel(row?.forwarder), '-', t("common.empty.notSpecifiedM")),
          renderCell: ({ row }) => {
             return <Box>{getForwarderLabel(row.forwarder)}</Box>;
          },
       },
       {
          field: 'grace_period_days',
-         headerName: 'Отсрочка платежа',
+         headerName: t("common.fields.gracePeriod"),
          width: 160,
          valueGetter: (_, row) => row?.grace_period_days ?? null,
          renderCell: ({ row }) => {
             return (
                <Box>
-                  {row.grace_period_days ? `${row.grace_period_days} дн.` : '-'}
+                  {row.grace_period_days ? t("common.units.days", { count: row.grace_period_days }) : '-'}
                </Box>
             );
          },
@@ -165,7 +169,7 @@ export function LeadsTable({ leads }) {
             columns={columns}
             getRowClassName={getLeadRowClassName}
             hideFooter
-            localeText={{ noRowsLabel: 'Заказы не найдены' }}
+            localeText={{ noRowsLabel: t("leads.notFound") }}
             sx={{ border: 0 }}
          />
       </Paper>

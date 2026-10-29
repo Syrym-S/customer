@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import i18n from '../../../../../shared/i18n';
+import { useTranslation } from "react-i18next";
 import { Box } from '@mui/material';
 
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
@@ -14,19 +16,21 @@ function getDriverFields(driver) {
    }
 
    return [
-      { label: 'ФИО', value: driver.fio || driver.fullName || driver.name },
-      { label: 'Телефон', value: driver.phone },
+      { label: i18n.t("common.fields.fullName"), value: driver.fio || driver.fullName || driver.name },
+      { label: i18n.t("common.fields.phone"), value: driver.phone },
       { label: 'Email', value: driver.email },
    ].filter(({ value }) => typeof value === 'string' && value.trim());
 }
 
 export function LeadDriverSection({ lead }) {
+   const { t } = useTranslation();
+
    const driver = lead.raw?.driver ?? lead.driver;
    const driverFields = getDriverFields(driver);
    // const driverId = driver && typeof driver === 'object' ? driver.id : null;
 
    return (
-      <DetailSection icon={<PersonOutlineOutlinedIcon />} title='Водитель'>
+      <DetailSection icon={<PersonOutlineOutlinedIcon />} title={t("common.fields.driver")}>
          {driverFields.length > 0 ? (
             <Box
                sx={{
@@ -50,7 +54,7 @@ export function LeadDriverSection({ lead }) {
             </Box>
          ) : (
             <InfoBadge
-               label='ФИО'
+               label={t("common.fields.fullName")}
                value={normalizePersonValue(lead.driver)}
                fullWidth
             />

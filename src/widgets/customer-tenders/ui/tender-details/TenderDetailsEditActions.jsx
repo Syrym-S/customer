@@ -1,4 +1,5 @@
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import PropTypes from "prop-types";
 
@@ -11,10 +12,12 @@ export function TenderDetailsEditActions({
    onStartEdit,
    onCancelEdit,
 }) {
+   const { t } = useTranslation();
+
    const isEditDisabled = isClosedTender(tender) || isCancelledTender(tender);
    const editTooltipTitle = isEditDisabled
-      ? "Нельзя редактировать закрытый или отмененный аукцион"
-      : "Изменить";
+      ? t("tenders.details.editBlocked")
+      : t("common.actions.edit");
 
    return (
       <Box
@@ -26,13 +29,13 @@ export function TenderDetailsEditActions({
          }}
       >
          {isEditing ? (
-            <Button onClick={onCancelEdit}>Отмена</Button>
+            <Button onClick={onCancelEdit}>{t("common.actions.cancel")}</Button>
          ) : (
             <Tooltip title={editTooltipTitle}>
                <span>
                   <IconButton
                      color="primary"
-                     aria-label="Изменить"
+                     aria-label={t("common.actions.edit")}
                      onClick={onStartEdit}
                      disabled={isEditDisabled}
                   >

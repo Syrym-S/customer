@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 import {
    Alert,
@@ -20,6 +21,8 @@ import {
 } from '../model/email-verification.helpers';
 
 export function EmailVerificationStatus() {
+   const { t } = useTranslation();
+
    const [isVerified, setIsVerified] = useState(null);
    const [isLoading, setIsLoading] = useState(false);
    const [loadError, setLoadError] = useState('');
@@ -37,7 +40,7 @@ export function EmailVerificationStatus() {
             error.response?.data?.message ||
                error.response?.data?.error ||
                error.message ||
-               'Не удалось проверить статус email',
+               t("verification.checkFailed"),
          );
       } finally {
          setIsLoading(false);
@@ -68,7 +71,7 @@ export function EmailVerificationStatus() {
                color="text.secondary"
                sx={{ fontSize: 14, lineHeight: 1.4 }}
             >
-               Проверка статуса email…
+               {t("verification.checking")}
             </Typography>
          </Stack>
       );
@@ -98,7 +101,7 @@ export function EmailVerificationStatus() {
                color="text.secondary"
                sx={{ fontSize: 14, lineHeight: 1.4 }}
             >
-               Email подтвержден
+               {t("verification.emailConfirmed")}
             </Typography>
          </Stack>
       );
@@ -124,7 +127,7 @@ export function EmailVerificationStatus() {
                   color="text.secondary"
                   sx={{ fontSize: 14, lineHeight: 1.4 }}
                >
-                  Email не подтвержден
+                  {t("verification.emailNotConfirmed")}
                </Typography>
             </Stack>
             <Button
@@ -140,7 +143,7 @@ export function EmailVerificationStatus() {
                   fontSize: 13,
                }}
             >
-               Подтвердить
+               {t("common.actions.confirm")}
             </Button>
          </Stack>
       );

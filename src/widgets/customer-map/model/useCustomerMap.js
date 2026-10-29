@@ -1,3 +1,5 @@
+import i18n from '../../../shared/i18n';
+
 export function useCustomerMap() {
    const center = [43.241141, 76.871399]; // Алматы, временно
    const zoom = 12;
@@ -6,8 +8,8 @@ export function useCustomerMap() {
       {
          id: 1,
          position: [43.241141, 76.871399],
-         title: 'Точка клиента',
-         description: 'Временный маркер для проверки карты',
+         title: i18n.t("map.customerPoint"),
+         description: i18n.t("map.devMarker"),
       },
    ];
 

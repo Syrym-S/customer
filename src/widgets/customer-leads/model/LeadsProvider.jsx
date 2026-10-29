@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { fetchCustomerLeads } from '../api/leads.repository';
@@ -22,6 +23,8 @@ function sortLeadsWithDraftsFirst(leads) {
 }
 
 export function LeadsProvider({ children }) {
+   const { t } = useTranslation();
+
    const [leads, setLeads] = useState([]);
    const [openLead, setOpenLead] = useState(null);
 
@@ -57,14 +60,14 @@ export function LeadsProvider({ children }) {
             setCount(mappedResponse.count);
             setPerPage(mappedResponse.perPage);
          } catch (requestError) {
-            setError(requestError.message || 'Не удалось загрузить заказы');
+            setError(requestError.message || t("leads.loadFailed"));
          } finally {
             if (withLoader) {
                setIsLoading(false);
             }
          }
       },
-      [page, perPage, status, debouncedSearch],
+      [page, perPage, status, debouncedSearch, t],
    );
 
    const setStatusFilter = useCallback((nextStatus) => {

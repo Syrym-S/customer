@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { useTranslation } from "react-i18next";
 
 import {
     Avatar,
@@ -22,6 +23,8 @@ export function ProfilePhotoUploader({
     onError,
     onRemove,
 }) {
+    const { t } = useTranslation();
+
     const inputRef = useRef(null);
 
     function handleOpenFileDialog() {
@@ -43,7 +46,7 @@ export function ProfilePhotoUploader({
             onError('');
             onChange(photoUrl, file);
         } catch (fileError) {
-            onError(fileError.message || 'Не удалось загрузить фото');
+            onError(fileError.message || t("profile.avatar.uploadFailed"));
         }
     }
 
@@ -134,7 +137,7 @@ export function ProfilePhotoUploader({
                                     size='small'
                                     onClick={handleOpenFileDialog}
                                     disabled={disabled}
-                                    aria-label='Загрузить фото'
+                                    aria-label={t("profile.avatar.upload")}
                                     sx={{
                                         color: '#fff',
                                         bgcolor: 'rgba(255,255,255,0.35)',
@@ -151,7 +154,7 @@ export function ProfilePhotoUploader({
                                         size='small'
                                         onClick={handleRemovePhoto}
                                         disabled={disabled}
-                                        aria-label='Удалить фото'
+                                        aria-label={t("profile.avatar.delete")}
                                         sx={{
                                             color: 'error.main',
                                             bgcolor: 'rgba(255,255,255,0.65)',
@@ -202,7 +205,7 @@ export function ProfilePhotoUploader({
                                 size='small'
                                 onClick={handleOpenFileDialog}
                                 disabled={disabled}
-                                aria-label='Загрузить фото'
+                                aria-label={t("profile.avatar.upload")}
                                 sx={{
                                     border: '1px solid',
                                     borderColor: 'divider',
@@ -217,7 +220,7 @@ export function ProfilePhotoUploader({
                                     color='error'
                                     onClick={handleRemovePhoto}
                                     disabled={disabled}
-                                    aria-label='Удалить фото'
+                                    aria-label={t("profile.avatar.delete")}
                                     sx={{
                                         border: '1px solid',
                                         borderColor: 'divider',

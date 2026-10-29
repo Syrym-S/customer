@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import i18n from '../../../../shared/i18n';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 import L from 'leaflet';
@@ -20,8 +21,8 @@ export function LeadRouteLeafletMap({
    center,
    zoom,
    routePoints = [],
-   fromLabel = 'Откуда',
-   toLabel = 'Куда',
+   fromLabel = i18n.t("common.fields.origin"),
+   toLabel = i18n.t("common.fields.destination"),
 }) {
    const containerRef = useRef(null);
    const mapRef = useRef(null);

@@ -9,6 +9,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import i18n from "../../../../../shared/i18n";
+import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
@@ -43,7 +45,7 @@ function createEmptyLeadCargo() {
     description: "",
     weight_kg: "",
     cargo_price: "",
-    type: "Не указан",
+    type: i18n.t("common.empty.notSpecifiedM"),
     width_cm: "",
     height_cm: "",
     length_cm: "",
@@ -70,7 +72,7 @@ function hasValue(value) {
 }
 
 function getCargoWeightDisplay(cargo) {
-  return hasValue(cargo.weight_kg) ? `${cargo.weight_kg} кг` : "Не указано";
+  return hasValue(cargo.weight_kg) ? i18n.t("common.units.kg", { value: cargo.weight_kg }) : i18n.t("common.empty.notSpecifiedN");
 }
 
 function getCargoDimensionsDisplay(cargo) {
@@ -79,14 +81,18 @@ function getCargoDimensionsDisplay(cargo) {
   const height = cargo.height_cm;
 
   if (!hasValue(length) && !hasValue(width) && !hasValue(height)) {
-    return "Не указано";
+    return i18n.t("common.empty.notSpecifiedN");
   }
 
-  return `${length || "—"} × ${width || "—"} × ${height || "—"} см`;
+  return i18n.t("common.units.dimensionsCm", {
+    length: length || "—",
+    width: width || "—",
+    height: height || "—",
+  });
 }
 
 function getCargoVolumeDisplay(cargo) {
-  return formatCargoVolumeM3(cargo.volume_m3) || "Не указано";
+  return formatCargoVolumeM3(cargo.volume_m3) || i18n.t("common.empty.notSpecifiedN");
 }
 
 export function LeadCargoSection({
@@ -98,6 +104,8 @@ export function LeadCargoSection({
   deletingCargoIndex = null,
   hidePrice = false,
 }) {
+  const { t } = useTranslation();
+
   const [cargoTypes, setCargoTypes] = useState([]);
   const [cargoTypesSearch, setCargoTypesSearch] = useState("");
   const [isCargoTypesLoading, setIsCargoTypesLoading] = useState(false);
@@ -192,7 +200,7 @@ export function LeadCargoSection({
   const cargoTypeOptions = useMemo(() => {
     const defaultOption = {
       id: "",
-      name: "Не указан",
+      name: t("common.empty.notSpecifiedM"),
     };
 
     const uniqueMap = new Map();
@@ -206,7 +214,7 @@ export function LeadCargoSection({
     });
 
     return Array.from(uniqueMap.values());
-  }, [cargoTypes]);
+  }, [cargoTypes, t]);
 
   function handleCargoChange(index, key, value) {
     const nextCargos = editCargos.map((cargo, cargoIndex) => {
@@ -267,7 +275,7 @@ export function LeadCargoSection({
   }
 
   return (
-    <DetailSection icon={<LocalShippingOutlinedIcon />} title="Грузы">
+    <DetailSection icon={<LocalShippingOutlinedIcon />} title={t("common.fields.cargos")}>
       <Stack spacing={2}>
         {isEditing ? (
           <>
@@ -291,7 +299,7 @@ export function LeadCargoSection({
                     mb: 2,
                   }}
                 >
-                  <Typography fontWeight={600}>Груз #{index + 1}</Typography>
+                  <Typography fontWeight={600}>{t("leads.cargo.itemNumber", { index: index + 1 })}</Typography>
 
                   {canBeDeleted && (
                     <IconButton
@@ -316,7 +324,7 @@ export function LeadCargoSection({
                   }}
                 >
                   <TextField
-                    label="Наименование груза"
+                    label={t("common.fields.cargoName")}
                     value={cargo.name || ""}
                     onChange={(event) =>
                       handleCargoChange(index, "name", event.target.value)
@@ -347,7 +355,7 @@ export function LeadCargoSection({
                       handleCargoChange(
                         index,
                         "type",
-                        option?.name || "Не указан",
+                        option?.name || t("common.empty.notSpecifiedM"),
                       );
                     }}
                     renderInput={(params) => {
@@ -356,7 +364,7 @@ export function LeadCargoSection({
                       return (
                         <TextField
                           {...params}
-                          label="Тип груза"
+                          label={t("common.fields.cargoType")}
                           fullWidth
                           size="small"
                           InputProps={{
@@ -377,7 +385,7 @@ export function LeadCargoSection({
                   />
 
                   <NumericTextField
-                    label="Вес, кг"
+                    label={t("common.fields.weightKg")}
                     value={cargo.weight_kg || ""}
                     onChange={(nextValue) =>
                       handleCargoChange(index, "weight_kg", nextValue)
@@ -388,7 +396,7 @@ export function LeadCargoSection({
                   />
 
                   <NumericTextField
-                    label="Цена груза"
+                    label={t("common.fields.cargoPrice")}
                     value={cargo.cargo_price || ""}
                     onChange={(nextValue) =>
                       handleCargoChange(index, "cargo_price", nextValue)
@@ -413,7 +421,7 @@ export function LeadCargoSection({
                     }}
                   >
                     <NumericTextField
-                      label="Длина, см"
+                      label={t("common.fields.lengthCm")}
                       value={cargo.length_cm || ""}
                       onChange={(nextValue) =>
                         handleCargoChange(index, "length_cm", nextValue)
@@ -424,7 +432,7 @@ export function LeadCargoSection({
                     />
 
                     <NumericTextField
-                      label="Ширина, см"
+                      label={t("common.fields.widthCm")}
                       value={cargo.width_cm || ""}
                       onChange={(nextValue) =>
                         handleCargoChange(index, "width_cm", nextValue)
@@ -435,7 +443,7 @@ export function LeadCargoSection({
                     />
 
                     <NumericTextField
-                      label="Высота, см"
+                      label={t("common.fields.heightCm")}
                       value={cargo.height_cm || ""}
                       onChange={(nextValue) =>
                         handleCargoChange(index, "height_cm", nextValue)
@@ -446,7 +454,7 @@ export function LeadCargoSection({
                     />
 
                     <NumericTextField
-                      label="Объем, м³"
+                      label={t("common.fields.volumeM3")}
                       value={cargo.volume_m3 || ""}
                       onChange={(nextValue) =>
                         handleCargoChange(index, "volume_m3", nextValue)
@@ -458,7 +466,7 @@ export function LeadCargoSection({
                   </Box>
 
                   <TextField
-                    label="Описание"
+                    label={t("common.fields.description")}
                     value={cargo.description || ""}
                     onChange={(event) =>
                       handleCargoChange(
@@ -493,7 +501,7 @@ export function LeadCargoSection({
                         onChange={(nextTnved) =>
                           handleCargoChange(index, "tnved", nextTnved)
                         }
-                        label="Код ТН ВЭД"
+                        label={t("common.fields.tnvedCode")}
                       />
                     </Box>
                   )}
@@ -508,7 +516,7 @@ export function LeadCargoSection({
               onClick={handleAddCargo}
               sx={{ alignSelf: "flex-start" }}
             >
-              Добавить груз
+              {t("leads.cargo.add")}
             </Button>
           </>
         ) : (
@@ -534,7 +542,7 @@ export function LeadCargoSection({
                       mb: 1,
                     }}
                   >
-                    <Typography fontWeight={600}>Груз #{index + 1}</Typography>
+                    <Typography fontWeight={600}>{t("leads.cargo.itemNumber", { index: index + 1 })}</Typography>
 
                     {canDeleteCargo && (
                       <IconButton
@@ -566,41 +574,41 @@ export function LeadCargoSection({
                     }}
                   >
                     <InfoBadge
-                      label="Наименование"
-                      value={cargo.name || "Не указано"}
+                      label={t("common.fields.title")}
+                      value={cargo.name || t("common.empty.notSpecifiedN")}
                     />
 
-                    <InfoBadge label="Тип" value={cargo.type || "Не указано"} />
+                    <InfoBadge label={t("common.fields.type")} value={cargo.type || t("common.empty.notSpecifiedN")} />
 
                     <InfoBadge
-                      label="Вес"
+                      label={t("common.fields.weight")}
                       value={getCargoWeightDisplay(cargo)}
                     />
 
                     {!hidePrice && (
                       <InfoBadge
-                        label="Цена груза"
+                        label={t("common.fields.cargoPrice")}
                         value={
                           hasValue(cargo.cargo_price)
                             ? `${formatAmount(cargo.cargo_price)} ${lead.currency || ""}`.trim()
-                            : "Не указано"
+                            : t("common.empty.notSpecifiedN")
                         }
                       />
                     )}
 
                     <InfoBadge
-                      label="Размеры"
+                      label={t("common.fields.dimensions")}
                       value={getCargoDimensionsDisplay(cargo)}
                     />
 
                     <InfoBadge
-                      label="Объем"
+                      label={t("common.fields.volume")}
                       value={getCargoVolumeDisplay(cargo)}
                     />
 
                     {cargo.tnved?.code && (
                       <InfoBadge
-                        label="Код ТН ВЭД"
+                        label={t("common.fields.tnvedCode")}
                         value={
                           cargo.tnved.name
                             ? `${cargo.tnved.code} — ${cargo.tnved.name}`
@@ -611,15 +619,15 @@ export function LeadCargoSection({
                   </Box>
 
                   <InfoBadge
-                    label="Описание"
-                    value={cargo.description || "Не указано"}
+                    label={t("common.fields.description")}
+                    value={cargo.description || t("common.empty.notSpecifiedN")}
                     fullWidth
                     sx={{ mt: 1 }}
                   />
                 </Box>
               ))
             ) : (
-              <InfoBadge label="Груз" value="Не указан" fullWidth />
+              <InfoBadge label={t("common.fields.cargo")} value={t("common.empty.notSpecifiedM")} fullWidth />
             )}
           </>
         )}
@@ -651,13 +659,13 @@ export function LeadCargoSection({
               >
                 <NumericTextField
                   name="price"
-                  label="Цена исполнения"
+                  label={t("common.fields.executionPrice")}
                   value={editForm.price ?? ""}
                   onChange={(nextValue) => onEditChange("price", nextValue)}
                   decimals={2}
                   disabled={isForwarderCreatedLead}
                   helperText={
-                    isForwarderCreatedLead ? "Цена задана экспедитором" : ""
+                    isForwarderCreatedLead ? t("leads.cargo.priceSetByForwarder") : ""
                   }
                   fullWidth
                   size="small"
@@ -672,7 +680,7 @@ export function LeadCargoSection({
                   onChange={(nextCurrency) => {
                     onEditChange("currency", nextCurrency);
                   }}
-                  label="Валюта"
+                  label={t("common.fields.currency")}
                   size="small"
                   disabled={isForwarderCreatedLead}
                   sx={{
@@ -691,21 +699,21 @@ export function LeadCargoSection({
 
               <TextField
                 name="vat"
-                label="НДС"
-                value={editForm.vat || "без НДС"}
+                label={t("common.fields.vat")}
+                value={editForm.vat || t("common.fields.withoutVat")}
                 onChange={onEditChange}
                 fullWidth
                 size="small"
                 select
                 sx={{ minWidth: 0 }}
               >
-                <MenuItem value="с НДС">с НДС</MenuItem>
-                <MenuItem value="без НДС">без НДС</MenuItem>
+                <MenuItem value={t("common.fields.withVat")}>{t("common.fields.withVat")}</MenuItem>
+                <MenuItem value={t("common.fields.withoutVat")}>{t("common.fields.withoutVat")}</MenuItem>
               </TextField>
 
               <NumericTextField
                 name="gracePeriodDays"
-                label="Отсрочка платежа, дней"
+                label={t("common.fields.gracePeriodDays")}
                 value={editForm.gracePeriodDays ?? ""}
                 onChange={(nextValue) =>
                   onEditChange("gracePeriodDays", nextValue)
@@ -720,29 +728,29 @@ export function LeadCargoSection({
             <>
               {!hidePrice && (
                 <InfoBadge
-                  label="Цена исполнения"
+                  label={t("common.fields.executionPrice")}
                   value={
                     hasValue(lead.price)
                       ? `${formatAmount(lead.price)} ${lead.currency}`
-                      : "Не указано"
+                      : t("common.empty.notSpecifiedN")
                   }
                   accent
                 />
               )}
 
-              <InfoBadge label="НДС" value={lead.vat || "Не указано"} />
+              <InfoBadge label={t("common.fields.vat")} value={lead.vat || t("common.empty.notSpecifiedN")} />
 
               <InfoBadge
-                label="Количество грузов"
-                value={leadCargos.length || "Не указано"}
+                label={t("common.fields.cargoCountLabel")}
+                value={leadCargos.length || t("common.empty.notSpecifiedN")}
               />
 
               <InfoBadge
-                label="Отсрочка платежа"
+                label={t("common.fields.gracePeriod")}
                 value={
                   hasValue(lead.grace_period_days)
-                    ? `${lead.grace_period_days} дн.`
-                    : "Не указано"
+                    ? t("common.units.days", { count: lead.grace_period_days })
+                    : t("common.empty.notSpecifiedN")
                 }
               />
             </>

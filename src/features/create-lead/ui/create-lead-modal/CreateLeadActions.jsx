@@ -1,4 +1,5 @@
 import { Box, Button, DialogActions } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 const actionButtonSx = {
@@ -24,6 +25,8 @@ export function CreateLeadActions({
    onSubmit,
    onSaveDraft,
 }) {
+   const { t } = useTranslation();
+
    const isAnyActionPending = isSubmitting || isSavingDraft;
 
    return (
@@ -41,7 +44,7 @@ export function CreateLeadActions({
             disabled={isAnyActionPending}
             sx={actionButtonSx}
          >
-            Отмена
+            {t("common.actions.cancel")}
          </Button>
 
          <Box sx={{ display: 'flex', gap: 1 }}>
@@ -52,7 +55,7 @@ export function CreateLeadActions({
                   disabled={isAnyActionPending}
                   sx={actionButtonSx}
                >
-                  {isSavingDraft ? 'Сохранение...' : 'Сохранить как черновик'}
+                  {isSavingDraft ? t("common.actions.saving") : t("createLead.saveDraft")}
                </Button>
             )}
 
@@ -63,7 +66,7 @@ export function CreateLeadActions({
                   disabled={isAnyActionPending}
                   sx={actionButtonSx}
                >
-                  Назад
+                  {t("common.actions.back")}
                </Button>
             )}
 
@@ -75,7 +78,7 @@ export function CreateLeadActions({
                   onClick={onSubmit}
                   sx={actionButtonSx}
                >
-                  {isSubmitting ? 'Создание...' : 'Создать заказ'}
+                  {isSubmitting ? t("common.actions.creatingProcess") : t("createLead.submit")}
                </Button>
             ) : (
                <Button
@@ -85,7 +88,7 @@ export function CreateLeadActions({
                   onClick={onNext}
                   sx={actionButtonSx}
                >
-                  Дальше
+                  {t("common.actions.next")}
                </Button>
             )}
          </Box>

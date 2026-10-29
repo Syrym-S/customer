@@ -1,4 +1,5 @@
 import { buildPointSchedulesPayload } from '../lib/point-schedule.helpers';
+import i18n from '../../../shared/i18n';
 import {
     cargoVolumeBackendToM3,
     cargoVolumeM3ToBackend,
@@ -107,7 +108,7 @@ function getNormalizedFormCargos(form) {
 }
 
 function mapApiCargoToUiCargo(cargo, formCargo) {
-    const type = normalizeCargoTypeValue(cargo.type) || 'Не указан';
+    const type = normalizeCargoTypeValue(cargo.type) || i18n.t("common.empty.notSpecifiedM");
     const name = normalizeText(cargo.name) || type;
 
     return {
@@ -161,7 +162,7 @@ export function mapCreateLeadFormToApi(form) {
         to_address: form.to_location.address,
 
         currency: form.currency || 'KZT',
-        vat: form.vat ? 'с НДС' : 'без НДС',
+        vat: form.vat ? i18n.t("common.fields.withVat") : i18n.t("common.fields.withoutVat"),
         pass_verify: Boolean(form.pass_verify),
         is_international: Boolean(form.is_international),
     };
@@ -224,7 +225,7 @@ export function mapCreateLeadDocumentsToApiDocuments(form) {
     return (form.documents || [])
         .filter((document) => document.file)
         .map((document) => ({
-            name: document.name || document.fileName || 'Документ',
+            name: document.name || document.fileName || i18n.t("common.fields.document"),
             context: document.context || '',
             file: document.file,
         }));
@@ -277,11 +278,11 @@ export function mapCreatedLeadToUi(form, response) {
     );
 
     const fallbackCargo = {
-        name: 'Не указан',
+        name: i18n.t("common.empty.notSpecifiedM"),
         description: '',
         context: '',
         weight_kg: 0,
-        type: 'Не указан',
+        type: i18n.t("common.empty.notSpecifiedM"),
         volume_m3: null,
         width_cm: null,
         height_cm: null,
@@ -306,18 +307,18 @@ export function mapCreatedLeadToUi(form, response) {
             responseData?.customer?.name ||
             responseData?.customer ||
             responseData?.creator?.name ||
-            'Текущий заказчик',
+            i18n.t("createLead.customer.current"),
 
         forwarder: form.forwarder ?? {
             id: form.forwarderId || null,
-            fullName: 'Не указан',
+            fullName: i18n.t("common.empty.notSpecifiedM"),
             companyName: '',
             companyBin: '',
             phone: '',
         },
 
-        from_location: form.fromLocation || 'Не указано',
-        to_location: form.toLocation || 'Не указано',
+        from_location: form.fromLocation || i18n.t("common.empty.notSpecifiedN"),
+        to_location: form.toLocation || i18n.t("common.empty.notSpecifiedN"),
 
         waypoints,
 
@@ -329,7 +330,7 @@ export function mapCreatedLeadToUi(form, response) {
         is_draft: Boolean(responseData?.is_draft),
 
         transportation_price: null,
-        vat: form.vat ? 'с НДС' : 'без НДС',
+        vat: form.vat ? i18n.t("common.fields.withVat") : i18n.t("common.fields.withoutVat"),
         grace_period_days: toNumber(form.gracePeriodDays),
         gsm: false,
         created_at: responseData?.created_at ?? null,
@@ -338,7 +339,7 @@ export function mapCreatedLeadToUi(form, response) {
         cargo: firstCargo,
         cargos,
 
-        driver: 'Не назначен',
+        driver: i18n.t("common.empty.notAssigned"),
 
         creator: null,
         person: null,

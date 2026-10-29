@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, Badge, Box, CircularProgress, Tab, Tabs, Typography } from "@mui/material";
 import { useChatStore } from "../model/chat.store";
 import {
@@ -14,6 +15,8 @@ import { CounterpartAvatar } from "./CounterpartAvatar";
 const LOAD_MORE_LEAD_CHATS_SCROLL_THRESHOLD_PX = 80;
 
 export function ChatListView() {
+  const { t } = useTranslation();
+
   const chats = useChatStore((state) => state.chats);
   const activeCategory = useChatStore((state) => state.activeCategory);
   const setActiveCategory = useChatStore((state) => state.setActiveCategory);
@@ -132,7 +135,7 @@ export function ChatListView() {
         ) : hasLeadChatsError && categoryChats.length === 0 ? (
           <Box sx={{ p: 2 }}>
             <Alert severity="error">
-              {leadChatsError || "Не удалось загрузить чаты"}
+              {leadChatsError || t("chat.load.listFailed")}
             </Alert>
           </Box>
         ) : categoryChats.length === 0 ? (
@@ -146,7 +149,7 @@ export function ChatListView() {
             }}
           >
             <Typography color="text.secondary" sx={{ fontSize: 13, textAlign: "center" }}>
-              Нет активных чатов
+              {t("chat.empty")}
             </Typography>
           </Box>
         ) : (
@@ -230,7 +233,7 @@ export function ChatListView() {
                       {lastMessage
                         ? lastMessage.text
                           ? truncateText(lastMessage.text, 42)
-                          : "Вложение"
+                          : t("chat.attachments.label")
                         : ""}
                     </Typography>
 

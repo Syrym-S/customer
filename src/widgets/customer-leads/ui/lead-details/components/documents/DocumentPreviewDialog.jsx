@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 
 import {
    Box,
@@ -17,6 +18,8 @@ import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import { DocumentPreview } from './DocumentPreview';
 
 export function DocumentPreviewDialog({ document, onClose }) {
+   const { t } = useTranslation();
+
    return (
       <Dialog
          open={Boolean(document)}
@@ -33,7 +36,7 @@ export function DocumentPreviewDialog({ document, onClose }) {
             },
          }}
       >
-         <DialogTitle>{document?.name || 'Документ'}</DialogTitle>
+         <DialogTitle>{document?.name || t("common.fields.document")}</DialogTitle>
 
          <DialogContent
             sx={{
@@ -49,7 +52,7 @@ export function DocumentPreviewDialog({ document, onClose }) {
                   mb: 2,
                }}
             >
-               {document?.context || 'Описание не указано'}
+               {document?.context || t("common.empty.descriptionNotSpecified")}
             </Typography>
 
             <DocumentPreview document={document} />
@@ -66,24 +69,24 @@ export function DocumentPreviewDialog({ document, onClose }) {
             <Box sx={{ display: 'flex', gap: 1 }}>
                {document?.fileUrl && document.fileUrl !== '#' && (
                   <>
-                     <Tooltip title='Открыть в новой вкладке'>
+                     <Tooltip title={t("common.actions.openInNewTab")}>
                         <IconButton
                            component='a'
                            href={document.fileUrl}
                            target='_blank'
                            rel='noreferrer'
-                           aria-label='Открыть в новой вкладке'
+                           aria-label={t("common.actions.openInNewTab")}
                         >
                            <OpenInNewOutlinedIcon />
                         </IconButton>
                      </Tooltip>
 
-                     <Tooltip title='Скачать'>
+                     <Tooltip title={t("common.actions.download")}>
                         <IconButton
                            component='a'
                            href={document.fileUrl}
                            download={document.fileName || document.name || true}
-                           aria-label='Скачать'
+                           aria-label={t("common.actions.download")}
                         >
                            <DownloadOutlinedIcon />
                         </IconButton>
@@ -92,7 +95,7 @@ export function DocumentPreviewDialog({ document, onClose }) {
                )}
             </Box>
 
-            <Button onClick={onClose}>Закрыть</Button>
+            <Button onClick={onClose}>{t("common.actions.close")}</Button>
          </DialogActions>
       </Dialog>
    );

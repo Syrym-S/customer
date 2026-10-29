@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Alert,
@@ -30,6 +31,8 @@ function createInitialState() {
 }
 
 export function ComplaintForm({ open, onClose }) {
+   const { t } = useTranslation();
+
    const { reloadComplaints } = useComplaintsContext();
 
    const [form, setForm] = useState(createInitialState);
@@ -46,11 +49,11 @@ export function ComplaintForm({ open, onClose }) {
       const trimmedRequest = form.request.trim();
 
       if (!trimmedRequest) {
-         return 'Опишите суть жалобы';
+         return t("complaints.create.subjectPlaceholder");
       }
 
       if (trimmedRequest.length > COMPLAINT_REQUEST_MAX_LENGTH) {
-         return `Описание не должно превышать ${COMPLAINT_REQUEST_MAX_LENGTH} символов`;
+         return t("complaints.create.maxLength", { count: COMPLAINT_REQUEST_MAX_LENGTH });
       }
 
       const filesError = validateComplaintAttachments(
@@ -90,7 +93,7 @@ export function ComplaintForm({ open, onClose }) {
          setSubmitError(
             error.response?.data?.message ||
                error.message ||
-               'Не удалось отправить жалобу',
+               t("complaints.create.failed"),
          );
       } finally {
          setIsSubmitting(false);
@@ -99,7 +102,7 @@ export function ComplaintForm({ open, onClose }) {
 
    return (
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-         <DialogTitle>Подать жалобу</DialogTitle>
+         <DialogTitle>{t("complaints.create.action")}</DialogTitle>
 
          <DialogContent>
             <Stack component="form" onSubmit={handleSubmit} spacing={2.5} sx={{ pt: 1 }}>
@@ -111,8 +114,8 @@ export function ComplaintForm({ open, onClose }) {
                />
 
                <TextField
-                  label="Суть жалобы"
-                  placeholder="Опишите, что произошло"
+                  label={t("complaints.create.subject")}
+                  placeholder={t("complaints.create.describePlaceholder")}
                   multiline
                   minRows={4}
                   fullWidth
@@ -144,7 +147,7 @@ export function ComplaintForm({ open, onClose }) {
 
          <DialogActions sx={{ px: 3, pb: 2 }}>
             <Button onClick={handleClose} disabled={isSubmitting}>
-               Отмена
+               {t("common.actions.cancel")}
             </Button>
 
             <Button
@@ -152,7 +155,7 @@ export function ComplaintForm({ open, onClose }) {
                onClick={handleSubmit}
                disabled={isSubmitting}
             >
-               {isSubmitting ? 'Отправляем...' : 'Отправить жалобу'}
+               {isSubmitting ? t("common.actions.sendingShort") : t("complaints.create.submit")}
             </Button>
          </DialogActions>
       </Dialog>

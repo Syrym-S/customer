@@ -1,4 +1,5 @@
 import { apiClient } from "../../shared/api/api-client";
+import i18n from "../../shared/i18n";
 
 export async function fetchCustomerProfile() {
   const response = await apiClient.get("/customer/profile/v1/get");
@@ -66,7 +67,7 @@ export async function updateProfileDocuments({
 
     payload.append(
       "registration_document_name",
-      "Документ о регистрации юридического лица",
+      i18n.t("profile.documents.legalEntity"),
     );
   }
 
@@ -79,7 +80,7 @@ export async function updateProfileDocuments({
 
     payload.append(
       "employer_document_name",
-      "Документ о трудоустройстве сотрудника с правом подписи или приказ о назначении первого руководителя",
+      i18n.t("profile.documents.employmentFull"),
     );
   }
 

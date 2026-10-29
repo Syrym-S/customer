@@ -1,10 +1,11 @@
 import { Box, Stack, Typography } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import { tenderPropType } from '../../model/tenders.prop-types';
 
 import {
    getTimeLeft,
-   tenderStatusLabels,
+   getTenderStatusLabel,
    tenderStatusStyles,
 } from '../../model/tender.helpers';
 import { StatusDot } from '../../../../shared/ui/StatusDot';
@@ -20,6 +21,8 @@ function getCompactId(id) {
 }
 
 export function TenderDetailsHeader({ tender }) {
+   const { t } = useTranslation();
+
    const shouldShowTimeLeft =
       tender.status !== 'closed' && tender.status !== 'cancelled';
 
@@ -50,7 +53,7 @@ export function TenderDetailsHeader({ tender }) {
       >
          <Box sx={{ minWidth: 0 }}>
             <Typography variant='body2' color='text.secondary'>
-               Аукцион
+               {t("tenders.titleSingular")}
             </Typography>
 
             <Typography
@@ -95,7 +98,7 @@ export function TenderDetailsHeader({ tender }) {
             )}
 
             <StatusDot
-               label={tenderStatusLabels[tender.status] || tender.status}
+               label={getTenderStatusLabel(tender.status) || tender.status}
                color={
                   (tenderStatusStyles[tender.status] ||
                      tenderStatusStyles.new).color
@@ -107,6 +110,8 @@ export function TenderDetailsHeader({ tender }) {
 }
 
 function TimeLeftBadge({ value }) {
+   const { t } = useTranslation();
+
    return (
       <Box
          sx={{
@@ -128,7 +133,7 @@ function TimeLeftBadge({ value }) {
                color: 'text.secondary',
             }}
          >
-            Осталось
+            {t("common.fields.timeLeft")}
          </Typography>
 
          <Typography
@@ -139,7 +144,7 @@ function TimeLeftBadge({ value }) {
                color: 'text.primary',
             }}
          >
-            {value || 'Не указано'}
+            {value || t("common.empty.notSpecifiedN")}
          </Typography>
       </Box>
    );

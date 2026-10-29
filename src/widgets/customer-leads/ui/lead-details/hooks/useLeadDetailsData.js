@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import i18n from '../../../../../shared/i18n';
 
 import { fetchCustomerLeadById } from '../../../api/leads.repository';
 import { mapLeadDetailsResponseFromApi } from '../../../model/lead.adapter';
@@ -40,7 +41,7 @@ export function useLeadDetailsData(openLead) {
             }
          } catch (error) {
             if (requestId === requestIdRef.current) {
-               const message = error.message || 'Не удалось загрузить заказ';
+               const message = error.message || i18n.t("leads.details.loadFailed");
 
                setLeadDetailsError(message);
                notifyError(message);

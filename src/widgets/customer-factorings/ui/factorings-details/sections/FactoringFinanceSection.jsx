@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
 
@@ -6,11 +7,13 @@ import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalance
 import { formatMoney, formatPercent } from '../../../model/factorings.helpers';
 
 export function FactoringFinanceSection({ factoring }) {
+    const { t } = useTranslation();
+
     return (
         <DetailSection
             icon={<AccountBalanceWalletOutlinedIcon />}
-            title='Финансы'
-            subtitle='Суммы, валюта и ставка факторинга'
+            title={t("factorings.finance.title")}
+            subtitle={t("factorings.finance.subtitle")}
         >
             <Box
                 sx={{
@@ -24,7 +27,7 @@ export function FactoringFinanceSection({ factoring }) {
                 }}
             >
                 <InfoBadge
-                    label='Дебиторская сумма'
+                    label={t("factorings.finance.debtAmount")}
                     value={formatMoney(
                         factoring.deb_summ,
                         factoring.deb_currency,
@@ -33,37 +36,37 @@ export function FactoringFinanceSection({ factoring }) {
                 />
 
                 <InfoBadge
-                    label='Кредитная сумма'
+                    label={t("factorings.finance.creditAmount")}
                     value={formatMoney(factoring.cred_summ, factoring.currency)}
                     accent
                 />
 
                 <InfoBadge
-                    label='Ставка факторинга'
+                    label={t("factorings.finance.factoringRate")}
                     value={formatPercent(factoring.proc_factor)}
                 />
 
                 <InfoBadge
-                    label='Сервисная ставка'
+                    label={t("factorings.finance.serviceRate")}
                     value={formatPercent(factoring.proc_service)}
                 />
 
                 <InfoBadge
-                    label='Валюта дебиторской суммы'
+                    label={t("factorings.finance.debtCurrency")}
                     value={factoring.deb_currency || 'KZT'}
                 />
 
                 <InfoBadge
-                    label='Валюта факторинга'
+                    label={t("factorings.finance.factoringCurrency")}
                     value={factoring.currency || 'KZT'}
                 />
 
                 <InfoBadge
-                    label='Отсрочка платежа'
+                    label={t("common.fields.gracePeriod")}
                     value={
                         factoring.grace_period_days
-                            ? `${factoring.grace_period_days} дн.`
-                            : 'Не указано'
+                            ? t("common.units.days", { count: factoring.grace_period_days })
+                            : t("common.empty.notSpecifiedN")
                     }
                 />
             </Box>

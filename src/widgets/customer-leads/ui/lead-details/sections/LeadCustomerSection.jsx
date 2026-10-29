@@ -1,4 +1,5 @@
 import { TextField } from '@mui/material';
+import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
@@ -12,19 +13,21 @@ export function LeadCustomerSection({
    editForm,
    onEditChange,
 }) {
+   const { t } = useTranslation();
+
    return (
-      <DetailSection icon={<BusinessOutlinedIcon />} title='Заказчик'>
+      <DetailSection icon={<BusinessOutlinedIcon />} title={t("common.fields.customer")}>
          {isEditing ? (
             <TextField
                name='customer'
-               label='Название'
+               label={t("common.fields.name")}
                value={editForm.customer}
                onChange={onEditChange}
                fullWidth
                size='small'
             />
          ) : (
-            <InfoBadge label='Название' value={lead.customer} fullWidth />
+            <InfoBadge label={t("common.fields.name")} value={lead.customer} fullWidth />
          )}
       </DetailSection>
    );
