@@ -464,7 +464,7 @@ export function Header() {
             gap: 1,
             minWidth: 0,
             flexShrink: 1,
-            ml: "auto",
+            marginInlineStart: "auto",
           }}
         >
           <LanguageSwitcher

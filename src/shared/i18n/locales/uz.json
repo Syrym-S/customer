@@ -1,0 +1,1404 @@
+{
+   "accountBan": {
+      "contactSupport": "Qo'llab-quvvatlash xizmatiga murojaat qilish",
+      "logout": "Hisobdan chiqish",
+      "text": "Ish maydoniga kirish vaqtincha cheklangan. Siz buyurtma yaratolmaysiz, auktsionlarda qatnasha olmaysiz yoki tizimda boshqa amallarni bajara olmaysiz.",
+      "title": "Hisob bloklangan"
+   },
+   "chat": {
+      "attachments": {
+         "allowedTypes": "Faqat rasmlar (JPG, PNG, WEBP), PDF, DOC(X) yoki XLS(X) fayllariga ruxsat berilgan",
+         "attach": "Fayl biriktirish",
+         "closeImage": "Rasm ko'rish oynasini yopish",
+         "fileDownloadFailed": "«{{name}}» faylini yuklab olib bo'lmadi",
+         "fileLoadFailed": "«{{name}}» faylini yuklab bo'lmadi",
+         "imageLoadFailed": "Rasmni yuklab bo'lmadi",
+         "label": "Biriktirma",
+         "loadFailed": "Yuklab bo'lmadi",
+         "maxCount": "Bitta xabarga {{count}} tadan ko'p fayl biriktirib bo'lmaydi",
+         "maxSize": "Fayl hajmi {{size}} MB dan oshmasligi kerak",
+         "remove": "{{name}} faylini o'chirish",
+         "view": "Biriktirmani ko'rish"
+      },
+      "backToList": "Chatlar ro'yxatiga qaytish",
+      "close": "Chatni yopish",
+      "conversationStart": "Suhbat boshlanishi",
+      "empty": "Faol chatlar yo'q",
+      "load": {
+         "deliveryFailed": "Yetkazib berish chatini yuklab bo'lmadi",
+         "factoringFailed": "Faktoring chatini yuklab bo'lmadi",
+         "leadFailed": "Buyurtma chatini yuklab bo'lmadi",
+         "listFailed": "Chatlarni yuklab bo'lmadi",
+         "moreFailed": "Qo'shimcha chatlarni yuklab bo'lmadi",
+         "participantsFailed": "Chat qatnashchilarini ({{type}}) {{id}} yuklab bo'lmadi",
+         "supportFailed": "Qo'llab-quvvatlash chatini yuklab bo'lmadi"
+      },
+      "message": {
+         "cancelEdit": "Tahrirlashni bekor qilish",
+         "delete": "Xabarni o'chirish",
+         "deleteConfirm": "Xabar butunlay o'chiriladi. Davom etilsinmi?",
+         "deleteFailed": "Xabarni o'chirib bo'lmadi",
+         "deleted": "Xabar o'chirildi",
+         "edit": "Xabarni tahrirlash",
+         "editFailed": "Xabarni tahrirlab bo'lmadi",
+         "placeholder": "Xabar...",
+         "read": "O'qilgan",
+         "send": "Xabarni yuborish",
+         "sendFailed": "Xabarni yuborib bo'lmadi"
+      },
+      "open": "Chatni ochish",
+      "participant": "Qatnashchi",
+      "participantLabel": "Chat qatnashchisi",
+      "refreshList": "Chatlar ro'yxatini yangilash",
+      "requisites": {
+         "title": "Bank rekvizitlari"
+      },
+      "time": {
+         "days": "{{count}} kun",
+         "hours": "{{count}} soat",
+         "justNow": "hozirgina",
+         "minutes": "{{count}} daqiqa",
+         "yesterday": "kecha"
+      },
+      "title": "Chatlar",
+      "types": {
+         "delivery": "Yetkazib berish",
+         "deliveryNumber": "Yetkazib berish #{{id}}",
+         "factoringNumber": "Faktoring #{{id}}",
+         "orderNumber": "Buyurtma #{{id}}",
+         "support": "Qo'llab-quvvatlash",
+         "supportFull": "Texnik qo'llab-quvvatlash"
+      }
+   },
+   "common": {
+      "actions": {
+         "add": "Qo'shish",
+         "adding": "Qo'shilmoqda...",
+         "addingShort": "Qo'shilmoqda...",
+         "back": "Orqaga",
+         "cancel": "Bekor qilish",
+         "clear": "Tozalash",
+         "close": "Yopish",
+         "confirm": "Tasdiqlash",
+         "continue": "Davom etish",
+         "copied": "Nusxalandi",
+         "copy": "Nusxalash",
+         "copyNumber": "Raqamni nusxalash",
+         "create": "Yaratish",
+         "creating": "Yaratilmoqda...",
+         "creatingProcess": "Yaratilmoqda...",
+         "delete": "O'chirish",
+         "deleting": "O'chirilmoqda...",
+         "download": "Yuklab olish",
+         "edit": "Tahrirlash",
+         "goTo": "O'tish",
+         "gotIt": "Tushunarli",
+         "hide": "Berkitish",
+         "next": "Keyingi",
+         "openInNewTab": "Yangi oynada ochish",
+         "preview": "Oldindan ko'rish",
+         "refresh": "Yangilash",
+         "remove": "Olib tashlash",
+         "retry": "Qayta urinish",
+         "retryAttempt": "Qayta urinish",
+         "save": "Saqlash",
+         "saveChanges": "O'zgarishlarni saqlash",
+         "saving": "Saqlanmoqda...",
+         "select": "Tanlash",
+         "selected": "Tanlangan: {{count}}",
+         "send": "Yuborish",
+         "sending": "Yuborilmoqda...",
+         "sendingShort": "Yuborilmoqda...",
+         "share": "Ulashish",
+         "showAll": "Barchasini ko'rsatish (+{{count}})",
+         "sign": "Imzolash",
+         "yes": "Ha"
+      },
+      "cargoCount_one": "{{count}} yuk",
+      "cargoCount_other": "{{count}} yuk",
+      "documents": {
+         "add": "Hujjat qo'shish",
+         "empty": "Hujjatlar qo'shilmagan",
+         "fileSelected": "Fayl tanlandi"
+      },
+      "empty": {
+         "addressNotSpecified": "Manzil ko'rsatilmagan",
+         "binNotSpecified": "BIN ko'rsatilmagan",
+         "canLeaveBlank": "Bo'sh qoldirish mumkin",
+         "cargoNotSpecified": "Yuk ko'rsatilmagan",
+         "companyNotSpecified": "Kompaniya ko'rsatilmagan",
+         "contactDataNotSpecified": "Kontakt ma'lumotlari ko'rsatilmagan",
+         "contactsNotSpecified": "Kontaktlar ko'rsatilmagan",
+         "dataNotFilled": "Ma'lumotlar to'ldirilmagan",
+         "dateNotSpecified": "Sana ko'rsatilmagan",
+         "descriptionNotSpecified": "Tavsif ko'rsatilmagan",
+         "fullNameNotSpecified": "F.I.Sh. ko'rsatilmagan",
+         "invalidData": "Noto'g'ri ma'lumotlar",
+         "invalidDate": "Noto'g'ri sana",
+         "nameNotSpecified": "Nomi ko'rsatilmagan",
+         "noCompany": "Kompaniyasiz",
+         "noData": "Ma'lumot yo'q",
+         "noFullName": "F.I.Sh. yo'q",
+         "noName": "Nomi yo'q",
+         "notAdded": "Qo'shilmagan",
+         "notAssigned": "Tayinlanmagan",
+         "notSelected": "Tanlanmagan",
+         "notSpecifiedM": "Ko'rsatilmagan",
+         "notSpecifiedN": "Ko'rsatilmagan",
+         "nothingFound": "Hech narsa topilmadi",
+         "optional": "Ixtiyoriy",
+         "priceNotSpecified": "Narx ko'rsatilmagan",
+         "typeNotSpecified": "Turi ko'rsatilmagan",
+         "unknown": "Noma'lum",
+         "unlimited": "Cheklanmagan"
+      },
+      "fields": {
+         "actions": "Amallar",
+         "amount": "Summa",
+         "bankName": "Bank nomi",
+         "bik": "BIK",
+         "bin": "BIN",
+         "binValue": "BIN: {{bin}}",
+         "bodyType": "Tirkama turi",
+         "cargo": "Yuk",
+         "cargoCountLabel": "Yuklar soni",
+         "cargoName": "Yuk nomi",
+         "cargoPrice": "Yuk narxi",
+         "cargoType": "Yuk turi",
+         "cargos": "Yuklar",
+         "comment": "Izoh",
+         "company": "Kompaniya",
+         "companyAddress": "Kompaniya manzili",
+         "companyBin": "Kompaniya BIN",
+         "companyName": "Kompaniya nomi",
+         "contactPerson": "Kontakt shaxs",
+         "currency": "Valyuta",
+         "customer": "Buyurtmachi",
+         "date": "Sana",
+         "dateFrom": "Sanadan",
+         "dateTo": "Sanagacha",
+         "description": "Tavsif",
+         "destination": "Qayerga",
+         "dimensions": "O'lchamlar",
+         "direction": "Yo'nalish",
+         "document": "Hujjat",
+         "documentName": "Hujjat nomi",
+         "documentNumber": "Hujjat raqami",
+         "documents": "Hujjatlar",
+         "driver": "Haydovchi",
+         "email": "Email",
+         "endDate": "Tugash sanasi",
+         "executionPrice": "Bajarish narxi",
+         "factor": "Faktor",
+         "file": "Fayl",
+         "files": "Fayllar",
+         "forwarder": "Ekspeditor",
+         "forwarderBin": "Ekspeditor BIN",
+         "forwarderFullName": "Ekspeditor F.I.Sh.",
+         "forwarderIin": "Ekspeditor IIN",
+         "from": "Qayerdan",
+         "fullName": "To'liq ism",
+         "gracePeriod": "To'lov muddatini kechiktirish",
+         "gracePeriodDays": "To'lov muddatini kechiktirish, kun",
+         "heightCm": "Balandligi, sm",
+         "iik": "IBAN",
+         "iin": "IIN",
+         "international": "Xalqaro tashish",
+         "issuingCountry": "Bergan davlat",
+         "legalAddress": "Yuridik manzil",
+         "lengthCm": "Uzunligi, sm",
+         "loadingType": "Yuklash turi",
+         "manufacturer": "Ishlab chiqaruvchi",
+         "name": "Nomi",
+         "number": "Raqam",
+         "origin": "Qayerdan",
+         "packagingType": "O'ram turi",
+         "participants": "Qatnashchilar",
+         "password": "Parol",
+         "phone": "Telefon",
+         "price": "Narx",
+         "quantity": "Miqdor",
+         "route": "Marshrut",
+         "settlementAccount": "Hisob raqami",
+         "shipments": "Tashishlar",
+         "startDate": "Boshlanish sanasi",
+         "status": "Holat",
+         "timeLeft": "Qolgan vaqt",
+         "title": "Nomi",
+         "tnvedCode": "TIF TN kodi",
+         "to": "Gacha",
+         "transportParams": "Tashish parametrlari",
+         "transportType": "Transport turi",
+         "type": "Turi",
+         "vat": "QQS",
+         "volume": "Hajm",
+         "volumeM3": "Hajm, m³",
+         "weight": "Og'irlik",
+         "weightKg": "Og'irlik, kg",
+         "widthCm": "Kengligi, sm",
+         "withVat": "QQS bilan",
+         "withoutVat": "QQS siz"
+      },
+      "filePreview": {
+         "documentNotFound": "Hujjat topilmadi",
+         "noFile": "Bu hujjat uchun oldindan ko'rish fayli yo'q",
+         "unsupported": "Bu fayl turi uchun oldindan ko'rish hali qo'llab-quvvatlanmaydi",
+         "unsupportedType": "{{mime}} turidagi fayllarni oldindan ko'rish qo'llab-quvvatlanmaydi"
+      },
+      "forwarderPicker": {
+         "clickToLoad": "Ekspeditorlarni yuklash uchun bosing",
+         "detailsLoadFailed": "Ekspeditor ma'lumotlarini yuklab bo'lmadi",
+         "loadFailed": "Ekspeditorlarni yuklab bo'lmadi",
+         "loading": "Ekspeditorlar yuklanmoqda...",
+         "notFound": "Ekspeditor topilmadi",
+         "searchByCompany": "Kompaniya nomi yoki BIN kiriting",
+         "searchHint": "F.I.Sh., IIN, kompaniya, BIN yoki telefon raqamini kiriting"
+      },
+      "loading": {
+         "default": "Yuklanmoqda...",
+         "list": "Ro'yxat yuklanmoqda...",
+         "map": "Xarita yuklanmoqda...",
+         "preview": "Oldindan ko'rish yuklanmoqda..."
+      },
+      "search": {
+         "byDirection": "Yo'nalish bo'yicha qidirish",
+         "minChars": "Kamida 2 belgi kiriting"
+      },
+      "severity": {
+         "error": "Xato",
+         "info": "Ma'lumot",
+         "notice": "Bildirishnoma",
+         "success": "Muvaffaqiyatli",
+         "warning": "Ogohlantirish"
+      },
+      "shipmentCount_one": "{{count}} tashish",
+      "shipmentCount_other": "{{count}} tashish",
+      "signing": {
+         "keepPageOpen": "Bu sahifani yopmang — imzolash oynasi yangi oynada ochiq. Holat avtomatik yangilanadi.",
+         "opening": "Imzolash sahifasi ochilmoqda...",
+         "thisLink": "shu havola",
+         "unavailable": "Imzolash xizmati mavjud emas, keyinroq urinib ko'ring",
+         "waiting": "Imzolanishi kutilmoqda...",
+         "windowHint": "Agar imzolash oynasi avtomatik ochilmagan bo'lsa, uni quyidagi orqali oching"
+      },
+      "units": {
+         "bytes": "{{value}} B",
+         "cargoSummary": "{{cargoCount}} · {{weight}} kg",
+         "days": "{{count}} kun",
+         "dimensionsCm": "{{length}} × {{width}} × {{height}} sm",
+         "kg": "{{value}} kg",
+         "kilobytes": "{{value}} KB",
+         "km": "km",
+         "m3": "{{value}} m³",
+         "megabytes": "{{value}} MB"
+      },
+      "view": {
+         "cards": "Kartalar",
+         "showAsCards": "Kartalar ko'rinishida ko'rsatish",
+         "showAsTable": "Jadval ko'rinishida ko'rsatish",
+         "table": "Jadval"
+      },
+      "waypointCount_one": "{{count}} nuqta",
+      "waypointCount_other": "{{count}} nuqta"
+   },
+   "complaints": {
+      "answer": {
+         "label": "Javob",
+         "notAdded": "Javob hali qo'shilmagan",
+         "pending": "Ma'muriyatdan javob hali kelmagan",
+         "rejected": "Shikoyat rad etildi",
+         "title": "Ma'muriyat javobi"
+      },
+      "attachments": {
+         "allowedTypes": "Faqat rasmlar, videolar, PDF yoki DOCX fayllariga ruxsat berilgan",
+         "attach": "Fayllarni biriktirish",
+         "limits": "{{count}} tadan ko'p bo'lmagan, har biri {{size}} MB gacha fayl",
+         "maxCount": "{{count}} tadan ko'p fayl biriktirib bo'lmaydi",
+         "maxSize": "Fayl hajmi {{size}} MB dan oshmasligi kerak",
+         "removeFile": "Faylni o'chirish"
+      },
+      "create": {
+         "action": "Shikoyat yuborish",
+         "describePlaceholder": "Nima bo'lganini tasvirlab bering",
+         "failed": "Shikoyatni yuborib bo'lmadi",
+         "maxLength": "Tavsif {{count}} belgidan oshmasligi kerak",
+         "subject": "Shikoyat mavzusi",
+         "subjectPlaceholder": "Shikoyat mohiyatini tasvirlab bering",
+         "submit": "Shikoyatni yuborish"
+      },
+      "emptyLast30Days": "So'nggi 30 kunda shikoyatlar topilmadi",
+      "loadFailed": "Shikoyatlarni yuklab bo'lmadi",
+      "notFound": "Shikoyatlar topilmadi",
+      "subtitle": "So'nggi 30 kundagi shikoyatlar va ma'muriyat javoblari",
+      "target": {
+         "empty": "So'nggi 30 kunda tashishlar yoki faktoringlar yo'q",
+         "label": "Tegishli",
+         "loadFailed": "Ro'yxatni yuklab bo'lmadi",
+         "question": "Shikoyat qaysi tashish yoki faktoringga tegishli"
+      },
+      "title": "Shikoyatlar",
+      "titleSingular": "Shikoyat",
+      "viewToggle": "Shikoyatlar ko'rinishini almashtirish"
+   },
+   "contractGate": {
+      "fillProfile": "Profilda ma'lumotlarni to'ldiring",
+      "goToProfile": "Profilga o'tish",
+      "noContracts": "Sizda shartnomalar yo'q yoki imzolash muddati tugagan",
+      "signContract": "Shartnomani imzolash"
+   },
+   "createLead": {
+      "cargo": {
+         "description": "Yuk tavsifi",
+         "validation": {
+            "cargoPriceNegative": "Yuk narxi manfiy bo'lishi mumkin emas",
+            "gracePeriodRange": "1 dan 364 kungacha qiymat kiriting",
+            "heightPositive": "Balandlik 0 dan katta bo'lishi kerak",
+            "lengthPositive": "Uzunlik 0 dan katta bo'lishi kerak",
+            "nameRequired": "Yuk nomini kiriting",
+            "priceNegative": "Narx manfiy bo'lishi mumkin emas",
+            "tnvedRequired": "TIF TN kodini kiriting",
+            "volumePositive": "Hajm 0 dan katta bo'lishi kerak",
+            "weightPositive": "Og'irlik 0 dan katta bo'lishi kerak",
+            "widthPositive": "Kenglik 0 dan katta bo'lishi kerak"
+         },
+         "withVat": "QQS bilan"
+      },
+      "customer": {
+         "current": "Joriy buyurtmachi",
+         "required": "Buyurtmachini tanlang"
+      },
+      "forwarder": {
+         "hint": "Bu marshrutga tayinlanadigan ekspeditorni toping va tanlang",
+         "loadingDetails": "Ekspeditor ma'lumotlari yuklanmoqda...",
+         "skippable": "Bu qadamni o'tkazib yuborib, buyurtmani ekspeditorsiz yaratishingiz mumkin"
+      },
+      "result": {
+         "createError": "Yaratish xatosi",
+         "createFailed": "Buyurtmani yaratib bo'lmadi",
+         "created": "Buyurtma yaratildi",
+         "createdSuccess": "Buyurtma muvaffaqiyatli yaratildi",
+         "createdSuccessWithId": "Buyurtma muvaffaqiyatli yaratildi: {{id}}",
+         "createdWithDocumentErrors": "Buyurtma yaratildi, ammo ba'zi hujjatlarni yuklab bo'lmadi",
+         "draftSaveFailed": "Qoralamani saqlab bo'lmadi",
+         "draftSaved": "Qoralama saqlandi",
+         "saveError": "Saqlash xatosi",
+         "savedAsDraft": "Buyurtma qoralama sifatida saqlandi"
+      },
+      "saveDraft": "Qoralama sifatida saqlash",
+      "skipVideoRecording": "Yuklash/tushirish video yozuvini o'tkazib yuborish",
+      "step": "{{total}} dan {{current}}-qadam",
+      "steps": {
+         "cargo": "Yuk va to'lov",
+         "confirm": "Tekshirish",
+         "confirmTitle": "Ma'lumotlarni tekshiring",
+         "customer": "Buyurtmachi ma'lumotlari",
+         "documents": "Hujjatlar",
+         "forwarder": "Ekspeditorni tanlash",
+         "route": "Marshrut"
+      },
+      "submit": "Buyurtma yaratish",
+      "subtitle": "Ariza ma'lumotlarini to'ldiring",
+      "title": "Buyurtma yaratish"
+   },
+   "dashboard": {
+      "analytics": {
+         "amountAxis": "Summa, {{currency}}",
+         "emergencyCount": "Favqulodda holatlar: {{count}}",
+         "emptyPeriod": "Tanlangan davr uchun ma'lumot yo'q",
+         "loadFailed": "Tashish tahlilini yuklab bo'lmadi",
+         "noShipmentsPeriod": "Tanlangan davrda tashishlar yo'q",
+         "shipmentNumber": "Tashish №",
+         "title": "Tashishlar dinamikasi",
+         "trips": "safar"
+      },
+      "factorings": {
+         "loading": "Faktoringlar yuklanmoqda...",
+         "number": "Faktoring #{{id}}",
+         "title": "Faktoringlar ro'yxati"
+      },
+      "groupBy": {
+         "day": "Kunlar bo'yicha",
+         "month": "Oylar bo'yicha",
+         "quarter": "Choraklar bo'yicha",
+         "week": "Haftalar bo'yicha"
+      },
+      "leads": {
+         "empty": "Hali faol buyurtmalar yo'q",
+         "loading": "Buyurtmalar yuklanmoqda...",
+         "mapHint": "Marshrutini xaritada ajratib ko'rsatish uchun buyurtmani tanlang",
+         "orderNumber": "Buyurtma #{{num}}",
+         "title": "Faol buyurtmalar"
+      },
+      "period": {
+         "action": "Davrni tanlash",
+         "compare": "Oldingi davr bilan solishtirish",
+         "halfYear": "Yarim yil",
+         "month": "Oy",
+         "quarter": "Chorak",
+         "title": "Davrni tanlash",
+         "week": "Hafta",
+         "year": "Yil"
+      },
+      "saleCount_one": "{{count}} savdo",
+      "saleCount_other": "{{count}} savdo",
+      "stats": {
+         "active": "Faol",
+         "activeFactoringSales": "Faol faktoring savdolari",
+         "activeShipments": "Faol tashishlar",
+         "activeTenders": "Faol auktsionlar",
+         "amounts": "Summalar",
+         "factoringSales": "Faktoring savdolari",
+         "factoringSalesPeriod": "Faktoring savdolari davri",
+         "forPeriod": "Davr uchun",
+         "loadFailed": "Statistikani yuklab bo'lmadi",
+         "shipmentsPeriod": "Tashishlar davri",
+         "showAllCurrencies": "Barcha valyutalarni ko'rsatish",
+         "title": "Statistika",
+         "today": "Bugun",
+         "viewMode": "Statistika ko'rinish rejimi"
+      },
+      "tenderCount_one": "{{count}} auktsion",
+      "tenderCount_other": "{{count}} auktsion",
+      "tenders": {
+         "bids": "Takliflar: {{count}}",
+         "loading": "Auktsionlar yuklanmoqda...",
+         "number": "Auktsion #{{id}}",
+         "private": "Yopiq",
+         "privateEmpty": "Hali yopiq auktsionlar topilmadi",
+         "public": "Ochiq",
+         "publicEmpty": "Hali ochiq auktsionlar topilmadi",
+         "title": "Auktsionlar ro'yxati"
+      },
+      "title": "Bosh sahifa",
+      "totalCargoWeight": "{{value}} kg"
+   },
+   "enums": {
+      "complaintStatus": {
+         "answered": "Javob berilgan",
+         "in_progress": "Ko'rib chiqilmoqda",
+         "pending_answer": "Javob kutilmoqda",
+         "pending_review": "Ko'rib chiqish kutilmoqda",
+         "rejected": "Rad etilgan",
+         "rejectedN": "Rad etilgan",
+         "resolved": "Hal qilingan"
+      },
+      "complaintTarget": {
+         "factoring": "Faktoring",
+         "shipment": "Tashish"
+      },
+      "factoringLine": {
+         "closed": "Yopiq liniya",
+         "open": "Ochiq liniya"
+      },
+      "factoringStatus": {
+         "await_paid": "To'lov kutilmoqda",
+         "cancelled": "Bekor qilingan",
+         "finished": "Yakunlangan",
+         "new": "Yangi",
+         "verified_participant": "Qisman tasdiqlangan"
+      },
+      "leadStatus": {
+         "add_driver": "Haydovchi qo'shildi",
+         "cancelled": "Bekor qilingan",
+         "draft": "Qoralama",
+         "emergency_situation": "Favqulodda holat",
+         "finished": "Yakunlangan",
+         "finished_emergency_situation": "Yakunlangan (favqulodda holat)",
+         "new": "Yangi",
+         "sign_avr": "Bajarilgan ishlar dalolatnomasi imzolanmoqda",
+         "start_driver": "Safar boshlandi",
+         "start_loading": "Yuklash",
+         "start_unloading": "Tushirish",
+         "verification_loading": "Yuklash tasdiqlandi",
+         "verification_unloading": "Tushirish tasdiqlandi"
+      },
+      "leadStatusFilter": {
+         "all": "Barcha holatlar",
+         "cancelled": "Bekor qilingan",
+         "driverAssigned": "Haydovchi tayinlangan",
+         "driverDeparted": "Haydovchi yo'lga chiqdi",
+         "finished": "Yakunlangan",
+         "inTransit": "Yo'lda",
+         "new": "Yangi",
+         "other": "Boshqa"
+      },
+      "manufacturerStatus": {
+         "attached": "Bog'langan",
+         "incomingRequest": "Kiruvchi so'rov",
+         "notAttached": "Bog'lanmagan",
+         "requestSent": "So'rov yuborilgan"
+      },
+      "participantType": {
+         "forwarder": "Ekspeditor"
+      },
+      "publicationType": {
+         "private": "Yopiq",
+         "public": "Ochiq"
+      },
+      "signature": {
+         "notSigned": "Imzolanmagan",
+         "notSignedM": "Imzolanmagan",
+         "signed": "Imzolangan",
+         "signedM": "Imzolangan"
+      },
+      "tenderStatus": {
+         "active": "Faol",
+         "cancelled": "Bekor qilingan",
+         "closed": "Yopiq",
+         "finished": "Yakunlangan",
+         "new": "Yangi"
+      },
+      "verification": {
+         "confirmed": "Tasdiqlangan",
+         "notConfirmed": "Tasdiqlanmagan"
+      },
+      "verificationCheck": {
+         "notPassed": "O'tmagan",
+         "passed": "O'tgan",
+         "passedMark": "✓ O'tgan"
+      },
+      "waypointType": {
+         "check_passes": "Tranzit",
+         "loading": "Yuklash",
+         "unloading": "Tushirish"
+      }
+   },
+   "errorPage": {
+      "title": "Nimadir xato ketdi",
+      "unexpectedReload": "Kutilmagan xatolik yuz berdi. Sahifani yangilang yoki keyinroq qayta urinib ko'ring."
+   },
+   "errors": {
+      "factoringNotFound": "Faktoring topilmadi",
+      "generic": "Nimadir xato ketdi",
+      "genericSupport": "Nimadir xato ketdi. Qo'llab-quvvatlash xizmatiga murojaat qiling.",
+      "leadNotFound": "Buyurtma topilmadi",
+      "notFound": "So'ralgan sahifa topilmadi.",
+      "server": "Serverda xatolik yuz berdi. Keyinroq qayta urinib ko'ring.",
+      "unexpected": "Kutilmagan xatolik yuz berdi."
+   },
+   "exportReport": {
+      "action": "Hisobotni yuklab olish",
+      "dateOrder": "«Dan» sanasi «gacha» sanasidan keyin bo'lishi mumkin emas",
+      "failed": "Hisobotni yuklab bo'lmadi. Keyinroq qayta urinib ko'ring",
+      "hint": "Hisobotga faqat tanlangan davrdagi yakunlangan tashishlar kiradi.",
+      "inProgress": "Yuklab olinmoqda...",
+      "submit": "Yuklab olish"
+   },
+   "factorings": {
+      "cancel": {
+         "action": "Faktoringni bekor qilish",
+         "confirm": "Bu faktoringni bekor qilishga ishonchingiz komilmi? Bu amalni ortga qaytarib bo'lmaydi.",
+         "failed": "Faktoringni bekor qilib bo'lmadi",
+         "inProgress": "Faktoring bekor qilinmoqda…"
+      },
+      "chat": {
+         "action": "Chat",
+         "leadNotResolved": "Faktoring bilan bog'liq buyurtmani aniqlab bo'lmadi",
+         "openFailed": "Faktoring chatini ochib bo'lmadi"
+      },
+      "confirmParticipation": {
+         "openFailed": "Imzolash oynasini ochib bo'lmadi",
+         "opening": "Imzolash oynasi ochilmoqda...",
+         "text": "Bu faktoringda qatnashishingizni tasdiqlaysizmi? Siz hujjatlarni imzolash oynasiga yo'naltirilasiz.",
+         "title": "Qatnashishni tasdiqlash"
+      },
+      "confirmations": {
+         "confirmedByCustomer": "Buyurtmachi tomonidan tasdiqlangan",
+         "customer": "Buyurtmachi tasdigi",
+         "date": "Tasdiqlash sanasi",
+         "factor": "Faktor tasdigi",
+         "factorStatus": "Faktor: {{status}}",
+         "forwarder": "Ekspeditor tasdigi",
+         "forwarderStatus": "Ekspeditor: {{status}}",
+         "subtitle": "Har bir tomonning tasdiqlash holati",
+         "title": "Tasdiqlar",
+         "you": "Siz",
+         "youStatus": "Siz: {{status}}"
+      },
+      "details": {
+         "cargoSection": "Yuk va tashish parametrlari",
+         "createdAt": "Yaratilgan sana",
+         "loadFailed": "Faktoring tafsilotlarini yuklab bo'lmadi",
+         "loading": "Faktoring tafsilotlari yuklanmoqda...",
+         "main": "Umumiy ma'lumot",
+         "mainSubtitle": "Ariza raqami, yaratilgan sana va bog'langan buyurtma",
+         "number": "Faktoring #{{id}}",
+         "title": "Faktoring tafsilotlari"
+      },
+      "finance": {
+         "creditAmount": "Kredit summasi",
+         "debtAmount": "Debitor summa",
+         "debtCurrency": "Debitor summa valyutasi",
+         "factoringCurrency": "Faktoring valyutasi",
+         "factoringRate": "Faktoring stavkasi",
+         "serviceRate": "Xizmat stavkasi",
+         "subtitle": "Summalar, valyuta va faktoring stavkasi",
+         "title": "Moliya"
+      },
+      "line": {
+         "contractNote": "Ekspeditor va faktor o'rtasida, ikki tomon tomonidan allaqachon imzolangan",
+         "contractTitle": "Faktoring liniyasi shartnomasi",
+         "signStartFailed": "Faktoring liniyasini imzolashni boshlab bo'lmadi",
+         "timeout": "Faktoring liniyasini imzolash vaqti tugadi, qaytadan urinib ko'ring",
+         "waitForParties": "Imzolash ekspeditor va faktor imzolagandan keyin mavjud bo'ladi.",
+         "yourSignature": "Faktoring liniyasi (sizning imzoingiz)"
+      },
+      "loadFailed": "Faktoring xaridlarini yuklab bo'lmadi",
+      "notFound": "Faktoring xaridlari topilmadi",
+      "participants": {
+         "customerLoadFailed": "Buyurtmachi ma'lumotlarini yuklab bo'lmadi",
+         "subtitle": "Faktoringdagi barcha qatnashchilar"
+      },
+      "purchasesTitle": "Faktoring xaridlari",
+      "requisites": {
+         "loadFailed": "Buyurtmachi bank rekvizitlarini yuklab bo'lmadi",
+         "title": "Tomonlar ma'lumotlari"
+      },
+      "subtitle": "Faktoring arizalari",
+      "title": "Faktoring",
+      "titleSingular": "Faktoring",
+      "viewToggle": "Faktoringlar ko'rinishini almashtirish"
+   },
+   "forwarders": {
+      "invite": {
+         "action": "Ekspeditorni taklif qilish",
+         "copyLink": "Havolani nusxalash",
+         "create": "Taklif yaratish",
+         "createFailed": "Taklifni yaratib bo'lmadi",
+         "created": "Taklif yaratildi",
+         "link": "Taklif havolasi",
+         "linkCopied": "Havola nusxalandi",
+         "noActiveLink": "Faol havola yo'q",
+         "success": "Ekspeditor yaratildi. Ma'lumotlarni to'ldirishni yakunlashi uchun unga havolani yuboring.",
+         "title": "Taklif"
+      },
+      "issuingCountry": "Hujjatni bergan davlat",
+      "notFound": "Ekspeditorlar topilmadi",
+      "registered": "Ro'yxatdan o'tgan",
+      "representative": "Vakil",
+      "searchPlaceholder": "Ekspeditorni qidirish",
+      "sections": {
+         "company": "Ekspeditor ma'lumotlari — kompaniya",
+         "contact": "Kontakt shaxs ma'lumotlari",
+         "requisites": "Ekspeditor bank rekvizitlari"
+      },
+      "subtitle": "Barcha ekspeditorlarning to'liq ro'yxati",
+      "title": "Ekspeditorlar",
+      "viewToggle": "Ekspeditorlar ko'rinishini almashtirish"
+   },
+   "header": {
+      "closeMenu": "Menyuni yopish",
+      "logout": {
+         "action": "Chiqish",
+         "confirm": "Chiqishga ishonchingiz komilmi?",
+         "failed": "Hisobdan chiqib bo'lmadi",
+         "fromAccount": "Hisobdan chiqish",
+         "inProgress": "Chiqilmoqda...",
+         "title": "Chiqish"
+      },
+      "needHelp": "Yordam kerakmi?",
+      "settings": "Sozlamalar",
+      "supportAvailable": "Qo'llab-quvvatlash xizmatimiz 24/7 ishlaydi",
+      "user": "Foydalanuvchi",
+      "userProfile": "{{email}} profili"
+   },
+   "kgd": {
+      "loadFailed": "Soliq organi ma'lumotlarini yuklab bo'lmadi",
+      "taxationMode": "Soliq solish rejimi"
+   },
+   "leads": {
+      "avr": {
+         "checking": "Dalolatnoma holati tekshirilmoqda...",
+         "clickToDownload": "Yuklab olish uchun bosing",
+         "customerSignature": "Buyurtmachi imzosi",
+         "devSimulateForwarder": "[dev] Ekspeditor imzosini simulyatsiya qilish",
+         "forwarderSignature": "Ekspeditor imzosi",
+         "notReady": "Dalolatnoma hujjati hali tayyor emas, keyinroq urinib ko'ring",
+         "signStartFailed": "Dalolatnomani imzolashni boshlab bo'lmadi",
+         "statusLoadFailed": "Dalolatnoma holatini yuklab bo'lmadi",
+         "timeout": "Dalolatnomani imzolash vaqti tugadi, qaytadan urinib ko'ring",
+         "title": "Bajarilgan ishlar dalolatnomasi",
+         "titleShort": "Bajarilgan ishlar dalolatnomasi",
+         "unavailable": "Dalolatnoma hujjati hali mavjud emas, keyinroq urinib ko'ring",
+         "waitForForwarder": "Dalolatnomani imzolash ekspeditor imzolagandan keyin mavjud bo'ladi."
+      },
+      "cargo": {
+         "add": "Yuk qo'shish",
+         "deleteConfirm": "Yuk #{{index}} o'chirilsinmi?",
+         "deleteFailed": "Yukni o'chirib bo'lmadi",
+         "itemNumber": "Yuk #{{index}}",
+         "priceSetByForwarder": "Narx ekspeditor tomonidan belgilangan",
+         "volumeM3Value": "{{value}} m³"
+      },
+      "chat": {
+         "withDriver": "Haydovchi bilan chat",
+         "withForwarder": "Ekspeditor bilan chat"
+      },
+      "details": {
+         "driverComment": "Haydovchi izohi: {{comment}}",
+         "info": "Buyurtma haqida ma'lumot",
+         "loadFailed": "Buyurtmani yuklab bo'lmadi",
+         "loading": "Buyurtma tafsilotlari yuklanmoqda...",
+         "noCustomer": "Buyurtmachisiz",
+         "notResolved": "Buyurtmani aniqlab bo'lmadi",
+         "number": "Buyurtma #{{num}}",
+         "ownerNotSpecified": "Mas'ul ko'rsatilmagan",
+         "refreshFailed": "Buyurtmaning yangilangan ma'lumotlarini olib bo'lmadi",
+         "saveFailed": "O'zgarishlarni saqlab bo'lmadi",
+         "shipmentNumber": "Tashish #{{num}}",
+         "subtitle": "Ariza bo'yicha batafsil ma'lumotlar",
+         "videoDisabled": "Video yozuv o'chirilgan"
+      },
+      "documents": {
+         "deleteFailed": "Hujjatni o'chirib bo'lmadi",
+         "deleteTargetMissing": "O'chirish uchun faylni aniqlab bo'lmadi",
+         "loadFailed": "Hujjatlarni yuklab bo'lmadi",
+         "ownFilesOnly": "Faqat buyurtmachining o'z fayllarini o'chirish mumkin",
+         "singleLoadFailed": "Hujjatni yuklab bo'lmadi"
+      },
+      "edit": {
+         "blockedEmergency": "Favqulodda holatdagi buyurtmani tahrirlab bo'lmaydi",
+         "blockedFinished": "Yakunlangan yoki bekor qilingan buyurtmani tahrirlab bo'lmaydi",
+         "blockedFinishedEmergency": "Favqulodda holatda yakunlangan buyurtmani tahrirlab bo'lmaydi"
+      },
+      "empty": "Buyurtmalar yo'q",
+      "forwarder": {
+         "lockedByTender": "Ekspeditor auktsion natijasi bo'yicha tayinlangan va o'zgartirilishi mumkin emas",
+         "notAssigned": "Ekspeditor tayinlanmagan"
+      },
+      "loadFailed": "Buyurtmalarni yuklab bo'lmadi",
+      "map": {
+         "coordsViaWebSocket": "Koordinatalar WebSocket orqali olindi",
+         "driverPosition": "Haydovchining joriy joylashuvi",
+         "lastUpdate": "Oxirgi yangilanish: {{time}}",
+         "loadingRoute": "Marshrut yuklanmoqda..."
+      },
+      "notFound": "Buyurtmalar topilmadi",
+      "publish": {
+         "action": "Nashr qilish",
+         "failed": "Buyurtmani nashr qilib bo'lmadi",
+         "fillRouteAndCargo": "Nashr qilishdan oldin marshrut va yukni to'ldiring",
+         "inProgress": "Nashr qilinmoqda..."
+      },
+      "share": {
+         "confirm": "Bu buyurtma haqidagi ma'lumotni uchinchi shaxslar bilan ulashishga ishonchingiz komilmi? Ma'lumot havolaga ega bo'lgan har kimga ochiq bo'ladi.",
+         "creating": "Havola yaratilmoqda...",
+         "failed": "Havolani olib bo'lmadi. Keyinroq qayta urinib ko'ring.",
+         "hint": "Bu havolaga ega har kim buyurtma tafsilotlarini ko'rishi mumkin.",
+         "link": "Buyurtma havolasi",
+         "title": "Buyurtmani ulashish",
+         "validUntil": "Havola amal qilish muddati"
+      },
+      "subtitle": "Tashish arizalari",
+      "title": "Buyurtmalar",
+      "trip": {
+         "avrSignedFinished": "Dalolatnoma imzolandi, safar yakunlandi",
+         "emergency": "Safarda favqulodda holat",
+         "finishedEmergency": "Safar favqulodda holatda yakunlandi"
+      },
+      "validation": {
+         "gracePeriodRange": "To'lov muddatini kechiktirish 1 dan 364 kungacha bo'lishi kerak",
+         "routeDates": "Marshrut sanalarini tekshiring",
+         "routePoints": "Marshrutning boshlanish va yakunlanish nuqtalarini belgilang",
+         "tnvedForAllCargo": "Har bir yuk uchun TIF TN kodini kiriting"
+      },
+      "view": {
+         "kanban": "Kanban",
+         "showAsKanban": "Kanban taxtasi ko'rinishida ko'rsatish"
+      },
+      "viewToggle": "Buyurtmalar ko'rinishini almashtirish"
+   },
+   "manufacturers": {
+      "add": {
+         "action": "Ishlab chiqaruvchi qo'shish",
+         "alreadyAdded": "Allaqachon qo'shilgan",
+         "failed": "Ishlab chiqaruvchini qo'shib bo'lmadi",
+         "inProgress": "Qo'shilmoqda...",
+         "searchHint": "Nomi yoki BIN bo'yicha qidirish",
+         "searchPlaceholder": "Ishlab chiqaruvchi nomini yoki BIN ini kiriting",
+         "success": "Ishlab chiqaruvchi qo'shildi"
+      },
+      "bulk": {
+         "result": "{{action}}: {{total}} dan {{done}}. {{reason}}"
+      },
+      "card": {
+         "bin": "BIN {{bin}}",
+         "linkedShipments": "Bog'langan tashishlar",
+         "linkedToCustomer": "Buyurtmachiga bog'langan",
+         "nameWithBin": "{{name}} — BIN {{bin}}",
+         "noLinkedShipments": "Ushbu ishlab chiqaruvchiga hech qanday tashish bog'lanmagan",
+         "notLinkedToCustomer": "Ishlab chiqaruvchi buyurtmachiga bog'lanmagan",
+         "openLinkedShipments": "Bog'langan tashishlarni ochish",
+         "shipmentsCount": "Tashishlar: {{count}}",
+         "shipmentsLabel": "Tashishlar",
+         "title": "Ishlab chiqaruvchi ma'lumotlari"
+      },
+      "filters": {
+         "all": "Barchasi",
+         "allManufacturers": "Barcha ishlab chiqaruvchilar",
+         "linkColumn": "Bog'lanish",
+         "manufacturerNotLinked": "Ishlab chiqaruvchi bog'lanmagan",
+         "notLinked": "Bog'lanmagan",
+         "withManufacturer": "Ishlab chiqaruvchi bilan",
+         "withoutManufacturer": "Ishlab chiqaruvchisiz"
+      },
+      "link": {
+         "action": "Bog'lash",
+         "actionWithCount": "Bog'lash ({{count}})",
+         "changeManufacturer": "Ishlab chiqaruvchini o'zgartirish",
+         "failed": "Ishlab chiqaruvchini bog'lab bo'lmadi",
+         "freeShipmentsHint": "Ishlab chiqaruvchi: {{name}}. Ishlab chiqaruvchisiz tashishlar ko'rsatilmoqda.",
+         "freeShipmentsNotFound": "Mavjud tashishlar topilmadi",
+         "inProgress": "Bog'lanmoqda...",
+         "manufacturerAction": "Ishlab chiqaruvchini bog'lash",
+         "overwriteWarning": "{{shipments}} tanlandi. Tashishda faqat bitta ishlab chiqaruvchi bo'lishi mumkin — joriy bog'lanish qayta yoziladi.",
+         "shipmentsAction": "Tashishlarni bog'lash",
+         "success": "Ishlab chiqaruvchi bog'landi",
+         "title": "Ishlab chiqaruvchini bog'lash"
+      },
+      "loadFailed": "Ishlab chiqaruvchilarni yuklab bo'lmadi",
+      "notFound": "Ishlab chiqaruvchilar topilmadi",
+      "remove": {
+         "failed": "Ishlab chiqaruvchini o'chirib bo'lmadi",
+         "success": "Ishlab chiqaruvchi ro'yxatdan o'chirildi"
+      },
+      "requestCount_one": "{{count}} ariza",
+      "requestCount_other": "{{count}} ariza",
+      "requests": {
+         "alreadySent": "Ariza allaqachon yuborilgan",
+         "approve": "Tasdiqlash",
+         "approveFailed": "Arizalarni tasdiqlab bo'lmadi",
+         "approveMany": "Arizalarni tasdiqlash",
+         "approved": "Arizalar tasdiqlandi",
+         "loadFailed": "Arizalarni yuklab bo'lmadi",
+         "reject": "Rad etish",
+         "rejectFailed": "Arizalarni rad etib bo'lmadi",
+         "rejectMany": "Arizalarni rad etish",
+         "rejected": "Arizalar rad etildi",
+         "send": "Ariza yuborish",
+         "sendFailed": "Arizani yuborib bo'lmadi",
+         "sendToManufacturer": "Ishlab chiqaruvchiga ariza yuborish",
+         "withdraw": "Qaytarib olish",
+         "withdrawFailed": "Arizalarni qaytarib olib bo'lmadi",
+         "withdrawMany": "Arizalarni qaytarib olish",
+         "withdrawn": "Arizalar qaytarib olindi"
+      },
+      "searchFailed": "Ishlab chiqaruvchilarni qidirish muvaffaqiyatsiz tugadi",
+      "shipments": {
+         "loadFailed": "Tashishlarni yuklab bo'lmadi",
+         "notFound": "Tashishlar topilmadi",
+         "searchByNumber": "Raqam yoki yo'nalish bo'yicha qidirish",
+         "searchFull": "Raqam, yo'nalish yoki ishlab chiqaruvchi bo'yicha qidirish",
+         "total": "Jami tashishlar: {{count}}"
+      },
+      "subtitle": "Ishlab chiqaruvchilarni tashishlarga bog'lash va o'z ishlab chiqaruvchilar ro'yxatini boshqarish",
+      "tabs": {
+         "linked": "Ishlab chiqaruvchi bog'lanishlari",
+         "linking": "Tashishlarni bog'lash"
+      },
+      "title": "Ishlab chiqaruvchilar",
+      "unlink": {
+         "action": "Bog'lanishni uzish",
+         "actionWithCount": "Bog'lanishni uzish ({{count}})",
+         "failed": "Ishlab chiqaruvchi bilan bog'lanishni uzib bo'lmadi",
+         "manufacturerAction": "Ishlab chiqaruvchi bilan bog'lanishni uzish",
+         "success": "Ishlab chiqaruvchi bilan bog'lanish uzildi"
+      }
+   },
+   "map": {
+      "actualPath": "Haqiqiy yo'l",
+      "actualPathOrder": "Buyurtma #ning haqiqiy yo'li",
+      "customerPoint": "Buyurtmachi joylashuvi",
+      "devMarker": "Xaritani sinash uchun vaqtinchalik belgi",
+      "driverName": "Haydovchi: {{name}}",
+      "driverNotSpecified": "Haydovchi ko'rsatilmagan",
+      "driverPhone": "Telefon:",
+      "driverPosition": "Haydovchining joriy joylashuvi",
+      "noCoordinates": "Koordinatalar yo'q",
+      "pointsCount": "Nuqtalar: {{count}}",
+      "routesLoadFailed": "Marshrutlarni yuklab bo'lmadi",
+      "routesPartialFailure": "{{total}} buyurtmadan {{failed}} tasi uchun GeoWS marshrutlarini yuklab bo'lmadi"
+   },
+   "mobileNotice": {
+      "text": "Qulayroq ishlash uchun kompyuterdan foydalanishni tavsiya qilamiz. Mobil versiya noto'g'ri ko'rsatilishi mumkin.",
+      "title": "Kompyuter versiyasidan foydalanishni tavsiya qilamiz"
+   },
+   "nav": {
+      "complaints": "Shikoyatlar",
+      "dashboard": "Bosh sahifa",
+      "factoring": "Faktoring",
+      "factorings": "Faktoring",
+      "forwarders": "Ekspeditorlar",
+      "leads": "Buyurtmalar",
+      "manufacturers": "Ishlab chiqaruvchilar",
+      "profile": "Profil",
+      "settings": "Sozlamalar",
+      "tenders": "Auktsionlar",
+      "tnved": "TIF TN kodlari",
+      "tooltips": {
+         "complaints": "Buyurtmalar va faktoring bo'yicha shikoyat berish, tarix va ma'muriyat javoblarini ko'rish",
+         "dashboard": "Buyurtmalar, marshrutlar va auktsionlar bo'yicha umumiy ko'rinish",
+         "factorings": "Faktoring va moliyaviy arizalar ro'yxati",
+         "forwarders": "Ekspeditorlar ro'yxati va yangi qatnashchilarni taklif qilish",
+         "leads": "Tashish arizalari ro'yxati va buyurtmalarni boshqarish",
+         "manufacturers": "Ishlab chiqaruvchilarni tashishlarga bog'lash va ishlab chiqaruvchilar katalogi",
+         "settings": "Interfeys tili va boshqa hisob sozlamalari",
+         "tenders": "Tashish auktsionlarini yaratish va boshqarish",
+         "tnved": "Tashqi iqtisodiy faoliyat tovar nomenklaturasi katalogi"
+      }
+   },
+   "notifications": {
+      "all": "Barcha bildirishnomalar",
+      "empty": "Hali bildirishnomalar yo'q",
+      "emptyHint": "Bu yerda yangi voqealar ko'rinadi",
+      "loadFailed": "Bildirishnomalarni yuklab bo'lmadi",
+      "newToast": "Yangi bildirishnoma",
+      "newToastBody": "Sizda yangi bildirishnoma bor",
+      "noDescription": "Tavsif yo'q",
+      "refresh": "Bildirishnomalarni yangilash",
+      "singleLoadFailed": "Bildirishnomani yuklab bo'lmadi",
+      "subtitle": "Arizalaringiz va auktsionlaringiz bo'yicha so'nggi voqealar",
+      "subtitleDot": "Arizalaringiz va auktsionlaringiz bo'yicha so'nggi voqealar.",
+      "title": "Bildirishnomalar",
+      "types": {
+         "factor": {
+            "cancelled_by_factor": {
+               "message": "Faktor faktoringni bekor qildi",
+               "theme": "Faktoring bekor qilindi"
+            },
+            "cancelled_by_forwarder": {
+               "message": "Ekspeditor faktoringni bekor qildi",
+               "theme": "Faktoring bekor qilindi"
+            },
+            "created_by_factor": {
+               "message": "Faktor faktoring yaratdi",
+               "theme": "Faktoring yaratildi"
+            },
+            "created_by_forwarder": {
+               "message": "Ekspeditor faktoring yaratdi",
+               "theme": "Faktoring yaratildi"
+            },
+            "finished_by_factor": {
+               "message": "Faktor faktoringni yakunladi",
+               "theme": "Faktoring yakunlandi"
+            },
+            "paid_by_customer": {
+               "message": "Faktor buyurtmachidan to'lovni tasdiqladi. Bitim yopildi.",
+               "theme": "To'lov tasdiqlandi"
+            },
+            "signed_by_factor": {
+               "message": "Faktor faktoring shartnomasini imzoladi",
+               "theme": "Faktoring shartnomasi imzolandi"
+            },
+            "signed_by_forwarder": {
+               "message": "Ekspeditor faktoring shartnomasini imzoladi",
+               "theme": "Faktoring shartnomasi imzolandi"
+            },
+            "updated_by_factor": {
+               "message": "Faktor faktoringni yangiladi",
+               "theme": "Faktoring yangilandi"
+            },
+            "verified_by_factor": {
+               "message": "Faktor faktoringni tasdiqladi",
+               "theme": "Faktoring tasdiqlandi"
+            },
+            "verified_by_forwarder": {
+               "message": "Ekspeditor faktoringni tasdiqladi",
+               "theme": "Faktoring tasdiqlandi"
+            }
+         },
+         "lead": {
+            "created_by_forwarder": {
+               "message": "Safar yaratildi va siz unga buyurtmachi sifatida bog'landingiz.",
+               "theme": "Safar yaratildi"
+            },
+            "customer_detached": {
+               "message": "Ekspeditor sizni safardan ajratdi.",
+               "theme": "Siz safardan ajratildingiz"
+            },
+            "manufacturer": {
+               "approved_by_manufacturer": {
+                  "message": "{{name}} ishlab chiqaruvchisi bog'lanishni tasdiqladi",
+                  "theme": "Ariza tasdiqlandi"
+               },
+               "cancelled_by_manufacturer": {
+                  "message": "{{name}} ishlab chiqaruvchisi arizani qaytarib oldi",
+                  "theme": "Ariza qaytarib olindi"
+               },
+               "detached_by_manufacturer": {
+                  "message": "{{name}} ishlab chiqaruvchisi sizdan ajraldi",
+                  "theme": "Bog'lanish o'chirildi"
+               },
+               "rejected_by_manufacturer": {
+                  "message": "{{name}} ishlab chiqaruvchisi arizani rad etdi",
+                  "theme": "Ariza rad etildi"
+               },
+               "request_by_manufacturer": {
+                  "message": "{{name}} ishlab chiqaruvchisi sizga bog'lanmoqchi",
+                  "theme": "Yangi bog'lanish arizasi"
+               }
+            },
+            "point_end_deadline": {
+               "message": "Marshrut nuqtasidagi ishlarning rejalashtirilgan tugash vaqti keldi.",
+               "theme": "Marshrut nuqtasi muddati keldi"
+            },
+            "point_start_deadline": {
+               "message": "Marshrut nuqtasidagi ishlarning rejalashtirilgan boshlanish vaqti keldi.",
+               "theme": "Marshrut nuqtasi muddati keldi"
+            },
+            "rejected": {
+               "message": "Safar bekor qilindi",
+               "theme": "Safar bekor qilindi"
+            },
+            "updated_by_forwarder": {
+               "message": "Safar yangilandi",
+               "theme": "Safar yangilandi"
+            }
+         },
+         "shipping": {
+            "delivered": {
+               "message": "Yetkazib berish tasdiqlandi. Safar yakunlandi.",
+               "theme": "Safar yakunlandi"
+            },
+            "emergency-situation": {
+               "theme": "Favqulodda holat e'lon qilindi."
+            },
+            "finished": {
+               "theme": "Safar yakunlandi"
+            },
+            "finished-emergency-situation": {
+               "message": "Ekspeditor safarni muddatidan oldin yakunladi.",
+               "theme": "Safar muddatidan oldin yakunlandi."
+            },
+            "last_point_passed": {
+               "message": "Haydovchi tushirish nuqtasidan o'tdi.",
+               "theme": "№{{num}} safar: nuqta o'tildi"
+            },
+            "loading_started": {
+               "message": "Haydovchi safarni boshladi.",
+               "theme": "Safar boshlandi."
+            },
+            "loading_verified": {
+               "message": "Haydovchi yuklashni tasdiqladi.",
+               "theme": "№{{num}} safar: haydovchi yuklashni tasdiqladi"
+            },
+            "point_passed": {
+               "message": "Haydovchi nuqtadan o'tdi.",
+               "theme": "№{{num}} safar: haydovchi nuqtadan o'tdi"
+            },
+            "unloading_verified": {
+               "message": "Haydovchi tushirishni tasdiqladi.",
+               "theme": "№{{num}} safar: haydovchi tushirishni tasdiqladi"
+            }
+         },
+         "tender": {
+            "bet_cancelled": {
+               "message": "Qatnashchi auktsioningizdagi taklifini bekor qildi.",
+               "theme": "Taklif bekor qilindi"
+            },
+            "bet_placed": {
+               "message": "Qatnashchi auktsioningizga taklif qo'ydi.",
+               "theme": "Auktsionga yangi taklif"
+            }
+         }
+      },
+      "viewAll": "Barcha bildirishnomalarni ko'rish"
+   },
+   "profile": {
+      "avatar": {
+         "allowedTypes": "Faqat PNG yoki JPEG fayllarini yuklash mumkin",
+         "delete": "Fotosuratni o'chirish",
+         "maxSize": "Fotosuratning maksimal hajmi — 600×600 px",
+         "minSize": "Fotosuratning minimal hajmi — 400×400 px",
+         "readFailed": "Faylni o'qib bo'lmadi",
+         "sizeCheckFailed": "Rasm hajmini tekshirib bo'lmadi",
+         "upload": "Fotosurat yuklash",
+         "uploadFailed": "Fotosuratni yuklab bo'lmadi"
+      },
+      "contract": {
+         "notSigned": "Imzolanmagan · imzolash uchun bosing",
+         "signStartFailed": "Imzolashni boshlab bo'lmadi",
+         "signStartFailedLater": "Imzolashni boshlab bo'lmadi, keyinroq urinib ko'ring",
+         "signed": "Imzolangan",
+         "signedUntil": "Imzolangan · Amal qilish muddati {{date}}",
+         "title": "Xizmat shartnomasi",
+         "unavailable": "Shartnoma hujjati hali mavjud emas, keyinroq urinib ko'ring"
+      },
+      "delete": {
+         "action": "Hisobni o'chirish",
+         "confirmTitle": "O'chirishni tasdiqlash",
+         "failed": "Hisobni o'chirib bo'lmadi",
+         "failedActiveDeals": "Hisobni o'chirib bo'lmadi: faol bitimlar mavjud",
+         "passwordPrompt": "Hisobni o'chirishni tasdiqlash uchun parolingizni kiriting.",
+         "warning": "Hisob faolsizlantiriladi. Uni qayta tiklash uchun qo'llab-quvvatlash xizmatiga murojaat qiling.",
+         "warningFull": "O'chirilgandan so'ng hisob faolsizlantiriladi. Uni qayta tiklash uchun qo'llab-quvvatlash xizmatiga murojaat qiling."
+      },
+      "documents": {
+         "allowedTypes": "Faqat PDF, JPG, JPEG yoki PNG fayllariga ruxsat berilgan",
+         "current": "Joriy hujjat",
+         "employment": "Xodimning ishga joylashish hujjati",
+         "employmentFull": "Imzo huquqiga ega bo'lgan vakolatli xodimning ishga joylashish hujjati yoki bosh rahbarni tayinlash buyrug'i",
+         "issuedAt": "Berilgan sana",
+         "issuedBy": "Kim bergan",
+         "issuers": {
+            "mia": "Qozog'iston IIV",
+            "moj": "Qozog'iston AV"
+         },
+         "legalEntity": "Yuridik shaxsni ro'yxatga olish hujjati",
+         "maxSize": "Fayl hajmi {{size}} MB dan oshmasligi kerak",
+         "newFile": "Yangi fayl · {{size}}",
+         "notUploaded": "Hujjat hali yuklanmagan",
+         "replace": "Hujjatni almashtirish",
+         "upload": "Hujjat yuklash"
+      },
+      "load": {
+         "failed": "Profilni yuklab bo'lmadi"
+      },
+      "password": {
+         "current": "Joriy parol",
+         "enterCurrent": "Joriy parolni kiriting",
+         "enterNew": "Yangi parolni kiriting",
+         "new": "Yangi parol",
+         "repeatNew": "Yangi parolni takrorlang"
+      },
+      "save": {
+         "failed": "Profilni yangilab bo'lmadi",
+         "noChanges": "Saqlash uchun o'zgarishlar yo'q",
+         "success": "Profil muvaffaqiyatli yangilandi"
+      },
+      "sections": {
+         "company": "Kompaniya va bank rekvizitlari",
+         "companySubtitle": "Kompaniya va kontakt shaxs ma'lumotlari",
+         "deleteAccount": "Hisobni o'chirish",
+         "documents": "Ro'yxatdan o'tish hujjatlari",
+         "password": "Parolni almashtirish"
+      },
+      "title": "Profil"
+   },
+   "route": {
+      "addWaypoint": "+ Oraliq nuqta",
+      "addressDetecting": "Manzil aniqlanmoqda...",
+      "addressNotFound": "Manzil topilmadi",
+      "addressSearching": "Manzil qidirilmoqda...",
+      "clear": "Marshrutni tozalash",
+      "coordinates": "Koordinatalar: {{lat}}, {{lng}}",
+      "destinationNotSpecified": "Qayerga ko'rsatilmagan",
+      "markerA": "A",
+      "markerB": "B",
+      "onMap": "Xaritada",
+      "originNotSpecified": "Qayerdan ko'rsatilmagan",
+      "pickOnMap": "Bu nuqtani tanlang va xaritada bosing",
+      "point": "{{index}}-nuqta",
+      "pointA": "A nuqtasi",
+      "pointB": "B nuqtasi",
+      "pointType": "Nuqta turi",
+      "removeWaypoint": "{{index}}-oraliq nuqtani o'chirish",
+      "validation": {
+         "coordinatesPoint": "{{index}}-nuqta uchun koordinatalarni belgilang: xaritada bosing",
+         "destinationRequired": "Borish manzilini kiriting",
+         "endBeforeStart": "Tugash sanasi ushbu nuqtaning boshlanish sanasidan oldin bo'lishi mumkin emas",
+         "endDateDestination": "Borish nuqtasida tugash sanasini kiriting",
+         "endDateOrigin": "Chiqish nuqtasida tugash sanasini kiriting",
+         "endDatePoint": "{{index}}-nuqta uchun tugash sanasini kiriting",
+         "originRequired": "Chiqish manzilini kiriting",
+         "startBeforePrevEnd": "Boshlanish sanasi oldingi nuqtaning tugash sanasidan oldin bo'lishi mumkin emas",
+         "startDateDestination": "Borish nuqtasida boshlanish sanasini kiriting",
+         "startDateOrigin": "Chiqish nuqtasida boshlanish sanasini kiriting",
+         "startDatePoint": "{{index}}-nuqta uchun boshlanish sanasini kiriting"
+      },
+      "waypoint": "{{index}}-oraliq nuqta",
+      "waypointHash": "Oraliq nuqta #{{index}}"
+   },
+   "settings": {
+      "language": {
+         "description": "Interfeys va bildirishnomalar uchun ishlatiladigan tilni tanlang.",
+         "label": "Til",
+         "saved": "Interfeys tili o'zgartirildi",
+         "switcherLabel": "Interfeys tilini tanlash",
+         "title": "Interfeys tili"
+      },
+      "languages": {
+         "ar": "العربية",
+         "de": "Deutsch",
+         "en": "English",
+         "kk": "Қазақша",
+         "ky": "Кыргызча",
+         "pt": "Português",
+         "ru": "Русский",
+         "tg": "Тоҳикӣ",
+         "uz": "O'zbekcha"
+      },
+      "title": "Sozlamalar"
+   },
+   "sharedLead": {
+      "gone": "Buyurtma o'chirilgan yoki unga havola bekor qilingan.",
+      "invalidLink": "Havola yaroqsiz yoki amal qilish muddati tugagan.",
+      "loading": "Buyurtma haqida ma'lumot yuklanmoqda...",
+      "notFound": "So'ralgan sahifa topilmadi. Havola to'liq nusxalanganini tekshiring.",
+      "readOnly": "Bu havola orqali buyurtmani faqat ko'rish sahifasi. Tahrirlash mumkin emas.",
+      "requestFailed": "Buyurtma haqida ma'lumotni yuklab bo'lmadi. Keyinroq qayta urinib ko'ring.",
+      "title": "Buyurtma haqida ma'lumot"
+   },
+   "support": {
+      "emailBody": "Salom! Mening savolim bor.",
+      "emailSubject": "Qo'llab-quvvatlash xizmatiga murojaat",
+      "writeToChat": "Chatni ochish"
+   },
+   "tenders": {
+      "bids": {
+         "amount": "Taklif summasi",
+         "chooseWinner": "G'olibni tanlash",
+         "chooseWinnerFailed": "G'olibni tanlab bo'lmadi",
+         "choosing": "Tanlanmoqda...",
+         "confirmChoice": "Tanlovni tasdiqlash",
+         "confirmWinner": "Bu taklifni g'olib deb tanlashga ishonchingiz komilmi?",
+         "empty": "Hali takliflar yo'q",
+         "irreversible": "Bu amalni ortga qaytarib bo'lmaydi.",
+         "participantUnknown": "Qatnashchi ko'rsatilmagan",
+         "showAll": "Barcha takliflarni ko'rsatish (+{{count}})",
+         "statusCancelled": "Bekor qilingan",
+         "statusWinning": "G'olib",
+         "title": "Takliflar"
+      },
+      "countdown": {
+         "daysHours": "{{days}} kun {{hours}} soat",
+         "hoursMinutes": "{{hours}} soat {{minutes}} daqiqa",
+         "minutes": "{{minutes}} daqiqa"
+      },
+      "create": {
+         "action": "Auktsion yaratish",
+         "confirm": "Bu buyurtma uchun auktsion yaratishga ishonchingiz komilmi?",
+         "failed": "Auktsionni yaratib bo'lmadi",
+         "maxParticipants": "Qatnashchilarning maksimal soni",
+         "privateHint": "Yopiq auktsionga taklif qilinadigan ekspeditorlarni tanlang",
+         "publicAuction": "Ochiq auktsion",
+         "startAfterCreate": "Yaratilgandan so'ng auktsionni boshlash",
+         "title": "Auktsion yaratish"
+      },
+      "dates": {
+         "endAfterNow": "Tugash sanasi joriy vaqtdan keyin bo'lishi kerak",
+         "endInvalid": "Noto'g'ri tugash sanasi",
+         "endMin30Minutes": "Tugash sanasi nashr sanasidan kamida 30 daqiqa keyin bo'lishi kerak",
+         "endRequired": "Tugash sanasini kiriting",
+         "publicationDate": "Nashr sanasi",
+         "publicationInPast": "Nashr sanasi o'tmishda bo'lishi mumkin emas",
+         "publicationInvalid": "Noto'g'ri nashr sanasi",
+         "publicationRequired": "Nashr sanasini kiriting"
+      },
+      "details": {
+         "audience": "Kim uchun",
+         "audienceForwarders": "Ekspeditorlar uchun",
+         "audienceShippers": "Yuk jo'natuvchilar uchun",
+         "bidsCountLabel": "Takliflar",
+         "cargoWeight": "Yuk og'irligi",
+         "editBlocked": "Yopiq yoki bekor qilingan auktsionni tahrirlab bo'lmaydi",
+         "info": "Auktsion haqida ma'lumot",
+         "loadFailed": "Auktsion tafsilotlarini yuklab bo'lmadi",
+         "loading": "Auktsion tafsilotlari yuklanmoqda...",
+         "maxParticipantsShort": "Maks. qatnashchilar",
+         "orderDocuments": "Buyurtma hujjatlari",
+         "participantsCountLabel": "Qatnashchilar",
+         "publicationType": "Nashr turi",
+         "totalOrderPrice": "Buyurtmaning umumiy narxi"
+      },
+      "leadPicker": {
+         "cargoLabel": "Yuk: {{cargo}}",
+         "cargoWithMore": "{{type}} + yana {{count}}",
+         "destination": "Qayerga: {{to}}",
+         "forwarder": "Ekspeditor: {{name}}",
+         "hint": "Bu auktsion yaratiladigan buyurtmani tanlang",
+         "notFound": "Buyurtmalar topilmadi",
+         "order": "Buyurtma",
+         "orderNumber": "Buyurtma #{{id}}",
+         "origin": "Qayerdan: {{from}}",
+         "priceLabel": "Narx: {{price}}",
+         "searchFailed": "Buyurtmalarni topib bo'lmadi",
+         "searching": "Buyurtmalar qidirilmoqda...",
+         "sectionTitle": "Buyurtmani tanlash",
+         "select": "Buyurtmani tanlang",
+         "selectAction": "Buyurtmani tanlash"
+      },
+      "loadFailed": "Auktsionlarni yuklab bo'lmadi",
+      "manage": {
+         "cancel": "Auktsionni bekor qilish",
+         "cancelConfirm": "Bu auktsionni bekor qilishga ishonchingiz komilmi? Bekor qilingandan so'ng u qatnashchilar uchun mavjud bo'lmaydi.",
+         "cancelFailed": "Auktsionni bekor qilib bo'lmadi",
+         "cancelling": "Bekor qilinmoqda...",
+         "delete": "Auktsionni o'chirish",
+         "deleteConfirm": "Bu auktsionni o'chirishga ishonchingiz komilmi? Bu amalni ortga qaytarib bo'lmaydi.",
+         "deleteFailed": "Auktsionni o'chirib bo'lmadi",
+         "saveFailed": "Auktsion o'zgarishlarini saqlab bo'lmadi",
+         "start": "Auktsionni boshlash",
+         "startFailed": "Auktsionni boshlab bo'lmadi"
+      },
+      "notFound": "Auktsionlar topilmadi",
+      "participantCount_one": "{{count}} qatnashchi",
+      "participantCount_other": "{{count}} qatnashchi",
+      "participants": {
+         "add": "Qatnashchi qo'shish",
+         "addFailed": "Qatnashchilarni qo'shib bo'lmadi",
+         "added": "Qo'shilgan: {{date}}",
+         "bin": "BIN: {{bin}}",
+         "empty": "Hali qatnashchilar qo'shilmagan",
+         "loading": "Qatnashchilar yuklanmoqda...",
+         "remove": "Qatnashchini o'chirish",
+         "removeFailed": "Qatnashchini o'chirib bo'lmadi",
+         "searching": "Ekspeditorlar qidirilmoqda...",
+         "title": "Qatnashchilar"
+      },
+      "searchPlaceholder": "Shahar, yuk yoki yo'nalishni kiriting",
+      "stopCount_one": "{{count}} to'xtash",
+      "stopCount_other": "{{count}} to'xtash",
+      "subtitle": "Tashish arizalari bo'yicha auktsionlar",
+      "title": "Auktsionlar",
+      "titleSingular": "Auktsion",
+      "validation": {
+         "maxParticipantsNegative": "Qatnashchilarning maksimal soni 0 dan kam bo'lishi mumkin emas",
+         "privateNeedsForwarder": "Yopiq auktsion uchun kamida bitta ekspeditorni tanlang"
+      },
+      "viewToggle": "Auktsionlar ko'rinishini almashtirish"
+   },
+   "tnved": {
+      "code": "Kod",
+      "codeNotFound": "Kod topilmadi",
+      "searchPlaceholder": "Kod yoki nomi bo'yicha qidirish",
+      "title": "TIF TN kodlari"
+   },
+   "validation": {
+      "bik": "BIK 8 belgidan iborat bo'lishi kerak",
+      "bin": "BIN 12 raqamdan iborat bo'lishi kerak",
+      "companyBinRequired": "Kompaniya BIN ini kiriting",
+      "companyNameRequired": "Kompaniya nomini kiriting",
+      "dateNotInFuture": "Sana bugungi kundan keyin bo'lishi mumkin emas",
+      "dateNotInPast": "Sana bugungi kundan oldin bo'lishi mumkin emas",
+      "documentIssueDateRequired": "Hujjat berilgan sanani kiriting",
+      "documentIssuedByRequired": "Hujjatni kim bergani kiriting",
+      "email": "Noto'g'ri email manzili",
+      "emailRequired": "Email manzilini kiriting",
+      "iikFormat": "Format: KZ + 18 belgi",
+      "iin": "IIN 12 raqamdan iborat bo'lishi kerak",
+      "iinRequired": "IIN kiriting",
+      "max100": "100 belgidan oshmasligi kerak",
+      "max50": "50 belgidan oshmasligi kerak",
+      "min3": "Kamida 3 belgi",
+      "min6": "Kamida 6 belgi",
+      "passwordsMismatch": "Parollar mos kelmadi",
+      "phone": "Noto'g'ri telefon raqami formati",
+      "phoneRequired": "Telefon raqamini kiriting",
+      "range2to100": "2 dan 100 belgigacha",
+      "range2to255": "2 dan 255 belgigacha",
+      "representativeRequired": "Vakilning F.I.Sh. kiriting"
+   },
+   "verification": {
+      "banner": "Email manzilingizni tasdiqlang. Xatni qayta yuborish uchun bu bildirishnomani bosing.",
+      "checkFailed": "Email holatini tekshirib bo'lmadi",
+      "checking": "Email holati tekshirilmoqda…",
+      "cooldown": "{{seconds}} soniyadan keyin",
+      "emailConfirmed": "Email tasdiqlandi",
+      "emailNotConfirmed": "Email tasdiqlanmagan",
+      "hint": "Tasdiqlash havolasini email manzilingizga yuboramiz.",
+      "resendAvailable": "Qayta yuborish {{seconds}} soniyadan keyin mavjud bo'ladi.",
+      "sendFailed": "Tasdiqlash xatini yuborib bo'lmadi",
+      "sent": "Tasdiqlash xati yuborildi. Pochtangizni tekshiring."
+   }
+}

@@ -122,6 +122,7 @@ export function FactoringsContent() {
                             color="primary"
                             aria-label={t("factorings.viewToggle")}
                             sx={{
+                                direction: "ltr",
                                 alignSelf: {
                                     xs: 'stretch',
                                     sm: 'auto',

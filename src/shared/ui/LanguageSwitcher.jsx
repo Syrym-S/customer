@@ -3,11 +3,13 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { Button, ListItemText, Menu, MenuItem, Tooltip } from "@mui/material";
 
-import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from "../i18n/language";
+import { DEFAULT_LANGUAGE } from "../i18n/language";
+import { useLanguagesStore } from "../model/languages.store";
 
 export function LanguageSwitcher({ sx }) {
   const { t, i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
+  const availableLanguages = useLanguagesStore((state) => state.availableLanguages);
 
   const currentLanguage =
     i18n.resolvedLanguage || i18n.language || DEFAULT_LANGUAGE;
@@ -54,7 +56,7 @@ export function LanguageSwitcher({ sx }) {
       </Tooltip>
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        {SUPPORTED_LANGUAGES.map((language) => (
+        {availableLanguages.map((language) => (
           <MenuItem
             key={language}
             selected={language === currentLanguage}

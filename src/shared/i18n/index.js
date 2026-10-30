@@ -1,13 +1,20 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
+import ar from "./locales/ar.json";
+import de from "./locales/de.json";
 import en from "./locales/en.json";
 import kk from "./locales/kk.json";
+import ky from "./locales/ky.json";
+import pt from "./locales/pt.json";
 import ru from "./locales/ru.json";
+import tg from "./locales/tg.json";
+import uz from "./locales/uz.json";
 import {
   DEFAULT_LANGUAGE,
   SUPPORTED_LANGUAGES,
   detectInitialLanguage,
+  getLanguageDirection,
   storeLanguage,
 } from "./language";
 
@@ -18,6 +25,12 @@ i18n.use(initReactI18next).init({
     ru: { translation: ru },
     kk: { translation: kk },
     en: { translation: en },
+    de: { translation: de },
+    uz: { translation: uz },
+    ky: { translation: ky },
+    tg: { translation: tg },
+    pt: { translation: pt },
+    ar: { translation: ar },
   },
   lng: initialLanguage,
   fallbackLng: DEFAULT_LANGUAGE,
@@ -34,6 +47,7 @@ i18n.use(initReactI18next).init({
 function applyDocumentLanguage(language) {
   if (document?.documentElement) {
     document.documentElement.lang = language;
+    document.documentElement.dir = getLanguageDirection(language);
   }
 }
 

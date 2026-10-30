@@ -11,13 +11,12 @@ import {
 
 import { PageContainer } from "../../shared/ui/PageContainer";
 import { notifySuccess } from "../../shared/model/notifications.store";
-import {
-  DEFAULT_LANGUAGE,
-  SUPPORTED_LANGUAGES,
-} from "../../shared/i18n/language";
+import { DEFAULT_LANGUAGE } from "../../shared/i18n/language";
+import { useLanguagesStore } from "../../shared/model/languages.store";
 
 export function SettingsPage() {
   const { t, i18n } = useTranslation();
+  const availableLanguages = useLanguagesStore((state) => state.availableLanguages);
 
   const currentLanguage =
     i18n.resolvedLanguage || i18n.language || DEFAULT_LANGUAGE;
@@ -51,7 +50,7 @@ export function SettingsPage() {
           </Stack>
 
           <List sx={{ mt: 1 }}>
-            {SUPPORTED_LANGUAGES.map((language) => (
+            {availableLanguages.map((language) => (
               <ListItemButton
                 key={language}
                 selected={language === currentLanguage}

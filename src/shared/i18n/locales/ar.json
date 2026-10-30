@@ -1,0 +1,1404 @@
+{
+   "accountBan": {
+      "contactSupport": "التواصل مع الدعم",
+      "logout": "تسجيل الخروج من الحساب",
+      "text": "الوصول إلى مساحة العمل مقيد مؤقتًا. لا يمكنك إنشاء طلبات أو المشاركة في المزادات أو تنفيذ إجراءات أخرى في النظام.",
+      "title": "الحساب محظور"
+   },
+   "chat": {
+      "attachments": {
+         "allowedTypes": "يُسمح فقط بالصور (JPG، PNG، WEBP) وملفات PDF أو DOC(X) أو XLS(X)",
+         "attach": "إرفاق ملف",
+         "closeImage": "إغلاق عارض الصور",
+         "fileDownloadFailed": "تعذر تنزيل الملف «{{name}}»",
+         "fileLoadFailed": "تعذر تحميل الملف «{{name}}»",
+         "imageLoadFailed": "تعذر تحميل الصورة",
+         "label": "مرفق",
+         "loadFailed": "تعذر التحميل",
+         "maxCount": "لا يمكن إرفاق أكثر من {{count}} ملفات برسالة واحدة",
+         "maxSize": "يجب ألا يتجاوز حجم الملف {{size}} ميغابايت",
+         "remove": "إزالة الملف {{name}}",
+         "view": "عرض المرفق"
+      },
+      "backToList": "العودة إلى قائمة المحادثات",
+      "close": "إغلاق المحادثة",
+      "conversationStart": "بداية المحادثة",
+      "empty": "لا توجد محادثات نشطة",
+      "load": {
+         "deliveryFailed": "تعذر تحميل محادثة التسليم",
+         "factoringFailed": "تعذر تحميل محادثة التخصيم",
+         "leadFailed": "تعذر تحميل محادثة الطلب",
+         "listFailed": "تعذر تحميل المحادثات",
+         "moreFailed": "تعذر تحميل المزيد من المحادثات",
+         "participantsFailed": "تعذر تحميل مشاركي المحادثة ({{type}}) {{id}}",
+         "supportFailed": "تعذر تحميل محادثة الدعم"
+      },
+      "message": {
+         "cancelEdit": "إلغاء التحرير",
+         "delete": "حذف الرسالة",
+         "deleteConfirm": "سيتم حذف الرسالة بشكل نهائي. هل تريد الاستمرار؟",
+         "deleteFailed": "تعذر حذف الرسالة",
+         "deleted": "تم حذف الرسالة",
+         "edit": "تحرير الرسالة",
+         "editFailed": "تعذر تحرير الرسالة",
+         "placeholder": "رسالة...",
+         "read": "تمت القراءة",
+         "send": "إرسال الرسالة",
+         "sendFailed": "تعذر إرسال الرسالة"
+      },
+      "open": "فتح المحادثة",
+      "participant": "مشارك",
+      "participantLabel": "مشارك في المحادثة",
+      "refreshList": "تحديث قائمة المحادثات",
+      "requisites": {
+         "title": "البيانات المصرفية"
+      },
+      "time": {
+         "days": "{{count}} يوم",
+         "hours": "{{count}} ساعة",
+         "justNow": "الآن",
+         "minutes": "{{count}} دقيقة",
+         "yesterday": "أمس"
+      },
+      "title": "المحادثات",
+      "types": {
+         "delivery": "التسليم",
+         "deliveryNumber": "التسليم رقم {{id}}",
+         "factoringNumber": "التخصيم رقم {{id}}",
+         "orderNumber": "الطلب رقم {{id}}",
+         "support": "الدعم",
+         "supportFull": "الدعم الفني"
+      }
+   },
+   "common": {
+      "actions": {
+         "add": "إضافة",
+         "adding": "جارٍ الإضافة...",
+         "addingShort": "جارٍ الإضافة...",
+         "back": "رجوع",
+         "cancel": "إلغاء",
+         "clear": "مسح",
+         "close": "إغلاق",
+         "confirm": "تأكيد",
+         "continue": "استمرار",
+         "copied": "تم النسخ",
+         "copy": "نسخ",
+         "copyNumber": "نسخ الرقم",
+         "create": "إنشاء",
+         "creating": "جارٍ الإنشاء...",
+         "creatingProcess": "جارٍ الإنشاء...",
+         "delete": "حذف",
+         "deleting": "جارٍ الحذف...",
+         "download": "تنزيل",
+         "edit": "تحرير",
+         "goTo": "الانتقال",
+         "gotIt": "فهمت",
+         "hide": "إخفاء",
+         "next": "التالي",
+         "openInNewTab": "فتح في تبويب جديد",
+         "preview": "معاينة",
+         "refresh": "تحديث",
+         "remove": "إزالة",
+         "retry": "إعادة المحاولة",
+         "retryAttempt": "إعادة المحاولة",
+         "save": "حفظ",
+         "saveChanges": "حفظ التغييرات",
+         "saving": "جارٍ الحفظ...",
+         "select": "تحديد",
+         "selected": "المحدد: {{count}}",
+         "send": "إرسال",
+         "sending": "جارٍ الإرسال...",
+         "sendingShort": "جارٍ الإرسال...",
+         "share": "مشاركة",
+         "showAll": "إظهار الكل (+{{count}})",
+         "sign": "توقيع",
+         "yes": "نعم"
+      },
+      "cargoCount_one": "{{count}} شحنة",
+      "cargoCount_other": "{{count}} شحنات",
+      "documents": {
+         "add": "إضافة مستند",
+         "empty": "لم تُضَف مستندات",
+         "fileSelected": "تم تحديد الملف"
+      },
+      "empty": {
+         "addressNotSpecified": "العنوان غير محدد",
+         "binNotSpecified": "الرقم التعريفي غير محدد",
+         "canLeaveBlank": "يمكن تركه فارغًا",
+         "cargoNotSpecified": "البضائع غير محددة",
+         "companyNotSpecified": "الشركة غير محددة",
+         "contactDataNotSpecified": "لا توجد بيانات اتصال",
+         "contactsNotSpecified": "لا توجد جهات اتصال",
+         "dataNotFilled": "البيانات غير مكتملة",
+         "dateNotSpecified": "التاريخ غير محدد",
+         "descriptionNotSpecified": "لا يوجد وصف",
+         "fullNameNotSpecified": "الاسم الكامل غير محدد",
+         "invalidData": "بيانات غير صحيحة",
+         "invalidDate": "تاريخ غير صحيح",
+         "nameNotSpecified": "الاسم غير محدد",
+         "noCompany": "بدون شركة",
+         "noData": "لا توجد بيانات",
+         "noFullName": "بدون اسم كامل",
+         "noName": "بدون اسم",
+         "notAdded": "غير مُضاف",
+         "notAssigned": "غير معيّن",
+         "notSelected": "غير محدد",
+         "notSpecifiedM": "غير محدد",
+         "notSpecifiedN": "غير محدد",
+         "nothingFound": "لم يتم العثور على شيء",
+         "optional": "اختياري",
+         "priceNotSpecified": "السعر غير محدد",
+         "typeNotSpecified": "النوع غير محدد",
+         "unknown": "غير معروف",
+         "unlimited": "غير محدود"
+      },
+      "fields": {
+         "actions": "الإجراءات",
+         "amount": "المبلغ",
+         "bankName": "اسم البنك",
+         "bik": "الرمز المصرفي",
+         "bin": "الرقم التعريفي",
+         "binValue": "الرقم التعريفي: {{bin}}",
+         "bodyType": "نوع المقطورة",
+         "cargo": "البضائع",
+         "cargoCountLabel": "عدد الشحنات",
+         "cargoName": "اسم البضائع",
+         "cargoPrice": "سعر البضائع",
+         "cargoType": "نوع البضائع",
+         "cargos": "البضائع",
+         "comment": "تعليق",
+         "company": "الشركة",
+         "companyAddress": "عنوان الشركة",
+         "companyBin": "الرقم التعريفي للشركة",
+         "companyName": "اسم الشركة",
+         "contactPerson": "جهة الاتصال",
+         "currency": "العملة",
+         "customer": "العميل",
+         "date": "التاريخ",
+         "dateFrom": "من تاريخ",
+         "dateTo": "إلى تاريخ",
+         "description": "الوصف",
+         "destination": "إلى",
+         "dimensions": "الأبعاد",
+         "direction": "الاتجاه",
+         "document": "مستند",
+         "documentName": "اسم المستند",
+         "documentNumber": "رقم المستند",
+         "documents": "المستندات",
+         "driver": "السائق",
+         "email": "البريد الإلكتروني",
+         "endDate": "تاريخ الانتهاء",
+         "executionPrice": "سعر التنفيذ",
+         "factor": "المموّل",
+         "file": "ملف",
+         "files": "ملفات",
+         "forwarder": "الوسيط اللوجستي",
+         "forwarderBin": "الرقم التعريفي للوسيط اللوجستي",
+         "forwarderFullName": "اسم الوسيط اللوجستي",
+         "forwarderIin": "الرقم التعريفي الشخصي للوسيط اللوجستي",
+         "from": "من",
+         "fullName": "الاسم الكامل",
+         "gracePeriod": "فترة تأجيل الدفع",
+         "gracePeriodDays": "فترة تأجيل الدفع، أيام",
+         "heightCm": "الارتفاع، سم",
+         "iik": "رقم الحساب الدولي",
+         "iin": "الرقم التعريفي الشخصي",
+         "international": "شحن دولي",
+         "issuingCountry": "بلد الإصدار",
+         "legalAddress": "العنوان القانوني",
+         "lengthCm": "الطول، سم",
+         "loadingType": "نوع التحميل",
+         "manufacturer": "الشركة المصنّعة",
+         "name": "الاسم",
+         "number": "الرقم",
+         "origin": "من",
+         "packagingType": "نوع التغليف",
+         "participants": "المشاركون",
+         "password": "كلمة المرور",
+         "phone": "الهاتف",
+         "price": "السعر",
+         "quantity": "الكمية",
+         "route": "المسار",
+         "settlementAccount": "الحساب المصرفي",
+         "shipments": "الشحنات",
+         "startDate": "تاريخ البدء",
+         "status": "الحالة",
+         "timeLeft": "الوقت المتبقي",
+         "title": "الاسم",
+         "tnvedCode": "رمز التصنيف الجمركي",
+         "to": "إلى",
+         "transportParams": "معايير النقل",
+         "transportType": "نوع المركبة",
+         "type": "النوع",
+         "vat": "ضريبة القيمة المضافة",
+         "volume": "الحجم",
+         "volumeM3": "الحجم، م³",
+         "weight": "الوزن",
+         "weightKg": "الوزن، كجم",
+         "widthCm": "العرض، سم",
+         "withVat": "شامل الضريبة",
+         "withoutVat": "غير شامل الضريبة"
+      },
+      "filePreview": {
+         "documentNotFound": "المستند غير موجود",
+         "noFile": "لا يوجد ملف لمعاينة هذا المستند",
+         "unsupported": "المعاينة غير مدعومة بعد لهذا النوع من الملفات",
+         "unsupportedType": "معاينة ملفات {{mime}} غير مدعومة"
+      },
+      "forwarderPicker": {
+         "clickToLoad": "انقر لتحميل الوسطاء اللوجستيين",
+         "detailsLoadFailed": "تعذر تحميل بيانات الوسيط اللوجستي",
+         "loadFailed": "تعذر تحميل الوسطاء اللوجستيين",
+         "loading": "جارٍ تحميل الوسطاء اللوجستيين...",
+         "notFound": "لم يتم العثور على وسيط لوجستي",
+         "searchByCompany": "أدخل اسم الشركة أو الرقم التعريفي",
+         "searchHint": "أدخل الاسم أو الرقم التعريفي الشخصي أو الشركة أو الرقم التعريفي أو رقم الهاتف"
+      },
+      "loading": {
+         "default": "جارٍ التحميل...",
+         "list": "جارٍ تحميل القائمة...",
+         "map": "جارٍ تحميل الخريطة...",
+         "preview": "جارٍ تحميل المعاينة..."
+      },
+      "search": {
+         "byDirection": "البحث بالاتجاه",
+         "minChars": "أدخل حرفين على الأقل"
+      },
+      "severity": {
+         "error": "خطأ",
+         "info": "معلومة",
+         "notice": "إشعار",
+         "success": "نجاح",
+         "warning": "تحذير"
+      },
+      "shipmentCount_one": "{{count}} شحنة",
+      "shipmentCount_other": "{{count}} شحنات",
+      "signing": {
+         "keepPageOpen": "لا تغلق هذه الصفحة — نافذة التوقيع مفتوحة في تبويب جديد. ستتحدث الحالة تلقائيًا.",
+         "opening": "جارٍ فتح صفحة التوقيع...",
+         "thisLink": "هذا الرابط",
+         "unavailable": "خدمة التوقيع غير متوفرة حاليًا، يرجى المحاولة لاحقًا",
+         "waiting": "في انتظار التوقيع...",
+         "windowHint": "إذا لم تُفتح نافذة التوقيع تلقائيًا، افتحها عبر"
+      },
+      "units": {
+         "bytes": "{{value}} بايت",
+         "cargoSummary": "{{cargoCount}} · {{weight}} كجم",
+         "days": "{{count}} يوم",
+         "dimensionsCm": "{{length}} × {{width}} × {{height}} سم",
+         "kg": "{{value}} كجم",
+         "kilobytes": "{{value}} كيلوبايت",
+         "km": "كم",
+         "m3": "{{value}} م³",
+         "megabytes": "{{value}} ميغابايت"
+      },
+      "view": {
+         "cards": "بطاقات",
+         "showAsCards": "عرض كبطاقات",
+         "showAsTable": "عرض كجدول",
+         "table": "جدول"
+      },
+      "waypointCount_one": "{{count}} نقطة",
+      "waypointCount_other": "{{count}} نقاط"
+   },
+   "complaints": {
+      "answer": {
+         "label": "الرد",
+         "notAdded": "لم يُضَف رد حتى الآن",
+         "pending": "لم يصدر رد من الإدارة حتى الآن",
+         "rejected": "تم رفض الشكوى",
+         "title": "رد الإدارة"
+      },
+      "attachments": {
+         "allowedTypes": "يُسمح فقط بالصور ومقاطع الفيديو وملفات PDF أو DOCX",
+         "attach": "إرفاق ملفات",
+         "limits": "بحد أقصى {{count}} ملفات، كل منها حتى {{size}} ميغابايت",
+         "maxCount": "لا يمكن إرفاق أكثر من {{count}} ملفات",
+         "maxSize": "يجب ألا يتجاوز حجم الملف {{size}} ميغابايت",
+         "removeFile": "إزالة الملف"
+      },
+      "create": {
+         "action": "تقديم شكوى",
+         "describePlaceholder": "صِف ما حدث",
+         "failed": "تعذر إرسال الشكوى",
+         "maxLength": "يجب ألا يتجاوز الوصف {{count}} حرفًا",
+         "subject": "موضوع الشكوى",
+         "subjectPlaceholder": "صِف موضوع الشكوى",
+         "submit": "إرسال الشكوى"
+      },
+      "emptyLast30Days": "لا توجد شكاوى في آخر 30 يومًا",
+      "loadFailed": "تعذر تحميل الشكاوى",
+      "notFound": "لم يتم العثور على شكاوى",
+      "subtitle": "شكاوى آخر 30 يومًا وردود الإدارة",
+      "target": {
+         "empty": "لا توجد شحنات أو تخصيمات في آخر 30 يومًا",
+         "label": "متعلق بـ",
+         "loadFailed": "تعذر تحميل القائمة",
+         "question": "ما الشحنة أو التخصيم الذي تتعلق به الشكوى"
+      },
+      "title": "الشكاوى",
+      "titleSingular": "شكوى",
+      "viewToggle": "تبديل عرض الشكاوى"
+   },
+   "contractGate": {
+      "fillProfile": "عبّئ البيانات في الملف الشخصي",
+      "goToProfile": "الانتقال إلى الملف الشخصي",
+      "noContracts": "لا توجد لديك عقود، أو انتهت مدة التوقيع",
+      "signContract": "توقيع العقد"
+   },
+   "createLead": {
+      "cargo": {
+         "description": "وصف البضائع",
+         "validation": {
+            "cargoPriceNegative": "لا يمكن أن يكون سعر البضائع سالبًا",
+            "gracePeriodRange": "أدخل قيمة بين 1 و364 يومًا",
+            "heightPositive": "يجب أن يكون الارتفاع أكبر من 0",
+            "lengthPositive": "يجب أن يكون الطول أكبر من 0",
+            "nameRequired": "أدخل اسم البضائع",
+            "priceNegative": "لا يمكن أن يكون السعر سالبًا",
+            "tnvedRequired": "أدخل رمز التصنيف الجمركي",
+            "volumePositive": "يجب أن يكون الحجم أكبر من 0",
+            "weightPositive": "يجب أن يكون الوزن أكبر من 0",
+            "widthPositive": "يجب أن يكون العرض أكبر من 0"
+         },
+         "withVat": "شامل الضريبة"
+      },
+      "customer": {
+         "current": "العميل الحالي",
+         "required": "حدد عميلًا"
+      },
+      "forwarder": {
+         "hint": "ابحث عن الوسيط اللوجستي الذي سيُعيَّن لهذا المسار وحدده",
+         "loadingDetails": "جارٍ تحميل بيانات الوسيط اللوجستي...",
+         "skippable": "يمكنك تخطي هذه الخطوة وإنشاء الطلب بدون وسيط لوجستي"
+      },
+      "result": {
+         "createError": "خطأ في الإنشاء",
+         "createFailed": "تعذر إنشاء الطلب",
+         "created": "تم إنشاء الطلب",
+         "createdSuccess": "تم إنشاء الطلب بنجاح",
+         "createdSuccessWithId": "تم إنشاء الطلب بنجاح: {{id}}",
+         "createdWithDocumentErrors": "تم إنشاء الطلب، ولكن تعذر تحميل بعض المستندات",
+         "draftSaveFailed": "تعذر حفظ المسودة",
+         "draftSaved": "تم حفظ المسودة",
+         "saveError": "خطأ في الحفظ",
+         "savedAsDraft": "تم حفظ الطلب كمسودة"
+      },
+      "saveDraft": "حفظ كمسودة",
+      "skipVideoRecording": "تخطي تسجيل فيديو التحميل/التفريغ",
+      "step": "الخطوة {{current}} من {{total}}",
+      "steps": {
+         "cargo": "البضائع والدفع",
+         "confirm": "المراجعة",
+         "confirmTitle": "راجع البيانات",
+         "customer": "بيانات العميل",
+         "documents": "المستندات",
+         "forwarder": "اختيار الوسيط اللوجستي",
+         "route": "المسار"
+      },
+      "submit": "إنشاء الطلب",
+      "subtitle": "عبّئ بيانات الطلب",
+      "title": "إنشاء طلب"
+   },
+   "dashboard": {
+      "analytics": {
+         "amountAxis": "المبلغ، {{currency}}",
+         "emergencyCount": "الحالات الطارئة: {{count}}",
+         "emptyPeriod": "لا توجد بيانات للفترة المحددة",
+         "loadFailed": "تعذر تحميل تحليلات الشحنات",
+         "noShipmentsPeriod": "لا توجد شحنات في الفترة المحددة",
+         "shipmentNumber": "رقم الشحنة",
+         "title": "ديناميكية الشحنات",
+         "trips": "رحلة"
+      },
+      "factorings": {
+         "loading": "جارٍ تحميل التخصيمات...",
+         "number": "التخصيم رقم {{id}}",
+         "title": "قائمة التخصيمات"
+      },
+      "groupBy": {
+         "day": "حسب اليوم",
+         "month": "حسب الشهر",
+         "quarter": "حسب الربع السنوي",
+         "week": "حسب الأسبوع"
+      },
+      "leads": {
+         "empty": "لا توجد طلبات نشطة حتى الآن",
+         "loading": "جارٍ تحميل الطلبات...",
+         "mapHint": "حدد طلبًا لتمييز مساره على الخريطة",
+         "orderNumber": "الطلب رقم {{num}}",
+         "title": "الطلبات النشطة"
+      },
+      "period": {
+         "action": "تحديد الفترة",
+         "compare": "المقارنة مع الفترة السابقة",
+         "halfYear": "نصف سنة",
+         "month": "شهر",
+         "quarter": "ربع سنة",
+         "title": "تحديد الفترة",
+         "week": "أسبوع",
+         "year": "سنة"
+      },
+      "saleCount_one": "{{count}} عملية بيع",
+      "saleCount_other": "{{count}} عمليات بيع",
+      "stats": {
+         "active": "نشط",
+         "activeFactoringSales": "مبيعات التخصيم النشطة",
+         "activeShipments": "الشحنات النشطة",
+         "activeTenders": "المزادات النشطة",
+         "amounts": "المبالغ",
+         "factoringSales": "مبيعات التخصيم",
+         "factoringSalesPeriod": "فترة مبيعات التخصيم",
+         "forPeriod": "للفترة",
+         "loadFailed": "تعذر تحميل الإحصائيات",
+         "shipmentsPeriod": "فترة الشحنات",
+         "showAllCurrencies": "إظهار جميع العملات",
+         "title": "الإحصائيات",
+         "today": "اليوم",
+         "viewMode": "طريقة عرض الإحصائيات"
+      },
+      "tenderCount_one": "{{count}} مزاد",
+      "tenderCount_other": "{{count}} مزادات",
+      "tenders": {
+         "bids": "العروض: {{count}}",
+         "loading": "جارٍ تحميل المزادات...",
+         "number": "المزاد رقم {{id}}",
+         "private": "خاص",
+         "privateEmpty": "لا توجد مزادات خاصة حتى الآن",
+         "public": "عام",
+         "publicEmpty": "لا توجد مزادات عامة حتى الآن",
+         "title": "قائمة المزادات"
+      },
+      "title": "لوحة التحكم",
+      "totalCargoWeight": "{{value}} كجم"
+   },
+   "enums": {
+      "complaintStatus": {
+         "answered": "تم الرد",
+         "in_progress": "قيد المعالجة",
+         "pending_answer": "في انتظار الرد",
+         "pending_review": "في انتظار المراجعة",
+         "rejected": "مرفوضة",
+         "rejectedN": "مرفوضة",
+         "resolved": "محلولة"
+      },
+      "complaintTarget": {
+         "factoring": "التخصيم",
+         "shipment": "الشحنة"
+      },
+      "factoringLine": {
+         "closed": "خط مغلق",
+         "open": "خط مفتوح"
+      },
+      "factoringStatus": {
+         "await_paid": "في انتظار الدفع",
+         "cancelled": "ملغى",
+         "finished": "مكتمل",
+         "new": "جديد",
+         "verified_participant": "مؤكد جزئيًا"
+      },
+      "leadStatus": {
+         "add_driver": "تمت إضافة سائق",
+         "cancelled": "ملغى",
+         "draft": "مسودة",
+         "emergency_situation": "حالة طارئة",
+         "finished": "مكتمل",
+         "finished_emergency_situation": "مكتمل (حالة طارئة)",
+         "new": "جديد",
+         "sign_avr": "جارٍ توقيع محضر التسليم",
+         "start_driver": "بدأت الرحلة",
+         "start_loading": "التحميل",
+         "start_unloading": "التفريغ",
+         "verification_loading": "تم تأكيد التحميل",
+         "verification_unloading": "تم تأكيد التفريغ"
+      },
+      "leadStatusFilter": {
+         "all": "جميع الحالات",
+         "cancelled": "ملغاة",
+         "driverAssigned": "تم تعيين السائق",
+         "driverDeparted": "انطلق السائق",
+         "finished": "مكتملة",
+         "inTransit": "قيد النقل",
+         "new": "جديدة",
+         "other": "أخرى"
+      },
+      "manufacturerStatus": {
+         "attached": "مرتبط",
+         "incomingRequest": "طلب وارد",
+         "notAttached": "غير مرتبط",
+         "requestSent": "تم إرسال الطلب"
+      },
+      "participantType": {
+         "forwarder": "الوسيط اللوجستي"
+      },
+      "publicationType": {
+         "private": "خاص",
+         "public": "عام"
+      },
+      "signature": {
+         "notSigned": "غير موقّع",
+         "notSignedM": "غير موقّع",
+         "signed": "موقّع",
+         "signedM": "موقّع"
+      },
+      "tenderStatus": {
+         "active": "نشط",
+         "cancelled": "ملغى",
+         "closed": "مغلق",
+         "finished": "مكتمل",
+         "new": "جديد"
+      },
+      "verification": {
+         "confirmed": "مؤكد",
+         "notConfirmed": "غير مؤكد"
+      },
+      "verificationCheck": {
+         "notPassed": "لم يُجتز",
+         "passed": "تم الاجتياز",
+         "passedMark": "✓ تم الاجتياز"
+      },
+      "waypointType": {
+         "check_passes": "عبور",
+         "loading": "التحميل",
+         "unloading": "التفريغ"
+      }
+   },
+   "errorPage": {
+      "title": "حدث خطأ ما",
+      "unexpectedReload": "حدث خطأ غير متوقع. حدّث الصفحة أو حاول مرة أخرى لاحقًا."
+   },
+   "errors": {
+      "factoringNotFound": "التخصيم غير موجود",
+      "generic": "حدث خطأ ما",
+      "genericSupport": "حدث خطأ ما. يرجى التواصل مع الدعم.",
+      "leadNotFound": "الطلب غير موجود",
+      "notFound": "الصفحة المطلوبة غير موجودة.",
+      "server": "حدث خطأ في الخادم. يرجى المحاولة لاحقًا.",
+      "unexpected": "حدث خطأ غير متوقع."
+   },
+   "exportReport": {
+      "action": "تصدير التقرير",
+      "dateOrder": "لا يمكن أن يكون تاريخ «من» بعد تاريخ «إلى»",
+      "failed": "تعذر تصدير التقرير. يرجى المحاولة لاحقًا",
+      "hint": "سيتم تضمين الشحنات المكتملة فقط خلال الفترة المحددة.",
+      "inProgress": "جارٍ التصدير...",
+      "submit": "تصدير"
+   },
+   "factorings": {
+      "cancel": {
+         "action": "إلغاء التخصيم",
+         "confirm": "هل أنت متأكد من رغبتك في إلغاء هذا التخصيم؟ لا يمكن التراجع عن هذا الإجراء.",
+         "failed": "تعذر إلغاء التخصيم",
+         "inProgress": "جارٍ إلغاء التخصيم…"
+      },
+      "chat": {
+         "action": "محادثة",
+         "leadNotResolved": "تعذر تحديد الطلب المرتبط بهذا التخصيم",
+         "openFailed": "تعذر فتح محادثة التخصيم"
+      },
+      "confirmParticipation": {
+         "openFailed": "تعذر فتح نافذة التوقيع",
+         "opening": "جارٍ فتح نافذة التوقيع...",
+         "text": "هل تريد تأكيد مشاركتك في هذا التخصيم؟ سيتم تحويلك إلى نافذة توقيع المستندات.",
+         "title": "تأكيد المشاركة"
+      },
+      "confirmations": {
+         "confirmedByCustomer": "تم التأكيد من قبل العميل",
+         "customer": "تأكيد العميل",
+         "date": "تاريخ التأكيد",
+         "factor": "تأكيد المموّل",
+         "factorStatus": "المموّل: {{status}}",
+         "forwarder": "تأكيد الوسيط اللوجستي",
+         "forwarderStatus": "الوسيط اللوجستي: {{status}}",
+         "subtitle": "حالة التأكيد لكل طرف",
+         "title": "التأكيدات",
+         "you": "أنت",
+         "youStatus": "أنت: {{status}}"
+      },
+      "details": {
+         "cargoSection": "معايير البضائع والشحن",
+         "createdAt": "تاريخ الإنشاء",
+         "loadFailed": "تعذر تحميل تفاصيل التخصيم",
+         "loading": "جارٍ تحميل تفاصيل التخصيم...",
+         "main": "معلومات عامة",
+         "mainSubtitle": "رقم الطلب وتاريخ الإنشاء والطلب المرتبط",
+         "number": "التخصيم رقم {{id}}",
+         "title": "تفاصيل التخصيم"
+      },
+      "finance": {
+         "creditAmount": "مبلغ الائتمان",
+         "debtAmount": "المبلغ المستحق",
+         "debtCurrency": "عملة المبلغ المستحق",
+         "factoringCurrency": "عملة التخصيم",
+         "factoringRate": "معدل التخصيم",
+         "serviceRate": "رسوم الخدمة",
+         "subtitle": "المبالغ والعملة ومعدل التخصيم",
+         "title": "الشؤون المالية"
+      },
+      "line": {
+         "contractNote": "بين الوسيط اللوجستي والمموّل، وقد تم توقيعه من كلا الطرفين بالفعل",
+         "contractTitle": "عقد خط التخصيم",
+         "signStartFailed": "تعذر بدء توقيع خط التخصيم",
+         "timeout": "انتهت مدة توقيع خط التخصيم، يرجى المحاولة مرة أخرى",
+         "waitForParties": "سيصبح التوقيع متاحًا بعد توقيع الوسيط اللوجستي والمموّل.",
+         "yourSignature": "خط التخصيم (توقيعك)"
+      },
+      "loadFailed": "تعذر تحميل عمليات شراء التخصيم",
+      "notFound": "لم يتم العثور على عمليات شراء تخصيم",
+      "participants": {
+         "customerLoadFailed": "تعذر تحميل بيانات العميل",
+         "subtitle": "جميع المشاركين في التخصيم"
+      },
+      "purchasesTitle": "عمليات شراء التخصيم",
+      "requisites": {
+         "loadFailed": "تعذر تحميل البيانات المصرفية للعميل",
+         "title": "بيانات الأطراف"
+      },
+      "subtitle": "طلبات التخصيم",
+      "title": "التخصيم",
+      "titleSingular": "التخصيم",
+      "viewToggle": "تبديل عرض التخصيم"
+   },
+   "forwarders": {
+      "invite": {
+         "action": "دعوة وسيط لوجستي",
+         "copyLink": "نسخ الرابط",
+         "create": "إنشاء دعوة",
+         "createFailed": "تعذر إنشاء الدعوة",
+         "created": "تم إنشاء الدعوة",
+         "link": "رابط الدعوة",
+         "linkCopied": "تم نسخ الرابط",
+         "noActiveLink": "لا يوجد رابط نشط",
+         "success": "تم إنشاء الوسيط اللوجستي. أرسل له الرابط لإتمام تعبئة بياناته.",
+         "title": "دعوة"
+      },
+      "issuingCountry": "بلد إصدار المستند",
+      "notFound": "لم يتم العثور على وسطاء لوجستيين",
+      "registered": "مسجّل",
+      "representative": "الممثل",
+      "searchPlaceholder": "البحث عن وسيط لوجستي",
+      "sections": {
+         "company": "بيانات الوسيط اللوجستي — الشركة",
+         "contact": "بيانات جهة الاتصال",
+         "requisites": "البيانات المصرفية للوسيط اللوجستي"
+      },
+      "subtitle": "القائمة الكاملة للوسطاء اللوجستيين",
+      "title": "الوسطاء اللوجستيون",
+      "viewToggle": "تبديل عرض الوسطاء اللوجستيين"
+   },
+   "header": {
+      "closeMenu": "إغلاق القائمة",
+      "logout": {
+         "action": "تسجيل الخروج",
+         "confirm": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
+         "failed": "تعذر تسجيل الخروج",
+         "fromAccount": "تسجيل الخروج من الحساب",
+         "inProgress": "جارٍ تسجيل الخروج...",
+         "title": "تسجيل الخروج"
+      },
+      "needHelp": "تحتاج إلى مساعدة؟",
+      "settings": "الإعدادات",
+      "supportAvailable": "فريق الدعم متاح على مدار الساعة",
+      "user": "المستخدم",
+      "userProfile": "الملف الشخصي لـ {{email}}"
+   },
+   "kgd": {
+      "loadFailed": "تعذر تحميل بيانات هيئة الضرائب",
+      "taxationMode": "نظام الضرائب"
+   },
+   "leads": {
+      "avr": {
+         "checking": "جارٍ التحقق من حالة المحضر...",
+         "clickToDownload": "انقر للتنزيل",
+         "customerSignature": "توقيع العميل",
+         "devSimulateForwarder": "[تطوير] محاكاة توقيع الوسيط اللوجستي",
+         "forwarderSignature": "توقيع الوسيط اللوجستي",
+         "notReady": "مستند المحضر غير جاهز بعد، يرجى المحاولة لاحقًا",
+         "signStartFailed": "تعذر بدء توقيع المحضر",
+         "statusLoadFailed": "تعذر تحميل حالة المحضر",
+         "timeout": "انتهت مدة توقيع المحضر، يرجى المحاولة مرة أخرى",
+         "title": "محضر استلام العمل",
+         "titleShort": "محضر الاستلام",
+         "unavailable": "مستند المحضر غير متوفر بعد، يرجى المحاولة لاحقًا",
+         "waitForForwarder": "سيصبح توقيع المحضر متاحًا بعد توقيع الوسيط اللوجستي."
+      },
+      "cargo": {
+         "add": "إضافة بضائع",
+         "deleteConfirm": "هل تريد حذف البضائع رقم {{index}}؟",
+         "deleteFailed": "تعذر حذف البضائع",
+         "itemNumber": "البضائع رقم {{index}}",
+         "priceSetByForwarder": "تم تحديد السعر من قبل الوسيط اللوجستي",
+         "volumeM3Value": "{{value}} م³"
+      },
+      "chat": {
+         "withDriver": "محادثة مع السائق",
+         "withForwarder": "محادثة مع الوسيط اللوجستي"
+      },
+      "details": {
+         "driverComment": "تعليق السائق: {{comment}}",
+         "info": "معلومات الطلب",
+         "loadFailed": "تعذر تحميل الطلب",
+         "loading": "جارٍ تحميل تفاصيل الطلب...",
+         "noCustomer": "بدون عميل",
+         "notResolved": "تعذر تحديد الطلب",
+         "number": "الطلب رقم {{num}}",
+         "ownerNotSpecified": "المسؤول غير محدد",
+         "refreshFailed": "تعذر الحصول على بيانات الطلب المحدثة",
+         "saveFailed": "تعذر حفظ التغييرات",
+         "shipmentNumber": "الشحنة رقم {{num}}",
+         "subtitle": "بيانات مفصّلة للطلب",
+         "videoDisabled": "تسجيل الفيديو معطّل"
+      },
+      "documents": {
+         "deleteFailed": "تعذر حذف المستند",
+         "deleteTargetMissing": "تعذر تحديد الملف المطلوب حذفه",
+         "loadFailed": "تعذر تحميل المستندات",
+         "ownFilesOnly": "يمكن حذف ملفات العميل الخاصة فقط",
+         "singleLoadFailed": "تعذر تحميل المستند"
+      },
+      "edit": {
+         "blockedEmergency": "لا يمكن تحرير طلب في حالة طارئة",
+         "blockedFinished": "لا يمكن تحرير طلب مكتمل أو ملغى",
+         "blockedFinishedEmergency": "لا يمكن تحرير طلب مكتمل في حالة طارئة"
+      },
+      "empty": "لا توجد طلبات",
+      "forwarder": {
+         "lockedByTender": "تم تعيين الوسيط اللوجستي بناءً على نتيجة المزاد ولا يمكن تغييره",
+         "notAssigned": "لم يتم تعيين وسيط لوجستي"
+      },
+      "loadFailed": "تعذر تحميل الطلبات",
+      "map": {
+         "coordsViaWebSocket": "تم استلام الإحداثيات عبر WebSocket",
+         "driverPosition": "الموقع الحالي للسائق",
+         "lastUpdate": "آخر تحديث: {{time}}",
+         "loadingRoute": "جارٍ تحميل المسار..."
+      },
+      "notFound": "لم يتم العثور على طلبات",
+      "publish": {
+         "action": "نشر",
+         "failed": "تعذر نشر الطلب",
+         "fillRouteAndCargo": "عبّئ المسار والبضائع قبل النشر",
+         "inProgress": "جارٍ النشر..."
+      },
+      "share": {
+         "confirm": "هل أنت متأكد من رغبتك في مشاركة معلومات هذا الطلب مع أطراف ثالثة؟ ستكون المعلومات متاحة لأي شخص يملك الرابط.",
+         "creating": "جارٍ إنشاء الرابط...",
+         "failed": "تعذر الحصول على الرابط. يرجى المحاولة لاحقًا.",
+         "hint": "يمكن لأي شخص يملك هذا الرابط عرض تفاصيل الطلب.",
+         "link": "رابط الطلب",
+         "title": "مشاركة الطلب",
+         "validUntil": "الرابط صالح حتى"
+      },
+      "subtitle": "طلبات الشحن",
+      "title": "الطلبات",
+      "trip": {
+         "avrSignedFinished": "تم توقيع المحضر، واكتملت الرحلة",
+         "emergency": "حالة طارئة في الرحلة",
+         "finishedEmergency": "اكتملت الرحلة في حالة طارئة"
+      },
+      "validation": {
+         "gracePeriodRange": "يجب أن تكون فترة تأجيل الدفع بين 1 و364 يومًا",
+         "routeDates": "تحقق من تواريخ المسار",
+         "routePoints": "حدد نقطتي بداية ونهاية المسار",
+         "tnvedForAllCargo": "أدخل رمز التصنيف الجمركي لكل بضائع"
+      },
+      "view": {
+         "kanban": "كانبان",
+         "showAsKanban": "عرض كلوحة كانبان"
+      },
+      "viewToggle": "تبديل عرض الطلبات"
+   },
+   "manufacturers": {
+      "add": {
+         "action": "إضافة شركة مصنّعة",
+         "alreadyAdded": "مُضافة مسبقًا",
+         "failed": "تعذر إضافة الشركة المصنّعة",
+         "inProgress": "جارٍ الإضافة...",
+         "searchHint": "البحث بالاسم أو الرقم التعريفي",
+         "searchPlaceholder": "أدخل اسم الشركة المصنّعة أو رقمها التعريفي",
+         "success": "تمت إضافة الشركة المصنّعة"
+      },
+      "bulk": {
+         "result": "{{action}}: {{done}} من {{total}}. {{reason}}"
+      },
+      "card": {
+         "bin": "الرقم التعريفي {{bin}}",
+         "linkedShipments": "الشحنات المرتبطة",
+         "linkedToCustomer": "مرتبطة بالعميل",
+         "nameWithBin": "{{name}} — الرقم التعريفي {{bin}}",
+         "noLinkedShipments": "لا توجد شحنات مرتبطة بهذه الشركة المصنّعة",
+         "notLinkedToCustomer": "الشركة المصنّعة غير مرتبطة بالعميل",
+         "openLinkedShipments": "فتح الشحنات المرتبطة",
+         "shipmentsCount": "الشحنات: {{count}}",
+         "shipmentsLabel": "الشحنات",
+         "title": "بيانات الشركة المصنّعة"
+      },
+      "filters": {
+         "all": "الكل",
+         "allManufacturers": "جميع الشركات المصنّعة",
+         "linkColumn": "الربط",
+         "manufacturerNotLinked": "لا توجد شركة مصنّعة مرتبطة",
+         "notLinked": "غير مرتبطة",
+         "withManufacturer": "مع شركة مصنّعة",
+         "withoutManufacturer": "بدون شركة مصنّعة"
+      },
+      "link": {
+         "action": "ربط",
+         "actionWithCount": "ربط ({{count}})",
+         "changeManufacturer": "تغيير الشركة المصنّعة",
+         "failed": "تعذر ربط الشركة المصنّعة",
+         "freeShipmentsHint": "الشركة المصنّعة: {{name}}. يتم عرض الشحنات بدون شركة مصنّعة.",
+         "freeShipmentsNotFound": "لم يتم العثور على شحنات متاحة",
+         "inProgress": "جارٍ الربط...",
+         "manufacturerAction": "ربط الشركة المصنّعة",
+         "overwriteWarning": "تم تحديد {{shipments}}. يمكن أن ترتبط الشحنة بشركة مصنّعة واحدة فقط — سيتم استبدال الربط الحالي.",
+         "shipmentsAction": "ربط الشحنات",
+         "success": "تم ربط الشركة المصنّعة",
+         "title": "ربط الشركة المصنّعة"
+      },
+      "loadFailed": "تعذر تحميل الشركات المصنّعة",
+      "notFound": "لم يتم العثور على شركات مصنّعة",
+      "remove": {
+         "failed": "تعذر إزالة الشركة المصنّعة",
+         "success": "تمت إزالة الشركة المصنّعة من القائمة"
+      },
+      "requestCount_one": "{{count}} طلب",
+      "requestCount_other": "{{count}} طلبات",
+      "requests": {
+         "alreadySent": "تم إرسال الطلب مسبقًا",
+         "approve": "قبول",
+         "approveFailed": "تعذر قبول الطلبات",
+         "approveMany": "قبول الطلبات",
+         "approved": "تم قبول الطلبات",
+         "loadFailed": "تعذر تحميل الطلبات",
+         "reject": "رفض",
+         "rejectFailed": "تعذر رفض الطلبات",
+         "rejectMany": "رفض الطلبات",
+         "rejected": "تم رفض الطلبات",
+         "send": "إرسال طلب",
+         "sendFailed": "تعذر إرسال الطلب",
+         "sendToManufacturer": "إرسال طلب إلى الشركة المصنّعة",
+         "withdraw": "سحب",
+         "withdrawFailed": "تعذر سحب الطلبات",
+         "withdrawMany": "سحب الطلبات",
+         "withdrawn": "تم سحب الطلبات"
+      },
+      "searchFailed": "فشل البحث عن الشركات المصنّعة",
+      "shipments": {
+         "loadFailed": "تعذر تحميل الشحنات",
+         "notFound": "لم يتم العثور على شحنات",
+         "searchByNumber": "البحث بالرقم أو الاتجاه",
+         "searchFull": "البحث بالرقم أو الاتجاه أو الشركة المصنّعة",
+         "total": "إجمالي الشحنات: {{count}}"
+      },
+      "subtitle": "ربط الشركات المصنّعة بالشحنات وإدارة قائمة الشركات المصنّعة الخاصة بك",
+      "tabs": {
+         "linked": "روابط الشركات المصنّعة",
+         "linking": "ربط الشحنات"
+      },
+      "title": "الشركات المصنّعة",
+      "unlink": {
+         "action": "فصل الربط",
+         "actionWithCount": "فصل الربط ({{count}})",
+         "failed": "تعذر فصل ربط الشركة المصنّعة",
+         "manufacturerAction": "فصل ربط الشركة المصنّعة",
+         "success": "تم فصل ربط الشركة المصنّعة"
+      }
+   },
+   "map": {
+      "actualPath": "المسار الفعلي",
+      "actualPathOrder": "المسار الفعلي للطلب رقم",
+      "customerPoint": "موقع العميل",
+      "devMarker": "علامة مؤقتة لاختبار الخريطة",
+      "driverName": "السائق: {{name}}",
+      "driverNotSpecified": "السائق غير محدد",
+      "driverPhone": "الهاتف:",
+      "driverPosition": "الموقع الحالي للسائق",
+      "noCoordinates": "لا توجد إحداثيات",
+      "pointsCount": "النقاط: {{count}}",
+      "routesLoadFailed": "تعذر تحميل المسارات",
+      "routesPartialFailure": "تعذر تحميل مسارات GeoWS لـ {{failed}} من {{total}} طلبات"
+   },
+   "mobileNotice": {
+      "text": "لتجربة أفضل، نوصي باستخدام جهاز كمبيوتر. قد لا يتم عرض النسخة الخاصة بالهاتف المحمول بشكل صحيح.",
+      "title": "نوصي باستخدام نسخة سطح المكتب"
+   },
+   "nav": {
+      "complaints": "الشكاوى",
+      "dashboard": "لوحة التحكم",
+      "factoring": "التخصيم",
+      "factorings": "التخصيم",
+      "forwarders": "الوسطاء اللوجستيون",
+      "leads": "الطلبات",
+      "manufacturers": "الشركات المصنّعة",
+      "profile": "الملف الشخصي",
+      "settings": "الإعدادات",
+      "tenders": "المزادات",
+      "tnved": "رموز التصنيف الجمركي",
+      "tooltips": {
+         "complaints": "تقديم الشكاوى بشأن الطلبات والتخصيم، وعرض السجل وردود الإدارة",
+         "dashboard": "نظرة عامة على الطلبات والمسارات والمزادات",
+         "factorings": "قائمة طلبات التخصيم والتمويل",
+         "forwarders": "قائمة الوسطاء اللوجستيين ودعوة مشاركين جدد",
+         "leads": "قائمة طلبات الشحن وإدارة الطلبات",
+         "manufacturers": "ربط الشركات المصنّعة بالشحنات واستعراض دليل الشركات المصنّعة",
+         "settings": "لغة الواجهة وإعدادات أخرى للحساب",
+         "tenders": "إنشاء وإدارة مزادات الشحن",
+         "tnved": "دليل رموز النظام المنسّق للسلع"
+      }
+   },
+   "notifications": {
+      "all": "جميع الإشعارات",
+      "empty": "لا توجد إشعارات حتى الآن",
+      "emptyHint": "ستظهر الأحداث الجديدة هنا",
+      "loadFailed": "تعذر تحميل الإشعارات",
+      "newToast": "إشعار جديد",
+      "newToastBody": "لديك إشعار جديد",
+      "noDescription": "لا يوجد وصف",
+      "refresh": "تحديث الإشعارات",
+      "singleLoadFailed": "تعذر تحميل الإشعار",
+      "subtitle": "آخر الأحداث المتعلقة بطلباتك ومزاداتك",
+      "subtitleDot": "آخر الأحداث المتعلقة بطلباتك ومزاداتك.",
+      "title": "الإشعارات",
+      "types": {
+         "factor": {
+            "cancelled_by_factor": {
+               "message": "ألغى المموّل التخصيم",
+               "theme": "تم إلغاء التخصيم"
+            },
+            "cancelled_by_forwarder": {
+               "message": "ألغى الوسيط اللوجستي التخصيم",
+               "theme": "تم إلغاء التخصيم"
+            },
+            "created_by_factor": {
+               "message": "أنشأ المموّل تخصيمًا",
+               "theme": "تم إنشاء التخصيم"
+            },
+            "created_by_forwarder": {
+               "message": "أنشأ الوسيط اللوجستي تخصيمًا",
+               "theme": "تم إنشاء التخصيم"
+            },
+            "finished_by_factor": {
+               "message": "أكمل المموّل التخصيم",
+               "theme": "تم إكمال التخصيم"
+            },
+            "paid_by_customer": {
+               "message": "أكّد المموّل استلام الدفع من العميل. تم إغلاق الصفقة.",
+               "theme": "تم تأكيد الدفع"
+            },
+            "signed_by_factor": {
+               "message": "وقّع المموّل على عقد التخصيم",
+               "theme": "تم توقيع عقد التخصيم"
+            },
+            "signed_by_forwarder": {
+               "message": "وقّع الوسيط اللوجستي على عقد التخصيم",
+               "theme": "تم توقيع عقد التخصيم"
+            },
+            "updated_by_factor": {
+               "message": "حدّث المموّل التخصيم",
+               "theme": "تم تحديث التخصيم"
+            },
+            "verified_by_factor": {
+               "message": "أكّد المموّل التخصيم",
+               "theme": "تم تأكيد التخصيم"
+            },
+            "verified_by_forwarder": {
+               "message": "أكّد الوسيط اللوجستي التخصيم",
+               "theme": "تم تأكيد التخصيم"
+            }
+         },
+         "lead": {
+            "created_by_forwarder": {
+               "message": "تم إنشاء الرحلة وتم ربطك بها كعميل.",
+               "theme": "تم إنشاء الرحلة"
+            },
+            "customer_detached": {
+               "message": "فصلك الوسيط اللوجستي عن الرحلة.",
+               "theme": "تم فصلك عن الرحلة"
+            },
+            "manufacturer": {
+               "approved_by_manufacturer": {
+                  "message": "وافقت الشركة المصنّعة {{name}} على الربط",
+                  "theme": "تم قبول الطلب"
+               },
+               "cancelled_by_manufacturer": {
+                  "message": "سحبت الشركة المصنّعة {{name}} الطلب",
+                  "theme": "تم سحب الطلب"
+               },
+               "detached_by_manufacturer": {
+                  "message": "فصلت الشركة المصنّعة {{name}} ارتباطها بك",
+                  "theme": "تمت إزالة الربط"
+               },
+               "rejected_by_manufacturer": {
+                  "message": "رفضت الشركة المصنّعة {{name}} الطلب",
+                  "theme": "تم رفض الطلب"
+               },
+               "request_by_manufacturer": {
+                  "message": "تريد الشركة المصنّعة {{name}} الارتباط بك",
+                  "theme": "طلب ربط جديد"
+               }
+            },
+            "point_end_deadline": {
+               "message": "حان الوقت المخطط لانتهاء العمل في نقطة المسار.",
+               "theme": "حان الموعد النهائي لنقطة المسار"
+            },
+            "point_start_deadline": {
+               "message": "حان الوقت المخطط لبدء العمل في نقطة المسار.",
+               "theme": "حان الموعد النهائي لنقطة المسار"
+            },
+            "rejected": {
+               "message": "تم إلغاء الرحلة",
+               "theme": "تم إلغاء الرحلة"
+            },
+            "updated_by_forwarder": {
+               "message": "تم تحديث الرحلة",
+               "theme": "تم تحديث الرحلة"
+            }
+         },
+         "shipping": {
+            "delivered": {
+               "message": "تم تأكيد التسليم. اكتملت الرحلة.",
+               "theme": "اكتملت الرحلة"
+            },
+            "emergency-situation": {
+               "theme": "تم الإعلان عن حالة طارئة."
+            },
+            "finished": {
+               "theme": "اكتملت الرحلة"
+            },
+            "finished-emergency-situation": {
+               "message": "أكمل الوسيط اللوجستي الرحلة قبل الموعد المحدد.",
+               "theme": "اكتملت الرحلة قبل الموعد المحدد."
+            },
+            "last_point_passed": {
+               "message": "عبر السائق نقطة التفريغ.",
+               "theme": "الرحلة رقم {{num}}: تم عبور النقطة"
+            },
+            "loading_started": {
+               "message": "بدأ السائق الرحلة.",
+               "theme": "بدأت الرحلة."
+            },
+            "loading_verified": {
+               "message": "أكّد السائق التحميل.",
+               "theme": "الرحلة رقم {{num}}: أكّد السائق التحميل"
+            },
+            "point_passed": {
+               "message": "عبر السائق نقطة.",
+               "theme": "الرحلة رقم {{num}}: عبر السائق نقطة"
+            },
+            "unloading_verified": {
+               "message": "أكّد السائق التفريغ.",
+               "theme": "الرحلة رقم {{num}}: أكّد السائق التفريغ"
+            }
+         },
+         "tender": {
+            "bet_cancelled": {
+               "message": "ألغى مشارك عرضه في مزادك.",
+               "theme": "تم إلغاء العرض"
+            },
+            "bet_placed": {
+               "message": "قدّم مشارك عرضًا في مزادك.",
+               "theme": "عرض جديد في المزاد"
+            }
+         }
+      },
+      "viewAll": "عرض جميع الإشعارات"
+   },
+   "profile": {
+      "avatar": {
+         "allowedTypes": "يمكن تحميل ملفات PNG أو JPEG فقط",
+         "delete": "حذف الصورة",
+         "maxSize": "الحجم الأقصى للصورة هو 600×600 بكسل",
+         "minSize": "الحجم الأدنى للصورة هو 400×400 بكسل",
+         "readFailed": "تعذر قراءة الملف",
+         "sizeCheckFailed": "تعذر التحقق من حجم الصورة",
+         "upload": "تحميل صورة",
+         "uploadFailed": "تعذر تحميل الصورة"
+      },
+      "contract": {
+         "notSigned": "غير موقّع · انقر للتوقيع",
+         "signStartFailed": "تعذر بدء التوقيع",
+         "signStartFailedLater": "تعذر بدء التوقيع، يرجى المحاولة لاحقًا",
+         "signed": "موقّع",
+         "signedUntil": "موقّع · صالح حتى {{date}}",
+         "title": "عقد الخدمة",
+         "unavailable": "مستند العقد غير متوفر بعد، يرجى المحاولة لاحقًا"
+      },
+      "delete": {
+         "action": "حذف الحساب",
+         "confirmTitle": "تأكيد الحذف",
+         "failed": "تعذر حذف الحساب",
+         "failedActiveDeals": "تعذر حذف الحساب: توجد صفقات نشطة",
+         "passwordPrompt": "أدخل كلمة مرورك لتأكيد حذف الحساب.",
+         "warning": "سيتم إلغاء تنشيط الحساب. للاستعادة، تواصل مع الدعم.",
+         "warningFull": "بعد الحذف، سيتم إلغاء تنشيط الحساب. للاستعادة، تواصل مع الدعم."
+      },
+      "documents": {
+         "allowedTypes": "يُسمح فقط بملفات PDF أو JPG أو JPEG أو PNG",
+         "current": "المستند الحالي",
+         "employment": "مستند تعيين الموظف",
+         "employmentFull": "مستند تعيين الموظف المفوّض بالتوقيع، أو أمر تعيين المدير التنفيذي",
+         "issuedAt": "تاريخ الإصدار",
+         "issuedBy": "الجهة المُصدرة",
+         "issuers": {
+            "mia": "وزارة الداخلية بكازاخستان",
+            "moj": "وزارة العدل بكازاخستان"
+         },
+         "legalEntity": "مستند تسجيل الشخصية القانونية",
+         "maxSize": "يجب ألا يتجاوز حجم الملف {{size}} ميغابايت",
+         "newFile": "ملف جديد · {{size}}",
+         "notUploaded": "لم يتم تحميل مستند حتى الآن",
+         "replace": "استبدال المستند",
+         "upload": "تحميل مستند"
+      },
+      "load": {
+         "failed": "تعذر تحميل الملف الشخصي"
+      },
+      "password": {
+         "current": "كلمة المرور الحالية",
+         "enterCurrent": "أدخل كلمة مرورك الحالية",
+         "enterNew": "أدخل كلمة مرور جديدة",
+         "new": "كلمة المرور الجديدة",
+         "repeatNew": "أعد إدخال كلمة المرور الجديدة"
+      },
+      "save": {
+         "failed": "تعذر تحديث الملف الشخصي",
+         "noChanges": "لا توجد تغييرات لحفظها",
+         "success": "تم تحديث الملف الشخصي بنجاح"
+      },
+      "sections": {
+         "company": "الشركة والبيانات المصرفية",
+         "companySubtitle": "بيانات الشركة وجهة الاتصال",
+         "deleteAccount": "حذف الحساب",
+         "documents": "مستندات التسجيل",
+         "password": "تغيير كلمة المرور"
+      },
+      "title": "الملف الشخصي"
+   },
+   "route": {
+      "addWaypoint": "+ نقطة وسيطة",
+      "addressDetecting": "جارٍ تحديد العنوان...",
+      "addressNotFound": "العنوان غير موجود",
+      "addressSearching": "جارٍ البحث عن العنوان...",
+      "clear": "مسح المسار",
+      "coordinates": "الإحداثيات: {{lat}}, {{lng}}",
+      "destinationNotSpecified": "الوجهة غير محددة",
+      "markerA": "أ",
+      "markerB": "ب",
+      "onMap": "على الخريطة",
+      "originNotSpecified": "نقطة الانطلاق غير محددة",
+      "pickOnMap": "حدد هذه النقطة وانقر على الخريطة",
+      "point": "النقطة {{index}}",
+      "pointA": "النقطة أ",
+      "pointB": "النقطة ب",
+      "pointType": "نوع النقطة",
+      "removeWaypoint": "إزالة النقطة الوسيطة {{index}}",
+      "validation": {
+         "coordinatesPoint": "حدد إحداثيات النقطة {{index}}: انقر على الخريطة",
+         "destinationRequired": "أدخل الوجهة",
+         "endBeforeStart": "لا يمكن أن يكون تاريخ الانتهاء قبل تاريخ البدء لهذه النقطة",
+         "endDateDestination": "أدخل تاريخ الانتهاء في نقطة الوجهة",
+         "endDateOrigin": "أدخل تاريخ الانتهاء في نقطة الانطلاق",
+         "endDatePoint": "أدخل تاريخ الانتهاء للنقطة {{index}}",
+         "originRequired": "أدخل نقطة الانطلاق",
+         "startBeforePrevEnd": "لا يمكن أن يكون تاريخ البدء قبل تاريخ انتهاء النقطة السابقة",
+         "startDateDestination": "أدخل تاريخ البدء في نقطة الوجهة",
+         "startDateOrigin": "أدخل تاريخ البدء في نقطة الانطلاق",
+         "startDatePoint": "أدخل تاريخ البدء للنقطة {{index}}"
+      },
+      "waypoint": "النقطة الوسيطة {{index}}",
+      "waypointHash": "النقطة الوسيطة رقم {{index}}"
+   },
+   "settings": {
+      "language": {
+         "description": "اختر اللغة المستخدمة في الواجهة والإشعارات.",
+         "label": "اللغة",
+         "saved": "تم تغيير لغة الواجهة",
+         "switcherLabel": "اختيار لغة الواجهة",
+         "title": "لغة الواجهة"
+      },
+      "languages": {
+         "ar": "العربية",
+         "de": "Deutsch",
+         "en": "English",
+         "kk": "Қазақша",
+         "ky": "Кыргызча",
+         "pt": "Português",
+         "ru": "Русский",
+         "tg": "Тоҳикӣ",
+         "uz": "O'zbekcha"
+      },
+      "title": "الإعدادات"
+   },
+   "sharedLead": {
+      "gone": "تم حذف الطلب أو إلغاء رابطه.",
+      "invalidLink": "الرابط غير صالح أو انتهت صلاحيته.",
+      "loading": "جارٍ تحميل تفاصيل الطلب...",
+      "notFound": "الصفحة المطلوبة غير موجودة. تحقق من نسخ الرابط بالكامل.",
+      "readOnly": "هذا عرض للقراءة فقط للطلب المشترَك عبر الرابط. التحرير غير متاح.",
+      "requestFailed": "تعذر تحميل تفاصيل الطلب. يرجى المحاولة لاحقًا.",
+      "title": "تفاصيل الطلب"
+   },
+   "support": {
+      "emailBody": "مرحبًا! لدي سؤال.",
+      "emailSubject": "طلب دعم",
+      "writeToChat": "فتح المحادثة"
+   },
+   "tenders": {
+      "bids": {
+         "amount": "قيمة العرض",
+         "chooseWinner": "اختيار الفائز",
+         "chooseWinnerFailed": "تعذر اختيار الفائز",
+         "choosing": "جارٍ الاختيار...",
+         "confirmChoice": "تأكيد الاختيار",
+         "confirmWinner": "هل أنت متأكد من رغبتك في اختيار هذا العرض كفائز؟",
+         "empty": "لا توجد عروض حتى الآن",
+         "irreversible": "لا يمكن التراجع عن هذا الإجراء.",
+         "participantUnknown": "المشارك غير محدد",
+         "showAll": "إظهار جميع العروض (+{{count}})",
+         "statusCancelled": "ملغى",
+         "statusWinning": "فائز",
+         "title": "العروض"
+      },
+      "countdown": {
+         "daysHours": "{{days}} يوم {{hours}} ساعة",
+         "hoursMinutes": "{{hours}} ساعة {{minutes}} دقيقة",
+         "minutes": "{{minutes}} دقيقة"
+      },
+      "create": {
+         "action": "إنشاء مزاد",
+         "confirm": "هل أنت متأكد من رغبتك في إنشاء مزاد لهذا الطلب؟",
+         "failed": "تعذر إنشاء المزاد",
+         "maxParticipants": "الحد الأقصى للمشاركين",
+         "privateHint": "حدد الوسطاء اللوجستيين الذين سيُدعون إلى المزاد الخاص",
+         "publicAuction": "مزاد عام",
+         "startAfterCreate": "بدء المزاد بعد إنشائه",
+         "title": "إنشاء مزاد"
+      },
+      "dates": {
+         "endAfterNow": "يجب أن يكون تاريخ الانتهاء بعد الوقت الحالي",
+         "endInvalid": "تاريخ انتهاء غير صحيح",
+         "endMin30Minutes": "يجب أن يكون تاريخ الانتهاء بعد 30 دقيقة على الأقل من تاريخ النشر",
+         "endRequired": "أدخل تاريخ الانتهاء",
+         "publicationDate": "تاريخ النشر",
+         "publicationInPast": "لا يمكن أن يكون تاريخ النشر في الماضي",
+         "publicationInvalid": "تاريخ نشر غير صحيح",
+         "publicationRequired": "أدخل تاريخ النشر"
+      },
+      "details": {
+         "audience": "الجمهور",
+         "audienceForwarders": "للوسطاء اللوجستيين",
+         "audienceShippers": "للشاحنين",
+         "bidsCountLabel": "العروض",
+         "cargoWeight": "وزن البضائع",
+         "editBlocked": "لا يمكن تحرير مزاد مغلق أو ملغى",
+         "info": "معلومات المزاد",
+         "loadFailed": "تعذر تحميل تفاصيل المزاد",
+         "loading": "جارٍ تحميل تفاصيل المزاد...",
+         "maxParticipantsShort": "الحد الأقصى للمشاركين",
+         "orderDocuments": "مستندات الطلب",
+         "participantsCountLabel": "المشاركون",
+         "publicationType": "نوع النشر",
+         "totalOrderPrice": "السعر الإجمالي للطلب"
+      },
+      "leadPicker": {
+         "cargoLabel": "البضائع: {{cargo}}",
+         "cargoWithMore": "{{type}} + {{count}} أخرى",
+         "destination": "إلى: {{to}}",
+         "forwarder": "الوسيط اللوجستي: {{name}}",
+         "hint": "حدد الطلب الذي يُنشأ هذا المزاد من أجله",
+         "notFound": "لم يتم العثور على طلبات",
+         "order": "الطلب",
+         "orderNumber": "الطلب رقم {{id}}",
+         "origin": "من: {{from}}",
+         "priceLabel": "السعر: {{price}}",
+         "searchFailed": "تعذر العثور على طلبات",
+         "searching": "جارٍ البحث عن طلبات...",
+         "sectionTitle": "اختيار الطلب",
+         "select": "حدد طلبًا",
+         "selectAction": "اختيار طلب"
+      },
+      "loadFailed": "تعذر تحميل المزادات",
+      "manage": {
+         "cancel": "إلغاء المزاد",
+         "cancelConfirm": "هل أنت متأكد من رغبتك في إلغاء هذا المزاد؟ بعد الإلغاء، سيصبح غير متاح للمشاركين.",
+         "cancelFailed": "تعذر إلغاء المزاد",
+         "cancelling": "جارٍ الإلغاء...",
+         "delete": "حذف المزاد",
+         "deleteConfirm": "هل أنت متأكد من رغبتك في حذف هذا المزاد؟ لا يمكن التراجع عن هذا الإجراء.",
+         "deleteFailed": "تعذر حذف المزاد",
+         "saveFailed": "تعذر حفظ تغييرات المزاد",
+         "start": "بدء المزاد",
+         "startFailed": "تعذر بدء المزاد"
+      },
+      "notFound": "لم يتم العثور على مزادات",
+      "participantCount_one": "{{count}} مشارك",
+      "participantCount_other": "{{count}} مشاركين",
+      "participants": {
+         "add": "إضافة مشارك",
+         "addFailed": "تعذر إضافة المشاركين",
+         "added": "تمت الإضافة: {{date}}",
+         "bin": "الرقم التعريفي: {{bin}}",
+         "empty": "لم يُضَف مشاركون حتى الآن",
+         "loading": "جارٍ تحميل المشاركين...",
+         "remove": "إزالة المشارك",
+         "removeFailed": "تعذر إزالة المشارك",
+         "searching": "جارٍ البحث عن وسطاء لوجستيين...",
+         "title": "المشاركون"
+      },
+      "searchPlaceholder": "أدخل مدينة أو بضائع أو اتجاهًا",
+      "stopCount_one": "{{count}} توقف",
+      "stopCount_other": "{{count}} توقفات",
+      "subtitle": "مزادات طلبات الشحن",
+      "title": "المزادات",
+      "titleSingular": "المزاد",
+      "validation": {
+         "maxParticipantsNegative": "لا يمكن أن يكون الحد الأقصى للمشاركين أقل من 0",
+         "privateNeedsForwarder": "حدد وسيطًا لوجستيًا واحدًا على الأقل للمزاد الخاص"
+      },
+      "viewToggle": "تبديل عرض المزادات"
+   },
+   "tnved": {
+      "code": "الرمز",
+      "codeNotFound": "الرمز غير موجود",
+      "searchPlaceholder": "البحث بالرمز أو الاسم",
+      "title": "رموز التصنيف الجمركي"
+   },
+   "validation": {
+      "bik": "يجب أن يتكون الرمز المصرفي من 8 أحرف",
+      "bin": "يجب أن يتكون الرقم التعريفي من 12 رقمًا",
+      "companyBinRequired": "أدخل الرقم التعريفي للشركة",
+      "companyNameRequired": "أدخل اسم الشركة",
+      "dateNotInFuture": "لا يمكن أن يكون التاريخ بعد اليوم",
+      "dateNotInPast": "لا يمكن أن يكون التاريخ قبل اليوم",
+      "documentIssueDateRequired": "أدخل تاريخ إصدار المستند",
+      "documentIssuedByRequired": "أدخل الجهة المُصدرة للمستند",
+      "email": "عنوان بريد إلكتروني غير صحيح",
+      "emailRequired": "أدخل عنوان بريد إلكتروني",
+      "iikFormat": "الصيغة: KZ + 18 حرفًا",
+      "iin": "يجب أن يتكون الرقم التعريفي الشخصي من 12 رقمًا",
+      "iinRequired": "أدخل الرقم التعريفي الشخصي",
+      "max100": "بحد أقصى 100 حرف",
+      "max50": "بحد أقصى 50 حرفًا",
+      "min3": "3 أحرف على الأقل",
+      "min6": "6 أحرف على الأقل",
+      "passwordsMismatch": "كلمتا المرور غير متطابقتين",
+      "phone": "صيغة رقم هاتف غير صحيحة",
+      "phoneRequired": "أدخل رقم هاتف",
+      "range2to100": "من 2 إلى 100 حرف",
+      "range2to255": "من 2 إلى 255 حرفًا",
+      "representativeRequired": "أدخل اسم الممثل"
+   },
+   "verification": {
+      "banner": "يرجى تأكيد عنوان بريدك الإلكتروني. انقر على هذا الإشعار لإعادة إرسال الرسالة.",
+      "checkFailed": "تعذر التحقق من حالة البريد الإلكتروني",
+      "checking": "جارٍ التحقق من حالة البريد الإلكتروني…",
+      "cooldown": "بعد {{seconds}} ثانية",
+      "emailConfirmed": "تم تأكيد البريد الإلكتروني",
+      "emailNotConfirmed": "لم يتم تأكيد البريد الإلكتروني",
+      "hint": "سنرسل رابط تأكيد إلى عنوان بريدك الإلكتروني.",
+      "resendAvailable": "ستتمكن من إعادة الإرسال بعد {{seconds}} ثانية.",
+      "sendFailed": "تعذر إرسال رسالة التأكيد",
+      "sent": "تم إرسال رسالة التأكيد. يرجى التحقق من بريدك الوارد."
+   }
+}

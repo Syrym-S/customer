@@ -1,6 +1,12 @@
-export const SUPPORTED_LANGUAGES = ["ru", "kk", "en"];
+export const SUPPORTED_LANGUAGES = ["ru", "kk", "en", "de", "uz", "ky", "tg", "pt", "ar"];
 
 export const DEFAULT_LANGUAGE = "ru";
+
+export const RTL_LANGUAGES = ["ar"];
+
+export function getLanguageDirection(language) {
+  return RTL_LANGUAGES.includes(language) ? "rtl" : "ltr";
+}
 
 const STORAGE_KEY = "customer.language";
 

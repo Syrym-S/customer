@@ -1,0 +1,1404 @@
+{
+   "accountBan": {
+      "contactSupport": "Contatar o suporte",
+      "logout": "Sair da conta",
+      "text": "O acesso ao espaço de trabalho está temporariamente restrito. Você não pode criar pedidos, participar de leilões ou realizar outras ações no sistema.",
+      "title": "Conta bloqueada"
+   },
+   "chat": {
+      "attachments": {
+         "allowedTypes": "São permitidas apenas imagens (JPG, PNG, WEBP), PDF, DOC(X) ou XLS(X)",
+         "attach": "Anexar arquivo",
+         "closeImage": "Fechar visualização da imagem",
+         "fileDownloadFailed": "Não foi possível baixar o arquivo “{{name}}”",
+         "fileLoadFailed": "Não foi possível carregar o arquivo “{{name}}”",
+         "imageLoadFailed": "Não foi possível carregar a imagem",
+         "label": "Anexo",
+         "loadFailed": "Falha ao carregar",
+         "maxCount": "Você pode anexar no máximo {{count}} arquivos a uma mensagem",
+         "maxSize": "O arquivo não deve exceder {{size}} MB",
+         "remove": "Remover o arquivo {{name}}",
+         "view": "Visualizar anexo"
+      },
+      "backToList": "Voltar à lista de chats",
+      "close": "Fechar chat",
+      "conversationStart": "Início da conversa",
+      "empty": "Nenhum chat ativo",
+      "load": {
+         "deliveryFailed": "Não foi possível carregar o chat da entrega",
+         "factoringFailed": "Não foi possível carregar o chat do factoring",
+         "leadFailed": "Não foi possível carregar o chat do pedido",
+         "listFailed": "Não foi possível carregar os chats",
+         "moreFailed": "Não foi possível carregar mais chats",
+         "participantsFailed": "Não foi possível carregar os participantes do chat ({{type}}) {{id}}",
+         "supportFailed": "Não foi possível carregar o chat de suporte"
+      },
+      "message": {
+         "cancelEdit": "Cancelar edição",
+         "delete": "Excluir mensagem",
+         "deleteConfirm": "A mensagem será excluída permanentemente. Continuar?",
+         "deleteFailed": "Não foi possível excluir a mensagem",
+         "deleted": "A mensagem foi excluída",
+         "edit": "Editar mensagem",
+         "editFailed": "Não foi possível editar a mensagem",
+         "placeholder": "Mensagem...",
+         "read": "Lida",
+         "send": "Enviar mensagem",
+         "sendFailed": "Não foi possível enviar a mensagem"
+      },
+      "open": "Abrir chat",
+      "participant": "Participante",
+      "participantLabel": "Participante do chat",
+      "refreshList": "Atualizar lista de chats",
+      "requisites": {
+         "title": "Dados bancários"
+      },
+      "time": {
+         "days": "{{count}} d",
+         "hours": "{{count}} h",
+         "justNow": "agora mesmo",
+         "minutes": "{{count}} min",
+         "yesterday": "ontem"
+      },
+      "title": "Chats",
+      "types": {
+         "delivery": "Entrega",
+         "deliveryNumber": "Entrega nº {{id}}",
+         "factoringNumber": "Factoring nº {{id}}",
+         "orderNumber": "Pedido nº {{id}}",
+         "support": "Suporte",
+         "supportFull": "Suporte técnico"
+      }
+   },
+   "common": {
+      "actions": {
+         "add": "Adicionar",
+         "adding": "Adicionando...",
+         "addingShort": "Adicionando...",
+         "back": "Voltar",
+         "cancel": "Cancelar",
+         "clear": "Limpar",
+         "close": "Fechar",
+         "confirm": "Confirmar",
+         "continue": "Continuar",
+         "copied": "Copiado",
+         "copy": "Copiar",
+         "copyNumber": "Copiar número",
+         "create": "Criar",
+         "creating": "Criando...",
+         "creatingProcess": "Criando...",
+         "delete": "Excluir",
+         "deleting": "Excluindo...",
+         "download": "Baixar",
+         "edit": "Editar",
+         "goTo": "Ir",
+         "gotIt": "Entendi",
+         "hide": "Ocultar",
+         "next": "Avançar",
+         "openInNewTab": "Abrir em nova aba",
+         "preview": "Pré-visualizar",
+         "refresh": "Atualizar",
+         "remove": "Remover",
+         "retry": "Repetir",
+         "retryAttempt": "Tentar novamente",
+         "save": "Salvar",
+         "saveChanges": "Salvar alterações",
+         "saving": "Salvando...",
+         "select": "Selecionar",
+         "selected": "Selecionado: {{count}}",
+         "send": "Enviar",
+         "sending": "Enviando...",
+         "sendingShort": "Enviando...",
+         "share": "Compartilhar",
+         "showAll": "Mostrar todos (+{{count}})",
+         "sign": "Assinar",
+         "yes": "Sim"
+      },
+      "cargoCount_one": "{{count}} item de carga",
+      "cargoCount_other": "{{count}} itens de carga",
+      "documents": {
+         "add": "Adicionar documento",
+         "empty": "Nenhum documento adicionado",
+         "fileSelected": "Arquivo selecionado"
+      },
+      "empty": {
+         "addressNotSpecified": "Endereço não informado",
+         "binNotSpecified": "BIN não informado",
+         "canLeaveBlank": "Pode ficar em branco",
+         "cargoNotSpecified": "Carga não informada",
+         "companyNotSpecified": "Empresa não informada",
+         "contactDataNotSpecified": "Sem dados de contato",
+         "contactsNotSpecified": "Sem contatos",
+         "dataNotFilled": "Dados não preenchidos",
+         "dateNotSpecified": "Data não informada",
+         "descriptionNotSpecified": "Sem descrição",
+         "fullNameNotSpecified": "Nome não informado",
+         "invalidData": "Dados inválidos",
+         "invalidDate": "Data inválida",
+         "nameNotSpecified": "Nome não informado",
+         "noCompany": "Sem empresa",
+         "noData": "Sem dados",
+         "noFullName": "Sem nome",
+         "noName": "Sem nome",
+         "notAdded": "Não adicionado",
+         "notAssigned": "Não atribuído",
+         "notSelected": "Não selecionado",
+         "notSpecifiedM": "Não informado",
+         "notSpecifiedN": "Não informado",
+         "nothingFound": "Nada encontrado",
+         "optional": "Opcional",
+         "priceNotSpecified": "Preço não informado",
+         "typeNotSpecified": "Tipo não informado",
+         "unknown": "Desconhecido",
+         "unlimited": "Ilimitado"
+      },
+      "fields": {
+         "actions": "Ações",
+         "amount": "Valor",
+         "bankName": "Nome do banco",
+         "bik": "BIC",
+         "bin": "BIN",
+         "binValue": "BIN: {{bin}}",
+         "bodyType": "Tipo de carroceria",
+         "cargo": "Carga",
+         "cargoCountLabel": "Itens de carga",
+         "cargoName": "Nome da carga",
+         "cargoPrice": "Preço da carga",
+         "cargoType": "Tipo de carga",
+         "cargos": "Cargas",
+         "comment": "Comentário",
+         "company": "Empresa",
+         "companyAddress": "Endereço da empresa",
+         "companyBin": "BIN da empresa",
+         "companyName": "Nome da empresa",
+         "contactPerson": "Pessoa de contato",
+         "currency": "Moeda",
+         "customer": "Cliente",
+         "date": "Data",
+         "dateFrom": "Data de início",
+         "dateTo": "Data final",
+         "description": "Descrição",
+         "destination": "Para",
+         "dimensions": "Dimensões",
+         "direction": "Direção",
+         "document": "Documento",
+         "documentName": "Nome do documento",
+         "documentNumber": "Número do documento",
+         "documents": "Documentos",
+         "driver": "Motorista",
+         "email": "E-mail",
+         "endDate": "Data final",
+         "executionPrice": "Preço de execução",
+         "factor": "Factor",
+         "file": "Arquivo",
+         "files": "Arquivos",
+         "forwarder": "Transportador",
+         "forwarderBin": "BIN do transportador",
+         "forwarderFullName": "Nome do transportador",
+         "forwarderIin": "IIN do transportador",
+         "from": "De",
+         "fullName": "Nome completo",
+         "gracePeriod": "Prazo de carência",
+         "gracePeriodDays": "Prazo de carência, dias",
+         "heightCm": "Altura, cm",
+         "iik": "IBAN",
+         "iin": "IIN",
+         "international": "Transporte internacional",
+         "issuingCountry": "País emissor",
+         "legalAddress": "Endereço registrado",
+         "lengthCm": "Comprimento, cm",
+         "loadingType": "Tipo de carregamento",
+         "manufacturer": "Fabricante",
+         "name": "Nome",
+         "number": "Número",
+         "origin": "De",
+         "packagingType": "Tipo de embalagem",
+         "participants": "Participantes",
+         "password": "Senha",
+         "phone": "Telefone",
+         "price": "Preço",
+         "quantity": "Quantidade",
+         "route": "Rota",
+         "settlementAccount": "Conta bancária",
+         "shipments": "Transportes",
+         "startDate": "Data de início",
+         "status": "Status",
+         "timeLeft": "Tempo restante",
+         "title": "Nome",
+         "tnvedCode": "Código HS",
+         "to": "Até",
+         "transportParams": "Parâmetros de transporte",
+         "transportType": "Tipo de veículo",
+         "type": "Tipo",
+         "vat": "IVA",
+         "volume": "Volume",
+         "volumeM3": "Volume, m³",
+         "weight": "Peso",
+         "weightKg": "Peso, kg",
+         "widthCm": "Largura, cm",
+         "withVat": "com IVA",
+         "withoutVat": "sem IVA"
+      },
+      "filePreview": {
+         "documentNotFound": "Documento não encontrado",
+         "noFile": "Não há arquivo para pré-visualização deste documento",
+         "unsupported": "A pré-visualização ainda não é suportada para este tipo de arquivo",
+         "unsupportedType": "A pré-visualização de arquivos {{mime}} não é suportada"
+      },
+      "forwarderPicker": {
+         "clickToLoad": "Clique para carregar os transportadores",
+         "detailsLoadFailed": "Não foi possível carregar os dados do transportador",
+         "loadFailed": "Não foi possível carregar os transportadores",
+         "loading": "Carregando transportadores...",
+         "notFound": "Nenhum transportador encontrado",
+         "searchByCompany": "Digite o nome da empresa ou o BIN",
+         "searchHint": "Digite o nome, IIN, empresa, BIN ou número de telefone"
+      },
+      "loading": {
+         "default": "Carregando...",
+         "list": "Carregando lista...",
+         "map": "Carregando mapa...",
+         "preview": "Carregando pré-visualização..."
+      },
+      "search": {
+         "byDirection": "Buscar por direção",
+         "minChars": "Digite pelo menos 2 caracteres"
+      },
+      "severity": {
+         "error": "Erro",
+         "info": "Informação",
+         "notice": "Notificação",
+         "success": "Sucesso",
+         "warning": "Aviso"
+      },
+      "shipmentCount_one": "{{count}} transporte",
+      "shipmentCount_other": "{{count}} transportes",
+      "signing": {
+         "keepPageOpen": "Não fecha esta página — a janela de assinatura está aberta em uma nova aba. O status será atualizado automaticamente.",
+         "opening": "Abrindo a página de assinatura...",
+         "thisLink": "este link",
+         "unavailable": "O serviço de assinatura está indisponível, tente novamente mais tarde",
+         "waiting": "Aguardando a assinatura...",
+         "windowHint": "Se a janela de assinatura não abriu automaticamente, abra-a através de"
+      },
+      "units": {
+         "bytes": "{{value}} B",
+         "cargoSummary": "{{cargoCount}} · {{weight}} kg",
+         "days": "{{count}} d.",
+         "dimensionsCm": "{{length}} × {{width}} × {{height}} cm",
+         "kg": "{{value}} kg",
+         "kilobytes": "{{value}} KB",
+         "km": "km",
+         "m3": "{{value}} m³",
+         "megabytes": "{{value}} MB"
+      },
+      "view": {
+         "cards": "Cartões",
+         "showAsCards": "Mostrar como cartões",
+         "showAsTable": "Mostrar como tabela",
+         "table": "Tabela"
+      },
+      "waypointCount_one": "{{count}} ponto",
+      "waypointCount_other": "{{count}} pontos"
+   },
+   "complaints": {
+      "answer": {
+         "label": "Resposta",
+         "notAdded": "Ainda não há resposta",
+         "pending": "Ainda não há resposta da administração",
+         "rejected": "A reclamação foi rejeitada",
+         "title": "Resposta da administração"
+      },
+      "attachments": {
+         "allowedTypes": "São permitidas apenas imagens, vídeos, PDF ou DOCX",
+         "attach": "Anexar arquivos",
+         "limits": "No máximo {{count}} arquivos, até {{size}} MB cada",
+         "maxCount": "Você pode anexar no máximo {{count}} arquivos",
+         "maxSize": "O arquivo não deve exceder {{size}} MB",
+         "removeFile": "Remover arquivo"
+      },
+      "create": {
+         "action": "Registrar reclamação",
+         "describePlaceholder": "Descreva o que aconteceu",
+         "failed": "Não foi possível enviar a reclamação",
+         "maxLength": "A descrição não deve exceder {{count}} caracteres",
+         "subject": "Assunto da reclamação",
+         "subjectPlaceholder": "Descreva a reclamação",
+         "submit": "Enviar reclamação"
+      },
+      "emptyLast30Days": "Nenhuma reclamação nos últimos 30 dias",
+      "loadFailed": "Não foi possível carregar as reclamações",
+      "notFound": "Nenhuma reclamação encontrada",
+      "subtitle": "Reclamações dos últimos 30 dias e respostas da administração",
+      "target": {
+         "empty": "Nenhum transporte ou factoring nos últimos 30 dias",
+         "label": "Relacionado a",
+         "loadFailed": "Não foi possível carregar a lista",
+         "question": "A qual transporte ou factoring esta reclamação se refere"
+      },
+      "title": "Reclamações",
+      "titleSingular": "Reclamação",
+      "viewToggle": "Alternar visualização das reclamações"
+   },
+   "contractGate": {
+      "fillProfile": "Preencha os dados no seu perfil",
+      "goToProfile": "Ir para o perfil",
+      "noContracts": "Você não tem contratos, ou o prazo de assinatura expirou",
+      "signContract": "Assinar contrato"
+   },
+   "createLead": {
+      "cargo": {
+         "description": "Descrição da carga",
+         "validation": {
+            "cargoPriceNegative": "O preço da carga não pode ser negativo",
+            "gracePeriodRange": "Digite um valor entre 1 e 364 dias",
+            "heightPositive": "A altura deve ser maior que 0",
+            "lengthPositive": "O comprimento deve ser maior que 0",
+            "nameRequired": "Digite o nome da carga",
+            "priceNegative": "O preço não pode ser negativo",
+            "tnvedRequired": "Digite um código HS",
+            "volumePositive": "O volume deve ser maior que 0",
+            "weightPositive": "O peso deve ser maior que 0",
+            "widthPositive": "A largura deve ser maior que 0"
+         },
+         "withVat": "Com IVA"
+      },
+      "customer": {
+         "current": "Cliente atual",
+         "required": "Selecione um cliente"
+      },
+      "forwarder": {
+         "hint": "Encontre e selecione o transportador que será designado para esta rota",
+         "loadingDetails": "Carregando os dados do transportador...",
+         "skippable": "Você pode pular esta etapa e criar o pedido sem transportador"
+      },
+      "result": {
+         "createError": "Erro ao criar",
+         "createFailed": "Não foi possível criar o pedido",
+         "created": "Pedido criado",
+         "createdSuccess": "O pedido foi criado com sucesso",
+         "createdSuccessWithId": "O pedido foi criado com sucesso: {{id}}",
+         "createdWithDocumentErrors": "O pedido foi criado, mas alguns documentos não puderam ser enviados",
+         "draftSaveFailed": "Não foi possível salvar o rascunho",
+         "draftSaved": "Rascunho salvo",
+         "saveError": "Erro ao salvar",
+         "savedAsDraft": "O pedido foi salvo como rascunho"
+      },
+      "saveDraft": "Salvar como rascunho",
+      "skipVideoRecording": "Pular gravação de vídeo de carga/descarga",
+      "step": "Etapa {{current}} de {{total}}",
+      "steps": {
+         "cargo": "Carga e pagamento",
+         "confirm": "Revisão",
+         "confirmTitle": "Revise os dados",
+         "customer": "Dados do cliente",
+         "documents": "Documentos",
+         "forwarder": "Escolher transportador",
+         "route": "Rota"
+      },
+      "submit": "Criar pedido",
+      "subtitle": "Preencha os dados da solicitação",
+      "title": "Criar pedido"
+   },
+   "dashboard": {
+      "analytics": {
+         "amountAxis": "Valor, {{currency}}",
+         "emergencyCount": "Emergências: {{count}}",
+         "emptyPeriod": "Nenhum dado para o período selecionado",
+         "loadFailed": "Não foi possível carregar a análise de transportes",
+         "noShipmentsPeriod": "Nenhum transporte no período selecionado",
+         "shipmentNumber": "Nº do transporte",
+         "title": "Dinâmica dos transportes",
+         "trips": "viagens"
+      },
+      "factorings": {
+         "loading": "Carregando factoring...",
+         "number": "Factoring nº {{id}}",
+         "title": "Lista de factoring"
+      },
+      "groupBy": {
+         "day": "Por dia",
+         "month": "Por mês",
+         "quarter": "Por trimestre",
+         "week": "Por semana"
+      },
+      "leads": {
+         "empty": "Ainda não há pedidos ativos",
+         "loading": "Carregando pedidos...",
+         "mapHint": "Selecione um pedido para destacar sua rota no mapa",
+         "orderNumber": "Pedido nº {{num}}",
+         "title": "Pedidos ativos"
+      },
+      "period": {
+         "action": "Selecionar período",
+         "compare": "Comparar com o período anterior",
+         "halfYear": "Semestre",
+         "month": "Mês",
+         "quarter": "Trimestre",
+         "title": "Selecionar período",
+         "week": "Semana",
+         "year": "Ano"
+      },
+      "saleCount_one": "{{count}} venda",
+      "saleCount_other": "{{count}} vendas",
+      "stats": {
+         "active": "Ativo",
+         "activeFactoringSales": "Vendas de factoring ativas",
+         "activeShipments": "Transportes ativos",
+         "activeTenders": "Leilões ativos",
+         "amounts": "Valores",
+         "factoringSales": "Vendas de factoring",
+         "factoringSalesPeriod": "Período de vendas de factoring",
+         "forPeriod": "Para o período",
+         "loadFailed": "Não foi possível carregar as estatísticas",
+         "shipmentsPeriod": "Período de transportes",
+         "showAllCurrencies": "Mostrar todas as moedas",
+         "title": "Estatísticas",
+         "today": "Hoje",
+         "viewMode": "Modo de exibição das estatísticas"
+      },
+      "tenderCount_one": "{{count}} leilão",
+      "tenderCount_other": "{{count}} leilões",
+      "tenders": {
+         "bids": "Lances: {{count}}",
+         "loading": "Carregando leilões...",
+         "number": "Leilão nº {{id}}",
+         "private": "Privado",
+         "privateEmpty": "Ainda não há leilões privados",
+         "public": "Público",
+         "publicEmpty": "Ainda não há leilões públicos",
+         "title": "Lista de leilões"
+      },
+      "title": "Painel",
+      "totalCargoWeight": "{{value}} kg"
+   },
+   "enums": {
+      "complaintStatus": {
+         "answered": "Respondido",
+         "in_progress": "Em andamento",
+         "pending_answer": "Aguardando resposta",
+         "pending_review": "Aguardando análise",
+         "rejected": "Rejeitada",
+         "rejectedN": "Rejeitada",
+         "resolved": "Resolvida"
+      },
+      "complaintTarget": {
+         "factoring": "Factoring",
+         "shipment": "Transporte"
+      },
+      "factoringLine": {
+         "closed": "Linha fechada",
+         "open": "Linha aberta"
+      },
+      "factoringStatus": {
+         "await_paid": "Aguardando pagamento",
+         "cancelled": "Cancelado",
+         "finished": "Concluído",
+         "new": "Novo",
+         "verified_participant": "Parcialmente confirmado"
+      },
+      "leadStatus": {
+         "add_driver": "Motorista adicionado",
+         "cancelled": "Cancelado",
+         "draft": "Rascunho",
+         "emergency_situation": "Emergência",
+         "finished": "Concluído",
+         "finished_emergency_situation": "Concluído (emergência)",
+         "new": "Novo",
+         "sign_avr": "Assinando o termo de recebimento",
+         "start_driver": "Viagem iniciada",
+         "start_loading": "Carregamento",
+         "start_unloading": "Descarregamento",
+         "verification_loading": "Carregamento confirmado",
+         "verification_unloading": "Descarregamento confirmado"
+      },
+      "leadStatusFilter": {
+         "all": "Todos os status",
+         "cancelled": "Cancelado",
+         "driverAssigned": "Motorista designado",
+         "driverDeparted": "Motorista saiu",
+         "finished": "Concluído",
+         "inTransit": "Em trânsito",
+         "new": "Novo",
+         "other": "Outro"
+      },
+      "manufacturerStatus": {
+         "attached": "Vinculado",
+         "incomingRequest": "Solicitação recebida",
+         "notAttached": "Não vinculado",
+         "requestSent": "Solicitação enviada"
+      },
+      "participantType": {
+         "forwarder": "Transportador"
+      },
+      "publicationType": {
+         "private": "Privado",
+         "public": "Público"
+      },
+      "signature": {
+         "notSigned": "Não assinado",
+         "notSignedM": "Não assinado",
+         "signed": "Assinado",
+         "signedM": "Assinado"
+      },
+      "tenderStatus": {
+         "active": "Ativo",
+         "cancelled": "Cancelado",
+         "closed": "Fechado",
+         "finished": "Concluído",
+         "new": "Novo"
+      },
+      "verification": {
+         "confirmed": "Confirmado",
+         "notConfirmed": "Não confirmado"
+      },
+      "verificationCheck": {
+         "notPassed": "Não aprovado",
+         "passed": "Aprovado",
+         "passedMark": "✓ Aprovado"
+      },
+      "waypointType": {
+         "check_passes": "Trânsito",
+         "loading": "Carregamento",
+         "unloading": "Descarregamento"
+      }
+   },
+   "errorPage": {
+      "title": "Algo deu errado",
+      "unexpectedReload": "Ocorreu um erro inesperado. Atualize a página ou tente novamente mais tarde."
+   },
+   "errors": {
+      "factoringNotFound": "Factoring não encontrado",
+      "generic": "Algo deu errado",
+      "genericSupport": "Algo deu errado. Entre em contato com o suporte.",
+      "leadNotFound": "Pedido não encontrado",
+      "notFound": "A página solicitada não foi encontrada.",
+      "server": "Ocorreu um erro no servidor. Tente novamente mais tarde.",
+      "unexpected": "Ocorreu um erro inesperado."
+   },
+   "exportReport": {
+      "action": "Exportar relatório",
+      "dateOrder": "A data “de” não pode ser posterior à data “até”",
+      "failed": "Não foi possível exportar o relatório. Tente novamente mais tarde",
+      "hint": "Apenas os transportes concluídos dentro do período selecionado serão incluídos.",
+      "inProgress": "Exportando...",
+      "submit": "Exportar"
+   },
+   "factorings": {
+      "cancel": {
+         "action": "Cancelar factoring",
+         "confirm": "Tem certeza de que deseja cancelar este factoring? Esta ação não pode ser desfeita.",
+         "failed": "Não foi possível cancelar o factoring",
+         "inProgress": "Cancelando o factoring…"
+      },
+      "chat": {
+         "action": "Chat",
+         "leadNotResolved": "Não foi possível identificar o pedido vinculado a este factoring",
+         "openFailed": "Não foi possível abrir o chat do factoring"
+      },
+      "confirmParticipation": {
+         "openFailed": "Não foi possível abrir a janela de assinatura",
+         "opening": "Abrindo a janela de assinatura...",
+         "text": "Deseja confirmar sua participação neste factoring? Você será redirecionado para a janela de assinatura de documentos.",
+         "title": "Confirmar participação"
+      },
+      "confirmations": {
+         "confirmedByCustomer": "Confirmado pelo cliente",
+         "customer": "Confirmação do cliente",
+         "date": "Data de confirmação",
+         "factor": "Confirmação do factor",
+         "factorStatus": "Factor: {{status}}",
+         "forwarder": "Confirmação do transportador",
+         "forwarderStatus": "Transportador: {{status}}",
+         "subtitle": "Status de confirmação de cada parte",
+         "title": "Confirmações",
+         "you": "Você",
+         "youStatus": "Você: {{status}}"
+      },
+      "details": {
+         "cargoSection": "Carga e parâmetros de transporte",
+         "createdAt": "Criado em",
+         "loadFailed": "Não foi possível carregar os detalhes do factoring",
+         "loading": "Carregando os detalhes do factoring...",
+         "main": "Informações gerais",
+         "mainSubtitle": "Número da solicitação, data de criação e pedido vinculado",
+         "number": "Factoring nº {{id}}",
+         "title": "Detalhes do factoring"
+      },
+      "finance": {
+         "creditAmount": "Valor do crédito",
+         "debtAmount": "Valor a receber",
+         "debtCurrency": "Moeda do valor a receber",
+         "factoringCurrency": "Moeda do factoring",
+         "factoringRate": "Taxa do factoring",
+         "serviceRate": "Taxa de serviço",
+         "subtitle": "Valores, moeda e taxa do factoring",
+         "title": "Financeiro"
+      },
+      "line": {
+         "contractNote": "Entre o transportador e o factor, já assinado por ambas as partes",
+         "contractTitle": "Contrato da linha de factoring",
+         "signStartFailed": "Não foi possível iniciar a assinatura da linha de factoring",
+         "timeout": "O prazo de assinatura da linha de factoring expirou, tente novamente",
+         "waitForParties": "Você poderá assinar depois que o transportador e o factor assinarem.",
+         "yourSignature": "Linha de factoring (sua assinatura)"
+      },
+      "loadFailed": "Não foi possível carregar as compras de factoring",
+      "notFound": "Nenhuma compra de factoring encontrada",
+      "participants": {
+         "customerLoadFailed": "Não foi possível carregar os dados do cliente",
+         "subtitle": "Todos os participantes do factoring"
+      },
+      "purchasesTitle": "Compras de factoring",
+      "requisites": {
+         "loadFailed": "Não foi possível carregar os dados bancários do cliente",
+         "title": "Dados das partes"
+      },
+      "subtitle": "Solicitações de factoring",
+      "title": "Factoring",
+      "titleSingular": "Factoring",
+      "viewToggle": "Alternar visualização do factoring"
+   },
+   "forwarders": {
+      "invite": {
+         "action": "Convidar transportador",
+         "copyLink": "Copiar link",
+         "create": "Criar convite",
+         "createFailed": "Não foi possível criar o convite",
+         "created": "O convite foi criado",
+         "link": "Link de convite",
+         "linkCopied": "O link foi copiado",
+         "noActiveLink": "Nenhum link ativo",
+         "success": "O transportador foi criado. Envie o link para que ele conclua o preenchimento dos dados.",
+         "title": "Convite"
+      },
+      "issuingCountry": "País emissor do documento",
+      "notFound": "Nenhum transportador encontrado",
+      "registered": "Registrado",
+      "representative": "Representante",
+      "searchPlaceholder": "Buscar transportador",
+      "sections": {
+         "company": "Dados do transportador — empresa",
+         "contact": "Dados da pessoa de contato",
+         "requisites": "Dados bancários do transportador"
+      },
+      "subtitle": "Lista completa de transportadores",
+      "title": "Transportadores",
+      "viewToggle": "Alternar visualização dos transportadores"
+   },
+   "header": {
+      "closeMenu": "Fechar menu",
+      "logout": {
+         "action": "Sair",
+         "confirm": "Tem certeza de que deseja sair?",
+         "failed": "Não foi possível sair",
+         "fromAccount": "Sair da conta",
+         "inProgress": "Saindo...",
+         "title": "Sair"
+      },
+      "needHelp": "Precisa de ajuda?",
+      "settings": "Configurações",
+      "supportAvailable": "Nossa equipe de suporte está disponível 24/7",
+      "user": "Usuário",
+      "userProfile": "Perfil de {{email}}"
+   },
+   "kgd": {
+      "loadFailed": "Não foi possível carregar os dados da autoridade fiscal",
+      "taxationMode": "Regime de tributação"
+   },
+   "leads": {
+      "avr": {
+         "checking": "Verificando o status do termo...",
+         "clickToDownload": "Clique para baixar",
+         "customerSignature": "Assinatura do cliente",
+         "devSimulateForwarder": "[dev] Simular a assinatura do transportador",
+         "forwarderSignature": "Assinatura do transportador",
+         "notReady": "O documento do termo ainda não está pronto, tente novamente mais tarde",
+         "signStartFailed": "Não foi possível iniciar a assinatura do termo",
+         "statusLoadFailed": "Não foi possível carregar o status do termo",
+         "timeout": "O prazo de assinatura do termo expirou, tente novamente",
+         "title": "Termo de recebimento",
+         "titleShort": "Termo de recebimento",
+         "unavailable": "O documento do termo ainda não está disponível, tente novamente mais tarde",
+         "waitForForwarder": "Você poderá assinar o termo depois que o transportador assinar."
+      },
+      "cargo": {
+         "add": "Adicionar carga",
+         "deleteConfirm": "Excluir a carga nº {{index}}?",
+         "deleteFailed": "Não foi possível excluir a carga",
+         "itemNumber": "Carga nº {{index}}",
+         "priceSetByForwarder": "O preço foi definido pelo transportador",
+         "volumeM3Value": "{{value}} m³"
+      },
+      "chat": {
+         "withDriver": "Chat com o motorista",
+         "withForwarder": "Chat com o transportador"
+      },
+      "details": {
+         "driverComment": "Comentário do motorista: {{comment}}",
+         "info": "Detalhes do pedido",
+         "loadFailed": "Não foi possível carregar o pedido",
+         "loading": "Carregando os detalhes do pedido...",
+         "noCustomer": "Sem cliente",
+         "notResolved": "Não foi possível identificar o pedido",
+         "number": "Pedido nº {{num}}",
+         "ownerNotSpecified": "Nenhum responsável informado",
+         "refreshFailed": "Não foi possível obter os dados atualizados do pedido",
+         "saveFailed": "Não foi possível salvar as alterações",
+         "shipmentNumber": "Transporte nº {{num}}",
+         "subtitle": "Dados detalhados da solicitação",
+         "videoDisabled": "Gravação de vídeo desativada"
+      },
+      "documents": {
+         "deleteFailed": "Não foi possível excluir o documento",
+         "deleteTargetMissing": "Não foi possível identificar o arquivo a excluir",
+         "loadFailed": "Não foi possível carregar os documentos",
+         "ownFilesOnly": "Apenas os próprios arquivos do cliente podem ser excluídos",
+         "singleLoadFailed": "Não foi possível carregar o documento"
+      },
+      "edit": {
+         "blockedEmergency": "Um pedido em situação de emergência não pode ser editado",
+         "blockedFinished": "Um pedido concluído ou cancelado não pode ser editado",
+         "blockedFinishedEmergency": "Um pedido concluído em situação de emergência não pode ser editado"
+      },
+      "empty": "Nenhum pedido",
+      "forwarder": {
+         "lockedByTender": "O transportador foi designado pelo resultado do leilão e não pode ser alterado",
+         "notAssigned": "Nenhum transportador designado"
+      },
+      "loadFailed": "Não foi possível carregar os pedidos",
+      "map": {
+         "coordsViaWebSocket": "Coordenadas recebidas via WebSocket",
+         "driverPosition": "Posição atual do motorista",
+         "lastUpdate": "Última atualização: {{time}}",
+         "loadingRoute": "Carregando a rota..."
+      },
+      "notFound": "Nenhum pedido encontrado",
+      "publish": {
+         "action": "Publicar",
+         "failed": "Não foi possível publicar o pedido",
+         "fillRouteAndCargo": "Preencha a rota e a carga antes de publicar",
+         "inProgress": "Publicando..."
+      },
+      "share": {
+         "confirm": "Tem certeza de que deseja compartilhar este pedido com terceiros? Qualquer pessoa com o link poderá ver as informações.",
+         "creating": "Criando o link...",
+         "failed": "Não foi possível obter o link. Tente novamente mais tarde.",
+         "hint": "Qualquer pessoa com este link poderá visualizar os detalhes do pedido.",
+         "link": "Link do pedido",
+         "title": "Compartilhar pedido",
+         "validUntil": "O link é válido até"
+      },
+      "subtitle": "Solicitações de transporte",
+      "title": "Pedidos",
+      "trip": {
+         "avrSignedFinished": "O termo foi assinado, a viagem está concluída",
+         "emergency": "Emergência na viagem",
+         "finishedEmergency": "A viagem foi concluída em situação de emergência"
+      },
+      "validation": {
+         "gracePeriodRange": "O prazo de carência deve ser entre 1 e 364 dias",
+         "routeDates": "Verifique as datas da rota",
+         "routePoints": "Defina os pontos de origem e destino da rota",
+         "tnvedForAllCargo": "Digite um código HS para cada item de carga"
+      },
+      "view": {
+         "kanban": "Kanban",
+         "showAsKanban": "Mostrar como quadro kanban"
+      },
+      "viewToggle": "Alternar visualização dos pedidos"
+   },
+   "manufacturers": {
+      "add": {
+         "action": "Adicionar fabricante",
+         "alreadyAdded": "Já adicionado",
+         "failed": "Não foi possível adicionar o fabricante",
+         "inProgress": "Adicionando...",
+         "searchHint": "Buscar por nome ou BIN",
+         "searchPlaceholder": "Digite o nome ou BIN do fabricante",
+         "success": "Fabricante adicionado"
+      },
+      "bulk": {
+         "result": "{{action}}: {{done}} de {{total}}. {{reason}}"
+      },
+      "card": {
+         "bin": "BIN {{bin}}",
+         "linkedShipments": "Transportes vinculados",
+         "linkedToCustomer": "Vinculado ao cliente",
+         "nameWithBin": "{{name}} — BIN {{bin}}",
+         "noLinkedShipments": "Nenhum transporte está vinculado a este fabricante",
+         "notLinkedToCustomer": "O fabricante não está vinculado ao cliente",
+         "openLinkedShipments": "Abrir transportes vinculados",
+         "shipmentsCount": "Transportes: {{count}}",
+         "shipmentsLabel": "Transportes",
+         "title": "Dados do fabricante"
+      },
+      "filters": {
+         "all": "Todos",
+         "allManufacturers": "Todos os fabricantes",
+         "linkColumn": "Vínculo",
+         "manufacturerNotLinked": "Nenhum fabricante vinculado",
+         "notLinked": "Não vinculado",
+         "withManufacturer": "Com fabricante",
+         "withoutManufacturer": "Sem fabricante"
+      },
+      "link": {
+         "action": "Vincular",
+         "actionWithCount": "Vincular ({{count}})",
+         "changeManufacturer": "Alterar fabricante",
+         "failed": "Não foi possível vincular o fabricante",
+         "freeShipmentsHint": "Fabricante: {{name}}. Exibindo transportes sem fabricante.",
+         "freeShipmentsNotFound": "Nenhum transporte disponível encontrado",
+         "inProgress": "Vinculando...",
+         "manufacturerAction": "Vincular fabricante",
+         "overwriteWarning": "{{shipments}} selecionado(s). Um transporte só pode ter um fabricante — o vínculo atual será substituído.",
+         "shipmentsAction": "Vincular transportes",
+         "success": "Fabricante vinculado",
+         "title": "Vincular fabricante"
+      },
+      "loadFailed": "Não foi possível carregar os fabricantes",
+      "notFound": "Nenhum fabricante encontrado",
+      "remove": {
+         "failed": "Não foi possível remover o fabricante",
+         "success": "Fabricante removido da lista"
+      },
+      "requestCount_one": "{{count}} solicitação",
+      "requestCount_other": "{{count}} solicitações",
+      "requests": {
+         "alreadySent": "A solicitação já foi enviada",
+         "approve": "Aprovar",
+         "approveFailed": "Não foi possível aprovar as solicitações",
+         "approveMany": "Aprovar solicitações",
+         "approved": "Solicitações aprovadas",
+         "loadFailed": "Não foi possível carregar as solicitações",
+         "reject": "Rejeitar",
+         "rejectFailed": "Não foi possível rejeitar as solicitações",
+         "rejectMany": "Rejeitar solicitações",
+         "rejected": "Solicitações rejeitadas",
+         "send": "Enviar solicitação",
+         "sendFailed": "Não foi possível enviar a solicitação",
+         "sendToManufacturer": "Enviar solicitação ao fabricante",
+         "withdraw": "Retirar",
+         "withdrawFailed": "Não foi possível retirar as solicitações",
+         "withdrawMany": "Retirar solicitações",
+         "withdrawn": "Solicitações retiradas"
+      },
+      "searchFailed": "A busca de fabricantes falhou",
+      "shipments": {
+         "loadFailed": "Não foi possível carregar os transportes",
+         "notFound": "Nenhum transporte encontrado",
+         "searchByNumber": "Buscar por número ou direção",
+         "searchFull": "Buscar por número, direção ou fabricante",
+         "total": "Total de transportes: {{count}}"
+      },
+      "subtitle": "Vincule fabricantes a transportes e gerencie sua lista de fabricantes",
+      "tabs": {
+         "linked": "Vínculos de fabricantes",
+         "linking": "Vinculação de transportes"
+      },
+      "title": "Fabricantes",
+      "unlink": {
+         "action": "Desvincular",
+         "actionWithCount": "Desvincular ({{count}})",
+         "failed": "Não foi possível desvincular o fabricante",
+         "manufacturerAction": "Desvincular fabricante",
+         "success": "Fabricante desvinculado"
+      }
+   },
+   "map": {
+      "actualPath": "Caminho real",
+      "actualPathOrder": "Caminho real do pedido nº",
+      "customerPoint": "Localização do cliente",
+      "devMarker": "Marcador temporário para teste do mapa",
+      "driverName": "Motorista: {{name}}",
+      "driverNotSpecified": "Motorista não informado",
+      "driverPhone": "Telefone:",
+      "driverPosition": "Posição atual do motorista",
+      "noCoordinates": "Sem coordenadas",
+      "pointsCount": "Pontos: {{count}}",
+      "routesLoadFailed": "Não foi possível carregar as rotas",
+      "routesPartialFailure": "Não foi possível carregar as rotas GeoWS de {{failed}} de {{total}} pedidos"
+   },
+   "mobileNotice": {
+      "text": "Para uma melhor experiência, recomendamos usar um computador. A versão móvel pode não ser exibida corretamente.",
+      "title": "Recomendamos usar a versão para desktop"
+   },
+   "nav": {
+      "complaints": "Reclamações",
+      "dashboard": "Painel",
+      "factoring": "Factoring",
+      "factorings": "Factoring",
+      "forwarders": "Transportadores",
+      "leads": "Pedidos",
+      "manufacturers": "Fabricantes",
+      "profile": "Perfil",
+      "settings": "Configurações",
+      "tenders": "Leilões",
+      "tnved": "Códigos HS",
+      "tooltips": {
+         "complaints": "Registre reclamações sobre pedidos e factoring, veja o histórico e as respostas da administração",
+         "dashboard": "Visão geral de pedidos, rotas e leilões",
+         "factorings": "Solicitações de factoring e financeiras",
+         "forwarders": "Lista de transportadores e convites para novos participantes",
+         "leads": "Solicitações de transporte e gestão de pedidos",
+         "manufacturers": "Vincule fabricantes a transportes e consulte o diretório de fabricantes",
+         "settings": "Idioma da interface e outras configurações da conta",
+         "tenders": "Crie e gerencie leilões de transporte",
+         "tnved": "Diretório de códigos da Nomenclatura do Sistema Harmonizado"
+      }
+   },
+   "notifications": {
+      "all": "Todas as notificações",
+      "empty": "Ainda não há notificações",
+      "emptyHint": "Novos eventos aparecerão aqui",
+      "loadFailed": "Não foi possível carregar as notificações",
+      "newToast": "Nova notificação",
+      "newToastBody": "Você tem uma nova notificação",
+      "noDescription": "Sem descrição",
+      "refresh": "Atualizar notificações",
+      "singleLoadFailed": "Não foi possível carregar a notificação",
+      "subtitle": "Últimos eventos dos seus pedidos e leilões",
+      "subtitleDot": "Últimos eventos dos seus pedidos e leilões.",
+      "title": "Notificações",
+      "types": {
+         "factor": {
+            "cancelled_by_factor": {
+               "message": "O factor cancelou o factoring",
+               "theme": "Factoring cancelado"
+            },
+            "cancelled_by_forwarder": {
+               "message": "O transportador cancelou o factoring",
+               "theme": "Factoring cancelado"
+            },
+            "created_by_factor": {
+               "message": "O factor criou um factoring",
+               "theme": "Factoring criado"
+            },
+            "created_by_forwarder": {
+               "message": "O transportador criou um factoring",
+               "theme": "Factoring criado"
+            },
+            "finished_by_factor": {
+               "message": "O factor concluiu o factoring",
+               "theme": "Factoring concluído"
+            },
+            "paid_by_customer": {
+               "message": "O factor confirmou o pagamento do cliente. O negócio está encerrado.",
+               "theme": "Pagamento confirmado"
+            },
+            "signed_by_factor": {
+               "message": "O factor assinou o contrato de factoring",
+               "theme": "Contrato de factoring assinado"
+            },
+            "signed_by_forwarder": {
+               "message": "O transportador assinou o contrato de factoring",
+               "theme": "Contrato de factoring assinado"
+            },
+            "updated_by_factor": {
+               "message": "O factor atualizou o factoring",
+               "theme": "Factoring atualizado"
+            },
+            "verified_by_factor": {
+               "message": "O factor confirmou o factoring",
+               "theme": "Factoring confirmado"
+            },
+            "verified_by_forwarder": {
+               "message": "O transportador confirmou o factoring",
+               "theme": "Factoring confirmado"
+            }
+         },
+         "lead": {
+            "created_by_forwarder": {
+               "message": "A viagem foi criada e você foi vinculado a ela como cliente.",
+               "theme": "Viagem criada"
+            },
+            "customer_detached": {
+               "message": "O transportador desvinculou você da viagem.",
+               "theme": "Você foi desvinculado da viagem"
+            },
+            "manufacturer": {
+               "approved_by_manufacturer": {
+                  "message": "O fabricante {{name}} aprovou o vínculo",
+                  "theme": "Solicitação aprovada"
+               },
+               "cancelled_by_manufacturer": {
+                  "message": "O fabricante {{name}} retirou a solicitação",
+                  "theme": "Solicitação retirada"
+               },
+               "detached_by_manufacturer": {
+                  "message": "O fabricante {{name}} se desvinculou de você",
+                  "theme": "Vínculo removido"
+               },
+               "rejected_by_manufacturer": {
+                  "message": "O fabricante {{name}} rejeitou a solicitação",
+                  "theme": "Solicitação rejeitada"
+               },
+               "request_by_manufacturer": {
+                  "message": "O fabricante {{name}} deseja se vincular a você",
+                  "theme": "Nova solicitação de vínculo"
+               }
+            },
+            "point_end_deadline": {
+               "message": "O horário previsto para o fim das atividades no ponto da rota chegou.",
+               "theme": "Prazo do ponto da rota atingido"
+            },
+            "point_start_deadline": {
+               "message": "O horário previsto para o início das atividades no ponto da rota chegou.",
+               "theme": "Prazo do ponto da rota atingido"
+            },
+            "rejected": {
+               "message": "A viagem foi cancelada",
+               "theme": "Viagem cancelada"
+            },
+            "updated_by_forwarder": {
+               "message": "A viagem foi atualizada",
+               "theme": "Viagem atualizada"
+            }
+         },
+         "shipping": {
+            "delivered": {
+               "message": "Entrega confirmada. A viagem foi concluída.",
+               "theme": "Viagem concluída"
+            },
+            "emergency-situation": {
+               "theme": "Uma emergência foi declarada."
+            },
+            "finished": {
+               "theme": "Viagem concluída"
+            },
+            "finished-emergency-situation": {
+               "message": "O transportador concluiu a viagem antes do previsto.",
+               "theme": "A viagem foi concluída antes do previsto."
+            },
+            "last_point_passed": {
+               "message": "O motorista passou pelo ponto de descarregamento.",
+               "theme": "Viagem nº {{num}}: ponto percorrido"
+            },
+            "loading_started": {
+               "message": "O motorista iniciou a viagem.",
+               "theme": "A viagem foi iniciada."
+            },
+            "loading_verified": {
+               "message": "O motorista confirmou o carregamento.",
+               "theme": "Viagem nº {{num}}: motorista confirmou o carregamento"
+            },
+            "point_passed": {
+               "message": "O motorista passou pelo ponto.",
+               "theme": "Viagem nº {{num}}: motorista passou por um ponto"
+            },
+            "unloading_verified": {
+               "message": "O motorista confirmou o descarregamento.",
+               "theme": "Viagem nº {{num}}: motorista confirmou o descarregamento"
+            }
+         },
+         "tender": {
+            "bet_cancelled": {
+               "message": "Um participante cancelou seu lance em seu leilão.",
+               "theme": "Lance cancelado"
+            },
+            "bet_placed": {
+               "message": "Um participante deu um lance em seu leilão.",
+               "theme": "Novo lance no leilão"
+            }
+         }
+      },
+      "viewAll": "Ver todas as notificações"
+   },
+   "profile": {
+      "avatar": {
+         "allowedTypes": "Somente arquivos PNG ou JPEG podem ser enviados",
+         "delete": "Excluir foto",
+         "maxSize": "O tamanho máximo da foto é 600×600 px",
+         "minSize": "O tamanho mínimo da foto é 400×400 px",
+         "readFailed": "Não foi possível ler o arquivo",
+         "sizeCheckFailed": "Não foi possível verificar o tamanho da imagem",
+         "upload": "Enviar foto",
+         "uploadFailed": "Não foi possível enviar a foto"
+      },
+      "contract": {
+         "notSigned": "Não assinado · clique para assinar",
+         "signStartFailed": "Não foi possível iniciar a assinatura",
+         "signStartFailedLater": "Não foi possível iniciar a assinatura, tente novamente mais tarde",
+         "signed": "Assinado",
+         "signedUntil": "Assinado · Válido até {{date}}",
+         "title": "Contrato de serviço",
+         "unavailable": "O documento do contrato ainda não está disponível, tente novamente mais tarde"
+      },
+      "delete": {
+         "action": "Excluir conta",
+         "confirmTitle": "Confirmar exclusão",
+         "failed": "Não foi possível excluir a conta",
+         "failedActiveDeals": "Não foi possível excluir a conta: há negócios ativos",
+         "passwordPrompt": "Digite sua senha para confirmar a exclusão da conta.",
+         "warning": "A conta será desativada. Entre em contato com o suporte para restaurá-la.",
+         "warningFull": "Após a exclusão, a conta será desativada. Entre em contato com o suporte para restaurá-la."
+      },
+      "documents": {
+         "allowedTypes": "São permitidos apenas arquivos PDF, JPG, JPEG ou PNG",
+         "current": "Documento atual",
+         "employment": "Documento de vínculo empregatício",
+         "employmentFull": "Documento de vínculo empregatício de um signatário autorizado, ou a ordem de nomeação do diretor-executivo",
+         "issuedAt": "Data de emissão",
+         "issuedBy": "Emitido por",
+         "issuers": {
+            "mia": "MIA do Cazaquistão",
+            "moj": "MoJ do Cazaquistão"
+         },
+         "legalEntity": "Documento de registro da pessoa jurídica",
+         "maxSize": "O arquivo não deve exceder {{size}} MB",
+         "newFile": "Novo arquivo · {{size}}",
+         "notUploaded": "Nenhum documento enviado ainda",
+         "replace": "Substituir documento",
+         "upload": "Enviar documento"
+      },
+      "load": {
+         "failed": "Não foi possível carregar o perfil"
+      },
+      "password": {
+         "current": "Senha atual",
+         "enterCurrent": "Digite sua senha atual",
+         "enterNew": "Digite uma nova senha",
+         "new": "Nova senha",
+         "repeatNew": "Repita a nova senha"
+      },
+      "save": {
+         "failed": "Não foi possível atualizar o perfil",
+         "noChanges": "Nenhuma alteração para salvar",
+         "success": "O perfil foi atualizado"
+      },
+      "sections": {
+         "company": "Empresa e dados bancários",
+         "companySubtitle": "Dados da empresa e da pessoa de contato",
+         "deleteAccount": "Excluir conta",
+         "documents": "Documentos de registro",
+         "password": "Alterar senha"
+      },
+      "title": "Perfil"
+   },
+   "route": {
+      "addWaypoint": "+ Ponto intermediário",
+      "addressDetecting": "Detectando o endereço...",
+      "addressNotFound": "Endereço não encontrado",
+      "addressSearching": "Buscando o endereço...",
+      "clear": "Limpar rota",
+      "coordinates": "Coordenadas: {{lat}}, {{lng}}",
+      "destinationNotSpecified": "Destino não informado",
+      "markerA": "A",
+      "markerB": "B",
+      "onMap": "No mapa",
+      "originNotSpecified": "Origem não informada",
+      "pickOnMap": "Selecione este ponto e clique no mapa",
+      "point": "Ponto {{index}}",
+      "pointA": "Ponto A",
+      "pointB": "Ponto B",
+      "pointType": "Tipo de ponto",
+      "removeWaypoint": "Remover o ponto intermediário {{index}}",
+      "validation": {
+         "coordinatesPoint": "Defina as coordenadas do ponto {{index}}: clique no mapa",
+         "destinationRequired": "Digite o destino",
+         "endBeforeStart": "A data final não pode ser anterior à data inicial deste ponto",
+         "endDateDestination": "Digite a data final no destino",
+         "endDateOrigin": "Digite a data final na origem",
+         "endDatePoint": "Digite a data final do ponto {{index}}",
+         "originRequired": "Digite a origem",
+         "startBeforePrevEnd": "A data inicial não pode ser anterior à data final do ponto anterior",
+         "startDateDestination": "Digite a data inicial no destino",
+         "startDateOrigin": "Digite a data inicial na origem",
+         "startDatePoint": "Digite a data inicial do ponto {{index}}"
+      },
+      "waypoint": "Ponto intermediário {{index}}",
+      "waypointHash": "Ponto intermediário nº {{index}}"
+   },
+   "settings": {
+      "language": {
+         "description": "Escolha o idioma usado na interface e nas notificações.",
+         "label": "Idioma",
+         "saved": "O idioma da interface foi alterado",
+         "switcherLabel": "Selecionar o idioma da interface",
+         "title": "Idioma da interface"
+      },
+      "languages": {
+         "ar": "العربية",
+         "de": "Deutsch",
+         "en": "English",
+         "kk": "Қазақша",
+         "ky": "Кыргызча",
+         "pt": "Português",
+         "ru": "Русский",
+         "tg": "Тоҳикӣ",
+         "uz": "O'zbekcha"
+      },
+      "title": "Configurações"
+   },
+   "sharedLead": {
+      "gone": "O pedido foi excluído ou seu link foi revogado.",
+      "invalidLink": "O link é inválido ou expirou.",
+      "loading": "Carregando os detalhes do pedido...",
+      "notFound": "A página solicitada não foi encontrada. Verifique se o link foi copiado por completo.",
+      "readOnly": "Esta é uma visualização somente leitura do pedido compartilhado por link. A edição não está disponível.",
+      "requestFailed": "Não foi possível carregar os detalhes do pedido. Tente novamente mais tarde.",
+      "title": "Detalhes do pedido"
+   },
+   "support": {
+      "emailBody": "Olá! Tenho uma pergunta.",
+      "emailSubject": "Solicitação de suporte",
+      "writeToChat": "Abrir chat"
+   },
+   "tenders": {
+      "bids": {
+         "amount": "Valor do lance",
+         "chooseWinner": "Escolher o vencedor",
+         "chooseWinnerFailed": "Não foi possível escolher o vencedor",
+         "choosing": "Escolhendo...",
+         "confirmChoice": "Confirmar a escolha",
+         "confirmWinner": "Tem certeza de que deseja escolher este lance como vencedor?",
+         "empty": "Ainda não há lances",
+         "irreversible": "Esta ação não pode ser desfeita.",
+         "participantUnknown": "Participante não informado",
+         "showAll": "Mostrar todos os lances (+{{count}})",
+         "statusCancelled": "Cancelado",
+         "statusWinning": "Vencendo",
+         "title": "Lances"
+      },
+      "countdown": {
+         "daysHours": "{{days}}d {{hours}}h",
+         "hoursMinutes": "{{hours}}h {{minutes}}min",
+         "minutes": "{{minutes}}min"
+      },
+      "create": {
+         "action": "Criar leilão",
+         "confirm": "Tem certeza de que deseja criar um leilão para este pedido?",
+         "failed": "Não foi possível criar o leilão",
+         "maxParticipants": "Máximo de participantes",
+         "privateHint": "Selecione os transportadores a serem convidados para o leilão privado",
+         "publicAuction": "Leilão público",
+         "startAfterCreate": "Iniciar o leilão após criá-lo",
+         "title": "Criar leilão"
+      },
+      "dates": {
+         "endAfterNow": "A data final deve ser posterior à hora atual",
+         "endInvalid": "Data final inválida",
+         "endMin30Minutes": "A data final deve ser pelo menos 30 minutos após a data de publicação",
+         "endRequired": "Digite a data final",
+         "publicationDate": "Data de publicação",
+         "publicationInPast": "A data de publicação não pode estar no passado",
+         "publicationInvalid": "Data de publicação inválida",
+         "publicationRequired": "Digite a data de publicação"
+      },
+      "details": {
+         "audience": "Público",
+         "audienceForwarders": "Para transportadores",
+         "audienceShippers": "Para embarcadores",
+         "bidsCountLabel": "Lances",
+         "cargoWeight": "Peso da carga",
+         "editBlocked": "Um leilão fechado ou cancelado não pode ser editado",
+         "info": "Detalhes do leilão",
+         "loadFailed": "Não foi possível carregar os detalhes do leilão",
+         "loading": "Carregando os detalhes do leilão...",
+         "maxParticipantsShort": "Máx. participantes",
+         "orderDocuments": "Documentos do pedido",
+         "participantsCountLabel": "Participantes",
+         "publicationType": "Tipo de publicação",
+         "totalOrderPrice": "Preço total do pedido"
+      },
+      "leadPicker": {
+         "cargoLabel": "Carga: {{cargo}}",
+         "cargoWithMore": "{{type}} + {{count}} mais",
+         "destination": "Para: {{to}}",
+         "forwarder": "Transportador: {{name}}",
+         "hint": "Selecione o pedido para o qual este leilão é criado",
+         "notFound": "Nenhum pedido encontrado",
+         "order": "Pedido",
+         "orderNumber": "Pedido nº {{id}}",
+         "origin": "De: {{from}}",
+         "priceLabel": "Preço: {{price}}",
+         "searchFailed": "Não foi possível encontrar pedidos",
+         "searching": "Buscando pedidos...",
+         "sectionTitle": "Seleção do pedido",
+         "select": "Selecione um pedido",
+         "selectAction": "Selecionar pedido"
+      },
+      "loadFailed": "Não foi possível carregar os leilões",
+      "manage": {
+         "cancel": "Cancelar leilão",
+         "cancelConfirm": "Tem certeza de que deseja cancelar este leilão? Após o cancelamento, ele não estará mais disponível para os participantes.",
+         "cancelFailed": "Não foi possível cancelar o leilão",
+         "cancelling": "Cancelando...",
+         "delete": "Excluir leilão",
+         "deleteConfirm": "Tem certeza de que deseja excluir este leilão? Esta ação não pode ser desfeita.",
+         "deleteFailed": "Não foi possível excluir o leilão",
+         "saveFailed": "Não foi possível salvar as alterações do leilão",
+         "start": "Iniciar leilão",
+         "startFailed": "Não foi possível iniciar o leilão"
+      },
+      "notFound": "Nenhum leilão encontrado",
+      "participantCount_one": "{{count}} participante",
+      "participantCount_other": "{{count}} participantes",
+      "participants": {
+         "add": "Adicionar participante",
+         "addFailed": "Não foi possível adicionar os participantes",
+         "added": "Adicionado: {{date}}",
+         "bin": "BIN: {{bin}}",
+         "empty": "Ainda não há participantes adicionados",
+         "loading": "Carregando participantes...",
+         "remove": "Remover participante",
+         "removeFailed": "Não foi possível remover o participante",
+         "searching": "Buscando transportadores...",
+         "title": "Participantes"
+      },
+      "searchPlaceholder": "Digite uma cidade, carga ou direção",
+      "stopCount_one": "{{count}} parada",
+      "stopCount_other": "{{count}} paradas",
+      "subtitle": "Leilões para solicitações de transporte",
+      "title": "Leilões",
+      "titleSingular": "Leilão",
+      "validation": {
+         "maxParticipantsNegative": "O número máximo de participantes não pode ser menor que 0",
+         "privateNeedsForwarder": "Selecione pelo menos um transportador para o leilão privado"
+      },
+      "viewToggle": "Alternar visualização dos leilões"
+   },
+   "tnved": {
+      "code": "Código",
+      "codeNotFound": "Código não encontrado",
+      "searchPlaceholder": "Buscar por código ou nome",
+      "title": "Códigos HS"
+   },
+   "validation": {
+      "bik": "O BIC deve conter 8 caracteres",
+      "bin": "O BIN deve conter 12 dígitos",
+      "companyBinRequired": "Digite o BIN da empresa",
+      "companyNameRequired": "Digite o nome da empresa",
+      "dateNotInFuture": "A data não pode ser posterior a hoje",
+      "dateNotInPast": "A data não pode ser anterior a hoje",
+      "documentIssueDateRequired": "Digite a data de emissão do documento",
+      "documentIssuedByRequired": "Informe quem emitiu o documento",
+      "email": "Endereço de e-mail inválido",
+      "emailRequired": "Digite um endereço de e-mail",
+      "iikFormat": "Formato: KZ + 18 caracteres",
+      "iin": "O IIN deve conter 12 dígitos",
+      "iinRequired": "Digite um IIN",
+      "max100": "No máximo 100 caracteres",
+      "max50": "No máximo 50 caracteres",
+      "min3": "No mínimo 3 caracteres",
+      "min6": "No mínimo 6 caracteres",
+      "passwordsMismatch": "As senhas não coincidem",
+      "phone": "Formato de telefone inválido",
+      "phoneRequired": "Digite um número de telefone",
+      "range2to100": "De 2 a 100 caracteres",
+      "range2to255": "De 2 a 255 caracteres",
+      "representativeRequired": "Digite o nome do representante"
+   },
+   "verification": {
+      "banner": "Confirme seu endereço de e-mail. Clique neste aviso para reenviar o e-mail.",
+      "checkFailed": "Não foi possível verificar o status do e-mail",
+      "checking": "Verificando o status do e-mail…",
+      "cooldown": "Em {{seconds}} s",
+      "emailConfirmed": "E-mail confirmado",
+      "emailNotConfirmed": "E-mail não confirmado",
+      "hint": "Enviaremos um link de confirmação para seu endereço de e-mail.",
+      "resendAvailable": "Você poderá reenviar em {{seconds}} seg.",
+      "sendFailed": "Não foi possível enviar o e-mail de confirmação",
+      "sent": "O e-mail de confirmação foi enviado. Verifique sua caixa de entrada."
+   }
+}

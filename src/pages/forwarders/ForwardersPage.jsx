@@ -255,6 +255,7 @@ export function ForwardersPage() {
                             color="primary"
                             aria-label={t("forwarders.viewToggle")}
                             sx={{
+                                direction: "ltr",
                                 flexShrink: 0,
                                 alignSelf: {
                                     xs: 'flex-start',

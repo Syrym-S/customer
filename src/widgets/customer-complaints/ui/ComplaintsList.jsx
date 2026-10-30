@@ -76,6 +76,7 @@ export function ComplaintsList() {
                      color="primary"
                      aria-label={t("complaints.viewToggle")}
                      sx={{
+                        direction: "ltr",
                         flexShrink: 0,
                         alignSelf: {
                            xs: 'flex-start',

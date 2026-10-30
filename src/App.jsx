@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Box, CircularProgress, CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "./theme/theme";
 import { NotificationsColumn } from "./shared/ui/NotificationsColumn";
@@ -5,10 +6,15 @@ import { MobileViewportModal } from "./shared/ui/MobileViewportModal";
 import { ContractGateModal } from "./shared/ui/ContractGateModal";
 import { useContractGate } from "./shared/model/useContractGate";
 import { useContractStore } from "./shared/model/contract.store";
+import { useLanguagesStore } from "./shared/model/languages.store";
 import { router } from "./router/router";
 import { RouterProvider } from "react-router-dom";
 
 function App() {
+  useEffect(() => {
+    useLanguagesStore.getState().loadLanguages();
+  }, []);
+
   // Holds off mounting the router (and the data-fetching effects of the
   // tenders/factorings/leads/profile/notifications providers it renders)
   // until the first contract check resolves — otherwise those requests fire

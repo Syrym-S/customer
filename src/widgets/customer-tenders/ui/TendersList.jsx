@@ -122,6 +122,7 @@ export function TendersList() {
                         color="primary"
                         aria-label={t("tenders.viewToggle")}
                         sx={{
+                           direction: "ltr",
                            alignSelf: {
                               xs: 'stretch',
                               sm: 'auto',

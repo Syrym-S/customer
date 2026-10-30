@@ -176,6 +176,7 @@ export function LeadsList() {
                      color="primary"
                      aria-label={t("leads.viewToggle")}
                      sx={{
+                        direction: "ltr",
                         alignSelf: {
                            xs: 'stretch',
                            sm: 'auto',
