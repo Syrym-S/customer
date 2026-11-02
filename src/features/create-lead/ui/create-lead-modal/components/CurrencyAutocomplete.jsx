@@ -161,21 +161,8 @@ export function CurrencyAutocomplete({
             const { key, ...listItemProps } = optionProps;
 
             return (
-               <Box
-                  key={key}
-                  component="li"
-                  {...listItemProps}
-                  sx={{
-                     display: 'flex',
-                     flexDirection: 'column',
-                     alignItems: 'flex-start',
-                  }}
-               >
+               <Box key={key} component="li" {...listItemProps}>
                   <Typography fontWeight={600}>{option.code}</Typography>
-
-                  <Typography fontSize={12} color="text.secondary">
-                     {option.fullname}
-                  </Typography>
                </Box>
             );
          }}

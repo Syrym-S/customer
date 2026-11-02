@@ -1,6 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { CacheProvider } from "@emotion/react";
+import { useTranslation } from "react-i18next";
 import { Box, CircularProgress, CssBaseline, ThemeProvider } from "@mui/material";
-import { theme } from "./theme/theme";
+import { createAppTheme } from "./theme/theme";
+import { createEmotionCache } from "./theme/createEmotionCache";
+import { getLanguageDirection } from "./shared/i18n/language";
 import { NotificationsColumn } from "./shared/ui/NotificationsColumn";
 import { MobileViewportModal } from "./shared/ui/MobileViewportModal";
 import { ContractGateModal } from "./shared/ui/ContractGateModal";
@@ -11,6 +15,15 @@ import { router } from "./router/router";
 import { RouterProvider } from "react-router-dom";
 
 function App() {
+  const { i18n } = useTranslation();
+  const direction = getLanguageDirection(i18n.resolvedLanguage);
+
+  const emotionCache = useMemo(
+    () => createEmotionCache(direction),
+    [direction],
+  );
+  const theme = useMemo(() => createAppTheme(direction), [direction]);
+
   useEffect(() => {
     useLanguagesStore.getState().loadLanguages();
   }, []);
@@ -27,28 +40,30 @@ function App() {
   const isContractGateEnabled = useContractStore((state) => state.isContractGateEnabled);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {isContractGateEnabled && hasValidContract === null ? (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: "100vh",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      ) : (
-        <>
-          <RouterProvider router={router} />
-          <NotificationsColumn />
-          <MobileViewportModal />
-          <ContractGateModal />
-        </>
-      )}
-    </ThemeProvider>
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {isContractGateEnabled && hasValidContract === null ? (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "100vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            <RouterProvider router={router} />
+            <NotificationsColumn />
+            <MobileViewportModal />
+            <ContractGateModal />
+          </>
+        )}
+      </ThemeProvider>
+    </CacheProvider>
   );
 }
 

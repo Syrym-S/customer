@@ -17,11 +17,14 @@ const SHADOW = {
    hover: '0 4px 16px rgba(22,36,62,0.10)',
 };
 
-export const theme = createTheme({
+export function createAppTheme(direction = 'ltr') {
+   return createTheme({
    // Custom, non-MUI-standard tokens exposed on the theme for future
    // components to reuse instead of inlining their own radius/shadow values.
    radius: RADIUS,
    customShadows: SHADOW,
+
+   direction,
 
    palette: {
       mode: 'light',
@@ -207,4 +210,7 @@ export const theme = createTheme({
          },
       },
    },
-});
+   });
+}
+
+export const theme = createAppTheme('ltr');
