@@ -934,7 +934,7 @@
       "profile": "Profil",
       "settings": "Sozlamalar",
       "tenders": "Auktsionlar",
-      "tnved": "TIF TN kodlari",
+      "tnved": "TIF TN kodlari (EAEU)",
       "tooltips": {
          "complaints": "Buyurtmalar va faktoring bo'yicha shikoyat berish, tarix va ma'muriyat javoblarini ko'rish",
          "dashboard": "Buyurtmalar, marshrutlar va auktsionlar bo'yicha umumiy ko'rinish",

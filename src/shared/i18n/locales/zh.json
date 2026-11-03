@@ -928,7 +928,7 @@
       "profile": "个人资料",
       "settings": "设置",
       "tenders": "竞标",
-      "tnved": "海关商品编码",
+      "tnved": "海关商品编码（欧亚经济联盟）",
       "tooltips": {
          "complaints": "针对订单和保理提交投诉、查看历史记录及管理部门回复",
          "dashboard": "订单、路线和竞标的总体概览",

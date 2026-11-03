@@ -15,6 +15,10 @@ export const DEFAULT_NOTIFICATION_WS_URL = isStaging
     ? `${NOTIFICATION_WS_BASE_URL}/staging/socket`
     : `${NOTIFICATION_WS_BASE_URL}/socket`;
 
+export const DEFAULT_PUSH_ENDPOINT = isStaging
+    ? 'https://notification.staging.360logistics.kz/api/push-token'
+    : 'https://notification.v2.360logistics.kz/api/push-token';
+
 export const NOTIFICATION_CHANNEL_ROLE = 'customer';
 
 const BROADCASTING_AUTH_PATH = '/api/broadcasting/auth';
@@ -41,6 +45,9 @@ export function getNotificationRealtimeConfig() {
             .trim()
             .toLowerCase(),
         ws: config.ws || config.wsUrl || config.url || '',
+        push:
+            String(config.push || config.pushUrl || '').trim() ||
+            DEFAULT_PUSH_ENDPOINT,
         reverbHost,
         reverbKey: String(config.reverb_key || config.reverbKey || '').trim(),
         authEndpoint:

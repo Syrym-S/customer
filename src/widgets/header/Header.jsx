@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logoutApi } from "../../shared/api/auth.api";
+import { usePushNotificationsStore } from "../customer-notifications/model/push-notifications.store";
 import { Notifications } from "../customer-notifications/ui/Notifications";
 import { getCompactEmail } from "../../shared/helpers/helpers";
 import { PROFILE_PHOTO_UPDATED_EVENT } from "../customer-profile/model/profile-photo.helpers";
@@ -145,6 +146,13 @@ export function Header() {
     try {
       setIsLogoutLoading(true);
       setLogoutError(null);
+
+      // Отвязываем пуши этого браузера, пока сессия ещё жива: иначе на общем
+      // компьютере уведомления продолжат приходить следующему пользователю.
+      await usePushNotificationsStore
+        .getState()
+        .unbindCurrentDevice()
+        .catch(() => {});
 
       await logoutApi();
 

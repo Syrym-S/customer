@@ -934,7 +934,7 @@
       "profile": "Profile",
       "settings": "Settings",
       "tenders": "Auctions",
-      "tnved": "HS codes",
+      "tnved": "HS codes (EAEU)",
       "tooltips": {
          "complaints": "File complaints about orders and factoring, view history and admin replies",
          "dashboard": "Overview of orders, routes and auctions",
@@ -1233,6 +1233,15 @@
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"
+      },
+      "push": {
+         "blocked": "Notifications are blocked in your browser settings. Allow them for this site and try again.",
+         "description": "Receive browser notifications even when the tab is closed.",
+         "disabled": "Push notifications disabled",
+         "enabled": "Push notifications enabled",
+         "failed": "Could not change the push notification setting",
+         "title": "Push notifications",
+         "unsupported": "This browser does not support push notifications. In Safari on iPhone they work only if the site is added to the Home Screen."
       },
       "title": "Settings"
    },

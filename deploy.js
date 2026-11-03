@@ -16,6 +16,8 @@ const credentials = {
    deleteRemote: false,
 };
 
+const WEB_PUSH_FILES = ['firebase-messaging-sw.js', 'icon-192.png'];
+
 // Two separate remote destinations on the same FTP server/credentials:
 // - main app (dist/index.js, dist/index.css, dist/vite.svg) -> FTP_REMOTE_ROOT
 // - public shared-lead bundle (dist/shared/**) -> FTP_REMOTE_ROOT_PUBLIC, a
@@ -29,7 +31,7 @@ const deployTargets = [
          localRoot: join(__dirname, 'dist'),
          remoteRoot: process.env.FTP_REMOTE_ROOT,
          include: ['*', '**/*'],
-         exclude: ['shared/**'],
+         exclude: ['shared/**', ...WEB_PUSH_FILES],
       },
    },
    {
@@ -42,6 +44,20 @@ const deployTargets = [
       },
    },
 ];
+
+// A service worker only controls pages at or below its own URL, so these two
+// files belong at the domain root (/ and /staging/), which this FTP account
+// cannot reach — its home is the plugin's assets folder. They are uploaded by
+// hand instead, so they are excluded from the bundle upload above and only
+// announced here.
+function remindAboutWebPushFiles() {
+   console.log(
+      `\nDeployed by hand to the domain root (/ and /staging/): ${WEB_PUSH_FILES.join(', ')}.`,
+   );
+   console.log(
+      'If either changed in public/, hand the new copy over — the bundle upload does not carry it.',
+   );
+}
 
 async function deployAll() {
    // Sequential, not parallel — each deploy opens its own FTP session against
@@ -63,6 +79,8 @@ async function deployAll() {
    }
 
    console.log('Upload complete');
+
+   remindAboutWebPushFiles();
 }
 
 deployAll();
