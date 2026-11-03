@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import i18n from '../../../shared/i18n';
 import { useTranslation } from "react-i18next";
 
-import { alpha, Box, Stack, Tooltip, Typography } from '@mui/material';
+import { alpha, Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
@@ -59,6 +59,8 @@ const cardContainerSx = {
 
 export function LeadCard({ lead }) {
    const { t } = useTranslation();
+   const theme = useTheme();
+   const isRtl = theme.direction === 'rtl';
 
    const { setOpenLead } = useLeadsContext();
 
@@ -201,7 +203,7 @@ export function LeadCard({ lead }) {
                </Tooltip>
 
                <ArrowRightAltRoundedIcon
-                  sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0 }}
+                  sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0, transform: isRtl ? 'scaleX(-1)' : 'none' }}
                />
 
                {waypointsCount > 0 && (
@@ -231,7 +233,7 @@ export function LeadCard({ lead }) {
                      </Box>
 
                      <ArrowRightAltRoundedIcon
-                        sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0 }}
+                        sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0, transform: isRtl ? 'scaleX(-1)' : 'none' }}
                      />
                   </>
                )}

@@ -14,6 +14,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  useTheme,
 } from "@mui/material";
 import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
@@ -292,6 +293,8 @@ function ServerFileAttachment({ attachment, isMine }) {
 
 export function ChatDetailView({ chat }) {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const isRtl = theme.direction === "rtl";
 
   const backToList = useChatStore((state) => state.backToList);
   const sendMessage = useChatStore((state) => state.sendMessage);
@@ -609,7 +612,7 @@ export function ChatDetailView({ chat }) {
         }}
       >
         <IconButton size="small" onClick={backToList} aria-label={t("chat.backToList")}>
-          <ArrowBackRoundedIcon fontSize="small" />
+          <ArrowBackRoundedIcon fontSize="small" sx={{ transform: isRtl ? "scaleX(-1)" : "none" }} />
         </IconButton>
 
         {chat.entityType === "factoring" && chat.counterparts?.length > 1 ? (
@@ -1120,7 +1123,7 @@ export function ChatDetailView({ chat }) {
             disabled={!canSend}
             aria-label={t("chat.message.send")}
           >
-            <SendRoundedIcon fontSize="small" />
+            <SendRoundedIcon fontSize="small" sx={{ transform: isRtl ? "scaleX(-1)" : "none" }} />
           </IconButton>
         </Box>
       </Box>

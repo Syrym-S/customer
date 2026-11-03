@@ -1,4 +1,4 @@
-import { alpha, Box, Stack, Tooltip, Typography } from '@mui/material';
+import { alpha, Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
 import i18n from '../../../shared/i18n';
 import { useTranslation } from "react-i18next";
 import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
@@ -59,6 +59,8 @@ function getParticipantsCountLabel(count) {
 
 export function TenderCard({ tender }) {
    const { t } = useTranslation();
+   const theme = useTheme();
+   const isRtl = theme.direction === 'rtl';
 
    const { openTenderDetails } = useTendersContext();
 
@@ -223,7 +225,7 @@ export function TenderCard({ tender }) {
                </Tooltip>
 
                <ArrowRightAltRoundedIcon
-                  sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0 }}
+                  sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0, transform: isRtl ? 'scaleX(-1)' : 'none' }}
                />
 
                {waypointsCount > 0 && (
@@ -233,7 +235,7 @@ export function TenderCard({ tender }) {
                      />
 
                      <ArrowRightAltRoundedIcon
-                        sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0 }}
+                        sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0, transform: isRtl ? 'scaleX(-1)' : 'none' }}
                      />
                   </>
                )}

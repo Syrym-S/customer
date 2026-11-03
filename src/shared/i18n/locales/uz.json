@@ -1221,12 +1221,18 @@
          "ar": "العربية",
          "de": "Deutsch",
          "en": "English",
+         "es": "Español",
+         "fr": "Français",
+         "ka": "ქართული",
          "kk": "Қазақша",
          "ky": "Кыргызча",
          "pt": "Português",
          "ru": "Русский",
          "tg": "Тоҳикӣ",
-         "uz": "O'zbekcha"
+         "tr": "Türkçe",
+         "ur": "اردو",
+         "uz": "O'zbekcha",
+         "zh": "中文"
       },
       "title": "Sozlamalar"
    },

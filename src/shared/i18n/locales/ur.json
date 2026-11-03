@@ -1,0 +1,1410 @@
+{
+   "accountBan": {
+      "contactSupport": "سپورٹ سے رابطہ کریں",
+      "logout": "اکاؤنٹ سے لاگ آؤٹ کریں",
+      "text": "ورک اسپیس تک رسائی عارضی طور پر محدود کر دی گئی ہے۔ آپ آرڈرز نہیں بنا سکتے، نیلامیوں میں حصہ نہیں لے سکتے اور سسٹم میں دیگر کارروائیاں انجام نہیں دے سکتے۔",
+      "title": "اکاؤنٹ بلاک کر دیا گیا ہے"
+   },
+   "chat": {
+      "attachments": {
+         "allowedTypes": "صرف تصاویر (JPG، PNG، WEBP)، PDF، DOC(X) یا XLS(X) کی اجازت ہے",
+         "attach": "فائل منسلک کریں",
+         "closeImage": "تصویر کا پیش منظر بند کریں",
+         "fileDownloadFailed": "فائل «{{name}}» ڈاؤن لوڈ نہیں ہو سکی",
+         "fileLoadFailed": "فائل «{{name}}» لوڈ نہیں ہو سکی",
+         "imageLoadFailed": "تصویر لوڈ نہیں ہو سکی",
+         "label": "منسلکہ",
+         "loadFailed": "لوڈ نہیں ہو سکا",
+         "maxCount": "ایک پیغام میں زیادہ سے زیادہ {{count}} فائلیں منسلک کی جا سکتی ہیں",
+         "maxSize": "فائل کا سائز {{size}} ایم بی سے زیادہ نہیں ہونا چاہیے",
+         "remove": "فائل {{name}} ہٹائیں",
+         "view": "منسلکہ دیکھیں"
+      },
+      "backToList": "چیٹس کی فہرست پر واپس جائیں",
+      "close": "چیٹ بند کریں",
+      "conversationStart": "گفتگو کا آغاز",
+      "empty": "کوئی فعال چیٹ موجود نہیں",
+      "load": {
+         "deliveryFailed": "ڈلیوری چیٹ لوڈ نہیں ہو سکی",
+         "factoringFailed": "فیکٹرنگ چیٹ لوڈ نہیں ہو سکی",
+         "leadFailed": "آرڈر چیٹ لوڈ نہیں ہو سکی",
+         "listFailed": "چیٹس لوڈ نہیں ہو سکیں",
+         "moreFailed": "مزید چیٹس لوڈ نہیں ہو سکیں",
+         "participantsFailed": "چیٹ کے شرکاء ({{type}}) {{id}} لوڈ نہیں ہو سکے",
+         "supportFailed": "سپورٹ چیٹ لوڈ نہیں ہو سکی"
+      },
+      "message": {
+         "cancelEdit": "ترمیم منسوخ کریں",
+         "delete": "پیغام حذف کریں",
+         "deleteConfirm": "پیغام مکمل طور پر حذف کر دیا جائے گا۔ جاری رکھیں؟",
+         "deleteFailed": "پیغام حذف نہیں ہو سکا",
+         "deleted": "پیغام حذف کر دیا گیا",
+         "edit": "پیغام میں ترمیم کریں",
+         "editFailed": "پیغام میں ترمیم نہیں ہو سکی",
+         "placeholder": "پیغام...",
+         "read": "پڑھا گیا",
+         "send": "پیغام بھیجیں",
+         "sendFailed": "پیغام بھیجا نہیں جا سکا"
+      },
+      "open": "چیٹ کھولیں",
+      "participant": "شریک",
+      "participantLabel": "چیٹ کا شریک",
+      "refreshList": "چیٹس کی فہرست تازہ کریں",
+      "requisites": {
+         "title": "بینک تفصیلات"
+      },
+      "time": {
+         "days": "{{count}} دن",
+         "hours": "{{count}} گھنٹے",
+         "justNow": "ابھی",
+         "minutes": "{{count}} منٹ",
+         "yesterday": "کل"
+      },
+      "title": "چیٹس",
+      "types": {
+         "delivery": "ڈلیوری",
+         "deliveryNumber": "ڈلیوری #{{id}}",
+         "factoringNumber": "فیکٹرنگ #{{id}}",
+         "orderNumber": "آرڈر #{{id}}",
+         "support": "سپورٹ",
+         "supportFull": "تکنیکی سپورٹ"
+      }
+   },
+   "common": {
+      "actions": {
+         "add": "شامل کریں",
+         "adding": "شامل کیا جا رہا ہے...",
+         "addingShort": "شامل کر رہے ہیں...",
+         "back": "واپس",
+         "cancel": "منسوخ کریں",
+         "clear": "صاف کریں",
+         "close": "بند کریں",
+         "confirm": "تصدیق کریں",
+         "continue": "جاری رکھیں",
+         "copied": "کاپی ہو گیا",
+         "copy": "کاپی کریں",
+         "copyNumber": "نمبر کاپی کریں",
+         "create": "بنائیں",
+         "creating": "بنایا جا رہا ہے...",
+         "creatingProcess": "بنایا جا رہا ہے...",
+         "delete": "حذف کریں",
+         "deleting": "حذف کیا جا رہا ہے...",
+         "download": "ڈاؤن لوڈ کریں",
+         "edit": "ترمیم کریں",
+         "goTo": "جائیں",
+         "gotIt": "سمجھ گیا",
+         "hide": "چھپائیں",
+         "next": "آگے",
+         "openInNewTab": "نئے ٹیب میں کھولیں",
+         "preview": "پیش منظر",
+         "refresh": "تازہ کریں",
+         "remove": "ہٹائیں",
+         "retry": "دوبارہ کوشش کریں",
+         "retryAttempt": "دوبارہ کوشش کریں",
+         "save": "محفوظ کریں",
+         "saveChanges": "تبدیلیاں محفوظ کریں",
+         "saving": "محفوظ کیا جا رہا ہے...",
+         "select": "منتخب کریں",
+         "selected": "منتخب شدہ: {{count}}",
+         "send": "بھیجیں",
+         "sending": "بھیجا جا رہا ہے...",
+         "sendingShort": "بھیج رہے ہیں...",
+         "share": "شیئر کریں",
+         "showAll": "تمام دکھائیں (+{{count}})",
+         "sign": "دستخط کریں",
+         "yes": "جی ہاں"
+      },
+      "cargoCount_one": "{{count}} کارگو",
+      "cargoCount_other": "{{count}} کارگو",
+      "documents": {
+         "add": "دستاویز شامل کریں",
+         "empty": "کوئی دستاویز شامل نہیں کی گئی",
+         "fileSelected": "فائل منتخب کر لی گئی"
+      },
+      "empty": {
+         "addressNotSpecified": "پتہ درج نہیں کیا گیا",
+         "binNotSpecified": "BIN درج نہیں کیا گیا",
+         "canLeaveBlank": "خالی چھوڑا جا سکتا ہے",
+         "cargoNotSpecified": "کارگو درج نہیں کیا گیا",
+         "companyNotSpecified": "کمپنی درج نہیں کی گئی",
+         "contactDataNotSpecified": "رابطہ کی معلومات درج نہیں کی گئیں",
+         "contactsNotSpecified": "رابطے درج نہیں کیے گئے",
+         "dataNotFilled": "معلومات مکمل نہیں کی گئیں",
+         "dateNotSpecified": "تاریخ درج نہیں کی گئی",
+         "descriptionNotSpecified": "تفصیل درج نہیں کی گئی",
+         "fullNameNotSpecified": "پورا نام درج نہیں کیا گیا",
+         "invalidData": "غلط معلومات",
+         "invalidDate": "غلط تاریخ",
+         "nameNotSpecified": "نام درج نہیں کیا گیا",
+         "noCompany": "کمپنی کے بغیر",
+         "noData": "کوئی معلومات نہیں",
+         "noFullName": "پورے نام کے بغیر",
+         "noName": "نام کے بغیر",
+         "notAdded": "شامل نہیں کیا گیا",
+         "notAssigned": "تفویض نہیں کیا گیا",
+         "notSelected": "منتخب نہیں کیا گیا",
+         "notSpecifiedM": "درج نہیں کیا گیا",
+         "notSpecifiedN": "درج نہیں کیا گیا",
+         "nothingFound": "کچھ نہیں ملا",
+         "optional": "اختیاری",
+         "priceNotSpecified": "قیمت درج نہیں کی گئی",
+         "typeNotSpecified": "قسم درج نہیں کی گئی",
+         "unknown": "نامعلوم",
+         "unlimited": "غیر محدود"
+      },
+      "fields": {
+         "actions": "کارروائیاں",
+         "amount": "رقم",
+         "bankName": "بینک کا نام",
+         "bik": "BIK",
+         "bin": "BIN",
+         "binValue": "BIN: {{bin}}",
+         "bodyType": "باڈی کی قسم",
+         "cargo": "کارگو",
+         "cargoCountLabel": "کارگو کی تعداد",
+         "cargoName": "کارگو کا نام",
+         "cargoPrice": "کارگو کی قیمت",
+         "cargoType": "کارگو کی قسم",
+         "cargos": "کارگو",
+         "comment": "تبصرہ",
+         "company": "کمپنی",
+         "companyAddress": "کمپنی کا پتہ",
+         "companyBin": "کمپنی کا BIN",
+         "companyName": "کمپنی کا نام",
+         "contactPerson": "رابطہ کار",
+         "currency": "کرنسی",
+         "customer": "گاہک",
+         "date": "تاریخ",
+         "dateFrom": "تاریخ از",
+         "dateTo": "تاریخ تا",
+         "description": "تفصیل",
+         "destination": "منزل",
+         "dimensions": "طول و عرض",
+         "direction": "سمت",
+         "document": "دستاویز",
+         "documentName": "دستاویز کا نام",
+         "documentNumber": "دستاویز نمبر",
+         "documents": "دستاویزات",
+         "driver": "ڈرائیور",
+         "email": "ای میل",
+         "endDate": "اختتامی تاریخ",
+         "executionPrice": "اجراء کی قیمت",
+         "factor": "فیکٹر",
+         "file": "فائل",
+         "files": "فائلیں",
+         "forwarder": "فارورڈر",
+         "forwarderBin": "فارورڈر کا BIN",
+         "forwarderFullName": "فارورڈر کا پورا نام",
+         "forwarderIin": "فارورڈر کا IIN",
+         "from": "سے",
+         "fullName": "پورا نام",
+         "gracePeriod": "ادائیگی کی مہلت",
+         "gracePeriodDays": "ادائیگی کی مہلت، دن",
+         "heightCm": "اونچائی، سینٹی میٹر",
+         "iik": "IIK",
+         "iin": "IIN",
+         "international": "بین الاقوامی ترسیل",
+         "issuingCountry": "جاری کرنے والا ملک",
+         "legalAddress": "قانونی پتہ",
+         "lengthCm": "لمبائی، سینٹی میٹر",
+         "loadingType": "لوڈنگ کی قسم",
+         "manufacturer": "تیار کنندہ",
+         "name": "نام",
+         "number": "نمبر",
+         "origin": "آغاز",
+         "packagingType": "پیکنگ کی قسم",
+         "participants": "شرکاء",
+         "password": "پاس ورڈ",
+         "phone": "فون",
+         "price": "قیمت",
+         "quantity": "مقدار",
+         "route": "راستہ",
+         "settlementAccount": "سیٹلمنٹ اکاؤنٹ",
+         "shipments": "ترسیلات",
+         "startDate": "آغاز کی تاریخ",
+         "status": "حیثیت",
+         "timeLeft": "باقی وقت",
+         "title": "عنوان",
+         "tnvedCode": "ٹی این ویڈ کوڈ",
+         "to": "تک",
+         "transportParams": "ترسیل کے پیرامیٹرز",
+         "transportType": "ترسیل کی قسم",
+         "type": "قسم",
+         "vat": "ویٹ",
+         "volume": "حجم",
+         "volumeM3": "حجم، م³",
+         "weight": "وزن",
+         "weightKg": "وزن، کلوگرام",
+         "widthCm": "چوڑائی، سینٹی میٹر",
+         "withVat": "ویٹ کے ساتھ",
+         "withoutVat": "ویٹ کے بغیر"
+      },
+      "filePreview": {
+         "documentNotFound": "دستاویز نہیں ملی",
+         "noFile": "اس دستاویز کے لیے پیش منظر کی فائل موجود نہیں",
+         "unsupported": "اس قسم کی فائل کا پیش منظر ابھی تک سپورٹ نہیں کیا جاتا",
+         "unsupportedType": "{{mime}} قسم کی فائلوں کا پیش منظر سپورٹ نہیں کیا جاتا"
+      },
+      "forwarderPicker": {
+         "clickToLoad": "فارورڈرز لوڈ کرنے کے لیے کلک کریں",
+         "detailsLoadFailed": "فارورڈر کی تفصیلات لوڈ نہیں ہو سکیں",
+         "loadFailed": "فارورڈرز لوڈ نہیں ہو سکے",
+         "loading": "فارورڈرز لوڈ ہو رہے ہیں...",
+         "notFound": "فارورڈر نہیں ملا",
+         "searchByCompany": "کمپنی کا نام یا BIN درج کریں",
+         "searchHint": "پورا نام، IIN، کمپنی، BIN یا فون نمبر درج کریں"
+      },
+      "loading": {
+         "default": "لوڈ ہو رہا ہے...",
+         "list": "فہرست لوڈ ہو رہی ہے...",
+         "map": "نقشہ لوڈ ہو رہا ہے...",
+         "preview": "پیش منظر لوڈ ہو رہا ہے..."
+      },
+      "search": {
+         "byDirection": "سمت کے مطابق تلاش کریں",
+         "minChars": "کم از کم 2 حروف درج کریں"
+      },
+      "severity": {
+         "error": "خرابی",
+         "info": "پیغام",
+         "notice": "اطلاع",
+         "success": "کامیابی",
+         "warning": "انتباہ"
+      },
+      "shipmentCount_one": "{{count}} ترسیل",
+      "shipmentCount_other": "{{count}} ترسیلات",
+      "signing": {
+         "keepPageOpen": "صفحہ بند نہ کریں — دستخط کی ونڈو نئے ٹیب میں کھلی ہوئی ہے۔ حیثیت خودکار طور پر تازہ ہو جائے گی۔",
+         "opening": "دستخط کا صفحہ کھولا جا رہا ہے...",
+         "thisLink": "اس لنک",
+         "unavailable": "دستخط کی سروس دستیاب نہیں، براہ کرم بعد میں دوبارہ کوشش کریں",
+         "waiting": "دستخط کا انتظار کیا جا رہا ہے...",
+         "windowHint": "اگر دستخط کی ونڈو خودکار طور پر نہیں کھلی، تو اسے اس کے ذریعے کھولیں"
+      },
+      "units": {
+         "bytes": "{{value}} بائٹ",
+         "cargoSummary": "{{cargoCount}} · {{weight}} کلوگرام",
+         "days": "{{count}} دن",
+         "dimensionsCm": "{{length}} × {{width}} × {{height}} سینٹی میٹر",
+         "kg": "{{value}} کلوگرام",
+         "kilobytes": "{{value}} کے بی",
+         "km": "کلومیٹر",
+         "m3": "{{value}} م³",
+         "megabytes": "{{value}} ایم بی"
+      },
+      "view": {
+         "cards": "کارڈز",
+         "showAsCards": "کارڈز کے طور پر دکھائیں",
+         "showAsTable": "جدول کے طور پر دکھائیں",
+         "table": "جدول"
+      },
+      "waypointCount_one": "{{count}} پوائنٹ",
+      "waypointCount_other": "{{count}} پوائنٹس"
+   },
+   "complaints": {
+      "answer": {
+         "label": "جواب",
+         "notAdded": "ابھی تک کوئی جواب شامل نہیں کیا گیا",
+         "pending": "انتظامیہ کی طرف سے ابھی تک کوئی جواب موصول نہیں ہوا",
+         "rejected": "شکایت مسترد کر دی گئی",
+         "title": "انتظامیہ کا جواب"
+      },
+      "attachments": {
+         "allowedTypes": "صرف تصاویر، ویڈیوز، PDF یا DOCX کی اجازت ہے",
+         "attach": "فائلیں منسلک کریں",
+         "limits": "زیادہ سے زیادہ {{count}} فائلیں، ہر ایک {{size}} ایم بی تک",
+         "maxCount": "زیادہ سے زیادہ {{count}} فائلیں منسلک کی جا سکتی ہیں",
+         "maxSize": "فائل کا سائز {{size}} ایم بی سے زیادہ نہیں ہونا چاہیے",
+         "removeFile": "فائل حذف کریں"
+      },
+      "create": {
+         "action": "شکایت درج کریں",
+         "describePlaceholder": "بیان کریں کہ کیا ہوا",
+         "failed": "شکایت بھیجی نہیں جا سکی",
+         "maxLength": "تفصیل {{count}} حروف سے زیادہ نہیں ہونی چاہیے",
+         "subject": "شکایت کا موضوع",
+         "subjectPlaceholder": "شکایت کا خلاصہ بیان کریں",
+         "submit": "شکایت بھیجیں"
+      },
+      "emptyLast30Days": "گزشتہ 30 دنوں میں کوئی شکایت نہیں ملی",
+      "loadFailed": "شکایات لوڈ نہیں ہو سکیں",
+      "notFound": "کوئی شکایت نہیں ملی",
+      "subtitle": "گزشتہ 30 دنوں کی شکایات اور انتظامیہ کے جوابات",
+      "target": {
+         "empty": "گزشتہ 30 دنوں میں کوئی ترسیل یا فیکٹرنگ موجود نہیں",
+         "label": "متعلق ہے",
+         "loadFailed": "فہرست لوڈ نہیں ہو سکی",
+         "question": "شکایت کس ترسیل یا فیکٹرنگ سے متعلق ہے"
+      },
+      "title": "شکایات",
+      "titleSingular": "شکایت",
+      "viewToggle": "شکایات کا منظر تبدیل کریں"
+   },
+   "contractGate": {
+      "fillProfile": "پروفائل میں معلومات مکمل کریں",
+      "goToProfile": "پروفائل پر جائیں",
+      "noContracts": "آپ کے پاس کوئی معاہدہ نہیں یا دستخط کی مدت ختم ہو چکی ہے",
+      "signContract": "معاہدے پر دستخط کریں"
+   },
+   "createLead": {
+      "cargo": {
+         "description": "کارگو کی تفصیل",
+         "validation": {
+            "cargoPriceNegative": "کارگو کی قیمت منفی نہیں ہو سکتی",
+            "gracePeriodRange": "1 سے 364 دن کے درمیان درج کریں",
+            "heightPositive": "اونچائی 0 سے زیادہ ہونی چاہیے",
+            "lengthPositive": "لمبائی 0 سے زیادہ ہونی چاہیے",
+            "nameRequired": "کارگو کا نام درج کریں",
+            "priceNegative": "قیمت منفی نہیں ہو سکتی",
+            "tnvedRequired": "ٹی این ویڈ کوڈ درج کریں",
+            "volumePositive": "حجم 0 سے زیادہ ہونا چاہیے",
+            "weightPositive": "وزن 0 سے زیادہ ہونا چاہیے",
+            "widthPositive": "چوڑائی 0 سے زیادہ ہونی چاہیے"
+         },
+         "withVat": "ویٹ کے ساتھ"
+      },
+      "customer": {
+         "current": "موجودہ گاہک",
+         "required": "گاہک درج کریں"
+      },
+      "forwarder": {
+         "hint": "اس فارورڈر کو تلاش کریں اور منتخب کریں جو راستے سے منسلک ہو گا",
+         "loadingDetails": "فارورڈر کی معلومات لوڈ ہو رہی ہیں...",
+         "skippable": "آپ یہ مرحلہ چھوڑ کر فارورڈر کے بغیر آرڈر بنا سکتے ہیں"
+      },
+      "result": {
+         "createError": "بنانے میں خرابی",
+         "createFailed": "آرڈر نہیں بنایا جا سکا",
+         "created": "آرڈر بن گیا",
+         "createdSuccess": "آرڈر کامیابی سے بنایا گیا",
+         "createdSuccessWithId": "آرڈر کامیابی سے بنایا گیا: {{id}}",
+         "createdWithDocumentErrors": "آرڈر بن گیا، لیکن کچھ دستاویزات اپ لوڈ نہیں ہو سکیں",
+         "draftSaveFailed": "ڈرافٹ محفوظ نہیں ہو سکا",
+         "draftSaved": "ڈرافٹ محفوظ ہو گیا",
+         "saveError": "محفوظ کرنے میں خرابی",
+         "savedAsDraft": "آرڈر ڈرافٹ کے طور پر محفوظ کر دیا گیا"
+      },
+      "saveDraft": "ڈرافٹ کے طور پر محفوظ کریں",
+      "skipVideoRecording": "لوڈنگ/ان لوڈنگ کی ویڈیو ریکارڈنگ چھوڑ دیں",
+      "step": "مرحلہ {{current}} از {{total}}",
+      "steps": {
+         "cargo": "کارگو اور ادائیگی",
+         "confirm": "تصدیق",
+         "confirmTitle": "معلومات چیک کریں",
+         "customer": "گاہک کی معلومات",
+         "documents": "دستاویزات",
+         "forwarder": "فارورڈر کا انتخاب",
+         "route": "راستہ"
+      },
+      "submit": "آرڈر بنائیں",
+      "subtitle": "آرڈر کی معلومات مکمل کریں",
+      "title": "آرڈر بنانا"
+   },
+   "dashboard": {
+      "analytics": {
+         "amountAxis": "رقم، {{currency}}",
+         "emergencyCount": "ہنگامی صورتحال: {{count}}",
+         "emptyPeriod": "منتخب مدت کے لیے کوئی ڈیٹا موجود نہیں",
+         "loadFailed": "ترسیل کا تجزیہ لوڈ نہیں ہو سکا",
+         "noShipmentsPeriod": "منتخب مدت میں کوئی ترسیل موجود نہیں",
+         "shipmentNumber": "ترسیل نمبر",
+         "title": "ترسیل کی روانی",
+         "trips": "سفر"
+      },
+      "factorings": {
+         "loading": "فیکٹرنگز لوڈ ہو رہی ہیں...",
+         "number": "فیکٹرنگ #{{id}}",
+         "title": "فیکٹرنگز کی فہرست"
+      },
+      "groupBy": {
+         "day": "دن کے مطابق",
+         "month": "ماہ کے مطابق",
+         "quarter": "سہ ماہی کے مطابق",
+         "week": "ہفتے کے مطابق"
+      },
+      "leads": {
+         "empty": "ابھی تک کوئی فعال آرڈر موجود نہیں",
+         "loading": "آرڈرز لوڈ ہو رہے ہیں...",
+         "mapHint": "نقشے پر راستہ نمایاں کرنے کے لیے ایک آرڈر منتخب کریں",
+         "orderNumber": "آرڈر #{{num}}",
+         "title": "فعال آرڈرز"
+      },
+      "period": {
+         "action": "مدت منتخب کریں",
+         "compare": "گزشتہ مدت سے موازنہ کریں",
+         "halfYear": "آدھا سال",
+         "month": "مہینہ",
+         "quarter": "سہ ماہی",
+         "title": "مدت کا انتخاب",
+         "week": "ہفتہ",
+         "year": "سال"
+      },
+      "saleCount_one": "{{count}} فروخت",
+      "saleCount_other": "{{count}} فروخت",
+      "stats": {
+         "active": "فعال",
+         "activeFactoringSales": "فیکٹرنگ کی فعال فروخت",
+         "activeShipments": "فعال ترسیلات",
+         "activeTenders": "فعال نیلامیاں",
+         "amounts": "رقوم",
+         "factoringSales": "فیکٹرنگ کی فروخت",
+         "factoringSalesPeriod": "فیکٹرنگ فروخت کی مدت",
+         "forPeriod": "مدت کے لیے",
+         "loadFailed": "اعداد و شمار لوڈ نہیں ہو سکے",
+         "shipmentsPeriod": "ترسیل کی مدت",
+         "showAllCurrencies": "تمام کرنسیاں دکھائیں",
+         "title": "اعداد و شمار",
+         "today": "آج",
+         "viewMode": "اعداد و شمار کا منظر موڈ"
+      },
+      "tenderCount_one": "{{count}} نیلامی",
+      "tenderCount_other": "{{count}} نیلامیاں",
+      "tenders": {
+         "bids": "بولیاں: {{count}}",
+         "loading": "نیلامیاں لوڈ ہو رہی ہیں...",
+         "number": "نیلامی #{{id}}",
+         "private": "نجی",
+         "privateEmpty": "ابھی تک کوئی نجی نیلامی نہیں ملی",
+         "public": "عوامی",
+         "publicEmpty": "ابھی تک کوئی عوامی نیلامی نہیں ملی",
+         "title": "نیلامیوں کی فہرست"
+      },
+      "title": "مرکزی صفحہ",
+      "totalCargoWeight": "{{value}} کلوگرام"
+   },
+   "enums": {
+      "complaintStatus": {
+         "answered": "جواب موصول ہوا",
+         "in_progress": "زیر کارروائی",
+         "pending_answer": "جواب کا منتظر",
+         "pending_review": "جائزے کا منتظر",
+         "rejected": "مسترد",
+         "rejectedN": "مسترد",
+         "resolved": "حل ہو گیا"
+      },
+      "complaintTarget": {
+         "factoring": "فیکٹرنگ",
+         "shipment": "ترسیل"
+      },
+      "factoringLine": {
+         "closed": "بند لائن",
+         "open": "کھلی لائن"
+      },
+      "factoringStatus": {
+         "await_paid": "ادائیگی کا منتظر",
+         "cancelled": "منسوخ",
+         "finished": "مکمل",
+         "new": "نیا",
+         "verified_participant": "جزوی طور پر تصدیق شدہ"
+      },
+      "leadStatus": {
+         "add_driver": "ڈرائیور شامل کر دیا گیا",
+         "cancelled": "منسوخ",
+         "draft": "ڈرافٹ",
+         "emergency_situation": "ہنگامی صورتحال",
+         "finished": "مکمل",
+         "finished_emergency_situation": "مکمل (ہنگامی صورتحال)",
+         "new": "نیا",
+         "sign_avr": "واجبات کی تصدیق پر دستخط",
+         "start_driver": "سفر شروع ہو گیا",
+         "start_loading": "لوڈنگ",
+         "start_unloading": "ان لوڈنگ",
+         "verification_loading": "لوڈنگ کی تصدیق ہو گئی",
+         "verification_unloading": "ان لوڈنگ کی تصدیق ہو گئی"
+      },
+      "leadStatusFilter": {
+         "all": "تمام حیثیتیں",
+         "cancelled": "منسوخ شدہ",
+         "driverAssigned": "ڈرائیور تفویض کر دیا گیا",
+         "driverDeparted": "ڈرائیور روانہ ہو گیا",
+         "finished": "مکمل شدہ",
+         "inTransit": "راستے میں",
+         "new": "نئے",
+         "other": "دیگر"
+      },
+      "manufacturerStatus": {
+         "attached": "منسلک",
+         "incomingRequest": "آنے والی درخواست",
+         "notAttached": "منسلک نہیں",
+         "requestSent": "درخواست بھیج دی گئی"
+      },
+      "participantType": {
+         "forwarder": "فارورڈر"
+      },
+      "publicationType": {
+         "private": "نجی",
+         "public": "عوامی"
+      },
+      "signature": {
+         "notSigned": "دستخط نہیں کیے گئے",
+         "notSignedM": "دستخط نہیں کیے گئے",
+         "signed": "دستخط کر دیے گئے",
+         "signedM": "دستخط کر دیے گئے"
+      },
+      "tenderStatus": {
+         "active": "فعال",
+         "cancelled": "منسوخ",
+         "closed": "بند",
+         "finished": "مکمل",
+         "new": "نیا"
+      },
+      "verification": {
+         "confirmed": "تصدیق شدہ",
+         "notConfirmed": "غیر تصدیق شدہ"
+      },
+      "verificationCheck": {
+         "notPassed": "کامیاب نہیں ہوا",
+         "passed": "کامیاب ہوا",
+         "passedMark": "✓ کامیاب ہوا"
+      },
+      "waypointType": {
+         "check_passes": "ٹرانزٹ",
+         "loading": "لوڈنگ",
+         "unloading": "ان لوڈنگ"
+      }
+   },
+   "errorPage": {
+      "title": "کچھ غلط ہو گیا",
+      "unexpectedReload": "ایک غیر متوقع خرابی پیش آئی۔ صفحہ تازہ کریں یا بعد میں دوبارہ کوشش کریں۔"
+   },
+   "errors": {
+      "factoringNotFound": "فیکٹرنگ نہیں ملی",
+      "generic": "کچھ غلط ہو گیا",
+      "genericSupport": "کچھ غلط ہو گیا۔ براہ کرم سپورٹ سے رابطہ کریں۔",
+      "leadNotFound": "آرڈر نہیں ملا",
+      "notFound": "مطلوبہ صفحہ نہیں ملا۔",
+      "server": "سرور پر ایک خرابی پیش آئی۔ بعد میں دوبارہ کوشش کریں۔",
+      "unexpected": "ایک غیر متوقع خرابی پیش آئی۔"
+   },
+   "exportReport": {
+      "action": "رپورٹ ایکسپورٹ کریں",
+      "dateOrder": "تاریخ «از» تاریخ «تا» سے بعد نہیں ہو سکتی",
+      "failed": "رپورٹ ایکسپورٹ نہیں ہو سکی۔ بعد میں دوبارہ کوشش کریں",
+      "hint": "رپورٹ میں صرف منتخب مدت کی مکمل ہونے والی ترسیلات شامل ہوں گی۔",
+      "inProgress": "ایکسپورٹ کیا جا رہا ہے...",
+      "submit": "ایکسپورٹ کریں"
+   },
+   "factorings": {
+      "cancel": {
+         "action": "فیکٹرنگ منسوخ کریں",
+         "confirm": "کیا آپ واقعی اس فیکٹرنگ کو منسوخ کرنا چاہتے ہیں؟ یہ عمل واپس نہیں ہو سکے گا۔",
+         "failed": "فیکٹرنگ منسوخ نہیں ہو سکی",
+         "inProgress": "فیکٹرنگ منسوخ کی جا رہی ہے…"
+      },
+      "chat": {
+         "action": "چیٹ",
+         "leadNotResolved": "فیکٹرنگ سے متعلق آرڈر کا تعین نہیں ہو سکا",
+         "openFailed": "فیکٹرنگ چیٹ نہیں کھل سکی"
+      },
+      "confirmParticipation": {
+         "openFailed": "دستخط کی ونڈو نہیں کھل سکی",
+         "opening": "دستخط کھولا جا رہا ہے...",
+         "text": "کیا آپ اس فیکٹرنگ میں اپنی شرکت کی تصدیق کرنا چاہتے ہیں؟ آپ کو دستاویزات کے دستخط کی ونڈو پر منتقل کیا جائے گا۔",
+         "title": "شرکت کی تصدیق"
+      },
+      "confirmations": {
+         "confirmedByCustomer": "گاہک کی طرف سے تصدیق شدہ",
+         "customer": "گاہک کی تصدیق",
+         "date": "تصدیق کی تاریخ",
+         "factor": "فیکٹر کی تصدیق",
+         "factorStatus": "فیکٹر: {{status}}",
+         "forwarder": "فارورڈر کی تصدیق",
+         "forwarderStatus": "فارورڈر: {{status}}",
+         "subtitle": "فریقین کی تصدیق کی حیثیت",
+         "title": "تصدیقات",
+         "you": "آپ",
+         "youStatus": "آپ: {{status}}"
+      },
+      "details": {
+         "cargoSection": "کارگو اور ترسیل کے پیرامیٹرز",
+         "createdAt": "تخلیق کی تاریخ",
+         "loadFailed": "فیکٹرنگ کی تفصیلات لوڈ نہیں ہو سکیں",
+         "loading": "فیکٹرنگ کی تفصیلات لوڈ ہو رہی ہیں...",
+         "main": "بنیادی معلومات",
+         "mainSubtitle": "درخواست کا نمبر، تخلیق کی تاریخ اور متعلقہ آرڈر",
+         "number": "فیکٹرنگ #{{id}}",
+         "title": "فیکٹرنگ کی تفصیلات"
+      },
+      "finance": {
+         "creditAmount": "کریڈٹ رقم",
+         "debtAmount": "وصولی کی رقم",
+         "debtCurrency": "وصولی کی رقم کی کرنسی",
+         "factoringCurrency": "فیکٹرنگ کی کرنسی",
+         "factoringRate": "فیکٹرنگ کی شرح",
+         "serviceRate": "سروس کی شرح",
+         "subtitle": "رقوم، کرنسی اور فیکٹرنگ کی شرح",
+         "title": "مالیات"
+      },
+      "line": {
+         "contractNote": "فارورڈر اور فیکٹر کے درمیان، دونوں فریقین کے دستخط کے ساتھ",
+         "contractTitle": "فیکٹرنگ لائن کا معاہدہ",
+         "signStartFailed": "فیکٹرنگ لائن کے دستخط شروع نہیں ہو سکے",
+         "timeout": "فیکٹرنگ لائن کے دستخط کا وقت ختم ہو گیا، دوبارہ کوشش کریں",
+         "waitForParties": "دستخط فارورڈر اور فیکٹر کے دستخط کے بعد دستیاب ہوں گے۔",
+         "yourSignature": "فیکٹرنگ لائن (آپ کے دستخط)"
+      },
+      "loadFailed": "فیکٹرنگ خریداریاں لوڈ نہیں ہو سکیں",
+      "notFound": "کوئی فیکٹرنگ خریداری نہیں ملی",
+      "participants": {
+         "customerLoadFailed": "گاہک کی معلومات لوڈ نہیں ہو سکیں",
+         "subtitle": "فیکٹرنگ کے تمام شرکاء"
+      },
+      "purchasesTitle": "فیکٹرنگ خریداریاں",
+      "requisites": {
+         "loadFailed": "گاہک کی بینک تفصیلات لوڈ نہیں ہو سکیں",
+         "title": "فریقین کی بینک تفصیلات"
+      },
+      "subtitle": "فیکٹرنگ درخواستوں کی فہرست",
+      "title": "فیکٹرنگز",
+      "titleSingular": "فیکٹرنگ",
+      "viewToggle": "فیکٹرنگز کا منظر تبدیل کریں"
+   },
+   "forwarders": {
+      "invite": {
+         "action": "فارورڈر کو مدعو کریں",
+         "copyLink": "لنک کاپی کریں",
+         "create": "دعوت نامہ بنائیں",
+         "createFailed": "دعوت نامہ نہیں بن سکا",
+         "created": "دعوت نامہ بن گیا",
+         "link": "دعوت کا لنک",
+         "linkCopied": "لنک کاپی ہو گیا",
+         "noActiveLink": "کوئی فعال لنک موجود نہیں",
+         "success": "فارورڈر بن گیا۔ معلومات مکمل کرنے کے لیے اسے لنک بھیجیں۔",
+         "title": "دعوت نامہ"
+      },
+      "issuingCountry": "دستاویز جاری کرنے والا ملک",
+      "notFound": "کوئی فارورڈر نہیں ملا",
+      "registered": "رجسٹرڈ",
+      "representative": "نمائندہ",
+      "searchPlaceholder": "فارورڈر تلاش کریں",
+      "sections": {
+         "company": "فارورڈر کی معلومات — کمپنی",
+         "contact": "رابطہ کار کی معلومات",
+         "requisites": "فارورڈر کی بینک تفصیلات"
+      },
+      "subtitle": "تمام فارورڈرز کی مکمل فہرست",
+      "title": "فارورڈرز",
+      "viewToggle": "فارورڈرز کا منظر تبدیل کریں"
+   },
+   "header": {
+      "closeMenu": "مینیو بند کریں",
+      "logout": {
+         "action": "لاگ آؤٹ",
+         "confirm": "کیا آپ واقعی لاگ آؤٹ کرنا چاہتے ہیں؟",
+         "failed": "لاگ آؤٹ نہیں ہو سکا",
+         "fromAccount": "اکاؤنٹ سے لاگ آؤٹ",
+         "inProgress": "لاگ آؤٹ کیا جا رہا ہے...",
+         "title": "لاگ آؤٹ"
+      },
+      "needHelp": "مدد کی ضرورت ہے؟",
+      "settings": "ترتیبات",
+      "supportAvailable": "ہماری سپورٹ ٹیم ہر وقت دستیاب ہے",
+      "user": "صارف",
+      "userProfile": "صارف {{email}} کا پروفائل"
+   },
+   "kgd": {
+      "loadFailed": "KGD کی معلومات لوڈ نہیں ہو سکیں",
+      "taxationMode": "ٹیکس کا طریقہ کار"
+   },
+   "leads": {
+      "avr": {
+         "checking": "واجبات کی تصدیق کی حیثیت چیک کی جا رہی ہے...",
+         "clickToDownload": "ڈاؤن لوڈ کے لیے کلک کریں",
+         "customerSignature": "گاہک کے دستخط",
+         "devSimulateForwarder": "[dev] فارورڈر کے دستخط کی نقل کریں",
+         "forwarderSignature": "فارورڈر کے دستخط",
+         "notReady": "واجبات کی تصدیق کی دستاویز ابھی تیار نہیں، بعد میں دوبارہ کوشش کریں",
+         "signStartFailed": "واجبات کی تصدیق کے دستخط شروع نہیں ہو سکے",
+         "statusLoadFailed": "واجبات کی تصدیق کی حیثیت لوڈ نہیں ہو سکی",
+         "timeout": "واجبات کی تصدیق کے دستخط کا وقت ختم ہو گیا، دوبارہ کوشش کریں",
+         "title": "کام کی تکمیل کا واجبات کا بیان",
+         "titleShort": "کام کی تکمیل کا واجبات کا بیان (AVR)",
+         "unavailable": "واجبات کی تصدیق کی دستاویز ابھی دستیاب نہیں، بعد میں دوبارہ کوشش کریں",
+         "waitForForwarder": "واجبات کی تصدیق کے دستخط فارورڈر کے دستخط کے بعد دستیاب ہوں گے۔"
+      },
+      "cargo": {
+         "add": "کارگو شامل کریں",
+         "deleteConfirm": "کارگو #{{index}} حذف کریں؟",
+         "deleteFailed": "کارگو حذف نہیں ہو سکا",
+         "itemNumber": "کارگو #{{index}}",
+         "priceSetByForwarder": "قیمت فارورڈر کی طرف سے مقرر کی گئی",
+         "volumeM3Value": "{{value}} م³"
+      },
+      "chat": {
+         "withDriver": "ڈرائیور کے ساتھ چیٹ",
+         "withForwarder": "فارورڈر کے ساتھ چیٹ"
+      },
+      "details": {
+         "driverComment": "ڈرائیور کا تبصرہ: {{comment}}",
+         "info": "آرڈر کی معلومات",
+         "loadFailed": "آرڈر لوڈ نہیں ہو سکا",
+         "loading": "آرڈر کی تفصیلات لوڈ ہو رہی ہیں...",
+         "noCustomer": "گاہک کے بغیر",
+         "notResolved": "آرڈر کا تعین نہیں ہو سکا",
+         "number": "آرڈر #{{num}}",
+         "ownerNotSpecified": "ذمہ دار درج نہیں کیا گیا",
+         "refreshFailed": "آرڈر کی تازہ معلومات حاصل نہیں ہو سکیں",
+         "saveFailed": "تبدیلیاں محفوظ نہیں ہو سکیں",
+         "shipmentNumber": "ترسیل #{{num}}",
+         "subtitle": "آرڈر کی تفصیلی معلومات",
+         "videoDisabled": "ویڈیو ریکارڈنگ غیر فعال ہے"
+      },
+      "documents": {
+         "deleteFailed": "دستاویز حذف نہیں ہو سکی",
+         "deleteTargetMissing": "حذف کرنے کے لیے فائل کا تعین نہیں ہو سکا",
+         "loadFailed": "دستاویزات لوڈ نہیں ہو سکیں",
+         "ownFilesOnly": "صرف گاہک کی فائلیں حذف کی جا سکتی ہیں",
+         "singleLoadFailed": "دستاویز لوڈ نہیں ہو سکی"
+      },
+      "edit": {
+         "blockedEmergency": "ہنگامی صورتحال میں موجود آرڈر میں ترمیم نہیں کی جا سکتی",
+         "blockedFinished": "مکمل یا منسوخ شدہ آرڈر میں ترمیم نہیں کی جا سکتی",
+         "blockedFinishedEmergency": "ہنگامی صورتحال میں مکمل ہونے والے آرڈر میں ترمیم نہیں کی جا سکتی"
+      },
+      "empty": "کوئی آرڈر نہیں ہے",
+      "forwarder": {
+         "lockedByTender": "فارورڈر نیلامی کے نتائج کے مطابق مقرر کیا گیا ہے اور اسے تبدیل نہیں کیا جا سکتا",
+         "notAssigned": "فارورڈر مقرر نہیں کیا گیا"
+      },
+      "loadFailed": "آرڈرز لوڈ نہیں ہو سکے",
+      "map": {
+         "coordsViaWebSocket": "کوآرڈینیٹس ویب ساکٹ کے ذریعے موصول ہوئے",
+         "driverPosition": "ڈرائیور کی موجودہ پوزیشن",
+         "lastUpdate": "آخری تازہ کاری: {{time}}",
+         "loadingRoute": "راستہ لوڈ ہو رہا ہے..."
+      },
+      "notFound": "کوئی آرڈر نہیں ملا",
+      "publish": {
+         "action": "شائع کریں",
+         "failed": "آرڈر شائع نہیں ہو سکا",
+         "fillRouteAndCargo": "شائع کرنے سے پہلے راستہ اور کارگو مکمل کریں",
+         "inProgress": "شائع کیا جا رہا ہے..."
+      },
+      "share": {
+         "confirm": "کیا آپ واقعی آرڈر کی معلومات تیسرے فریق کے ساتھ شیئر کرنا چاہتے ہیں؟ معلومات لنک کے ذریعے ہر اس شخص کو دستیاب ہوں گی جس کے پاس یہ ہو۔",
+         "creating": "لنک بنایا جا رہا ہے...",
+         "failed": "لنک حاصل نہیں ہو سکا۔ بعد میں دوبارہ کوشش کریں۔",
+         "hint": "اس لنک کا حامل کوئی بھی شخص آرڈر کی معلومات دیکھ سکے گا۔",
+         "link": "آرڈر کا لنک",
+         "title": "آرڈر شیئر کریں",
+         "validUntil": "لنک اس تاریخ تک درست ہے"
+      },
+      "subtitle": "ترسیل کی درخواستوں کی فہرست",
+      "title": "آرڈرز",
+      "trip": {
+         "avrSignedFinished": "واجبات کی تصدیق پر دستخط ہو گئے، سفر مکمل ہو گیا",
+         "emergency": "سفر میں ہنگامی صورتحال",
+         "finishedEmergency": "یہ سفر ہنگامی صورتحال میں مکمل ہوا"
+      },
+      "validation": {
+         "gracePeriodRange": "ادائیگی کی مہلت 1 سے 364 دن کے درمیان ہونی چاہیے",
+         "routeDates": "راستے کی تاریخیں چیک کریں",
+         "routePoints": "راستے کے آغاز اور منزل کے پوائنٹس درج کریں",
+         "tnvedForAllCargo": "تمام کارگو کے لیے ٹی این ویڈ کوڈ درج کریں"
+      },
+      "view": {
+         "kanban": "کانبان",
+         "showAsKanban": "کانبان کے طور پر دکھائیں"
+      },
+      "viewToggle": "آرڈرز کا منظر تبدیل کریں"
+   },
+   "manufacturers": {
+      "add": {
+         "action": "تیار کنندہ شامل کریں",
+         "alreadyAdded": "پہلے سے شامل ہے",
+         "failed": "تیار کنندہ شامل نہیں ہو سکا",
+         "inProgress": "شامل کیا جا رہا ہے...",
+         "searchHint": "نام یا BIN کے مطابق تلاش کریں",
+         "searchPlaceholder": "تیار کنندہ کا نام یا BIN درج کریں",
+         "success": "تیار کنندہ شامل کر دیا گیا"
+      },
+      "bulk": {
+         "result": "{{action}}: {{done}} از {{total}}۔ {{reason}}"
+      },
+      "card": {
+         "bin": "BIN {{bin}}",
+         "linkedShipments": "منسلک ترسیلات",
+         "linkedToCustomer": "گاہک سے منسلک",
+         "nameWithBin": "{{name}} — BIN {{bin}}",
+         "noLinkedShipments": "تیار کنندہ سے کوئی ترسیل منسلک نہیں",
+         "notLinkedToCustomer": "تیار کنندہ گاہک سے منسلک نہیں ہے",
+         "openLinkedShipments": "منسلک ترسیلات کھولیں",
+         "shipmentsCount": "ترسیلات: {{count}}",
+         "shipmentsLabel": "ترسیلات",
+         "title": "تیار کنندہ کی معلومات"
+      },
+      "filters": {
+         "all": "تمام",
+         "allManufacturers": "تمام تیار کنندگان",
+         "linkColumn": "منسلکی",
+         "manufacturerNotLinked": "تیار کنندہ منسلک نہیں ہے",
+         "notLinked": "منسلک نہیں",
+         "withManufacturer": "تیار کنندہ کے ساتھ",
+         "withoutManufacturer": "تیار کنندہ کے بغیر"
+      },
+      "link": {
+         "action": "منسلک کریں",
+         "actionWithCount": "منسلک کریں ({{count}})",
+         "changeManufacturer": "تیار کنندہ تبدیل کریں",
+         "failed": "تیار کنندہ منسلک نہیں ہو سکا",
+         "freeShipmentsHint": "تیار کنندہ: {{name}}۔ تیار کنندہ کے بغیر ترسیلات دکھائی گئی ہیں۔",
+         "freeShipmentsNotFound": "کوئی آزاد ترسیل نہیں ملی",
+         "inProgress": "منسلک کیا جا رہا ہے...",
+         "manufacturerAction": "تیار کنندہ منسلک کریں",
+         "overwriteWarning": "{{shipments}} منتخب کیے گئے ہیں۔ ایک ترسیل کا صرف ایک تیار کنندہ ہو سکتا ہے — موجودہ منسلکی اوور رائٹ ہو جائے گی۔",
+         "shipmentsAction": "ترسیلات منسلک کریں",
+         "success": "تیار کنندہ منسلک کر دیا گیا",
+         "title": "تیار کنندہ کی منسلکی"
+      },
+      "loadFailed": "تیار کنندگان لوڈ نہیں ہو سکے",
+      "notFound": "کوئی تیار کنندہ نہیں ملا",
+      "remove": {
+         "failed": "تیار کنندہ حذف نہیں ہو سکا",
+         "success": "تیار کنندہ فہرست سے ہٹا دیا گیا"
+      },
+      "requestCount_one": "{{count}} درخواست",
+      "requestCount_other": "{{count}} درخواستیں",
+      "requests": {
+         "alreadySent": "درخواست پہلے ہی بھیجی جا چکی ہے",
+         "approve": "منظور کریں",
+         "approveFailed": "درخواستیں منظور نہیں ہو سکیں",
+         "approveMany": "درخواستیں منظور کریں",
+         "approved": "درخواستیں منظور کر دی گئیں",
+         "loadFailed": "درخواستیں لوڈ نہیں ہو سکیں",
+         "reject": "مسترد کریں",
+         "rejectFailed": "درخواستیں مسترد نہیں ہو سکیں",
+         "rejectMany": "درخواستیں مسترد کریں",
+         "rejected": "درخواستیں مسترد کر دی گئیں",
+         "send": "درخواست بھیجیں",
+         "sendFailed": "درخواست بھیجی نہیں جا سکی",
+         "sendToManufacturer": "تیار کنندہ کو درخواست بھیجیں",
+         "withdraw": "واپس لیں",
+         "withdrawFailed": "درخواستیں واپس نہیں لی جا سکیں",
+         "withdrawMany": "درخواستیں واپس لیں",
+         "withdrawn": "درخواستیں واپس لے لی گئیں"
+      },
+      "searchFailed": "تیار کنندگان کی تلاش نہیں ہو سکی",
+      "shipments": {
+         "loadFailed": "ترسیلات لوڈ نہیں ہو سکیں",
+         "notFound": "کوئی ترسیل نہیں ملی",
+         "searchByNumber": "نمبر یا سمت کے مطابق تلاش کریں",
+         "searchFull": "نمبر، سمت یا تیار کنندہ کے مطابق تلاش کریں",
+         "total": "کل ترسیلات: {{count}}"
+      },
+      "subtitle": "تیار کنندگان کو ترسیلات سے منسلک کرنا اور آپ کے تیار کنندگان کی فہرست",
+      "tabs": {
+         "linked": "تیار کنندہ کے ساتھ منسلکی",
+         "linking": "ترسیلات کی منسلکی"
+      },
+      "title": "تیار کنندگان",
+      "unlink": {
+         "action": "منسلکی ختم کریں",
+         "actionWithCount": "منسلکی ختم کریں ({{count}})",
+         "failed": "تیار کنندہ کی منسلکی ختم نہیں ہو سکی",
+         "manufacturerAction": "تیار کنندہ کی منسلکی ختم کریں",
+         "success": "تیار کنندہ کی منسلکی ختم کر دی گئی"
+      }
+   },
+   "map": {
+      "actualPath": "اصلی راستہ",
+      "actualPathOrder": "آرڈر # کا اصلی راستہ",
+      "customerPoint": "گاہک کا مقام",
+      "devMarker": "نقشے کی جانچ کے لیے عارضی نشان",
+      "driverName": "ڈرائیور: {{name}}",
+      "driverNotSpecified": "ڈرائیور درج نہیں کیا گیا",
+      "driverPhone": "فون:",
+      "driverPosition": "ڈرائیور کی موجودہ پوزیشن",
+      "noCoordinates": "کوئی کوآرڈینیٹس نہیں",
+      "pointsCount": "پوائنٹس: {{count}}",
+      "routesLoadFailed": "راستے لوڈ نہیں ہو سکے",
+      "routesPartialFailure": "{{total}} آرڈرز میں سے {{failed}} کے GeoWS راستے لوڈ نہیں ہو سکے"
+   },
+   "mobileNotice": {
+      "text": "سروس کے زیادہ آرام دہ استعمال کے لیے ہم کمپیوٹر استعمال کرنے کی سفارش کرتے ہیں۔ موبائل ورژن درست طریقے سے ظاہر نہیں ہو سکتا۔",
+      "title": "ہم کمپیوٹر ورژن استعمال کرنے کی سفارش کرتے ہیں"
+   },
+   "nav": {
+      "complaints": "شکایات",
+      "dashboard": "مرکزی صفحہ",
+      "factoring": "فیکٹرنگ",
+      "factorings": "فیکٹرنگز",
+      "forwarders": "فارورڈرز",
+      "leads": "آرڈرز",
+      "manufacturers": "تیار کنندگان",
+      "profile": "پروفائل",
+      "settings": "ترتیبات",
+      "tenders": "نیلامیاں",
+      "tnved": "ٹی این ویڈ",
+      "tooltips": {
+         "complaints": "آرڈرز اور فیکٹرنگز پر شکایت درج کرنا، تاریخ اور انتظامیہ کے جوابات",
+         "dashboard": "آرڈرز، راستوں اور نیلامیوں کا عمومی جائزہ",
+         "factorings": "فیکٹرنگز اور مالیاتی درخواستوں کی فہرست",
+         "forwarders": "فارورڈرز کی فہرست اور نئے شرکاء کو مدعو کرنا",
+         "leads": "ترسیل کی درخواستوں کی فہرست اور آرڈرز کا انتظام",
+         "manufacturers": "تیار کنندگان کو ترسیلات سے منسلک کرنا اور تیار کنندگان کی ڈائرکٹری",
+         "settings": "انٹرفیس کی زبان اور اکاؤنٹ کی دیگر ترتیبات",
+         "tenders": "ترسیل کی نیلامیوں کی تخلیق اور انتظام",
+         "tnved": "خارجی اقتصادی سرگرمی کی اشیاء کی درجہ بندی کی ڈائرکٹری"
+      }
+   },
+   "notifications": {
+      "all": "تمام اطلاعات",
+      "empty": "ابھی تک کوئی اطلاع نہیں",
+      "emptyHint": "نئے واقعات یہاں دکھائے جائیں گے",
+      "loadFailed": "اطلاعات لوڈ نہیں ہو سکیں",
+      "newToast": "نئی اطلاع",
+      "newToastBody": "آپ کے پاس ایک نئی اطلاع ہے",
+      "noDescription": "کوئی تفصیل نہیں",
+      "refresh": "اطلاعات تازہ کریں",
+      "singleLoadFailed": "اطلاع لوڈ نہیں ہو سکی",
+      "subtitle": "آپ کی درخواستوں اور نیلامیوں کے تازہ ترین واقعات",
+      "subtitleDot": "آپ کی درخواستوں اور نیلامیوں کے تازہ ترین واقعات۔",
+      "title": "اطلاعات",
+      "types": {
+         "factor": {
+            "cancelled_by_factor": {
+               "message": "فیکٹر نے فیکٹرنگ منسوخ کر دی",
+               "theme": "فیکٹرنگ منسوخ کر دی گئی"
+            },
+            "cancelled_by_forwarder": {
+               "message": "فارورڈر نے فیکٹرنگ منسوخ کر دی",
+               "theme": "فیکٹرنگ منسوخ کر دی گئی"
+            },
+            "created_by_factor": {
+               "message": "فیکٹر نے فیکٹرنگ بنائی",
+               "theme": "فیکٹرنگ بنائی گئی"
+            },
+            "created_by_forwarder": {
+               "message": "فارورڈر نے فیکٹرنگ بنائی",
+               "theme": "فیکٹرنگ بنائی گئی"
+            },
+            "finished_by_factor": {
+               "message": "فیکٹر نے فیکٹرنگ مکمل کر دی",
+               "theme": "فیکٹرنگ مکمل ہو گئی"
+            },
+            "paid_by_customer": {
+               "message": "فیکٹر نے گاہک کی ادائیگی کی تصدیق کر دی۔ لین دین بند ہو گیا۔",
+               "theme": "ادائیگی کی تصدیق ہو گئی"
+            },
+            "signed_by_factor": {
+               "message": "فیکٹر نے فیکٹرنگ کے معاہدے پر دستخط کر دیے",
+               "theme": "فیکٹرنگ کا معاہدہ دستخط شدہ ہے"
+            },
+            "signed_by_forwarder": {
+               "message": "فارورڈر نے فیکٹرنگ کے معاہدے پر دستخط کر دیے",
+               "theme": "فیکٹرنگ کا معاہدہ دستخط شدہ ہے"
+            },
+            "updated_by_factor": {
+               "message": "فیکٹر نے فیکٹرنگ کو تازہ کر دیا",
+               "theme": "فیکٹرنگ تازہ کر دی گئی"
+            },
+            "verified_by_factor": {
+               "message": "فیکٹر نے فیکٹرنگ کی تصدیق کر دی",
+               "theme": "فیکٹرنگ کی تصدیق ہو گئی"
+            },
+            "verified_by_forwarder": {
+               "message": "فارورڈر نے فیکٹرنگ کی تصدیق کر دی",
+               "theme": "فیکٹرنگ کی تصدیق ہو گئی"
+            }
+         },
+         "lead": {
+            "created_by_forwarder": {
+               "message": "سفر بن گیا اور آپ کو گاہک کے طور پر سفر سے منسلک کر دیا گیا۔",
+               "theme": "سفر بن گیا"
+            },
+            "customer_detached": {
+               "message": "فارورڈر نے آپ کو سفر سے منسلک نہیں رکھا۔",
+               "theme": "آپ کو سفر سے ہٹا دیا گیا"
+            },
+            "manufacturer": {
+               "approved_by_manufacturer": {
+                  "message": "تیار کنندہ {{name}} نے منسلکی منظور کر لی",
+                  "theme": "درخواست منظور ہو گئی"
+               },
+               "cancelled_by_manufacturer": {
+                  "message": "تیار کنندہ {{name}} نے درخواست واپس لے لی",
+                  "theme": "درخواست واپس لے لی گئی"
+               },
+               "detached_by_manufacturer": {
+                  "message": "تیار کنندہ {{name}} نے آپ سے منسلکی ختم کر دی",
+                  "theme": "منسلکی ختم کر دی گئی"
+               },
+               "rejected_by_manufacturer": {
+                  "message": "تیار کنندہ {{name}} نے درخواست مسترد کر دی",
+                  "theme": "درخواست مسترد ہو گئی"
+               },
+               "request_by_manufacturer": {
+                  "message": "تیار کنندہ {{name}} آپ سے منسلک ہونا چاہتا ہے",
+                  "theme": "منسلکی کی نئی درخواست"
+               }
+            },
+            "point_end_deadline": {
+               "message": "راستے کے پوائنٹ پر کام کے اختتام کا طے شدہ وقت آ گیا ہے۔",
+               "theme": "راستے کے پوائنٹ کی مدت آ گئی"
+            },
+            "point_start_deadline": {
+               "message": "راستے کے پوائنٹ پر کام کے آغاز کا طے شدہ وقت آ گیا ہے۔",
+               "theme": "راستے کے پوائنٹ کی مدت آ گئی"
+            },
+            "rejected": {
+               "message": "سفر منسوخ کر دیا گیا",
+               "theme": "سفر منسوخ کر دیا گیا"
+            },
+            "updated_by_forwarder": {
+               "message": "سفر کو تازہ کر دیا گیا",
+               "theme": "سفر تازہ کر دیا گیا"
+            }
+         },
+         "shipping": {
+            "delivered": {
+               "message": "ڈلیوری کی تصدیق ہو گئی۔ سفر مکمل ہو گیا۔",
+               "theme": "سفر مکمل ہو گیا"
+            },
+            "emergency-situation": {
+               "theme": "ہنگامی صورتحال کا اعلان کر دیا گیا۔"
+            },
+            "finished": {
+               "theme": "سفر مکمل ہو گیا"
+            },
+            "finished-emergency-situation": {
+               "message": "فارورڈر نے سفر وقت سے پہلے مکمل کر دیا۔",
+               "theme": "سفر وقت سے پہلے مکمل ہو گیا۔"
+            },
+            "last_point_passed": {
+               "message": "ڈرائیور نے ان لوڈنگ پوائنٹ عبور کر لیا۔",
+               "theme": "سفر №{{num}}: پوائنٹ عبور ہو گیا"
+            },
+            "loading_started": {
+               "message": "ڈرائیور نے سفر شروع کر دیا۔",
+               "theme": "سفر شروع ہو گیا۔"
+            },
+            "loading_verified": {
+               "message": "ڈرائیور نے لوڈنگ کی تصدیق کر دی۔",
+               "theme": "سفر №{{num}}: ڈرائیور نے لوڈنگ کی تصدیق کر دی"
+            },
+            "point_passed": {
+               "message": "ڈرائیور نے پوائنٹ عبور کر لیا۔",
+               "theme": "سفر №{{num}}: ڈرائیور نے پوائنٹ عبور کر لیا"
+            },
+            "unloading_verified": {
+               "message": "ڈرائیور نے ان لوڈنگ کی تصدیق کر دی۔",
+               "theme": "سفر №{{num}}: ڈرائیور نے ان لوڈنگ کی تصدیق کر دی"
+            }
+         },
+         "tender": {
+            "bet_cancelled": {
+               "message": "ایک شریک نے آپ کی نیلامی میں اپنی بولی منسوخ کر دی۔",
+               "theme": "بولی منسوخ کر دی گئی"
+            },
+            "bet_placed": {
+               "message": "ایک شریک نے آپ کی نیلامی میں بولی لگائی۔",
+               "theme": "نیلامی میں نئی بولی"
+            }
+         }
+      },
+      "viewAll": "تمام اطلاعات دیکھیں"
+   },
+   "profile": {
+      "avatar": {
+         "allowedTypes": "صرف PNG یا JPEG اپ لوڈ کیا جا سکتا ہے",
+         "delete": "تصویر حذف کریں",
+         "maxSize": "تصویر کا زیادہ سے زیادہ سائز — 600×600 پکسل",
+         "minSize": "تصویر کا کم از کم سائز — 400×400 پکسل",
+         "readFailed": "فائل پڑھی نہیں جا سکی",
+         "sizeCheckFailed": "تصویر کا سائز چیک نہیں ہو سکا",
+         "upload": "تصویر اپ لوڈ کریں",
+         "uploadFailed": "تصویر اپ لوڈ نہیں ہو سکی"
+      },
+      "contract": {
+         "notSigned": "دستخط نہیں کیے گئے · دستخط کرنے کے لیے کلک کریں",
+         "signStartFailed": "دستخط شروع نہیں ہو سکے",
+         "signStartFailedLater": "دستخط شروع نہیں ہو سکے، بعد میں دوبارہ کوشش کریں",
+         "signed": "دستخط کر دیے گئے",
+         "signedUntil": "دستخط کر دیے گئے · {{date}} تک درست",
+         "title": "سروس کے ساتھ معاہدہ",
+         "unavailable": "معاہدے کی دستاویز ابھی دستیاب نہیں، بعد میں دوبارہ کوشش کریں"
+      },
+      "delete": {
+         "action": "اکاؤنٹ حذف کریں",
+         "confirmTitle": "حذف کرنے کی تصدیق کریں",
+         "failed": "اکاؤنٹ حذف نہیں ہو سکا",
+         "failedActiveDeals": "اکاؤنٹ حذف نہیں ہو سکا: فعال معاملات موجود ہیں",
+         "passwordPrompt": "اکاؤنٹ کے حذف ہونے کی تصدیق کے لیے اپنا پاس ورڈ درج کریں۔",
+         "warning": "اکاؤنٹ غیر فعال کر دیا جائے گا۔ بحالی کے لیے سپورٹ سے رابطہ کریں۔",
+         "warningFull": "حذف ہونے کے بعد اکاؤنٹ غیر فعال کر دیا جائے گا۔ بحالی کے لیے سپورٹ سے رابطہ کریں۔"
+      },
+      "documents": {
+         "allowedTypes": "صرف PDF، JPG، JPEG یا PNG کی اجازت ہے",
+         "current": "موجودہ دستاویز",
+         "employment": "ملازم کی ملازمت کی دستاویز",
+         "employmentFull": "دستخط کے حق کے ساتھ ملازم کی ملازمت کی دستاویز یا اعلیٰ منیجر کی تقرری کا حکم",
+         "issuedAt": "دستاویز کے جاری ہونے کی تاریخ",
+         "issuedBy": "دستاویز کس نے جاری کی",
+         "issuers": {
+            "mia": "RK داخلی امور کی وزارت",
+            "moj": "RK انصاف کی وزارت"
+         },
+         "legalEntity": "قانونی ادارے کی رجسٹریشن کی دستاویز",
+         "maxSize": "فائل کا سائز {{size}} ایم بی سے زیادہ نہیں ہونا چاہیے",
+         "newFile": "نئی فائل · {{size}}",
+         "notUploaded": "دستاویز ابھی اپ لوڈ نہیں کی گئی",
+         "replace": "دستاویز تبدیل کریں",
+         "upload": "دستاویز اپ لوڈ کریں"
+      },
+      "load": {
+         "failed": "پروفائل لوڈ نہیں ہو سکا"
+      },
+      "password": {
+         "current": "موجودہ پاس ورڈ",
+         "enterCurrent": "موجودہ پاس ورڈ درج کریں",
+         "enterNew": "نیا پاس ورڈ درج کریں",
+         "new": "نیا پاس ورڈ",
+         "repeatNew": "نیا پاس ورڈ دوبارہ درج کریں"
+      },
+      "save": {
+         "failed": "پروفائل تازہ نہیں ہو سکا",
+         "noChanges": "محفوظ کرنے کے لیے کوئی تبدیلی نہیں",
+         "success": "پروفائل کامیابی سے تازہ کر دیا گیا"
+      },
+      "sections": {
+         "company": "کمپنی اور بینک تفصیلات",
+         "companySubtitle": "کمپنی اور رابطہ کار کی معلومات",
+         "deleteAccount": "اکاؤنٹ حذف کرنا",
+         "documents": "رجسٹریشن کی دستاویزات",
+         "password": "پاس ورڈ تبدیل کرنا"
+      },
+      "title": "پروفائل"
+   },
+   "route": {
+      "addWaypoint": "+ درمیانی پوائنٹ",
+      "addressDetecting": "پتہ معلوم کیا جا رہا ہے...",
+      "addressNotFound": "پتہ نہیں ملا",
+      "addressSearching": "پتہ تلاش کیا جا رہا ہے...",
+      "clear": "راستہ صاف کریں",
+      "coordinates": "کوآرڈینیٹس: {{lat}}, {{lng}}",
+      "destinationNotSpecified": "منزل درج نہیں کی گئی",
+      "markerA": "A",
+      "markerB": "B",
+      "onMap": "نقشے پر",
+      "originNotSpecified": "آغاز درج نہیں کیا گیا",
+      "pickOnMap": "اس پوائنٹ کو منتخب کریں اور نقشے پر کلک کریں",
+      "point": "پوائنٹ {{index}}",
+      "pointA": "پوائنٹ A",
+      "pointB": "پوائنٹ B",
+      "pointType": "پوائنٹ کی قسم",
+      "removeWaypoint": "درمیانی پوائنٹ {{index}} حذف کریں",
+      "validation": {
+         "coordinatesPoint": "پوائنٹ {{index}} کے کوآرڈینیٹس درج کریں: نقشے پر کلک کریں",
+         "destinationRequired": "منزل کی جگہ درج کریں",
+         "endBeforeStart": "اختتامی تاریخ اس پوائنٹ کی آغاز کی تاریخ سے پہلے نہیں ہو سکتی",
+         "endDateDestination": "منزل کے پوائنٹ پر اختتامی تاریخ درج کریں",
+         "endDateOrigin": "آغاز کے پوائنٹ پر اختتامی تاریخ درج کریں",
+         "endDatePoint": "پوائنٹ {{index}} کے لیے اختتامی تاریخ درج کریں",
+         "originRequired": "آغاز کی جگہ درج کریں",
+         "startBeforePrevEnd": "آغاز کی تاریخ پچھلے پوائنٹ کی اختتامی تاریخ سے پہلے نہیں ہو سکتی",
+         "startDateDestination": "منزل کے پوائنٹ پر آغاز کی تاریخ درج کریں",
+         "startDateOrigin": "آغاز کے پوائنٹ پر آغاز کی تاریخ درج کریں",
+         "startDatePoint": "پوائنٹ {{index}} کے لیے آغاز کی تاریخ درج کریں"
+      },
+      "waypoint": "درمیانی پوائنٹ {{index}}",
+      "waypointHash": "درمیانی پوائنٹ #{{index}}"
+   },
+   "settings": {
+      "language": {
+         "description": "وہ زبان منتخب کریں جس میں انٹرفیس اور اطلاعات دکھائی جائیں گی۔",
+         "label": "زبان",
+         "saved": "انٹرفیس کی زبان تبدیل کر دی گئی",
+         "switcherLabel": "انٹرفیس کی زبان کا انتخاب",
+         "title": "انٹرفیس کی زبان"
+      },
+      "languages": {
+         "ar": "العربية",
+         "de": "Deutsch",
+         "en": "English",
+         "es": "Español",
+         "fr": "Français",
+         "ka": "ქართული",
+         "kk": "Қазақша",
+         "ky": "Кыргызча",
+         "pt": "Português",
+         "ru": "Русский",
+         "tg": "Тоҳикӣ",
+         "tr": "Türkçe",
+         "ur": "اردو",
+         "uz": "O'zbekcha",
+         "zh": "中文"
+      },
+      "title": "ترتیبات"
+   },
+   "sharedLead": {
+      "gone": "آرڈر حذف کر دیا گیا ہے یا لنک منسوخ کر دیا گیا ہے۔",
+      "invalidLink": "لنک غلط ہے یا اس کی مدت ختم ہو چکی ہے۔",
+      "loading": "آرڈر کی معلومات لوڈ ہو رہی ہیں...",
+      "notFound": "مطلوبہ صفحہ نہیں ملا۔ یقینی بنائیں کہ لنک مکمل طور پر کاپی کیا گیا ہے۔",
+      "readOnly": "یہ لنک کے ذریعے آرڈر دیکھنے کا صفحہ ہے۔ ترمیم دستیاب نہیں ہے۔",
+      "requestFailed": "آرڈر کی معلومات لوڈ نہیں ہو سکیں۔ بعد میں دوبارہ کوشش کریں۔",
+      "title": "آرڈر کی معلومات"
+   },
+   "support": {
+      "emailBody": "السلام علیکم! میرا ایک سوال ہے۔",
+      "emailSubject": "سپورٹ سے رابطہ",
+      "writeToChat": "چیٹ میں لکھیں"
+   },
+   "tenders": {
+      "bids": {
+         "amount": "بولی کی رقم",
+         "chooseWinner": "فاتح کا انتخاب کریں",
+         "chooseWinnerFailed": "فاتح کا انتخاب نہیں ہو سکا",
+         "choosing": "انتخاب کیا جا رہا ہے...",
+         "confirmChoice": "انتخاب کی تصدیق کریں",
+         "confirmWinner": "کیا آپ واقعی اس بولی کو فاتح کے طور پر منتخب کرنا چاہتے ہیں؟",
+         "empty": "ابھی تک کوئی بولی شامل نہیں کی گئی",
+         "irreversible": "یہ عمل واپس نہیں ہو سکے گا۔",
+         "participantUnknown": "شریک درج نہیں کیا گیا",
+         "showAll": "تمام بولیاں دکھائیں (+{{count}})",
+         "statusCancelled": "منسوخ شدہ",
+         "statusWinning": "فاتح",
+         "title": "بولیاں"
+      },
+      "countdown": {
+         "daysHours": "{{days}} دن {{hours}} گھنٹے",
+         "hoursMinutes": "{{hours}} گھنٹے {{minutes}} منٹ",
+         "minutes": "{{minutes}} منٹ"
+      },
+      "create": {
+         "action": "نیلامی بنائیں",
+         "confirm": "کیا آپ واقعی اس آرڈر کے لیے نیلامی بنانا چاہتے ہیں؟",
+         "failed": "نیلامی نہیں بن سکی",
+         "maxParticipants": "شرکاء کی زیادہ سے زیادہ تعداد",
+         "privateHint": "ان فارورڈرز کو منتخب کریں جنہیں نجی نیلامی میں مدعو کیا جائے گا",
+         "publicAuction": "عوامی نیلامی",
+         "startAfterCreate": "بننے کے بعد نیلامی شروع کریں",
+         "title": "نیلامی بنانا"
+      },
+      "dates": {
+         "endAfterNow": "اختتامی تاریخ موجودہ وقت سے بعد ہونی چاہیے",
+         "endInvalid": "غلط اختتامی تاریخ",
+         "endMin30Minutes": "اختتامی تاریخ اشاعت کی تاریخ سے کم از کم 30 منٹ بعد ہونی چاہیے",
+         "endRequired": "اختتامی تاریخ درج کریں",
+         "publicationDate": "اشاعت کی تاریخ",
+         "publicationInPast": "اشاعت کی تاریخ ماضی میں نہیں ہو سکتی",
+         "publicationInvalid": "غلط اشاعت کی تاریخ",
+         "publicationRequired": "اشاعت کی تاریخ درج کریں"
+      },
+      "details": {
+         "audience": "کس کے لیے",
+         "audienceForwarders": "فارورڈرز کے لیے",
+         "audienceShippers": "بھیجنے والوں کے لیے",
+         "bidsCountLabel": "بولیاں",
+         "cargoWeight": "کارگو کا وزن",
+         "editBlocked": "بند یا منسوخ شدہ نیلامی میں ترمیم نہیں کی جا سکتی",
+         "info": "نیلامی کی معلومات",
+         "loadFailed": "نیلامی کی تفصیلات لوڈ نہیں ہو سکیں",
+         "loading": "نیلامی کی تفصیلات لوڈ ہو رہی ہیں...",
+         "maxParticipantsShort": "زیادہ سے زیادہ شرکاء",
+         "orderDocuments": "آرڈر کی دستاویزات",
+         "participantsCountLabel": "شرکاء",
+         "publicationType": "اشاعت کی قسم",
+         "totalOrderPrice": "آرڈر کی مجموعی قیمت"
+      },
+      "leadPicker": {
+         "cargoLabel": "کارگو: {{cargo}}",
+         "cargoWithMore": "{{type}} + مزید {{count}}",
+         "destination": "منزل: {{to}}",
+         "forwarder": "فارورڈر: {{name}}",
+         "hint": "وہ آرڈر منتخب کریں جس کے لیے نیلامی بنائی جا رہی ہے",
+         "notFound": "کوئی آرڈر نہیں ملا",
+         "order": "آرڈر",
+         "orderNumber": "آرڈر #{{id}}",
+         "origin": "آغاز: {{from}}",
+         "priceLabel": "قیمت: {{price}}",
+         "searchFailed": "آرڈرز نہیں مل سکے",
+         "searching": "آرڈرز تلاش کیے جا رہے ہیں...",
+         "sectionTitle": "آرڈر کا انتخاب",
+         "select": "ایک آرڈر منتخب کریں",
+         "selectAction": "آرڈر منتخب کریں"
+      },
+      "loadFailed": "نیلامیاں لوڈ نہیں ہو سکیں",
+      "manage": {
+         "cancel": "نیلامی منسوخ کریں",
+         "cancelConfirm": "کیا آپ واقعی اس نیلامی کو منسوخ کرنا چاہتے ہیں؟ منسوخی کے بعد یہ شرکاء کے لیے دستیاب نہیں ہوگی۔",
+         "cancelFailed": "نیلامی منسوخ نہیں ہو سکی",
+         "cancelling": "منسوخ کیا جا رہا ہے...",
+         "delete": "نیلامی حذف کریں",
+         "deleteConfirm": "کیا آپ واقعی اس نیلامی کو حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں ہو سکے گا۔",
+         "deleteFailed": "نیلامی حذف نہیں ہو سکی",
+         "saveFailed": "نیلامی کی تبدیلیاں محفوظ نہیں ہو سکیں",
+         "start": "نیلامی شروع کریں",
+         "startFailed": "نیلامی شروع نہیں ہو سکی"
+      },
+      "notFound": "کوئی نیلامی نہیں ملی",
+      "participantCount_one": "{{count}} شریک",
+      "participantCount_other": "{{count}} شرکاء",
+      "participants": {
+         "add": "شریک شامل کریں",
+         "addFailed": "شرکاء شامل نہیں ہو سکے",
+         "added": "شامل کیا گیا: {{date}}",
+         "bin": "BIN: {{bin}}",
+         "empty": "ابھی تک کوئی شریک شامل نہیں کیا گیا",
+         "loading": "شرکاء لوڈ ہو رہے ہیں...",
+         "remove": "شریک حذف کریں",
+         "removeFailed": "شریک حذف نہیں ہو سکا",
+         "searching": "فارورڈرز تلاش کیے جا رہے ہیں...",
+         "title": "شرکاء"
+      },
+      "searchPlaceholder": "شہر، کارگو یا سمت درج کریں",
+      "stopCount_one": "{{count}} توقف",
+      "stopCount_other": "{{count}} توقف",
+      "subtitle": "درخواستوں کے مطابق نیلامیوں کی فہرست",
+      "title": "نیلامیاں",
+      "titleSingular": "نیلامی",
+      "validation": {
+         "maxParticipantsNegative": "شرکاء کی زیادہ سے زیادہ تعداد 0 سے کم نہیں ہو سکتی",
+         "privateNeedsForwarder": "نجی نیلامی کے لیے کم از کم ایک فارورڈر منتخب کریں"
+      },
+      "viewToggle": "نیلامیوں کا منظر تبدیل کریں"
+   },
+   "tnved": {
+      "code": "کوڈ",
+      "codeNotFound": "کوڈ نہیں ملا",
+      "searchPlaceholder": "کوڈ یا نام کے مطابق تلاش کریں",
+      "title": "ٹی این ویڈ"
+   },
+   "validation": {
+      "bik": "BIK میں 8 حروف ہونے چاہئیں",
+      "bin": "BIN میں 12 ہندسے ہونے چاہئیں",
+      "companyBinRequired": "کمپنی کا BIN درج کریں",
+      "companyNameRequired": "کمپنی کا نام درج کریں",
+      "dateNotInFuture": "تاریخ آج سے بعد نہیں ہو سکتی",
+      "dateNotInPast": "تاریخ آج سے پہلے نہیں ہو سکتی",
+      "documentIssueDateRequired": "دستاویز کے جاری ہونے کی تاریخ درج کریں",
+      "documentIssuedByRequired": "درج کریں کہ دستاویز کس نے جاری کی",
+      "email": "غلط ای میل",
+      "emailRequired": "ای میل درج کریں",
+      "iikFormat": "فارمیٹ: KZ + 18 حروف",
+      "iin": "IIN میں 12 ہندسے ہونے چاہئیں",
+      "iinRequired": "IIN درج کریں",
+      "max100": "100 حروف سے زیادہ نہیں",
+      "max50": "50 حروف سے زیادہ نہیں",
+      "min3": "کم از کم 3 حروف",
+      "min6": "کم از کم 6 حروف",
+      "passwordsMismatch": "پاس ورڈ مماثل نہیں ہیں",
+      "phone": "فون کا غلط فارمیٹ",
+      "phoneRequired": "فون نمبر درج کریں",
+      "range2to100": "2 سے 100 حروف تک",
+      "range2to255": "2 سے 255 حروف تک",
+      "representativeRequired": "نمائندے کا پورا نام درج کریں"
+   },
+   "verification": {
+      "banner": "اپنا ای میل تصدیق کریں۔ خط دوبارہ بھیجنے کے لیے اطلاع پر کلک کریں۔",
+      "checkFailed": "ای میل کی حیثیت چیک نہیں ہو سکی",
+      "checking": "ای میل کی حیثیت چیک کی جا رہی ہے…",
+      "cooldown": "{{seconds}} سیکنڈ میں",
+      "emailConfirmed": "ای میل کی تصدیق ہو گئی",
+      "emailNotConfirmed": "ای میل کی تصدیق نہیں ہوئی",
+      "hint": "ہم آپ کے ای میل پر تصدیقی لنک کے ساتھ ایک خط بھیجیں گے۔",
+      "resendAvailable": "دوبارہ بھیجنا {{seconds}} سیکنڈ میں دستیاب ہوگا۔",
+      "sendFailed": "تصدیقی خط نہیں بھیجا جا سکا",
+      "sent": "ای میل کی تصدیق کا خط بھیج دیا گیا ہے۔ اپنا ای میل چیک کریں۔"
+   }
+}

@@ -1,4 +1,4 @@
-import { Breadcrumbs, Link, Typography } from "@mui/material";
+import { Breadcrumbs, Link, Typography, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRounded";
 import { Link as RouterLink, useMatches, useNavigate } from "react-router-dom";
@@ -8,6 +8,8 @@ export function AppBreadcrumbs() {
   const { t } = useTranslation();
   const matches = useMatches();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isRtl = theme.direction === "rtl";
 
   const crumbs = matches.filter((match) => match.handle?.breadcrumb);
   const isFullWidth = matches.some((match) => match.handle?.fullWidthLayout);
@@ -38,6 +40,7 @@ export function AppBreadcrumbs() {
                     xs: 13,
                     sm: 16,
                   },
+                  transform: isRtl ? "scaleX(-1)" : "none",
                 }}
               />
               {t("common.actions.back")}

@@ -1,14 +1,14 @@
-export const SUPPORTED_LANGUAGES = ["ru", "kk", "en", "de", "uz", "ky", "tg", "pt", "ar"];
+export const SUPPORTED_LANGUAGES = ["ru", "kk", "en", "de", "uz", "ky", "tg", "pt", "ar", "es", "tr", "fr", "ka", "zh", "ur"];
 
 export const DEFAULT_LANGUAGE = "ru";
 
-export const RTL_LANGUAGES = ["ar"];
+export const RTL_LANGUAGES = ["ar", "ur"];
 
 export function getLanguageDirection(language) {
   return RTL_LANGUAGES.includes(language) ? "rtl" : "ltr";
 }
 
-const STORAGE_KEY = "customer.language";
+const STORAGE_KEY = "language";
 
 export function normalizeLanguage(value) {
   if (!value) return null;

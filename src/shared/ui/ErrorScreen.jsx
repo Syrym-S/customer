@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
@@ -11,6 +11,8 @@ export function ErrorScreen({
   onBack = null,
 }) {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const isRtl = theme.direction === "rtl";
 
   const resolvedTitle = title ?? t("errorPage.title");
 
@@ -121,7 +123,7 @@ export function ErrorScreen({
           {onBack && (
             <Button
               variant="outlined"
-              startIcon={<ArrowBackRoundedIcon />}
+              startIcon={<ArrowBackRoundedIcon sx={{ transform: isRtl ? "scaleX(-1)" : "none" }} />}
               onClick={onBack}
               sx={{
                 height: 44,

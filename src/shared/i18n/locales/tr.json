@@ -1,0 +1,1410 @@
+{
+   "accountBan": {
+      "contactSupport": "Destek ile iletişime geçin",
+      "logout": "Hesaptan çıkış yap",
+      "text": "Çalışma alanına erişim geçici olarak kısıtlandı. Sipariş oluşturamaz, ihalelerde çalışamaz ve sistemde diğer işlemleri gerçekleştiremezsiniz.",
+      "title": "Hesap engellendi"
+   },
+   "chat": {
+      "attachments": {
+         "allowedTypes": "Yalnızca görüntülere (JPG, PNG, WEBP), PDF, DOC(X) veya XLS(X) izin verilir",
+         "attach": "Dosya ekle",
+         "closeImage": "Görüntü önizlemesini kapat",
+         "fileDownloadFailed": "«{{name}}» dosyası indirilemedi",
+         "fileLoadFailed": "«{{name}}» dosyası yüklenemedi",
+         "imageLoadFailed": "Görüntü yüklenemedi",
+         "label": "Ek",
+         "loadFailed": "Yüklenemedi",
+         "maxCount": "Bir mesaja en fazla {{count}} dosya eklenebilir",
+         "maxSize": "Dosya boyutu {{size}} MB'ı aşmamalıdır",
+         "remove": "{{name}} dosyasını kaldır",
+         "view": "Eki görüntüle"
+      },
+      "backToList": "Sohbet listesine geri dön",
+      "close": "Sohbeti kapat",
+      "conversationStart": "Yazışmanın başlangıcı",
+      "empty": "Etkin sohbet yok",
+      "load": {
+         "deliveryFailed": "Teslimat sohbeti yüklenemedi",
+         "factoringFailed": "Faktoring sohbeti yüklenemedi",
+         "leadFailed": "Sipariş sohbeti yüklenemedi",
+         "listFailed": "Sohbetler yüklenemedi",
+         "moreFailed": "Ek sohbetler yüklenemedi",
+         "participantsFailed": "Sohbet katılımcıları ({{type}}) {{id}} yüklenemedi",
+         "supportFailed": "Destek sohbeti yüklenemedi"
+      },
+      "message": {
+         "cancelEdit": "Düzenlemeyi iptal et",
+         "delete": "Mesajı sil",
+         "deleteConfirm": "Mesaj kalıcı olarak silinecek. Devam edilsin mi?",
+         "deleteFailed": "Mesaj silinemedi",
+         "deleted": "Mesaj silindi",
+         "edit": "Mesajı düzenle",
+         "editFailed": "Mesaj düzenlenemedi",
+         "placeholder": "Mesaj...",
+         "read": "Okundu",
+         "send": "Mesaj gönder",
+         "sendFailed": "Mesaj gönderilemedi"
+      },
+      "open": "Sohbeti aç",
+      "participant": "Katılımcı",
+      "participantLabel": "Sohbet katılımcısı",
+      "refreshList": "Sohbet listesini yenile",
+      "requisites": {
+         "title": "Banka bilgileri"
+      },
+      "time": {
+         "days": "{{count}} g",
+         "hours": "{{count}} sa",
+         "justNow": "şimdi",
+         "minutes": "{{count}} dk",
+         "yesterday": "dün"
+      },
+      "title": "Sohbetler",
+      "types": {
+         "delivery": "Teslimat",
+         "deliveryNumber": "Teslimat #{{id}}",
+         "factoringNumber": "Faktoring #{{id}}",
+         "orderNumber": "Sipariş #{{id}}",
+         "support": "Destek",
+         "supportFull": "Teknik destek"
+      }
+   },
+   "common": {
+      "actions": {
+         "add": "Ekle",
+         "adding": "Ekleniyor...",
+         "addingShort": "Ekleniyor...",
+         "back": "Geri",
+         "cancel": "İptal",
+         "clear": "Temizle",
+         "close": "Kapat",
+         "confirm": "Onayla",
+         "continue": "Devam et",
+         "copied": "Kopyalandı",
+         "copy": "Kopyala",
+         "copyNumber": "Numarayı kopyala",
+         "create": "Oluştur",
+         "creating": "Oluşturuluyor...",
+         "creatingProcess": "Oluşturuluyor...",
+         "delete": "Sil",
+         "deleting": "Siliniyor...",
+         "download": "İndir",
+         "edit": "Düzenle",
+         "goTo": "Git",
+         "gotIt": "Anladım",
+         "hide": "Gizle",
+         "next": "İleri",
+         "openInNewTab": "Yeni sekmede aç",
+         "preview": "Önizleme",
+         "refresh": "Yenile",
+         "remove": "Kaldır",
+         "retry": "Yeniden dene",
+         "retryAttempt": "Yeniden dene",
+         "save": "Kaydet",
+         "saveChanges": "Değişiklikleri kaydet",
+         "saving": "Kaydediliyor...",
+         "select": "Seç",
+         "selected": "Seçildi: {{count}}",
+         "send": "Gönder",
+         "sending": "Gönderiliyor...",
+         "sendingShort": "Gönderiliyor...",
+         "share": "Paylaş",
+         "showAll": "Tümünü göster (+{{count}})",
+         "sign": "İmzala",
+         "yes": "Evet"
+      },
+      "cargoCount_one": "{{count}} yük",
+      "cargoCount_other": "{{count}} yük",
+      "documents": {
+         "add": "Belge ekle",
+         "empty": "Belge eklenmedi",
+         "fileSelected": "Dosya seçildi"
+      },
+      "empty": {
+         "addressNotSpecified": "Adres belirtilmedi",
+         "binNotSpecified": "BIN belirtilmedi",
+         "canLeaveBlank": "Boş bırakılabilir",
+         "cargoNotSpecified": "Yük belirtilmedi",
+         "companyNotSpecified": "Şirket belirtilmedi",
+         "contactDataNotSpecified": "İletişim bilgileri belirtilmedi",
+         "contactsNotSpecified": "İletişim bilgileri belirtilmedi",
+         "dataNotFilled": "Bilgiler doldurulmadı",
+         "dateNotSpecified": "Tarih belirtilmedi",
+         "descriptionNotSpecified": "Açıklama belirtilmedi",
+         "fullNameNotSpecified": "Ad soyad belirtilmedi",
+         "invalidData": "Geçersiz bilgiler",
+         "invalidDate": "Geçersiz tarih",
+         "nameNotSpecified": "Ad belirtilmedi",
+         "noCompany": "Şirket yok",
+         "noData": "Bilgi yok",
+         "noFullName": "Ad soyad yok",
+         "noName": "Ad yok",
+         "notAdded": "Eklenmedi",
+         "notAssigned": "Atanmadı",
+         "notSelected": "Seçilmedi",
+         "notSpecifiedM": "Belirtilmedi",
+         "notSpecifiedN": "Belirtilmedi",
+         "nothingFound": "Hiçbir şey bulunamadı",
+         "optional": "İsteğe bağlı",
+         "priceNotSpecified": "Fiyat belirtilmedi",
+         "typeNotSpecified": "Tür belirtilmedi",
+         "unknown": "Bilinmiyor",
+         "unlimited": "Sınırsız"
+      },
+      "fields": {
+         "actions": "İşlemler",
+         "amount": "Tutar",
+         "bankName": "Banka adı",
+         "bik": "BIK",
+         "bin": "BIN",
+         "binValue": "BIN: {{bin}}",
+         "bodyType": "Kasa tipi",
+         "cargo": "Yük",
+         "cargoCountLabel": "Yük sayısı",
+         "cargoName": "Yük adı",
+         "cargoPrice": "Yük fiyatı",
+         "cargoType": "Yük tipi",
+         "cargos": "Yükler",
+         "comment": "Yorum",
+         "company": "Şirket",
+         "companyAddress": "Şirket adresi",
+         "companyBin": "Şirket BIN numarası",
+         "companyName": "Şirket adı",
+         "contactPerson": "İletişim kişisi",
+         "currency": "Para birimi",
+         "customer": "Müşteri",
+         "date": "Tarih",
+         "dateFrom": "Başlangıç tarihi",
+         "dateTo": "Bitiş tarihi",
+         "description": "Açıklama",
+         "destination": "Varış yeri",
+         "dimensions": "Boyutlar",
+         "direction": "Yön",
+         "document": "Belge",
+         "documentName": "Belge adı",
+         "documentNumber": "Belge numarası",
+         "documents": "Belgeler",
+         "driver": "Sürücü",
+         "email": "E-posta",
+         "endDate": "Bitiş tarihi",
+         "executionPrice": "Uygulama fiyatı",
+         "factor": "Faktör",
+         "file": "Dosya",
+         "files": "Dosyalar",
+         "forwarder": "Nakliyeci",
+         "forwarderBin": "Nakliyeci BIN numarası",
+         "forwarderFullName": "Nakliyeci ad soyadı",
+         "forwarderIin": "Nakliyeci IIN numarası",
+         "from": "Nereden",
+         "fullName": "Ad soyad",
+         "gracePeriod": "Ödeme vadesi",
+         "gracePeriodDays": "Ödeme vadesi, gün",
+         "heightCm": "Yükseklik, cm",
+         "iik": "IIK",
+         "iin": "IIN",
+         "international": "Uluslararası taşımacılık",
+         "issuingCountry": "Veren ülke",
+         "legalAddress": "Yasal adres",
+         "lengthCm": "Uzunluk, cm",
+         "loadingType": "Yükleme tipi",
+         "manufacturer": "Üretici",
+         "name": "Ad",
+         "number": "Numara",
+         "origin": "Çıkış yeri",
+         "packagingType": "Ambalaj türü",
+         "participants": "Katılımcılar",
+         "password": "Şifre",
+         "phone": "Telefon",
+         "price": "Fiyat",
+         "quantity": "Miktar",
+         "route": "Rota",
+         "settlementAccount": "Cari hesap",
+         "shipments": "Taşımalar",
+         "startDate": "Başlangıç tarihi",
+         "status": "Durum",
+         "timeLeft": "Kalan süre",
+         "title": "Ad",
+         "tnvedCode": "GTİP kodu",
+         "to": "Nereye",
+         "transportParams": "Taşımacılık parametreleri",
+         "transportType": "Taşıma türü",
+         "type": "Tür",
+         "vat": "KDV",
+         "volume": "Hacim",
+         "volumeM3": "Hacim, m³",
+         "weight": "Ağırlık",
+         "weightKg": "Ağırlık, kg",
+         "widthCm": "Genişlik, cm",
+         "withVat": "KDV dahil",
+         "withoutVat": "KDV hariç"
+      },
+      "filePreview": {
+         "documentNotFound": "Belge bulunamadı",
+         "noFile": "Bu belge için önizleme dosyası yok",
+         "unsupported": "Bu dosya türü için önizleme henüz desteklenmiyor",
+         "unsupportedType": "{{mime}} türündeki dosyalar için önizleme desteklenmiyor"
+      },
+      "forwarderPicker": {
+         "clickToLoad": "Nakliyecileri yüklemek için tıklayın",
+         "detailsLoadFailed": "Nakliyeci bilgileri yüklenemedi",
+         "loadFailed": "Nakliyeciler yüklenemedi",
+         "loading": "Nakliyeciler yükleniyor...",
+         "notFound": "Nakliyeci bulunamadı",
+         "searchByCompany": "Şirket adını veya BIN numarasını girin",
+         "searchHint": "Ad soyad, IIN, şirket, BIN veya telefon girin"
+      },
+      "loading": {
+         "default": "Yükleniyor...",
+         "list": "Liste yükleniyor...",
+         "map": "Harita yükleniyor...",
+         "preview": "Önizleme yükleniyor..."
+      },
+      "search": {
+         "byDirection": "Yöne göre ara",
+         "minChars": "En az 2 karakter girin"
+      },
+      "severity": {
+         "error": "Hata",
+         "info": "Mesaj",
+         "notice": "Bildirim",
+         "success": "Başarılı",
+         "warning": "Uyarı"
+      },
+      "shipmentCount_one": "{{count}} taşıma",
+      "shipmentCount_other": "{{count}} taşıma",
+      "signing": {
+         "keepPageOpen": "Sayfayı kapatmayın — imza penceresi yeni bir sekmede açık. Durum otomatik olarak güncellenecek.",
+         "opening": "İmza sayfası açılıyor...",
+         "thisLink": "bu bağlantıya",
+         "unavailable": "İmza hizmeti kullanılamıyor, lütfen daha sonra tekrar deneyin",
+         "waiting": "İmza bekleniyor...",
+         "windowHint": "İmza penceresi otomatik açılmadıysa, aşağıdaki bağlantıdan açabilirsiniz"
+      },
+      "units": {
+         "bytes": "{{value}} B",
+         "cargoSummary": "{{cargoCount}} · {{weight}} kg",
+         "days": "{{count}} g.",
+         "dimensionsCm": "{{length}} × {{width}} × {{height}} cm",
+         "kg": "{{value}} kg",
+         "kilobytes": "{{value}} KB",
+         "km": "km",
+         "m3": "{{value}} m³",
+         "megabytes": "{{value}} MB"
+      },
+      "view": {
+         "cards": "Kartlar",
+         "showAsCards": "Kartlar olarak göster",
+         "showAsTable": "Tablo olarak göster",
+         "table": "Tablo"
+      },
+      "waypointCount_one": "{{count}} nokta",
+      "waypointCount_other": "{{count}} nokta"
+   },
+   "complaints": {
+      "answer": {
+         "label": "Yanıt",
+         "notAdded": "Henüz yanıt eklenmedi",
+         "pending": "Yönetimden henüz yanıt alınmadı",
+         "rejected": "Şikayet reddedildi",
+         "title": "Yönetim yanıtı"
+      },
+      "attachments": {
+         "allowedTypes": "Yalnızca görüntü, video, PDF veya DOCX'e izin verilir",
+         "attach": "Dosya ekle",
+         "limits": "En fazla {{count}} dosya, her biri {{size}} MB'a kadar",
+         "maxCount": "En fazla {{count}} dosya eklenebilir",
+         "maxSize": "Dosya boyutu {{size}} MB'ı aşmamalıdır",
+         "removeFile": "Dosyayı sil"
+      },
+      "create": {
+         "action": "Şikayet gönder",
+         "describePlaceholder": "Ne olduğunu açıklayın",
+         "failed": "Şikayet gönderilemedi",
+         "maxLength": "Açıklama {{count}} karakteri aşmamalıdır",
+         "subject": "Şikayet konusu",
+         "subjectPlaceholder": "Şikayetin özünü açıklayın",
+         "submit": "Şikayeti gönder"
+      },
+      "emptyLast30Days": "Son 30 günde şikayet bulunamadı",
+      "loadFailed": "Şikayetler yüklenemedi",
+      "notFound": "Şikayet bulunamadı",
+      "subtitle": "Son 30 gündeki şikayetler ve yönetim yanıtları",
+      "target": {
+         "empty": "Son 30 günde taşıma veya faktoring yok",
+         "label": "İlgili olduğu",
+         "loadFailed": "Liste yüklenemedi",
+         "question": "Şikayet hangi taşıma veya faktoring ile ilgili"
+      },
+      "title": "Şikayetler",
+      "titleSingular": "Şikayet",
+      "viewToggle": "Şikayet görünümünü değiştir"
+   },
+   "contractGate": {
+      "fillProfile": "Profilde bilgileri doldurun",
+      "goToProfile": "Profile git",
+      "noContracts": "Sözleşmeniz yok veya imza süresi doldu",
+      "signContract": "Sözleşmeyi imzala"
+   },
+   "createLead": {
+      "cargo": {
+         "description": "Yük açıklaması",
+         "validation": {
+            "cargoPriceNegative": "Yük fiyatı negatif olamaz",
+            "gracePeriodRange": "1 ile 364 gün arasında belirtin",
+            "heightPositive": "Yükseklik 0'dan büyük olmalıdır",
+            "lengthPositive": "Uzunluk 0'dan büyük olmalıdır",
+            "nameRequired": "Yük adını belirtin",
+            "priceNegative": "Fiyat negatif olamaz",
+            "tnvedRequired": "GTİP kodunu belirtin",
+            "volumePositive": "Hacim 0'dan büyük olmalıdır",
+            "weightPositive": "Ağırlık 0'dan büyük olmalıdır",
+            "widthPositive": "Genişlik 0'dan büyük olmalıdır"
+         },
+         "withVat": "KDV dahil"
+      },
+      "customer": {
+         "current": "Mevcut müşteri",
+         "required": "Müşteriyi belirtin"
+      },
+      "forwarder": {
+         "hint": "Rotaya atanacak nakliyeciyi bulun ve seçin",
+         "loadingDetails": "Nakliyeci bilgileri yükleniyor...",
+         "skippable": "Bu adımı atlayıp siparişi nakliyecisiz oluşturabilirsiniz"
+      },
+      "result": {
+         "createError": "Oluşturma hatası",
+         "createFailed": "Sipariş oluşturulamadı",
+         "created": "Sipariş oluşturuldu",
+         "createdSuccess": "Sipariş başarıyla oluşturuldu",
+         "createdSuccessWithId": "Sipariş başarıyla oluşturuldu: {{id}}",
+         "createdWithDocumentErrors": "Sipariş oluşturuldu, ancak bazı belgeler yüklenemedi",
+         "draftSaveFailed": "Taslak kaydedilemedi",
+         "draftSaved": "Taslak kaydedildi",
+         "saveError": "Kaydetme hatası",
+         "savedAsDraft": "Sipariş taslak olarak kaydedildi"
+      },
+      "saveDraft": "Taslak olarak kaydet",
+      "skipVideoRecording": "Yükleme/boşaltma video kaydını atla",
+      "step": "Adım {{current}} / {{total}}",
+      "steps": {
+         "cargo": "Yükler ve ödeme",
+         "confirm": "Doğrulama",
+         "confirmTitle": "Bilgileri kontrol edin",
+         "customer": "Müşteri bilgileri",
+         "documents": "Belgeler",
+         "forwarder": "Nakliyeci seçimi",
+         "route": "Rota"
+      },
+      "submit": "Sipariş oluştur",
+      "subtitle": "Sipariş bilgilerini doldurun",
+      "title": "Sipariş oluşturma"
+   },
+   "dashboard": {
+      "analytics": {
+         "amountAxis": "Tutar, {{currency}}",
+         "emergencyCount": "Acil durum: {{count}}",
+         "emptyPeriod": "Seçilen dönem için veri yok",
+         "loadFailed": "Taşıma analizi yüklenemedi",
+         "noShipmentsPeriod": "Seçilen dönemde taşıma yok",
+         "shipmentNumber": "Taşıma no.",
+         "title": "Taşıma dinamiği",
+         "trips": "sefer"
+      },
+      "factorings": {
+         "loading": "Faktoringler yükleniyor...",
+         "number": "Faktoring #{{id}}",
+         "title": "Faktoring listesi"
+      },
+      "groupBy": {
+         "day": "Günlük",
+         "month": "Aylık",
+         "quarter": "Çeyreklik",
+         "week": "Haftalık"
+      },
+      "leads": {
+         "empty": "Henüz etkin sipariş yok",
+         "loading": "Siparişler yükleniyor...",
+         "mapHint": "Rotayı haritada vurgulamak için bir sipariş seçin",
+         "orderNumber": "Sipariş #{{num}}",
+         "title": "Etkin siparişler"
+      },
+      "period": {
+         "action": "Dönem seç",
+         "compare": "Önceki dönemle karşılaştır",
+         "halfYear": "Yarım yıl",
+         "month": "Ay",
+         "quarter": "Çeyrek",
+         "title": "Dönem seçimi",
+         "week": "Hafta",
+         "year": "Yıl"
+      },
+      "saleCount_one": "{{count}} satış",
+      "saleCount_other": "{{count}} satış",
+      "stats": {
+         "active": "Etkin",
+         "activeFactoringSales": "Etkin faktoring satışları",
+         "activeShipments": "Etkin taşımalar",
+         "activeTenders": "Etkin ihaleler",
+         "amounts": "Tutarlar",
+         "factoringSales": "Faktoring satışları",
+         "factoringSalesPeriod": "Faktoring satış dönemi",
+         "forPeriod": "Dönem için",
+         "loadFailed": "İstatistikler yüklenemedi",
+         "shipmentsPeriod": "Taşıma dönemi",
+         "showAllCurrencies": "Tüm para birimlerini göster",
+         "title": "İstatistikler",
+         "today": "Bugün",
+         "viewMode": "İstatistik görünüm modu"
+      },
+      "tenderCount_one": "{{count}} ihale",
+      "tenderCount_other": "{{count}} ihale",
+      "tenders": {
+         "bids": "Teklifler: {{count}}",
+         "loading": "İhaleler yükleniyor...",
+         "number": "İhale #{{id}}",
+         "private": "Özel",
+         "privateEmpty": "Henüz özel ihale bulunamadı",
+         "public": "Genel",
+         "publicEmpty": "Henüz genel ihale bulunamadı",
+         "title": "İhale listesi"
+      },
+      "title": "Ana sayfa",
+      "totalCargoWeight": "{{value}} kg"
+   },
+   "enums": {
+      "complaintStatus": {
+         "answered": "Yanıt alındı",
+         "in_progress": "İşlemde",
+         "pending_answer": "Yanıt bekleniyor",
+         "pending_review": "İnceleme bekleniyor",
+         "rejected": "Reddedildi",
+         "rejectedN": "Reddedildi",
+         "resolved": "Çözüldü"
+      },
+      "complaintTarget": {
+         "factoring": "Faktoring",
+         "shipment": "Taşıma"
+      },
+      "factoringLine": {
+         "closed": "Kapalı hat",
+         "open": "Açık hat"
+      },
+      "factoringStatus": {
+         "await_paid": "Ödeme bekleniyor",
+         "cancelled": "İptal edildi",
+         "finished": "Tamamlandı",
+         "new": "Yeni",
+         "verified_participant": "Kısmen onaylandı"
+      },
+      "leadStatus": {
+         "add_driver": "Sürücü eklendi",
+         "cancelled": "İptal edildi",
+         "draft": "Taslak",
+         "emergency_situation": "Acil durum",
+         "finished": "Tamamlandı",
+         "finished_emergency_situation": "Tamamlandı (acil durum)",
+         "new": "Yeni",
+         "sign_avr": "Tutanak imzalama",
+         "start_driver": "Sefer başladı",
+         "start_loading": "Yükleme",
+         "start_unloading": "Boşaltma",
+         "verification_loading": "Yükleme onaylandı",
+         "verification_unloading": "Boşaltma onaylandı"
+      },
+      "leadStatusFilter": {
+         "all": "Tüm durumlar",
+         "cancelled": "İptal edildi",
+         "driverAssigned": "Sürücü atandı",
+         "driverDeparted": "Sürücü yola çıktı",
+         "finished": "Tamamlandı",
+         "inTransit": "Yolda",
+         "new": "Yeni",
+         "other": "Diğer"
+      },
+      "manufacturerStatus": {
+         "attached": "Bağlı",
+         "incomingRequest": "Gelen talep",
+         "notAttached": "Bağlı değil",
+         "requestSent": "Talep gönderildi"
+      },
+      "participantType": {
+         "forwarder": "Nakliyeci"
+      },
+      "publicationType": {
+         "private": "Özel",
+         "public": "Genel"
+      },
+      "signature": {
+         "notSigned": "İmzalanmadı",
+         "notSignedM": "İmzalanmadı",
+         "signed": "İmzalandı",
+         "signedM": "İmzalandı"
+      },
+      "tenderStatus": {
+         "active": "Etkin",
+         "cancelled": "İptal edildi",
+         "closed": "Kapalı",
+         "finished": "Tamamlandı",
+         "new": "Yeni"
+      },
+      "verification": {
+         "confirmed": "Onaylandı",
+         "notConfirmed": "Onaylanmadı"
+      },
+      "verificationCheck": {
+         "notPassed": "Geçilmedi",
+         "passed": "Geçildi",
+         "passedMark": "✓ Geçildi"
+      },
+      "waypointType": {
+         "check_passes": "Transit",
+         "loading": "Yükleme",
+         "unloading": "Boşaltma"
+      }
+   },
+   "errorPage": {
+      "title": "Bir şeyler yanlış gitti",
+      "unexpectedReload": "Beklenmeyen bir hata oluştu. Sayfayı yenileyin veya daha sonra tekrar deneyin."
+   },
+   "errors": {
+      "factoringNotFound": "Faktoring bulunamadı",
+      "generic": "Bir şeyler yanlış gitti",
+      "genericSupport": "Bir şeyler yanlış gitti. Lütfen destek ile iletişime geçin.",
+      "leadNotFound": "Sipariş bulunamadı",
+      "notFound": "İstenen sayfa bulunamadı.",
+      "server": "Sunucuda bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+      "unexpected": "Beklenmeyen bir hata oluştu."
+   },
+   "exportReport": {
+      "action": "Raporu dışa aktar",
+      "dateOrder": "«Başlangıç» tarihi «Bitiş» tarihinden sonra olamaz",
+      "failed": "Rapor dışa aktarılamadı. Lütfen daha sonra tekrar deneyin",
+      "hint": "Rapora yalnızca seçilen dönemdeki tamamlanmış taşımalar dahil edilecektir.",
+      "inProgress": "Dışa aktarılıyor...",
+      "submit": "Dışa aktar"
+   },
+   "factorings": {
+      "cancel": {
+         "action": "Faktoringi iptal et",
+         "confirm": "Bu faktoringi iptal etmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+         "failed": "Faktoring iptal edilemedi",
+         "inProgress": "Faktoring iptal ediliyor…"
+      },
+      "chat": {
+         "action": "Sohbet",
+         "leadNotResolved": "Faktoring ile ilgili sipariş belirlenemedi",
+         "openFailed": "Faktoring sohbeti açılamadı"
+      },
+      "confirmParticipation": {
+         "openFailed": "İmza penceresi açılamadı",
+         "opening": "İmza açılıyor...",
+         "text": "Bu faktoringe katılımınızı onaylamak istiyor musunuz? Belge imza penceresine yönlendirileceksiniz.",
+         "title": "Katılım onayı"
+      },
+      "confirmations": {
+         "confirmedByCustomer": "Müşteri tarafından onaylandı",
+         "customer": "Müşteri onayı",
+         "date": "Onay tarihi",
+         "factor": "Faktör onayı",
+         "factorStatus": "Faktör: {{status}}",
+         "forwarder": "Nakliyeci onayı",
+         "forwarderStatus": "Nakliyeci: {{status}}",
+         "subtitle": "Tarafların onay durumları",
+         "title": "Onaylar",
+         "you": "Siz",
+         "youStatus": "Siz: {{status}}"
+      },
+      "details": {
+         "cargoSection": "Yük ve taşıma parametreleri",
+         "createdAt": "Oluşturulma tarihi",
+         "loadFailed": "Faktoring detayları yüklenemedi",
+         "loading": "Faktoring detayları yükleniyor...",
+         "main": "Genel bilgiler",
+         "mainSubtitle": "Talep numarası, oluşturulma tarihi ve ilgili sipariş",
+         "number": "Faktoring #{{id}}",
+         "title": "Faktoring detayları"
+      },
+      "finance": {
+         "creditAmount": "Kredi tutarı",
+         "debtAmount": "Alacak tutarı",
+         "debtCurrency": "Alacak tutarı para birimi",
+         "factoringCurrency": "Faktoring para birimi",
+         "factoringRate": "Faktoring oranı",
+         "serviceRate": "Hizmet oranı",
+         "subtitle": "Tutarlar, para birimi ve faktoring oranı",
+         "title": "Finans"
+      },
+      "line": {
+         "contractNote": "Nakliyeci ve faktör arasında, her iki taraf tarafından imzalanmıştır",
+         "contractTitle": "Faktoring hattı sözleşmesi",
+         "signStartFailed": "Faktoring hattı imzası başlatılamadı",
+         "timeout": "Faktoring hattı imzalama süresi doldu, lütfen tekrar deneyin",
+         "waitForParties": "İmza, nakliyeci ve faktör imzaladıktan sonra kullanılabilir olacaktır.",
+         "yourSignature": "Faktoring hattı (sizin imzanız)"
+      },
+      "loadFailed": "Faktoring satın alımları yüklenemedi",
+      "notFound": "Faktoring satın alımı bulunamadı",
+      "participants": {
+         "customerLoadFailed": "Müşteri bilgileri yüklenemedi",
+         "subtitle": "Faktoringdeki tüm katılımcılar"
+      },
+      "purchasesTitle": "Faktoring satın alımları",
+      "requisites": {
+         "loadFailed": "Müşteri banka bilgileri yüklenemedi",
+         "title": "Tarafların banka bilgileri"
+      },
+      "subtitle": "Faktoring talepleri listesi",
+      "title": "Faktoringler",
+      "titleSingular": "Faktoring",
+      "viewToggle": "Faktoring görünümünü değiştir"
+   },
+   "forwarders": {
+      "invite": {
+         "action": "Nakliyeci davet et",
+         "copyLink": "Bağlantıyı kopyala",
+         "create": "Davet oluştur",
+         "createFailed": "Davet oluşturulamadı",
+         "created": "Davet oluşturuldu",
+         "link": "Davet bağlantısı",
+         "linkCopied": "Bağlantı kopyalandı",
+         "noActiveLink": "Etkin bağlantı yok",
+         "success": "Nakliyeci oluşturuldu. Bilgilerini tamamlaması için bağlantıyı gönderin.",
+         "title": "Davet"
+      },
+      "issuingCountry": "Belgenin verildiği ülke",
+      "notFound": "Nakliyeci bulunamadı",
+      "registered": "Kayıtlı",
+      "representative": "Temsilci",
+      "searchPlaceholder": "Nakliyeci ara",
+      "sections": {
+         "company": "Nakliyeci bilgileri — şirket",
+         "contact": "İletişim kişisi bilgileri",
+         "requisites": "Nakliyeci banka bilgileri"
+      },
+      "subtitle": "Tüm nakliyecilerin tam listesi",
+      "title": "Nakliyeciler",
+      "viewToggle": "Nakliyeci görünümünü değiştir"
+   },
+   "header": {
+      "closeMenu": "Menüyü kapat",
+      "logout": {
+         "action": "Çıkış yap",
+         "confirm": "Çıkış yapmak istediğinizden emin misiniz?",
+         "failed": "Çıkış yapılamadı",
+         "fromAccount": "Hesaptan çıkış",
+         "inProgress": "Çıkış yapılıyor...",
+         "title": "Çıkış"
+      },
+      "needHelp": "Yardıma mı ihtiyacınız var?",
+      "settings": "Ayarlar",
+      "supportAvailable": "Destek ekibimiz 7/24 hizmetinizdedir",
+      "user": "Kullanıcı",
+      "userProfile": "{{email}} kullanıcı profili"
+   },
+   "kgd": {
+      "loadFailed": "KGD bilgileri yüklenemedi",
+      "taxationMode": "Vergilendirme rejimi"
+   },
+   "leads": {
+      "avr": {
+         "checking": "Tutanak durumu kontrol ediliyor...",
+         "clickToDownload": "İndirmek için tıklayın",
+         "customerSignature": "Müşteri imzası",
+         "devSimulateForwarder": "[dev] Nakliyeci imzasını simüle et",
+         "forwarderSignature": "Nakliyeci imzası",
+         "notReady": "Tutanak belgesi henüz hazır değil, lütfen daha sonra tekrar deneyin",
+         "signStartFailed": "Tutanak imzası başlatılamadı",
+         "statusLoadFailed": "Tutanak durumu yüklenemedi",
+         "timeout": "Tutanak imzalama süresi doldu, lütfen tekrar deneyin",
+         "title": "Yapılan işler tutanağı",
+         "titleShort": "Yapılan işler tutanağı (AVR)",
+         "unavailable": "Tutanak belgesi henüz kullanılamıyor, lütfen daha sonra tekrar deneyin",
+         "waitForForwarder": "Tutanak imzası, nakliyeci imzaladıktan sonra kullanılabilir olacaktır."
+      },
+      "cargo": {
+         "add": "Yük ekle",
+         "deleteConfirm": "#{{index}} numaralı yük silinsin mi?",
+         "deleteFailed": "Yük silinemedi",
+         "itemNumber": "Yük #{{index}}",
+         "priceSetByForwarder": "Fiyat nakliyeci tarafından belirlendi",
+         "volumeM3Value": "{{value}} m³"
+      },
+      "chat": {
+         "withDriver": "Sürücü ile sohbet",
+         "withForwarder": "Nakliyeci ile sohbet"
+      },
+      "details": {
+         "driverComment": "Sürücü yorumu: {{comment}}",
+         "info": "Sipariş bilgileri",
+         "loadFailed": "Sipariş yüklenemedi",
+         "loading": "Sipariş detayları yükleniyor...",
+         "noCustomer": "Müşteri yok",
+         "notResolved": "Sipariş belirlenemedi",
+         "number": "Sipariş #{{num}}",
+         "ownerNotSpecified": "Sorumlu belirtilmedi",
+         "refreshFailed": "Güncel sipariş bilgileri alınamadı",
+         "saveFailed": "Değişiklikler kaydedilemedi",
+         "shipmentNumber": "Taşıma #{{num}}",
+         "subtitle": "Siparişin ayrıntılı bilgileri",
+         "videoDisabled": "Video kaydı devre dışı"
+      },
+      "documents": {
+         "deleteFailed": "Belge silinemedi",
+         "deleteTargetMissing": "Silinecek dosya belirlenemedi",
+         "loadFailed": "Belgeler yüklenemedi",
+         "ownFilesOnly": "Yalnızca müşterinin dosyaları silinebilir",
+         "singleLoadFailed": "Belge yüklenemedi"
+      },
+      "edit": {
+         "blockedEmergency": "Acil durumdaki bir sipariş düzenlenemez",
+         "blockedFinished": "Tamamlanmış veya iptal edilmiş bir sipariş düzenlenemez",
+         "blockedFinishedEmergency": "Acil durumda tamamlanmış bir sipariş düzenlenemez"
+      },
+      "empty": "Sipariş yok",
+      "forwarder": {
+         "lockedByTender": "Nakliyeci ihale sonuçlarına göre atandı ve değiştirilemez",
+         "notAssigned": "Nakliyeci atanmadı"
+      },
+      "loadFailed": "Siparişler yüklenemedi",
+      "map": {
+         "coordsViaWebSocket": "Koordinatlar WebSocket üzerinden alındı",
+         "driverPosition": "Sürücünün güncel konumu",
+         "lastUpdate": "Son güncelleme: {{time}}",
+         "loadingRoute": "Rota yükleniyor..."
+      },
+      "notFound": "Sipariş bulunamadı",
+      "publish": {
+         "action": "Yayınla",
+         "failed": "Sipariş yayınlanamadı",
+         "fillRouteAndCargo": "Yayınlamadan önce rotayı ve yükü doldurun",
+         "inProgress": "Yayınlanıyor..."
+      },
+      "share": {
+         "confirm": "Sipariş bilgilerini üçüncü kişilerle paylaşmak istediğinizden emin misiniz? Bilgiler, bağlantıya sahip herkes tarafından görüntülenebilir olacaktır.",
+         "creating": "Bağlantı oluşturuluyor...",
+         "failed": "Bağlantı alınamadı. Lütfen daha sonra tekrar deneyin.",
+         "hint": "Bu bağlantıya sahip olan herkes sipariş bilgilerini görüntüleyebilir.",
+         "link": "Sipariş bağlantısı",
+         "title": "Siparişi paylaş",
+         "validUntil": "Bağlantı geçerlilik tarihi"
+      },
+      "subtitle": "Taşıma talepleri listesi",
+      "title": "Siparişler",
+      "trip": {
+         "avrSignedFinished": "Tutanak imzalandı, sefer tamamlandı",
+         "emergency": "Seferde acil durum",
+         "finishedEmergency": "Sefer acil durumda tamamlandı"
+      },
+      "validation": {
+         "gracePeriodRange": "Ödeme vadesi 1 ile 364 gün arasında olmalıdır",
+         "routeDates": "Rota tarihlerini kontrol edin",
+         "routePoints": "Rotanın çıkış ve varış noktalarını belirtin",
+         "tnvedForAllCargo": "Tüm yükler için GTİP kodunu belirtin"
+      },
+      "view": {
+         "kanban": "Kanban",
+         "showAsKanban": "Kanban olarak göster"
+      },
+      "viewToggle": "Sipariş görünümünü değiştir"
+   },
+   "manufacturers": {
+      "add": {
+         "action": "Üretici ekle",
+         "alreadyAdded": "Zaten eklendi",
+         "failed": "Üretici eklenemedi",
+         "inProgress": "Ekleniyor...",
+         "searchHint": "Ad veya BIN numarasına göre ara",
+         "searchPlaceholder": "Üreticinin adını veya BIN numarasını girin",
+         "success": "Üretici eklendi"
+      },
+      "bulk": {
+         "result": "{{action}}: {{total}} / {{done}}. {{reason}}"
+      },
+      "card": {
+         "bin": "BIN {{bin}}",
+         "linkedShipments": "Bağlı taşımalar",
+         "linkedToCustomer": "Müşteriye bağlı",
+         "nameWithBin": "{{name}} — BIN {{bin}}",
+         "noLinkedShipments": "Üreticiye bağlı taşıma yok",
+         "notLinkedToCustomer": "Üretici müşteriye bağlı değil",
+         "openLinkedShipments": "Bağlı taşımaları aç",
+         "shipmentsCount": "Taşıma sayısı: {{count}}",
+         "shipmentsLabel": "Taşımalar",
+         "title": "Üretici bilgileri"
+      },
+      "filters": {
+         "all": "Tümü",
+         "allManufacturers": "Tüm üreticiler",
+         "linkColumn": "Bağlantı",
+         "manufacturerNotLinked": "Üretici bağlı değil",
+         "notLinked": "Bağlı değil",
+         "withManufacturer": "Üreticili",
+         "withoutManufacturer": "Üreticisiz"
+      },
+      "link": {
+         "action": "Bağla",
+         "actionWithCount": "Bağla ({{count}})",
+         "changeManufacturer": "Üreticiyi değiştir",
+         "failed": "Üretici bağlanamadı",
+         "freeShipmentsHint": "Üretici: {{name}}. Üreticisi olmayan taşımalar gösteriliyor.",
+         "freeShipmentsNotFound": "Serbest taşıma bulunamadı",
+         "inProgress": "Bağlanıyor...",
+         "manufacturerAction": "Üretici bağla",
+         "overwriteWarning": "{{shipments}} seçildi. Bir taşımanın yalnızca bir üreticisi olabilir — mevcut bağlantı değiştirilecektir.",
+         "shipmentsAction": "Taşımaları bağla",
+         "success": "Üretici bağlandı",
+         "title": "Üretici bağlantısı"
+      },
+      "loadFailed": "Üreticiler yüklenemedi",
+      "notFound": "Üretici bulunamadı",
+      "remove": {
+         "failed": "Üretici silinemedi",
+         "success": "Üretici listeden kaldırıldı"
+      },
+      "requestCount_one": "{{count}} talep",
+      "requestCount_other": "{{count}} talep",
+      "requests": {
+         "alreadySent": "Talep zaten gönderildi",
+         "approve": "Onayla",
+         "approveFailed": "Talepler onaylanamadı",
+         "approveMany": "Talepleri onayla",
+         "approved": "Talepler onaylandı",
+         "loadFailed": "Talepler yüklenemedi",
+         "reject": "Reddet",
+         "rejectFailed": "Talepler reddedilemedi",
+         "rejectMany": "Talepleri reddet",
+         "rejected": "Talepler reddedildi",
+         "send": "Talep gönder",
+         "sendFailed": "Talep gönderilemedi",
+         "sendToManufacturer": "Üreticiye talep gönder",
+         "withdraw": "Geri çek",
+         "withdrawFailed": "Talepler geri çekilemedi",
+         "withdrawMany": "Talepleri geri çek",
+         "withdrawn": "Talepler geri çekildi"
+      },
+      "searchFailed": "Üretici araması yapılamadı",
+      "shipments": {
+         "loadFailed": "Taşımalar yüklenemedi",
+         "notFound": "Taşıma bulunamadı",
+         "searchByNumber": "Numara veya yöne göre ara",
+         "searchFull": "Numara, yön veya üreticiye göre ara",
+         "total": "Toplam taşıma: {{count}}"
+      },
+      "subtitle": "Üreticilerin taşımalara bağlanması ve kendi üreticileriniz listesi",
+      "tabs": {
+         "linked": "Üretici bağlantısı",
+         "linking": "Taşıma bağlama"
+      },
+      "title": "Üreticiler",
+      "unlink": {
+         "action": "Bağlantıyı kaldır",
+         "actionWithCount": "Bağlantıyı kaldır ({{count}})",
+         "failed": "Üretici bağlantısı kaldırılamadı",
+         "manufacturerAction": "Üretici bağlantısını kaldır",
+         "success": "Üretici bağlantısı kaldırıldı"
+      }
+   },
+   "map": {
+      "actualPath": "Gerçek rota",
+      "actualPathOrder": "Sipariş # gerçek rotası",
+      "customerPoint": "Müşteri noktası",
+      "devMarker": "Haritayı test etmek için geçici işaretçi",
+      "driverName": "Sürücü: {{name}}",
+      "driverNotSpecified": "Sürücü belirtilmedi",
+      "driverPhone": "Telefon:",
+      "driverPosition": "Sürücünün güncel konumu",
+      "noCoordinates": "Koordinat yok",
+      "pointsCount": "Nokta sayısı: {{count}}",
+      "routesLoadFailed": "Rotalar yüklenemedi",
+      "routesPartialFailure": "{{total}} siparişten {{failed}} için GeoWS rotaları yüklenemedi"
+   },
+   "mobileNotice": {
+      "text": "Hizmeti daha rahat kullanmak için bir bilgisayar kullanmanızı öneririz. Mobil sürüm doğru şekilde görüntülenmeyebilir.",
+      "title": "Masaüstü sürümünü kullanmanızı öneririz"
+   },
+   "nav": {
+      "complaints": "Şikayetler",
+      "dashboard": "Ana sayfa",
+      "factoring": "Faktoring",
+      "factorings": "Faktoringler",
+      "forwarders": "Nakliyeciler",
+      "leads": "Siparişler",
+      "manufacturers": "Üreticiler",
+      "profile": "Profil",
+      "settings": "Ayarlar",
+      "tenders": "İhaleler",
+      "tnved": "GTİP",
+      "tooltips": {
+         "complaints": "Siparişler ve faktoringler için şikayet gönderme, geçmiş ve yönetim yanıtları",
+         "dashboard": "Siparişler, rotalar ve ihalelere genel bakış",
+         "factorings": "Faktoring ve finansal talep listesi",
+         "forwarders": "Nakliyeci listesi ve yeni katılımcı daveti",
+         "leads": "Taşıma talepleri listesi ve sipariş yönetimi",
+         "manufacturers": "Üreticilerin taşımalara bağlanması ve üretici dizini",
+         "settings": "Arayüz dili ve diğer hesap ayarları",
+         "tenders": "Taşıma ihalelerinin oluşturulması ve yönetimi",
+         "tnved": "Dış ticaret ürün nomenklatürü dizini"
+      }
+   },
+   "notifications": {
+      "all": "Tüm bildirimler",
+      "empty": "Henüz bildirim yok",
+      "emptyHint": "Yeni etkinlikler burada görüntülenecek",
+      "loadFailed": "Bildirimler yüklenemedi",
+      "newToast": "Yeni bildirim",
+      "newToastBody": "Yeni bir bildiriminiz var",
+      "noDescription": "Açıklama yok",
+      "refresh": "Bildirimleri yenile",
+      "singleLoadFailed": "Bildirim yüklenemedi",
+      "subtitle": "Talepleriniz ve ihaleleriniz ile ilgili son etkinlikler",
+      "subtitleDot": "Talepleriniz ve ihaleleriniz ile ilgili son etkinlikler.",
+      "title": "Bildirimler",
+      "types": {
+         "factor": {
+            "cancelled_by_factor": {
+               "message": "Faktör, faktoringi iptal etti",
+               "theme": "Faktoring iptal edildi"
+            },
+            "cancelled_by_forwarder": {
+               "message": "Nakliyeci, faktoringi iptal etti",
+               "theme": "Faktoring iptal edildi"
+            },
+            "created_by_factor": {
+               "message": "Faktör, faktoring oluşturdu",
+               "theme": "Faktoring oluşturuldu"
+            },
+            "created_by_forwarder": {
+               "message": "Nakliyeci, faktoring oluşturdu",
+               "theme": "Faktoring oluşturuldu"
+            },
+            "finished_by_factor": {
+               "message": "Faktör, faktoringi tamamladı",
+               "theme": "Faktoring tamamlandı"
+            },
+            "paid_by_customer": {
+               "message": "Faktör, müşteriden ödemeyi onayladı. İşlem tamamlandı.",
+               "theme": "Ödeme onaylandı"
+            },
+            "signed_by_factor": {
+               "message": "Faktör, faktoring sözleşmesini imzaladı",
+               "theme": "Faktoring sözleşmesi imzalandı"
+            },
+            "signed_by_forwarder": {
+               "message": "Nakliyeci, faktoring sözleşmesini imzaladı",
+               "theme": "Faktoring sözleşmesi imzalandı"
+            },
+            "updated_by_factor": {
+               "message": "Faktör, faktoringi güncelledi",
+               "theme": "Faktoring güncellendi"
+            },
+            "verified_by_factor": {
+               "message": "Faktör, faktoringi onayladı",
+               "theme": "Faktoring onaylandı"
+            },
+            "verified_by_forwarder": {
+               "message": "Nakliyeci, faktoringi onayladı",
+               "theme": "Faktoring onaylandı"
+            }
+         },
+         "lead": {
+            "created_by_forwarder": {
+               "message": "Sefer oluşturuldu ve sefer için müşteri olarak size bağlandı.",
+               "theme": "Sefer oluşturuldu"
+            },
+            "customer_detached": {
+               "message": "Nakliyeci tarafından seferden ayrıldınız.",
+               "theme": "Seferden ayrıldınız"
+            },
+            "manufacturer": {
+               "approved_by_manufacturer": {
+                  "message": "{{name}} üreticisi bağlantıyı onayladı",
+                  "theme": "Talep onaylandı"
+               },
+               "cancelled_by_manufacturer": {
+                  "message": "{{name}} üreticisi talebi geri çekti",
+                  "theme": "Talep geri çekildi"
+               },
+               "detached_by_manufacturer": {
+                  "message": "{{name}} üreticisi sizden ayrıldı",
+                  "theme": "Bağlantı kaldırıldı"
+               },
+               "rejected_by_manufacturer": {
+                  "message": "{{name}} üreticisi talebi reddetti",
+                  "theme": "Talep reddedildi"
+               },
+               "request_by_manufacturer": {
+                  "message": "{{name}} üreticisi sizinle bağlantı kurmak istiyor",
+                  "theme": "Yeni bağlantı talebi"
+               }
+            },
+            "point_end_deadline": {
+               "message": "Rota noktasındaki işlerin planlanan tamamlanma zamanı geldi.",
+               "theme": "Rota noktası süresi doldu"
+            },
+            "point_start_deadline": {
+               "message": "Rota noktasındaki işlerin planlanan başlama zamanı geldi.",
+               "theme": "Rota noktası süresi doldu"
+            },
+            "rejected": {
+               "message": "Sefer iptal edildi",
+               "theme": "Sefer iptal edildi"
+            },
+            "updated_by_forwarder": {
+               "message": "Sefer güncellendi",
+               "theme": "Sefer güncellendi"
+            }
+         },
+         "shipping": {
+            "delivered": {
+               "message": "Teslimat onaylandı. Sefer tamamlandı.",
+               "theme": "Sefer tamamlandı"
+            },
+            "emergency-situation": {
+               "theme": "Acil durum ilan edildi."
+            },
+            "finished": {
+               "theme": "Sefer tamamlandı"
+            },
+            "finished-emergency-situation": {
+               "message": "Nakliyeci, seferi vaktinden önce tamamladı.",
+               "theme": "Sefer erken tamamlandı."
+            },
+            "last_point_passed": {
+               "message": "Sürücü boşaltma noktasından geçti.",
+               "theme": "Sefer no. {{num}}: Nokta geçildi"
+            },
+            "loading_started": {
+               "message": "Sürücü sefere başladı.",
+               "theme": "Sefer başladı."
+            },
+            "loading_verified": {
+               "message": "Sürücü yüklemeyi onayladı.",
+               "theme": "Sefer no. {{num}}: Sürücü yüklemeyi onayladı"
+            },
+            "point_passed": {
+               "message": "Sürücü noktadan geçti.",
+               "theme": "Sefer no. {{num}}: Sürücü noktadan geçti"
+            },
+            "unloading_verified": {
+               "message": "Sürücü boşaltmayı onayladı.",
+               "theme": "Sefer no. {{num}}: Sürücü boşaltmayı onayladı"
+            }
+         },
+         "tender": {
+            "bet_cancelled": {
+               "message": "Bir katılımcı ihalenizdeki teklifini iptal etti.",
+               "theme": "Teklif iptal edildi"
+            },
+            "bet_placed": {
+               "message": "Bir katılımcı ihalenize teklif verdi.",
+               "theme": "İhalede yeni teklif"
+            }
+         }
+      },
+      "viewAll": "Tüm bildirimleri görüntüle"
+   },
+   "profile": {
+      "avatar": {
+         "allowedTypes": "Yalnızca PNG veya JPEG yüklenebilir",
+         "delete": "Fotoğrafı sil",
+         "maxSize": "Maksimum fotoğraf boyutu — 600×600 px",
+         "minSize": "Minimum fotoğraf boyutu — 400×400 px",
+         "readFailed": "Dosya okunamadı",
+         "sizeCheckFailed": "Görüntü boyutu kontrol edilemedi",
+         "upload": "Fotoğraf yükle",
+         "uploadFailed": "Fotoğraf yüklenemedi"
+      },
+      "contract": {
+         "notSigned": "İmzalanmadı · imzalamak için tıklayın",
+         "signStartFailed": "İmza başlatılamadı",
+         "signStartFailedLater": "İmza başlatılamadı, lütfen daha sonra tekrar deneyin",
+         "signed": "İmzalandı",
+         "signedUntil": "İmzalandı · {{date}} tarihine kadar geçerli",
+         "title": "Hizmet sözleşmesi",
+         "unavailable": "Sözleşme belgesi henüz kullanılamıyor, lütfen daha sonra tekrar deneyin"
+      },
+      "delete": {
+         "action": "Hesabı sil",
+         "confirmTitle": "Silmeyi onaylayın",
+         "failed": "Hesap silinemedi",
+         "failedActiveDeals": "Hesap silinemedi: etkin işlemler mevcut",
+         "passwordPrompt": "Hesap silme işlemini onaylamak için şifrenizi girin.",
+         "warning": "Hesap devre dışı bırakılacaktır. Geri yüklemek için destek ile iletişime geçin.",
+         "warningFull": "Silindikten sonra hesap devre dışı bırakılacaktır. Geri yüklemek için destek ile iletişime geçin."
+      },
+      "documents": {
+         "allowedTypes": "Yalnızca PDF, JPG, JPEG veya PNG'ye izin verilir",
+         "current": "Mevcut belge",
+         "employment": "Çalışanın istihdam belgesi",
+         "employmentFull": "İmza yetkisine sahip çalışanın istihdam belgesi veya ilk yöneticinin atama kararı",
+         "issuedAt": "Belgenin verildiği tarih",
+         "issuedBy": "Belgeyi veren kurum",
+         "issuers": {
+            "mia": "RK İçişleri Bakanlığı",
+            "moj": "RK Adalet Bakanlığı"
+         },
+         "legalEntity": "Tüzel kişi kayıt belgesi",
+         "maxSize": "Dosya boyutu {{size}} MB'ı aşmamalıdır",
+         "newFile": "Yeni dosya · {{size}}",
+         "notUploaded": "Belge henüz yüklenmedi",
+         "replace": "Belgeyi değiştir",
+         "upload": "Belge yükle"
+      },
+      "load": {
+         "failed": "Profil yüklenemedi"
+      },
+      "password": {
+         "current": "Mevcut şifre",
+         "enterCurrent": "Mevcut şifreyi girin",
+         "enterNew": "Yeni şifreyi girin",
+         "new": "Yeni şifre",
+         "repeatNew": "Yeni şifreyi tekrar girin"
+      },
+      "save": {
+         "failed": "Profil güncellenemedi",
+         "noChanges": "Kaydedilecek değişiklik yok",
+         "success": "Profil başarıyla güncellendi"
+      },
+      "sections": {
+         "company": "Şirket ve banka bilgileri",
+         "companySubtitle": "Şirket ve iletişim kişisi bilgileri",
+         "deleteAccount": "Hesap silme",
+         "documents": "Kayıt belgeleri",
+         "password": "Şifre değiştirme"
+      },
+      "title": "Profil"
+   },
+   "route": {
+      "addWaypoint": "+ Ara nokta",
+      "addressDetecting": "Adres belirleniyor...",
+      "addressNotFound": "Adres bulunamadı",
+      "addressSearching": "Adres aranıyor...",
+      "clear": "Rotayı temizle",
+      "coordinates": "Koordinatlar: {{lat}}, {{lng}}",
+      "destinationNotSpecified": "Varış yeri belirtilmedi",
+      "markerA": "A",
+      "markerB": "B",
+      "onMap": "Haritada",
+      "originNotSpecified": "Çıkış yeri belirtilmedi",
+      "pickOnMap": "Bu noktayı seçin ve haritaya tıklayın",
+      "point": "Nokta {{index}}",
+      "pointA": "A Noktası",
+      "pointB": "B Noktası",
+      "pointType": "Nokta türü",
+      "removeWaypoint": "{{index}} numaralı ara noktayı sil",
+      "validation": {
+         "coordinatesPoint": "{{index}} noktası için koordinatları belirtin: haritaya tıklayın",
+         "destinationRequired": "Varış yerini belirtin",
+         "endBeforeStart": "Bitiş tarihi bu noktanın başlangıç tarihinden önce olamaz",
+         "endDateDestination": "Varış noktasında bitiş tarihini belirtin",
+         "endDateOrigin": "Çıkış noktasında bitiş tarihini belirtin",
+         "endDatePoint": "{{index}} noktası için bitiş tarihini belirtin",
+         "originRequired": "Çıkış yerini belirtin",
+         "startBeforePrevEnd": "Başlangıç tarihi önceki noktanın bitiş tarihinden önce olamaz",
+         "startDateDestination": "Varış noktasında başlangıç tarihini belirtin",
+         "startDateOrigin": "Çıkış noktasında başlangıç tarihini belirtin",
+         "startDatePoint": "{{index}} noktası için başlangıç tarihini belirtin"
+      },
+      "waypoint": "{{index}} numaralı ara nokta",
+      "waypointHash": "Ara nokta #{{index}}"
+   },
+   "settings": {
+      "language": {
+         "description": "Arayüzün ve bildirimlerin görüntüleneceği dili seçin.",
+         "label": "Dil",
+         "saved": "Arayüz dili değiştirildi",
+         "switcherLabel": "Arayüz dili seçimi",
+         "title": "Arayüz dili"
+      },
+      "languages": {
+         "ar": "العربية",
+         "de": "Deutsch",
+         "en": "English",
+         "es": "Español",
+         "fr": "Français",
+         "ka": "ქართული",
+         "kk": "Қазақша",
+         "ky": "Кыргызча",
+         "pt": "Português",
+         "ru": "Русский",
+         "tg": "Тоҳикӣ",
+         "tr": "Türkçe",
+         "ur": "اردو",
+         "uz": "O'zbekcha",
+         "zh": "中文"
+      },
+      "title": "Ayarlar"
+   },
+   "sharedLead": {
+      "gone": "Sipariş silindi veya bağlantısı iptal edildi.",
+      "invalidLink": "Bağlantı geçersiz veya süresi dolmuş.",
+      "loading": "Sipariş bilgileri yükleniyor...",
+      "notFound": "İstenen sayfa bulunamadı. Bağlantının tamamen kopyalandığından emin olun.",
+      "readOnly": "Bu, bağlantı ile sipariş görüntüleme sayfasıdır. Düzenleme kullanılamaz.",
+      "requestFailed": "Sipariş bilgileri yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+      "title": "Sipariş bilgileri"
+   },
+   "support": {
+      "emailBody": "Merhaba! Bir sorum var.",
+      "emailSubject": "Destek talebi",
+      "writeToChat": "Sohbete yaz"
+   },
+   "tenders": {
+      "bids": {
+         "amount": "Teklif tutarı",
+         "chooseWinner": "Kazananı seç",
+         "chooseWinnerFailed": "Kazanan seçilemedi",
+         "choosing": "Seçiliyor...",
+         "confirmChoice": "Seçimi onayla",
+         "confirmWinner": "Bu teklifi kazanan olarak seçmek istediğinizden emin misiniz?",
+         "empty": "Henüz teklif eklenmedi",
+         "irreversible": "Bu işlem geri alınamaz.",
+         "participantUnknown": "Katılımcı belirtilmedi",
+         "showAll": "Tüm teklifleri göster (+{{count}})",
+         "statusCancelled": "İptal edildi",
+         "statusWinning": "Kazanan",
+         "title": "Teklifler"
+      },
+      "countdown": {
+         "daysHours": "{{days}} g {{hours}} sa",
+         "hoursMinutes": "{{hours}} sa {{minutes}} dk",
+         "minutes": "{{minutes}} dk"
+      },
+      "create": {
+         "action": "İhale oluştur",
+         "confirm": "Bu sipariş için bir ihale oluşturmak istediğinizden emin misiniz?",
+         "failed": "İhale oluşturulamadı",
+         "maxParticipants": "Maksimum katılımcı sayısı",
+         "privateHint": "Özel ihaleye davet edilecek nakliyecileri seçin",
+         "publicAuction": "Genel ihale",
+         "startAfterCreate": "Oluşturduktan sonra ihaleyi başlat",
+         "title": "İhale oluşturma"
+      },
+      "dates": {
+         "endAfterNow": "Bitiş tarihi mevcut zamandan sonra olmalıdır",
+         "endInvalid": "Geçersiz bitiş tarihi",
+         "endMin30Minutes": "Bitiş tarihi, yayın tarihinden en az 30 dakika sonra olmalıdır",
+         "endRequired": "Bitiş tarihini belirtin",
+         "publicationDate": "Yayın tarihi",
+         "publicationInPast": "Yayın tarihi geçmişte olamaz",
+         "publicationInvalid": "Geçersiz yayın tarihi",
+         "publicationRequired": "Yayın tarihini belirtin"
+      },
+      "details": {
+         "audience": "Kimler için",
+         "audienceForwarders": "Nakliyeciler için",
+         "audienceShippers": "Gönderenler için",
+         "bidsCountLabel": "Teklifler",
+         "cargoWeight": "Yük ağırlığı",
+         "editBlocked": "Kapalı veya iptal edilmiş bir ihale düzenlenemez",
+         "info": "İhale bilgileri",
+         "loadFailed": "İhale detayları yüklenemedi",
+         "loading": "İhale detayları yükleniyor...",
+         "maxParticipantsShort": "Maks. katılımcı",
+         "orderDocuments": "Sipariş belgeleri",
+         "participantsCountLabel": "Katılımcılar",
+         "publicationType": "Yayın türü",
+         "totalOrderPrice": "Toplam sipariş fiyatı"
+      },
+      "leadPicker": {
+         "cargoLabel": "Yük: {{cargo}}",
+         "cargoWithMore": "{{type}} + {{count}} daha",
+         "destination": "Nereye: {{to}}",
+         "forwarder": "Nakliyeci: {{name}}",
+         "hint": "İhalenin oluşturulacağı siparişi seçin",
+         "notFound": "Sipariş bulunamadı",
+         "order": "Sipariş",
+         "orderNumber": "Sipariş #{{id}}",
+         "origin": "Nereden: {{from}}",
+         "priceLabel": "Fiyat: {{price}}",
+         "searchFailed": "Sipariş bulunamadı",
+         "searching": "Siparişler aranıyor...",
+         "sectionTitle": "Sipariş seçimi",
+         "select": "Bir sipariş seçin",
+         "selectAction": "Sipariş seç"
+      },
+      "loadFailed": "İhaleler yüklenemedi",
+      "manage": {
+         "cancel": "İhaleyi iptal et",
+         "cancelConfirm": "Bu ihaleyi iptal etmek istediğinizden emin misiniz? İptal edildikten sonra katılımcılar için kullanılamaz hale gelecektir.",
+         "cancelFailed": "İhale iptal edilemedi",
+         "cancelling": "İptal ediliyor...",
+         "delete": "İhaleyi sil",
+         "deleteConfirm": "Bu ihaleyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+         "deleteFailed": "İhale silinemedi",
+         "saveFailed": "İhale değişiklikleri kaydedilemedi",
+         "start": "İhaleyi başlat",
+         "startFailed": "İhale başlatılamadı"
+      },
+      "notFound": "İhale bulunamadı",
+      "participantCount_one": "{{count}} katılımcı",
+      "participantCount_other": "{{count}} katılımcı",
+      "participants": {
+         "add": "Katılımcı ekle",
+         "addFailed": "Katılımcılar eklenemedi",
+         "added": "Eklendi: {{date}}",
+         "bin": "BIN: {{bin}}",
+         "empty": "Henüz katılımcı eklenmedi",
+         "loading": "Katılımcılar yükleniyor...",
+         "remove": "Katılımcıyı sil",
+         "removeFailed": "Katılımcı silinemedi",
+         "searching": "Nakliyeciler aranıyor...",
+         "title": "Katılımcılar"
+      },
+      "searchPlaceholder": "Şehir, yük veya yön girin",
+      "stopCount_one": "{{count}} durak",
+      "stopCount_other": "{{count}} durak",
+      "subtitle": "Taleplere göre ihale listesi",
+      "title": "İhaleler",
+      "titleSingular": "İhale",
+      "validation": {
+         "maxParticipantsNegative": "Maksimum katılımcı sayısı 0'dan küçük olamaz",
+         "privateNeedsForwarder": "Özel ihale için en az bir nakliyeci seçin"
+      },
+      "viewToggle": "İhale görünümünü değiştir"
+   },
+   "tnved": {
+      "code": "Kod",
+      "codeNotFound": "Kod bulunamadı",
+      "searchPlaceholder": "Koda veya adına göre ara",
+      "title": "GTİP"
+   },
+   "validation": {
+      "bik": "BIK 8 karakter içermelidir",
+      "bin": "BIN 12 basamak içermelidir",
+      "companyBinRequired": "Şirketin BIN numarasını belirtin",
+      "companyNameRequired": "Şirket adını belirtin",
+      "dateNotInFuture": "Tarih bugünden sonra olamaz",
+      "dateNotInPast": "Tarih bugünden önce olamaz",
+      "documentIssueDateRequired": "Belgenin verilme tarihini belirtin",
+      "documentIssuedByRequired": "Belgeyi kimin verdiğini belirtin",
+      "email": "Geçersiz e-posta",
+      "emailRequired": "E-posta adresini belirtin",
+      "iikFormat": "Format: KZ + 18 karakter",
+      "iin": "IIN 12 basamak içermelidir",
+      "iinRequired": "IIN numarasını belirtin",
+      "max100": "En fazla 100 karakter",
+      "max50": "En fazla 50 karakter",
+      "min3": "En az 3 karakter",
+      "min6": "En az 6 karakter",
+      "passwordsMismatch": "Şifreler eşleşmiyor",
+      "phone": "Geçersiz telefon formatı",
+      "phoneRequired": "Telefon numarasını belirtin",
+      "range2to100": "2 ile 100 karakter arası",
+      "range2to255": "2 ile 255 karakter arası",
+      "representativeRequired": "Temsilcinin ad soyadını belirtin"
+   },
+   "verification": {
+      "banner": "E-postanızı onaylayın. Mesajı yeniden göndermek için bildirime tıklayın.",
+      "checkFailed": "E-posta durumu kontrol edilemedi",
+      "checking": "E-posta durumu kontrol ediliyor…",
+      "cooldown": "{{seconds}} sn içinde",
+      "emailConfirmed": "E-posta onaylandı",
+      "emailNotConfirmed": "E-posta onaylanmadı",
+      "hint": "Onay bağlantısı içeren bir e-posta adresinize gönderilecektir.",
+      "resendAvailable": "Yeniden gönderme {{seconds}} sn içinde kullanılabilir olacak.",
+      "sendFailed": "Onay e-postası gönderilemedi",
+      "sent": "E-posta onay mesajı gönderildi. E-postanızı kontrol edin."
+   }
+}

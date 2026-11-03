@@ -1,0 +1,1402 @@
+{
+   "accountBan": {
+      "contactSupport": "联系客服",
+      "logout": "退出登录",
+      "text": "您的工作空间访问权限已被暂时限制。您无法创建订单、参与竞标或在系统中执行其他操作。",
+      "title": "账户已被封禁"
+   },
+   "chat": {
+      "attachments": {
+         "allowedTypes": "仅支持图片（JPG、PNG、WEBP）、PDF、DOC(X) 或 XLS(X) 格式",
+         "attach": "添加附件",
+         "closeImage": "关闭图片预览",
+         "fileDownloadFailed": "文件「{{name}}」下载失败",
+         "fileLoadFailed": "文件「{{name}}」加载失败",
+         "imageLoadFailed": "图片加载失败",
+         "label": "附件",
+         "loadFailed": "加载失败",
+         "maxCount": "每条消息最多可附加 {{count}} 个文件",
+         "maxSize": "文件大小不得超过 {{size}} MB",
+         "remove": "删除文件 {{name}}",
+         "view": "查看附件"
+      },
+      "backToList": "返回会话列表",
+      "close": "关闭会话",
+      "conversationStart": "对话开始",
+      "empty": "暂无进行中的会话",
+      "load": {
+         "deliveryFailed": "配送会话加载失败",
+         "factoringFailed": "保理会话加载失败",
+         "leadFailed": "订单会话加载失败",
+         "listFailed": "会话列表加载失败",
+         "moreFailed": "更多会话加载失败",
+         "participantsFailed": "会话参与者（{{type}}）{{id}} 加载失败",
+         "supportFailed": "客服会话加载失败"
+      },
+      "message": {
+         "cancelEdit": "取消编辑",
+         "delete": "删除消息",
+         "deleteConfirm": "消息将被永久删除，是否继续？",
+         "deleteFailed": "消息删除失败",
+         "deleted": "消息已删除",
+         "edit": "编辑消息",
+         "editFailed": "消息编辑失败",
+         "placeholder": "输入消息…",
+         "read": "已读",
+         "send": "发送消息",
+         "sendFailed": "消息发送失败"
+      },
+      "open": "打开会话",
+      "participant": "参与者",
+      "participantLabel": "会话参与者",
+      "refreshList": "刷新会话列表",
+      "requisites": {
+         "title": "银行信息"
+      },
+      "time": {
+         "days": "{{count}} 天",
+         "hours": "{{count}} 小时",
+         "justNow": "刚刚",
+         "minutes": "{{count}} 分钟",
+         "yesterday": "昨天"
+      },
+      "title": "会话",
+      "types": {
+         "delivery": "配送",
+         "deliveryNumber": "配送单 #{{id}}",
+         "factoringNumber": "保理单 #{{id}}",
+         "orderNumber": "订单 #{{id}}",
+         "support": "客服",
+         "supportFull": "技术支持"
+      }
+   },
+   "common": {
+      "actions": {
+         "add": "添加",
+         "adding": "正在添加…",
+         "addingShort": "添加中…",
+         "back": "返回",
+         "cancel": "取消",
+         "clear": "清除",
+         "close": "关闭",
+         "confirm": "确认",
+         "continue": "继续",
+         "copied": "已复制",
+         "copy": "复制",
+         "copyNumber": "复制单号",
+         "create": "创建",
+         "creating": "正在创建…",
+         "creatingProcess": "创建中…",
+         "delete": "删除",
+         "deleting": "正在删除…",
+         "download": "下载",
+         "edit": "编辑",
+         "goTo": "前往",
+         "gotIt": "知道了",
+         "hide": "隐藏",
+         "next": "下一步",
+         "openInNewTab": "在新标签页中打开",
+         "preview": "预览",
+         "refresh": "刷新",
+         "remove": "移除",
+         "retry": "重试",
+         "retryAttempt": "重试",
+         "save": "保存",
+         "saveChanges": "保存更改",
+         "saving": "正在保存…",
+         "select": "选择",
+         "selected": "已选择：{{count}}",
+         "send": "发送",
+         "sending": "正在发送…",
+         "sendingShort": "发送中…",
+         "share": "分享",
+         "showAll": "显示全部（+{{count}}）",
+         "sign": "签署",
+         "yes": "是"
+      },
+      "cargoCount_other": "{{count}} 件货物",
+      "documents": {
+         "add": "添加文件",
+         "empty": "尚未添加任何文件",
+         "fileSelected": "已选择文件"
+      },
+      "empty": {
+         "addressNotSpecified": "未填写地址",
+         "binNotSpecified": "未填写商业识别号",
+         "canLeaveBlank": "可留空",
+         "cargoNotSpecified": "未填写货物信息",
+         "companyNotSpecified": "未填写公司信息",
+         "contactDataNotSpecified": "未填写联系方式",
+         "contactsNotSpecified": "未填写联系方式",
+         "dataNotFilled": "信息未填写",
+         "dateNotSpecified": "未填写日期",
+         "descriptionNotSpecified": "未填写描述",
+         "fullNameNotSpecified": "未填写姓名",
+         "invalidData": "数据不正确",
+         "invalidDate": "日期不正确",
+         "nameNotSpecified": "未填写名称",
+         "noCompany": "无公司信息",
+         "noData": "暂无数据",
+         "noFullName": "无姓名",
+         "noName": "无名称",
+         "notAdded": "未添加",
+         "notAssigned": "未指派",
+         "notSelected": "未选择",
+         "notSpecifiedM": "未填写",
+         "notSpecifiedN": "未填写",
+         "nothingFound": "未找到任何内容",
+         "optional": "可选",
+         "priceNotSpecified": "未填写价格",
+         "typeNotSpecified": "未填写类型",
+         "unknown": "未知",
+         "unlimited": "不限"
+      },
+      "fields": {
+         "actions": "操作",
+         "amount": "金额",
+         "bankName": "银行名称",
+         "bik": "银行识别代码（BIK）",
+         "bin": "商业识别号（BIN）",
+         "binValue": "商业识别号：{{bin}}",
+         "bodyType": "车身类型",
+         "cargo": "货物",
+         "cargoCountLabel": "货物数量",
+         "cargoName": "货物名称",
+         "cargoPrice": "货物价格",
+         "cargoType": "货物类型",
+         "cargos": "货物",
+         "comment": "备注",
+         "company": "公司",
+         "companyAddress": "公司地址",
+         "companyBin": "公司商业识别号",
+         "companyName": "公司名称",
+         "contactPerson": "联系人",
+         "currency": "货币",
+         "customer": "客户",
+         "date": "日期",
+         "dateFrom": "起始日期",
+         "dateTo": "截止日期",
+         "description": "描述",
+         "destination": "目的地",
+         "dimensions": "尺寸",
+         "direction": "方向",
+         "document": "文件",
+         "documentName": "文件名称",
+         "documentNumber": "文件编号",
+         "documents": "文件",
+         "driver": "司机",
+         "email": "电子邮箱",
+         "endDate": "结束日期",
+         "executionPrice": "执行价格",
+         "factor": "保理商",
+         "file": "文件",
+         "files": "文件",
+         "forwarder": "货运代理",
+         "forwarderBin": "货运代理商业识别号",
+         "forwarderFullName": "货运代理姓名",
+         "forwarderIin": "货运代理个人识别号",
+         "from": "起点",
+         "fullName": "姓名",
+         "gracePeriod": "延期付款期限",
+         "gracePeriodDays": "延期付款期限（天）",
+         "heightCm": "高度（厘米）",
+         "iik": "银行账号（IIK）",
+         "iin": "个人识别号（IIN）",
+         "international": "国际运输",
+         "issuingCountry": "签发国家",
+         "legalAddress": "法定地址",
+         "lengthCm": "长度（厘米）",
+         "loadingType": "装货类型",
+         "manufacturer": "生产商",
+         "name": "名称",
+         "number": "编号",
+         "origin": "起点",
+         "packagingType": "包装类型",
+         "participants": "参与方",
+         "password": "密码",
+         "phone": "电话",
+         "price": "价格",
+         "quantity": "数量",
+         "route": "路线",
+         "settlementAccount": "结算账户",
+         "shipments": "运输单",
+         "startDate": "开始日期",
+         "status": "状态",
+         "timeLeft": "剩余时间",
+         "title": "名称",
+         "tnvedCode": "海关商品编码",
+         "to": "终点",
+         "transportParams": "运输参数",
+         "transportType": "运输方式",
+         "type": "类型",
+         "vat": "增值税",
+         "volume": "体积",
+         "volumeM3": "体积（立方米）",
+         "weight": "重量",
+         "weightKg": "重量（公斤）",
+         "widthCm": "宽度（厘米）",
+         "withVat": "含增值税",
+         "withoutVat": "不含增值税"
+      },
+      "filePreview": {
+         "documentNotFound": "未找到文件",
+         "noFile": "该文件暂无可预览内容",
+         "unsupported": "暂不支持该文件类型的预览",
+         "unsupportedType": "不支持预览 {{mime}} 类型的文件"
+      },
+      "forwarderPicker": {
+         "clickToLoad": "点击加载货运代理",
+         "detailsLoadFailed": "货运代理信息加载失败",
+         "loadFailed": "货运代理加载失败",
+         "loading": "正在加载货运代理…",
+         "notFound": "未找到货运代理",
+         "searchByCompany": "请输入公司名称或商业识别号",
+         "searchHint": "请输入姓名、个人识别号、公司、商业识别号或电话"
+      },
+      "loading": {
+         "default": "加载中…",
+         "list": "正在加载列表…",
+         "map": "正在加载地图…",
+         "preview": "正在加载预览…"
+      },
+      "search": {
+         "byDirection": "按方向搜索",
+         "minChars": "请至少输入 2 个字符"
+      },
+      "severity": {
+         "error": "错误",
+         "info": "消息",
+         "notice": "提示",
+         "success": "成功",
+         "warning": "警告"
+      },
+      "shipmentCount_other": "{{count}} 笔运输",
+      "signing": {
+         "keepPageOpen": "请勿关闭此页面——签署窗口已在新标签页中打开，状态将自动更新。",
+         "opening": "正在打开签署页面…",
+         "thisLink": "该链接",
+         "unavailable": "签署服务当前不可用，请稍后重试",
+         "waiting": "正在等待签署…",
+         "windowHint": "如果签署窗口未自动打开，请通过以下方式打开"
+      },
+      "units": {
+         "bytes": "{{value}} 字节",
+         "cargoSummary": "{{cargoCount}} · {{weight}} 公斤",
+         "days": "{{count}} 天",
+         "dimensionsCm": "{{length}} × {{width}} × {{height}} 厘米",
+         "kg": "{{value}} 公斤",
+         "kilobytes": "{{value}} KB",
+         "km": "公里",
+         "m3": "{{value}} 立方米",
+         "megabytes": "{{value}} MB"
+      },
+      "view": {
+         "cards": "卡片视图",
+         "showAsCards": "以卡片形式显示",
+         "showAsTable": "以表格形式显示",
+         "table": "表格视图"
+      },
+      "waypointCount_other": "{{count}} 个点"
+   },
+   "complaints": {
+      "answer": {
+         "label": "回复",
+         "notAdded": "尚未添加回复",
+         "pending": "管理部门尚未回复",
+         "rejected": "投诉已被驳回",
+         "title": "管理部门回复"
+      },
+      "attachments": {
+         "allowedTypes": "仅支持图片、视频、PDF 或 DOCX 格式",
+         "attach": "添加附件",
+         "limits": "最多 {{count}} 个文件，每个不超过 {{size}} MB",
+         "maxCount": "最多可添加 {{count}} 个文件",
+         "maxSize": "文件大小不得超过 {{size}} MB",
+         "removeFile": "删除文件"
+      },
+      "create": {
+         "action": "提交投诉",
+         "describePlaceholder": "请描述发生的情况",
+         "failed": "投诉提交失败",
+         "maxLength": "描述内容不得超过 {{count}} 个字符",
+         "subject": "投诉主题",
+         "subjectPlaceholder": "请描述投诉内容",
+         "submit": "提交投诉"
+      },
+      "emptyLast30Days": "过去 30 天内未发现投诉记录",
+      "loadFailed": "投诉记录加载失败",
+      "notFound": "未找到投诉记录",
+      "subtitle": "最近 30 天的投诉及管理部门回复",
+      "target": {
+         "empty": "过去 30 天内没有运输单或保理单记录",
+         "label": "关联对象",
+         "loadFailed": "列表加载失败",
+         "question": "该投诉关联哪笔运输单或保理单"
+      },
+      "title": "投诉",
+      "titleSingular": "投诉",
+      "viewToggle": "切换投诉视图"
+   },
+   "contractGate": {
+      "fillProfile": "请在个人资料中补充信息",
+      "goToProfile": "前往个人资料",
+      "noContracts": "您暂无合同，或签署期限已过",
+      "signContract": "签署合同"
+   },
+   "createLead": {
+      "cargo": {
+         "description": "货物描述",
+         "validation": {
+            "cargoPriceNegative": "货物价格不能为负数",
+            "gracePeriodRange": "请填写 1 至 364 天",
+            "heightPositive": "高度必须大于 0",
+            "lengthPositive": "长度必须大于 0",
+            "nameRequired": "请填写货物名称",
+            "priceNegative": "价格不能为负数",
+            "tnvedRequired": "请填写海关商品编码",
+            "volumePositive": "体积必须大于 0",
+            "weightPositive": "重量必须大于 0",
+            "widthPositive": "宽度必须大于 0"
+         },
+         "withVat": "含增值税"
+      },
+      "customer": {
+         "current": "当前客户",
+         "required": "请填写客户信息"
+      },
+      "forwarder": {
+         "hint": "请查找并选择将指派给该路线的货运代理",
+         "loadingDetails": "正在加载货运代理信息…",
+         "skippable": "您可以跳过此步骤，不指定货运代理创建订单"
+      },
+      "result": {
+         "createError": "创建失败",
+         "createFailed": "订单创建失败",
+         "created": "订单已创建",
+         "createdSuccess": "订单创建成功",
+         "createdSuccessWithId": "订单创建成功：{{id}}",
+         "createdWithDocumentErrors": "订单已创建，但部分文件上传失败",
+         "draftSaveFailed": "草稿保存失败",
+         "draftSaved": "草稿已保存",
+         "saveError": "保存失败",
+         "savedAsDraft": "订单已保存为草稿"
+      },
+      "saveDraft": "保存为草稿",
+      "skipVideoRecording": "跳过装卸货视频记录",
+      "step": "第 {{current}} 步，共 {{total}} 步",
+      "steps": {
+         "cargo": "货物与付款",
+         "confirm": "核对",
+         "confirmTitle": "请核对信息",
+         "customer": "客户信息",
+         "documents": "文件",
+         "forwarder": "选择货运代理",
+         "route": "路线"
+      },
+      "submit": "创建订单",
+      "subtitle": "请填写订单信息",
+      "title": "创建订单"
+   },
+   "dashboard": {
+      "analytics": {
+         "amountAxis": "金额（{{currency}}）",
+         "emergencyCount": "紧急事件：{{count}}",
+         "emptyPeriod": "所选时间段内暂无数据",
+         "loadFailed": "运输分析数据加载失败",
+         "noShipmentsPeriod": "所选时间段内暂无运输单",
+         "shipmentNumber": "运输单号",
+         "title": "运输趋势",
+         "trips": "次运输"
+      },
+      "factorings": {
+         "loading": "正在加载保理单…",
+         "number": "保理单 #{{id}}",
+         "title": "保理单列表"
+      },
+      "groupBy": {
+         "day": "按天",
+         "month": "按月",
+         "quarter": "按季度",
+         "week": "按周"
+      },
+      "leads": {
+         "empty": "暂无进行中的订单",
+         "loading": "正在加载订单…",
+         "mapHint": "选择一个订单以在地图上高亮显示路线",
+         "orderNumber": "订单 #{{num}}",
+         "title": "进行中的订单"
+      },
+      "period": {
+         "action": "选择时间段",
+         "compare": "与上一时间段对比",
+         "halfYear": "半年",
+         "month": "月",
+         "quarter": "季度",
+         "title": "选择时间段",
+         "week": "周",
+         "year": "年"
+      },
+      "saleCount_other": "{{count}} 笔销售",
+      "stats": {
+         "active": "进行中",
+         "activeFactoringSales": "进行中的保理销售",
+         "activeShipments": "进行中的运输单",
+         "activeTenders": "进行中的竞标",
+         "amounts": "金额",
+         "factoringSales": "保理销售",
+         "factoringSalesPeriod": "保理销售周期",
+         "forPeriod": "所选时间段",
+         "loadFailed": "统计数据加载失败",
+         "shipmentsPeriod": "运输周期",
+         "showAllCurrencies": "显示所有货币",
+         "title": "统计",
+         "today": "今日",
+         "viewMode": "统计显示模式"
+      },
+      "tenderCount_other": "{{count}} 个竞标",
+      "tenders": {
+         "bids": "出价数：{{count}}",
+         "loading": "正在加载竞标…",
+         "number": "竞标 #{{id}}",
+         "private": "私有",
+         "privateEmpty": "暂未找到私有竞标",
+         "public": "公开",
+         "publicEmpty": "暂未找到公开竞标",
+         "title": "竞标列表"
+      },
+      "title": "首页",
+      "totalCargoWeight": "{{value}} 公斤"
+   },
+   "enums": {
+      "complaintStatus": {
+         "answered": "已回复",
+         "in_progress": "处理中",
+         "pending_answer": "待回复",
+         "pending_review": "待审核",
+         "rejected": "已驳回",
+         "rejectedN": "已驳回",
+         "resolved": "已解决"
+      },
+      "complaintTarget": {
+         "factoring": "保理",
+         "shipment": "运输"
+      },
+      "factoringLine": {
+         "closed": "已关闭额度",
+         "open": "已开通额度"
+      },
+      "factoringStatus": {
+         "await_paid": "待付款",
+         "cancelled": "已取消",
+         "finished": "已完成",
+         "new": "新建",
+         "verified_participant": "部分确认"
+      },
+      "leadStatus": {
+         "add_driver": "已添加司机",
+         "cancelled": "已取消",
+         "draft": "草稿",
+         "emergency_situation": "紧急情况",
+         "finished": "已完成",
+         "finished_emergency_situation": "已完成（紧急情况）",
+         "new": "新建",
+         "sign_avr": "签署验收单",
+         "start_driver": "行程已开始",
+         "start_loading": "装货中",
+         "start_unloading": "卸货中",
+         "verification_loading": "装货已确认",
+         "verification_unloading": "卸货已确认"
+      },
+      "leadStatusFilter": {
+         "all": "全部状态",
+         "cancelled": "已取消",
+         "driverAssigned": "已指派司机",
+         "driverDeparted": "司机已出发",
+         "finished": "已完成",
+         "inTransit": "运输中",
+         "new": "新建",
+         "other": "其他"
+      },
+      "manufacturerStatus": {
+         "attached": "已关联",
+         "incomingRequest": "待处理申请",
+         "notAttached": "未关联",
+         "requestSent": "申请已发送"
+      },
+      "participantType": {
+         "forwarder": "货运代理"
+      },
+      "publicationType": {
+         "private": "私有",
+         "public": "公开"
+      },
+      "signature": {
+         "notSigned": "未签署",
+         "notSignedM": "未签署",
+         "signed": "已签署",
+         "signedM": "已签署"
+      },
+      "tenderStatus": {
+         "active": "进行中",
+         "cancelled": "已取消",
+         "closed": "已关闭",
+         "finished": "已完成",
+         "new": "新建"
+      },
+      "verification": {
+         "confirmed": "已确认",
+         "notConfirmed": "未确认"
+      },
+      "verificationCheck": {
+         "notPassed": "未通过",
+         "passed": "已通过",
+         "passedMark": "✓ 已通过"
+      },
+      "waypointType": {
+         "check_passes": "过境",
+         "loading": "装货",
+         "unloading": "卸货"
+      }
+   },
+   "errorPage": {
+      "title": "出现错误",
+      "unexpectedReload": "发生意外错误。请刷新页面或稍后重试。"
+   },
+   "errors": {
+      "factoringNotFound": "未找到保理单",
+      "generic": "出现错误",
+      "genericSupport": "出现错误，请联系客服。",
+      "leadNotFound": "未找到订单",
+      "notFound": "未找到请求的页面。",
+      "server": "服务器发生错误，请稍后重试。",
+      "unexpected": "发生意外错误。"
+   },
+   "exportReport": {
+      "action": "导出报表",
+      "dateOrder": "起始日期不能晚于截止日期",
+      "failed": "报表导出失败，请稍后重试",
+      "hint": "报表仅包含所选时间段内已完成的运输单。",
+      "inProgress": "正在导出…",
+      "submit": "导出"
+   },
+   "factorings": {
+      "cancel": {
+         "action": "取消保理",
+         "confirm": "确定要取消此保理吗？该操作无法撤销。",
+         "failed": "保理取消失败",
+         "inProgress": "正在取消保理…"
+      },
+      "chat": {
+         "action": "会话",
+         "leadNotResolved": "无法确定与该保理关联的订单",
+         "openFailed": "保理会话打开失败"
+      },
+      "confirmParticipation": {
+         "openFailed": "签署窗口打开失败",
+         "opening": "正在打开签署页面…",
+         "text": "您确定要确认参与此保理吗？您将被重新定向至文件签署页面。",
+         "title": "参与确认"
+      },
+      "confirmations": {
+         "confirmedByCustomer": "客户已确认",
+         "customer": "客户确认",
+         "date": "确认日期",
+         "factor": "保理商确认",
+         "factorStatus": "保理商：{{status}}",
+         "forwarder": "货运代理确认",
+         "forwarderStatus": "货运代理：{{status}}",
+         "subtitle": "各方确认状态",
+         "title": "确认情况",
+         "you": "您",
+         "youStatus": "您：{{status}}"
+      },
+      "details": {
+         "cargoSection": "货物与运输参数",
+         "createdAt": "创建日期",
+         "loadFailed": "保理详情加载失败",
+         "loading": "正在加载保理详情…",
+         "main": "基本信息",
+         "mainSubtitle": "申请编号、创建日期及关联订单",
+         "number": "保理单 #{{id}}",
+         "title": "保理详情"
+      },
+      "finance": {
+         "creditAmount": "授信金额",
+         "debtAmount": "应收账款金额",
+         "debtCurrency": "应收账款货币",
+         "factoringCurrency": "保理货币",
+         "factoringRate": "保理费率",
+         "serviceRate": "服务费率",
+         "subtitle": "金额、货币及保理费率",
+         "title": "财务信息"
+      },
+      "line": {
+         "contractNote": "由货运代理与保理商签订，双方均已签署",
+         "contractTitle": "保理额度合同",
+         "signStartFailed": "保理额度签署发起失败",
+         "timeout": "保理额度签署已超时，请重试",
+         "waitForParties": "待货运代理与保理商签署后，方可进行签署。",
+         "yourSignature": "保理额度（您的签名）"
+      },
+      "loadFailed": "保理采购记录加载失败",
+      "notFound": "未找到保理采购记录",
+      "participants": {
+         "customerLoadFailed": "客户信息加载失败",
+         "subtitle": "保理中的所有参与方"
+      },
+      "purchasesTitle": "保理采购",
+      "requisites": {
+         "loadFailed": "客户银行信息加载失败",
+         "title": "各方银行信息"
+      },
+      "subtitle": "保理申请列表",
+      "title": "保理",
+      "titleSingular": "保理",
+      "viewToggle": "切换保理视图"
+   },
+   "forwarders": {
+      "invite": {
+         "action": "邀请货运代理",
+         "copyLink": "复制链接",
+         "create": "创建邀请",
+         "createFailed": "邀请创建失败",
+         "created": "邀请已创建",
+         "link": "邀请链接",
+         "linkCopied": "链接已复制",
+         "noActiveLink": "暂无有效链接",
+         "success": "货运代理已创建。请将链接发送给对方以完成信息填写。",
+         "title": "邀请"
+      },
+      "issuingCountry": "文件签发国家",
+      "notFound": "未找到货运代理",
+      "registered": "已注册",
+      "representative": "代表人",
+      "searchPlaceholder": "搜索货运代理",
+      "sections": {
+         "company": "货运代理信息 — 公司",
+         "contact": "联系人信息",
+         "requisites": "货运代理银行信息"
+      },
+      "subtitle": "所有货运代理的完整列表",
+      "title": "货运代理",
+      "viewToggle": "切换货运代理视图"
+   },
+   "header": {
+      "closeMenu": "关闭菜单",
+      "logout": {
+         "action": "退出",
+         "confirm": "确定要退出登录吗？",
+         "failed": "退出登录失败",
+         "fromAccount": "退出账户",
+         "inProgress": "正在退出…",
+         "title": "退出"
+      },
+      "needHelp": "需要帮助？",
+      "settings": "设置",
+      "supportAvailable": "我们的客服团队 24/7 全天候为您服务",
+      "user": "用户",
+      "userProfile": "用户 {{email}} 的个人资料"
+   },
+   "kgd": {
+      "loadFailed": "国家税务委员会（KGD）数据加载失败",
+      "taxationMode": "税务制度"
+   },
+   "leads": {
+      "avr": {
+         "checking": "正在检查验收单状态…",
+         "clickToDownload": "点击下载",
+         "customerSignature": "客户签名",
+         "devSimulateForwarder": "[开发] 模拟货运代理签署",
+         "forwarderSignature": "货运代理签名",
+         "notReady": "验收单文件尚未生成，请稍后重试",
+         "signStartFailed": "验收单签署发起失败",
+         "statusLoadFailed": "验收单状态加载失败",
+         "timeout": "验收单签署已超时，请重试",
+         "title": "工作完成验收单",
+         "titleShort": "工作完成验收单（AVR）",
+         "unavailable": "验收单文件暂不可用，请稍后重试",
+         "waitForForwarder": "待货运代理签署后，方可进行验收单签署。"
+      },
+      "cargo": {
+         "add": "添加货物",
+         "deleteConfirm": "确定要删除货物 #{{index}} 吗？",
+         "deleteFailed": "货物删除失败",
+         "itemNumber": "货物 #{{index}}",
+         "priceSetByForwarder": "价格由货运代理设定",
+         "volumeM3Value": "{{value}} 立方米"
+      },
+      "chat": {
+         "withDriver": "与司机会话",
+         "withForwarder": "与货运代理会话"
+      },
+      "details": {
+         "driverComment": "司机备注：{{comment}}",
+         "info": "订单信息",
+         "loadFailed": "订单加载失败",
+         "loading": "正在加载订单详情…",
+         "noCustomer": "无客户信息",
+         "notResolved": "无法确定订单",
+         "number": "订单 #{{num}}",
+         "ownerNotSpecified": "未指定负责人",
+         "refreshFailed": "无法获取最新订单数据",
+         "saveFailed": "更改保存失败",
+         "shipmentNumber": "运输单 #{{num}}",
+         "subtitle": "订单详细信息",
+         "videoDisabled": "视频记录功能已关闭"
+      },
+      "documents": {
+         "deleteFailed": "文件删除失败",
+         "deleteTargetMissing": "无法确定要删除的文件",
+         "loadFailed": "文件加载失败",
+         "ownFilesOnly": "仅可删除客户自己的文件",
+         "singleLoadFailed": "文件加载失败"
+      },
+      "edit": {
+         "blockedEmergency": "处于紧急情况的订单无法编辑",
+         "blockedFinished": "已完成或已取消的订单无法编辑",
+         "blockedFinishedEmergency": "因紧急情况而完成的订单无法编辑"
+      },
+      "empty": "暂无订单",
+      "forwarder": {
+         "lockedByTender": "该货运代理由竞标结果指定，不可更改",
+         "notAssigned": "未指派货运代理"
+      },
+      "loadFailed": "订单加载失败",
+      "map": {
+         "coordsViaWebSocket": "坐标通过 WebSocket 获取",
+         "driverPosition": "司机当前位置",
+         "lastUpdate": "最近更新：{{time}}",
+         "loadingRoute": "正在加载路线…"
+      },
+      "notFound": "未找到订单",
+      "publish": {
+         "action": "发布",
+         "failed": "订单发布失败",
+         "fillRouteAndCargo": "请在发布前填写路线和货物信息",
+         "inProgress": "正在发布…"
+      },
+      "share": {
+         "confirm": "确定要将该订单信息分享给第三方吗？任何持有该链接的人都可以查看相关信息。",
+         "creating": "正在创建链接…",
+         "failed": "链接获取失败，请稍后重试。",
+         "hint": "任何持有该链接的人都可以查看该订单信息。",
+         "link": "订单链接",
+         "title": "分享订单",
+         "validUntil": "链接有效期至"
+      },
+      "subtitle": "运输申请列表",
+      "title": "订单",
+      "trip": {
+         "avrSignedFinished": "验收单已签署，行程已完成",
+         "emergency": "行程中出现紧急情况",
+         "finishedEmergency": "该行程因紧急情况而完成"
+      },
+      "validation": {
+         "gracePeriodRange": "延期付款期限必须在 1 至 364 天之间",
+         "routeDates": "请检查路线日期",
+         "routePoints": "请填写路线的起点和终点",
+         "tnvedForAllCargo": "请为所有货物填写海关商品编码"
+      },
+      "view": {
+         "kanban": "看板",
+         "showAsKanban": "以看板形式显示"
+      },
+      "viewToggle": "切换订单视图"
+   },
+   "manufacturers": {
+      "add": {
+         "action": "添加生产商",
+         "alreadyAdded": "已添加",
+         "failed": "生产商添加失败",
+         "inProgress": "正在添加…",
+         "searchHint": "按名称或商业识别号搜索",
+         "searchPlaceholder": "请输入生产商名称或商业识别号",
+         "success": "生产商已添加"
+      },
+      "bulk": {
+         "result": "{{action}}：{{done}} / {{total}}。{{reason}}"
+      },
+      "card": {
+         "bin": "商业识别号 {{bin}}",
+         "linkedShipments": "关联运输单",
+         "linkedToCustomer": "已关联客户",
+         "nameWithBin": "{{name}} — 商业识别号 {{bin}}",
+         "noLinkedShipments": "该生产商暂无关联运输单",
+         "notLinkedToCustomer": "该生产商未关联客户",
+         "openLinkedShipments": "查看关联运输单",
+         "shipmentsCount": "运输单数量：{{count}}",
+         "shipmentsLabel": "运输单",
+         "title": "生产商信息"
+      },
+      "filters": {
+         "all": "全部",
+         "allManufacturers": "全部生产商",
+         "linkColumn": "关联状态",
+         "manufacturerNotLinked": "生产商未关联",
+         "notLinked": "未关联",
+         "withManufacturer": "有生产商",
+         "withoutManufacturer": "无生产商"
+      },
+      "link": {
+         "action": "关联",
+         "actionWithCount": "关联（{{count}}）",
+         "changeManufacturer": "更换生产商",
+         "failed": "生产商关联失败",
+         "freeShipmentsHint": "生产商：{{name}}。此处显示未关联生产商的运输单。",
+         "freeShipmentsNotFound": "未找到可关联的运输单",
+         "inProgress": "正在关联…",
+         "manufacturerAction": "关联生产商",
+         "overwriteWarning": "已选择 {{shipments}} 项。每笔运输单仅可关联一个生产商，当前关联关系将被覆盖。",
+         "shipmentsAction": "关联运输单",
+         "success": "生产商已关联",
+         "title": "生产商关联"
+      },
+      "loadFailed": "生产商加载失败",
+      "notFound": "未找到生产商",
+      "remove": {
+         "failed": "生产商删除失败",
+         "success": "已从列表中移除生产商"
+      },
+      "requestCount_other": "{{count}} 项申请",
+      "requests": {
+         "alreadySent": "申请已发送",
+         "approve": "批准",
+         "approveFailed": "申请批准失败",
+         "approveMany": "批量批准申请",
+         "approved": "申请已批准",
+         "loadFailed": "申请加载失败",
+         "reject": "拒绝",
+         "rejectFailed": "申请拒绝失败",
+         "rejectMany": "批量拒绝申请",
+         "rejected": "申请已拒绝",
+         "send": "发送申请",
+         "sendFailed": "申请发送失败",
+         "sendToManufacturer": "向生产商发送申请",
+         "withdraw": "撤回",
+         "withdrawFailed": "申请撤回失败",
+         "withdrawMany": "批量撤回申请",
+         "withdrawn": "申请已撤回"
+      },
+      "searchFailed": "生产商搜索失败",
+      "shipments": {
+         "loadFailed": "运输单加载失败",
+         "notFound": "未找到运输单",
+         "searchByNumber": "按编号或方向搜索",
+         "searchFull": "按编号、方向或生产商搜索",
+         "total": "运输单总数：{{count}}"
+      },
+      "subtitle": "生产商与运输单关联及您的生产商列表",
+      "tabs": {
+         "linked": "生产商关联",
+         "linking": "运输单关联"
+      },
+      "title": "生产商",
+      "unlink": {
+         "action": "取消关联",
+         "actionWithCount": "取消关联（{{count}}）",
+         "failed": "生产商取消关联失败",
+         "manufacturerAction": "取消关联生产商",
+         "success": "生产商已取消关联"
+      }
+   },
+   "map": {
+      "actualPath": "实际路径",
+      "actualPathOrder": "订单 # 实际路径",
+      "customerPoint": "客户地点",
+      "devMarker": "用于测试地图的临时标记",
+      "driverName": "司机：{{name}}",
+      "driverNotSpecified": "未指定司机",
+      "driverPhone": "电话：",
+      "driverPosition": "司机当前位置",
+      "noCoordinates": "暂无坐标",
+      "pointsCount": "点数：{{count}}",
+      "routesLoadFailed": "路线加载失败",
+      "routesPartialFailure": "{{total}} 笔订单中有 {{failed}} 笔的 GeoWS 路线加载失败"
+   },
+   "mobileNotice": {
+      "text": "为获得更佳使用体验，建议您使用电脑访问本服务。移动端版本可能显示异常。",
+      "title": "建议使用电脑版访问"
+   },
+   "nav": {
+      "complaints": "投诉",
+      "dashboard": "首页",
+      "factoring": "保理",
+      "factorings": "保理",
+      "forwarders": "货运代理",
+      "leads": "订单",
+      "manufacturers": "生产商",
+      "profile": "个人资料",
+      "settings": "设置",
+      "tenders": "竞标",
+      "tnved": "海关商品编码",
+      "tooltips": {
+         "complaints": "针对订单和保理提交投诉、查看历史记录及管理部门回复",
+         "dashboard": "订单、路线和竞标的总体概览",
+         "factorings": "保理及财务申请列表",
+         "forwarders": "货运代理列表及邀请新成员",
+         "leads": "运输申请列表及订单管理",
+         "manufacturers": "生产商与运输单关联及生产商目录",
+         "settings": "界面语言及其他账户设置",
+         "tenders": "运输竞标的创建与管理",
+         "tnved": "对外经济活动商品分类目录"
+      }
+   },
+   "notifications": {
+      "all": "全部通知",
+      "empty": "暂无通知",
+      "emptyHint": "新事件将在此显示",
+      "loadFailed": "通知加载失败",
+      "newToast": "新通知",
+      "newToastBody": "您有一条新通知",
+      "noDescription": "无描述",
+      "refresh": "刷新通知",
+      "singleLoadFailed": "通知加载失败",
+      "subtitle": "您的申请与竞标的最新动态",
+      "subtitleDot": "您的申请与竞标的最新动态。",
+      "title": "通知",
+      "types": {
+         "factor": {
+            "cancelled_by_factor": {
+               "message": "保理商已取消该保理",
+               "theme": "保理已取消"
+            },
+            "cancelled_by_forwarder": {
+               "message": "货运代理已取消该保理",
+               "theme": "保理已取消"
+            },
+            "created_by_factor": {
+               "message": "保理商已创建保理",
+               "theme": "保理已创建"
+            },
+            "created_by_forwarder": {
+               "message": "货运代理已创建保理",
+               "theme": "保理已创建"
+            },
+            "finished_by_factor": {
+               "message": "保理商已完成该保理",
+               "theme": "保理已完成"
+            },
+            "paid_by_customer": {
+               "message": "保理商已确认客户付款，交易已完成。",
+               "theme": "付款已确认"
+            },
+            "signed_by_factor": {
+               "message": "保理商已签署保理合同",
+               "theme": "保理合同已签署"
+            },
+            "signed_by_forwarder": {
+               "message": "货运代理已签署保理合同",
+               "theme": "保理合同已签署"
+            },
+            "updated_by_factor": {
+               "message": "保理商已更新该保理",
+               "theme": "保理已更新"
+            },
+            "verified_by_factor": {
+               "message": "保理商已确认该保理",
+               "theme": "保理已确认"
+            },
+            "verified_by_forwarder": {
+               "message": "货运代理已确认该保理",
+               "theme": "保理已确认"
+            }
+         },
+         "lead": {
+            "created_by_forwarder": {
+               "message": "行程已创建，您已作为客户关联至该行程。",
+               "theme": "行程已创建"
+            },
+            "customer_detached": {
+               "message": "货运代理已将您从该行程中移除。",
+               "theme": "您已被移出该行程"
+            },
+            "manufacturer": {
+               "approved_by_manufacturer": {
+                  "message": "生产商 {{name}} 已批准关联申请",
+                  "theme": "申请已批准"
+               },
+               "cancelled_by_manufacturer": {
+                  "message": "生产商 {{name}} 已撤回申请",
+                  "theme": "申请已撤回"
+               },
+               "detached_by_manufacturer": {
+                  "message": "生产商 {{name}} 已与您取消关联",
+                  "theme": "关联已取消"
+               },
+               "rejected_by_manufacturer": {
+                  "message": "生产商 {{name}} 已拒绝申请",
+                  "theme": "申请已拒绝"
+               },
+               "request_by_manufacturer": {
+                  "message": "生产商 {{name}} 希望与您建立关联",
+                  "theme": "新的关联申请"
+               }
+            },
+            "point_end_deadline": {
+               "message": "路线节点的计划工作结束时间已到。",
+               "theme": "路线节点截止时间已到"
+            },
+            "point_start_deadline": {
+               "message": "路线节点的计划工作开始时间已到。",
+               "theme": "路线节点截止时间已到"
+            },
+            "rejected": {
+               "message": "该行程已被取消",
+               "theme": "行程已取消"
+            },
+            "updated_by_forwarder": {
+               "message": "该行程已更新",
+               "theme": "行程已更新"
+            }
+         },
+         "shipping": {
+            "delivered": {
+               "message": "交付已确认，行程已完成。",
+               "theme": "行程已完成"
+            },
+            "emergency-situation": {
+               "theme": "已宣布进入紧急情况。"
+            },
+            "finished": {
+               "theme": "行程已完成"
+            },
+            "finished-emergency-situation": {
+               "message": "货运代理已提前结束该行程。",
+               "theme": "行程已提前结束。"
+            },
+            "last_point_passed": {
+               "message": "司机已通过卸货地点。",
+               "theme": "行程 №{{num}}：已通过节点"
+            },
+            "loading_started": {
+               "message": "司机已开始行程。",
+               "theme": "行程已开始。"
+            },
+            "loading_verified": {
+               "message": "司机已确认装货。",
+               "theme": "行程 №{{num}}：司机已确认装货"
+            },
+            "point_passed": {
+               "message": "司机已通过该节点。",
+               "theme": "行程 №{{num}}：司机已通过节点"
+            },
+            "unloading_verified": {
+               "message": "司机已确认卸货。",
+               "theme": "行程 №{{num}}：司机已确认卸货"
+            }
+         },
+         "tender": {
+            "bet_cancelled": {
+               "message": "有参与者取消了在您的竞标中的出价。",
+               "theme": "出价已取消"
+            },
+            "bet_placed": {
+               "message": "有参与者在您的竞标中出价。",
+               "theme": "竞标出现新出价"
+            }
+         }
+      },
+      "viewAll": "查看全部通知"
+   },
+   "profile": {
+      "avatar": {
+         "allowedTypes": "仅支持上传 PNG 或 JPEG 格式",
+         "delete": "删除照片",
+         "maxSize": "照片最大尺寸为 600×600 像素",
+         "minSize": "照片最小尺寸为 400×400 像素",
+         "readFailed": "文件读取失败",
+         "sizeCheckFailed": "图片尺寸校验失败",
+         "upload": "上传照片",
+         "uploadFailed": "照片上传失败"
+      },
+      "contract": {
+         "notSigned": "未签署 · 点击进行签署",
+         "signStartFailed": "签署发起失败",
+         "signStartFailedLater": "签署发起失败，请稍后重试",
+         "signed": "已签署",
+         "signedUntil": "已签署 · 有效期至 {{date}}",
+         "title": "服务合同",
+         "unavailable": "合同文件暂不可用，请稍后重试"
+      },
+      "delete": {
+         "action": "删除账户",
+         "confirmTitle": "请确认删除",
+         "failed": "账户删除失败",
+         "failedActiveDeals": "账户删除失败：存在进行中的交易",
+         "passwordPrompt": "请输入密码以确认删除账户。",
+         "warning": "账户将被停用。如需恢复，请联系客服。",
+         "warningFull": "删除后账户将被停用。如需恢复，请联系客服。"
+      },
+      "documents": {
+         "allowedTypes": "仅支持 PDF、JPG、JPEG 或 PNG 格式",
+         "current": "当前文件",
+         "employment": "员工在职证明文件",
+         "employmentFull": "拥有签署权的员工在职证明文件，或首位负责人任命令",
+         "issuedAt": "文件签发日期",
+         "issuedBy": "文件签发机构",
+         "issuers": {
+            "mia": "哈萨克斯坦共和国内务部",
+            "moj": "哈萨克斯坦共和国司法部"
+         },
+         "legalEntity": "法人注册文件",
+         "maxSize": "文件大小不得超过 {{size}} MB",
+         "newFile": "新文件 · {{size}}",
+         "notUploaded": "文件尚未上传",
+         "replace": "替换文件",
+         "upload": "上传文件"
+      },
+      "load": {
+         "failed": "个人资料加载失败"
+      },
+      "password": {
+         "current": "当前密码",
+         "enterCurrent": "请输入当前密码",
+         "enterNew": "请输入新密码",
+         "new": "新密码",
+         "repeatNew": "请再次输入新密码"
+      },
+      "save": {
+         "failed": "个人资料更新失败",
+         "noChanges": "没有需要保存的更改",
+         "success": "个人资料已成功更新"
+      },
+      "sections": {
+         "company": "公司及银行信息",
+         "companySubtitle": "公司及联系人信息",
+         "deleteAccount": "删除账户",
+         "documents": "注册文件",
+         "password": "修改密码"
+      },
+      "title": "个人资料"
+   },
+   "route": {
+      "addWaypoint": "+ 添加中转点",
+      "addressDetecting": "正在定位地址…",
+      "addressNotFound": "未找到地址",
+      "addressSearching": "正在搜索地址…",
+      "clear": "清除路线",
+      "coordinates": "坐标：{{lat}}, {{lng}}",
+      "destinationNotSpecified": "未填写目的地",
+      "markerA": "A",
+      "markerB": "B",
+      "onMap": "地图上标注",
+      "originNotSpecified": "未填写起点",
+      "pickOnMap": "请选择此点并在地图上点击",
+      "point": "点 {{index}}",
+      "pointA": "点 A",
+      "pointB": "点 B",
+      "pointType": "点类型",
+      "removeWaypoint": "删除中转点 {{index}}",
+      "validation": {
+         "coordinatesPoint": "请填写点 {{index}} 的坐标：在地图上点击选取",
+         "destinationRequired": "请填写目的地",
+         "endBeforeStart": "结束日期不能早于该点的开始日期",
+         "endDateDestination": "请填写目的地点的结束日期",
+         "endDateOrigin": "请填写起点的结束日期",
+         "endDatePoint": "请填写点 {{index}} 的结束日期",
+         "originRequired": "请填写起点",
+         "startBeforePrevEnd": "开始日期不能早于上一点的结束日期",
+         "startDateDestination": "请填写目的地点的开始日期",
+         "startDateOrigin": "请填写起点的开始日期",
+         "startDatePoint": "请填写点 {{index}} 的开始日期"
+      },
+      "waypoint": "中转点 {{index}}",
+      "waypointHash": "中转点 #{{index}}"
+   },
+   "settings": {
+      "language": {
+         "description": "请选择界面与通知的显示语言。",
+         "label": "语言",
+         "saved": "界面语言已更改",
+         "switcherLabel": "选择界面语言",
+         "title": "界面语言"
+      },
+      "languages": {
+         "ar": "العربية",
+         "de": "Deutsch",
+         "en": "English",
+         "es": "Español",
+         "fr": "Français",
+         "ka": "ქართული",
+         "kk": "Қазақша",
+         "ky": "Кыргызча",
+         "pt": "Português",
+         "ru": "Русский",
+         "tg": "Тоҳикӣ",
+         "tr": "Türkçe",
+         "ur": "اردو",
+         "uz": "O'zbekcha",
+         "zh": "中文"
+      },
+      "title": "设置"
+   },
+   "sharedLead": {
+      "gone": "该订单已被删除，或链接已被撤销。",
+      "invalidLink": "链接无效或已过期。",
+      "loading": "正在加载订单信息…",
+      "notFound": "未找到请求的页面，请确认链接是否完整复制。",
+      "readOnly": "此页面为通过链接查看的订单只读页面，无法进行编辑。",
+      "requestFailed": "订单信息加载失败，请稍后重试。",
+      "title": "订单信息"
+   },
+   "support": {
+      "emailBody": "您好！我有一个问题想咨询。",
+      "emailSubject": "客服咨询",
+      "writeToChat": "发送会话消息"
+   },
+   "tenders": {
+      "bids": {
+         "amount": "出价金额",
+         "chooseWinner": "选定中标方",
+         "chooseWinnerFailed": "中标方选定失败",
+         "choosing": "正在选定…",
+         "confirmChoice": "确认选择",
+         "confirmWinner": "确定要将该出价选为中标出价吗？",
+         "empty": "暂无出价记录",
+         "irreversible": "该操作无法撤销。",
+         "participantUnknown": "未指定参与方",
+         "showAll": "显示全部出价（+{{count}}）",
+         "statusCancelled": "已取消",
+         "statusWinning": "中标",
+         "title": "出价"
+      },
+      "countdown": {
+         "daysHours": "{{days}} 天 {{hours}} 小时",
+         "hoursMinutes": "{{hours}} 小时 {{minutes}} 分钟",
+         "minutes": "{{minutes}} 分钟"
+      },
+      "create": {
+         "action": "创建竞标",
+         "confirm": "确定要为该订单创建竞标吗？",
+         "failed": "竞标创建失败",
+         "maxParticipants": "最大参与方数量",
+         "privateHint": "请选择将受邀参与私有竞标的货运代理",
+         "publicAuction": "公开竞标",
+         "startAfterCreate": "创建后立即启动竞标",
+         "title": "创建竞标"
+      },
+      "dates": {
+         "endAfterNow": "结束时间必须晚于当前时间",
+         "endInvalid": "结束时间不正确",
+         "endMin30Minutes": "结束时间必须晚于发布时间至少 30 分钟",
+         "endRequired": "请填写结束时间",
+         "publicationDate": "发布时间",
+         "publicationInPast": "发布时间不能早于当前时间",
+         "publicationInvalid": "发布时间不正确",
+         "publicationRequired": "请填写发布时间"
+      },
+      "details": {
+         "audience": "适用对象",
+         "audienceForwarders": "适用于货运代理",
+         "audienceShippers": "适用于发货方",
+         "bidsCountLabel": "出价数",
+         "cargoWeight": "货物重量",
+         "editBlocked": "已关闭或已取消的竞标无法编辑",
+         "info": "竞标信息",
+         "loadFailed": "竞标详情加载失败",
+         "loading": "正在加载竞标详情…",
+         "maxParticipantsShort": "最大参与方数",
+         "orderDocuments": "订单文件",
+         "participantsCountLabel": "参与方数量",
+         "publicationType": "发布类型",
+         "totalOrderPrice": "订单总价"
+      },
+      "leadPicker": {
+         "cargoLabel": "货物：{{cargo}}",
+         "cargoWithMore": "{{type}} 等共 {{count}} 项",
+         "destination": "终点：{{to}}",
+         "forwarder": "货运代理：{{name}}",
+         "hint": "请选择要为其创建竞标的订单",
+         "notFound": "未找到订单",
+         "order": "订单",
+         "orderNumber": "订单 #{{id}}",
+         "origin": "起点：{{from}}",
+         "priceLabel": "价格：{{price}}",
+         "searchFailed": "订单搜索失败",
+         "searching": "正在搜索订单…",
+         "sectionTitle": "选择订单",
+         "select": "请选择一个订单",
+         "selectAction": "选择订单"
+      },
+      "loadFailed": "竞标列表加载失败",
+      "manage": {
+         "cancel": "取消竞标",
+         "cancelConfirm": "确定要取消该竞标吗？取消后，参与方将无法访问该竞标。",
+         "cancelFailed": "竞标取消失败",
+         "cancelling": "正在取消…",
+         "delete": "删除竞标",
+         "deleteConfirm": "确定要删除该竞标吗？该操作无法撤销。",
+         "deleteFailed": "竞标删除失败",
+         "saveFailed": "竞标更改保存失败",
+         "start": "启动竞标",
+         "startFailed": "竞标启动失败"
+      },
+      "notFound": "未找到竞标",
+      "participantCount_other": "{{count}} 位参与方",
+      "participants": {
+         "add": "添加参与方",
+         "addFailed": "参与方添加失败",
+         "added": "添加于：{{date}}",
+         "bin": "商业识别号：{{bin}}",
+         "empty": "暂未添加参与方",
+         "loading": "正在加载参与方…",
+         "remove": "删除参与方",
+         "removeFailed": "参与方删除失败",
+         "searching": "正在搜索货运代理…",
+         "title": "参与方"
+      },
+      "searchPlaceholder": "请输入城市、货物或方向",
+      "stopCount_other": "{{count}} 个停靠点",
+      "subtitle": "按申请列出的竞标列表",
+      "title": "竞标",
+      "titleSingular": "竞标",
+      "validation": {
+         "maxParticipantsNegative": "最大参与方数量不能小于 0",
+         "privateNeedsForwarder": "私有竞标需至少选择一名货运代理"
+      },
+      "viewToggle": "切换竞标视图"
+   },
+   "tnved": {
+      "code": "编码",
+      "codeNotFound": "未找到该编码",
+      "searchPlaceholder": "按编码或名称搜索",
+      "title": "海关商品编码"
+   },
+   "validation": {
+      "bik": "银行识别代码（BIK）须为 8 位字符",
+      "bin": "商业识别号须为 12 位数字",
+      "companyBinRequired": "请填写公司商业识别号",
+      "companyNameRequired": "请填写公司名称",
+      "dateNotInFuture": "日期不能晚于今天",
+      "dateNotInPast": "日期不能早于今天",
+      "documentIssueDateRequired": "请填写文件签发日期",
+      "documentIssuedByRequired": "请填写文件签发机构",
+      "email": "电子邮箱格式不正确",
+      "emailRequired": "请填写电子邮箱",
+      "iikFormat": "格式：KZ + 18 位字符",
+      "iin": "个人识别号须为 12 位数字",
+      "iinRequired": "请填写个人识别号",
+      "max100": "不得超过 100 个字符",
+      "max50": "不得超过 50 个字符",
+      "min3": "至少 3 个字符",
+      "min6": "至少 6 个字符",
+      "passwordsMismatch": "两次输入的密码不一致",
+      "phone": "电话号码格式不正确",
+      "phoneRequired": "请填写电话号码",
+      "range2to100": "长度为 2 至 100 个字符",
+      "range2to255": "长度为 2 至 255 个字符",
+      "representativeRequired": "请填写代表人姓名"
+   },
+   "verification": {
+      "banner": "请验证您的电子邮箱。点击此通知可重新发送验证邮件。",
+      "checkFailed": "电子邮箱验证状态检查失败",
+      "checking": "正在检查电子邮箱验证状态…",
+      "cooldown": "{{seconds}} 秒后可用",
+      "emailConfirmed": "电子邮箱已验证",
+      "emailNotConfirmed": "电子邮箱尚未验证",
+      "hint": "我们将向您的邮箱发送一封包含验证链接的邮件。",
+      "resendAvailable": "{{seconds}} 秒后可重新发送。",
+      "sendFailed": "验证邮件发送失败",
+      "sent": "验证邮件已发送，请查看您的邮箱。"
+   }
+}
