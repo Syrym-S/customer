@@ -47,6 +47,10 @@ export function DashboardStats({ config = customerStatsConfig }) {
 
    const showGroups = Boolean(data) || isLoading;
 
+   // Группа может остаться одна (см. applyFeatureFlags в stats.config.js) —
+   // тогда разбиение на две колонки оставило бы половину строки пустой.
+   const hasTwoGroupColumns = config.groups.length > 1;
+
    function handlePeriodChange(sectionKey, value) {
       setPeriods((current) => ({ ...current, [sectionKey]: value }));
    }
@@ -112,7 +116,9 @@ export function DashboardStats({ config = customerStatsConfig }) {
                   gap: 2,
                   gridTemplateColumns: {
                      xs: 'minmax(0, 1fr)',
-                     lg: 'minmax(0, 2fr) minmax(0, 3fr)',
+                     lg: hasTwoGroupColumns
+                        ? 'minmax(0, 2fr) minmax(0, 3fr)'
+                        : 'minmax(0, 1fr)',
                   },
                   opacity: error ? 0.5 : 1,
                   transition: 'opacity 0.2s ease',

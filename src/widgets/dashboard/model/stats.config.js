@@ -1,3 +1,4 @@
+import { isFactoringEnabled } from '../../../shared/config/feature-flags';
 import { fetchCustomerStats } from '../api/stats.repository';
 import { mapStatsResponseFromApi } from './stats.adapter';
 
@@ -12,11 +13,38 @@ export const DEFAULT_STATS_PERIOD = 'month';
 
 export const CUSTOM_STATS_PERIOD = 'custom';
 
+const FACTORING_CARD_IDS = ['factorings-period', 'factorings-active'];
+
+// Пока раздел факторинга скрыт флагом, его плитки убираем и из статистики:
+// иначе на дашборде остаются цифры по разделу, которого для пользователя
+// нет. Группа "за период" состоит из одной факторинговой плитки, поэтому
+// при выключенном флаге отпадает целиком — отсюда отбрасывание пустых
+// групп и пересчёт columns под оставшиеся карточки.
+function applyFeatureFlags(groups) {
+   if (isFactoringEnabled) {
+      return groups;
+   }
+
+   return groups
+      .map((group) => {
+         const cards = group.cards.filter(
+            (card) => !FACTORING_CARD_IDS.includes(card.id),
+         );
+
+         return {
+            ...group,
+            cards,
+            columns: Math.max(1, Math.min(group.columns, cards.length)),
+         };
+      })
+      .filter((group) => group.cards.length > 0);
+}
+
 export const customerStatsConfig = {
    role: 'customer',
    fetchStats: fetchCustomerStats,
    mapResponse: mapStatsResponseFromApi,
-   groups: [
+   groups: applyFeatureFlags([
       {
          id: 'period',
          titleKey: 'dashboard.stats.forPeriod',
@@ -60,5 +88,5 @@ export const customerStatsConfig = {
             },
          ],
       },
-   ],
+   ]),
 };

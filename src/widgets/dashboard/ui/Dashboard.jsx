@@ -7,6 +7,7 @@ import { DashboardStats } from "./DashboardStats";
 import { DashboardLeadsList } from "./DashboardLeadsList";
 import { DashboardTendersSection } from "./DashboardTendersSection";
 import { DashboardFactoringsSection } from "./DashboardFactoringsSection";
+import { isFactoringEnabled } from "../../../shared/config/feature-flags";
 
 export function Dashboard() {
   const { leads, isLoading, error } = useLeadsContext();
@@ -75,11 +76,13 @@ export function Dashboard() {
           onLeaveLead={handleLeaveLead}
         />
       </Box>
+      {/* При скрытом факторинге остаётся один блок тендеров — растягиваем
+          его на всю ширину, иначе половина строки пустует. */}
       <Box
         sx={(theme) => ({
           mt: 2,
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: isFactoringEnabled ? "1fr 1fr" : "1fr",
           gap: 2,
           [theme.breakpoints.down(850)]: {
             gridTemplateColumns: "1fr",
@@ -88,7 +91,7 @@ export function Dashboard() {
       >
         <DashboardTendersSection />
 
-        <DashboardFactoringsSection />
+        {isFactoringEnabled && <DashboardFactoringsSection />}
       </Box>
     </Box>
   );

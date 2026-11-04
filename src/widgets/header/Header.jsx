@@ -33,6 +33,10 @@ import { PROFILE_PHOTO_UPDATED_EVENT } from "../customer-profile/model/profile-p
 import { fetchCustomerProfile } from "../../features/profile-edit/profile.api";
 import { isStaging } from "../../shared/api/api-client";
 import { CUSTOMER_NAV_WIDTH } from "../../shared/config/constants";
+import {
+  isFactoringEnabled,
+  isManufacturersEnabled,
+} from "../../shared/config/feature-flags";
 import DashboardOutlined from "@mui/icons-material/DashboardOutlined";
 import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
 import GavelOutlined from "@mui/icons-material/GavelOutlined";
@@ -231,13 +235,20 @@ export function Header() {
         icon: <GavelOutlined />,
         tooltip: t("nav.tooltips.tenders"),
       },
-      {
-        label: t("nav.factoring"),
-        path: "/customer/factorings",
-        selected: isFactoringsPage,
-        icon: <AccountBalanceOutlined />,
-        tooltip: t("nav.tooltips.factorings"),
-      },
+      // Разделы, выключенные флагом в window.APP_DATA.features, не попадают
+      // в меню вовсе — пункт не просто недоступен, его не видно. Роут при
+      // этом остаётся и редиректит на дашборд (см. router.jsx).
+      ...(isFactoringEnabled
+        ? [
+            {
+              label: t("nav.factoring"),
+              path: "/customer/factorings",
+              selected: isFactoringsPage,
+              icon: <AccountBalanceOutlined />,
+              tooltip: t("nav.tooltips.factorings"),
+            },
+          ]
+        : []),
       {
         label: t("nav.forwarders"),
         path: "/customer/forwarders",
@@ -245,13 +256,17 @@ export function Header() {
         icon: <SwapHorizOutlined />,
         tooltip: t("nav.tooltips.forwarders"),
       },
-      {
-        label: t("nav.manufacturers"),
-        path: "/customer/manufacturers",
-        selected: isManufacturersPage,
-        icon: <FactoryOutlined />,
-        tooltip: t("nav.tooltips.manufacturers"),
-      },
+      ...(isManufacturersEnabled
+        ? [
+            {
+              label: t("nav.manufacturers"),
+              path: "/customer/manufacturers",
+              selected: isManufacturersPage,
+              icon: <FactoryOutlined />,
+              tooltip: t("nav.tooltips.manufacturers"),
+            },
+          ]
+        : []),
       {
         label: t("nav.tnved"),
         path: "/customer/tnved",

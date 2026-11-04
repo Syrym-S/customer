@@ -13,6 +13,15 @@ import { ComplaintsPage } from "../pages/complaints/ComplaintsPage";
 import { SettingsPage } from "../pages/settings/SettingsPage";
 import { ErrorPage } from "../pages/error/ErrorPage";
 import { appBasename } from "../shared/api/api-client";
+import {
+  isFactoringEnabled,
+  isManufacturersEnabled,
+} from "../shared/config/feature-flags";
+
+// Раздел, скрытый флагом, остаётся в роутере, но отдаёт редирект на дашборд:
+// прямая ссылка и переход из уведомления не должны открывать выключенный
+// раздел. Редирект с replace, чтобы «назад» не возвращало в ту же ловушку.
+const HIDDEN_SECTION_ELEMENT = <Navigate to="/customer/dashboard" replace />;
 
 export const router = createBrowserRouter(
   [
@@ -76,7 +85,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/factorings",
-          element: <FactoringsPage />,
+          element: isFactoringEnabled ? <FactoringsPage /> : HIDDEN_SECTION_ELEMENT,
           handle: {
             breadcrumb: "nav.factorings",
             title: "nav.factorings",
@@ -84,7 +93,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/factorings/:factoringId",
-          element: <FactoringsPage />,
+          element: isFactoringEnabled ? <FactoringsPage /> : HIDDEN_SECTION_ELEMENT,
           handle: {
             title: "nav.factorings",
           },
@@ -94,7 +103,7 @@ export const router = createBrowserRouter(
           // (e.g. .../customer/factoring/{id}). Canonical route is the plural
           // "factorings" above — keep using that everywhere internally.
           path: "customer/factoring/:factoringId",
-          element: <FactoringsPage />,
+          element: isFactoringEnabled ? <FactoringsPage /> : HIDDEN_SECTION_ELEMENT,
           handle: {
             title: "nav.factorings",
           },
@@ -109,7 +118,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/manufacturers",
-          element: <ManufacturersPage />,
+          element: isManufacturersEnabled ? <ManufacturersPage /> : HIDDEN_SECTION_ELEMENT,
           handle: {
             breadcrumb: "nav.manufacturers",
             title: "nav.manufacturers",
