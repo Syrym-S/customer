@@ -261,6 +261,7 @@
       },
       "search": {
          "byDirection": "按方向搜索",
+         "byName": "按名称搜索",
          "minChars": "请至少输入 2 个字符"
       },
       "severity": {
@@ -1270,6 +1271,8 @@
          "confirm": "确定要为该订单创建竞标吗？",
          "failed": "竞标创建失败",
          "maxParticipants": "最大参与方数量",
+         "name": "拍卖名称",
+         "namePlaceholder": "例如：阿拉木图 — 阿斯塔纳，紧急",
          "privateHint": "请选择将受邀参与私有竞标的货运代理",
          "publicAuction": "公开竞标",
          "startAfterCreate": "创建后立即启动竞标",

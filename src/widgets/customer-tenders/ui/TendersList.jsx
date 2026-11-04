@@ -160,7 +160,7 @@ export function TendersList() {
             <TextField
                value={search}
                onChange={handleSearchChange}
-               placeholder={t("common.search.byDirection")}
+               placeholder={t("common.search.byName")}
                fullWidth
                size="small"
                slotProps={{

@@ -262,6 +262,7 @@
       },
       "search": {
          "byDirection": "Search by direction",
+         "byName": "Search by title",
          "minChars": "Enter at least 2 characters"
       },
       "severity": {
@@ -1285,6 +1286,8 @@
          "confirm": "Are you sure you want to create an auction for this order?",
          "failed": "Failed to create the auction",
          "maxParticipants": "Maximum participants",
+         "name": "Auction title",
+         "namePlaceholder": "For example: Almaty — Astana, urgent",
          "privateHint": "Select the forwarders to invite to the private auction",
          "publicAuction": "Public auction",
          "startAfterCreate": "Start the auction after creating it",

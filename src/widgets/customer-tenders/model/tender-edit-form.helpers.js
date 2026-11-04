@@ -116,6 +116,7 @@ function normalizeCurrency(value) {
 export function createTenderEditForm(tender) {
    if (!tender) {
       return {
+         name: '',
          endDateTime: '',
          publicationType: 'public',
          maxParticipants: 0,
@@ -134,6 +135,7 @@ export function createTenderEditForm(tender) {
    const lead = tender.lead || {};
 
    return {
+      name: tender.name || '',
       endDateTime: formatApiDateTimeToInput(
          tender.end_date_time || tender.endDateTime,
       ),
@@ -153,6 +155,13 @@ export function createTenderEditForm(tender) {
 
 export function mapTenderEditFormToApi(editForm, currentTender) {
    const payload = {};
+
+   const nextName = normalizeText(editForm.name);
+   const currentName = normalizeText(currentTender.name);
+
+   if (nextName !== currentName) {
+      payload.name = nextName;
+   }
 
    const nextEndDateTime = formatInputDateTimeToApi(editForm.endDateTime);
    const currentEndDateTime =

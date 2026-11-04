@@ -21,7 +21,7 @@ export async function fetchCustomerTenders({
     const normalizedSearch = String(search ?? "").trim();
 
     if (normalizedSearch) {
-        params.q = normalizedSearch;
+        params.name = normalizedSearch;
     }
 
     const response = await apiClient.get("/customer/v1/tenders", {

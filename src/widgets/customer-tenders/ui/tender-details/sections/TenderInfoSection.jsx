@@ -41,6 +41,20 @@ export function TenderInfoSection({
                }}
             >
                <TextField
+                  label={t("tenders.create.name")}
+                  placeholder={t("tenders.create.namePlaceholder")}
+                  value={editForm?.name || ''}
+                  onChange={(event) => onEditChange('name', event.target.value)}
+                  fullWidth
+                  size='small'
+                  sx={{
+                     gridColumn: {
+                        md: '1 / -1',
+                     },
+                  }}
+               />
+
+               <TextField
                   label={t("common.fields.endDate")}
                   type='datetime-local'
                   value={editForm?.endDateTime || ''}
@@ -99,6 +113,16 @@ export function TenderInfoSection({
                   gap: 1,
                }}
             >
+               <TenderInfoBadge
+                  label={t("common.fields.name")}
+                  value={tender.name || t("common.empty.notSpecifiedN")}
+                  sx={{
+                     gridColumn: {
+                        md: '1 / -1',
+                     },
+                  }}
+               />
+
                <TenderInfoBadge
                   label={t("tenders.details.audience")}
                   value={

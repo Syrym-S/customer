@@ -262,6 +262,7 @@
       },
       "search": {
          "byDirection": "Yöne göre ara",
+         "byName": "Ada göre ara",
          "minChars": "En az 2 karakter girin"
       },
       "severity": {
@@ -1276,6 +1277,8 @@
          "confirm": "Bu sipariş için bir ihale oluşturmak istediğinizden emin misiniz?",
          "failed": "İhale oluşturulamadı",
          "maxParticipants": "Maksimum katılımcı sayısı",
+         "name": "Açık artırma adı",
+         "namePlaceholder": "Örnek: Almatı — Astana, acil",
          "privateHint": "Özel ihaleye davet edilecek nakliyecileri seçin",
          "publicAuction": "Genel ihale",
          "startAfterCreate": "Oluşturduktan sonra ihaleyi başlat",

@@ -48,6 +48,7 @@ export const betPropType = PropTypes.shape({
 });
 
 export const tenderEditFormPropType = PropTypes.shape({
+   name: PropTypes.string,
    endDateTime: PropTypes.string,
    publicationType: PropTypes.oneOf(['public', 'private']),
    maxParticipants: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -91,6 +92,7 @@ export const leadPropType = PropTypes.shape({
 
 export const tenderPropType = PropTypes.shape({
    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   name: PropTypes.string,
    status: PropTypes.oneOf(['new', 'active', 'closed', 'cancelled']),
    type: PropTypes.string,
    publication_type: PropTypes.oneOf(['public', 'private']),

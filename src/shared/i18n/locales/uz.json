@@ -262,6 +262,7 @@
       },
       "search": {
          "byDirection": "Yo'nalish bo'yicha qidirish",
+         "byName": "Nomi bo'yicha qidirish",
          "minChars": "Kamida 2 belgi kiriting"
       },
       "severity": {
@@ -1276,6 +1277,8 @@
          "confirm": "Bu buyurtma uchun auktsion yaratishga ishonchingiz komilmi?",
          "failed": "Auktsionni yaratib bo'lmadi",
          "maxParticipants": "Qatnashchilarning maksimal soni",
+         "name": "Auksion nomi",
+         "namePlaceholder": "Masalan: Almati — Astana, shoshilinch",
          "privateHint": "Yopiq auktsionga taklif qilinadigan ekspeditorlarni tanlang",
          "publicAuction": "Ochiq auktsion",
          "startAfterCreate": "Yaratilgandan so'ng auktsionni boshlash",

@@ -262,6 +262,7 @@
       },
       "search": {
          "byDirection": "Buscar por direção",
+         "byName": "Buscar por nome",
          "minChars": "Digite pelo menos 2 caracteres"
       },
       "severity": {
@@ -1276,6 +1277,8 @@
          "confirm": "Tem certeza de que deseja criar um leilão para este pedido?",
          "failed": "Não foi possível criar o leilão",
          "maxParticipants": "Máximo de participantes",
+         "name": "Nome do leilão",
+         "namePlaceholder": "Por exemplo: Almaty — Astana, urgente",
          "privateHint": "Selecione os transportadores a serem convidados para o leilão privado",
          "publicAuction": "Leilão público",
          "startAfterCreate": "Iniciar o leilão após criá-lo",

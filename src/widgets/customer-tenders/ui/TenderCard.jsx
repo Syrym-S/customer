@@ -80,6 +80,7 @@ export function TenderCard({ tender }) {
    const publicationTypeLabel =
       getPublicationTypeLabel(tender.publication_type) || tender.publication_type;
 
+   const tenderName = String(tender.name || '').trim();
    const fullTenderIdLabel = tender.id ? `#${tender.id}` : '#—';
    const shortTenderIdLabel = tender.id
       ? `#${getShortTenderId(tender.id)}`
@@ -125,6 +126,7 @@ export function TenderCard({ tender }) {
          <Stack spacing={2}>
             <Box>
                <Typography
+                  title={tenderName || fullTenderIdLabel}
                   sx={{
                      lineHeight: 1.3,
                      fontSize: {
@@ -132,31 +134,38 @@ export function TenderCard({ tender }) {
                         sm: '19px',
                      },
                      fontWeight: 600,
+                     overflow: 'hidden',
+                     textOverflow: 'ellipsis',
+                     whiteSpace: 'nowrap',
                   }}
                >
-                  <Box
-                     component="span"
-                     sx={{
-                        display: {
-                           xs: 'inline',
-                           md: 'none',
-                        },
-                     }}
-                  >
-                     {shortTenderIdLabel}
-                  </Box>
+                  {tenderName || (
+                     <>
+                        <Box
+                           component="span"
+                           sx={{
+                              display: {
+                                 xs: 'inline',
+                                 md: 'none',
+                              },
+                           }}
+                        >
+                           {shortTenderIdLabel}
+                        </Box>
 
-                  <Box
-                     component="span"
-                     sx={{
-                        display: {
-                           xs: 'none',
-                           md: 'inline',
-                        },
-                     }}
-                  >
-                     {fullTenderIdLabel}
-                  </Box>
+                        <Box
+                           component="span"
+                           sx={{
+                              display: {
+                                 xs: 'none',
+                                 md: 'inline',
+                              },
+                           }}
+                        >
+                           {fullTenderIdLabel}
+                        </Box>
+                     </>
+                  )}
                </Typography>
 
                <Stack

@@ -28,6 +28,7 @@ export function TenderDetailsHeader({ tender }) {
 
    const tenderId = tender.id || '—';
    const compactTenderId = getCompactId(tenderId);
+   const tenderName = String(tender.name || '').trim();
 
    return (
       <Box
@@ -59,7 +60,7 @@ export function TenderDetailsHeader({ tender }) {
             <Typography
                variant='h6'
                fontWeight={600}
-               title={`#${tenderId}`}
+               title={tenderName || `#${tenderId}`}
                sx={{
                   maxWidth: {
                      xs: 220,
@@ -75,8 +76,18 @@ export function TenderDetailsHeader({ tender }) {
                   },
                }}
             >
-               #{compactTenderId}
+               {tenderName || `#${compactTenderId}`}
             </Typography>
+
+            {tenderName && (
+               <Typography
+                  variant='body2'
+                  color='text.secondary'
+                  title={`#${tenderId}`}
+               >
+                  #{compactTenderId}
+               </Typography>
+            )}
          </Box>
 
          <Stack

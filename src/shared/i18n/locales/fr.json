@@ -262,6 +262,7 @@
       },
       "search": {
          "byDirection": "Rechercher par direction",
+         "byName": "Rechercher par nom",
          "minChars": "Saisissez au moins 2 caractères"
       },
       "severity": {
@@ -1276,6 +1277,8 @@
          "confirm": "Êtes-vous sûr de vouloir créer une enchère pour cette commande ?",
          "failed": "Impossible de créer l'enchère",
          "maxParticipants": "Nombre maximal de participants",
+         "name": "Nom de l'enchère",
+         "namePlaceholder": "Par exemple : Almaty — Astana, urgent",
          "privateHint": "Sélectionnez les transporteurs qui seront invités à l'enchère privée",
          "publicAuction": "Enchère publique",
          "startAfterCreate": "Démarrer l'enchère après sa création",

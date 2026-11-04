@@ -262,6 +262,7 @@
       },
       "search": {
          "byDirection": "Suche nach Richtung",
+         "byName": "Suche nach Bezeichnung",
          "minChars": "Mindestens 2 Zeichen eingeben"
       },
       "severity": {
@@ -1276,6 +1277,8 @@
          "confirm": "Sind Sie sicher, dass Sie eine Auktion für diesen Auftrag erstellen möchten?",
          "failed": "Die Auktion konnte nicht erstellt werden",
          "maxParticipants": "Maximale Teilnehmerzahl",
+         "name": "Bezeichnung der Auktion",
+         "namePlaceholder": "Zum Beispiel: Almaty — Astana, dringend",
          "privateHint": "Wählen Sie die Spediteure aus, die zur privaten Auktion eingeladen werden sollen",
          "publicAuction": "Öffentliche Auktion",
          "startAfterCreate": "Auktion nach der Erstellung starten",

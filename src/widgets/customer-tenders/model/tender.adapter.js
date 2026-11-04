@@ -184,6 +184,7 @@ export function mapTenderFromApi(tender) {
       id: tender.id,
       status: tender.status || 'new',
       type: tender.type || 'forwarder',
+      name: tender.name || '',
       publication_type: tender.publication_type || 'public',
 
       public_date_time: tender.public_date_time || '',

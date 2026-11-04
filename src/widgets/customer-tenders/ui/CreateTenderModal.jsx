@@ -86,6 +86,7 @@ function createInitialForm() {
   const publicationDate = new Date(Date.now() + PUBLICATION_LEAD_TIME_MS);
 
   return {
+    name: "",
     publicationDateTime: formatDateTimeLocalValue(publicationDate),
     endDateTime: getDefaultTenderEndDateTime(publicationDate),
     isPublic: true,
@@ -417,6 +418,7 @@ export function CreateTenderModal({ open, onClose }) {
 
       const payload = {
         lead_id: selectedLead.id,
+        name: form.name.trim(),
         public_date_time: formatDateTimeForTenderApi(
           form.publicationDateTime,
         ),
@@ -664,6 +666,16 @@ export function CreateTenderModal({ open, onClose }) {
                     }
                   />
                 )}
+              />
+
+              <TextField
+                label={t("tenders.create.name")}
+                placeholder={t("tenders.create.namePlaceholder")}
+                value={form.name}
+                onChange={(event) =>
+                  handleFieldChange("name", event.target.value)
+                }
+                fullWidth
               />
 
               <TextField

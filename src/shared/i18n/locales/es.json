@@ -262,6 +262,7 @@
       },
       "search": {
          "byDirection": "Buscar por dirección",
+         "byName": "Buscar por nombre",
          "minChars": "Ingrese al menos 2 caracteres"
       },
       "severity": {
@@ -1276,6 +1277,8 @@
          "confirm": "¿Está seguro de que desea crear una subasta para este pedido?",
          "failed": "No se pudo crear la subasta",
          "maxParticipants": "Máximo de participantes",
+         "name": "Nombre de la subasta",
+         "namePlaceholder": "Por ejemplo: Almaty — Astaná, urgente",
          "privateHint": "Seleccione los transportistas que serán invitados a la subasta privada",
          "publicAuction": "Subasta pública",
          "startAfterCreate": "Iniciar la subasta después de crearla",

@@ -111,6 +111,34 @@ export function TendersTable({ tenders }) {
          ),
       },
       {
+         field: 'name',
+         headerName: t("common.fields.name"),
+         flex: 1,
+         minWidth: 160,
+         valueGetter: (_, row) => toSortString(row?.name),
+         renderCell: ({ row }) => {
+            const name = String(row?.name || '').trim();
+
+            if (!name) {
+               return <Box>-</Box>;
+            }
+
+            return (
+               <Tooltip title={name}>
+                  <Box
+                     sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                     }}
+                  >
+                     {name}
+                  </Box>
+               </Tooltip>
+            );
+         },
+      },
+      {
          field: 'status',
          headerName: t("common.fields.status"),
          width: 140,
