@@ -180,6 +180,7 @@
          "destination": "目的地",
          "dimensions": "尺寸",
          "direction": "方向",
+         "directorFio": "个体工商户负责人姓名",
          "document": "文件",
          "documentName": "文件名称",
          "documentNumber": "文件编号",
@@ -1225,6 +1226,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

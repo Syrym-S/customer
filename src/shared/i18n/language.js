@@ -1,4 +1,4 @@
-export const SUPPORTED_LANGUAGES = ["ru", "kk", "en", "de", "uz", "ky", "tg", "pt", "ar", "es", "tr", "fr", "ka", "zh", "ur"];
+export const SUPPORTED_LANGUAGES = ["ru", "kk", "en", "de", "uz", "ky", "tg", "pt", "ar", "es", "tr", "fr", "ka", "zh", "ur", "uk"];
 
 export const DEFAULT_LANGUAGE = "ru";
 

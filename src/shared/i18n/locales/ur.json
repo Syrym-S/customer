@@ -181,6 +181,7 @@
          "destination": "منزل",
          "dimensions": "طول و عرض",
          "direction": "سمت",
+         "directorFio": "انفرادی کاروبار کے ڈائریکٹر کا پورا نام",
          "document": "دستاویز",
          "documentName": "دستاویز کا نام",
          "documentNumber": "دستاویز نمبر",
@@ -1231,6 +1232,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

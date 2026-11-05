@@ -181,6 +181,7 @@
          "destination": "Nach",
          "dimensions": "Maße",
          "direction": "Richtung",
+         "directorFio": "Name des Geschäftsführers (Einzelunternehmen)",
          "document": "Dokument",
          "documentName": "Dokumentname",
          "documentNumber": "Dokumentnummer",
@@ -1231,6 +1232,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

@@ -10,7 +10,7 @@ import { InfoBadge } from '../components/InfoBadge';
 import { normalizePersonValue } from '../../../model/lead-edit-form.helpers';
 // import { TaxationRegimeInfo } from '../../../../../shared/kgd-taxation/ui/TaxationRegimeInfo';
 
-function getDriverFields(driver) {
+function getDriverFields(driver, { hideDirectorFio } = {}) {
    if (!driver || typeof driver !== 'object') {
       return [];
    }
@@ -18,15 +18,19 @@ function getDriverFields(driver) {
    return [
       { label: i18n.t("common.fields.fullName"), value: driver.fio || driver.fullName || driver.name },
       { label: i18n.t("common.fields.phone"), value: driver.phone },
+      {
+         label: i18n.t("common.fields.directorFio"),
+         value: hideDirectorFio ? undefined : driver.director_fio,
+      },
       { label: 'Email', value: driver.email },
    ].filter(({ value }) => typeof value === 'string' && value.trim());
 }
 
-export function LeadDriverSection({ lead }) {
+export function LeadDriverSection({ lead, hideDirectorFio = false }) {
    const { t } = useTranslation();
 
    const driver = lead.raw?.driver ?? lead.driver;
-   const driverFields = getDriverFields(driver);
+   const driverFields = getDriverFields(driver, { hideDirectorFio });
    // const driverId = driver && typeof driver === 'object' ? driver.id : null;
 
    return (
@@ -71,6 +75,7 @@ export function LeadDriverSection({ lead }) {
 
 LeadDriverSection.propTypes = {
    lead: PropTypes.object.isRequired,
+   hideDirectorFio: PropTypes.bool,
    isEditing: PropTypes.bool,
    editForm: PropTypes.object,
    onEditChange: PropTypes.func,

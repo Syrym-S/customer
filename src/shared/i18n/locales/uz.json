@@ -181,6 +181,7 @@
          "destination": "Qayerga",
          "dimensions": "O'lchamlar",
          "direction": "Yo'nalish",
+         "directorFio": "YTT direktorining F.I.Sh.",
          "document": "Hujjat",
          "documentName": "Hujjat nomi",
          "documentNumber": "Hujjat raqami",
@@ -1231,6 +1232,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

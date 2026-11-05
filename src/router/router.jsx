@@ -16,6 +16,7 @@ import { appBasename } from "../shared/api/api-client";
 import {
   isFactoringEnabled,
   isManufacturersEnabled,
+  isTenderEnabled,
 } from "../shared/config/feature-flags";
 
 // Раздел, скрытый флагом, остаётся в роутере, но отдаёт редирект на дашборд:
@@ -70,7 +71,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/tenders",
-          element: <TenderPage />,
+          element: isTenderEnabled ? <TenderPage /> : HIDDEN_SECTION_ELEMENT,
           handle: {
             breadcrumb: "nav.tenders",
             title: "nav.tenders",
@@ -78,7 +79,7 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/tenders/:tenderId",
-          element: <TenderPage />,
+          element: isTenderEnabled ? <TenderPage /> : HIDDEN_SECTION_ELEMENT,
           handle: {
             title: "nav.tenders",
           },

@@ -36,6 +36,7 @@ import { CUSTOMER_NAV_WIDTH } from "../../shared/config/constants";
 import {
   isFactoringEnabled,
   isManufacturersEnabled,
+  isTenderEnabled,
 } from "../../shared/config/feature-flags";
 import DashboardOutlined from "@mui/icons-material/DashboardOutlined";
 import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
@@ -228,13 +229,17 @@ export function Header() {
         icon: <PersonAddAltOutlined />,
         tooltip: t("nav.tooltips.leads"),
       },
-      {
-        label: t("nav.tenders"),
-        path: "/customer/tenders",
-        selected: isTenderPage,
-        icon: <GavelOutlined />,
-        tooltip: t("nav.tooltips.tenders"),
-      },
+      ...(isTenderEnabled
+        ? [
+            {
+              label: t("nav.tenders"),
+              path: "/customer/tenders",
+              selected: isTenderPage,
+              icon: <GavelOutlined />,
+              tooltip: t("nav.tooltips.tenders"),
+            },
+          ]
+        : []),
       // Разделы, выключенные флагом в window.APP_DATA.features, не попадают
       // в меню вовсе — пункт не просто недоступен, его не видно. Роут при
       // этом остаётся и редиректит на дашборд (см. router.jsx).

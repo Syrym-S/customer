@@ -1,4 +1,7 @@
-import { isFactoringEnabled } from '../../../shared/config/feature-flags';
+import {
+   isFactoringEnabled,
+   isTenderEnabled,
+} from '../../../shared/config/feature-flags';
 import { fetchCustomerStats } from '../api/stats.repository';
 import { mapStatsResponseFromApi } from './stats.adapter';
 
@@ -15,20 +18,27 @@ export const CUSTOM_STATS_PERIOD = 'custom';
 
 const FACTORING_CARD_IDS = ['factorings-period', 'factorings-active'];
 
-// Пока раздел факторинга скрыт флагом, его плитки убираем и из статистики:
-// иначе на дашборде остаются цифры по разделу, которого для пользователя
-// нет. Группа "за период" состоит из одной факторинговой плитки, поэтому
-// при выключенном флаге отпадает целиком — отсюда отбрасывание пустых
-// групп и пересчёт columns под оставшиеся карточки.
+const TENDER_CARD_IDS = ['tenders-active'];
+
+// Пока раздел скрыт флагом (факторинг, тендеры), его плитки убираем и из
+// статистики: иначе на дашборде остаются цифры по разделу, которого для
+// пользователя нет. Группа "за период" состоит из одной факторинговой
+// плитки, поэтому при выключенном флаге отпадает целиком — отсюда
+// отбрасывание пустых групп и пересчёт columns под оставшиеся карточки.
 function applyFeatureFlags(groups) {
-   if (isFactoringEnabled) {
+   if (isFactoringEnabled && isTenderEnabled) {
       return groups;
    }
+
+   const hiddenCardIds = [
+      ...(isFactoringEnabled ? [] : FACTORING_CARD_IDS),
+      ...(isTenderEnabled ? [] : TENDER_CARD_IDS),
+   ];
 
    return groups
       .map((group) => {
          const cards = group.cards.filter(
-            (card) => !FACTORING_CARD_IDS.includes(card.id),
+            (card) => !hiddenCardIds.includes(card.id),
          );
 
          return {

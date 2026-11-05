@@ -181,6 +181,7 @@
          "destination": "Destination",
          "dimensions": "Dimensions",
          "direction": "Direction",
+         "directorFio": "Nom complet du dirigeant de l'entreprise individuelle",
          "document": "Document",
          "documentName": "Nom du document",
          "documentNumber": "Numéro de document",
@@ -1231,6 +1232,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

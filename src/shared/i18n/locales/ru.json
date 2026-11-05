@@ -183,6 +183,7 @@
          "destination": "Куда",
          "dimensions": "Размеры",
          "direction": "Направление",
+         "directorFio": "ФИО директора ИП",
          "document": "Документ",
          "documentName": "Название документа",
          "documentNumber": "Номер документа",
@@ -1243,6 +1244,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

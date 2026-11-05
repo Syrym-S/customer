@@ -181,6 +181,7 @@
          "destination": "Para",
          "dimensions": "Dimensões",
          "direction": "Direção",
+         "directorFio": "Nome completo do diretor do empresário individual",
          "document": "Documento",
          "documentName": "Nome do documento",
          "documentNumber": "Número do documento",
@@ -1231,6 +1232,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

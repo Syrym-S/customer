@@ -15,3 +15,5 @@ const features = window?.APP_DATA?.features || {};
 export const isFactoringEnabled = features.factoring ?? true;
 
 export const isManufacturersEnabled = features.manufacturer ?? true;
+
+export const isTenderEnabled = features.tender ?? true;

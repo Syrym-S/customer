@@ -13,6 +13,7 @@ import pt from "./locales/pt.json";
 import ru from "./locales/ru.json";
 import tg from "./locales/tg.json";
 import tr from "./locales/tr.json";
+import uk from "./locales/uk.json";
 import ur from "./locales/ur.json";
 import uz from "./locales/uz.json";
 import zh from "./locales/zh.json";
@@ -43,6 +44,7 @@ i18n.use(initReactI18next).init({
     ar: { translation: ar },
     zh: { translation: zh },
     ur: { translation: ur },
+    uk: { translation: uk },
   },
   lng: initialLanguage,
   fallbackLng: DEFAULT_LANGUAGE,

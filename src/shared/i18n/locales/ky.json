@@ -181,6 +181,7 @@
          "destination": "Кайда",
          "dimensions": "Өлчөмдөр",
          "direction": "Багыт",
+         "directorFio": "ЖИ директорунун аты-жөнү",
          "document": "Документ",
          "documentName": "Документтин аталышы",
          "documentNumber": "Документтин номери",
@@ -1231,6 +1232,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

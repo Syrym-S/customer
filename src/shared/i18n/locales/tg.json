@@ -181,6 +181,7 @@
          "destination": "Ба куҷо",
          "dimensions": "Андозаҳо",
          "direction": "Самт",
+         "directorFio": "Номи пурраи директори СК",
          "document": "Ҳуҷҷат",
          "documentName": "Номи ҳуҷҷат",
          "documentNumber": "Рақами ҳуҷҷат",
@@ -1231,6 +1232,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

@@ -1,17 +1,3 @@
-// Service worker веб-пушей: отдельная программа, которую браузер запускает при
-// получении пуша — в том числе когда сайт полностью закрыт. Здесь нет DOM,
-// React, i18n и данных пользователя; воркер умеет только нарисовать системную
-// плашку и обработать клик по ней. Разрешение у пользователя спрашивает и
-// FCM-токен получает приложение (src/services/firebase.js), не этот файл.
-//
-// Файл должен лежать в корне своего контура: /firebase-messaging-sw.js на
-// проде и /staging/firebase-messaging-sw.js со scope /staging/. Воркер
-// контролирует только страницы по своему адресу и ниже, поэтому рядом с
-// бандлом в js/workspace он бесполезен — раскладывает их deploy.js.
-
-// Файл копируется из public/ как есть, сборщик его не трогает, поэтому SDK
-// подключается с CDN в compat-варианте, а не импортом из npm. Мажорную версию
-// держать общей с пакетом firebase в package.json.
 importScripts(
    'https://www.gstatic.com/firebasejs/13.2.0/firebase-app-compat.js',
 );
@@ -53,7 +39,7 @@ self.addEventListener('activate', (event) =>
 messaging.onBackgroundMessage((payload) => {
    const data = payload.data || {};
 
-   self.registration.showNotification(data.title || FALLBACK_TITLE, {
+   return self.registration.showNotification(data.title || FALLBACK_TITLE, {
       body: data.body || '',
       icon: ICON_URL,
       // Ключа id в payload нет, но type уникален для события

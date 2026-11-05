@@ -181,6 +181,7 @@
          "destination": "إلى",
          "dimensions": "الأبعاد",
          "direction": "الاتجاه",
+         "directorFio": "اسم مدير المؤسسة الفردية الكامل",
          "document": "مستند",
          "documentName": "اسم المستند",
          "documentNumber": "رقم المستند",
@@ -1231,6 +1232,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

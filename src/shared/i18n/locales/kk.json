@@ -181,6 +181,7 @@
          "destination": "Қайда",
          "dimensions": "Өлшемдері",
          "direction": "Бағыты",
+         "directorFio": "ЖК директорының тегі, аты, әкесінің аты",
          "document": "Құжат",
          "documentName": "Құжат атауы",
          "documentNumber": "Құжат нөмірі",
@@ -1231,6 +1232,7 @@
          "ru": "Русский",
          "tg": "Тоҳикӣ",
          "tr": "Türkçe",
+         "uk": "Українська",
          "ur": "اردو",
          "uz": "O'zbekcha",
          "zh": "中文"

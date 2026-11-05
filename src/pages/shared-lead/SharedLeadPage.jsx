@@ -68,7 +68,15 @@ function getSharedLeadRoute(lead) {
 }
 
 export function SharedLeadPage() {
-   const { t } = useTranslation();
+   const { t, i18n } = useTranslation();
+
+   // apiClient sends Accept-Language from i18n on every request, so the
+   // backend-localized parts of the response (location names, cargo types)
+   // are tied to whichever language was active when it was fetched. This page
+   // is a single screen with no navigation to remount it, so the only way
+   // those strings follow the header switcher is to refetch on change —
+   // hence resolvedLanguage in the effect deps below.
+   const language = i18n.resolvedLanguage || i18n.language;
 
    const { leadId, token } = useParams();
    const [lead, setLead] = useState(null);
@@ -118,7 +126,7 @@ export function SharedLeadPage() {
       return () => {
          isCancelled = true;
       };
-   }, [leadId, token]);
+   }, [leadId, token, language]);
 
    if (isLoading) {
       return (
@@ -220,7 +228,7 @@ export function SharedLeadPage() {
                onEditChange={noop}
             />
 
-            <LeadDriverSection lead={lead} />
+            <LeadDriverSection lead={lead} hideDirectorFio />
          </Stack>
       </Box>
    );
