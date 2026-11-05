@@ -116,6 +116,30 @@ export function getLeadStatusFilterOptions() {
    }));
 }
 
+// Terminal statuses: an order in one of these is no longer in progress and is
+// absent from the active list that `/customer/v1/leads` serves.
+export const archivedLeadStatuses = [
+   'finished',
+   'cancelled',
+   'finished_emergency_situation',
+];
+
+export function isArchivedLeadStatus(status) {
+   return archivedLeadStatuses.includes(String(status || '').toLowerCase());
+}
+
+export function isActiveLeadStatus(status) {
+   return !isArchivedLeadStatus(status);
+}
+
+// The status dropdown must not offer a status the current list can never
+// contain: picking "finished" while the active list is shown yields nothing.
+export function getActiveLeadStatusFilterOptions() {
+   return getLeadStatusFilterOptions().filter((option) =>
+      isActiveLeadStatus(option.value),
+   );
+}
+
 export function getLeadStatusStyles(status) {
    return leadStatusStyles[status] || leadStatusStyles.new;
 }

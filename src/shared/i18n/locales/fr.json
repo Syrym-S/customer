@@ -782,6 +782,11 @@
          "fillRouteAndCargo": "Remplissez l'itinéraire et la cargaison avant de publier",
          "inProgress": "Publication en cours..."
       },
+      "scope": {
+         "active": "Actives",
+         "all": "Toutes les commandes",
+         "toggle": "Basculer entre toutes les commandes et les commandes actives"
+      },
       "share": {
          "confirm": "Êtes-vous sûr de vouloir partager les informations de la commande avec des tiers ? Les informations seront accessibles via le lien à toute personne qui le possède.",
          "creating": "Création du lien...",

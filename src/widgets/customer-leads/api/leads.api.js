@@ -1,4 +1,18 @@
 import { apiClient } from '../../../shared/api/api-client';
+import { leadsScopes } from '../model/leads-scope.constants';
+
+// `/leads` serves the active orders only; `/leads/total` serves every order,
+// finished and cancelled ones included. Each has its own search variant.
+const leadsEndpointsByScope = {
+   [leadsScopes.ACTIVE]: {
+      list: '/customer/v1/leads',
+      search: '/customer/v1/leads/search',
+   },
+   [leadsScopes.ALL]: {
+      list: '/customer/v1/leads/total',
+      search: '/customer/v1/leads/total/search',
+   },
+};
 
 export async function fetchCustomerLeadsApi({
    page = 1,
@@ -7,6 +21,7 @@ export async function fetchCustomerLeadsApi({
    search,
    isDraft,
    manufacturerId,
+   scope = leadsScopes.ACTIVE,
 } = {}) {
    const params = {
       page,
@@ -33,9 +48,10 @@ export async function fetchCustomerLeadsApi({
       params.q = normalizedSearch;
    }
 
-   const endpoint = normalizedSearch
-      ? '/customer/v1/leads/search'
-      : '/customer/v1/leads';
+   const endpoints =
+      leadsEndpointsByScope[scope] ?? leadsEndpointsByScope[leadsScopes.ACTIVE];
+
+   const endpoint = normalizedSearch ? endpoints.search : endpoints.list;
 
    const response = await apiClient.get(endpoint, { params });
 

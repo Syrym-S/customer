@@ -782,6 +782,11 @@
          "fillRouteAndCargo": "Yayınlamadan önce rotayı ve yükü doldurun",
          "inProgress": "Yayınlanıyor..."
       },
+      "scope": {
+         "active": "Aktif",
+         "all": "Tüm siparişler",
+         "toggle": "Tüm ve aktif siparişler arasında geçiş yap"
+      },
       "share": {
          "confirm": "Sipariş bilgilerini üçüncü kişilerle paylaşmak istediğinizden emin misiniz? Bilgiler, bağlantıya sahip herkes tarafından görüntülenebilir olacaktır.",
          "creating": "Bağlantı oluşturuluyor...",

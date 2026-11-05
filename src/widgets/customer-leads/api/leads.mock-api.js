@@ -1,6 +1,8 @@
 import { mockLeads } from '../model/leads.mock';
 import { findTnvedByCodeMock } from '../../customer-tnved/api/tnved.mock-api';
 import { getCurrentUserId } from '../../../shared/helpers/current-user.helpers';
+import { isActiveLeadStatus } from '../model/lead.helpers';
+import { leadsScopes } from '../model/leads-scope.constants';
 
 function isOwnDraft(lead, currentUserId) {
    return lead.is_draft === true && lead.createdBy === currentUserId;
@@ -16,12 +18,21 @@ export async function fetchCustomerLeadsMock({
    status,
    search,
    isDraft,
+   scope = leadsScopes.ACTIVE,
 } = {}) {
    const currentUserId = getCurrentUserId();
 
    let filteredLeads = isDraft
       ? mockLeads.filter((lead) => isOwnDraft(lead, currentUserId))
       : mockLeads.filter((lead) => isVisibleInDefaultList(lead, currentUserId));
+
+   // Mirrors the split between `/leads` and `/leads/total`: drafts stay in the
+   // active list, since an unpublished order is still in progress.
+   if (scope === leadsScopes.ACTIVE) {
+      filteredLeads = filteredLeads.filter(
+         (lead) => lead.is_draft === true || isActiveLeadStatus(lead.status),
+      );
+   }
 
    if (status) {
       filteredLeads = filteredLeads.filter((lead) => lead.status === status);

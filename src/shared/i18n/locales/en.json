@@ -782,6 +782,11 @@
          "fillRouteAndCargo": "Fill in the route and cargo before publishing",
          "inProgress": "Publishing..."
       },
+      "scope": {
+         "active": "Active",
+         "all": "All orders",
+         "toggle": "Switch between all and active orders"
+      },
       "share": {
          "confirm": "Are you sure you want to share this order with third parties? Anyone with the link will be able to see the information.",
          "creating": "Creating the link...",

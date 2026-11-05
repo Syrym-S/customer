@@ -782,6 +782,11 @@
          "fillRouteAndCargo": "Preencha a rota e a carga antes de publicar",
          "inProgress": "Publicando..."
       },
+      "scope": {
+         "active": "Ativos",
+         "all": "Todos os pedidos",
+         "toggle": "Alternar entre todos os pedidos e os ativos"
+      },
       "share": {
          "confirm": "Tem certeza de que deseja compartilhar este pedido com terceiros? Qualquer pessoa com o link poderá ver as informações.",
          "creating": "Criando o link...",

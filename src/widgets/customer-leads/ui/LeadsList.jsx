@@ -20,7 +20,12 @@ import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 import { useLeadsContext } from '../model/useLeadsContext';
-import { getLeadStatusFilterOptions } from '../model/lead.helpers';
+import {
+   getActiveLeadStatusFilterOptions,
+   getLeadStatusFilterOptions,
+   isArchivedLeadStatus,
+} from '../model/lead.helpers';
+import { leadsScopes } from '../model/leads-scope.constants';
 import { LeadCard } from './LeadCard';
 import { LeadDetailsModal } from './LeadDetailsModal';
 import { LeadsPagination } from './LeadsPagination';
@@ -46,6 +51,8 @@ export function LeadsList() {
       perPage,
       count,
       setStatusFilter,
+      scope,
+      setScopeFilter,
       search,
       setSearch,
       isLoading,
@@ -57,7 +64,13 @@ export function LeadsList() {
       ALL_STATUSES_VALUE,
    );
 
-   const statusFilterOptions = useMemo(() => getLeadStatusFilterOptions(), []);
+   const statusFilterOptions = useMemo(
+      () =>
+         scope === leadsScopes.ACTIVE
+            ? getActiveLeadStatusFilterOptions()
+            : getLeadStatusFilterOptions(),
+      [scope],
+   );
 
    const pagesCount = Math.max(1, Math.ceil(count / perPage));
 
@@ -71,6 +84,24 @@ export function LeadsList() {
       }
 
       setViewMode(nextViewMode);
+   }
+
+   function handleScopeChange(_, nextScope) {
+      if (!nextScope) {
+         return;
+      }
+
+      // A terminal status cannot survive the switch to the active list: keep it
+      // selected and the list would always come back empty.
+      if (
+         nextScope === leadsScopes.ACTIVE &&
+         isArchivedLeadStatus(selectedStatusValue)
+      ) {
+         setSelectedStatusValue(ALL_STATUSES_VALUE);
+         setStatusFilter('');
+      }
+
+      setScopeFilter(nextScope);
    }
 
    function handleStatusFilterChange(event) {
@@ -136,6 +167,34 @@ export function LeadsList() {
                      },
                   }}
                >
+                  <ToggleButtonGroup
+                     value={scope}
+                     exclusive
+                     onChange={handleScopeChange}
+                     size="small"
+                     color="primary"
+                     aria-label={t("leads.scope.toggle")}
+                     sx={{
+                        alignSelf: {
+                           xs: 'stretch',
+                           sm: 'auto',
+                        },
+                        '& .MuiToggleButton-root': {
+                           px: 2,
+                           whiteSpace: 'nowrap',
+                           textTransform: 'none',
+                        },
+                     }}
+                  >
+                     <ToggleButton value={leadsScopes.ALL}>
+                        {t("leads.scope.all")}
+                     </ToggleButton>
+
+                     <ToggleButton value={leadsScopes.ACTIVE}>
+                        {t("leads.scope.active")}
+                     </ToggleButton>
+                  </ToggleButtonGroup>
+
                   <FormControl
                      size="small"
                      sx={{

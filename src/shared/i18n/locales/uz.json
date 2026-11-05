@@ -782,6 +782,11 @@
          "fillRouteAndCargo": "Nashr qilishdan oldin marshrut va yukni to'ldiring",
          "inProgress": "Nashr qilinmoqda..."
       },
+      "scope": {
+         "active": "Faol",
+         "all": "Barcha buyurtmalar",
+         "toggle": "Barcha va faol buyurtmalar o’rtasida almashish"
+      },
       "share": {
          "confirm": "Bu buyurtma haqidagi ma'lumotni uchinchi shaxslar bilan ulashishga ishonchingiz komilmi? Ma'lumot havolaga ega bo'lgan har kimga ochiq bo'ladi.",
          "creating": "Havola yaratilmoqda...",

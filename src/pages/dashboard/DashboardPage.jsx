@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import { PageContainer } from "../../shared/ui/PageContainer";
 import { LeadsProvider } from "../../widgets/customer-leads/model/LeadsProvider";
+import { leadsScopes } from "../../widgets/customer-leads/model/leads-scope.constants";
 import { TendersProvider } from "../../widgets/customer-tenders/model/TendersProviders";
 import { LeadDetailsModal } from "../../widgets/customer-leads/ui/LeadDetailsModal";
 import { TenderDetailsModal } from "../../widgets/customer-tenders/ui/TenderDetailsModal";
@@ -34,7 +35,7 @@ const TendersBoundary = isTenderEnabled ? TendersProvider : TendersPassthrough;
 
 export function DashboardPage() {
   return (
-    <LeadsProvider>
+    <LeadsProvider initialScope={leadsScopes.ACTIVE}>
       <FactoringsBoundary>
         <TendersBoundary initialPerPage={50}>
           <PageContainer fullWidth>

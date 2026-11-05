@@ -782,6 +782,11 @@
          "fillRouteAndCargo": "Füllen Sie Route und Fracht aus, bevor Sie veröffentlichen",
          "inProgress": "Wird veröffentlicht..."
       },
+      "scope": {
+         "active": "Aktive",
+         "all": "Alle Aufträge",
+         "toggle": "Zwischen allen und aktiven Aufträgen wechseln"
+      },
       "share": {
          "confirm": "Sind Sie sicher, dass Sie die Informationen zu diesem Auftrag mit Dritten teilen möchten? Die Informationen sind über den Link für jeden einsehbar, der ihn hat.",
          "creating": "Link wird erstellt...",

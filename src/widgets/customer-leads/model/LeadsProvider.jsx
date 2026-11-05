@@ -6,6 +6,7 @@ import { fetchCustomerLeads } from '../api/leads.repository';
 import { mapLeadsResponseFromApi } from './lead.adapter';
 import { isDraftLead } from './lead.helpers';
 import { LeadsContext } from './LeadsContext';
+import { leadsScopes } from './leads-scope.constants';
 import {
    notificationDomainEventNames,
    subscribeToNotificationDomainEvent,
@@ -22,7 +23,10 @@ function sortLeadsWithDraftsFirst(leads) {
    });
 }
 
-export function LeadsProvider({ children }) {
+// The orders page opens on the full list, while the dashboard shows an
+// "active orders" block — hence the scope is the mount's choice, not a default
+// baked into the provider.
+export function LeadsProvider({ children, initialScope = leadsScopes.ALL }) {
    const { t } = useTranslation();
 
    const [leads, setLeads] = useState([]);
@@ -32,6 +36,7 @@ export function LeadsProvider({ children }) {
    const [perPage, setPerPage] = useState(DEFAULT_PER_PAGE);
    const [count, setCount] = useState(0);
    const [status, setStatus] = useState('');
+   const [scope, setScope] = useState(initialScope);
 
    const [search, setSearch] = useState('');
    const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -53,6 +58,7 @@ export function LeadsProvider({ children }) {
                perPage,
                status,
                search: debouncedSearch,
+               scope,
             });
             const mappedResponse = mapLeadsResponseFromApi(response);
 
@@ -67,11 +73,16 @@ export function LeadsProvider({ children }) {
             }
          }
       },
-      [page, perPage, status, debouncedSearch, t],
+      [page, perPage, status, debouncedSearch, scope, t],
    );
 
    const setStatusFilter = useCallback((nextStatus) => {
       setStatus(nextStatus);
+      setPage(1);
+   }, []);
+
+   const setScopeFilter = useCallback((nextScope) => {
+      setScope(nextScope);
       setPage(1);
    }, []);
 
@@ -136,6 +147,9 @@ export function LeadsProvider({ children }) {
          status,
          setStatusFilter,
 
+         scope,
+         setScopeFilter,
+
          search,
          setSearch,
 
@@ -153,6 +167,8 @@ export function LeadsProvider({ children }) {
          count,
          status,
          setStatusFilter,
+         scope,
+         setScopeFilter,
          search,
          isLoading,
          error,
@@ -168,4 +184,5 @@ export function LeadsProvider({ children }) {
 
 LeadsProvider.propTypes = {
    children: PropTypes.node.isRequired,
+   initialScope: PropTypes.oneOf(Object.values(leadsScopes)),
 };
