@@ -2,7 +2,7 @@ import { Box, Dialog, DialogContent } from '@mui/material';
 import i18n from '../../../shared/i18n';
 import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
     mapCreatedLeadToUi,
@@ -160,8 +160,7 @@ export function CreateLeadModal({ open, onClose }) {
 
     const [activeStep, setActiveStep] = useState(0);
     const [maxAvailableStep, setMaxAvailableStep] = useState(0);
-    const stepContentRef = useRef(null);
-    const [stepContentHeight, setStepContentHeight] = useState(null);
+    const contentRef = useRef(null);
     const {
         control,
         handleSubmit,
@@ -188,21 +187,11 @@ export function CreateLeadModal({ open, onClose }) {
 
     const formValues = useWatch({ control });
 
-    useLayoutEffect(() => {
-        const node = stepContentRef.current;
-
-        if (!node) {
-            return undefined;
+    useEffect(() => {
+        if (contentRef.current) {
+            contentRef.current.scrollTop = 0;
         }
-
-        const observer = new ResizeObserver(([entry]) => {
-            setStepContentHeight(entry.contentRect.height);
-        });
-
-        observer.observe(node);
-
-        return () => observer.disconnect();
-    }, []);
+    }, [activeStep]);
 
     const isFirstStep = activeStep === 0;
     const steps = STEP_KEYS.map((key) => t(key));
@@ -429,57 +418,66 @@ export function CreateLeadModal({ open, onClose }) {
                     paper: {
                         sx: {
                             borderRadius: 4,
+                            m: { xs: 1, sm: 4 },
+                            width: { xs: 'calc(100% - 16px)', sm: 'calc(100% - 64px)' },
+                            maxHeight: {
+                                xs: 'calc(100% - 16px)',
+                                sm: 'calc(100% - 64px)',
+                            },
                         },
                     },
                 }}
             >
-                <Box component="div">
-                    <CreateLeadHeader
+                <CreateLeadHeader
+                    activeStep={activeStep}
+                    stepsCount={steps.length}
+                />
+
+                <Box
+                    sx={{
+                        px: {
+                            xs: 1.5,
+                            sm: 2,
+                            md: 3,
+                        },
+                        flexShrink: 0,
+                    }}
+                >
+                    <CreateLeadStepTabs
+                        steps={steps}
                         activeStep={activeStep}
-                        stepsCount={steps.length}
-                    />
-
-                    <DialogContent
-                        sx={{
-                            px: {
-                                xs: 1.5,
-                                sm: 2,
-                                md: 3,
-                            },
-                        }}
-                    >
-                        <CreateLeadStepTabs
-                            steps={steps}
-                            activeStep={activeStep}
-                            maxAvailableStep={maxAvailableStep}
-                            hasStepErrors={hasStepErrors}
-                            onStepClick={handleStepClick}
-                        />
-
-                        <Box
-                            sx={{
-                                height: stepContentHeight ?? 'auto',
-                                overflow: 'hidden',
-                                transition: 'height 200ms ease',
-                            }}
-                        >
-                            <Box ref={stepContentRef}>{renderStepContent()}</Box>
-                        </Box>
-                    </DialogContent>
-
-                    <CreateLeadActions
-                        isFirstStep={isFirstStep}
-                        isLastStep={isLastStep}
-                        hasCurrentStepErrors={hasCurrentStepErrors}
-                        isSubmitting={isSubmitting}
-                        isSavingDraft={isSavingDraft}
-                        onClose={handleClose}
-                        onBack={handleBack}
-                        onNext={handleNext}
-                        onSubmit={handleSubmitClick}
-                        onSaveDraft={handleSaveDraft}
+                        maxAvailableStep={maxAvailableStep}
+                        hasStepErrors={hasStepErrors}
+                        onStepClick={handleStepClick}
                     />
                 </Box>
+
+                <DialogContent
+                    ref={contentRef}
+                    dividers
+                    sx={{
+                        px: {
+                            xs: 1.5,
+                            sm: 2,
+                            md: 3,
+                        },
+                    }}
+                >
+                    {renderStepContent()}
+                </DialogContent>
+
+                <CreateLeadActions
+                    isFirstStep={isFirstStep}
+                    isLastStep={isLastStep}
+                    hasCurrentStepErrors={hasCurrentStepErrors}
+                    isSubmitting={isSubmitting}
+                    isSavingDraft={isSavingDraft}
+                    onClose={handleClose}
+                    onBack={handleBack}
+                    onNext={handleNext}
+                    onSubmit={handleSubmitClick}
+                    onSaveDraft={handleSaveDraft}
+                />
             </Dialog>
 
             <CreateLeadResultModal
