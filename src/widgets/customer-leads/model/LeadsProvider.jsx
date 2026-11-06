@@ -41,8 +41,18 @@ export function LeadsProvider({ children, initialScope = leadsScopes.ALL }) {
    const [search, setSearch] = useState('');
    const [debouncedSearch, setDebouncedSearch] = useState('');
 
+   const [num, setNum] = useState('');
+   const [debouncedNum, setDebouncedNum] = useState('');
+
+   const [dateFrom, setDateFrom] = useState('');
+   const [dateTo, setDateTo] = useState('');
+
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState(null);
+
+   const isDateRangeValid = !dateFrom || !dateTo || dateFrom <= dateTo;
+   const appliedDateFrom = isDateRangeValid ? dateFrom : '';
+   const appliedDateTo = isDateRangeValid ? dateTo : '';
 
    const loadLeads = useCallback(
       async ({ withLoader = true } = {}) => {
@@ -58,6 +68,9 @@ export function LeadsProvider({ children, initialScope = leadsScopes.ALL }) {
                perPage,
                status,
                search: debouncedSearch,
+               num: debouncedNum,
+               dateFrom: appliedDateFrom,
+               dateTo: appliedDateTo,
                scope,
             });
             const mappedResponse = mapLeadsResponseFromApi(response);
@@ -73,7 +86,17 @@ export function LeadsProvider({ children, initialScope = leadsScopes.ALL }) {
             }
          }
       },
-      [page, perPage, status, debouncedSearch, scope, t],
+      [
+         page,
+         perPage,
+         status,
+         debouncedSearch,
+         debouncedNum,
+         appliedDateFrom,
+         appliedDateTo,
+         scope,
+         t,
+      ],
    );
 
    const setStatusFilter = useCallback((nextStatus) => {
@@ -83,6 +106,33 @@ export function LeadsProvider({ children, initialScope = leadsScopes.ALL }) {
 
    const setScopeFilter = useCallback((nextScope) => {
       setScope(nextScope);
+      setPage(1);
+
+      if (nextScope !== leadsScopes.ALL) {
+         setNum('');
+         setDebouncedNum('');
+         setDateFrom('');
+         setDateTo('');
+      }
+   }, []);
+
+   const setDateFromFilter = useCallback((nextDateFrom) => {
+      setDateFrom(nextDateFrom);
+      setPage(1);
+   }, []);
+
+   const setDateToFilter = useCallback((nextDateTo) => {
+      setDateTo(nextDateTo);
+      setPage(1);
+   }, []);
+
+   const resetFilters = useCallback(() => {
+      setSearch('');
+      setDebouncedSearch('');
+      setNum('');
+      setDebouncedNum('');
+      setDateFrom('');
+      setDateTo('');
       setPage(1);
    }, []);
 
@@ -108,6 +158,17 @@ export function LeadsProvider({ children, initialScope = leadsScopes.ALL }) {
          window.clearTimeout(timeoutId);
       };
    }, [search]);
+
+   useEffect(() => {
+      const timeoutId = window.setTimeout(() => {
+         setDebouncedNum(num.trim());
+         setPage(1);
+      }, SEARCH_DEBOUNCE_MS);
+
+      return () => {
+         window.clearTimeout(timeoutId);
+      };
+   }, [num]);
 
    useEffect(() => {
       loadLeads({ withLoader: true });
@@ -153,6 +214,17 @@ export function LeadsProvider({ children, initialScope = leadsScopes.ALL }) {
          search,
          setSearch,
 
+         num,
+         setNum,
+
+         dateFrom,
+         setDateFrom: setDateFromFilter,
+         dateTo,
+         setDateTo: setDateToFilter,
+         isDateRangeValid,
+
+         resetFilters,
+
          isLoading,
          error,
 
@@ -170,6 +242,13 @@ export function LeadsProvider({ children, initialScope = leadsScopes.ALL }) {
          scope,
          setScopeFilter,
          search,
+         num,
+         dateFrom,
+         dateTo,
+         isDateRangeValid,
+         setDateFromFilter,
+         setDateToFilter,
+         resetFilters,
          isLoading,
          error,
          loadLeads,

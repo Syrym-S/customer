@@ -1,6 +1,7 @@
 import {
    Alert,
    Box,
+   Button,
    CircularProgress,
    FormControl,
    InputAdornment,
@@ -18,6 +19,7 @@ import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import ViewKanbanRoundedIcon from '@mui/icons-material/ViewKanbanRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 import { useLeadsContext } from '../model/useLeadsContext';
 import {
@@ -55,6 +57,14 @@ export function LeadsList() {
       setScopeFilter,
       search,
       setSearch,
+      num,
+      setNum,
+      dateFrom,
+      setDateFrom,
+      dateTo,
+      setDateTo,
+      isDateRangeValid,
+      resetFilters,
       isLoading,
       error,
    } = useLeadsContext();
@@ -71,6 +81,10 @@ export function LeadsList() {
             : getLeadStatusFilterOptions(),
       [scope],
    );
+
+   const isTotalScope = scope === leadsScopes.ALL;
+
+   const hasActiveFilters = Boolean(search || num || dateFrom || dateTo);
 
    const pagesCount = Math.max(1, Math.ceil(count / perPage));
 
@@ -113,6 +127,18 @@ export function LeadsList() {
 
    function handleSearchChange(event) {
       setSearch(event.target.value);
+   }
+
+   function handleNumChange(event) {
+      setNum(event.target.value);
+   }
+
+   function handleDateFromChange(event) {
+      setDateFrom(event.target.value);
+   }
+
+   function handleDateToChange(event) {
+      setDateTo(event.target.value);
    }
 
    return (
@@ -273,22 +299,121 @@ export function LeadsList() {
                </Stack>
             </Box>
 
-            <TextField
-               value={search}
-               onChange={handleSearchChange}
-               placeholder={t("common.search.byDirection")}
-               fullWidth
-               size="small"
-               slotProps={{
-                  input: {
-                     startAdornment: (
-                        <InputAdornment position="start">
-                           <SearchRoundedIcon color="action" fontSize="small" />
-                        </InputAdornment>
-                     ),
-                  },
-               }}
-            />
+            <Stack spacing={1.5}>
+               <Stack
+                  direction={{
+                     xs: 'column',
+                     md: 'row',
+                  }}
+                  spacing={1.5}
+                  sx={{
+                     alignItems: {
+                        xs: 'stretch',
+                        md: 'flex-start',
+                     },
+                  }}
+               >
+                  <TextField
+                     value={search}
+                     onChange={handleSearchChange}
+                     placeholder={t("common.search.byDirection")}
+                     size="small"
+                     sx={{ flexGrow: 1 }}
+                     slotProps={{
+                        input: {
+                           startAdornment: (
+                              <InputAdornment position="start">
+                                 <SearchRoundedIcon
+                                    color="action"
+                                    fontSize="small"
+                                 />
+                              </InputAdornment>
+                           ),
+                        },
+                     }}
+                  />
+
+                  {isTotalScope && (
+                     <>
+                        <TextField
+                           label={t("common.fields.number")}
+                           value={num}
+                           onChange={handleNumChange}
+                           size="small"
+                           sx={{
+                              width: {
+                                 xs: '100%',
+                                 md: 140,
+                              },
+                           }}
+                           slotProps={{
+                              inputLabel: { shrink: true },
+                           }}
+                        />
+
+                        <TextField
+                           label={t("common.fields.dateFrom")}
+                           type="date"
+                           value={dateFrom}
+                           onChange={handleDateFromChange}
+                           size="small"
+                           sx={{
+                              width: {
+                                 xs: '100%',
+                                 md: 170,
+                              },
+                           }}
+                           slotProps={{
+                              inputLabel: { shrink: true },
+                              htmlInput: { max: dateTo || undefined },
+                           }}
+                        />
+
+                        <TextField
+                           label={t("common.fields.dateTo")}
+                           type="date"
+                           value={dateTo}
+                           onChange={handleDateToChange}
+                           size="small"
+                           sx={{
+                              width: {
+                                 xs: '100%',
+                                 md: 170,
+                              },
+                           }}
+                           slotProps={{
+                              inputLabel: { shrink: true },
+                              htmlInput: { min: dateFrom || undefined },
+                           }}
+                        />
+                     </>
+                  )}
+
+                  {hasActiveFilters && (
+                     <Button
+                        onClick={resetFilters}
+                        size="small"
+                        color="inherit"
+                        startIcon={<CloseRoundedIcon fontSize="small" />}
+                        sx={{
+                           whiteSpace: 'nowrap',
+                           alignSelf: {
+                              xs: 'stretch',
+                              md: 'center',
+                           },
+                        }}
+                     >
+                        {t("common.actions.clear")}
+                     </Button>
+                  )}
+               </Stack>
+
+               {!isDateRangeValid && (
+                  <Alert severity="warning">
+                     {t("common.validation.dateOrder")}
+                  </Alert>
+               )}
+            </Stack>
 
             {error && <Alert severity="error">{error}</Alert>}
 

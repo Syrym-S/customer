@@ -294,6 +294,9 @@
          "m3": "{{value}} m³",
          "megabytes": "{{value}} MB"
       },
+      "validation": {
+         "dateOrder": "Das Datum „von“ darf nicht später als das Datum „bis“ sein"
+      },
       "view": {
          "cards": "Karten",
          "showAsCards": "Als Karten anzeigen",

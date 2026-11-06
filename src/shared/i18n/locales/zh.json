@@ -292,6 +292,9 @@
          "m3": "{{value}} 立方米",
          "megabytes": "{{value}} MB"
       },
+      "validation": {
+         "dateOrder": "起始日期不能晚于截止日期"
+      },
       "view": {
          "cards": "卡片视图",
          "showAsCards": "以卡片形式显示",

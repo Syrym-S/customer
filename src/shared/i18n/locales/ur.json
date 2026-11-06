@@ -294,6 +294,9 @@
          "m3": "{{value}} م³",
          "megabytes": "{{value}} ایم بی"
       },
+      "validation": {
+         "dateOrder": "تاریخ «از» تاریخ «تا» سے بعد نہیں ہو سکتی"
+      },
       "view": {
          "cards": "کارڈز",
          "showAsCards": "کارڈز کے طور پر دکھائیں",

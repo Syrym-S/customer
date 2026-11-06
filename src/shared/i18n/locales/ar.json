@@ -294,6 +294,9 @@
          "m3": "{{value}} م³",
          "megabytes": "{{value}} ميغابايت"
       },
+      "validation": {
+         "dateOrder": "لا يمكن أن يكون تاريخ «من» بعد تاريخ «إلى»"
+      },
       "view": {
          "cards": "بطاقات",
          "showAsCards": "عرض كبطاقات",

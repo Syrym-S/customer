@@ -294,6 +294,9 @@
          "m3": "{{value}} m³",
          "megabytes": "{{value}} MB"
       },
+      "validation": {
+         "dateOrder": "The “from” date cannot be later than the “to” date"
+      },
       "view": {
          "cards": "Cards",
          "showAsCards": "Show as cards",

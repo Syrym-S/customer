@@ -19,6 +19,9 @@ export async function fetchCustomerLeadsApi({
    perPage = 4,
    status,
    search,
+   num,
+   dateFrom,
+   dateTo,
    isDraft,
    manufacturerId,
    scope = leadsScopes.ACTIVE,
@@ -48,10 +51,35 @@ export async function fetchCustomerLeadsApi({
       params.q = normalizedSearch;
    }
 
+   const normalizedNum = String(num ?? '').trim();
+
+   if (normalizedNum) {
+      params.num = normalizedNum;
+   }
+
+   const normalizedDateFrom = String(dateFrom ?? '').trim();
+
+   if (normalizedDateFrom) {
+      params.date_from = normalizedDateFrom;
+   }
+
+   const normalizedDateTo = String(dateTo ?? '').trim();
+
+   if (normalizedDateTo) {
+      params.date_to = normalizedDateTo;
+   }
+
    const endpoints =
       leadsEndpointsByScope[scope] ?? leadsEndpointsByScope[leadsScopes.ACTIVE];
 
-   const endpoint = normalizedSearch ? endpoints.search : endpoints.list;
+   const hasSearchParams = Boolean(
+      normalizedSearch ||
+         normalizedNum ||
+         normalizedDateFrom ||
+         normalizedDateTo,
+   );
+
+   const endpoint = hasSearchParams ? endpoints.search : endpoints.list;
 
    const response = await apiClient.get(endpoint, { params });
 

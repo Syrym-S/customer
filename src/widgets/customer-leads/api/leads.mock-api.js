@@ -8,6 +8,12 @@ function isOwnDraft(lead, currentUserId) {
    return lead.is_draft === true && lead.createdBy === currentUserId;
 }
 
+function getMockLeadCreatedAtDay(lead) {
+   const rawCreatedAt = lead?.created_at?.date ?? lead?.created_at ?? '';
+
+   return String(rawCreatedAt).slice(0, 10);
+}
+
 function isVisibleInDefaultList(lead, currentUserId) {
    return lead.is_draft !== true || lead.createdBy === currentUserId;
 }
@@ -17,6 +23,9 @@ export async function fetchCustomerLeadsMock({
    perPage = 4,
    status,
    search,
+   num,
+   dateFrom,
+   dateTo,
    isDraft,
    scope = leadsScopes.ACTIVE,
 } = {}) {
@@ -48,6 +57,39 @@ export async function fetchCustomerLeadsMock({
                location.toLowerCase().includes(normalizedSearch),
             ),
       );
+   }
+
+   const normalizedNum = String(num ?? '').trim().toLowerCase();
+
+   if (normalizedNum) {
+      filteredLeads = filteredLeads.filter((lead) =>
+         String(lead.num ?? lead.id ?? '')
+            .toLowerCase()
+            .includes(normalizedNum),
+      );
+   }
+
+   const normalizedDateFrom = String(dateFrom ?? '').trim();
+   const normalizedDateTo = String(dateTo ?? '').trim();
+
+   if (normalizedDateFrom || normalizedDateTo) {
+      filteredLeads = filteredLeads.filter((lead) => {
+         const createdAt = getMockLeadCreatedAtDay(lead);
+
+         if (!createdAt) {
+            return false;
+         }
+
+         if (normalizedDateFrom && createdAt < normalizedDateFrom) {
+            return false;
+         }
+
+         if (normalizedDateTo && createdAt > normalizedDateTo) {
+            return false;
+         }
+
+         return true;
+      });
    }
 
    const startIndex = (page - 1) * perPage;

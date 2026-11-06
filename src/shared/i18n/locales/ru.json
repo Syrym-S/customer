@@ -298,6 +298,9 @@
          "m3": "{{value}} м³",
          "megabytes": "{{value}} МБ"
       },
+      "validation": {
+         "dateOrder": "Дата «от» не может быть позже даты «до»"
+      },
       "view": {
          "cards": "Карточки",
          "showAsCards": "Показать карточками",

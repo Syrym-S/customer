@@ -294,6 +294,9 @@
          "m3": "{{value}} m³",
          "megabytes": "{{value}} MB"
       },
+      "validation": {
+         "dateOrder": "«Başlangıç» tarihi «Bitiş» tarihinden sonra olamaz"
+      },
       "view": {
          "cards": "Kartlar",
          "showAsCards": "Kartlar olarak göster",
