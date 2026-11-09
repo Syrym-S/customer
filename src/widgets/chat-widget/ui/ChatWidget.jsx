@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Badge, Box, CircularProgress, Fab, Grow, IconButton, Paper, Typography, useTheme } from "@mui/material";
+import { Badge, Box, Fab, Grow, IconButton, Paper, Typography, useTheme } from "@mui/material";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import { useChatStore } from "../model/chat.store";
 import { getTotalUnreadCount } from "../model/chat.helpers";
 import { ChatListView } from "./ChatListView";
+import { ChatListSkeleton } from '../../../shared/ui/skeletons/ChatListSkeleton';
 import { ChatDetailView } from "./ChatDetailView";
 
 const UNREAD_CHATS_POLL_INTERVAL_MS = 60 * 1000;
@@ -111,16 +112,9 @@ export function ChatWidget() {
             {activeChat ? (
               <ChatDetailView chat={activeChat} />
             ) : isLoadingSingleLeadChat ? (
-              <Box
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <CircularProgress size={28} />
-              </Box>
+              // Пока тянется чат конкретной сделки, показываем форму
+              // строк списка вместо спиннера на всю панель.
+              <ChatListSkeleton />
             ) : (
               <ChatListView />
             )}

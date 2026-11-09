@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { FormSkeleton } from '../../shared/ui/skeletons/FormSkeleton';
 
 import {
   Alert,
   Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -527,17 +527,10 @@ export function ProfilePage() {
             onError={setProfilePhotoError}
           />
 
+          {/* При загрузке рисуем поля формы, которые сейчас заполнятся
+              данными профиля. */}
           {isProfileLoading ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                py: 6,
-              }}
-            >
-              <CircularProgress />
-            </Box>
+            <FormSkeleton fields={6} />
           ) : (
             <>
               <Stack spacing={2}>

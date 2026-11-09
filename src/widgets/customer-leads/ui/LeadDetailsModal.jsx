@@ -1,7 +1,5 @@
 import {
    Alert,
-   Box,
-   CircularProgress,
    Dialog,
    DialogContent,
    DialogTitle,
@@ -16,6 +14,7 @@ import { useCustomerMap } from '../../customer-map/model/useCustomerMap';
 import { useLeadPublish } from '../model/useLeadPublish';
 
 import { LeadDetailsMap } from './lead-details/LeadDetailsMap';
+import { DetailsSkeleton } from '../../../shared/ui/skeletons/DetailsSkeleton';
 import { LeadDetailsEditActions } from './lead-details/LeadDetailsEditActions';
 import { LeadDetailsContent } from './lead-details/LeadDetailsContent';
 import { LeadDetailsActions } from './lead-details/LeadDetailsActions';
@@ -176,24 +175,9 @@ export function LeadDetailsModal() {
          )}
 
          <DialogContent sx={{ px: 3 }}>
-            {shouldShowRouteLeadLoader && (
-               <Box
-                  sx={{
-                     minHeight: 360,
-                     display: 'flex',
-                     flexDirection: 'column',
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                     gap: 2,
-                  }}
-               >
-                  <CircularProgress />
-
-                  <Typography color="text.secondary">
-                     {t("leads.details.loading")}
-                  </Typography>
-               </Box>
-            )}
+            {/* Вместо спиннера на пустом диалоге показываем форму секций,
+                которые сейчас появятся. */}
+            {shouldShowRouteLeadLoader && <DetailsSkeleton sections={4} />}
 
             {!shouldShowRouteLeadLoader && isLeadDetailsLoading && (
                <Typography color="text.secondary" sx={{ mb: 2 }}>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
+import { DetailsSkeleton } from '../../shared/ui/skeletons/DetailsSkeleton';
 import { useParams } from 'react-router-dom';
-import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material';
+import { Alert, Box, Stack, Typography } from '@mui/material';
 
 import { useCustomerMap } from '../../widgets/customer-map/model/useCustomerMap';
 import { LeadDetailsMap } from '../../widgets/customer-leads/ui/lead-details/LeadDetailsMap';
@@ -129,24 +130,9 @@ export function SharedLeadPage() {
    }, [leadId, token, language]);
 
    if (isLoading) {
-      return (
-         <Box
-            sx={{
-               display: 'flex',
-               flexDirection: 'column',
-               alignItems: 'center',
-               justifyContent: 'center',
-               gap: 2,
-               minHeight: 320,
-            }}
-         >
-            <CircularProgress />
-
-            <Typography color="text.secondary">
-               {t("sharedLead.loading")}
-            </Typography>
-         </Box>
-      );
+      // Вместо спиннера показываем форму секций лида, которые
+      // сейчас появятся.
+      return <DetailsSkeleton sections={4} />;
    }
 
    if (loadErrorKey || !lead) {

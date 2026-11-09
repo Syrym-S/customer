@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Box, Paper, Tooltip } from '@mui/material';
 import i18n from '../../../shared/i18n';
 import { useTranslation } from "react-i18next";
@@ -57,7 +58,7 @@ function LeadStatusChip({ lead }) {
    );
 }
 
-export function LeadsTable({ leads }) {
+export function LeadsTable({ leads, isLoading = false }) {
    const { t } = useTranslation();
 
    const { setOpenLead } = useLeadsContext();
@@ -164,6 +165,16 @@ export function LeadsTable({ leads }) {
    return (
       <Paper sx={{ height: '70vh', my: '10px' }}>
          <DataGrid
+            // Загрузку рисует сама сетка: встроенный скелетон-оверлей строит
+            // строки-заглушки по реальным колонкам и их ширине, шапка остаётся
+            // видимой.
+            loading={isLoading}
+            slotProps={{
+               loadingOverlay: {
+                  variant: 'skeleton',
+                  noRowsVariant: 'skeleton',
+               },
+            }}
             rows={leads}
             getRowId={(row) => row.id}
             columns={columns}
@@ -175,3 +186,8 @@ export function LeadsTable({ leads }) {
       </Paper>
    );
 }
+
+LeadsTable.propTypes = {
+   leads: PropTypes.array.isRequired,
+   isLoading: PropTypes.bool,
+};

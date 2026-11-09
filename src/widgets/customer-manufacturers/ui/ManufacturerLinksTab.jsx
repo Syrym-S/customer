@@ -6,7 +6,6 @@ import {
    Box,
    Button,
    Chip,
-   CircularProgress,
    FormControl,
    InputAdornment,
    InputLabel,
@@ -260,36 +259,25 @@ export function ManufacturerLinksTab({
             <Alert severity="error">{error || requestsError}</Alert>
          )}
 
-         {isLoading || isRequestsLoading ? (
-            <Box
-               sx={{
-                  minHeight: 280,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-               }}
-            >
-               <CircularProgress />
-            </Box>
-         ) : (
-            <ManufacturersTable
-               manufacturers={visibleRows}
-               leadsCounts={leadsCounts}
-               selectionModel={selectionModel}
-               onSelectionModelChange={setSelectionModel}
-               onOpenDetails={(manufacturer) =>
-                  setSelectedId(getManufacturerId(manufacturer))
-               }
-               onOpenLeads={(manufacturer) =>
-                  onOpenManufacturerLeads(getManufacturerId(manufacturer))
-               }
-               onRemove={handleRemoveManufacturer}
-               onApprove={approveRequests}
-               onReject={rejectRequests}
-               onWithdraw={withdrawRequests}
-               isSubmitting={isSubmitting}
-            />
-         )}
+         {/* Загрузку показывает сама таблица — скелетон-оверлеем сетки. */}
+         <ManufacturersTable
+            manufacturers={visibleRows}
+            leadsCounts={leadsCounts}
+            selectionModel={selectionModel}
+            onSelectionModelChange={setSelectionModel}
+            onOpenDetails={(manufacturer) =>
+               setSelectedId(getManufacturerId(manufacturer))
+            }
+            onOpenLeads={(manufacturer) =>
+               onOpenManufacturerLeads(getManufacturerId(manufacturer))
+            }
+            onRemove={handleRemoveManufacturer}
+            onApprove={approveRequests}
+            onReject={rejectRequests}
+            onWithdraw={withdrawRequests}
+            isSubmitting={isSubmitting}
+            isLoading={isLoading || isRequestsLoading}
+         />
 
          {selectedManufacturer && (
             <ManufacturerDetailsModal

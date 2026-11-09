@@ -36,6 +36,7 @@ export function ManufacturersTable({
    onReject,
    onWithdraw,
    isSubmitting = false,
+   isLoading = false,
 }) {
    const { t } = useTranslation();
 
@@ -221,6 +222,16 @@ export function ManufacturersTable({
    return (
       <Paper sx={{ height: '70vh', my: '10px' }}>
          <DataGrid
+            // Загрузку рисует сама сетка: встроенный скелетон-оверлей строит
+            // строки-заглушки по реальным колонкам и их ширине, шапка остаётся
+            // видимой.
+            loading={isLoading}
+            slotProps={{
+               loadingOverlay: {
+                  variant: 'skeleton',
+                  noRowsVariant: 'skeleton',
+               },
+            }}
             rows={manufacturers}
             getRowId={(row) => getManufacturerId(row)}
             columns={columns}
@@ -251,4 +262,5 @@ ManufacturersTable.propTypes = {
    onReject: PropTypes.func.isRequired,
    onWithdraw: PropTypes.func.isRequired,
    isSubmitting: PropTypes.bool,
+   isLoading: PropTypes.bool,
 };

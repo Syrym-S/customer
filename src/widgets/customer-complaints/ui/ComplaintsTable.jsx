@@ -43,7 +43,7 @@ ComplaintStatusChip.propTypes = {
    }).isRequired,
 };
 
-export function ComplaintsTable({ complaints }) {
+export function ComplaintsTable({ complaints, isLoading = false }) {
    const { t } = useTranslation();
 
    const { setOpenComplaint } = useComplaintsContext();
@@ -130,7 +130,17 @@ export function ComplaintsTable({ complaints }) {
    return (
       <Paper sx={{ height: '70vh', my: '10px' }}>
          <DataGrid
-            rows={complaints}
+            // Загрузку рисует сама сетка: встроенный скелетон-оверлей строит
+         // строки-заглушки по реальным колонкам и их ширине, шапка остаётся
+         // видимой.
+         loading={isLoading}
+         slotProps={{
+            loadingOverlay: {
+               variant: 'skeleton',
+               noRowsVariant: 'skeleton',
+            },
+         }}
+         rows={complaints}
             getRowId={(row) => row.id}
             columns={columns}
             getRowClassName={getZebraRowClassName}
@@ -144,4 +154,9 @@ export function ComplaintsTable({ complaints }) {
 
 ComplaintsTable.propTypes = {
    complaints: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+ComplaintsTable.propTypes = {
+   complaints: PropTypes.array.isRequired,
+   isLoading: PropTypes.bool,
 };

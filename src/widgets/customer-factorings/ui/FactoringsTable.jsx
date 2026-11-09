@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Box, Paper, Stack, Tooltip } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import { DataGrid } from '@mui/x-data-grid';
@@ -30,7 +31,7 @@ function getCompanyBin(company) {
    return company?.bin || '-';
 }
 
-export function FactoringsTable({ factorings, onOpenDetails }) {
+export function FactoringsTable({ factorings, onOpenDetails, isLoading = false }) {
    const { t } = useTranslation();
 
    const columns = [
@@ -205,6 +206,16 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
    return (
       <Paper sx={{ height: '70vh', my: '10px' }}>
          <DataGrid
+            // Загрузку рисует сама сетка: встроенный скелетон-оверлей строит
+            // строки-заглушки по реальным колонкам и их ширине, шапка остаётся
+            // видимой.
+            loading={isLoading}
+            slotProps={{
+               loadingOverlay: {
+                  variant: 'skeleton',
+                  noRowsVariant: 'skeleton',
+               },
+            }}
             rows={factorings}
             getRowId={(row) => row.id ?? row.index}
             columns={columns}
@@ -216,3 +227,9 @@ export function FactoringsTable({ factorings, onOpenDetails }) {
       </Paper>
    );
 }
+
+FactoringsTable.propTypes = {
+   factorings: PropTypes.array.isRequired,
+   onOpenDetails: PropTypes.func,
+   isLoading: PropTypes.bool,
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Box, Paper, Tooltip } from '@mui/material';
 import i18n from '../../../shared/i18n';
 import { useTranslation } from "react-i18next";
@@ -82,7 +83,7 @@ function TenderStatusChip({ status }) {
    return <StatusDot label={label} color={styles.color} />;
 }
 
-export function TendersTable({ tenders }) {
+export function TendersTable({ tenders, isLoading = false }) {
    const { t } = useTranslation();
 
    const { openTenderDetails } = useTendersContext();
@@ -271,6 +272,16 @@ export function TendersTable({ tenders }) {
    return (
       <Paper sx={{ height: '70vh', my: '10px' }}>
          <DataGrid
+            // Загрузку рисует сама сетка: встроенный скелетон-оверлей строит
+            // строки-заглушки по реальным колонкам и их ширине, шапка остаётся
+            // видимой.
+            loading={isLoading}
+            slotProps={{
+               loadingOverlay: {
+                  variant: 'skeleton',
+                  noRowsVariant: 'skeleton',
+               },
+            }}
             rows={tenders}
             getRowId={(row) => row.id}
             columns={columns}
@@ -282,3 +293,8 @@ export function TendersTable({ tenders }) {
       </Paper>
    );
 }
+
+TendersTable.propTypes = {
+   tenders: PropTypes.array.isRequired,
+   isLoading: PropTypes.bool,
+};

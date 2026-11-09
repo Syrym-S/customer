@@ -5,7 +5,6 @@ import {
     Alert,
     Box,
     Button,
-    CircularProgress,
     InputAdornment,
     Pagination,
     Stack,
@@ -32,6 +31,7 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import { ForwardersTable } from '../../widgets/customer-forwarders/ui/ForwardersTable';
 import { ForwarderDetailsModal } from '../../widgets/customer-forwarders/ui/ForwardersDetailsModal';
 import { ForwardersCardsList } from '../../widgets/customer-forwarders/ui/ForwardersCardsList';
+import { CardsListSkeleton } from '../../shared/ui/skeletons/CardsListSkeleton';
 import { CreateForwarderInviteModal } from '../../widgets/customer-forwarders/ui/CreateForwarderInviteModal';
 import { PageContainer } from '../../shared/ui/PageContainer';
 
@@ -315,22 +315,17 @@ export function ForwardersPage() {
 
                 {error && <Alert severity="error">{error}</Alert>}
 
-                {isLoading ? (
-                    <Box
-                        sx={{
-                            minHeight: 280,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <CircularProgress />
-                    </Box>
-                ) : viewMode === FORWARDERS_VIEW_MODES.TABLE ? (
+                {/* Каждый вид показывает загрузку сам: таблица —
+                    скелетон-оверлеем сетки, карточки — через
+                    CardsListSkeleton. */}
+                {viewMode === FORWARDERS_VIEW_MODES.TABLE ? (
                     <ForwardersTable
                         forwarders={forwarders}
                         onOpenDetails={handleOpenDetails}
+                        isLoading={isLoading}
                     />
+                ) : isLoading ? (
+                    <CardsListSkeleton padding={0} />
                 ) : (
                     <ForwardersCardsList
                         forwarders={forwarders}

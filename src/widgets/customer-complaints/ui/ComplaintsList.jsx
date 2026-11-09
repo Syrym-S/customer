@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
    Alert,
    Box,
-   CircularProgress,
    Stack,
    ToggleButton,
    ToggleButtonGroup,
@@ -14,6 +13,7 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 
 import { useComplaintsContext } from '../model/useComplaintsContext';
 import { ComplaintCard } from './ComplaintCard';
+import { CardsListSkeleton } from '../../../shared/ui/skeletons/CardsListSkeleton';
 import { ComplaintsTable } from './ComplaintsTable';
 import { ComplaintDetailsModal } from './ComplaintDetailsModal';
 import { ComplaintFormButton } from './ComplaintFormButton';
@@ -113,19 +113,14 @@ export function ComplaintsList() {
 
             {error && <Alert severity="error">{error}</Alert>}
 
-            {isLoading ? (
-               <Box
-                  sx={{
-                     minHeight: 240,
-                     display: 'flex',
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                  }}
-               >
-                  <CircularProgress />
-               </Box>
-            ) : viewMode === COMPLAINTS_VIEW_MODES.TABLE ? (
-               <ComplaintsTable complaints={complaints} />
+            {/* Каждый вид показывает загрузку сам: таблица —
+                скелетон-оверлеем сетки, карточки — через
+                CardsListSkeleton. Пустое состояние не должно выигрывать
+                у загрузки: пока запрос в полёте, жалоб ещё нет. */}
+            {viewMode === COMPLAINTS_VIEW_MODES.TABLE ? (
+               <ComplaintsTable complaints={complaints} isLoading={isLoading} />
+            ) : isLoading ? (
+               <CardsListSkeleton padding={0} />
             ) : complaints.length === 0 ? (
                <Box sx={{ py: 6, textAlign: 'center' }}>
                   <Typography color="text.secondary">

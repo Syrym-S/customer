@@ -1,7 +1,6 @@
 import {
     Alert,
     Box,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -15,6 +14,7 @@ import {
     Typography,
 } from '@mui/material';
 import i18n from '../../../shared/i18n';
+import { DetailsSkeleton } from '../../../shared/ui/skeletons/DetailsSkeleton';
 import { useTranslation } from "react-i18next";
 
 import {
@@ -204,17 +204,9 @@ export function ForwarderDetailsModal({
                     overflowX: 'hidden',
                 }}
             >
-                {loading && (
-                    <Box
-                        sx={{
-                            py: 6,
-                            display: 'flex',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <CircularProgress />
-                    </Box>
-                )}
+                {/* Вместо спиннера на пустом диалоге показываем форму секций,
+                    которые сейчас появятся. */}
+                {loading && <DetailsSkeleton />}
 
                 {error && (
                     <Alert severity="error" sx={{ mb: 2 }}>

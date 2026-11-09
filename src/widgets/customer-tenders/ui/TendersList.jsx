@@ -1,7 +1,6 @@
 import {
    Alert,
    Box,
-   CircularProgress,
    InputAdornment,
    Stack,
    TextField,
@@ -15,6 +14,7 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 import { TenderCard } from './TenderCard';
+import { CardsListSkeleton } from '../../../shared/ui/skeletons/CardsListSkeleton';
 import { TenderDetailsModal } from './TenderDetailsModal';
 import { useTendersContext } from '../model/useTendersContext';
 import { TendersPagination } from './TendersPagination';
@@ -182,55 +182,46 @@ export function TendersList() {
                   overflow: 'hidden',
                }}
             >
-               {isLoading ? (
+               {/* Каждый вид показывает загрузку сам: таблица —
+                   скелетон-оверлеем сетки, карточки — через
+                   CardsListSkeleton. Пустое состояние не должно выигрывать
+                   у загрузки: пока запрос в полёте, тендеров ещё нет. */}
+               {viewMode === TENDERS_VIEW_MODES.TABLE ? (
+                  <TendersTable tenders={tenders} isLoading={isLoading} />
+               ) : isLoading ? (
+                  <CardsListSkeleton maxWidth={720} padding={2} />
+               ) : tenders.length === 0 ? (
                   <Box
                      sx={{
-                        minHeight: 240,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        py: 4,
+                        textAlign: 'center',
                      }}
                   >
-                     <CircularProgress size={32} />
+                     <Typography color="text.secondary">
+                        {t("tenders.notFound")}
+                     </Typography>
                   </Box>
                ) : (
-                  <>
-                     {viewMode === TENDERS_VIEW_MODES.TABLE ? (
-                        <TendersTable tenders={tenders} />
-                     ) : tenders.length === 0 ? (
-                        <Box
-                           sx={{
-                              py: 4,
-                              textAlign: 'center',
-                           }}
-                        >
-                           <Typography color="text.secondary">
-                              {t("tenders.notFound")}
-                           </Typography>
-                        </Box>
-                     ) : (
-                        <Box sx={{ p: 2 }}>
-                           <Stack
-                              spacing={2}
-                              sx={{
-                                 maxWidth: 720,
-                                 mx: 'auto',
-                              }}
-                           >
-                              {tenders.map((tender) => (
-                                 <TenderCard key={tender.id} tender={tender} />
-                              ))}
-                           </Stack>
-                        </Box>
-                     )}
-
-                     <TendersPagination
-                        page={page}
-                        count={pagesCount}
-                        onChange={handlePageChange}
-                     />
-                  </>
+                  <Box sx={{ p: 2 }}>
+                     <Stack
+                        spacing={2}
+                        sx={{
+                           maxWidth: 720,
+                           mx: 'auto',
+                        }}
+                     >
+                        {tenders.map((tender) => (
+                           <TenderCard key={tender.id} tender={tender} />
+                        ))}
+                     </Stack>
+                  </Box>
                )}
+
+               <TendersPagination
+                  page={page}
+                  count={pagesCount}
+                  onChange={handlePageChange}
+               />
             </Box>
          </Stack>
 

@@ -6,7 +6,6 @@ import {
    Box,
    Button,
    Chip,
-   CircularProgress,
    FormControl,
    InputAdornment,
    InputLabel,
@@ -266,28 +265,17 @@ export function ManufacturerLeadsTab({
 
          {error && <Alert severity="error">{error}</Alert>}
 
-         {isLoading ? (
-            <Box
-               sx={{
-                  minHeight: 280,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-               }}
-            >
-               <CircularProgress />
-            </Box>
-         ) : (
-            <ManufacturerLeadsTable
-               leads={pageLeads}
-               selectionModel={selectionModel}
-               onSelectionModelChange={setSelectionModel}
-               onOpenLead={(lead) => setOpenLeadId(lead.id)}
-               onAttachLead={(lead) => handleOpenAttachModal([lead.id])}
-               onDetachLead={(lead) => detachLeads([lead.id])}
-               isSubmitting={isSubmitting}
-            />
-         )}
+         {/* Загрузку показывает сама таблица — скелетон-оверлеем сетки. */}
+         <ManufacturerLeadsTable
+            leads={pageLeads}
+            selectionModel={selectionModel}
+            onSelectionModelChange={setSelectionModel}
+            onOpenLead={(lead) => setOpenLeadId(lead.id)}
+            onAttachLead={(lead) => handleOpenAttachModal([lead.id])}
+            onDetachLead={(lead) => detachLeads([lead.id])}
+            isSubmitting={isSubmitting}
+            isLoading={isLoading}
+         />
 
          {!isLoading && pagesCount > 1 && (
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>

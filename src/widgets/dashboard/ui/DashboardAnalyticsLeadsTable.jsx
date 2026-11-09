@@ -50,7 +50,16 @@ export function DashboardAnalyticsLeadsTable({
             rows={rows}
             columns={getColumns()}
             getRowId={(row) => row.id}
+            // loading здесь был изначально, но без явного variant сетка при
+            // повторных загрузках показывала линейный прогресс-бар: скелетон
+            // по умолчанию включается только на первой, когда строк ещё нет.
             loading={loading}
+            slotProps={{
+               loadingOverlay: {
+                  variant: 'skeleton',
+                  noRowsVariant: 'skeleton',
+               },
+            }}
             getRowClassName={getZebraRowClassName}
             paginationMode="server"
             rowCount={count}

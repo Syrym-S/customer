@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { DetailsSkeleton } from '../../../shared/ui/skeletons/DetailsSkeleton';
 import {
   Alert,
-  Box,
-  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -281,24 +280,9 @@ export function FactoringDetailsModal({
       )}
 
       <DialogContent sx={{ px: 3 }}>
-        {shouldShowDetailsLoader && (
-          <Box
-            sx={{
-              minHeight: 360,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 2,
-            }}
-          >
-            <CircularProgress size={32} />
-
-            <Typography color="text.secondary">
-              {t("factorings.details.loading")}
-            </Typography>
-          </Box>
-        )}
+        {/* Вместо спиннера на пустом диалоге показываем форму секций,
+            которые сейчас появятся. */}
+        {shouldShowDetailsLoader && <DetailsSkeleton sections={4} />}
 
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>

@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import {
     Alert,
     Box,
-    CircularProgress,
     Pagination,
     Stack,
     ToggleButton,
@@ -15,6 +14,7 @@ import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import { useFactoringsContext } from '../model/useFactoringsContext';
 import { FactoringCardsList } from './FactoringCardsList';
+import { CardsListSkeleton } from '../../../shared/ui/skeletons/CardsListSkeleton';
 import { FactoringDetailsModal } from './FactoringDetailsModal';
 import { FactoringsTable } from './FactoringsTable';
 import { PageContainer } from '../../../shared/ui/PageContainer';
@@ -160,48 +160,39 @@ export function FactoringsContent() {
                         overflow: 'hidden',
                     }}
                 >
-                    {isLoading ? (
-                        <Box
-                            sx={{
-                                minHeight: 240,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <CircularProgress />
-                        </Box>
+                    {/* Каждый вид показывает загрузку сам: таблица —
+                        скелетон-оверлеем сетки, карточки — через
+                        CardsListSkeleton. */}
+                    {viewMode === FACTORINGS_VIEW_MODES.TABLE ? (
+                        <FactoringsTable
+                            factorings={factorings}
+                            onOpenDetails={openFactoringDetails}
+                            isLoading={isLoading}
+                        />
+                    ) : isLoading ? (
+                        <CardsListSkeleton />
                     ) : (
-                        <>
-                            {viewMode === FACTORINGS_VIEW_MODES.TABLE ? (
-                                <FactoringsTable
-                                    factorings={factorings}
-                                    onOpenDetails={openFactoringDetails}
-                                />
-                            ) : (
-                                <FactoringCardsList
-                                    factorings={factorings}
-                                    onOpenDetails={openFactoringDetails}
-                                />
-                            )}
-
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    p: 2,
-                                }}
-                            >
-                                <Pagination
-                                    page={page}
-                                    count={pageCount}
-                                    onChange={handlePageChange}
-                                    color="primary"
-                                    shape="rounded"
-                                />
-                            </Box>
-                        </>
+                        <FactoringCardsList
+                            factorings={factorings}
+                            onOpenDetails={openFactoringDetails}
+                        />
                     )}
+
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            p: 2,
+                        }}
+                    >
+                        <Pagination
+                            page={page}
+                            count={pageCount}
+                            onChange={handlePageChange}
+                            color="primary"
+                            shape="rounded"
+                        />
+                    </Box>
                 </Box>
             </Stack>
 

@@ -1,7 +1,5 @@
 import {
     Alert,
-    Box,
-    CircularProgress,
     Dialog,
     DialogContent,
     DialogTitle,
@@ -13,6 +11,7 @@ import { useTendersContext } from '../model/useTendersContext';
 import { useEffect, useMemo, useState } from 'react';
 import { useCustomerMap } from '../../customer-map/model/useCustomerMap';
 import { LeadDetailsMap } from '../../customer-leads/ui/lead-details/LeadDetailsMap';
+import { DetailsSkeleton } from '../../../shared/ui/skeletons/DetailsSkeleton';
 import { TenderDetailsContent } from './tender-details/TenderDetailsContent';
 import { TenderDetailsHeader } from './tender-details/TenderDetailsHeader';
 import { TenderDetailsEditActions } from './tender-details/TenderDetailsEditActions';
@@ -481,23 +480,10 @@ export function TenderDetailsModal() {
                     </Alert>
                 )}
 
+                {/* Вместо спиннера на пустом диалоге показываем форму секций,
+                    которые сейчас появятся. */}
                 {shouldShowDetailsLoader ? (
-                    <Box
-                        sx={{
-                            minHeight: 360,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: 2,
-                        }}
-                    >
-                        <CircularProgress size={32} />
-
-                        <Typography color="text.secondary">
-                            {t("tenders.details.loading")}
-                        </Typography>
-                    </Box>
+                    <DetailsSkeleton sections={4} />
                 ) : (
                     shouldRenderTenderDetails && (
                         <>

@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
    Box,
    Button,
-   CircularProgress,
    InputAdornment,
    Paper,
    Table,
@@ -19,6 +18,7 @@ import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 
 import { TnvedRow } from './TnvedRow';
 import { LeadsPagination } from '../../customer-leads/ui/LeadsPagination';
+import { TableRowsSkeleton } from '../../../shared/ui/skeletons/TableRowsSkeleton';
 import { fetchTnvedCatalog } from '../api/tnved.repository';
 import { mergeTnvedTrees } from '../model/tnved-tree.helpers';
 
@@ -177,12 +177,11 @@ export function TnvedTable() {
                   </TableHead>
 
                   <TableBody>
+                     {/* Это обычная MUI-таблица, а не DataGrid, поэтому
+                         скелетон-строки рисуются явно, по ширине двух
+                         колонок. */}
                      {isLoading ? (
-                        <TableRow>
-                           <TableCell colSpan={2} align="center" sx={{ py: 4 }}>
-                              <CircularProgress size={24} />
-                           </TableCell>
-                        </TableRow>
+                        <TableRowsSkeleton columnWidths={[100, '70%']} />
                      ) : rows.length ? (
                         rows
                      ) : (

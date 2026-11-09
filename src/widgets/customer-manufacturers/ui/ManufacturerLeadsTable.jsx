@@ -40,6 +40,7 @@ export function ManufacturerLeadsTable({
    onAttachLead,
    onDetachLead,
    isSubmitting = false,
+   isLoading = false,
 }) {
    const { t } = useTranslation();
 
@@ -173,6 +174,16 @@ export function ManufacturerLeadsTable({
    return (
       <Paper sx={{ height: '70vh', my: '10px' }}>
          <DataGrid
+            // Загрузку рисует сама сетка: встроенный скелетон-оверлей строит
+            // строки-заглушки по реальным колонкам и их ширине, шапка остаётся
+            // видимой.
+            loading={isLoading}
+            slotProps={{
+               loadingOverlay: {
+                  variant: 'skeleton',
+                  noRowsVariant: 'skeleton',
+               },
+            }}
             rows={leads}
             getRowId={(row) => row.id}
             columns={columns}
@@ -199,4 +210,5 @@ ManufacturerLeadsTable.propTypes = {
    onAttachLead: PropTypes.func.isRequired,
    onDetachLead: PropTypes.func.isRequired,
    isSubmitting: PropTypes.bool,
+   isLoading: PropTypes.bool,
 };

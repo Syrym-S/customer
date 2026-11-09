@@ -11,6 +11,7 @@ import {
 } from "../model/chat.helpers";
 import { CHAT_CATEGORIES } from "../model/chat.mock";
 import { CounterpartAvatar } from "./CounterpartAvatar";
+import { ChatListSkeleton } from '../../../shared/ui/skeletons/ChatListSkeleton';
 
 const LOAD_MORE_LEAD_CHATS_SCROLL_THRESHOLD_PX = 80;
 
@@ -120,18 +121,12 @@ export function ChatListView() {
       </Tabs>
 
       <Box ref={listScrollRef} onScroll={handleScroll} sx={{ flex: 1, overflowY: "auto" }}>
+        {/* Первая загрузка показывает форму строк списка, которые
+            сейчас появятся. Спиннер ниже остаётся: то догрузка
+            следующей порции к уже видимому списку, а не ожидание
+            пустого экрана. */}
         {isLoadingLeadChats && categoryChats.length === 0 ? (
-          <Box
-            sx={{
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              p: 3,
-            }}
-          >
-            <CircularProgress size={28} />
-          </Box>
+          <ChatListSkeleton />
         ) : hasLeadChatsError && categoryChats.length === 0 ? (
           <Box sx={{ p: 2 }}>
             <Alert severity="error">

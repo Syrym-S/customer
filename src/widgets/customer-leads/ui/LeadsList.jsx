@@ -2,7 +2,6 @@ import {
    Alert,
    Box,
    Button,
-   CircularProgress,
    FormControl,
    InputAdornment,
    InputLabel,
@@ -29,6 +28,7 @@ import {
 } from '../model/lead.helpers';
 import { leadsScopes } from '../model/leads-scope.constants';
 import { LeadCard } from './LeadCard';
+import { CardsListSkeleton } from '../../../shared/ui/skeletons/CardsListSkeleton';
 import { LeadDetailsModal } from './LeadDetailsModal';
 import { LeadsPagination } from './LeadsPagination';
 import { useMemo, useState } from 'react';
@@ -423,59 +423,53 @@ export function LeadsList() {
                   overflow: 'hidden',
                }}
             >
-               {isLoading ? (
-                  <Box
-                     sx={{
-                        minHeight: 240,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                     }}
-                  >
-                     <CircularProgress />
-                  </Box>
+               {/* Каждый вид показывает загрузку сам: таблица —
+                   скелетон-оверлеем сетки, карточки и канбан — через
+                   CardsListSkeleton. Пустое состояние не должно
+                   выигрывать у загрузки: пока запрос в полёте, лидов
+                   ещё нет. */}
+               {viewMode === LEADS_VIEW_MODES.TABLE ? (
+                  <LeadsTable leads={leads} isLoading={isLoading} />
+               ) : viewMode === LEADS_VIEW_MODES.CARDS ? (
+                  isLoading ? (
+                     <CardsListSkeleton maxWidth={720} padding={2} />
+                  ) : leads.length === 0 ? (
+                     <Box
+                        sx={{
+                           py: 4,
+                           textAlign: 'center',
+                        }}
+                     >
+                        <Typography color="text.secondary">
+                           {t("leads.notFound")}
+                        </Typography>
+                     </Box>
+                  ) : (
+                     <Box sx={{ p: 2 }}>
+                        <Stack
+                           spacing={2}
+                           sx={{
+                              maxWidth: 720,
+                              mx: 'auto',
+                           }}
+                        >
+                           {leads.map((lead) => (
+                              <LeadCard key={lead.id} lead={lead} />
+                           ))}
+                        </Stack>
+                     </Box>
+                  )
+               ) : isLoading ? (
+                  <CardsListSkeleton maxWidth={720} padding={2} />
                ) : (
-                  <>
-                     {viewMode === LEADS_VIEW_MODES.TABLE ? (
-                        <LeadsTable leads={leads} />
-                     ) : viewMode === LEADS_VIEW_MODES.CARDS ? (
-                        leads.length === 0 ? (
-                           <Box
-                              sx={{
-                                 py: 4,
-                                 textAlign: 'center',
-                              }}
-                           >
-                              <Typography color="text.secondary">
-                                 {t("leads.notFound")}
-                              </Typography>
-                           </Box>
-                        ) : (
-                           <Box sx={{ p: 2 }}>
-                              <Stack
-                                 spacing={2}
-                                 sx={{
-                                    maxWidth: 720,
-                                    mx: 'auto',
-                                 }}
-                              >
-                                 {leads.map((lead) => (
-                                    <LeadCard key={lead.id} lead={lead} />
-                                 ))}
-                              </Stack>
-                           </Box>
-                        )
-                     ) : (
-                        <LeadsKanbanBoard leads={leads} />
-                     )}
-
-                     <LeadsPagination
-                        page={page}
-                        count={pagesCount}
-                        onChange={handlePageChange}
-                     />
-                  </>
+                  <LeadsKanbanBoard leads={leads} />
                )}
+
+               <LeadsPagination
+                  page={page}
+                  count={pagesCount}
+                  onChange={handlePageChange}
+               />
             </Box>
          </Stack>
 
