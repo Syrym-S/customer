@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from "react-i18next";
 
 import {
     Alert,
     Box,
-    CircularProgress,
-    Divider,
     Drawer,
     IconButton,
-    ListItemButton,
-    ListItemText,
     Pagination,
     Stack,
     Typography,
@@ -20,14 +17,11 @@ import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 
 import { fetchCustomerNotificationsApi } from '../api/notifications.api';
 import {
-    formatNotificationDate,
-    getNotificationCreatedAt,
-    getNotificationDescription,
     getNotificationId,
-    getNotificationTitle,
-    isNotificationUnread,
     normalizeNotificationsResponse,
 } from '../model/notifications.helpers';
+import { NotificationItem } from './NotificationItem';
+import { NotificationState } from './NotificationState';
 
 const PER_PAGE = 10;
 
@@ -121,188 +115,101 @@ export function NotificationsColumn({
             anchor='right'
             open={open}
             onClose={onClose}
+            sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}
             slotProps={{
                 paper: {
                     sx: {
                         width: {
                             xs: '100%',
-                            sm: 420,
+                            sm: 460,
                         },
-                        maxWidth: '100vw',
+                        maxWidth: '100%',
+                        bgcolor: 'background.default',
                     },
                 },
             }}
         >
             <Box
                 sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
+                    p: 3,
+                    bgcolor: 'background.paper',
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
                 }}
             >
                 <Box
                     sx={{
-                        px: 2,
-                        py: 1.5,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         gap: 1,
                     }}
                 >
-                    <Box>
-                        <Typography fontWeight={700}>
-                            {t("notifications.all")}
-                        </Typography>
-
-                        <Typography variant='body2' color='text.secondary'>
-                            {t("notifications.subtitle")}
-                        </Typography>
-                    </Box>
+                    <Typography
+                        sx={{
+                            fontSize: 22,
+                            fontWeight: 600,
+                            color: 'text.primary',
+                        }}
+                    >
+                        {t("notifications.all")}
+                    </Typography>
 
                     <Stack direction='row' spacing={0.5}>
                         <IconButton
-                            size='small'
                             onClick={handleRefresh}
                             disabled={isLoading}
                             aria-label={t("notifications.refresh")}
                         >
-                            <RefreshRoundedIcon fontSize='small' />
+                            <RefreshRoundedIcon />
                         </IconButton>
 
                         <IconButton
-                            size='small'
                             onClick={onClose}
                             aria-label={t("common.actions.close")}
                         >
-                            <CloseRoundedIcon fontSize='small' />
+                            <CloseRoundedIcon />
                         </IconButton>
                     </Stack>
                 </Box>
 
-                <Divider />
-
-                <Box
-                    sx={{
-                        flex: 1,
-                        overflowY: 'auto',
-                    }}
+                <Typography
+                    sx={{ mt: 0.5, fontSize: 13, color: 'text.secondary' }}
                 >
-                    {isLoading ? (
-                        <Box
-                            sx={{
-                                py: 5,
-                                display: 'flex',
-                                justifyContent: 'center',
-                            }}
-                        >
-                            <CircularProgress size={28} />
-                        </Box>
-                    ) : error ? (
-                        <Box sx={{ p: 2 }}>
-                            <Alert severity='error'>{error}</Alert>
-                        </Box>
-                    ) : notifications.length === 0 ? (
-                        <Box sx={{ p: 2 }}>
-                            <Typography color='text.secondary'>
-                                {t("notifications.empty")}
-                            </Typography>
-                        </Box>
-                    ) : (
-                        notifications.map((notification, index) => {
-                            const notificationId =
-                                getNotificationId(notification);
-                            const isUnread =
-                                isNotificationUnread(notification);
+                    {t("notifications.subtitle")}
+                </Typography>
+            </Box>
 
-                            return (
-                                <ListItemButton
-                                    key={notificationId || `${page}-${index}`}
-                                    onClick={() =>
-                                        handleOpenDetails(notification)
-                                    }
-                                    sx={{
-                                        alignItems: 'flex-start',
-                                        gap: 1,
-                                        py: 1.4,
-                                        px: 2,
-                                        whiteSpace: 'normal',
-                                        borderBottom: '1px solid',
-                                        borderColor: 'divider',
-                                        backgroundColor: isUnread
-                                            ? 'rgba(25, 118, 210, 0.06)'
-                                            : 'transparent',
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            width: 8,
-                                            height: 8,
-                                            mt: 0.75,
-                                            borderRadius: '50%',
-                                            backgroundColor: isUnread
-                                                ? 'primary.main'
-                                                : 'transparent',
-                                            flexShrink: 0,
-                                        }}
-                                    />
+            <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto' }}>
+                {error ? (
+                    <Alert severity='error' sx={{ m: 2 }}>
+                        {error}
+                    </Alert>
+                ) : isLoading || !notifications.length ? (
+                    <NotificationState loading={isLoading} />
+                ) : (
+                    <Box sx={{ p: 2, display: 'grid', gap: 1.5 }}>
+                        {notifications.map((notification, index) => (
+                            <NotificationItem
+                                key={
+                                    getNotificationId(notification) ||
+                                    `${page}-${index}`
+                                }
+                                notification={notification}
+                                onOpen={handleOpenDetails}
+                            />
+                        ))}
+                    </Box>
+                )}
+            </Box>
 
-                                    <ListItemText
-                                        primary={
-                                            <Typography
-                                                fontWeight={600}
-                                                sx={{ fontSize: 14 }}
-                                            >
-                                                {getNotificationTitle(
-                                                    notification,
-                                                )}
-                                            </Typography>
-                                        }
-                                        secondary={
-                                            <Box>
-                                                <Typography
-                                                    component='span'
-                                                    color='text.secondary'
-                                                    sx={{
-                                                        display: 'block',
-                                                        fontSize: 13,
-                                                        lineHeight: 1.35,
-                                                    }}
-                                                >
-                                                    {getNotificationDescription(
-                                                        notification,
-                                                    )}
-                                                </Typography>
-
-                                                <Typography
-                                                    component='span'
-                                                    color='text.disabled'
-                                                    sx={{
-                                                        display: 'block',
-                                                        mt: 0.5,
-                                                        fontSize: 12,
-                                                    }}
-                                                >
-                                                    {formatNotificationDate(
-                                                        getNotificationCreatedAt(
-                                                            notification,
-                                                        ),
-                                                    )}
-                                                </Typography>
-                                            </Box>
-                                        }
-                                    />
-                                </ListItemButton>
-                            );
-                        })
-                    )}
-                </Box>
-
-                <Divider />
-
+            {pageCount > 1 && (
                 <Box
                     sx={{
                         p: 2,
+                        bgcolor: 'background.paper',
+                        borderTop: '1px solid',
+                        borderColor: 'divider',
                         display: 'flex',
                         justifyContent: 'center',
                     }}
@@ -310,13 +217,21 @@ export function NotificationsColumn({
                     <Pagination
                         page={page}
                         count={pageCount}
+                        disabled={isLoading}
                         onChange={handlePageChange}
                         color='primary'
                         shape='rounded'
-                        disabled={isLoading}
+                        siblingCount={0}
                     />
                 </Box>
-            </Box>
+            )}
         </Drawer>
     );
 }
+
+NotificationsColumn.propTypes = {
+    open: PropTypes.bool,
+    onClose: PropTypes.func.isRequired,
+    onOpenNotificationDetails: PropTypes.func.isRequired,
+    refreshKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};

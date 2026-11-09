@@ -1,24 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from "react-i18next";
 import {
+    alpha,
     Alert,
     Badge,
     Box,
-    CircularProgress,
-    Divider,
+    Button,
+    Chip,
     IconButton,
-    ListItemText,
-    Menu,
-    MenuItem,
+    Popover,
     Typography,
 } from '@mui/material';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import {
-    formatNotificationDate,
-    getNotificationCreatedAt,
-    getNotificationDescription,
     getNotificationId,
-    getNotificationTitle,
     isNotificationUnread,
     isRealtimeOnlyNotification,
     normalizeNotificationDetailsResponse,
@@ -39,6 +35,8 @@ import {
     REALTIME_NOTIFICATION_TOAST_OPEN_EVENT,
 } from '../../../shared/model/notifications.store';
 import { NotificationsColumn } from './NotificationsColumn';
+import { NotificationItem } from './NotificationItem';
+import { NotificationState } from './NotificationState';
 
 export function Notifications() {
     const { t } = useTranslation();
@@ -350,218 +348,149 @@ export function Notifications() {
     return (
         <>
             <IconButton
-                color='inherit'
                 onClick={handleOpenMenu}
                 aria-label={t("notifications.title")}
+                aria-expanded={isMenuOpen}
+                sx={(theme) => ({
+                    mx: { xs: 0, sm: 1 },
+                    width: 40,
+                    height: 40,
+                    borderRadius: `${theme.radius.md}px`,
+                    border: '1px solid',
+                    borderColor: isMenuOpen ? 'primary.main' : 'divider',
+                    color: 'primary.main',
+                    bgcolor: isMenuOpen
+                        ? alpha(theme.palette.primary.main, 0.08)
+                        : 'background.paper',
+
+                    '&:hover': {
+                        bgcolor: alpha(theme.palette.primary.main, 0.08),
+                    },
+                })}
             >
                 <Badge
                     badgeContent={unreadNotificationsCount}
+                    max={99}
                     color='error'
-                    invisible={unreadNotificationsCount === 0}
                 >
                     <NotificationsNoneOutlinedIcon />
                 </Badge>
             </IconButton>
 
-            <Menu
+            <Popover
                 anchorEl={anchorEl}
                 open={isMenuOpen}
                 onClose={handleCloseMenu}
+                // Same as the other header dropdowns: the page scroll is left
+                // alone, so the scrollbar does not come and go.
+                disableScrollLock
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 slotProps={{
                     paper: {
-                        sx: {
-                            width: {
-                                xs: 'calc(100vw - 24px)',
-                                sm: 360,
-                            },
-                            maxWidth: 'calc(100vw - 24px)',
+                        sx: (theme) => ({
                             mt: 1,
-                            borderRadius: 3,
-                            overflow: 'hidden',
-                            maxHeight: {
-                                xs: 'calc(100dvh - 96px)',
-                                sm: 520,
-                            },
-                        },
+                            border: '1px solid',
+                            borderColor: 'divider',
+                            boxShadow: theme.customShadows.hover,
+                        }),
                     },
                 }}
             >
                 <Box
                     sx={{
+                        width: { xs: 'calc(100vw - 32px)', sm: 400 },
+                        maxWidth: '100%',
                         display: 'flex',
                         flexDirection: 'column',
-                        maxHeight: {
-                            xs: 'calc(100dvh - 96px)',
-                            sm: 520,
-                        },
-                        minHeight: 0,
+                        maxHeight: 'min(680px, 80dvh)',
                     }}
                 >
-                    <Box sx={{ px: 2, py: 1.5, flexShrink: 0 }}>
-                        <Typography fontWeight={700}>{t("notifications.title")}</Typography>
+                    <Box
+                        sx={{
+                            p: 2.5,
+                            borderBottom: '1px solid',
+                            borderColor: 'divider',
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                            }}
+                        >
+                            <Typography
+                                sx={{
+                                    fontSize: 18,
+                                    fontWeight: 600,
+                                    color: 'text.primary',
+                                }}
+                            >
+                                {t("notifications.title")}
+                            </Typography>
 
-                        <Typography variant='body2' color='text.secondary'>
+                            {unreadNotificationsCount > 0 && (
+                                <Chip
+                                    size='small'
+                                    label={unreadNotificationsCount}
+                                    color='primary'
+                                    sx={{ height: 22, fontWeight: 600 }}
+                                />
+                            )}
+                        </Box>
+
+                        <Typography
+                            sx={{
+                                mt: 0.75,
+                                fontSize: 13,
+                                color: 'text.secondary',
+                            }}
+                        >
                             {t("notifications.subtitleDot")}
                         </Typography>
                     </Box>
 
-                    <Divider />
-
-                    <Box
-                        sx={{
-                            flex: '0 1 auto',
-                            minHeight: 0,
-                            maxHeight: {
-                                xs: 'calc(100dvh - 220px)',
-                                sm: 360,
-                            },
-                            overflowY: 'auto',
-                            WebkitOverflowScrolling: 'touch',
-                        }}
-                    >
-                        {isNotificationsLoading ? (
-                            <Box
-                                sx={{
-                                    py: 3,
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <CircularProgress size={24} />
-                            </Box>
-                        ) : notificationsError ? (
-                            <Box sx={{ px: 2, py: 2 }}>
-                                <Alert severity='error'>
-                                    {notificationsError}
-                                </Alert>
-                            </Box>
-                        ) : notifications.length === 0 ? (
-                            <MenuItem disabled>
-                                <ListItemText
-                                    primary={t("notifications.empty")}
-                                    secondary={t("notifications.emptyHint")}
-                                />
-                            </MenuItem>
+                    <Box sx={{ overflowY: 'auto', minHeight: 0 }}>
+                        {notificationsError ? (
+                            <Alert severity='error' sx={{ m: 2 }}>
+                                {notificationsError}
+                            </Alert>
+                        ) : isNotificationsLoading || !notifications.length ? (
+                            <NotificationState
+                                loading={isNotificationsLoading}
+                            />
                         ) : (
-                            previewNotifications.map((notification) => {
-                                const notificationId =
-                                    getNotificationId(notification);
-                                const isUnread =
-                                    isNotificationUnread(notification);
-
-                                return (
-                                    <MenuItem
-                                        key={notificationId}
-                                        onClick={() =>
-                                            handleOpenNotificationDetails(
-                                                notification,
-                                            )
-                                        }
-                                        sx={{
-                                            alignItems: 'flex-start',
-                                            gap: 1,
-                                            py: 1.25,
-                                            whiteSpace: 'normal',
-                                            backgroundColor: isUnread
-                                                ? 'rgba(25, 118, 210, 0.06)'
-                                                : 'transparent',
-                                        }}
-                                    >
-                                        <Box
-                                            sx={{
-                                                width: 8,
-                                                height: 8,
-                                                mt: 0.75,
-                                                borderRadius: '50%',
-                                                backgroundColor: isUnread
-                                                    ? 'primary.main'
-                                                    : 'transparent',
-                                                flexShrink: 0,
-                                            }}
-                                        />
-
-                                        <ListItemText
-                                            primary={
-                                                <Typography
-                                                    fontWeight={600}
-                                                    sx={{ fontSize: 14 }}
-                                                >
-                                                    {getNotificationTitle(
-                                                        notification,
-                                                    )}
-                                                </Typography>
-                                            }
-                                            secondary={
-                                                <Box>
-                                                    <Typography
-                                                        component='span'
-                                                        color='text.secondary'
-                                                        sx={{
-                                                            display: 'block',
-                                                            fontSize: 13,
-                                                            lineHeight: 1.35,
-                                                        }}
-                                                    >
-                                                        {getNotificationDescription(
-                                                            notification,
-                                                        )}
-                                                    </Typography>
-
-                                                    <Typography
-                                                        component='span'
-                                                        color='text.disabled'
-                                                        sx={{
-                                                            display: 'block',
-                                                            mt: 0.5,
-                                                            fontSize: 12,
-                                                        }}
-                                                    >
-                                                        {formatNotificationDate(
-                                                            getNotificationCreatedAt(
-                                                                notification,
-                                                            ),
-                                                        )}
-                                                    </Typography>
-                                                </Box>
-                                            }
-                                        />
-                                    </MenuItem>
-                                );
-                            })
+                            <Box sx={{ p: 1.5, display: 'grid', gap: 1 }}>
+                                {previewNotifications.map((notification) => (
+                                    <NotificationItem
+                                        key={getNotificationId(notification)}
+                                        notification={notification}
+                                        onOpen={handleOpenNotificationDetails}
+                                    />
+                                ))}
+                            </Box>
                         )}
                     </Box>
 
-                    <Divider />
-
-                    <MenuItem
-                        onClick={handleOpenNotificationsDrawer}
+                    <Box
                         sx={{
-                            flexShrink: 0,
-                            justifyContent: 'center',
-                            py: 1.25,
-                            backgroundColor: 'background.paper',
-                            position: 'sticky',
-                            bottom: 0,
-                            zIndex: 1,
+                            p: 1.5,
+                            borderTop: '1px solid',
+                            borderColor: 'divider',
                         }}
                     >
-                        <Typography
-                            color='primary.main'
-                            fontWeight={600}
-                            sx={{
-                                width: '100%',
-                                textAlign: 'center',
-                                fontSize: {
-                                    xs: 13,
-                                    sm: 14,
-                                },
-                            }}
+                        <Button
+                            fullWidth
+                            onClick={handleOpenNotificationsDrawer}
+                            endIcon={<ArrowForwardRoundedIcon />}
+                            sx={{ py: 1 }}
                         >
-                            {t("notifications.viewAll")}
-                        </Typography>
-                    </MenuItem>
+                            {t("notifications.all")}
+                        </Button>
+                    </Box>
                 </Box>
-            </Menu>
+            </Popover>
 
             <NotificationsColumn
                 open={isNotificationsDrawerOpen}

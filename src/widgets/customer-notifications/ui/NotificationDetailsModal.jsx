@@ -1,16 +1,18 @@
+import PropTypes from 'prop-types';
 import {
+    alpha,
     Alert,
     Box,
     Button,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
+    Skeleton,
     Typography,
 } from '@mui/material';
 import { useTranslation } from "react-i18next";
-import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import {
     formatNotificationDate,
     getNotificationCreatedAt,
@@ -20,6 +22,8 @@ import {
     resolveCustomerNotificationAppPath,
 } from '../model/notifications.helpers';
 import { useNavigate } from 'react-router-dom';
+import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
+import { NotificationIcon } from './NotificationIcon';
 
 export function NotificationDetailsModal({
     open,
@@ -63,140 +67,152 @@ export function NotificationDetailsModal({
             onClose={loading ? undefined : onClose}
             fullWidth
             maxWidth='sm'
+            aria-labelledby='notification-dialog-title'
             slotProps={{
                 paper: {
                     sx: {
-                        borderRadius: 4,
+                        m: 2,
+                        width: 'calc(100% - 32px)',
+                        maxHeight: 'calc(100dvh - 32px)',
                     },
                 },
             }}
         >
-            <DialogTitle sx={{ px: 3, pt: 3, pb: 1.5 }}>
-                <Typography
-                    sx={{
-                        fontSize: {
-                            xs: '18px',
-                            sm: '20px',
-                        },
-                        fontWeight: 600,
-                        lineHeight: 1.3,
-                    }}
-                >
-                    {notification
-                        ? getNotificationTitle(notification)
-                        : t("common.severity.notice")}
-                </Typography>
-
-                {notification && (
-                    <Typography
-                        variant='body2'
-                        color='text.secondary'
-                        sx={{ mt: 0.5 }}
-                    >
-                        {formatNotificationDate(
-                            getNotificationCreatedAt(notification),
-                        )}
-                    </Typography>
-                )}
+            <DialogTitle
+                id='notification-dialog-title'
+                sx={{
+                    p: 3,
+                    pr: 7,
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
+                    color: 'text.primary',
+                    fontSize: 20,
+                    fontWeight: 600,
+                    overflowWrap: 'anywhere',
+                }}
+            >
+                {notification
+                    ? getNotificationTitle(notification)
+                    : t("common.severity.notice")}
             </DialogTitle>
 
-            <DialogContent sx={{ px: 3 }}>
-                {loading && (
-                    <Box
-                        sx={{
-                            minHeight: 160,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <CircularProgress />
+            <DialogCloseButton onClick={onClose} disabled={loading} />
+
+            <DialogContent
+                sx={{ p: 3, '&.MuiDialogContent-root': { pt: 3 } }}
+            >
+                {loading ? (
+                    <Box sx={{ display: 'grid', gap: 1.5 }}>
+                        <Skeleton variant='rounded' height={42} width={220} />
+
+                        <Skeleton
+                            variant='rounded'
+                            height={120}
+                            sx={(theme) => ({
+                                borderRadius: `${theme.radius.md}px`,
+                            })}
+                        />
                     </Box>
-                )}
-
-                {error && (
-                    <Alert severity='error' sx={{ mb: 2 }}>
-                        {error}
-                    </Alert>
-                )}
-
-                {!loading && notification && (
-                    <Box
-                        sx={{
-                            p: 2,
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            borderRadius: 3,
-                            backgroundColor: 'background.paper',
-                        }}
-                    >
-                        <Typography
-                            color='text.secondary'
-                            sx={{
-                                fontSize: 14,
-                                lineHeight: 1.5,
-                            }}
-                        >
-                            {getNotificationDescription(notification)}
-                        </Typography>
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                gap: 1,
-                                flexWrap: 'wrap',
-                                mt: 2,
-                            }}
-                        ></Box>
-
-                        {getNotificationLink(notification) && (
-                            <Box sx={{ mt: 2 }}>
-                                <Typography
-                                    component='button'
-                                    type='button'
-                                    onClick={handleOpenNotificationLink}
-                                    sx={{
-                                        p: 0,
-                                        border: 0,
-                                        background: 'none',
-                                        cursor: 'pointer',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: 0.5,
+                ) : error ? (
+                    <Alert severity='error'>{error}</Alert>
+                ) : (
+                    notification && (
+                        <>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 1.5,
+                                    mb: 2,
+                                }}
+                            >
+                                <Box
+                                    sx={(theme) => ({
+                                        width: 42,
+                                        height: 42,
+                                        borderRadius: `${theme.radius.md}px`,
+                                        bgcolor: alpha(
+                                            theme.palette.primary.main,
+                                            0.08,
+                                        ),
                                         color: 'primary.main',
+                                        display: 'grid',
+                                        placeItems: 'center',
+                                        flexShrink: 0,
+                                    })}
+                                >
+                                    <NotificationIcon
+                                        notification={notification}
+                                    />
+                                </Box>
+
+                                <Box
+                                    sx={{
+                                        color: 'text.primary',
                                         fontSize: 14,
                                         fontWeight: 600,
-                                        fontFamily: 'inherit',
-                                        textDecoration: 'none',
-
-                                        '&:hover': {
-                                            textDecoration: 'underline',
-                                        },
                                     }}
                                 >
-                                    {t("common.actions.goTo")}
-                                    <OpenInNewOutlinedIcon
-                                        sx={{ fontSize: 16 }}
-                                    />
-                                </Typography>
+                                    {formatNotificationDate(
+                                        getNotificationCreatedAt(notification),
+                                    )}
+                                </Box>
                             </Box>
-                        )}
-                    </Box>
+
+                            <Typography
+                                sx={(theme) => ({
+                                    p: 2,
+                                    borderRadius: `${theme.radius.md}px`,
+                                    bgcolor: 'background.default',
+                                    fontSize: 14,
+                                    lineHeight: 1.8,
+                                    color: 'text.secondary',
+                                    whiteSpace: 'pre-wrap',
+                                    overflowWrap: 'anywhere',
+                                })}
+                            >
+                                {getNotificationDescription(notification)}
+                            </Typography>
+                        </>
+                    )
                 )}
             </DialogContent>
 
             <DialogActions
                 sx={{
                     px: 3,
-                    pb: 3,
-                    pt: 2,
-                    justifyContent: 'flex-end',
+                    py: 2,
+                    borderTop: '1px solid',
+                    borderColor: 'divider',
+                    gap: 1,
                 }}
             >
                 <Button onClick={onClose} disabled={loading}>
                     {t("common.actions.close")}
                 </Button>
+
+                {!loading &&
+                    !error &&
+                    notification &&
+                    getNotificationLink(notification) && (
+                        <Button
+                            variant='contained'
+                            disableElevation
+                            endIcon={<ArrowForwardRoundedIcon />}
+                            onClick={handleOpenNotificationLink}
+                        >
+                            {t("common.actions.goTo")}
+                        </Button>
+                    )}
             </DialogActions>
         </Dialog>
     );
 }
+
+NotificationDetailsModal.propTypes = {
+    open: PropTypes.bool,
+    notification: PropTypes.object,
+    loading: PropTypes.bool,
+    error: PropTypes.string,
+    onClose: PropTypes.func.isRequired,
+};

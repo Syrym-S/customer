@@ -55,7 +55,15 @@ export function LanguageSwitcher({ sx }) {
         </Button>
       </Tooltip>
 
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        // Opening the list leaves the page scroll untouched, so the scrollbar
+        // is not swapped for padding and the header controls stay put. The
+        // menu keeps hanging off its button because the header is sticky.
+        disableScrollLock
+      >
         {availableLanguages.map((language) => (
           <MenuItem
             key={language}

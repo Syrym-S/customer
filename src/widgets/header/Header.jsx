@@ -514,18 +514,18 @@ export function Header() {
             sx={{
               minWidth: 0,
               maxWidth: {
-                xs: 140,
-                sm: 220,
-                md: 280,
+                xs: 112,
+                sm: 200,
+                md: 260,
               },
               px: {
-                xs: 0.75,
-                sm: 1.25,
+                xs: 1,
+                sm: 1.5,
               },
               textTransform: "none",
               overflow: "hidden",
               flexShrink: 1,
-              gap: 0.75,
+              gap: 1,
 
               "@media (max-width: 449px)": {
                 width: 36,
@@ -540,19 +540,17 @@ export function Header() {
           >
             <Avatar
               src={profilePhoto || undefined}
-              sx={{
-                width: {
-                  xs: 24,
-                  sm: 28,
-                },
-                height: {
-                  xs: 24,
-                  sm: 28,
-                },
+              sx={(theme) => ({
+                width: 28,
+                height: 28,
+                bgcolor: alpha(theme.palette.primary.main, 0.08),
+                color: "primary.main",
                 fontSize: 13,
                 flexShrink: 0,
-              }}
-            />
+              })}
+            >
+              {userEmailLabel.charAt(0).toUpperCase()}
+            </Avatar>
 
             <Typography
               component="span"
@@ -636,6 +634,52 @@ export function Header() {
         anchorEl={profileAnchorEl}
         open={isProfileMenuOpen}
         onClose={handleCloseProfileMenu}
+        // Same as the language switcher: no scroll lock, so the page scrollbar
+        // does not disappear and reappear while the menu is open.
+        disableScrollLock
+        slotProps={{
+          paper: {
+            sx: (theme) => ({
+              border: "1px solid",
+              borderColor: "divider",
+              boxShadow: theme.customShadows.hover,
+
+              // Never narrower than the profile button it hangs from, but
+              // free to grow when a label needs more room.
+              minWidth: profileAnchorEl?.offsetWidth,
+
+              "& .MuiMenuItem-root": {
+                minHeight: 40,
+                py: 1,
+                transition: "background-color 160ms ease, color 160ms ease",
+
+                "&:hover": {
+                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                  color: "primary.main",
+                },
+
+                // Keyboard focus repeats the hover fill and adds a ring. The
+                // outline is inset so the menu paper does not clip it.
+                "&.Mui-focusVisible": {
+                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                  color: "primary.main",
+                  outline: "2px solid",
+                  outlineColor: "primary.main",
+                  outlineOffset: -2,
+                },
+
+                "&.Mui-selected": {
+                  backgroundColor: alpha(theme.palette.primary.main, 0.08),
+                  color: "primary.main",
+
+                  "&:hover": {
+                    backgroundColor: alpha(theme.palette.primary.main, 0.12),
+                  },
+                },
+              },
+            }),
+          },
+        }}
       >
         <MenuItem onClick={handleNavigateProfile}>{t("nav.profile")}</MenuItem>
 
