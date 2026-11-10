@@ -1,5 +1,4 @@
 import {
-   Dialog,
    DialogContent,
    DialogTitle,
    Stack,
@@ -19,6 +18,7 @@ import { ComplaintRequestSection } from './complaints-details/sections/Complaint
 import { ComplaintTargetSection } from './complaints-details/sections/ComplaintTargetSection';
 import { ComplaintResponseSection } from './complaints-details/sections/ComplaintResponseSection';
 import { ComplaintFilesSection } from './complaints-details/sections/ComplaintFilesSection';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function ComplaintDetailsModal() {
    const { t } = useTranslation();
@@ -40,7 +40,7 @@ export function ComplaintDetailsModal() {
    }
 
    return (
-      <Dialog
+      <AppDialog
          open={Boolean(openComplaint)}
          onClose={handleClose}
          fullWidth
@@ -80,6 +80,6 @@ export function ComplaintDetailsModal() {
                <ComplaintFilesSection files={openComplaint.files} />
             </Stack>
          </DialogContent>
-      </Dialog>
+      </AppDialog>
    );
 }

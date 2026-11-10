@@ -8,7 +8,6 @@ import {
     Box,
     Button,
     CircularProgress,
-    Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
@@ -33,6 +32,7 @@ import {
     prepareAvatarSource,
     revokeAvatarSourceUrl,
 } from '../model/avatar-crop.helpers';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 const MIN_ZOOM = 1;
 const ZOOM_STEP = 0.1;
@@ -209,7 +209,7 @@ export function AvatarCropModal({ open, onClose, onApply }) {
     }
 
     return (
-        <Dialog
+        <AppDialog
             open={open}
             onClose={handleClose}
             fullWidth
@@ -376,7 +376,7 @@ export function AvatarCropModal({ open, onClose, onApply }) {
                 hidden
                 onChange={handleFileChange}
             />
-        </Dialog>
+        </AppDialog>
     );
 }
 

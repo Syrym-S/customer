@@ -1,4 +1,4 @@
-import { Box, Dialog, DialogContent } from '@mui/material';
+import { Box, DialogContent } from '@mui/material';
 import i18n from '../../../shared/i18n';
 import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
@@ -22,6 +22,7 @@ import { createLead } from '../api/create-lead.repository';
 import { DocumentsStep } from './create-lead-modal/steps/DocumentsStep';
 import { uploadLeadDocument } from '../../../widgets/customer-leads/api/lead-documents.api';
 import { buildPointScheduleFields } from '../lib/point-schedule.helpers';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 const STEP_KEYS = [
     'createLead.steps.route',
@@ -409,7 +410,7 @@ export function CreateLeadModal({ open, onClose }) {
 
     return (
         <>
-            <Dialog
+            <AppDialog
                 open={open}
                 onClose={handleClose}
                 fullWidth
@@ -478,7 +479,7 @@ export function CreateLeadModal({ open, onClose }) {
                     onSubmit={handleSubmitClick}
                     onSaveDraft={handleSaveDraft}
                 />
-            </Dialog>
+            </AppDialog>
 
             <CreateLeadResultModal
                 open={resultModal.open}

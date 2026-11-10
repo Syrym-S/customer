@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Dialog, DialogContent } from '@mui/material';
+import { Alert, DialogContent } from '@mui/material';
 
 import { DialogCloseButton } from '../../../../shared/ui/DialogCloseButton';
 import { DetailsSkeleton } from '../../../../shared/ui/skeletons/DetailsSkeleton';
@@ -13,6 +13,7 @@ import { useLeadDetailsData } from './hooks/useLeadDetailsData';
 import { useLeadDetailsRoute } from './hooks/useLeadDetailsRoute';
 import { useLeadDetailsGeoTracking } from './hooks/useLeadDetailsGeoTracking';
 import { useLeadDetailsDocuments } from './hooks/useLeadDetailsDocuments';
+import { AppDialog } from '../../../../shared/ui/AppDialog';
 
 export function LeadDetailsReadOnlyModal({ lead, onClose }) {
    const map = useCustomerMap();
@@ -54,7 +55,7 @@ export function LeadDetailsReadOnlyModal({ lead, onClose }) {
    const isInitialLoading = isLeadDetailsLoading && !leadDetails;
 
    return (
-      <Dialog
+      <AppDialog
          open={Boolean(lead)}
          onClose={onClose}
          fullWidth
@@ -108,7 +109,7 @@ export function LeadDetailsReadOnlyModal({ lead, onClose }) {
                </>
             )}
          </DialogContent>
-      </Dialog>
+      </AppDialog>
    );
 }
 

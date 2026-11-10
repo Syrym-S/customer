@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
    Alert,
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
@@ -21,6 +20,7 @@ import {
 } from '../model/complaints.helpers';
 import { ComplaintTargetPicker } from './ComplaintTargetPicker';
 import { ComplaintAttachmentsField } from './ComplaintAttachmentsField';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 function createInitialState() {
    return {
@@ -101,7 +101,7 @@ export function ComplaintForm({ open, onClose }) {
    }
 
    return (
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+      <AppDialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
          <DialogTitle>{t("complaints.create.action")}</DialogTitle>
 
          <DialogContent>
@@ -158,7 +158,7 @@ export function ComplaintForm({ open, onClose }) {
                {isSubmitting ? t("common.actions.sendingShort") : t("complaints.create.submit")}
             </Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }
 

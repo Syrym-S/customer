@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
@@ -20,6 +19,7 @@ import {
 } from '../../../shared/helpers/data-grid.helpers';
 import { searchLeads } from '../model/manufacturers.helpers';
 import { CompactLeadsGrid } from './CompactLeadsGrid';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function AttachLeadsModal({
    open,
@@ -54,7 +54,7 @@ export function AttachLeadsModal({
    }
 
    return (
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+      <AppDialog open={open} onClose={handleClose} fullWidth maxWidth="md">
          <DialogTitle>{t("manufacturers.tabs.linking")}</DialogTitle>
 
          <DialogContent>
@@ -105,7 +105,7 @@ export function AttachLeadsModal({
                   : t("manufacturers.link.actionWithCount", { count: selectedLeadIds.length })}
             </Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }
 

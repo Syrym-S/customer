@@ -6,7 +6,6 @@ import {
    Alert,
    Box,
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
@@ -24,6 +23,7 @@ import {
    isDateRangeValid,
    parseBlobErrorMessage,
 } from '../model/export-leads-report.helpers';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function ExportLeadsReportModal({ open, onClose }) {
    const { t } = useTranslation();
@@ -78,7 +78,7 @@ export function ExportLeadsReportModal({ open, onClose }) {
    }
 
    return (
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth='xs'>
+      <AppDialog open={open} onClose={handleClose} fullWidth maxWidth='xs'>
          <DialogTitle sx={{ px: 3, pt: 3, pb: 2 }}>
             <Stack direction='row' spacing={1.75} sx={{ alignItems: 'center' }}>
                <Box
@@ -163,7 +163,7 @@ export function ExportLeadsReportModal({ open, onClose }) {
                {isExporting ? t("exportReport.inProgress") : t("exportReport.submit")}
             </Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }
 

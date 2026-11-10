@@ -5,7 +5,6 @@ import {
    Box,
    Button,
    Chip,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
@@ -34,6 +33,7 @@ import {
 } from '../model/manufacturers.helpers';
 import { CompactLeadsGrid } from './CompactLeadsGrid';
 import { AttachLeadsModal } from './AttachLeadsModal';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 function ManufacturerDataTable({ manufacturer }) {
    const { t } = useTranslation();
@@ -140,7 +140,7 @@ export function ManufacturerDetailsModal({
    }
 
    return (
-      <Dialog
+      <AppDialog
          open
          onClose={isSubmitting ? undefined : onClose}
          fullWidth
@@ -250,7 +250,7 @@ export function ManufacturerDetailsModal({
                onSubmit={handleAttach}
             />
          )}
-      </Dialog>
+      </AppDialog>
    );
 }
 

@@ -4,7 +4,6 @@ import {
   Avatar,
   Box,
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -50,6 +49,7 @@ import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import { SupportContacts } from "../../shared/ui/SupportContacts";
 import { LanguageSwitcher } from "../../shared/ui/LanguageSwitcher";
 import { useChatStore } from "../chat-widget/model/chat.store";
+import { AppDialog } from "../../shared/ui/AppDialog";
 
 export function Header() {
   const { t } = useTranslation();
@@ -692,7 +692,7 @@ export function Header() {
         </MenuItem>
       </Menu>
 
-      <Dialog open={isLogoutModalOpen} onClose={handleCloseLogoutModal}>
+      <AppDialog open={isLogoutModalOpen} onClose={handleCloseLogoutModal}>
         <DialogTitle>{t("header.logout.fromAccount")}</DialogTitle>
 
         <DialogContent>
@@ -721,7 +721,7 @@ export function Header() {
               : t("header.logout.action")}
           </Button>
         </DialogActions>
-      </Dialog>
+      </AppDialog>
     </Box>
   );
 }

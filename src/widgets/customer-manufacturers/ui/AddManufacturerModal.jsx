@@ -7,7 +7,6 @@ import {
    Box,
    Button,
    CircularProgress,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
@@ -27,6 +26,7 @@ import {
    getManufacturerName,
 } from '../model/manufacturers.helpers';
 import { useManufacturersSearch } from '../model/useManufacturers';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function AddManufacturerModal({
    open,
@@ -62,7 +62,7 @@ export function AddManufacturerModal({
    }
 
    return (
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+      <AppDialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
          <DialogTitle>{title}</DialogTitle>
 
          <DialogContent>
@@ -167,7 +167,7 @@ export function AddManufacturerModal({
                {isSubmitting ? submittingLabel : submitLabel}
             </Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }
 

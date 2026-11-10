@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 import {
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
@@ -20,6 +19,7 @@ import {
    getManufacturerId,
    getManufacturerName,
 } from '../model/manufacturers.helpers';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function AttachManufacturerModal({
    open,
@@ -59,7 +59,7 @@ export function AttachManufacturerModal({
    const leadsCount = leadIds.length;
 
    return (
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
+      <AppDialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
          <DialogTitle>{t("manufacturers.link.title")}</DialogTitle>
 
          <DialogContent>
@@ -107,7 +107,7 @@ export function AttachManufacturerModal({
                {isSubmitting ? t("manufacturers.link.inProgress") : t("manufacturers.link.action")}
             </Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }
 

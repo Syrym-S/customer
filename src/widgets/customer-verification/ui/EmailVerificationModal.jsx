@@ -5,7 +5,6 @@ import {
    Box,
    Alert,
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
@@ -21,6 +20,7 @@ import {
    getResendVerificationMessage,
    startEmailVerificationCooldown,
 } from '../model/email-verification.helpers';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function EmailVerificationModal({ open, onClose }) {
    const { t } = useTranslation();
@@ -80,7 +80,7 @@ export function EmailVerificationModal({ open, onClose }) {
    }, [open]);
 
    return (
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth='xs'>
+      <AppDialog open={open} onClose={onClose} fullWidth maxWidth='xs'>
          <DialogTitle sx={{ px: 3, pt: 3, pb: 2 }}>
             <Stack direction='row' spacing={1.75} sx={{alignItems: 'center'}}>
                <Box
@@ -162,6 +162,6 @@ export function EmailVerificationModal({ open, onClose }) {
                     : t("common.actions.send")}
             </Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }

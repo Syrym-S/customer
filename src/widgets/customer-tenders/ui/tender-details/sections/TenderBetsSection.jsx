@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Chip,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -18,6 +17,7 @@ import PropTypes from "prop-types";
 import { TenderDetailsSection } from "./TenderDetailsSection";
 import { betPropType } from "../../../model/tenders.prop-types";
 import { formatAmount } from "../../../../../shared/helpers/currency-format.helpers";
+import { AppDialog } from "../../../../../shared/ui/AppDialog";
 
 const INITIAL_VISIBLE_COUNT = 3;
 
@@ -266,7 +266,7 @@ export function TenderBetsSection({
         )}
       </TenderDetailsSection>
 
-      <Dialog
+      <AppDialog
         open={Boolean(confirmBet)}
         onClose={handleCloseConfirm}
         fullWidth
@@ -334,7 +334,7 @@ export function TenderBetsSection({
             {isActionLoading ? t("tenders.bids.choosing") : t("tenders.bids.confirmChoice")}
           </Button>
         </DialogActions>
-      </Dialog>
+      </AppDialog>
     </>
   );
 }

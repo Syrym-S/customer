@@ -4,7 +4,6 @@ import {
     Alert,
     Box,
     Button,
-    Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
@@ -20,6 +19,7 @@ import {
     validateForwarderInviteForm,
 } from '../model/create-forwarder-invite.helpers';
 import { formatPhoneInput } from '../../../shared/helpers/phone-format.helpers';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function CreateForwarderInviteModal({
     open,
@@ -91,7 +91,7 @@ export function CreateForwarderInviteModal({
     }
 
     return (
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <AppDialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
             <DialogTitle>
                 {createdInvite
                     ? t("forwarders.invite.created")
@@ -279,6 +279,6 @@ export function CreateForwarderInviteModal({
                     </Button>
                 )}
             </DialogActions>
-        </Dialog>
+        </AppDialog>
     );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Box, Dialog, DialogContent, Divider } from '@mui/material';
+import { Alert, Box, DialogContent, Divider } from '@mui/material';
 
 import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
 import { LeadDetailsReadOnlyModal } from '../../customer-leads/ui/lead-details/LeadDetailsReadOnlyModal';
@@ -8,6 +8,7 @@ import { ForwarderInfoColumn } from './forwarder-details/ForwarderInfoColumn';
 import { ForwarderLeadsColumn } from './forwarder-details/ForwarderLeadsColumn';
 import { getForwarderId } from '../model/forwarders.helpers';
 import { useForwarderDetails } from '../model/useForwarderDetails';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function ForwarderDetailsModal({ open, forwarder: listForwarder, onClose }) {
     const {
@@ -39,7 +40,7 @@ export function ForwarderDetailsModal({ open, forwarder: listForwarder, onClose 
 
     return (
         <>
-            <Dialog
+            <AppDialog
                 open={open}
                 onClose={onClose}
                 fullWidth
@@ -181,7 +182,7 @@ export function ForwarderDetailsModal({ open, forwarder: listForwarder, onClose 
                         </Box>
                     </Box>
                 </DialogContent>
-            </Dialog>
+            </AppDialog>
 
             {openLead && (
                 <LeadDetailsReadOnlyModal

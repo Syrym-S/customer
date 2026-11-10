@@ -1,6 +1,5 @@
 import {
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogContentText,
@@ -14,6 +13,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import PropTypes from 'prop-types';
 import { tenderPropType } from '../../model/tenders.prop-types';
 import { useState } from 'react';
+import { AppDialog } from '../../../../shared/ui/AppDialog';
 
 function getConfirmActionConfig() {
    return {
@@ -157,7 +157,7 @@ export function TenderDetailsActions({
                </div>
             )}
          </DialogActions>
-         <Dialog open={Boolean(confirmAction)} onClose={handleCloseConfirm}>
+         <AppDialog open={Boolean(confirmAction)} onClose={handleCloseConfirm}>
             <DialogTitle>{confirmConfig?.title}</DialogTitle>
 
             <DialogContent>
@@ -180,7 +180,7 @@ export function TenderDetailsActions({
                      : confirmConfig?.confirmText}
                </Button>
             </DialogActions>
-         </Dialog>
+         </AppDialog>
       </>
    );
 }

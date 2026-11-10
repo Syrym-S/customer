@@ -4,7 +4,6 @@ import {
     Alert,
     Box,
     Button,
-    Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
@@ -24,6 +23,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
 import { NotificationIcon } from './NotificationIcon';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function NotificationDetailsModal({
     open,
@@ -62,7 +62,7 @@ export function NotificationDetailsModal({
     }
 
     return (
-        <Dialog
+        <AppDialog
             open={open}
             onClose={loading ? undefined : onClose}
             fullWidth
@@ -205,7 +205,7 @@ export function NotificationDetailsModal({
                         </Button>
                     )}
             </DialogActions>
-        </Dialog>
+        </AppDialog>
     );
 }
 

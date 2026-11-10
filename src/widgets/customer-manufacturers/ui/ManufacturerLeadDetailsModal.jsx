@@ -7,7 +7,6 @@ import {
    Button,
    Chip,
    CircularProgress,
-   Dialog,
    DialogActions,
    DialogContent,
    Stack,
@@ -31,6 +30,7 @@ import {
    getManufacturerBin,
    hasAttachedManufacturer,
 } from '../model/manufacturers.helpers';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function ManufacturerLeadDetailsModal({
    lead,
@@ -78,7 +78,7 @@ export function ManufacturerLeadDetailsModal({
    const isAttached = hasAttachedManufacturer(lead);
 
    return (
-      <Dialog
+      <AppDialog
          open={Boolean(lead)}
          onClose={onClose}
          fullWidth
@@ -205,7 +205,7 @@ export function ManufacturerLeadDetailsModal({
                {isAttached ? t("manufacturers.link.changeManufacturer") : t("manufacturers.link.manufacturerAction")}
             </Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }
 

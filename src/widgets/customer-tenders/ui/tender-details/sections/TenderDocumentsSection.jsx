@@ -8,7 +8,6 @@ import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import {
    Box,
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
@@ -20,6 +19,7 @@ import {
 
 import { TenderDetailsSection } from './TenderDetailsSection';
 import { tenderDocumentPropType } from '../../../model/tenders.prop-types';
+import { AppDialog } from '../../../../../shared/ui/AppDialog';
 
 function isPdfDocument(document) {
    const fileType = document?.fileType || '';
@@ -188,7 +188,7 @@ function TenderDocumentPreviewDialog({ document, onClose }) {
    const { t } = useTranslation();
 
    return (
-      <Dialog
+      <AppDialog
          open={Boolean(document)}
          onClose={onClose}
          fullWidth
@@ -264,7 +264,7 @@ function TenderDocumentPreviewDialog({ document, onClose }) {
 
             <Button onClick={onClose}>{t("common.actions.close")}</Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }
 

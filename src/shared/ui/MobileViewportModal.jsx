@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import {
    Box,
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    IconButton,
@@ -13,6 +12,7 @@ import {
    useTheme,
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { AppDialog } from './AppDialog';
 
 export function MobileViewportModal() {
    const { t } = useTranslation();
@@ -30,7 +30,7 @@ export function MobileViewportModal() {
    }
 
    return (
-      <Dialog open={open} onClose={handleClose} maxWidth='xs' fullWidth>
+      <AppDialog open={open} onClose={handleClose} maxWidth='xs' fullWidth>
          <IconButton
             onClick={handleClose}
             size='small'
@@ -76,6 +76,6 @@ export function MobileViewportModal() {
                {t("common.actions.gotIt")}
             </Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }

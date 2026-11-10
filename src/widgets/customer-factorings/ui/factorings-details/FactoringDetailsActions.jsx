@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Chip,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -13,6 +12,7 @@ import {
 } from "@mui/material";
 import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined";
 import { FactoringChatButton } from "./FactoringChatButton";
+import { AppDialog } from "../../../../shared/ui/AppDialog";
 
 const NON_CANCELLABLE_STATUSES = ["await_paid", "finished", "cancelled"];
 
@@ -140,7 +140,7 @@ export function FactoringDetailsActions({
         </Stack>
       </DialogActions>
 
-      <Dialog open={isConfirmOpen} onClose={handleCloseConfirm}>
+      <AppDialog open={isConfirmOpen} onClose={handleCloseConfirm}>
         <DialogTitle>{t("factorings.confirmParticipation.title")}</DialogTitle>
 
         <DialogContent>
@@ -162,9 +162,9 @@ export function FactoringDetailsActions({
             {initiatingSigning ? t("factorings.confirmParticipation.opening") : t("common.actions.confirm")}
           </Button>
         </DialogActions>
-      </Dialog>
+      </AppDialog>
 
-      <Dialog open={isCancelConfirmOpen} onClose={handleCloseCancelConfirm}>
+      <AppDialog open={isCancelConfirmOpen} onClose={handleCloseCancelConfirm}>
         <DialogTitle>{t("factorings.cancel.action")}</DialogTitle>
 
         <DialogContent>
@@ -187,7 +187,7 @@ export function FactoringDetailsActions({
             {isCancelling ? t("factorings.cancel.inProgress") : t("factorings.cancel.action")}
           </Button>
         </DialogActions>
-      </Dialog>
+      </AppDialog>
     </>
   );
 }

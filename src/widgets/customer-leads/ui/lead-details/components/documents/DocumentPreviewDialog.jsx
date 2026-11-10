@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import {
    Box,
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogTitle,
@@ -16,12 +15,13 @@ import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 
 import { DocumentPreview } from './DocumentPreview';
+import { AppDialog } from '../../../../../../shared/ui/AppDialog';
 
 export function DocumentPreviewDialog({ document, onClose }) {
    const { t } = useTranslation();
 
    return (
-      <Dialog
+      <AppDialog
          open={Boolean(document)}
          onClose={onClose}
          fullWidth
@@ -97,7 +97,7 @@ export function DocumentPreviewDialog({ document, onClose }) {
 
             <Button onClick={onClose}>{t("common.actions.close")}</Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }
 

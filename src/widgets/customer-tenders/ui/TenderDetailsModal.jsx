@@ -1,6 +1,5 @@
 import {
     Alert,
-    Dialog,
     DialogContent,
     DialogTitle,
     Typography,
@@ -30,6 +29,7 @@ import {
 import { TenderDetailsActions } from './tender-details/TenderDetailsActions';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 function getTenderRouteKey(lead) {
     if (!lead?.id) {
@@ -403,7 +403,7 @@ export function TenderDetailsModal() {
     }
 
     return (
-        <Dialog
+        <AppDialog
             open={Boolean(openTender)}
             onClose={handleClose}
             fullWidth
@@ -534,6 +534,6 @@ export function TenderDetailsModal() {
                     onDeleteTender={handleDeleteTender}
                 />
             )}
-        </Dialog>
+        </AppDialog>
     );
 }

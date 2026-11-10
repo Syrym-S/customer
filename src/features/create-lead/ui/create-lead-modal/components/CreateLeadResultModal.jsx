@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next";
 import {
    Box,
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    Typography,
 } from '@mui/material';
+import { AppDialog } from '../../../../../shared/ui/AppDialog';
 
 const modalStyles = {
    success: {
@@ -28,7 +28,7 @@ export function CreateLeadResultModal({ open, type, title, message, onClose }) {
    const styles = modalStyles[type] ?? modalStyles.success;
 
    return (
-      <Dialog
+      <AppDialog
          open={open}
          onClose={onClose}
          maxWidth='xs'
@@ -80,7 +80,7 @@ export function CreateLeadResultModal({ open, type, title, message, onClose }) {
                {t("common.actions.gotIt")}
             </Button>
          </DialogActions>
-      </Dialog>
+      </AppDialog>
    );
 }
 

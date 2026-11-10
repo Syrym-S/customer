@@ -5,7 +5,6 @@ import {
   Button,
   Checkbox,
   Chip,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -26,6 +25,7 @@ import { fetchForwardersApi } from "../../../features/create-lead/api/forwarders
 import { FORWARDERS_PER_PAGE } from "../../customer-forwarders/model/forwarders.helpers";
 import { TenderLeadOption } from "./TenderLeadOption";
 import { formatAmount } from "../../../shared/helpers/currency-format.helpers";
+import { AppDialog } from "../../../shared/ui/AppDialog";
 
 // A tender must be published at least this far in the future — gives a
 // safety buffer against the few seconds between picking "now" and actually
@@ -586,7 +586,7 @@ export function CreateTenderModal({ open, onClose }) {
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+      <AppDialog open={open} onClose={onClose} fullWidth maxWidth="sm">
         <DialogTitle>{t("tenders.create.title")}</DialogTitle>
 
         <DialogContent>
@@ -928,8 +928,8 @@ export function CreateTenderModal({ open, onClose }) {
             {isSubmitting ? t("common.actions.creating") : t("tenders.create.action")}
           </Button>
         </DialogActions>
-      </Dialog>
-      <Dialog open={isLeadConfirmOpen} onClose={handleCloseLeadConfirm}>
+      </AppDialog>
+      <AppDialog open={isLeadConfirmOpen} onClose={handleCloseLeadConfirm}>
         <DialogTitle>{t("tenders.leadPicker.sectionTitle")}</DialogTitle>
 
         <DialogContent>
@@ -969,7 +969,7 @@ export function CreateTenderModal({ open, onClose }) {
             {t("tenders.leadPicker.selectAction")}
           </Button>
         </DialogActions>
-      </Dialog>
+      </AppDialog>
     </>
   );
 }

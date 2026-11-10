@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -42,6 +41,7 @@ import { openLeadChatConnection } from "../lib/chat-ws";
 import { notifyError } from "../../../shared/model/notifications.store";
 import { CounterpartDetailsModal } from "./CounterpartDetailsModal";
 import { CounterpartAvatar } from "./CounterpartAvatar";
+import { AppDialog } from "../../../shared/ui/AppDialog";
 
 const LOAD_OLDER_SCROLL_THRESHOLD_PX = 80;
 const MARK_AS_READ_DEBOUNCE_MS = 1200;
@@ -1128,7 +1128,7 @@ export function ChatDetailView({ chat }) {
         </Box>
       </Box>
 
-      <Dialog
+      <AppDialog
         open={Boolean(lightboxAttachment)}
         onClose={() => setLightboxAttachment(null)}
         maxWidth="md"
@@ -1179,7 +1179,7 @@ export function ChatDetailView({ chat }) {
             />
           )}
         </Box>
-      </Dialog>
+      </AppDialog>
 
       <CounterpartDetailsModal
         open={isContactModalOpen}
@@ -1187,7 +1187,7 @@ export function ChatDetailView({ chat }) {
         onClose={handleCloseContactModal}
       />
 
-      <Dialog
+      <AppDialog
         open={Boolean(messagePendingDeletion)}
         onClose={() => setMessagePendingDeletion(null)}
         sx={{ zIndex: (theme) => theme.zIndex.snackbar + 1 }}
@@ -1211,7 +1211,7 @@ export function ChatDetailView({ chat }) {
             {isDeletingMessage ? t("common.actions.deleting") : t("common.actions.delete")}
           </Button>
         </DialogActions>
-      </Dialog>
+      </AppDialog>
     </Box>
   );
 }

@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { DetailsSkeleton } from '../../../shared/ui/skeletons/DetailsSkeleton';
 import {
   Alert,
-  Dialog,
   DialogContent,
   DialogTitle,
   Stack,
@@ -31,6 +30,7 @@ import { generateRoute } from "../../customer-leads/api/lead-route.repository";
 import { useCustomerMap } from "../../customer-map/model/useCustomerMap";
 import { useNavigate, useParams } from "react-router-dom";
 import { DialogCloseButton } from "../../../shared/ui/DialogCloseButton";
+import { AppDialog } from "../../../shared/ui/AppDialog";
 
 function getFactoringDisplayId(factoring, fallbackId = "") {
   return (
@@ -234,7 +234,7 @@ export function FactoringDetailsModal({
   }
 
   return (
-    <Dialog
+    <AppDialog
       open={open}
       onClose={initiatingSigning || isCancelling ? undefined : handleClose}
       maxWidth="md"
@@ -353,6 +353,6 @@ export function FactoringDetailsModal({
           onCancelFactoring={onCancelFactoring}
         />
       )}
-    </Dialog>
+    </AppDialog>
   );
 }

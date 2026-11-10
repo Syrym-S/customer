@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
    Alert,
    Button,
-   Dialog,
    DialogActions,
    DialogContent,
    DialogContentText,
@@ -18,6 +17,7 @@ import PropTypes from 'prop-types';
 
 import { getLeadShareLinkApi } from '../../api/leads.api';
 import { notifyError } from '../../../../shared/model/notifications.store';
+import { AppDialog } from '../../../../shared/ui/AppDialog';
 
 function formatShareExpiryDate(date) {
    if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
@@ -130,7 +130,7 @@ export function LeadShareButton({ leadId }) {
             </IconButton>
          </Tooltip>
 
-         <Dialog open={isConfirmOpen} onClose={handleCloseConfirm}>
+         <AppDialog open={isConfirmOpen} onClose={handleCloseConfirm}>
             <DialogTitle>{t("leads.share.title")}</DialogTitle>
 
             <DialogContent>
@@ -158,9 +158,9 @@ export function LeadShareButton({ leadId }) {
                   {isSharing ? t("leads.share.creating") : t("common.actions.share")}
                </Button>
             </DialogActions>
-         </Dialog>
+         </AppDialog>
 
-         <Dialog
+         <AppDialog
             open={Boolean(shareLink)}
             onClose={handleCloseLinkDialog}
             fullWidth
@@ -198,7 +198,7 @@ export function LeadShareButton({ leadId }) {
                   {t("common.actions.goTo")}
                </Button>
             </DialogActions>
-         </Dialog>
+         </AppDialog>
       </>
    );
 }

@@ -6,7 +6,6 @@ import {
   Alert,
   Box,
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -53,6 +52,7 @@ import { EmailVerificationStatus } from "../../widgets/customer-verification/ui/
 import { ProfileDocumentUpdateField } from "../../widgets/customer-profile/ui/ProfileDocumentUpdateField";
 import { ContractDocumentCard } from "../../widgets/customer-profile/ui/ContractDocumentCard";
 import { PageContainer } from "../../shared/ui/PageContainer";
+import { AppDialog } from "../../shared/ui/AppDialog";
 
 export function ProfilePage() {
   const { t } = useTranslation();
@@ -804,7 +804,7 @@ export function ProfilePage() {
         </Stack>
       </Paper>
 
-      <Dialog open={isDeleteWarningOpen} onClose={handleCloseDeleteWarning}>
+      <AppDialog open={isDeleteWarningOpen} onClose={handleCloseDeleteWarning}>
         <DialogTitle>{t("profile.sections.deleteAccount")}</DialogTitle>
 
         <DialogContent>
@@ -824,9 +824,9 @@ export function ProfilePage() {
             {t("common.actions.continue")}
           </Button>
         </DialogActions>
-      </Dialog>
+      </AppDialog>
 
-      <Dialog open={isDeleteConfirmOpen} onClose={handleCloseDeleteConfirm}>
+      <AppDialog open={isDeleteConfirmOpen} onClose={handleCloseDeleteConfirm}>
         <DialogTitle>{t("profile.delete.confirmTitle")}</DialogTitle>
 
         <DialogContent>
@@ -885,7 +885,7 @@ export function ProfilePage() {
             {isDeleteLoading ? t("common.actions.deleting") : t("profile.delete.action")}
           </Button>
         </DialogActions>
-      </Dialog>
+      </AppDialog>
     </PageContainer>
   );
 }

@@ -1,6 +1,5 @@
 import {
    Alert,
-   Dialog,
    DialogContent,
    DialogTitle,
    Typography,
@@ -26,6 +25,7 @@ import { useLeadDetailsDocuments } from './lead-details/hooks/useLeadDetailsDocu
 import { useLeadDetailsGeoTracking } from './lead-details/hooks/useLeadDetailsGeoTracking';
 import { useLeadDetailsMutations } from './lead-details/hooks/useLeadDetailsMutations';
 import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
+import { AppDialog } from '../../../shared/ui/AppDialog';
 
 export function LeadDetailsModal() {
    const { t } = useTranslation();
@@ -128,7 +128,7 @@ export function LeadDetailsModal() {
    }
 
    return (
-      <Dialog
+      <AppDialog
          open={Boolean(openLead)}
          onClose={handleClose}
          fullWidth
@@ -289,6 +289,6 @@ export function LeadDetailsModal() {
             isSaving={isSavingEdit}
             onSave={handleSaveEdit}
          />
-      </Dialog>
+      </AppDialog>
    );
 }

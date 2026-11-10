@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import {
   Box,
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -20,6 +19,7 @@ import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 import { CounterpartAvatar } from "./CounterpartAvatar";
 // import { TaxationRegimeInfo } from "../../../shared/kgd-taxation/ui/TaxationRegimeInfo";
+import { AppDialog } from "../../../shared/ui/AppDialog";
 
 // const TAXATION_ROLE_BY_LABEL = {
 //   "Экспедитор": "forwarder",
@@ -103,7 +103,7 @@ export function CounterpartDetailsModal({ open, counterpart, onClose }) {
   }
 
   return (
-    <Dialog
+    <AppDialog
       open={open}
       onClose={onClose}
       fullWidth
@@ -239,6 +239,6 @@ export function CounterpartDetailsModal({ open, counterpart, onClose }) {
       <DialogActions sx={{ px: 3, pb: 3 }}>
         <Button onClick={onClose}>{t("common.actions.close")}</Button>
       </DialogActions>
-    </Dialog>
+    </AppDialog>
   );
 }
