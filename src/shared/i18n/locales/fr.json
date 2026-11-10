@@ -155,7 +155,6 @@
       "fields": {
          "actions": "Actions",
          "amount": "Montant",
-         "bankName": "Nom de la banque",
          "bik": "BIK",
          "bin": "BIN",
          "binValue": "BIN : {{bin}}",
@@ -172,6 +171,7 @@
          "companyBin": "BIN de l'entreprise",
          "companyName": "Nom de l'entreprise",
          "contactPerson": "Personne de contact",
+         "createdAt": "Date de création",
          "currency": "Devise",
          "customer": "Client",
          "date": "Date",
@@ -678,14 +678,17 @@
          "title": "Invitation"
       },
       "issuingCountry": "Pays d'émission du document",
+      "leads": {
+         "empty": "Ce transporteur n'a encore aucune commande",
+         "title": "Commandes du transporteur"
+      },
       "notFound": "Aucun transporteur trouvé",
       "registered": "Enregistré",
       "representative": "Représentant",
       "searchPlaceholder": "Rechercher un transporteur",
       "sections": {
-         "company": "Informations du transporteur — entreprise",
-         "contact": "Informations de la personne de contact",
-         "requisites": "Coordonnées bancaires du transporteur"
+         "individual": "Personne physique",
+         "legalEntity": "Personne morale"
       },
       "subtitle": "Liste complète de tous les transporteurs",
       "title": "Transporteurs",
@@ -1119,13 +1122,22 @@
    "profile": {
       "avatar": {
          "allowedTypes": "Seuls les fichiers PNG ou JPEG peuvent être chargés",
+         "changePhoto": "Choisir une autre photo",
+         "cropFailed": "Impossible de recadrer l'image",
+         "cropHint": "Déplacez l'image et ajustez le zoom de la zone de recadrage",
+         "cropTitle": "Photo de profil",
          "delete": "Supprimer la photo",
-         "maxSize": "Taille maximale de la photo — 600×600 px",
+         "maxFileSize": "Taille maximale du fichier — {{size}} Mo",
+         "minCropSize": "Sélectionnez une zone de recadrage d'au moins {{size}}×{{size}} px",
          "minSize": "Taille minimale de la photo — 400×400 px",
          "readFailed": "Impossible de lire le fichier",
+         "requirements": ".png, .jpeg · à partir de 400×400 px",
+         "rotate": "Faire pivoter",
+         "selectPhoto": "Choisir un fichier",
          "sizeCheckFailed": "Impossible de vérifier la taille de l'image",
          "upload": "Télécharger la photo",
-         "uploadFailed": "Impossible de télécharger la photo"
+         "uploadFailed": "Impossible de télécharger la photo",
+         "zoom": "Zoom"
       },
       "contract": {
          "notSigned": "Non signé · cliquez pour signer",

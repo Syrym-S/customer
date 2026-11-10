@@ -61,7 +61,6 @@ export function ProfilePage() {
   const [errors, setErrors] = useState({});
   const [isSaving, setIsSaving] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [legalFilesLoading, setLegalFilesLoading] = useState(false);
   const [legalDocuments, setLegalDocuments] = useState([]);
   const [initialLoadedForm, setInitialLoadedForm] =
     useState(initialProfileForm);
@@ -69,7 +68,6 @@ export function ProfilePage() {
   const [profileLoadError, setProfileLoadError] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
   const [profilePhotoFile, setProfilePhotoFile] = useState(null);
-  const [profilePhotoError, setProfilePhotoError] = useState("");
   const [shouldDeleteProfilePhoto, setShouldDeleteProfilePhoto] =
     useState(false);
 
@@ -131,7 +129,6 @@ export function ProfilePage() {
 
         setProfilePhoto(avatar);
         setProfilePhotoFile(null);
-        setProfilePhotoError("");
         setShouldDeleteProfilePhoto(false);
 
         setProfileDocumentFiles({
@@ -252,18 +249,6 @@ export function ProfilePage() {
     setSubmitError("");
   }
 
-  async function uploadLegalDocuments(files) {
-    try {
-      setLegalFilesLoading(true);
-
-      updateProfileDocuments(files);
-
-      setLegalFilesLoading(false);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -275,13 +260,7 @@ export function ProfilePage() {
       return;
     }
 
-    if (profilePhotoError) {
-      return;
-    }
-
     const payload = mapProfileFormToChangedApi(form, initialLoadedForm);
-
-    uploadLegalDocuments(profileDocumentFiles);
 
     const hasProfileChanges = Object.keys(payload).length > 0;
     const hasPhotoUpload = Boolean(profilePhotoFile);
@@ -507,24 +486,20 @@ export function ProfilePage() {
 
           <ProfilePhotoUploader
             value={profilePhoto}
-            error={profilePhotoError}
             disabled={isSaving || isProfileLoading}
             isLoading={isProfileLoading}
             onChange={(nextPhoto, file) => {
               setProfilePhoto(nextPhoto);
               setProfilePhotoFile(file);
               setShouldDeleteProfilePhoto(false);
-              setProfilePhotoError("");
               setSubmitError("");
             }}
             onRemove={() => {
               setProfilePhoto("");
               setProfilePhotoFile(null);
               setShouldDeleteProfilePhoto(true);
-              setProfilePhotoError("");
               setSubmitError("");
             }}
-            onError={setProfilePhotoError}
           />
 
           {/* При загрузке рисуем поля формы, которые сейчас заполнятся
@@ -583,16 +558,6 @@ export function ProfilePage() {
                   onChange={handleChange}
                   error={Boolean(errors.legalAddress)}
                   helperText={errors.legalAddress}
-                  fullWidth
-                />
-
-                <TextField
-                  name="bankName"
-                  label={t("common.fields.bankName")}
-                  value={form.bankName}
-                  onChange={handleChange}
-                  error={Boolean(errors.bankName)}
-                  helperText={errors.bankName}
                   fullWidth
                 />
               </Stack>

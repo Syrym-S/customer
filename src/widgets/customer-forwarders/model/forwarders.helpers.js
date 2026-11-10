@@ -78,3 +78,50 @@ export function isForwarderRegistered(forwarder) {
 export function hasForwarderInviteLink(forwarder) {
     return Boolean(getForwarderInviteLink(forwarder));
 }
+
+export function getForwarderAvatarUrl(forwarder) {
+    const value =
+        forwarder?.avatar ||
+        forwarder?.avatar_url ||
+        forwarder?.avatarUrl ||
+        forwarder?.photo ||
+        forwarder?.logo ||
+        '';
+
+    return typeof value === 'string' ? value.trim() : '';
+}
+
+export function getForwarderInitials(forwarder) {
+    const source =
+        forwarder?.name ||
+        forwarder?.company_name ||
+        forwarder?.companyName ||
+        forwarder?.fio ||
+        forwarder?.fullname ||
+        forwarder?.fullName ||
+        '';
+
+    const words = String(source)
+        .replace(/["«»'`]/g, ' ')
+        .replace(/\b(ТОО|ИП|АО|ТОВ|ООО|LLP|LLC|JSC)\b/gi, ' ')
+        .split(/\s+/)
+        .filter((word) => /\p{L}/u.test(word));
+
+    if (words.length === 0) {
+        return '?';
+    }
+
+    if (words.length === 1) {
+        return words[0].slice(0, 2).toUpperCase();
+    }
+
+    return words
+        .slice(0, 2)
+        .map((word) => word[0])
+        .join('')
+        .toUpperCase();
+}
+
+export function getForwarderLeads(forwarder) {
+    return Array.isArray(forwarder?.leads) ? forwarder.leads : [];
+}

@@ -1,5 +1,6 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import { useTranslation } from "react-i18next";
+import PropTypes from 'prop-types';
 
 import {
     Avatar,
@@ -12,47 +13,25 @@ import {
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
-import { validateAndReadProfilePhoto } from '../model/profile-photo.helpers';
+import { AvatarCropModal } from './AvatarCropModal';
 
 export function ProfilePhotoUploader({
     value,
-    error,
     disabled,
     isLoading,
     onChange,
-    onError,
     onRemove,
 }) {
     const { t } = useTranslation();
 
-    const inputRef = useRef(null);
+    const [isCropModalOpen, setIsCropModalOpen] = useState(false);
 
-    function handleOpenFileDialog() {
-        inputRef.current?.click();
+    function handleOpenCropModal() {
+        setIsCropModalOpen(true);
     }
 
-    async function handleFileChange(event) {
-        const file = event.target.files?.[0];
-
-        event.target.value = '';
-
-        if (!file) {
-            return;
-        }
-
-        try {
-            const photoUrl = await validateAndReadProfilePhoto(file);
-
-            onError('');
-            onChange(photoUrl, file);
-        } catch (fileError) {
-            onError(fileError.message || t("profile.avatar.uploadFailed"));
-        }
-    }
-
-    function handleRemovePhoto() {
-        onError('');
-        onRemove();
+    function handleCloseCropModal() {
+        setIsCropModalOpen(false);
     }
 
     return (
@@ -135,7 +114,7 @@ export function ProfilePhotoUploader({
                             >
                                 <IconButton
                                     size='small'
-                                    onClick={handleOpenFileDialog}
+                                    onClick={handleOpenCropModal}
                                     disabled={disabled}
                                     aria-label={t("profile.avatar.upload")}
                                     sx={{
@@ -152,7 +131,7 @@ export function ProfilePhotoUploader({
                                 {value && (
                                     <IconButton
                                         size='small'
-                                        onClick={handleRemovePhoto}
+                                        onClick={onRemove}
                                         disabled={disabled}
                                         aria-label={t("profile.avatar.delete")}
                                         sx={{
@@ -184,7 +163,7 @@ export function ProfilePhotoUploader({
                             },
                         }}
                     >
-                        .png, .jpeg · 400–600px
+                        {t("profile.avatar.requirements")}
                     </Typography>
                 </Box>
 
@@ -203,7 +182,7 @@ export function ProfilePhotoUploader({
                         >
                             <IconButton
                                 size='small'
-                                onClick={handleOpenFileDialog}
+                                onClick={handleOpenCropModal}
                                 disabled={disabled}
                                 aria-label={t("profile.avatar.upload")}
                                 sx={{
@@ -218,7 +197,7 @@ export function ProfilePhotoUploader({
                                 <IconButton
                                     size='small'
                                     color='error'
-                                    onClick={handleRemovePhoto}
+                                    onClick={onRemove}
                                     disabled={disabled}
                                     aria-label={t("profile.avatar.delete")}
                                     sx={{
@@ -231,26 +210,22 @@ export function ProfilePhotoUploader({
                             )}
                         </Stack>
                     )}
-
-                    {error && (
-                        <Typography
-                            color='error'
-                            fontSize={13}
-                            sx={{ mt: 0.75 }}
-                        >
-                            {error}
-                        </Typography>
-                    )}
                 </Box>
             </Stack>
 
-            <input
-                ref={inputRef}
-                type='file'
-                accept='image/png,image/jpeg'
-                hidden
-                onChange={handleFileChange}
+            <AvatarCropModal
+                open={isCropModalOpen}
+                onClose={handleCloseCropModal}
+                onApply={onChange}
             />
         </Box>
     );
 }
+
+ProfilePhotoUploader.propTypes = {
+    value: PropTypes.string,
+    disabled: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    onChange: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
+};

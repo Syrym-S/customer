@@ -17,7 +17,6 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 import {
     createForwarderApi,
-    fetchForwarderById,
     fetchForwardersApi,
     searchForwardersApi,
 } from '../../features/create-lead/api/forwarders.api';
@@ -56,8 +55,6 @@ export function ForwardersPage() {
 
     const [selectedForwarder, setSelectedForwarder] = useState(null);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-    const [isDetailsLoading, setIsDetailsLoading] = useState(false);
-    const [detailsError, setDetailsError] = useState('');
     const [viewMode, setViewMode] = useState(FORWARDERS_VIEW_MODES.TABLE);
 
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -127,42 +124,18 @@ export function ForwardersPage() {
         setPage(nextPage);
     }
 
-    async function handleOpenDetails(forwarder) {
-        const forwarderId = getForwarderId(forwarder);
-
-        if (!forwarderId) {
+    function handleOpenDetails(forwarder) {
+        if (!getForwarderId(forwarder)) {
             return;
         }
 
-        try {
-            setIsDetailsOpen(true);
-            setSelectedForwarder(forwarder);
-            setDetailsError('');
-            setIsDetailsLoading(true);
-
-            const details = await fetchForwarderById(forwarderId);
-
-            setSelectedForwarder(details || forwarder);
-        } catch (requestError) {
-            setDetailsError(
-                requestError.response?.data?.message ||
-                    requestError.response?.data?.error ||
-                    requestError.message ||
-                    t("common.forwarderPicker.detailsLoadFailed"),
-            );
-        } finally {
-            setIsDetailsLoading(false);
-        }
+        setSelectedForwarder(forwarder);
+        setIsDetailsOpen(true);
     }
 
     function handleCloseDetails() {
-        if (isDetailsLoading) {
-            return;
-        }
-
         setIsDetailsOpen(false);
         setSelectedForwarder(null);
-        setDetailsError('');
     }
 
     function handleOpenCreate() {
@@ -354,8 +327,6 @@ export function ForwardersPage() {
             <ForwarderDetailsModal
                 open={isDetailsOpen}
                 forwarder={selectedForwarder}
-                loading={isDetailsLoading}
-                error={detailsError}
                 onClose={handleCloseDetails}
             />
 

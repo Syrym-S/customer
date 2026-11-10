@@ -56,6 +56,10 @@ export async function updateProfileDocuments({
   registrationDocumentFile,
   employerDocumentFile,
 }) {
+  if (!registrationDocumentFile && !employerDocumentFile) {
+    return null;
+  }
+
   const payload = new FormData();
 
   if (registrationDocumentFile) {

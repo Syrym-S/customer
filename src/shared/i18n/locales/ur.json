@@ -155,7 +155,6 @@
       "fields": {
          "actions": "کارروائیاں",
          "amount": "رقم",
-         "bankName": "بینک کا نام",
          "bik": "BIK",
          "bin": "BIN",
          "binValue": "BIN: {{bin}}",
@@ -172,6 +171,7 @@
          "companyBin": "کمپنی کا BIN",
          "companyName": "کمپنی کا نام",
          "contactPerson": "رابطہ کار",
+         "createdAt": "تاریخ تخلیق",
          "currency": "کرنسی",
          "customer": "گاہک",
          "date": "تاریخ",
@@ -678,14 +678,17 @@
          "title": "دعوت نامہ"
       },
       "issuingCountry": "دستاویز جاری کرنے والا ملک",
+      "leads": {
+         "empty": "اس فارورڈر کا ابھی کوئی آرڈر نہیں ہے",
+         "title": "فارورڈر کے آرڈرز"
+      },
       "notFound": "کوئی فارورڈر نہیں ملا",
       "registered": "رجسٹرڈ",
       "representative": "نمائندہ",
       "searchPlaceholder": "فارورڈر تلاش کریں",
       "sections": {
-         "company": "فارورڈر کی معلومات — کمپنی",
-         "contact": "رابطہ کار کی معلومات",
-         "requisites": "فارورڈر کی بینک تفصیلات"
+         "individual": "انفرادی شخص",
+         "legalEntity": "قانونی ادارہ"
       },
       "subtitle": "تمام فارورڈرز کی مکمل فہرست",
       "title": "فارورڈرز",
@@ -1119,13 +1122,22 @@
    "profile": {
       "avatar": {
          "allowedTypes": "صرف PNG یا JPEG اپ لوڈ کیا جا سکتا ہے",
+         "changePhoto": "دوسری تصویر منتخب کریں",
+         "cropFailed": "تصویر کراپ نہیں ہو سکی",
+         "cropHint": "تصویر کو حرکت دیں اور کراپ ایریا کا زوم ایڈجسٹ کریں",
+         "cropTitle": "پروفائل تصویر",
          "delete": "تصویر حذف کریں",
-         "maxSize": "تصویر کا زیادہ سے زیادہ سائز — 600×600 پکسل",
+         "maxFileSize": "فائل کا زیادہ سے زیادہ سائز — {{size}} MB",
+         "minCropSize": "کم از کم {{size}}×{{size}} پکسل کا کراپ ایریا منتخب کریں",
          "minSize": "تصویر کا کم از کم سائز — 400×400 پکسل",
          "readFailed": "فائل پڑھی نہیں جا سکی",
+         "requirements": ".png, .jpeg · 400×400 پکسل سے",
+         "rotate": "گھمائیں",
+         "selectPhoto": "فائل منتخب کریں",
          "sizeCheckFailed": "تصویر کا سائز چیک نہیں ہو سکا",
          "upload": "تصویر اپ لوڈ کریں",
-         "uploadFailed": "تصویر اپ لوڈ نہیں ہو سکی"
+         "uploadFailed": "تصویر اپ لوڈ نہیں ہو سکی",
+         "zoom": "زوم"
       },
       "contract": {
          "notSigned": "دستخط نہیں کیے گئے · دستخط کرنے کے لیے کلک کریں",

@@ -155,7 +155,6 @@
       "fields": {
          "actions": "Actions",
          "amount": "Amount",
-         "bankName": "Bank name",
          "bik": "BIC",
          "bin": "BIN",
          "binValue": "BIN: {{bin}}",
@@ -172,6 +171,7 @@
          "companyBin": "Company BIN",
          "companyName": "Company name",
          "contactPerson": "Contact person",
+         "createdAt": "Created at",
          "currency": "Currency",
          "customer": "Customer",
          "date": "Date",
@@ -678,14 +678,17 @@
          "title": "Invitation"
       },
       "issuingCountry": "Document issuing country",
+      "leads": {
+         "empty": "This forwarder has no orders yet",
+         "title": "Forwarder orders"
+      },
       "notFound": "No forwarders found",
       "registered": "Registered",
       "representative": "Representative",
       "searchPlaceholder": "Search for a forwarder",
       "sections": {
-         "company": "Forwarder details — company",
-         "contact": "Contact person details",
-         "requisites": "Forwarder bank details"
+         "individual": "Individual",
+         "legalEntity": "Legal entity"
       },
       "subtitle": "The full list of forwarders",
       "title": "Forwarders",
@@ -1119,13 +1122,22 @@
    "profile": {
       "avatar": {
          "allowedTypes": "Only PNG or JPEG files can be uploaded",
+         "changePhoto": "Choose another photo",
+         "cropFailed": "Failed to crop the image",
+         "cropHint": "Move the image and adjust the zoom to set the crop area",
+         "cropTitle": "Profile photo",
          "delete": "Delete photo",
-         "maxSize": "The maximum photo size is 600×600 px",
+         "maxFileSize": "The maximum file size is {{size}} MB",
+         "minCropSize": "Select a crop area of at least {{size}}×{{size}} px",
          "minSize": "The minimum photo size is 400×400 px",
          "readFailed": "Failed to read the file",
+         "requirements": ".png, .jpeg · from 400×400 px",
+         "rotate": "Rotate",
+         "selectPhoto": "Choose a file",
          "sizeCheckFailed": "Failed to check the image size",
          "upload": "Upload photo",
-         "uploadFailed": "Failed to upload the photo"
+         "uploadFailed": "Failed to upload the photo",
+         "zoom": "Zoom"
       },
       "contract": {
          "notSigned": "Not signed · click to sign",

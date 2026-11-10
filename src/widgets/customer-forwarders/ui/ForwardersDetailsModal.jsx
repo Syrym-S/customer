@@ -1,270 +1,200 @@
-import {
-    Alert,
-    Box,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
-    Typography,
-} from '@mui/material';
-import i18n from '../../../shared/i18n';
-import { DetailsSkeleton } from '../../../shared/ui/skeletons/DetailsSkeleton';
-import { useTranslation } from "react-i18next";
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Alert, Box, Dialog, DialogContent, Divider } from '@mui/material';
 
-import {
-    getForwarderAccount,
-    getForwarderAddress,
-    getForwarderBik,
-    getForwarderBin,
-    getForwarderCompanyName,
-    getForwarderEmail,
-    getForwarderFio,
-    getForwarderIin,
-    // getForwarderId,
-    getForwarderPhone,
-} from '../model/forwarders.helpers';
-// import { TaxationRegimeInfo } from '../../../shared/kgd-taxation/ui/TaxationRegimeInfo';
+import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
+import { LeadDetailsReadOnlyModal } from '../../customer-leads/ui/lead-details/LeadDetailsReadOnlyModal';
+import { ForwarderInfoColumn } from './forwarder-details/ForwarderInfoColumn';
+import { ForwarderLeadsColumn } from './forwarder-details/ForwarderLeadsColumn';
+import { getForwarderId } from '../model/forwarders.helpers';
+import { useForwarderDetails } from '../model/useForwarderDetails';
 
-function getValue(value) {
-    return value || i18n.t("common.empty.notSpecifiedM");
-}
+export function ForwarderDetailsModal({ open, forwarder: listForwarder, onClose }) {
+    const {
+        forwarder,
+        leads,
+        page,
+        setPage,
+        pageCount,
+        isDetailsLoading,
+        isLeadsLoading,
+        error,
+    } = useForwarderDetails({
+        forwarderId: getForwarderId(listForwarder),
+        enabled: open,
+        initialForwarder: listForwarder,
+    });
 
-function ForwarderDataGroup({ title, rows }) {
-    return (
-        <Box
-            sx={{
-                mb: 2,
-                p: {
-                    xs: 1.25,
-                    sm: 1.5,
-                },
-                backgroundColor: 'background.paper',
-                border: '1px solid',
-                borderColor: 'divider',
-                borderRadius: 2,
-                '&:last-of-type': {
-                    mb: 0,
-                },
-            }}
-        >
-            <Typography
-                sx={{
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: 'text.secondary',
-                    mb: 0.5,
-                }}
-            >
-                {title}
-            </Typography>
+    const [openLead, setOpenLead] = useState(null);
 
-            <TableContainer component={Box}>
-                <Table size="small">
-                    <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.label}>
-                                <TableCell
-                                    sx={{
-                                        width: '40%',
-                                        color: 'text.secondary',
-                                        pl: 0,
-                                    }}
-                                >
-                                    {row.label}:
-                                </TableCell>
+    useEffect(() => {
+        if (!open) {
+            setOpenLead(null);
+        }
+    }, [open]);
 
-                                <TableCell
-                                    sx={{
-                                        fontWeight: 500,
-                                        pr: 0,
-                                    }}
-                                >
-                                    {getValue(row.value)}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Box>
-    );
-}
-
-function ForwarderDataTable({ forwarder }) {
-    const { t } = useTranslation();
-
-    const companyRows = [
-        {
-            label: t("common.fields.company"),
-            value: getForwarderCompanyName(forwarder),
-        },
-        {
-            label: t("common.fields.bin"),
-            value: getForwarderBin(forwarder),
-        },
-        {
-            label: t("common.fields.bik"),
-            value: getForwarderBik(forwarder),
-        },
-        {
-            label: t("common.fields.settlementAccount"),
-            value: getForwarderAccount(forwarder),
-        },
-        {
-            label: t("common.fields.companyAddress"),
-            value: getForwarderAddress(forwarder),
-        },
-    ];
-
-    const contactRows = [
-        {
-            label: t("common.fields.fullName"),
-            value: getForwarderFio(forwarder),
-        },
-        {
-            label: t("common.fields.iin"),
-            value: getForwarderIin(forwarder),
-        },
-        {
-            label: t("common.fields.phone"),
-            value: getForwarderPhone(forwarder),
-        },
-        {
-            label: 'Email',
-            value: getForwarderEmail(forwarder),
-        },
-    ];
+    function handleLeadsPageChange(_, nextPage) {
+        setPage(nextPage);
+    }
 
     return (
-        <Box>
-            <ForwarderDataGroup
-                title={t("forwarders.sections.company")}
-                rows={companyRows}
-            />
-
-            <ForwarderDataGroup
-                title={t("forwarders.sections.contact")}
-                rows={contactRows}
-            />
-        </Box>
-    );
-}
-
-export function ForwarderDetailsModal({
-    open,
-    forwarder,
-    loading,
-    error,
-    onClose,
-}) {
-    const { t } = useTranslation();
-
-    return (
-        <Dialog
-            open={open}
-            onClose={loading ? undefined : onClose}
-            fullWidth
-            maxWidth="sm"
-            slotProps={{
-                paper: {
-                    sx: {
-                        m: {
-                            xs: 1,
-                            sm: 2,
-                        },
-                        width: {
-                            xs: 'calc(100% - 16px)',
-                            sm: 'calc(100% - 64px)',
-                        },
-                        borderRadius: {
-                            xs: 2,
-                            sm: 3,
-                        },
-                        overflowX: 'hidden',
-                    },
-                },
-            }}
-        >
-            <DialogContent
-                sx={{
-                    px: {
-                        xs: 1.5,
-                        sm: 3,
-                    },
-                    py: {
-                        xs: 1,
-                        sm: 2,
-                    },
-                    overflowX: 'hidden',
-                }}
-            >
-                {/* Вместо спиннера на пустом диалоге показываем форму секций,
-                    которые сейчас появятся. */}
-                {loading && <DetailsSkeleton />}
-
-                {error && (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                        {error}
-                    </Alert>
-                )}
-
-                {!loading && forwarder && (
-                    <Box
-                        sx={{
-                            p: {
+        <>
+            <Dialog
+                open={open}
+                onClose={onClose}
+                fullWidth
+                maxWidth="lg"
+                slotProps={{
+                    paper: {
+                        sx: {
+                            m: {
                                 xs: 1,
                                 sm: 2,
                             },
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            borderRadius: 3,
-                            backgroundColor: 'grey.50',
-                        }}
-                    >
-                        <Typography
-                            sx={{
-                                fontSize: 15,
-                                fontWeight: 600,
-                                mb: 1.5,
-                            }}
-                        >
-                            {t("forwarders.sections.requisites")}
-                        </Typography>
-
-                        <ForwarderDataTable forwarder={forwarder} />
-
-                        {/* <Box sx={{ mt: 2 }}>
-                            <TaxationRegimeInfo
-                                role="forwarder"
-                                entityId={getForwarderId(forwarder)}
-                            />
-                        </Box> */}
-                    </Box>
-                )}
-            </DialogContent>
-
-            <DialogActions
-                sx={{
-                    px: {
-                        xs: 1.5,
-                        sm: 3,
-                    },
-                    pb: {
-                        xs: 1.5,
-                        sm: 2,
+                            width: {
+                                xs: 'calc(100% - 16px)',
+                                sm: 'calc(100% - 64px)',
+                            },
+                            height: {
+                                xs: 'auto',
+                                md: 'calc(100% - 64px)',
+                            },
+                            maxHeight: {
+                                xs: 'calc(100% - 16px)',
+                                sm: 'calc(100% - 64px)',
+                            },
+                            borderRadius: {
+                                xs: 2,
+                                sm: 3,
+                            },
+                            overflowX: 'hidden',
+                        },
                     },
                 }}
             >
-                <Button onClick={onClose} disabled={loading}>
-                    {t("common.actions.close")}
-                </Button>
-            </DialogActions>
-        </Dialog>
+                <DialogCloseButton onClick={onClose} />
+
+                <DialogContent
+                    sx={{
+                        p: 0,
+                        display: 'flex',
+                        minHeight: 0,
+                        overflowX: 'hidden',
+                        overflowY: {
+                            xs: 'auto',
+                            md: 'hidden',
+                        },
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: {
+                                xs: 'column',
+                                md: 'row',
+                            },
+                            alignItems: 'stretch',
+                            width: '100%',
+                            minHeight: 0,
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                flex: {
+                                    xs: 'none',
+                                    md: '0 0 34%',
+                                },
+                                minWidth: 0,
+                                px: {
+                                    xs: 2,
+                                    sm: 3,
+                                },
+                                py: {
+                                    xs: 2.5,
+                                    sm: 3,
+                                },
+                                overflowY: {
+                                    xs: 'visible',
+                                    md: 'auto',
+                                },
+                            }}
+                        >
+                            {error && (
+                                <Alert severity="error" sx={{ mb: 2 }}>
+                                    {error}
+                                </Alert>
+                            )}
+
+                            <ForwarderInfoColumn
+                                forwarder={forwarder}
+                                loading={isDetailsLoading}
+                            />
+                        </Box>
+
+                        <Divider
+                            flexItem
+                            orientation="vertical"
+                            sx={{
+                                display: {
+                                    xs: 'none',
+                                    md: 'block',
+                                },
+                            }}
+                        />
+
+                        <Divider
+                            sx={{
+                                display: {
+                                    xs: 'block',
+                                    md: 'none',
+                                },
+                            }}
+                        />
+
+                        <Box
+                            sx={{
+                                flex: 1,
+                                minWidth: 0,
+                                minHeight: 0,
+                                px: {
+                                    xs: 2,
+                                    sm: 3,
+                                },
+                                py: {
+                                    xs: 2.5,
+                                    sm: 3,
+                                },
+                                pr: {
+                                    xs: 2,
+                                    sm: 7,
+                                },
+                            }}
+                        >
+                            <ForwarderLeadsColumn
+                                leads={leads}
+                                page={page}
+                                pageCount={pageCount}
+                                loading={isLeadsLoading}
+                                onPageChange={handleLeadsPageChange}
+                                onOpenLead={setOpenLead}
+                            />
+                        </Box>
+                    </Box>
+                </DialogContent>
+            </Dialog>
+
+            {openLead && (
+                <LeadDetailsReadOnlyModal
+                    lead={openLead}
+                    onClose={() => setOpenLead(null)}
+                />
+            )}
+        </>
     );
 }
+
+ForwarderDetailsModal.propTypes = {
+    open: PropTypes.bool.isRequired,
+    forwarder: PropTypes.object,
+    onClose: PropTypes.func.isRequired,
+};

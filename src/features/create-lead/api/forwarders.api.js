@@ -17,10 +17,22 @@ export async function searchForwardersApi(query) {
     return mapForwardersResponseFromApi(response.data);
 }
 
-export async function fetchForwarderById(forwarderId) {
+export async function fetchForwarderById(forwarderId, { page, perPage } = {}) {
+    const params = {};
+
+    if (page) {
+        params.page = page;
+    }
+
+    if (perPage) {
+        params.per_page = perPage;
+    }
+
     const { data } = await apiClient.get(
         `/customer/v1/forwarders/${forwarderId}`,
+        Object.keys(params).length > 0 ? { params } : undefined,
     );
+
     return data;
 }
 

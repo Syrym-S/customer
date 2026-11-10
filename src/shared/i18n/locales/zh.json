@@ -154,7 +154,6 @@
       "fields": {
          "actions": "操作",
          "amount": "金额",
-         "bankName": "银行名称",
          "bik": "银行识别代码（BIK）",
          "bin": "商业识别号（BIN）",
          "binValue": "商业识别号：{{bin}}",
@@ -171,6 +170,7 @@
          "companyBin": "公司商业识别号",
          "companyName": "公司名称",
          "contactPerson": "联系人",
+         "createdAt": "创建日期",
          "currency": "货币",
          "customer": "客户",
          "date": "日期",
@@ -673,14 +673,17 @@
          "title": "邀请"
       },
       "issuingCountry": "文件签发国家",
+      "leads": {
+         "empty": "该货运代理暂无订单",
+         "title": "货运代理的订单"
+      },
       "notFound": "未找到货运代理",
       "registered": "已注册",
       "representative": "代表人",
       "searchPlaceholder": "搜索货运代理",
       "sections": {
-         "company": "货运代理信息 — 公司",
-         "contact": "联系人信息",
-         "requisites": "货运代理银行信息"
+         "individual": "自然人",
+         "legalEntity": "法人实体"
       },
       "subtitle": "所有货运代理的完整列表",
       "title": "货运代理",
@@ -1113,13 +1116,22 @@
    "profile": {
       "avatar": {
          "allowedTypes": "仅支持上传 PNG 或 JPEG 格式",
+         "changePhoto": "选择其他照片",
+         "cropFailed": "图片裁剪失败",
+         "cropHint": "拖动图片并调整缩放以选择裁剪区域",
+         "cropTitle": "个人头像",
          "delete": "删除照片",
-         "maxSize": "照片最大尺寸为 600×600 像素",
+         "maxFileSize": "文件最大为 {{size}} MB",
+         "minCropSize": "请选择至少 {{size}}×{{size}} 像素的裁剪区域",
          "minSize": "照片最小尺寸为 400×400 像素",
          "readFailed": "文件读取失败",
+         "requirements": ".png、.jpeg · 400×400 像素起",
+         "rotate": "旋转",
+         "selectPhoto": "选择文件",
          "sizeCheckFailed": "图片尺寸校验失败",
          "upload": "上传照片",
-         "uploadFailed": "照片上传失败"
+         "uploadFailed": "照片上传失败",
+         "zoom": "缩放"
       },
       "contract": {
          "notSigned": "未签署 · 点击进行签署",

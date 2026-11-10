@@ -155,7 +155,6 @@
       "fields": {
          "actions": "Aktionen",
          "amount": "Betrag",
-         "bankName": "Bankname",
          "bik": "BIC",
          "bin": "BIN",
          "binValue": "BIN: {{bin}}",
@@ -172,6 +171,7 @@
          "companyBin": "BIN des Unternehmens",
          "companyName": "Firmenname",
          "contactPerson": "Ansprechpartner",
+         "createdAt": "Erstellt am",
          "currency": "Währung",
          "customer": "Auftraggeber",
          "date": "Datum",
@@ -678,14 +678,17 @@
          "title": "Einladung"
       },
       "issuingCountry": "Ausstellungsland des Dokuments",
+      "leads": {
+         "empty": "Dieser Spediteur hat noch keine Aufträge",
+         "title": "Aufträge des Spediteurs"
+      },
       "notFound": "Keine Spediteure gefunden",
       "registered": "Registriert",
       "representative": "Vertreter",
       "searchPlaceholder": "Spediteur suchen",
       "sections": {
-         "company": "Angaben zum Spediteur — Unternehmen",
-         "contact": "Angaben zur Kontaktperson",
-         "requisites": "Bankdaten des Spediteurs"
+         "individual": "Natürliche Person",
+         "legalEntity": "Juristische Person"
       },
       "subtitle": "Vollständige Liste der Spediteure",
       "title": "Spediteure",
@@ -1119,13 +1122,22 @@
    "profile": {
       "avatar": {
          "allowedTypes": "Es können nur PNG- oder JPEG-Dateien hochgeladen werden",
+         "changePhoto": "Anderes Foto wählen",
+         "cropFailed": "Das Bild konnte nicht zugeschnitten werden",
+         "cropHint": "Verschieben Sie das Bild und passen Sie den Zoom des Zuschnittbereichs an",
+         "cropTitle": "Profilfoto",
          "delete": "Foto löschen",
-         "maxSize": "Die maximale Fotogröße beträgt 600×600 px",
+         "maxFileSize": "Die maximale Dateigröße beträgt {{size}} MB",
+         "minCropSize": "Wählen Sie einen Zuschnittbereich von mindestens {{size}}×{{size}} px",
          "minSize": "Die minimale Fotogröße beträgt 400×400 px",
          "readFailed": "Die Datei konnte nicht gelesen werden",
+         "requirements": ".png, .jpeg · ab 400×400 px",
+         "rotate": "Drehen",
+         "selectPhoto": "Datei wählen",
          "sizeCheckFailed": "Die Bildgröße konnte nicht überprüft werden",
          "upload": "Foto hochladen",
-         "uploadFailed": "Das Foto konnte nicht hochgeladen werden"
+         "uploadFailed": "Das Foto konnte nicht hochgeladen werden",
+         "zoom": "Zoom"
       },
       "contract": {
          "notSigned": "Nicht unterschrieben · zum Unterschreiben klicken",

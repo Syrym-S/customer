@@ -155,7 +155,6 @@
       "fields": {
          "actions": "Ações",
          "amount": "Valor",
-         "bankName": "Nome do banco",
          "bik": "BIC",
          "bin": "BIN",
          "binValue": "BIN: {{bin}}",
@@ -172,6 +171,7 @@
          "companyBin": "BIN da empresa",
          "companyName": "Nome da empresa",
          "contactPerson": "Pessoa de contato",
+         "createdAt": "Data de criação",
          "currency": "Moeda",
          "customer": "Cliente",
          "date": "Data",
@@ -678,14 +678,17 @@
          "title": "Convite"
       },
       "issuingCountry": "País emissor do documento",
+      "leads": {
+         "empty": "Este transportador ainda não tem pedidos",
+         "title": "Pedidos do transportador"
+      },
       "notFound": "Nenhum transportador encontrado",
       "registered": "Registrado",
       "representative": "Representante",
       "searchPlaceholder": "Buscar transportador",
       "sections": {
-         "company": "Dados do transportador — empresa",
-         "contact": "Dados da pessoa de contato",
-         "requisites": "Dados bancários do transportador"
+         "individual": "Pessoa física",
+         "legalEntity": "Pessoa jurídica"
       },
       "subtitle": "Lista completa de transportadores",
       "title": "Transportadores",
@@ -1119,13 +1122,22 @@
    "profile": {
       "avatar": {
          "allowedTypes": "Somente arquivos PNG ou JPEG podem ser enviados",
+         "changePhoto": "Escolher outra foto",
+         "cropFailed": "Não foi possível recortar a imagem",
+         "cropHint": "Mova a imagem e ajuste o zoom da área de recorte",
+         "cropTitle": "Foto do perfil",
          "delete": "Excluir foto",
-         "maxSize": "O tamanho máximo da foto é 600×600 px",
+         "maxFileSize": "O tamanho máximo do arquivo é {{size}} MB",
+         "minCropSize": "Selecione uma área de recorte de pelo menos {{size}}×{{size}} px",
          "minSize": "O tamanho mínimo da foto é 400×400 px",
          "readFailed": "Não foi possível ler o arquivo",
+         "requirements": ".png, .jpeg · a partir de 400×400 px",
+         "rotate": "Girar",
+         "selectPhoto": "Escolher arquivo",
          "sizeCheckFailed": "Não foi possível verificar o tamanho da imagem",
          "upload": "Enviar foto",
-         "uploadFailed": "Não foi possível enviar a foto"
+         "uploadFailed": "Não foi possível enviar a foto",
+         "zoom": "Zoom"
       },
       "contract": {
          "notSigned": "Não assinado · clique para assinar",

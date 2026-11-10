@@ -155,7 +155,6 @@
       "fields": {
          "actions": "Acciones",
          "amount": "Importe",
-         "bankName": "Nombre del banco",
          "bik": "BIK",
          "bin": "BIN",
          "binValue": "BIN: {{bin}}",
@@ -172,6 +171,7 @@
          "companyBin": "BIN de la empresa",
          "companyName": "Nombre de la empresa",
          "contactPerson": "Persona de contacto",
+         "createdAt": "Fecha de creación",
          "currency": "Moneda",
          "customer": "Cliente",
          "date": "Fecha",
@@ -678,14 +678,17 @@
          "title": "Invitación"
       },
       "issuingCountry": "País de emisión del documento",
+      "leads": {
+         "empty": "Este transportista aún no tiene pedidos",
+         "title": "Pedidos del transportista"
+      },
       "notFound": "No se encontraron transportistas",
       "registered": "Registrado",
       "representative": "Representante",
       "searchPlaceholder": "Buscar transportista",
       "sections": {
-         "company": "Datos del transportista — empresa",
-         "contact": "Datos de la persona de contacto",
-         "requisites": "Datos bancarios del transportista"
+         "individual": "Persona física",
+         "legalEntity": "Persona jurídica"
       },
       "subtitle": "Lista completa de todos los transportistas",
       "title": "Transportistas",
@@ -1119,13 +1122,22 @@
    "profile": {
       "avatar": {
          "allowedTypes": "Solo se puede cargar PNG o JPEG",
+         "changePhoto": "Elegir otra foto",
+         "cropFailed": "No se pudo recortar la imagen",
+         "cropHint": "Mueva la imagen y ajuste el zoom del área de recorte",
+         "cropTitle": "Foto de perfil",
          "delete": "Eliminar foto",
-         "maxSize": "Tamaño máximo de la foto: 600×600 px",
+         "maxFileSize": "Tamaño máximo del archivo: {{size}} MB",
+         "minCropSize": "Seleccione un área de recorte de al menos {{size}}×{{size}} px",
          "minSize": "Tamaño mínimo de la foto: 400×400 px",
          "readFailed": "No se pudo leer el archivo",
+         "requirements": ".png, .jpeg · desde 400×400 px",
+         "rotate": "Girar",
+         "selectPhoto": "Elegir archivo",
          "sizeCheckFailed": "No se pudo verificar el tamaño de la imagen",
          "upload": "Subir foto",
-         "uploadFailed": "No se pudo subir la foto"
+         "uploadFailed": "No se pudo subir la foto",
+         "zoom": "Zoom"
       },
       "contract": {
          "notSigned": "No firmado · haga clic para firmar",

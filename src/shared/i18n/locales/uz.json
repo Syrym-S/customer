@@ -155,7 +155,6 @@
       "fields": {
          "actions": "Amallar",
          "amount": "Summa",
-         "bankName": "Bank nomi",
          "bik": "BIK",
          "bin": "BIN",
          "binValue": "BIN: {{bin}}",
@@ -172,6 +171,7 @@
          "companyBin": "Kompaniya BIN",
          "companyName": "Kompaniya nomi",
          "contactPerson": "Kontakt shaxs",
+         "createdAt": "Yaratilgan sana",
          "currency": "Valyuta",
          "customer": "Buyurtmachi",
          "date": "Sana",
@@ -678,14 +678,17 @@
          "title": "Taklif"
       },
       "issuingCountry": "Hujjatni bergan davlat",
+      "leads": {
+         "empty": "Bu ekspeditorda hozircha buyurtmalar yo‘q",
+         "title": "Ekspeditor buyurtmalari"
+      },
       "notFound": "Ekspeditorlar topilmadi",
       "registered": "Ro'yxatdan o'tgan",
       "representative": "Vakil",
       "searchPlaceholder": "Ekspeditorni qidirish",
       "sections": {
-         "company": "Ekspeditor ma'lumotlari — kompaniya",
-         "contact": "Kontakt shaxs ma'lumotlari",
-         "requisites": "Ekspeditor bank rekvizitlari"
+         "individual": "Jismoniy shaxs",
+         "legalEntity": "Yuridik shaxs"
       },
       "subtitle": "Barcha ekspeditorlarning to'liq ro'yxati",
       "title": "Ekspeditorlar",
@@ -1119,13 +1122,22 @@
    "profile": {
       "avatar": {
          "allowedTypes": "Faqat PNG yoki JPEG fayllarini yuklash mumkin",
+         "changePhoto": "Boshqa fotosurat tanlash",
+         "cropFailed": "Rasmni qirqib bo'lmadi",
+         "cropHint": "Rasmni suring va qirqish sohasining masshtabini tanlang",
+         "cropTitle": "Profil fotosurati",
          "delete": "Fotosuratni o'chirish",
-         "maxSize": "Fotosuratning maksimal hajmi — 600×600 px",
+         "maxFileSize": "Faylning maksimal hajmi — {{size}} MB",
+         "minCropSize": "Kamida {{size}}×{{size}} px kesish maydonini tanlang",
          "minSize": "Fotosuratning minimal hajmi — 400×400 px",
          "readFailed": "Faylni o'qib bo'lmadi",
+         "requirements": ".png, .jpeg · 400×400 px dan",
+         "rotate": "Aylantirish",
+         "selectPhoto": "Fayl tanlash",
          "sizeCheckFailed": "Rasm hajmini tekshirib bo'lmadi",
          "upload": "Fotosurat yuklash",
-         "uploadFailed": "Fotosuratni yuklab bo'lmadi"
+         "uploadFailed": "Fotosuratni yuklab bo'lmadi",
+         "zoom": "Masshtab"
       },
       "contract": {
          "notSigned": "Imzolanmagan · imzolash uchun bosing",

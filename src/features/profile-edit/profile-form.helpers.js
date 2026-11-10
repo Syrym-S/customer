@@ -21,7 +21,6 @@ export const initialProfileForm = {
   legalAddress: "",
   accountNumber: "",
   bik: "",
-  bankName: "",
   personFio: "",
   personPhone: "",
   personEmail: "",
@@ -65,7 +64,6 @@ export function mapProfileFromApi(profile, legalDocuments) {
     legalAddress: profile?.legalAddress || profile?.legal_address || "",
     accountNumber: profile?.accountNumber || profile?.iik || "",
     bik: profile?.bik || "",
-    bankName: profile?.bankName || profile?.bank_name || "",
 
     personFio: profile?.personFio || "",
     personPhone: profile?.personPhone || "",
@@ -106,7 +104,6 @@ export function mapProfileFormToApi(form) {
 
   addIfNotEmpty(payload, "fullName", form.fullName);
   addIfNotEmpty(payload, "legalAddress", form.legalAddress);
-  addIfNotEmpty(payload, "bankName", form.bankName);
   addIfNotEmpty(payload, "personFio", form.personFio);
   addIfNotEmpty(payload, "personPhone", form.personPhone);
   addIfNotEmpty(payload, "document_number", form.documentNumber);
@@ -153,7 +150,6 @@ export function mapProfileFormToChangedApi(form, initialForm) {
     "legalAddress",
     "accountNumber",
     "bik",
-    "bankName",
     "personFio",
     "personPhone",
     "personEmail",
@@ -253,7 +249,6 @@ export function validateProfileForm(form, initialForm) {
   const legalAddress = normalizeText(form.legalAddress);
   const accountNumber = normalizeText(form.accountNumber).toUpperCase();
   const bik = normalizeText(form.bik);
-  const bankName = normalizeText(form.bankName);
   const personEmail = normalizeText(form.personEmail);
   const personIin = onlyDigits(form.personIin);
   const documentNumber = normalizeText(form.documentNumber);
@@ -284,10 +279,6 @@ export function validateProfileForm(form, initialForm) {
 
   if (bik && bik.length !== 8) {
     errors.bik = i18n.t("validation.bik");
-  }
-
-  if (bankName && (bankName.length < 2 || bankName.length > 100)) {
-    errors.bankName = i18n.t("validation.range2to100");
   }
 
   if (personEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(personEmail)) {

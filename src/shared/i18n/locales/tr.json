@@ -155,7 +155,6 @@
       "fields": {
          "actions": "İşlemler",
          "amount": "Tutar",
-         "bankName": "Banka adı",
          "bik": "BIK",
          "bin": "BIN",
          "binValue": "BIN: {{bin}}",
@@ -172,6 +171,7 @@
          "companyBin": "Şirket BIN numarası",
          "companyName": "Şirket adı",
          "contactPerson": "İletişim kişisi",
+         "createdAt": "Oluşturulma tarihi",
          "currency": "Para birimi",
          "customer": "Müşteri",
          "date": "Tarih",
@@ -678,14 +678,17 @@
          "title": "Davet"
       },
       "issuingCountry": "Belgenin verildiği ülke",
+      "leads": {
+         "empty": "Bu nakliyecinin henüz siparişi yok",
+         "title": "Nakliyecinin siparişleri"
+      },
       "notFound": "Nakliyeci bulunamadı",
       "registered": "Kayıtlı",
       "representative": "Temsilci",
       "searchPlaceholder": "Nakliyeci ara",
       "sections": {
-         "company": "Nakliyeci bilgileri — şirket",
-         "contact": "İletişim kişisi bilgileri",
-         "requisites": "Nakliyeci banka bilgileri"
+         "individual": "Gerçek kişi",
+         "legalEntity": "Tüzel kişi"
       },
       "subtitle": "Tüm nakliyecilerin tam listesi",
       "title": "Nakliyeciler",
@@ -1119,13 +1122,22 @@
    "profile": {
       "avatar": {
          "allowedTypes": "Yalnızca PNG veya JPEG yüklenebilir",
+         "changePhoto": "Başka fotoğraf seç",
+         "cropFailed": "Görüntü kırpılamadı",
+         "cropHint": "Görüntüyü hareket ettirin ve kırpma alanının yakınlaştırmasını ayarlayın",
+         "cropTitle": "Profil fotoğrafı",
          "delete": "Fotoğrafı sil",
-         "maxSize": "Maksimum fotoğraf boyutu — 600×600 px",
+         "maxFileSize": "Maksimum dosya boyutu — {{size}} MB",
+         "minCropSize": "En az {{size}}×{{size}} px kırpma alanı seçin",
          "minSize": "Minimum fotoğraf boyutu — 400×400 px",
          "readFailed": "Dosya okunamadı",
+         "requirements": ".png, .jpeg · 400×400 px'den",
+         "rotate": "Döndür",
+         "selectPhoto": "Dosya seç",
          "sizeCheckFailed": "Görüntü boyutu kontrol edilemedi",
          "upload": "Fotoğraf yükle",
-         "uploadFailed": "Fotoğraf yüklenemedi"
+         "uploadFailed": "Fotoğraf yüklenemedi",
+         "zoom": "Yakınlaştırma"
       },
       "contract": {
          "notSigned": "İmzalanmadı · imzalamak için tıklayın",
