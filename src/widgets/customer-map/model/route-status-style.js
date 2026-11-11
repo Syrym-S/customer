@@ -5,6 +5,7 @@ export const ROUTE_CASING_COLOR = '#ffffff';
 const DIMMED_OPACITY = 0.18;
 const HIGHLIGHT_OPACITY = 0.95;
 const GEO_DASH_ARRAY = '8 8';
+const GEO_OVERLAID_DASH_ARRAY = '10 12';
 const GEO_WEIGHT = 4;
 const CASING_EXTRA_WEIGHT = 3;
 const CASING_OPACITY = 0.85;
@@ -92,6 +93,7 @@ export function getRoutePathStyle({
    isHighlighted = false,
    isDimmed = false,
    isGeo = false,
+   isGeoOverlaid = false,
 }) {
    const base = getRouteStatusStyle(status, theme);
 
@@ -109,7 +111,11 @@ export function getRoutePathStyle({
         ? HIGHLIGHT_OPACITY
         : base.opacity;
 
-   const dashArray = isGeo ? GEO_DASH_ARRAY : base.dashArray;
+   const geoDashArray = isGeoOverlaid
+      ? GEO_OVERLAID_DASH_ARRAY
+      : GEO_DASH_ARRAY;
+
+   const dashArray = isGeo ? geoDashArray : base.dashArray;
 
    const path = { color: base.color, weight, opacity };
 

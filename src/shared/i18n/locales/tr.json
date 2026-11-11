@@ -776,10 +776,10 @@
       },
       "loadFailed": "Siparişler yüklenemedi",
       "map": {
-         "coordsViaWebSocket": "Koordinatlar WebSocket üzerinden alındı",
          "driverPosition": "Sürücünün güncel konumu",
          "lastUpdate": "Son güncelleme: {{time}}",
-         "loadingRoute": "Rota yükleniyor..."
+         "loadingRoute": "Rota yükleniyor...",
+         "positionFromTrack": "Takip verilerine göre konum"
       },
       "notFound": "Sipariş bulunamadı",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "Sürücünün güncel konumu",
       "noCoordinates": "Koordinat yok",
       "pointsCount": "Nokta sayısı: {{count}}",
+      "routeView": {
+         "label": "Güzergah görünümü",
+         "all": "Tüm güzergahlar",
+         "passed": "Yalnızca gidilen yol",
+         "planned": "Gidilen yol olmadan güzergah"
+      },
       "routesLoadFailed": "Rotalar yüklenemedi",
       "routesPartialFailure": "{{total}} siparişten {{failed}} için GeoWS rotaları yüklenemedi"
    },

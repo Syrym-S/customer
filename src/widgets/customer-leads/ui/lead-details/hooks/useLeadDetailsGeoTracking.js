@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { mergeGeoPointsById, normalizeGeoPoints } from '../../../../../utils/geologic';
+import {
+   buildLiveGeoPoint,
+   mergeGeoPointsById,
+   normalizeGeoPoints,
+} from '../../../../../utils/geologic';
 import {
    normalizePolylinePoints,
    openLeadGeoTrackingConnection,
@@ -47,8 +51,10 @@ export function useLeadDetailsGeoTracking(leadId, leadStatus) {
             setGeoCurrentPoint(initialPoints.at(-1) ?? null);
          },
 
-         onCoordinate: (coords) => {
-            const [nextPoint] = normalizeGeoPoints([coords]);
+         onCoordinate: (coords, eventData) => {
+            const [nextPoint] = normalizeGeoPoints([
+               buildLiveGeoPoint(coords, eventData),
+            ]);
 
             if (!nextPoint) {
                return;

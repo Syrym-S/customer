@@ -786,10 +786,10 @@
       },
       "loadFailed": "Не удалось загрузить заказы",
       "map": {
-         "coordsViaWebSocket": "Координаты получены через WebSocket",
          "driverPosition": "Текущая позиция водителя",
          "lastUpdate": "Последнее обновление: {{time}}",
-         "loadingRoute": "Загружаем маршрут..."
+         "loadingRoute": "Загружаем маршрут...",
+         "positionFromTrack": "Позиция по данным трекинга"
       },
       "notFound": "Заказы не найдены",
       "publish": {
@@ -941,6 +941,12 @@
       "driverPosition": "Текущая позиция водителя",
       "noCoordinates": "Нет координат",
       "pointsCount": "Точек: {{count}}",
+      "routeView": {
+         "label": "Отображение маршрута",
+         "all": "Все маршруты",
+         "passed": "Только пройденный путь",
+         "planned": "Маршрут без пройденного"
+      },
       "routesLoadFailed": "Не удалось загрузить маршруты",
       "routesPartialFailure": "Не удалось загрузить GeoWS-маршруты для {{failed}} из {{total}} заказов"
    },

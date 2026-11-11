@@ -771,10 +771,10 @@
       },
       "loadFailed": "订单加载失败",
       "map": {
-         "coordsViaWebSocket": "坐标通过 WebSocket 获取",
          "driverPosition": "司机当前位置",
          "lastUpdate": "最近更新：{{time}}",
-         "loadingRoute": "正在加载路线…"
+         "loadingRoute": "正在加载路线…",
+         "positionFromTrack": "根据跟踪数据的位置"
       },
       "notFound": "未找到订单",
       "publish": {
@@ -923,6 +923,12 @@
       "driverPosition": "司机当前位置",
       "noCoordinates": "暂无坐标",
       "pointsCount": "点数：{{count}}",
+      "routeView": {
+         "label": "路线显示",
+         "all": "全部路线",
+         "passed": "仅已行驶路径",
+         "planned": "不含已行驶路径的路线"
+      },
       "routesLoadFailed": "路线加载失败",
       "routesPartialFailure": "{{total}} 笔订单中有 {{failed}} 笔的 GeoWS 路线加载失败"
    },

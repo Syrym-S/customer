@@ -776,10 +776,10 @@
       },
       "loadFailed": "Não foi possível carregar os pedidos",
       "map": {
-         "coordsViaWebSocket": "Coordenadas recebidas via WebSocket",
          "driverPosition": "Posição atual do motorista",
          "lastUpdate": "Última atualização: {{time}}",
-         "loadingRoute": "Carregando a rota..."
+         "loadingRoute": "Carregando a rota...",
+         "positionFromTrack": "Posição com base nos dados de rastreamento"
       },
       "notFound": "Nenhum pedido encontrado",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "Posição atual do motorista",
       "noCoordinates": "Sem coordenadas",
       "pointsCount": "Pontos: {{count}}",
+      "routeView": {
+         "label": "Exibição da rota",
+         "all": "Todas as rotas",
+         "passed": "Apenas o trajeto percorrido",
+         "planned": "Rota sem o trajeto percorrido"
+      },
       "routesLoadFailed": "Não foi possível carregar as rotas",
       "routesPartialFailure": "Não foi possível carregar as rotas GeoWS de {{failed}} de {{total}} pedidos"
    },

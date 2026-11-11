@@ -776,10 +776,10 @@
       },
       "loadFailed": "آرڈرز لوڈ نہیں ہو سکے",
       "map": {
-         "coordsViaWebSocket": "کوآرڈینیٹس ویب ساکٹ کے ذریعے موصول ہوئے",
          "driverPosition": "ڈرائیور کی موجودہ پوزیشن",
          "lastUpdate": "آخری تازہ کاری: {{time}}",
-         "loadingRoute": "راستہ لوڈ ہو رہا ہے..."
+         "loadingRoute": "راستہ لوڈ ہو رہا ہے...",
+         "positionFromTrack": "ٹریکنگ ڈیٹا کے مطابق مقام"
       },
       "notFound": "کوئی آرڈر نہیں ملا",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "ڈرائیور کی موجودہ پوزیشن",
       "noCoordinates": "کوئی کوآرڈینیٹس نہیں",
       "pointsCount": "پوائنٹس: {{count}}",
+      "routeView": {
+         "label": "روٹ کی نمائش",
+         "all": "تمام روٹس",
+         "passed": "صرف طے شدہ راستہ",
+         "planned": "طے شدہ راستے کے بغیر روٹ"
+      },
       "routesLoadFailed": "راستے لوڈ نہیں ہو سکے",
       "routesPartialFailure": "{{total}} آرڈرز میں سے {{failed}} کے GeoWS راستے لوڈ نہیں ہو سکے"
    },

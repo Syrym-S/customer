@@ -776,10 +776,10 @@
       },
       "loadFailed": "Тапсырыстарды жүктеу сәтсіз аяқталды",
       "map": {
-         "coordsViaWebSocket": "Координаттар WebSocket арқылы алынды",
          "driverPosition": "Жүргізушінің ағымдағы орны",
          "lastUpdate": "Соңғы жаңарту: {{time}}",
-         "loadingRoute": "Маршрут жүктелуде..."
+         "loadingRoute": "Маршрут жүктелуде...",
+         "positionFromTrack": "Трекинг деректері бойынша позиция"
       },
       "notFound": "Тапсырыстар табылмады",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "Жүргізушінің ағымдағы орны",
       "noCoordinates": "Координаттар жоқ",
       "pointsCount": "Нүктелер: {{count}}",
+      "routeView": {
+         "label": "Маршрутты көрсету",
+         "all": "Барлық маршруттар",
+         "passed": "Тек жүріп өткен жол",
+         "planned": "Жүріп өткен жолсыз маршрут"
+      },
       "routesLoadFailed": "Маршруттарды жүктеу сәтсіз аяқталды",
       "routesPartialFailure": "{{total}} тапсырыстың {{failed}} үшін GeoWS маршруттарын жүктеу сәтсіз аяқталды"
    },

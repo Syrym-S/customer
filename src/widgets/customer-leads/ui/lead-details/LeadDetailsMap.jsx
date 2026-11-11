@@ -140,7 +140,7 @@ export function LeadDetailsMap({
               title: t("leads.map.driverPosition"),
               description: geoCurrentPoint.recordedAt
                  ? t("leads.map.lastUpdate", { time: formatLeadDate(geoCurrentPoint.recordedAt) })
-                 : t("leads.map.coordsViaWebSocket"),
+                 : t("leads.map.positionFromTrack"),
            },
         ]
       : [];

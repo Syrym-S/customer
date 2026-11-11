@@ -776,10 +776,10 @@
       },
       "loadFailed": "Фармоишҳоро бор карда натавонист",
       "map": {
-         "coordsViaWebSocket": "Координатаҳо тавассути WebSocket гирифта шуданд",
          "driverPosition": "Ҳолати ҳозираи ронанда",
          "lastUpdate": "Навсозии охирин: {{time}}",
-         "loadingRoute": "Масир бор шуда истодааст..."
+         "loadingRoute": "Масир бор шуда истодааст...",
+         "positionFromTrack": "Мавқеъ аз рӯи додаҳои трекинг"
       },
       "notFound": "Фармоишҳо ёфт нашуданд",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "Ҳолати ҳозираи ронанда",
       "noCoordinates": "Координата нест",
       "pointsCount": "Нуқтаҳо: {{count}}",
+      "routeView": {
+         "label": "Намоиши масир",
+         "all": "Ҳамаи масирҳо",
+         "passed": "Танҳо роҳи тайшуда",
+         "planned": "Масир бе роҳи тайшуда"
+      },
       "routesLoadFailed": "Масирҳоро бор карда натавонист",
       "routesPartialFailure": "Масирҳои GeoWS-ро барои {{failed}} аз {{total}} фармоиш бор карда натавонист"
    },

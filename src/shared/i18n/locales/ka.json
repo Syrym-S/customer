@@ -776,10 +776,10 @@
       },
       "loadFailed": "შეკვეთების ჩატვირთვა ვერ მოხერხდა",
       "map": {
-         "coordsViaWebSocket": "კოორდინატები მიღებულია WebSocket-ის მეშვეობით",
          "driverPosition": "მძღოლის მიმდინარე მდებარეობა",
          "lastUpdate": "ბოლო განახლება: {{time}}",
-         "loadingRoute": "მარშრუტის ჩატვირთვა..."
+         "loadingRoute": "მარშრუტის ჩატვირთვა...",
+         "positionFromTrack": "პოზიცია ტრეკინგის მონაცემებით"
       },
       "notFound": "შეკვეთები ვერ მოიძებნა",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "მძღოლის მიმდინარე მდებარეობა",
       "noCoordinates": "კოორდინატები არ არის",
       "pointsCount": "წერტილები: {{count}}",
+      "routeView": {
+         "label": "მარშრუტის ჩვენება",
+         "all": "ყველა მარშრუტი",
+         "passed": "მხოლოდ გავლილი გზა",
+         "planned": "მარშრუტი გავლილი გზის გარეშე"
+      },
       "routesLoadFailed": "მარშრუტების ჩატვირთვა ვერ მოხერხდა",
       "routesPartialFailure": "GeoWS მარშრუტების ჩატვირთვა ვერ მოხერხდა {{total}}-დან {{failed}} შეკვეთისთვის"
    },

@@ -776,10 +776,10 @@
       },
       "loadFailed": "Die Aufträge konnten nicht geladen werden",
       "map": {
-         "coordsViaWebSocket": "Koordinaten über WebSocket empfangen",
          "driverPosition": "Aktuelle Position des Fahrers",
          "lastUpdate": "Letzte Aktualisierung: {{time}}",
-         "loadingRoute": "Route wird geladen..."
+         "loadingRoute": "Route wird geladen...",
+         "positionFromTrack": "Position laut Tracking-Daten"
       },
       "notFound": "Keine Aufträge gefunden",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "Aktuelle Position des Fahrers",
       "noCoordinates": "Keine Koordinaten",
       "pointsCount": "Punkte: {{count}}",
+      "routeView": {
+         "label": "Routenanzeige",
+         "all": "Alle Routen",
+         "passed": "Nur gefahrene Strecke",
+         "planned": "Route ohne gefahrene Strecke"
+      },
       "routesLoadFailed": "Die Routen konnten nicht geladen werden",
       "routesPartialFailure": "Die GeoWS-Routen konnten für {{failed}} von {{total}} Aufträgen nicht geladen werden"
    },

@@ -34,6 +34,15 @@ import { TooltipEscapePane } from "./TooltipEscapePane";
 import { RouteCasingPane } from "./RouteCasingPane";
 import { RoutePolyline } from "./RoutePolyline";
 import { RouteArrows } from "./RouteArrows";
+import { RouteViewModeToggle } from "./RouteViewModeToggle";
+import {
+   DEFAULT_ROUTE_VIEW_MODE,
+   hasPassedRoutePath,
+   hasPlannedRoutePath,
+   isPassedRouteVisible,
+   isPlannedRouteVisible,
+   resolveRouteViewFitBoundsPoints,
+} from "../model/route-view-mode";
 
 export function CustomerMapView({
    center,
@@ -59,13 +68,37 @@ export function CustomerMapView({
 
    const theme = useTheme();
    const [tooltipPaneContainer, setTooltipPaneContainer] = useState(null);
+   const [routeViewMode, setRouteViewMode] = useState(DEFAULT_ROUTE_VIEW_MODE);
 
-   const routesPointsCount = routes.reduce(
+   const hasPlannedRoute = hasPlannedRoutePath({ routes, routePoints });
+   const hasPassedRoute = hasPassedRoutePath({ geoRoutes, geoRoutePoints });
+
+   const canToggleRouteView = hasPlannedRoute && hasPassedRoute;
+
+   const showPlannedRoute =
+      !canToggleRouteView || isPlannedRouteVisible(routeViewMode);
+   const showPassedRoute =
+      !canToggleRouteView || isPassedRouteVisible(routeViewMode);
+
+   const visibleRoutes = showPlannedRoute ? routes : [];
+   const visibleRoutePoints = showPlannedRoute ? routePoints : [];
+   const visibleGeoRoutes = showPassedRoute ? geoRoutes : [];
+   const visibleGeoRoutePoints = showPassedRoute ? geoRoutePoints : [];
+
+   const visibleFitBoundsPoints = resolveRouteViewFitBoundsPoints({
+      fitBoundsPoints,
+      selectedLeadId,
+      visibleRoutes,
+      visibleGeoRoutes,
+      isFiltered: !showPlannedRoute || !showPassedRoute,
+   });
+
+   const routesPointsCount = visibleRoutes.reduce(
       (count, route) => count + (route.points?.length || 0),
       0,
    );
 
-   const geoRoutesPointsCount = geoRoutes.reduce(
+   const geoRoutesPointsCount = visibleGeoRoutes.reduce(
       (count, route) => count + (route.points?.length || 0),
       0,
    );
@@ -91,10 +124,13 @@ export function CustomerMapView({
    }
 
    const singleRouteStyle = getRoutePathStyle({ status, theme });
+   const isGeoOverlaid = showPlannedRoute && showPassedRoute;
+
    const singleGeoRouteStyle = getRoutePathStyle({
       status,
       theme,
       isGeo: true,
+      isGeoOverlaid,
    });
    const singleMarkerColor = getRouteStatusStyle(status, theme).color;
 
@@ -120,21 +156,23 @@ export function CustomerMapView({
             zoom={zoom}
             markersCount={markers.length}
             routePointsCount={
-               routePoints.length +
-               geoRoutePoints.length +
+               visibleRoutePoints.length +
+               visibleGeoRoutePoints.length +
                routesPointsCount +
                geoRoutesPointsCount
             }
          />
 
          <FitRouteBounds
-            routePoints={routePoints}
-            geoRoutePoints={geoRoutePoints}
-            routes={routes}
-            geoRoutes={geoRoutes}
+            routePoints={visibleRoutePoints}
+            geoRoutePoints={visibleGeoRoutePoints}
+            routes={visibleRoutes}
+            geoRoutes={visibleGeoRoutes}
             markers={markers}
-            fitBoundsKey={fitBoundsKey}
-            fitBoundsPoints={fitBoundsPoints}
+            fitBoundsKey={
+               fitBoundsKey ? `${fitBoundsKey}|view-${routeViewMode}` : ""
+            }
+            fitBoundsPoints={visibleFitBoundsPoints}
          />
 
          <MapClickHandler onMapClick={onMapClick} />
@@ -146,7 +184,7 @@ export function CustomerMapView({
             attribution={CUSTOMER_MAP_TILE_LAYER.attribution}
          />
 
-         {routes.map((mapRoute) => {
+         {visibleRoutes.map((mapRoute) => {
             if (!mapRoute.points || mapRoute.points.length < 2) {
                return null;
             }
@@ -263,11 +301,12 @@ export function CustomerMapView({
                isHighlighted,
                isDimmed,
                isGeo: true,
+               isGeoOverlaid,
             });
 
             return (
                <Fragment key={`geo-${geoRoute.id}`}>
-                  {points.length >= 2 && (
+                  {showPassedRoute && points.length >= 2 && (
                      <RoutePolyline
                         positions={points}
                         style={geoRouteStyle}
@@ -320,9 +359,12 @@ export function CustomerMapView({
             );
          })}
 
-         {routePoints.length >= 2 && (
+         {visibleRoutePoints.length >= 2 && (
             <>
-               <RoutePolyline positions={routePoints} style={singleRouteStyle}>
+               <RoutePolyline
+                  positions={visibleRoutePoints}
+                  style={singleRouteStyle}
+               >
                   <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                      <div>
                         <b>{t("common.fields.route")}</b>
@@ -350,22 +392,24 @@ export function CustomerMapView({
                </RoutePolyline>
 
                <RouteArrows
-                  positions={routePoints}
+                  positions={visibleRoutePoints}
                   color={singleRouteStyle.path.color}
                />
             </>
          )}
 
-         {geoRoutePoints.length >= 2 && (
+         {visibleGeoRoutePoints.length >= 2 && (
             <RoutePolyline
-               positions={geoRoutePoints}
+               positions={visibleGeoRoutePoints}
                style={singleGeoRouteStyle}
             >
                <Tooltip sticky pane={ROUTE_TOOLTIP_PANE_NAME}>
                   <div>
                      <b>{t("map.actualPath")}</b>
                      <br />
-                     {t("map.pointsCount", { count: geoRoutePoints.length })}
+                     {t("map.pointsCount", {
+                        count: visibleGeoRoutePoints.length,
+                     })}
                   </div>
                </Tooltip>
             </RoutePolyline>
@@ -400,6 +444,13 @@ export function CustomerMapView({
       </MapContainer>
       </Box>
 
+      {canToggleRouteView && (
+         <RouteViewModeToggle
+            value={routeViewMode}
+            onChange={setRouteViewMode}
+         />
+      )}
+
       <Box
          ref={setTooltipPaneContainer}
          className="route-tooltip-pane"
@@ -426,4 +477,9 @@ CustomerMapView.propTypes = {
    fitBoundsKey: PropTypes.string,
    onLeadClick: PropTypes.func,
    fitBoundsPoints: PropTypes.array,
+   selectedLeadId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+   highlightedLeadId: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+   ]),
 };

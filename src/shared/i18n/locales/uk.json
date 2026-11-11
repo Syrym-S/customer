@@ -786,10 +786,10 @@
       },
       "loadFailed": "Не вдалося завантажити замовлення",
       "map": {
-         "coordsViaWebSocket": "Координати отримано через WebSocket",
          "driverPosition": "Поточна позиція водія",
          "lastUpdate": "Останнє оновлення: {{time}}",
-         "loadingRoute": "Завантажуємо маршрут..."
+         "loadingRoute": "Завантажуємо маршрут...",
+         "positionFromTrack": "Позиція за даними трекінгу"
       },
       "notFound": "Замовлень не знайдено",
       "publish": {
@@ -941,6 +941,12 @@
       "driverPosition": "Поточна позиція водія",
       "noCoordinates": "Немає координат",
       "pointsCount": "Точок: {{count}}",
+      "routeView": {
+         "label": "Відображення маршруту",
+         "all": "Усі маршрути",
+         "passed": "Лише пройдений шлях",
+         "planned": "Маршрут без пройденого"
+      },
       "routesLoadFailed": "Не вдалося завантажити маршрути",
       "routesPartialFailure": "Не вдалося завантажити GeoWS-маршрути для {{failed}} з {{total}} замовлень"
    },

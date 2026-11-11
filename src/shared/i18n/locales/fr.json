@@ -776,10 +776,10 @@
       },
       "loadFailed": "Impossible de charger les commandes",
       "map": {
-         "coordsViaWebSocket": "Coordonnées reçues via WebSocket",
          "driverPosition": "Position actuelle du chauffeur",
          "lastUpdate": "Dernière mise à jour : {{time}}",
-         "loadingRoute": "Chargement de l'itinéraire..."
+         "loadingRoute": "Chargement de l'itinéraire...",
+         "positionFromTrack": "Position d'après les données de suivi"
       },
       "notFound": "Aucune commande trouvée",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "Position actuelle du chauffeur",
       "noCoordinates": "Aucune coordonnée",
       "pointsCount": "Points : {{count}}",
+      "routeView": {
+         "label": "Affichage de l'itinéraire",
+         "all": "Tous les itinéraires",
+         "passed": "Trajet parcouru uniquement",
+         "planned": "Itinéraire sans le trajet parcouru"
+      },
       "routesLoadFailed": "Impossible de charger les itinéraires",
       "routesPartialFailure": "Impossible de charger les itinéraires GeoWS pour {{failed}} commandes sur {{total}}"
    },

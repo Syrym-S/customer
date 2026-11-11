@@ -776,10 +776,10 @@
       },
       "loadFailed": "Failed to load orders",
       "map": {
-         "coordsViaWebSocket": "Coordinates received over WebSocket",
          "driverPosition": "Current driver position",
          "lastUpdate": "Last update: {{time}}",
-         "loadingRoute": "Loading the route..."
+         "loadingRoute": "Loading the route...",
+         "positionFromTrack": "Position from tracking data"
       },
       "notFound": "No orders found",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "Current driver position",
       "noCoordinates": "No coordinates",
       "pointsCount": "Points: {{count}}",
+      "routeView": {
+         "label": "Route display",
+         "all": "All routes",
+         "passed": "Travelled path only",
+         "planned": "Route without travelled path"
+      },
       "routesLoadFailed": "Failed to load routes",
       "routesPartialFailure": "Failed to load GeoWS routes for {{failed}} of {{total}} orders"
    },

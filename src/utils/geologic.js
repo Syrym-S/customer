@@ -38,6 +38,29 @@ function normalizeGeoPoint(point, index) {
    };
 }
 
+// The geows-v2 websocket event carries the fix time next to `coords`, not
+// inside it, so callers have to pass the event payload through. Older events
+// (and the decoded polyline) have no time at all — then the caller decides on
+// a fallback.
+export function resolveGeoEventRecordedAt(eventData) {
+   return (
+      eventData?.recorded_at ??
+      eventData?.recordedAt ??
+      eventData?.created_at ??
+      eventData?.timestamp ??
+      eventData?.time ??
+      null
+   );
+}
+
+export function buildLiveGeoPoint(coords, eventData) {
+   return {
+      ...coords,
+      recorded_at:
+         resolveGeoEventRecordedAt(eventData) ?? new Date().toISOString(),
+   };
+}
+
 export function normalizeGeoPoints(points) {
    return (points || [])
       .map(normalizeGeoPoint)

@@ -776,10 +776,10 @@
       },
       "loadFailed": "تعذر تحميل الطلبات",
       "map": {
-         "coordsViaWebSocket": "تم استلام الإحداثيات عبر WebSocket",
          "driverPosition": "الموقع الحالي للسائق",
          "lastUpdate": "آخر تحديث: {{time}}",
-         "loadingRoute": "جارٍ تحميل المسار..."
+         "loadingRoute": "جارٍ تحميل المسار...",
+         "positionFromTrack": "الموقع وفقًا لبيانات التتبع"
       },
       "notFound": "لم يتم العثور على طلبات",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "الموقع الحالي للسائق",
       "noCoordinates": "لا توجد إحداثيات",
       "pointsCount": "النقاط: {{count}}",
+      "routeView": {
+         "label": "عرض المسار",
+         "all": "جميع المسارات",
+         "passed": "المسار المقطوع فقط",
+         "planned": "المسار بدون المسار المقطوع"
+      },
       "routesLoadFailed": "تعذر تحميل المسارات",
       "routesPartialFailure": "تعذر تحميل مسارات GeoWS لـ {{failed}} من {{total}} طلبات"
    },

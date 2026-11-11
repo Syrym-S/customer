@@ -776,10 +776,10 @@
       },
       "loadFailed": "Buyurtmalarni yuklab bo'lmadi",
       "map": {
-         "coordsViaWebSocket": "Koordinatalar WebSocket orqali olindi",
          "driverPosition": "Haydovchining joriy joylashuvi",
          "lastUpdate": "Oxirgi yangilanish: {{time}}",
-         "loadingRoute": "Marshrut yuklanmoqda..."
+         "loadingRoute": "Marshrut yuklanmoqda...",
+         "positionFromTrack": "Kuzatuv ma'lumotlariga ko'ra joylashuv"
       },
       "notFound": "Buyurtmalar topilmadi",
       "publish": {
@@ -929,6 +929,12 @@
       "driverPosition": "Haydovchining joriy joylashuvi",
       "noCoordinates": "Koordinatalar yo'q",
       "pointsCount": "Nuqtalar: {{count}}",
+      "routeView": {
+         "label": "Marshrutni ko'rsatish",
+         "all": "Barcha marshrutlar",
+         "passed": "Faqat o'tilgan yo'l",
+         "planned": "O'tilgan yo'lsiz marshrut"
+      },
       "routesLoadFailed": "Marshrutlarni yuklab bo'lmadi",
       "routesPartialFailure": "{{total}} buyurtmadan {{failed}} tasi uchun GeoWS marshrutlarini yuklab bo'lmadi"
    },

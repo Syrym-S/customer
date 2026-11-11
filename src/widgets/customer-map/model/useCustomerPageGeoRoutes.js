@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import i18n from "../../../shared/i18n";
 
-import { geoPointToLatLng, mergeGeoPointsById, normalizeGeoPoints } from "../../../utils/geologic";
+import {
+    buildLiveGeoPoint,
+    geoPointToLatLng,
+    mergeGeoPointsById,
+    normalizeGeoPoints,
+} from "../../../utils/geologic";
 import {
     normalizePolylinePoints,
     openLeadGeoTrackingConnection,
@@ -207,12 +212,16 @@ export function useCustomerPageGeoRoutes(leads) {
                     markLeadHandled(leadId, "opened");
                 },
 
-                onCoordinate: (coords) => {
+                onCoordinate: (coords, eventData) => {
                     if (isCancelled) {
                         return;
                     }
 
-                    mergeLeadGeoPoints(leadId, lead, normalizeGeoPoints([coords]));
+                    mergeLeadGeoPoints(
+                        leadId,
+                        lead,
+                        normalizeGeoPoints([buildLiveGeoPoint(coords, eventData)]),
+                    );
                 },
 
                 // Lead has no geo session (created before the geows-v2
