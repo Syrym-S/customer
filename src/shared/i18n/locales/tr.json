@@ -390,6 +390,7 @@
          "savedAsDraft": "Sipariş taslak olarak kaydedildi"
       },
       "saveDraft": "Taslak olarak kaydet",
+      "saveDraftShort": "Taslak",
       "skipVideoRecording": "Yükleme/boşaltma video kaydını atla",
       "step": "Adım {{current}} / {{total}}",
       "steps": {

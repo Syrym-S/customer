@@ -390,6 +390,7 @@
          "savedAsDraft": "O pedido foi salvo como rascunho"
       },
       "saveDraft": "Salvar como rascunho",
+      "saveDraftShort": "Rascunho",
       "skipVideoRecording": "Pular gravação de vídeo de carga/descarga",
       "step": "Etapa {{current}} de {{total}}",
       "steps": {

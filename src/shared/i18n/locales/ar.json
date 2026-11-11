@@ -390,6 +390,7 @@
          "savedAsDraft": "تم حفظ الطلب كمسودة"
       },
       "saveDraft": "حفظ كمسودة",
+      "saveDraftShort": "مسودة",
       "skipVideoRecording": "تخطي تسجيل فيديو التحميل/التفريغ",
       "step": "الخطوة {{current}} من {{total}}",
       "steps": {

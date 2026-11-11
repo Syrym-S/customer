@@ -396,6 +396,7 @@
          "savedAsDraft": "Замовлення збережено як чернетку"
       },
       "saveDraft": "Зберегти як чернетку",
+      "saveDraftShort": "Чернетка",
       "skipVideoRecording": "Пропуск відеофіксації розвантаження/завантаження",
       "step": "Крок {{current}} з {{total}}",
       "steps": {

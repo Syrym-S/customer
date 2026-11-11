@@ -2,6 +2,11 @@ import { Box, Button, DialogActions } from '@mui/material';
 import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
 
+// Ниже 430px четыре кнопки в одну строку уже не влезают: подпись
+// «Сохранить как черновик» ломается переносом и тянет по высоте весь ряд.
+// Там кнопка показывает короткую подпись, а кегль и отступы поджимаются.
+const NARROW_ACTIONS_QUERY = '@media (max-width: 429.95px)';
+
 const actionButtonSx = {
    fontSize: {
       xs: 12,
@@ -10,6 +15,13 @@ const actionButtonSx = {
    px: {
       xs: 1,
       sm: 2,
+   },
+   whiteSpace: 'nowrap',
+
+   [NARROW_ACTIONS_QUERY]: {
+      fontSize: 11,
+      px: 0.75,
+      minWidth: 0,
    },
 };
 
@@ -36,6 +48,12 @@ export function CreateLeadActions({
             pb: 3,
             pt: 2,
             justifyContent: 'space-between',
+            gap: 1,
+
+            [NARROW_ACTIONS_QUERY]: {
+               px: 2,
+               gap: 0.75,
+            },
          }}
       >
          <Button
@@ -47,7 +65,16 @@ export function CreateLeadActions({
             {t("common.actions.cancel")}
          </Button>
 
-         <Box sx={{ display: 'flex', gap: 1 }}>
+         <Box
+            sx={{
+               display: 'flex',
+               gap: 1,
+
+               [NARROW_ACTIONS_QUERY]: {
+                  gap: 0.75,
+               },
+            }}
+         >
             {onSaveDraft && (
                <Button
                   type='button'
@@ -55,7 +82,35 @@ export function CreateLeadActions({
                   disabled={isAnyActionPending}
                   sx={actionButtonSx}
                >
-                  {isSavingDraft ? t("common.actions.saving") : t("createLead.saveDraft")}
+                  {isSavingDraft ? (
+                     t("common.actions.saving")
+                  ) : (
+                     <>
+                        <Box
+                           component='span'
+                           sx={{
+                              [NARROW_ACTIONS_QUERY]: {
+                                 display: 'none',
+                              },
+                           }}
+                        >
+                           {t("createLead.saveDraft")}
+                        </Box>
+
+                        <Box
+                           component='span'
+                           sx={{
+                              display: 'none',
+
+                              [NARROW_ACTIONS_QUERY]: {
+                                 display: 'inline',
+                              },
+                           }}
+                        >
+                           {t("createLead.saveDraftShort")}
+                        </Box>
+                     </>
+                  )}
                </Button>
             )}
 

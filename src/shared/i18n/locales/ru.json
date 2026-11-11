@@ -396,6 +396,7 @@
          "savedAsDraft": "Заказ сохранен как черновик"
       },
       "saveDraft": "Сохранить как черновик",
+      "saveDraftShort": "Черновик",
       "skipVideoRecording": "Пропуск видеофиксации разгрузки/погрузки",
       "step": "Шаг {{current}} из {{total}}",
       "steps": {

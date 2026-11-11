@@ -156,13 +156,16 @@ export function LeadsList() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   gap: 2,
+                  // До md заголовок и контролы в одну строку не влезают:
+                  // переключатель вида уезжает за край. Поэтому контролы
+                  // переносятся на следующую строку.
                   alignItems: {
                      xs: 'flex-start',
-                     sm: 'center',
+                     md: 'center',
                   },
                   flexDirection: {
                      xs: 'column',
-                     sm: 'row',
+                     md: 'row',
                   },
                }}
             >
@@ -176,20 +179,15 @@ export function LeadsList() {
                   </Typography>
                </Box>
 
-               <Stack
-                  direction={{
-                     xs: 'column',
-                     sm: 'row',
-                  }}
-                  spacing={1}
+               <Box
                   sx={{
+                     display: 'flex',
+                     flexWrap: 'wrap',
+                     gap: 1,
+                     alignItems: 'center',
                      width: {
                         xs: '100%',
-                        sm: 'auto',
-                     },
-                     alignItems: {
-                        xs: 'stretch',
-                        sm: 'center',
+                        md: 'auto',
                      },
                   }}
                >
@@ -201,10 +199,6 @@ export function LeadsList() {
                      color="primary"
                      aria-label={t("leads.scope.toggle")}
                      sx={{
-                        alignSelf: {
-                           xs: 'stretch',
-                           sm: 'auto',
-                        },
                         '& .MuiToggleButton-root': {
                            px: 2,
                            whiteSpace: 'nowrap',
@@ -224,10 +218,13 @@ export function LeadsList() {
                   <FormControl
                      size="small"
                      sx={{
-                        minWidth: 200,
-                        alignSelf: {
-                           xs: 'stretch',
-                           sm: 'auto',
+                        minWidth: 160,
+                        flexGrow: {
+                           xs: 1,
+                           md: 0,
+                        },
+                        width: {
+                           md: 200,
                         },
                      }}
                   >
@@ -262,9 +259,9 @@ export function LeadsList() {
                      aria-label={t("leads.viewToggle")}
                      sx={{
                         direction: "ltr",
-                        alignSelf: {
-                           xs: 'stretch',
-                           sm: 'auto',
+                        ml: {
+                           xs: 'auto',
+                           md: 0,
                         },
                         '& .MuiToggleButton-root': {
                            px: 1.5,
@@ -296,7 +293,7 @@ export function LeadsList() {
                         <ViewKanbanRoundedIcon fontSize="small" />
                      </ToggleButton> */}
                   </ToggleButtonGroup>
-               </Stack>
+               </Box>
             </Box>
 
             <Stack spacing={1.5}>

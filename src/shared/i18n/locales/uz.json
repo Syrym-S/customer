@@ -390,6 +390,7 @@
          "savedAsDraft": "Buyurtma qoralama sifatida saqlandi"
       },
       "saveDraft": "Qoralama sifatida saqlash",
+      "saveDraftShort": "Qoralama",
       "skipVideoRecording": "Yuklash/tushirish video yozuvini o'tkazib yuborish",
       "step": "{{total}} dan {{current}}-qadam",
       "steps": {

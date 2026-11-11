@@ -12,6 +12,20 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
   const isRow = layout === "row";
   const iconFontSize = isRow ? 16 : undefined;
 
+  // В колоночном виде кнопки стоят в сайдбаре: его ширина (20vw, но не
+  // меньше 220px) с ~1130px и ниже перестаёт расти, и подписи начинают
+  // переноситься на вторую строку. До 600px сайдбар разворачивается на всю
+  // ширину, так что там хватает исходного кегля.
+  const buttonFontSizeSx = isRow
+    ? { fontSize: 11 }
+    : {
+        fontSize: 12,
+
+        "@media (min-width: 600px) and (max-width: 1129.95px)": {
+          fontSize: 11,
+        },
+      };
+
   const supportEmail = window?.APP_DATA?.support?.email;
   const supportPhone = window?.APP_DATA?.support?.phone;
 
@@ -56,7 +70,7 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
           sx={{
             borderColor: "primary.main",
             backgroundColor: "rgba(33, 150, 243, 0.06)",
-            fontSize: isRow ? 11 : 12,
+            ...buttonFontSizeSx,
             textTransform: "none",
 
             "&:hover": {
@@ -88,7 +102,7 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
           sx={{
             color: "text.secondary",
             borderColor: "divider",
-            fontSize: isRow ? 11 : 12,
+            ...buttonFontSizeSx,
             textTransform: "none",
 
             "&:hover": {
@@ -131,7 +145,7 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
           sx={{
             color: "text.secondary",
             borderColor: "divider",
-            fontSize: isRow ? 11 : 12,
+            ...buttonFontSizeSx,
             textTransform: "none",
 
             "&:hover": {

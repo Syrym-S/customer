@@ -390,6 +390,7 @@
          "savedAsDraft": "Буйрутма долбоор түрүндө сакталды"
       },
       "saveDraft": "Долбоор түрүндө сактоо",
+      "saveDraftShort": "Долбоор",
       "skipVideoRecording": "Жүктөө/түшүрүү видео жаздырууну өткөрүп жиберүү",
       "step": "{{total}}дин {{current}}-кадамы",
       "steps": {

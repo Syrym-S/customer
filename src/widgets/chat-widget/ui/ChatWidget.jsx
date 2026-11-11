@@ -49,7 +49,7 @@ export function ChatWidget() {
         position: "fixed",
         right: { xs: 16, sm: 24 },
         bottom: { xs: 16, sm: 24 },
-        zIndex: (theme) => theme.zIndex.snackbar,
+        zIndex: (theme) => theme.zIndex.modal - 1,
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-end",

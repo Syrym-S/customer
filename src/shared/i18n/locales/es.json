@@ -390,6 +390,7 @@
          "savedAsDraft": "Pedido guardado como borrador"
       },
       "saveDraft": "Guardar como borrador",
+      "saveDraftShort": "Borrador",
       "skipVideoRecording": "Omitir grabación de video de carga/descarga",
       "step": "Paso {{current}} de {{total}}",
       "steps": {

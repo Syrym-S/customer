@@ -99,9 +99,10 @@ export function RoutePoint({
             columnGap: 1,
             rowGap: 0.5,
 
-            // On narrow screens the date/status chips overlap the address,
-            // so move them onto their own row below it.
-            '@media (max-width: 499.95px)': {
+            // На узких экранах чипы даты и статуса не влезают в строку с
+            // подписью точки и её типом — ниже 700px они уезжают на свою
+            // строку под адресом.
+            '@media (max-width: 699.95px)': {
                gridTemplateColumns: 'minmax(0, 1fr)',
                gridTemplateAreas: '"label" "value" "chips"',
                rowGap: 0.75,

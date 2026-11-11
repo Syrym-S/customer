@@ -390,6 +390,7 @@
          "savedAsDraft": "Фармоиш ҳамчун лоиҳа нигоҳ дошта шуд"
       },
       "saveDraft": "Нигоҳ доштан ҳамчун лоиҳа",
+      "saveDraftShort": "Лоиҳа",
       "skipVideoRecording": "Гузариш додани сабти видео дар боркунӣ/борфурорӣ",
       "step": "Қадами {{current}} аз {{total}}",
       "steps": {

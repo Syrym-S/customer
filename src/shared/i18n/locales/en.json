@@ -390,6 +390,7 @@
          "savedAsDraft": "The order was saved as a draft"
       },
       "saveDraft": "Save as draft",
+      "saveDraftShort": "Draft",
       "skipVideoRecording": "Skip loading/unloading video recording",
       "step": "Step {{current}} of {{total}}",
       "steps": {

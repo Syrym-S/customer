@@ -390,6 +390,7 @@
          "savedAsDraft": "Commande enregistrée comme brouillon"
       },
       "saveDraft": "Enregistrer comme brouillon",
+      "saveDraftShort": "Brouillon",
       "skipVideoRecording": "Ignorer l'enregistrement vidéo du chargement/déchargement",
       "step": "Étape {{current}} sur {{total}}",
       "steps": {

@@ -387,6 +387,7 @@
          "savedAsDraft": "订单已保存为草稿"
       },
       "saveDraft": "保存为草稿",
+      "saveDraftShort": "草稿",
       "skipVideoRecording": "跳过装卸货视频记录",
       "step": "第 {{current}} 步，共 {{total}} 步",
       "steps": {

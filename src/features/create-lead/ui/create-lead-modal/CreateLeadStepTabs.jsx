@@ -1,6 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
+const COMPACT_STEPS_QUERY = '@media (max-width: 670px)';
+
 export function CreateLeadStepTabs({
    steps,
    activeStep,
@@ -13,16 +15,13 @@ export function CreateLeadStepTabs({
          sx={{
             mb: 2,
             display: 'grid',
-            gridTemplateColumns: {
-               xs: '1fr 1fr',
-               sm: `repeat(${steps.length}, minmax(0, 1fr))`,
-            },
-            '@media (max-width: 670px)': {
-               gridTemplateColumns: '1fr 1fr',
-            },
-            gap: {
-               xs: 1,
-               sm: 0.75,
+            gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
+            gap: 0.75,
+
+            [COMPACT_STEPS_QUERY]: {
+               display: 'flex',
+               alignItems: 'stretch',
+               gap: 0.5,
             },
          }}
       >
@@ -38,6 +37,11 @@ export function CreateLeadStepTabs({
                   onClick={() => onStepClick(index)}
                   role='button'
                   tabIndex={isAvailable ? 0 : -1}
+                  aria-current={isActive ? 'step' : undefined}
+                  // Номер без подписи ничего не говорит о шаге, поэтому в
+                  // сжатом виде название уходит в title и в aria-label.
+                  title={`${index + 1}. ${step}`}
+                  aria-label={`${index + 1}. ${step}`}
                   sx={{
                      p: 1.25,
                      border: '1px solid',
@@ -67,10 +71,32 @@ export function CreateLeadStepTabs({
                              ? 'rgba(33, 150, 243, 0.08)'
                              : 'grey.50',
                      },
+
+                     [COMPACT_STEPS_QUERY]: {
+                        py: 0.75,
+                        borderRadius: 1.5,
+                        minWidth: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        ...(isActive
+                           ? {
+                                px: 0.75,
+                                flex: '0 1 auto',
+                                minWidth: 104,
+                             }
+                           : {
+                                px: 0.5,
+                                flex: '1 1 auto',
+                             }),
+                     },
                   }}
                >
                   <Typography
+                     component='span'
                      sx={{
+                        display: 'block',
+                        minWidth: 0,
                         fontSize: 12,
                         fontWeight: 600,
                         color: isInvalid
@@ -78,19 +104,35 @@ export function CreateLeadStepTabs({
                            : isActive || isCompleted || isAvailable
                              ? 'primary.main'
                              : 'text.primary',
-                     }}
-                  >
-                     {index + 1}. {step}
-                  </Typography>
 
-                  <Typography
-                     sx={{
-                        mt: 0.25,
-                        fontSize: 11,
-                        color: 'text.secondary',
+                        [COMPACT_STEPS_QUERY]: {
+                           display: 'flex',
+                           alignItems: 'center',
+                        },
                      }}
                   >
-                     {' '}
+                     <Box component='span' sx={{ flexShrink: 0 }}>
+                        {index + 1}
+                     </Box>
+
+                     <Box
+                        component='span'
+                        sx={{
+                           minWidth: 0,
+
+                           [COMPACT_STEPS_QUERY]: isActive
+                              ? {
+                                   overflow: 'hidden',
+                                   textOverflow: 'ellipsis',
+                                   whiteSpace: 'nowrap',
+                                }
+                              : {
+                                   display: 'none',
+                                },
+                        }}
+                     >
+                        . {step}
+                     </Box>
                   </Typography>
                </Box>
             );

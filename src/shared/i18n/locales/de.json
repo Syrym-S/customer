@@ -390,6 +390,7 @@
          "savedAsDraft": "Der Auftrag wurde als Entwurf gespeichert"
       },
       "saveDraft": "Als Entwurf speichern",
+      "saveDraftShort": "Entwurf",
       "skipVideoRecording": "Videoaufzeichnung der Be-/Entladung überspringen",
       "step": "Schritt {{current}} von {{total}}",
       "steps": {

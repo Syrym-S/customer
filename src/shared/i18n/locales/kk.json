@@ -390,6 +390,7 @@
          "savedAsDraft": "Тапсырыс жоба ретінде сақталды"
       },
       "saveDraft": "Жоба ретінде сақтау",
+      "saveDraftShort": "Жоба",
       "skipVideoRecording": "Жүк тиеу/түсіру бейнетіркеуін өткізіп жіберу",
       "step": "{{total}} қадамнан {{current}}-і",
       "steps": {

@@ -390,6 +390,7 @@
          "savedAsDraft": "آرڈر ڈرافٹ کے طور پر محفوظ کر دیا گیا"
       },
       "saveDraft": "ڈرافٹ کے طور پر محفوظ کریں",
+      "saveDraftShort": "ڈرافٹ",
       "skipVideoRecording": "لوڈنگ/ان لوڈنگ کی ویڈیو ریکارڈنگ چھوڑ دیں",
       "step": "مرحلہ {{current}} از {{total}}",
       "steps": {
