@@ -584,6 +584,7 @@
    },
    "exportReport": {
       "action": "Hisobotni yuklab olish",
+      "actionShort": "Hisobot",
       "dateOrder": "«Dan» sanasi «gacha» sanasidan keyin bo'lishi mumkin emas",
       "failed": "Hisobotni yuklab bo'lmadi. Keyinroq qayta urinib ko'ring",
       "hint": "Hisobotga faqat tanlangan davrdagi yakunlangan tashishlar kiradi.",

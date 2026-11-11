@@ -579,6 +579,7 @@
    },
    "exportReport": {
       "action": "导出报表",
+      "actionShort": "报表",
       "dateOrder": "起始日期不能晚于截止日期",
       "failed": "报表导出失败，请稍后重试",
       "hint": "报表仅包含所选时间段内已完成的运输单。",

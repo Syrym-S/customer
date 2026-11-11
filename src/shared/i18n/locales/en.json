@@ -584,6 +584,7 @@
    },
    "exportReport": {
       "action": "Export report",
+      "actionShort": "Report",
       "dateOrder": "The “from” date cannot be later than the “to” date",
       "failed": "Failed to export the report. Please try again later",
       "hint": "Only completed shipments within the selected period will be included.",

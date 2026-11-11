@@ -584,6 +584,7 @@
    },
    "exportReport": {
       "action": "Exportar informe",
+      "actionShort": "Informe",
       "dateOrder": "La fecha «desde» no puede ser posterior a la fecha «hasta»",
       "failed": "No se pudo exportar el informe. Inténtelo más tarde",
       "hint": "El informe incluirá solo los transportes finalizados en el período seleccionado.",

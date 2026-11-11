@@ -584,6 +584,7 @@
    },
    "exportReport": {
       "action": "Bericht exportieren",
+      "actionShort": "Bericht",
       "dateOrder": "Das Datum „von“ darf nicht später als das Datum „bis“ sein",
       "failed": "Der Bericht konnte nicht exportiert werden. Bitte versuchen Sie es später erneut",
       "hint": "Es werden nur abgeschlossene Transporte im ausgewählten Zeitraum einbezogen.",

@@ -119,6 +119,34 @@ function teardownEcho(echo) {
 }
 
 /**
+ * Live-only tracking connection for a lead whose read-token and websocket
+ * config are already known — the batch `/geows/v1/polylines` response carries
+ * both, so there is nothing left to fetch before subscribing.
+ */
+export function openGeoTrackingChannel({ token, websocket, onCoordinate, onError }) {
+   if (!token || !websocket?.channel) {
+      return null;
+   }
+
+   const echo = subscribeGeoTrackingChannel({
+      token,
+      routeData: { websocket },
+      onCoordinate,
+      onError,
+   });
+
+   if (!echo) {
+      return null;
+   }
+
+   return {
+      close() {
+         teardownEcho(echo);
+      },
+   };
+}
+
+/**
  * Public/shared-lead geo tracking connection (customer, read-only) — the
  * url/token are already known (from the shared-lead response's
  * `tracking: { type, token, url }` field), so this skips straight to:

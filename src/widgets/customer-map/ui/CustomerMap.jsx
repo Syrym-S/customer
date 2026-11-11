@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import { CustomerMapView } from './CustomerMapView';
 import { useCustomerMap } from '../model/useCustomerMap';
 import { useLeadsContext } from '../../customer-leads/model/useLeadsContext';
-import { useCustomerPageRoutes } from '../model/useCustomerPageRoutes';
-import { useCustomerPageGeoRoutes } from '../model/useCustomerPageGeoRoutes';
+import { useCustomerPageMapRoutes } from '../model/useCustomerPageMapRoutes';
 
 export function CustomerMap() {
    const { t } = useTranslation();
@@ -13,10 +12,8 @@ export function CustomerMap() {
    const map = useCustomerMap();
    const { leads, isLoading, setOpenLead } = useLeadsContext();
 
-   const { routes, isRoutesLoading, routesError } =
-      useCustomerPageRoutes(leads);
-   const { geoRoutes, isGeoRoutesLoading, geoRoutesError } =
-      useCustomerPageGeoRoutes(leads);
+   const { routes, geoRoutes, isMapRoutesLoading, mapRoutesError } =
+      useCustomerPageMapRoutes(leads);
 
    const routeBoundsKey = routes
       .map((route) => route.id)
@@ -39,7 +36,7 @@ export function CustomerMap() {
    const fitBoundsKey = routeBoundsKey || geoRouteBoundsKey || leadsBoundsKey;
 
    const hasRoutes = routes.length > 0 || geoRoutes.length > 0;
-   const isMapLoading = isLoading || isRoutesLoading || isGeoRoutesLoading;
+   const isMapLoading = isLoading || isMapRoutesLoading;
 
    function handleLeadRouteClick(lead) {
       if (!lead) {
@@ -51,9 +48,9 @@ export function CustomerMap() {
 
    return (
       <Box>
-         {(routesError || geoRoutesError) && (
+         {mapRoutesError && (
             <Alert severity='warning' sx={{ mb: 2 }}>
-               {routesError || geoRoutesError}
+               {mapRoutesError}
             </Alert>
          )}
          <Box

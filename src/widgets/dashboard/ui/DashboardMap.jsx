@@ -1,8 +1,7 @@
 import { Alert, Box, CircularProgress, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useCustomerMap } from "../../customer-map/model/useCustomerMap";
-import { useCustomerPageRoutes } from "../../customer-map/model/useCustomerPageRoutes";
-import { useCustomerPageGeoRoutes } from "../../customer-map/model/useCustomerPageGeoRoutes";
+import { useCustomerPageMapRoutes } from "../../customer-map/model/useCustomerPageMapRoutes";
 import { CustomerMapView } from "../../customer-map/ui/CustomerMapView";
 
 function getRouteBoundsKey(routes) {
@@ -32,11 +31,8 @@ export function DashboardMap({
 
     const map = useCustomerMap();
 
-    const { routes, isRoutesLoading, routesError } =
-        useCustomerPageRoutes(leads);
-
-    const { geoRoutes, isGeoRoutesLoading, geoRoutesError } =
-        useCustomerPageGeoRoutes(leads);
+    const { routes, geoRoutes, isMapRoutesLoading, mapRoutesError } =
+        useCustomerPageMapRoutes(leads);
 
     const selectedRoute =
         findRouteByLeadId(routes, selectedLeadId) ||
@@ -61,7 +57,7 @@ export function DashboardMap({
         : allRoutesFitBoundsKey;
 
     const hasRoutes = routes.length > 0 || geoRoutes.length > 0;
-    const isMapLoading = isLoading || isRoutesLoading || isGeoRoutesLoading;
+    const isMapLoading = isLoading || isMapRoutesLoading;
 
     function handleLeadRouteClick(lead) {
         if (!lead?.id) {
@@ -73,9 +69,9 @@ export function DashboardMap({
 
     return (
         <Box>
-            {(routesError || geoRoutesError) && (
+            {mapRoutesError && (
                 <Alert severity="warning" sx={{ mb: 2 }}>
-                    {routesError || geoRoutesError}
+                    {mapRoutesError}
                 </Alert>
             )}
 

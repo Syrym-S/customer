@@ -19,10 +19,18 @@ export function CreateLeadHeader({ activeStep, stepsCount }) {
                justifyContent: 'space-between',
                alignItems: 'flex-start',
                gap: 2,
-               flexWrap: 'wrap',
+               // Перенос чипа «Шаг N из 5» на свою строку добавлял модалке
+               // лишний ряд по высоте: ниже ~338px заголовку не хватало
+               // места рядом с ним. Вместо переноса сжимается блок с
+               // заголовком — подзаголовок переносится внутри себя.
+               flexWrap: 'nowrap',
+
+               '@media (max-width: 379.95px)': {
+                  gap: 1,
+               },
             }}
          >
-            <Box>
+            <Box sx={{ minWidth: 0 }}>
                <Typography
                   sx={{
                      fontSize: {
@@ -54,6 +62,7 @@ export function CreateLeadHeader({ activeStep, stepsCount }) {
                   borderRadius: 999,
                   fontWeight: 600,
                   backgroundColor: 'rgba(33, 150, 243, 0.04)',
+                  flexShrink: 0,
                }}
             />
          </Box>

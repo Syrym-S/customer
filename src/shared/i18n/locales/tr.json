@@ -584,6 +584,7 @@
    },
    "exportReport": {
       "action": "Raporu dışa aktar",
+      "actionShort": "Rapor",
       "dateOrder": "«Başlangıç» tarihi «Bitiş» tarihinden sonra olamaz",
       "failed": "Rapor dışa aktarılamadı. Lütfen daha sonra tekrar deneyin",
       "hint": "Rapora yalnızca seçilen dönemdeki tamamlanmış taşımalar dahil edilecektir.",

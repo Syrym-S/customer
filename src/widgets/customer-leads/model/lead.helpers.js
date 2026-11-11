@@ -29,6 +29,10 @@ export function isLeadTrackingActive(status) {
    return activeTrackingLeadStatuses.has(status);
 }
 
+export function getLeadId(lead) {
+   return lead?.id || lead?._id || lead?.lead_id || lead?.leadId || '';
+}
+
 export const leadStatusStyles = {
    new: {
       borderColor: 'primary.main',
