@@ -27,6 +27,8 @@ import {
    isLeadTrackingActive,
 } from '../../customer-leads/model/lead.helpers';
 
+import { resolveDriverFacing } from './customer-map.helpers';
+
 import {
    buildLeadPolylinesRequestKey,
    deleteCachedLeadPolylineEntry,
@@ -93,6 +95,7 @@ function buildGeoRoute(leadId, rawPoints) {
       rawPoints,
       points,
       currentPoint: points.at(-1) || null,
+      driverFacing: resolveDriverFacing(points),
    };
 }
 

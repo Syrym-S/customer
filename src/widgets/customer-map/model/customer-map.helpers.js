@@ -1,6 +1,45 @@
 import { normalizeLocationValue } from '../../customer-leads/model/lead-edit-form.helpers';
 import i18n from '../../../shared/i18n';
 
+const DRIVER_FACING_DEFAULT = 'right';
+const DRIVER_FACING_MIN_SHIFT_METERS = 25;
+const METERS_PER_LONGITUDE_DEGREE = 111320;
+
+export function resolveDriverFacing(points) {
+   if (!Array.isArray(points) || points.length < 2) {
+      return DRIVER_FACING_DEFAULT;
+   }
+
+   const lastIndex = points.length - 1;
+   const currentPoint = points[lastIndex];
+
+   if (!Array.isArray(currentPoint)) {
+      return DRIVER_FACING_DEFAULT;
+   }
+
+   for (let index = lastIndex - 1; index >= 0; index -= 1) {
+      const previousPoint = points[index];
+
+      if (!Array.isArray(previousPoint)) {
+         continue;
+      }
+
+      const latitudeRadians =
+         (((currentPoint[0] + previousPoint[0]) / 2) * Math.PI) / 180;
+
+      const shiftMeters =
+         (currentPoint[1] - previousPoint[1]) *
+         METERS_PER_LONGITUDE_DEGREE *
+         Math.cos(latitudeRadians);
+
+      if (Math.abs(shiftMeters) >= DRIVER_FACING_MIN_SHIFT_METERS) {
+         return shiftMeters < 0 ? 'left' : DRIVER_FACING_DEFAULT;
+      }
+   }
+
+   return DRIVER_FACING_DEFAULT;
+}
+
 export function getMarkerVisual(marker) {
    const id = String(marker?.id ?? '');
 

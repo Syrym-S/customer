@@ -14,7 +14,7 @@ import {
    CUSTOMER_MAP_TILE_LAYER,
    LEAFLET_ATTRIBUTION_PREFIX,
    ROUTE_TOOLTIP_PANE_NAME,
-   driverIcon,
+   getDriverIcon,
    getMarkerIcon,
 } from "../model/customer-map.constants";
 import {
@@ -341,7 +341,7 @@ export function CustomerMapView({
                   {currentPoint && isLeadTrackingActive(geoRoute.lead?.status) && (
                      <Marker
                         position={currentPoint}
-                        icon={driverIcon}
+                        icon={getDriverIcon(geoRoute.driverFacing)}
                         opacity={isDimmed ? 0.3 : 1}
                         eventHandlers={{
                            click: () => {

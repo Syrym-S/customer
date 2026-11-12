@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "المسار الفعلي",
       "actualPathOrder": "المسار الفعلي للطلب رقم",
-      "customerPoint": "موقع العميل",
-      "devMarker": "علامة مؤقتة لاختبار الخريطة",
       "driverName": "السائق: {{name}}",
       "driverNotSpecified": "السائق غير محدد",
       "driverPhone": "الهاتف:",

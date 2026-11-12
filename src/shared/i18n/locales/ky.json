@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "Чыныгы жол",
       "actualPathOrder": "Буйрутма №дин чыныгы жолу",
-      "customerPoint": "Тапшырыкчынын жайгашкан жери",
-      "devMarker": "Картаны текшерүү үчүн убактылуу белги",
       "driverName": "Айдоочу: {{name}}",
       "driverNotSpecified": "Айдоочу көрсөтүлгөн эмес",
       "driverPhone": "Телефон:",

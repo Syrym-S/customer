@@ -41,6 +41,10 @@ body {
    display: block;
 }
 
+.driver-marker__icon--left svg {
+   transform: scaleX(-1);
+}
+
 .driver-marker__pulse {
    position: absolute;
    inset: 0;

@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "اصلی راستہ",
       "actualPathOrder": "آرڈر # کا اصلی راستہ",
-      "customerPoint": "گاہک کا مقام",
-      "devMarker": "نقشے کی جانچ کے لیے عارضی نشان",
       "driverName": "ڈرائیور: {{name}}",
       "driverNotSpecified": "ڈرائیور درج نہیں کیا گیا",
       "driverPhone": "فون:",

@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "Actual path",
       "actualPathOrder": "Actual path of order #",
-      "customerPoint": "Customer location",
-      "devMarker": "Temporary marker for map testing",
       "driverName": "Driver: {{name}}",
       "driverNotSpecified": "Driver not specified",
       "driverPhone": "Phone:",

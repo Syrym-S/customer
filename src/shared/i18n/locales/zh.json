@@ -917,8 +917,6 @@
    "map": {
       "actualPath": "实际路径",
       "actualPathOrder": "订单 # 实际路径",
-      "customerPoint": "客户地点",
-      "devMarker": "用于测试地图的临时标记",
       "driverName": "司机：{{name}}",
       "driverNotSpecified": "未指定司机",
       "driverPhone": "电话：",

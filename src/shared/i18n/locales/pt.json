@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "Caminho real",
       "actualPathOrder": "Caminho real do pedido nº",
-      "customerPoint": "Localização do cliente",
-      "devMarker": "Marcador temporário para teste do mapa",
       "driverName": "Motorista: {{name}}",
       "driverNotSpecified": "Motorista não informado",
       "driverPhone": "Telefone:",

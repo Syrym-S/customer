@@ -1,29 +1,18 @@
-import i18n from '../../../shared/i18n';
+const DEFAULT_CENTER = [43.241141, 76.871399];
+const DEFAULT_ZOOM = 12;
+const NO_MARKERS = [];
+const NO_ROUTE_POINTS = [];
 
 export function useCustomerMap() {
-   const center = [43.241141, 76.871399]; // Алматы, временно
-   const zoom = 12;
-
-   const markers = [
-      {
-         id: 1,
-         position: [43.241141, 76.871399],
-         title: i18n.t("map.customerPoint"),
-         description: i18n.t("map.devMarker"),
-      },
-   ];
-
-   const routePoints = [];
-
    function handleMarkerClick(marker) {
       console.log('marker click:', marker);
    }
 
    return {
-      center,
-      zoom,
-      markers,
-      routePoints,
+      center: DEFAULT_CENTER,
+      zoom: DEFAULT_ZOOM,
+      markers: NO_MARKERS,
+      routePoints: NO_ROUTE_POINTS,
       handleMarkerClick,
    };
 }

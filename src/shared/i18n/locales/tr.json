@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "Gerçek rota",
       "actualPathOrder": "Sipariş # gerçek rotası",
-      "customerPoint": "Müşteri noktası",
-      "devMarker": "Haritayı test etmek için geçici işaretçi",
       "driverName": "Sürücü: {{name}}",
       "driverNotSpecified": "Sürücü belirtilmedi",
       "driverPhone": "Telefon:",

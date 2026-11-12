@@ -10,6 +10,7 @@ import {
 } from '../../model/lead-details-map.helpers';
 import { formatLeadDate, isLeadTrackingActive } from '../../model/lead.helpers';
 import { getWaypointTypeLabel } from '../../model/lead-route.helpers';
+import { resolveDriverFacing } from '../../../customer-map/model/customer-map.helpers';
 
 function getPassedStateLine(location) {
    return location?.is_passed ? i18n.t("enums.verificationCheck.passedMark") : i18n.t("enums.verificationCheck.notPassed");
@@ -137,6 +138,7 @@ export function LeadDetailsMap({
            {
               id: 'geo-current-point',
               position: [geoCurrentPoint.latitude, geoCurrentPoint.longitude],
+              facing: resolveDriverFacing(geoRoutePoints),
               title: t("leads.map.driverPosition"),
               description: geoCurrentPoint.recordedAt
                  ? t("leads.map.lastUpdate", { time: formatLeadDate(geoCurrentPoint.recordedAt) })

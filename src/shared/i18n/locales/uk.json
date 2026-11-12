@@ -935,8 +935,6 @@
    "map": {
       "actualPath": "Фактичний шлях",
       "actualPathOrder": "Фактичний шлях замовлення #",
-      "customerPoint": "Точка клієнта",
-      "devMarker": "Тимчасовий маркер для перевірки карти",
       "driverName": "Водій: {{name}}",
       "driverNotSpecified": "Водія не вказано",
       "driverPhone": "Телефон:",

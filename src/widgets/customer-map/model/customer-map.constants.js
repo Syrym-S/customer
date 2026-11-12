@@ -6,13 +6,26 @@ const MARKER_FONT_FAMILY = 'Roboto,Arial,sans-serif';
 const driverTruckSvg =
    '<svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M1 5h14v11H1z"/><path d="M15 9h4.2L23 13v3h-8z"/><circle cx="6" cy="18" r="2.3" stroke="#16243E" stroke-width="1.6"/><circle cx="18" cy="18" r="2.3" stroke="#16243E" stroke-width="1.6"/></svg>';
 
-export const driverIcon = L.divIcon({
-   className: 'driver-marker',
-   html: `<span class="driver-marker__pulse"></span><span class="driver-marker__icon">${driverTruckSvg}</span>`,
-   iconSize: [38, 38],
-   iconAnchor: [19, 19],
-   popupAnchor: [0, -20],
-});
+const driverIconCache = new Map();
+
+export function getDriverIcon(facing) {
+   const key = facing === 'left' ? 'left' : 'right';
+
+   if (!driverIconCache.has(key)) {
+      driverIconCache.set(
+         key,
+         L.divIcon({
+            className: 'driver-marker',
+            html: `<span class="driver-marker__pulse"></span><span class="driver-marker__icon driver-marker__icon--${key}">${driverTruckSvg}</span>`,
+            iconSize: [38, 38],
+            iconAnchor: [19, 19],
+            popupAnchor: [0, -20],
+         }),
+      );
+   }
+
+   return driverIconCache.get(key);
+}
 
 const pinIconCache = new Map();
 const transitIconCache = new Map();
@@ -66,7 +79,7 @@ export function getMarkerIcon(marker, color) {
    const { kind, label } = getMarkerVisual(marker);
 
    if (kind === 'driver') {
-      return driverIcon;
+      return getDriverIcon(marker?.facing);
    }
 
    if (kind === 'transit') {

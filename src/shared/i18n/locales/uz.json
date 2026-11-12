@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "Haqiqiy yo'l",
       "actualPathOrder": "Buyurtma #ning haqiqiy yo'li",
-      "customerPoint": "Buyurtmachi joylashuvi",
-      "devMarker": "Xaritani sinash uchun vaqtinchalik belgi",
       "driverName": "Haydovchi: {{name}}",
       "driverNotSpecified": "Haydovchi ko'rsatilmagan",
       "driverPhone": "Telefon:",

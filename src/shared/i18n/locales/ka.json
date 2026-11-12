@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "ფაქტობრივი მარშრუტი",
       "actualPathOrder": "შეკვეთის # ფაქტობრივი მარშრუტი",
-      "customerPoint": "დამკვეთის წერტილი",
-      "devMarker": "დროებითი მარკერი რუკის შესამოწმებლად",
       "driverName": "მძღოლი: {{name}}",
       "driverNotSpecified": "მძღოლი არ არის მითითებული",
       "driverPhone": "ტელეფონი:",

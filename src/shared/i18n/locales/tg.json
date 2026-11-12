@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "Роҳи воқеӣ",
       "actualPathOrder": "Роҳи воқеии фармоиш №",
-      "customerPoint": "Ҳолати фармоишдиҳанда",
-      "devMarker": "Нишони муваққатӣ барои санҷиши харита",
       "driverName": "Ронанда: {{name}}",
       "driverNotSpecified": "Ронанда зикр нашудааст",
       "driverPhone": "Телефон:",

@@ -35,7 +35,6 @@ export function CustomerMap() {
 
    const fitBoundsKey = routeBoundsKey || geoRouteBoundsKey || leadsBoundsKey;
 
-   const hasRoutes = routes.length > 0 || geoRoutes.length > 0;
    const isMapLoading = isLoading || isMapRoutesLoading;
 
    function handleLeadRouteClick(lead) {
@@ -100,7 +99,7 @@ export function CustomerMap() {
             <CustomerMapView
                center={map.center}
                zoom={map.zoom}
-               markers={hasRoutes ? [] : map.markers}
+               markers={map.markers}
                routePoints={map.routePoints}
                routes={routes}
                geoRoutes={geoRoutes}

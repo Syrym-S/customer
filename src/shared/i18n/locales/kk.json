@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "Нақты жол",
       "actualPathOrder": "# тапсырысының нақты жолы",
-      "customerPoint": "Клиент нүктесі",
-      "devMarker": "Картаны тексеру үшін уақытша маркер",
       "driverName": "Жүргізуші: {{name}}",
       "driverNotSpecified": "Жүргізуші көрсетілмеген",
       "driverPhone": "Телефон:",

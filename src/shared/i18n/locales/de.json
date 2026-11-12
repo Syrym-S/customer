@@ -923,8 +923,6 @@
    "map": {
       "actualPath": "Tatsächliche Route",
       "actualPathOrder": "Tatsächliche Route des Auftrags Nr.",
-      "customerPoint": "Standort des Auftraggebers",
-      "devMarker": "Temporärer Marker zum Testen der Karte",
       "driverName": "Fahrer: {{name}}",
       "driverNotSpecified": "Fahrer nicht angegeben",
       "driverPhone": "Telefon:",
