@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from "react-i18next";
 
 import PropTypes from 'prop-types';
+
+import { keyframes } from '@emotion/react';
 
 import { Alert, Box, IconButton, Typography } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
@@ -19,8 +21,64 @@ const NOTIFICATION_TITLE_KEYS = {
    info: 'common.severity.notice',
 };
 
-const TRANSITION_DURATION_MS = 300;
-const REDUCED_MOTION_DURATION_MS = 150;
+const ENTER_DURATION_MS = 260;
+const EXIT_DURATION_MS = 200;
+const REDUCED_MOTION_DURATION_MS = 120;
+
+const ENTER_EASING = 'cubic-bezier(0.2, 0, 0, 1)';
+const EXIT_EASING = 'cubic-bezier(0.4, 0, 1, 1)';
+
+const SLIDE_OFFSET_PX = 24;
+const STACK_GAP_PX = 10;
+
+const slideIn = keyframes`
+   from {
+      opacity: 0;
+      transform: translate3d(${SLIDE_OFFSET_PX}px, 0, 0);
+   }
+   to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+   }
+`;
+
+const slideOut = keyframes`
+   from {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+   }
+   to {
+      opacity: 0;
+      transform: translate3d(${SLIDE_OFFSET_PX}px, 0, 0);
+   }
+`;
+
+const fadeIn = keyframes`
+   from {
+      opacity: 0;
+   }
+   to {
+      opacity: 1;
+   }
+`;
+
+const fadeOut = keyframes`
+   from {
+      opacity: 1;
+   }
+   to {
+      opacity: 0;
+   }
+`;
+
+const collapse = keyframes`
+   from {
+      margin-top: var(--toast-gap);
+   }
+   to {
+      margin-top: var(--toast-collapse);
+   }
+`;
 
 function usePrefersReducedMotion() {
    const [prefersReducedMotion, setPrefersReducedMotion] = useState(
@@ -44,9 +102,10 @@ function usePrefersReducedMotion() {
 function NotificationToast({
    notification,
    isVisible,
-   duration,
+   isPaused,
    prefersReducedMotion,
    onExited,
+   onAutoClose,
    onClick,
    onCloseClick,
    isClickable,
@@ -54,21 +113,31 @@ function NotificationToast({
 }) {
    const { t } = useTranslation();
 
-   const [hasEntered, setHasEntered] = useState(false);
+   const wrapperRef = useRef(null);
+   const [exitHeight, setExitHeight] = useState(null);
+
    const onExitedRef = useRef(onExited);
    onExitedRef.current = onExited;
 
-   useEffect(() => {
-      const enterFrameId = window.requestAnimationFrame(() => {
-         const paintFrameId = window.requestAnimationFrame(() => {
-            setHasEntered(true);
-         });
+   const onAutoCloseRef = useRef(onAutoClose);
+   onAutoCloseRef.current = onAutoClose;
 
-         return () => window.cancelAnimationFrame(paintFrameId);
-      });
+   const remainingMsRef = useRef(notification.autoCloseMs);
 
-      return () => window.cancelAnimationFrame(enterFrameId);
-   }, []);
+   const enterDuration = prefersReducedMotion
+      ? REDUCED_MOTION_DURATION_MS
+      : ENTER_DURATION_MS;
+   const exitDuration = prefersReducedMotion
+      ? REDUCED_MOTION_DURATION_MS
+      : EXIT_DURATION_MS;
+
+   useLayoutEffect(() => {
+      if (isVisible) {
+         return;
+      }
+
+      setExitHeight(wrapperRef.current?.offsetHeight ?? 0);
+   }, [isVisible]);
 
    useEffect(() => {
       if (isVisible) {
@@ -77,65 +146,98 @@ function NotificationToast({
 
       const timeoutId = window.setTimeout(() => {
          onExitedRef.current();
-      }, duration);
+      }, exitDuration);
 
       return () => window.clearTimeout(timeoutId);
-   }, [isVisible, duration]);
+   }, [isVisible, exitDuration]);
 
-   const shown = isVisible && hasEntered;
+   useEffect(() => {
+      if (!isVisible || isPaused || remainingMsRef.current <= 0) {
+         return undefined;
+      }
+
+      const startedAt = Date.now();
+      const timeoutId = window.setTimeout(() => {
+         onAutoCloseRef.current();
+      }, remainingMsRef.current);
+
+      return () => {
+         window.clearTimeout(timeoutId);
+         remainingMsRef.current -= Date.now() - startedAt;
+      };
+   }, [isVisible, isPaused]);
+
+   const isExiting = !isVisible && exitHeight !== null;
+
+   const enterAnimation = prefersReducedMotion ? fadeIn : slideIn;
+   const exitAnimation = prefersReducedMotion ? fadeOut : slideOut;
 
    return (
-      <Alert
-         severity={notification.type}
-         variant='filled'
-         onClick={onClick}
-         action={
-            !isEmailVerificationNotification ? (
-               <IconButton size='small' color='inherit' onClick={onCloseClick}>
-                  <CloseRoundedIcon fontSize='small' />
-               </IconButton>
-            ) : null
-         }
+      <Box
+         ref={wrapperRef}
          sx={{
-            width: '100%',
-            borderRadius: 3,
-            boxShadow: '0 12px 32px rgba(0, 0, 0, 0.22)',
-            alignItems: 'flex-start',
-            pointerEvents: 'auto',
-            cursor: isClickable ? 'pointer' : 'default',
-            transition: prefersReducedMotion
-               ? `opacity ${duration}ms ease`
-               : `transform ${duration}ms ease, opacity ${duration}ms ease`,
-            transform: prefersReducedMotion
-               ? 'none'
-               : `translateX(${shown ? '0' : '120%'})`,
-            opacity: shown ? 1 : 0,
+            '--toast-gap': `${STACK_GAP_PX}px`,
+            '--toast-collapse': `${-(exitHeight ?? 0)}px`,
+            marginTop: 'var(--toast-gap)',
+            animation: isExiting
+               ? `${collapse} ${exitDuration}ms ${EXIT_EASING} both`
+               : 'none',
          }}
       >
-         <Typography
-            sx={{
-               fontSize: 13,
-               fontWeight: 700,
-               lineHeight: 1.3,
-               mb: 0.25,
-            }}
+         <Alert
+            severity={notification.type}
+            variant='filled'
+            onClick={isClickable ? onClick : undefined}
+            action={
+               !isEmailVerificationNotification ? (
+                  <IconButton
+                     size='small'
+                     color='inherit'
+                     aria-label={t('common.actions.close')}
+                     onClick={onCloseClick}
+                  >
+                     <CloseRoundedIcon fontSize='small' />
+                  </IconButton>
+               ) : null
+            }
+            sx={(theme) => ({
+               width: '100%',
+               borderRadius: `${theme.radius.lg}px`,
+               boxShadow: theme.customShadows.hover,
+               alignItems: 'flex-start',
+               pointerEvents: 'auto',
+               cursor: isClickable ? 'pointer' : 'default',
+               willChange: 'transform, opacity',
+               animation: isExiting
+                  ? `${exitAnimation} ${exitDuration}ms ${EXIT_EASING} both`
+                  : `${enterAnimation} ${enterDuration}ms ${ENTER_EASING} both`,
+            })}
          >
-            {notification.title ||
-               t(
-                  NOTIFICATION_TITLE_KEYS[notification.type] ||
-                     'common.severity.info',
-               )}
-         </Typography>
+            <Typography
+               sx={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  lineHeight: 1.3,
+                  mb: 0.25,
+               }}
+            >
+               {notification.title ||
+                  t(
+                     NOTIFICATION_TITLE_KEYS[notification.type] ||
+                        'common.severity.info',
+                  )}
+            </Typography>
 
-         <Typography
-            sx={{
-               fontSize: 13,
-               lineHeight: 1.4,
-            }}
-         >
-            {notification.message}
-         </Typography>
-      </Alert>
+            <Typography
+               sx={{
+                  fontSize: 13,
+                  lineHeight: 1.4,
+               }}
+            >
+               {notification.message}
+            </Typography>
+         </Alert>
+      </Box>
    );
 }
 
@@ -145,11 +247,13 @@ NotificationToast.propTypes = {
       type: PropTypes.string,
       title: PropTypes.string,
       message: PropTypes.string,
+      autoCloseMs: PropTypes.number,
    }).isRequired,
    isVisible: PropTypes.bool.isRequired,
-   duration: PropTypes.number.isRequired,
+   isPaused: PropTypes.bool.isRequired,
    prefersReducedMotion: PropTypes.bool.isRequired,
    onExited: PropTypes.func.isRequired,
+   onAutoClose: PropTypes.func.isRequired,
    onClick: PropTypes.func.isRequired,
    onCloseClick: PropTypes.func.isRequired,
    isClickable: PropTypes.bool.isRequired,
@@ -159,6 +263,7 @@ NotificationToast.propTypes = {
 export function NotificationsColumn() {
    const { notifications, removeNotification } = useNotificationsStore();
    const [items, setItems] = useState(notifications);
+   const [isPaused, setIsPaused] = useState(false);
    const prefersReducedMotion = usePrefersReducedMotion();
 
    useEffect(() => {
@@ -183,22 +288,6 @@ export function NotificationsColumn() {
          currentItems.filter((notification) => notification.id !== id),
       );
    }
-
-   useEffect(() => {
-      const timeoutIds = notifications
-         .filter((notification) => notification.autoCloseMs > 0)
-         .map((notification) =>
-            window.setTimeout(() => {
-               removeNotification(notification.id);
-            }, notification.autoCloseMs),
-         );
-
-      return () => {
-         timeoutIds.forEach((timeoutId) => {
-            window.clearTimeout(timeoutId);
-         });
-      };
-   }, [notifications, removeNotification]);
 
    function handleNotificationClick(notification) {
       const realtimeNotification = notification.meta?.notification;
@@ -236,12 +325,14 @@ export function NotificationsColumn() {
             position: 'fixed',
             inset: 0,
             zIndex: 2000,
-            overflowX: 'hidden',
-            overflowY: 'visible',
             pointerEvents: 'none',
          }}
       >
          <Box
+            role='status'
+            aria-live='polite'
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
             sx={{
                position: 'absolute',
                right: {
@@ -254,13 +345,14 @@ export function NotificationsColumn() {
                },
                display: 'flex',
                flexDirection: 'column-reverse',
-               gap: 1.25,
                width: {
-                  xs: 'calc(100vw - 24px)',
+                  xs: 'calc(100% - 24px)',
                   sm: 360,
                },
-               maxHeight: 'calc(100vh - 48px)',
-               overflowY: 'auto',
+               maxHeight: {
+                  xs: 'calc(100dvh - 24px)',
+                  sm: 'calc(100dvh - 48px)',
+               },
                pointerEvents: 'none',
             }}
          >
@@ -275,18 +367,15 @@ export function NotificationsColumn() {
                const isEmailVerificationNotification =
                   notification.meta?.source === 'email-verification';
 
-               const duration = prefersReducedMotion
-                  ? REDUCED_MOTION_DURATION_MS
-                  : TRANSITION_DURATION_MS;
-
                return (
                   <NotificationToast
                      key={notification.id}
                      notification={notification}
                      isVisible={isVisible}
-                     duration={duration}
+                     isPaused={isPaused}
                      prefersReducedMotion={prefersReducedMotion}
                      onExited={() => handleExited(notification.id)}
+                     onAutoClose={() => removeNotification(notification.id)}
                      onClick={() => handleNotificationClick(notification)}
                      onCloseClick={(event) => {
                         event.stopPropagation();
