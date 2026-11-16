@@ -5,6 +5,58 @@
       "text": "Der Zugriff auf den Arbeitsbereich ist vorübergehend eingeschränkt. Sie können keine Aufträge erstellen, an Auktionen teilnehmen oder andere Aktionen im System ausführen.",
       "title": "Konto gesperrt"
    },
+   "advertisements": {
+      "title": "Anzeigen",
+      "titleSingular": "Anzeige",
+      "subtitle": "Ihre Transportanzeigen für Spediteure",
+      "notFound": "Keine Anzeigen gefunden",
+      "loadFailed": "Anzeigen konnten nicht geladen werden",
+      "viewToggle": "Ansicht der Anzeigenliste",
+      "status": {
+         "active": "Aktiv",
+         "closed": "Geschlossen"
+      },
+      "fields": {
+         "leadNum": "Transportnummer",
+         "route": "Route",
+         "firstPointAt": "Beginn des ersten Punktes",
+         "expiredAt": "Aktiv bis",
+         "createdAt": "Erstellt",
+         "closedAt": "Geschlossen"
+      },
+      "contacts": {
+         "call": "Anrufen",
+         "email": "E-Mail schreiben"
+      },
+      "details": {
+         "title": "Anzeigendetails",
+         "subtitle": "Detaillierte Anzeigendaten",
+         "leadNumber": "Transport #{{num}}",
+         "leadSection": "Transport",
+         "transportationPrice": "Transportpreis",
+         "loadFailed": "Anzeige konnte nicht geladen werden"
+      },
+      "create": {
+         "button": "Anzeige erstellen",
+         "title": "Anzeige erstellen",
+         "subtitle": "Wählen Sie, wie die Anzeige erstellt werden soll",
+         "chooseExisting": "Vorhandenen Transport auswählen",
+         "chooseExistingHint": "Die Anzeige wird für einen vorhandenen Transport ohne Spediteur erstellt",
+         "createNew": "Neuen Transport mit Anzeige erstellen",
+         "createNewHint": "Erstellen Sie einen Transport ohne Spediteurauswahl — die Anzeige wird automatisch erstellt",
+         "submit": "Anzeige erstellen",
+         "failed": "Anzeige konnte nicht erstellt werden"
+      },
+      "pickLead": {
+         "label": "Transport",
+         "placeholder": "Transportnummer oder Route",
+         "hint": "Verfügbar sind Transporte mit dem Status „Neu“ ohne Spediteur",
+         "empty": "Keine passenden Transporte gefunden",
+         "loading": "Transporte werden geladen…",
+         "searchFailed": "Transportsuche fehlgeschlagen",
+         "selected": "Ausgewählter Transport"
+      }
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "Nur Bilder (JPG, PNG, WEBP), PDF, DOC(X) oder XLS(X) sind erlaubt",
@@ -945,6 +997,7 @@
       "title": "Wir empfehlen die Desktop-Version"
    },
    "nav": {
+      "advertisements": "Anzeigen",
       "complaints": "Beschwerden",
       "dashboard": "Übersicht",
       "factoring": "Factoring",
@@ -957,6 +1010,7 @@
       "tenders": "Auktionen",
       "tnved": "HS-Codes (EAWU)",
       "tooltips": {
+         "advertisements": "Transportanzeigen für Spediteure: Anzeigen erstellen sowie aktive und geschlossene Anzeigen ansehen",
          "complaints": "Beschwerden zu Aufträgen und Factoring einreichen, Verlauf und Antworten der Verwaltung ansehen",
          "dashboard": "Übersicht über Aufträge, Routen und Auktionen",
          "factorings": "Factoring- und Finanzanfragen",

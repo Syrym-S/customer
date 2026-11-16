@@ -240,8 +240,10 @@ LeadDetailsMap.propTypes = {
       handleMarkerClick: PropTypes.func.isRequired,
    }).isRequired,
    lead: PropTypes.shape({
-      from_location: PropTypes.string,
-      to_location: PropTypes.string,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      waypoints: PropTypes.array,
+      from_location: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+      to_location: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
       status: PropTypes.string,
    }).isRequired,
    route: PropTypes.object,

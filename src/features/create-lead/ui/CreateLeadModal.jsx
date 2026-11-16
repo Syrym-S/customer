@@ -2,7 +2,7 @@ import { Box, DialogContent } from '@mui/material';
 import i18n from '../../../shared/i18n';
 import { useTranslation } from "react-i18next";
 import PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import {
     mapCreatedLeadToUi,
@@ -17,20 +17,22 @@ import { CargoStep } from './create-lead-modal/steps/CargoStep';
 import { ConfirmStep } from './create-lead-modal/steps/ConfirmStep';
 import { RouteStep } from './create-lead-modal/steps/RouteStep';
 import { CreateLeadResultModal } from './create-lead-modal/components/CreateLeadResultModal';
-import { useLeadsContext } from '../../../widgets/customer-leads/model/useLeadsContext';
+import { useOptionalLeadsContext } from '../../../widgets/customer-leads/model/useOptionalLeadsContext';
 import { createLead } from '../api/create-lead.repository';
 import { DocumentsStep } from './create-lead-modal/steps/DocumentsStep';
 import { uploadLeadDocument } from '../../../widgets/customer-leads/api/lead-documents.api';
 import { buildPointScheduleFields } from '../lib/point-schedule.helpers';
 import { AppDialog } from '../../../shared/ui/AppDialog';
 
-const STEP_KEYS = [
-    'createLead.steps.route',
-    'common.fields.cargo',
-    'common.fields.forwarder',
-    'createLead.steps.documents',
-    'createLead.steps.confirm',
+const STEP_DEFINITIONS = [
+    { key: 'route', labelKey: 'createLead.steps.route' },
+    { key: 'cargo', labelKey: 'common.fields.cargo' },
+    { key: 'forwarder', labelKey: 'common.fields.forwarder' },
+    { key: 'documents', labelKey: 'createLead.steps.documents' },
+    { key: 'confirm', labelKey: 'createLead.steps.confirm' },
 ];
+
+const EMPTY_HIDDEN_STEPS = [];
 
 function createInitialCargo() {
     return {
@@ -97,12 +99,12 @@ function createInitialForm() {
     };
 }
 
-const staticStepFields = [
-    null,
-    ['cargos', 'price', 'gracePeriodDays', 'currency'],
-    [],
-    [],
-];
+const staticStepFieldsByKey = {
+    cargo: ['cargos', 'price', 'gracePeriodDays', 'currency'],
+    forwarder: [],
+    documents: [],
+    confirm: [],
+};
 
 function getRouteStepFields(waypoints) {
     const normalizedWaypoints = Array.isArray(waypoints) ? waypoints : [];
@@ -116,12 +118,12 @@ function getRouteStepFields(waypoints) {
     ];
 }
 
-function getStepFields(stepIndex, formValues) {
-    if (stepIndex === 0) {
+function getStepFieldsByKey(stepKey, formValues) {
+    if (stepKey === 'route') {
         return getRouteStepFields(formValues.waypoints);
     }
 
-    return staticStepFields[stepIndex] || [];
+    return staticStepFieldsByKey[stepKey] || [];
 }
 
 function getNestedFieldError(errors, fieldName) {
@@ -156,7 +158,12 @@ async function uploadCreateLeadDocuments(leadId, documents = []) {
     }
 }
 
-export function CreateLeadModal({ open, onClose }) {
+export function CreateLeadModal({
+    open,
+    onClose,
+    hiddenStepKeys = EMPTY_HIDDEN_STEPS,
+    onCreated,
+}) {
     const { t } = useTranslation();
 
     const [activeStep, setActiveStep] = useState(0);
@@ -175,7 +182,16 @@ export function CreateLeadModal({ open, onClose }) {
         mode: 'onChange',
         reValidateMode: 'onChange',
     });
-    const { prependLead } = useLeadsContext();
+    const leadsContext = useOptionalLeadsContext();
+    const prependLead = leadsContext?.prependLead;
+
+    const stepDefinitions = useMemo(
+        () =>
+            STEP_DEFINITIONS.filter(
+                (step) => !hiddenStepKeys.includes(step.key),
+            ),
+        [hiddenStepKeys],
+    );
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSavingDraft, setIsSavingDraft] = useState(false);
@@ -195,11 +211,15 @@ export function CreateLeadModal({ open, onClose }) {
     }, [activeStep]);
 
     const isFirstStep = activeStep === 0;
-    const steps = STEP_KEYS.map((key) => t(key));
+    const steps = stepDefinitions.map((step) => t(step.labelKey));
 
     const isLastStep = activeStep === steps.length - 1;
 
-    const currentStepFields = getStepFields(activeStep, formValues);
+    function getStepFields(stepIndex) {
+        return getStepFieldsByKey(stepDefinitions[stepIndex]?.key, formValues);
+    }
+
+    const currentStepFields = getStepFields(activeStep);
 
     const hasCurrentStepErrors = currentStepFields.some((fieldName) =>
         Boolean(getNestedFieldError(errors, fieldName)),
@@ -210,7 +230,7 @@ export function CreateLeadModal({ open, onClose }) {
     }
 
     async function handleNext() {
-        const fields = getStepFields(activeStep, formValues);
+        const fields = getStepFields(activeStep);
 
         const isStepValid = await trigger(fields);
 
@@ -238,7 +258,7 @@ export function CreateLeadModal({ open, onClose }) {
             return;
         }
 
-        const fields = getStepFields(activeStep, formValues);
+        const fields = getStepFields(activeStep);
 
         const isStepValid = await trigger(fields);
 
@@ -271,7 +291,7 @@ export function CreateLeadModal({ open, onClose }) {
 
             const createdLead = mapCreatedLeadToUi(data, response);
 
-            prependLead(createdLead);
+            prependLead?.(createdLead);
             handleClose();
 
             setResultModal({
@@ -329,7 +349,10 @@ export function CreateLeadModal({ open, onClose }) {
 
             const createdLead = mapCreatedLeadToUi(data, response);
 
-            prependLead(createdLead);
+            prependLead?.(createdLead);
+
+            await onCreated?.(createdLead, response);
+
             handleClose();
 
             setResultModal({
@@ -360,7 +383,9 @@ export function CreateLeadModal({ open, onClose }) {
     }
 
     function renderStepContent() {
-        if (activeStep === 0) {
+        const stepKey = stepDefinitions[activeStep]?.key;
+
+        if (stepKey === 'route') {
             return (
                 <RouteStep
                     control={control}
@@ -372,7 +397,7 @@ export function CreateLeadModal({ open, onClose }) {
             );
         }
 
-        if (activeStep === 1) {
+        if (stepKey === 'cargo') {
             return (
                 <CargoStep
                     control={control}
@@ -383,7 +408,7 @@ export function CreateLeadModal({ open, onClose }) {
             );
         }
 
-        if (activeStep === 2) {
+        if (stepKey === 'forwarder') {
             return (
                 <ForwarderStep
                     control={control}
@@ -393,15 +418,20 @@ export function CreateLeadModal({ open, onClose }) {
             );
         }
 
-        if (activeStep === 3) {
+        if (stepKey === 'documents') {
             return <DocumentsStep form={formValues} setValue={setValue} />;
         }
 
-        return <ConfirmStep form={formValues} />;
+        return (
+            <ConfirmStep
+                form={formValues}
+                showForwarderSection={!hiddenStepKeys.includes('forwarder')}
+            />
+        );
     }
 
     function hasStepErrors(stepIndex) {
-        const fields = getStepFields(stepIndex, formValues);
+        const fields = getStepFields(stepIndex);
 
         return fields.some((fieldName) =>
             Boolean(getNestedFieldError(errors, fieldName)),
@@ -502,4 +532,6 @@ export function CreateLeadModal({ open, onClose }) {
 CreateLeadModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
+    hiddenStepKeys: PropTypes.arrayOf(PropTypes.string),
+    onCreated: PropTypes.func,
 };

@@ -5,6 +5,58 @@
       "text": "O acesso ao espaço de trabalho está temporariamente restrito. Você não pode criar pedidos, participar de leilões ou realizar outras ações no sistema.",
       "title": "Conta bloqueada"
    },
+   "advertisements": {
+      "title": "Anúncios",
+      "titleSingular": "Anúncio",
+      "subtitle": "Os seus anúncios de transporte para transitários",
+      "notFound": "Nenhum anúncio encontrado",
+      "loadFailed": "Não foi possível carregar os anúncios",
+      "viewToggle": "Visualização da lista de anúncios",
+      "status": {
+         "active": "Ativo",
+         "closed": "Encerrado"
+      },
+      "fields": {
+         "leadNum": "Número do transporte",
+         "route": "Rota",
+         "firstPointAt": "Início do primeiro ponto",
+         "expiredAt": "Ativo até",
+         "createdAt": "Criado",
+         "closedAt": "Encerrado"
+      },
+      "contacts": {
+         "call": "Ligar",
+         "email": "Enviar e-mail"
+      },
+      "details": {
+         "title": "Detalhes do anúncio",
+         "subtitle": "Dados detalhados do anúncio",
+         "leadNumber": "Transporte #{{num}}",
+         "leadSection": "Transporte",
+         "transportationPrice": "Preço do transporte",
+         "loadFailed": "Não foi possível carregar o anúncio"
+      },
+      "create": {
+         "button": "Criar anúncio",
+         "title": "Criação de anúncio",
+         "subtitle": "Escolha como criar o anúncio",
+         "chooseExisting": "Escolher um transporte existente",
+         "chooseExistingHint": "O anúncio será criado para um transporte existente sem transitário",
+         "createNew": "Criar um novo transporte com anúncio",
+         "createNewHint": "Crie um transporte sem escolher transitário — o anúncio é criado automaticamente",
+         "submit": "Criar anúncio",
+         "failed": "Não foi possível criar o anúncio"
+      },
+      "pickLead": {
+         "label": "Transporte",
+         "placeholder": "Número do transporte ou rota",
+         "hint": "Estão disponíveis apenas transportes com estado «Novo» e sem transitário",
+         "empty": "Nenhum transporte correspondente encontrado",
+         "loading": "A carregar transportes…",
+         "searchFailed": "Falha na pesquisa de transportes",
+         "selected": "Transporte selecionado"
+      }
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "São permitidas apenas imagens (JPG, PNG, WEBP), PDF, DOC(X) ou XLS(X)",
@@ -945,6 +997,7 @@
       "title": "Recomendamos usar a versão para desktop"
    },
    "nav": {
+      "advertisements": "Anúncios",
       "complaints": "Reclamações",
       "dashboard": "Painel",
       "factoring": "Factoring",
@@ -957,6 +1010,7 @@
       "tenders": "Leilões",
       "tnved": "Códigos HS (UEEA)",
       "tooltips": {
+         "advertisements": "Anúncios de transporte para transitários: criação e lista de anúncios ativos e encerrados",
          "complaints": "Registre reclamações sobre pedidos e factoring, veja o histórico e as respostas da administração",
          "dashboard": "Visão geral de pedidos, rotas e leilões",
          "factorings": "Solicitações de factoring e financeiras",

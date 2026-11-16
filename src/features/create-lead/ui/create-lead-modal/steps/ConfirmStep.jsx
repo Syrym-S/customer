@@ -65,7 +65,7 @@ function getDimensionsDisplay(cargo) {
    });
 }
 
-export function ConfirmStep({ form }) {
+export function ConfirmStep({ form, showForwarderSection = true }) {
     const { t } = useTranslation();
 
     const selectedForwarder = form.forwarder;
@@ -285,39 +285,41 @@ export function ConfirmStep({ form }) {
                 </Box>
             </StepSection>
 
-            <StepSection title={t("common.fields.forwarder")}>
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: {
-                            xs: '1fr',
-                            sm: 'repeat(2, 1fr)',
-                        },
-                        gap: 1.5,
-                    }}
-                >
-                    <InfoBadge
-                        label={t("common.fields.forwarderFullName")}
-                        value={selectedForwarder?.fullName || t("common.empty.notSelected")}
-                    />
-                    <InfoBadge
-                        label={t("common.fields.forwarderIin")}
-                        value={selectedForwarder?.iin || '—'}
-                    />
-                    <InfoBadge
-                        label={t("common.fields.company")}
-                        value={selectedForwarder?.companyName || '—'}
-                    />
-                    <InfoBadge
-                        label={t("common.fields.companyBin")}
-                        value={selectedForwarder?.companyBin || '—'}
-                    />
-                    <InfoBadge
-                        label={t("common.fields.phone")}
-                        value={selectedForwarder?.phone || '—'}
-                    />
-                </Box>
-            </StepSection>
+            {showForwarderSection && (
+                <StepSection title={t("common.fields.forwarder")}>
+                    <Box
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: {
+                                xs: '1fr',
+                                sm: 'repeat(2, 1fr)',
+                            },
+                            gap: 1.5,
+                        }}
+                    >
+                        <InfoBadge
+                            label={t("common.fields.forwarderFullName")}
+                            value={selectedForwarder?.fullName || t("common.empty.notSelected")}
+                        />
+                        <InfoBadge
+                            label={t("common.fields.forwarderIin")}
+                            value={selectedForwarder?.iin || '—'}
+                        />
+                        <InfoBadge
+                            label={t("common.fields.company")}
+                            value={selectedForwarder?.companyName || '—'}
+                        />
+                        <InfoBadge
+                            label={t("common.fields.companyBin")}
+                            value={selectedForwarder?.companyBin || '—'}
+                        />
+                        <InfoBadge
+                            label={t("common.fields.phone")}
+                            value={selectedForwarder?.phone || '—'}
+                        />
+                    </Box>
+                </StepSection>
+            )}
 
             <StepSection title={t("createLead.steps.documents")}>
                 {form.documents?.length ? (
@@ -345,4 +347,5 @@ export function ConfirmStep({ form }) {
 
 ConfirmStep.propTypes = {
     form: PropTypes.object.isRequired,
+    showForwarderSection: PropTypes.bool,
 };

@@ -33,6 +33,7 @@ import { fetchCustomerProfile } from "../../features/profile-edit/profile.api";
 import { isStaging } from "../../shared/api/api-client";
 import { CUSTOMER_NAV_WIDTH } from "../../shared/config/constants";
 import {
+  isAdvertisementsEnabled,
   isFactoringEnabled,
   isManufacturersEnabled,
   isTenderEnabled,
@@ -45,6 +46,7 @@ import SwapHorizOutlined from "@mui/icons-material/SwapHorizOutlined";
 import InventoryOutlined from "@mui/icons-material/InventoryOutlined";
 import FactoryOutlined from "@mui/icons-material/FactoryOutlined";
 import ReportProblemOutlined from "@mui/icons-material/ReportProblemOutlined";
+import CampaignOutlined from "@mui/icons-material/CampaignOutlined";
 import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import { SupportContacts } from "../../shared/ui/SupportContacts";
 import { LanguageSwitcher } from "../../shared/ui/LanguageSwitcher";
@@ -71,6 +73,8 @@ export function Header() {
   const isForwardersPage = location.pathname === "/customer/forwarders";
   const isManufacturersPage = location.pathname === "/customer/manufacturers";
   const isTnvedPage = location.pathname === "/customer/tnved";
+  const isAdvertisementsPage =
+    location.pathname === "/customer/advertisements";
   const isComplaintsPage = location.pathname === "/customer/complaints";
   const isSettingsPage = location.pathname === "/customer/settings";
   const userEmail = window?.APP_DATA?.user_email || t("header.user");
@@ -279,6 +283,17 @@ export function Header() {
         icon: <InventoryOutlined />,
         tooltip: t("nav.tooltips.tnved"),
       },
+      ...(isAdvertisementsEnabled
+        ? [
+            {
+              label: t("nav.advertisements"),
+              path: "/customer/advertisements",
+              selected: isAdvertisementsPage,
+              icon: <CampaignOutlined />,
+              tooltip: t("nav.tooltips.advertisements"),
+            },
+          ]
+        : []),
       {
         label: t("nav.complaints"),
         path: "/customer/complaints",

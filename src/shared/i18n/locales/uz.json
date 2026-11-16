@@ -5,6 +5,58 @@
       "text": "Ish maydoniga kirish vaqtincha cheklangan. Siz buyurtma yaratolmaysiz, auktsionlarda qatnasha olmaysiz yoki tizimda boshqa amallarni bajara olmaysiz.",
       "title": "Hisob bloklangan"
    },
+   "advertisements": {
+      "title": "E'lonlar",
+      "titleSingular": "E'lon",
+      "subtitle": "Ekspeditorlar uchun tashish e'lonlaringiz",
+      "notFound": "E'lonlar topilmadi",
+      "loadFailed": "E'lonlarni yuklab bo'lmadi",
+      "viewToggle": "E'lonlar ro'yxati ko'rinishi",
+      "status": {
+         "active": "Faol",
+         "closed": "Yopilgan"
+      },
+      "fields": {
+         "leadNum": "Tashish raqami",
+         "route": "Marshrut",
+         "firstPointAt": "Birinchi nuqta boshlanishi",
+         "expiredAt": "Gacha faol",
+         "createdAt": "Yaratilgan",
+         "closedAt": "Yopilgan"
+      },
+      "contacts": {
+         "call": "Qo'ng'iroq qilish",
+         "email": "Pochtaga yozish"
+      },
+      "details": {
+         "title": "E'lon tafsilotlari",
+         "subtitle": "E'lonning batafsil ma'lumotlari",
+         "leadNumber": "Tashish #{{num}}",
+         "leadSection": "Tashish",
+         "transportationPrice": "Tashish narxi",
+         "loadFailed": "E'lonni yuklab bo'lmadi"
+      },
+      "create": {
+         "button": "E'lon yaratish",
+         "title": "E'lon yaratish",
+         "subtitle": "E'lonni qanday yaratishni tanlang",
+         "chooseExisting": "Mavjud tashishni tanlash",
+         "chooseExistingHint": "E'lon ekspeditorsiz mavjud tashish bo'yicha yaratiladi",
+         "createNew": "E'lon bilan yangi tashish yaratish",
+         "createNewHint": "Ekspeditorni tanlamasdan tashish yarating — e'lon avtomatik yaratiladi",
+         "submit": "E'lon yaratish",
+         "failed": "E'lon yaratib bo'lmadi"
+      },
+      "pickLead": {
+         "label": "Tashish",
+         "placeholder": "Tashish raqami yoki marshruti",
+         "hint": "“Yangi” holatidagi, ekspeditorsiz tashishlar mavjud",
+         "empty": "Mos tashishlar topilmadi",
+         "loading": "Tashishlar yuklanmoqda…",
+         "searchFailed": "Tashishlarni qidirib bo‘lmadi",
+         "selected": "Tanlangan tashish"
+      }
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "Faqat rasmlar (JPG, PNG, WEBP), PDF, DOC(X) yoki XLS(X) fayllariga ruxsat berilgan",
@@ -945,6 +997,7 @@
       "title": "Kompyuter versiyasidan foydalanishni tavsiya qilamiz"
    },
    "nav": {
+      "advertisements": "E'lonlar",
       "complaints": "Shikoyatlar",
       "dashboard": "Bosh sahifa",
       "factoring": "Faktoring",
@@ -957,6 +1010,7 @@
       "tenders": "Auktsionlar",
       "tnved": "TIF TN kodlari (EAEU)",
       "tooltips": {
+         "advertisements": "Ekspeditorlar uchun tashish e'lonlari: yaratish hamda faol va yopilgan e'lonlar ro'yxati",
          "complaints": "Buyurtmalar va faktoring bo'yicha shikoyat berish, tarix va ma'muriyat javoblarini ko'rish",
          "dashboard": "Buyurtmalar, marshrutlar va auktsionlar bo'yicha umumiy ko'rinish",
          "factorings": "Faktoring va moliyaviy arizalar ro'yxati",

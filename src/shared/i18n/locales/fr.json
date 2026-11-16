@@ -5,6 +5,58 @@
       "text": "L'accès à l'espace de travail est temporairement restreint. Vous ne pouvez pas créer de commandes, participer à des enchères ni effectuer d'autres actions dans le système.",
       "title": "Compte bloqué"
    },
+   "advertisements": {
+      "title": "Annonces",
+      "titleSingular": "Annonce",
+      "subtitle": "Vos annonces de transport pour les transitaires",
+      "notFound": "Aucune annonce trouvée",
+      "loadFailed": "Impossible de charger les annonces",
+      "viewToggle": "Affichage de la liste des annonces",
+      "status": {
+         "active": "Active",
+         "closed": "Fermée"
+      },
+      "fields": {
+         "leadNum": "Numéro de transport",
+         "route": "Itinéraire",
+         "firstPointAt": "Début du premier point",
+         "expiredAt": "Actif jusqu'au",
+         "createdAt": "Créée",
+         "closedAt": "Clôturée"
+      },
+      "contacts": {
+         "call": "Appeler",
+         "email": "Envoyer un e-mail"
+      },
+      "details": {
+         "title": "Détails de l'annonce",
+         "subtitle": "Données détaillées de l'annonce",
+         "leadNumber": "Transport #{{num}}",
+         "leadSection": "Transport",
+         "transportationPrice": "Prix du transport",
+         "loadFailed": "Impossible de charger l'annonce"
+      },
+      "create": {
+         "button": "Créer une annonce",
+         "title": "Création d’une annonce",
+         "subtitle": "Choisissez comment créer l’annonce",
+         "chooseExisting": "Choisir un transport existant",
+         "chooseExistingHint": "L’annonce sera créée pour un transport existant sans transitaire",
+         "createNew": "Créer un nouveau transport avec une annonce",
+         "createNewHint": "Créez un transport sans choisir de transitaire — l’annonce est créée automatiquement",
+         "submit": "Créer une annonce",
+         "failed": "Impossible de créer l’annonce"
+      },
+      "pickLead": {
+         "label": "Transport",
+         "placeholder": "Numéro de transport ou itinéraire",
+         "hint": "Seuls les transports au statut « Nouveau » et sans transitaire sont disponibles",
+         "empty": "Aucun transport correspondant",
+         "loading": "Chargement des transports…",
+         "searchFailed": "La recherche de transports a échoué",
+         "selected": "Transport sélectionné"
+      }
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "Seules les images (JPG, PNG, WEBP), PDF, DOC(X) ou XLS(X) sont autorisées",
@@ -945,6 +997,7 @@
       "title": "Nous recommandons d'utiliser la version pour ordinateur"
    },
    "nav": {
+      "advertisements": "Annonces",
       "complaints": "Réclamations",
       "dashboard": "Accueil",
       "factoring": "Affacturage",
@@ -957,6 +1010,7 @@
       "tenders": "Enchères",
       "tnved": "Code SH (UEEA)",
       "tooltips": {
+         "advertisements": "Annonces de transport pour les transitaires : création et liste des annonces actives et fermées",
          "complaints": "Dépôt de réclamations sur les commandes et affacturages, historique et réponses de l'administration",
          "dashboard": "Vue d'ensemble des commandes, itinéraires et enchères",
          "factorings": "Liste des affacturages et des demandes financières",

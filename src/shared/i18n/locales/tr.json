@@ -5,6 +5,58 @@
       "text": "Çalışma alanına erişim geçici olarak kısıtlandı. Sipariş oluşturamaz, ihalelerde çalışamaz ve sistemde diğer işlemleri gerçekleştiremezsiniz.",
       "title": "Hesap engellendi"
    },
+   "advertisements": {
+      "title": "İlanlar",
+      "titleSingular": "İlan",
+      "subtitle": "Nakliyeciler için taşıma ilanlarınız",
+      "notFound": "İlan bulunamadı",
+      "loadFailed": "İlanlar yüklenemedi",
+      "viewToggle": "İlan listesi görünümü",
+      "status": {
+         "active": "Aktif",
+         "closed": "Kapalı"
+      },
+      "fields": {
+         "leadNum": "Taşıma numarası",
+         "route": "Güzergâh",
+         "firstPointAt": "İlk nokta başlangıcı",
+         "expiredAt": "Şu tarihe kadar aktif",
+         "createdAt": "Oluşturulma",
+         "closedAt": "Kapatıldı"
+      },
+      "contacts": {
+         "call": "Ara",
+         "email": "E-posta gönder"
+      },
+      "details": {
+         "title": "İlan detayları",
+         "subtitle": "İlanın ayrıntılı bilgileri",
+         "leadNumber": "Taşıma #{{num}}",
+         "leadSection": "Taşıma",
+         "transportationPrice": "Taşıma fiyatı",
+         "loadFailed": "İlan yüklenemedi"
+      },
+      "create": {
+         "button": "İlan oluştur",
+         "title": "İlan oluşturma",
+         "subtitle": "İlanı nasıl oluşturacağınızı seçin",
+         "chooseExisting": "Mevcut taşımayı seç",
+         "chooseExistingHint": "İlan, nakliyecisi olmayan mevcut bir taşıma için oluşturulur",
+         "createNew": "İlanla birlikte yeni taşıma oluştur",
+         "createNewHint": "Nakliyeci seçmeden taşıma oluşturun — ilan otomatik oluşturulur",
+         "submit": "İlan oluştur",
+         "failed": "İlan oluşturulamadı"
+      },
+      "pickLead": {
+         "label": "Taşıma",
+         "placeholder": "Taşıma numarası veya güzergâh",
+         "hint": "Yalnızca “Yeni” durumundaki ve nakliyecisi olmayan taşımalar kullanılabilir",
+         "empty": "Uygun taşıma bulunamadı",
+         "loading": "Taşımalar yükleniyor…",
+         "searchFailed": "Taşıma araması başarısız oldu",
+         "selected": "Seçilen taşıma"
+      }
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "Yalnızca görüntülere (JPG, PNG, WEBP), PDF, DOC(X) veya XLS(X) izin verilir",
@@ -945,6 +997,7 @@
       "title": "Masaüstü sürümünü kullanmanızı öneririz"
    },
    "nav": {
+      "advertisements": "İlanlar",
       "complaints": "Şikayetler",
       "dashboard": "Ana sayfa",
       "factoring": "Faktoring",
@@ -957,6 +1010,7 @@
       "tenders": "İhaleler",
       "tnved": "GTİP (AEB)",
       "tooltips": {
+         "advertisements": "Nakliyeciler için taşıma ilanları: ilan oluşturma ve aktif ile kapalı ilan listesi",
          "complaints": "Siparişler ve faktoringler için şikayet gönderme, geçmiş ve yönetim yanıtları",
          "dashboard": "Siparişler, rotalar ve ihalelere genel bakış",
          "factorings": "Faktoring ve finansal talep listesi",

@@ -5,6 +5,58 @@
       "text": "您的工作空间访问权限已被暂时限制。您无法创建订单、参与竞标或在系统中执行其他操作。",
       "title": "账户已被封禁"
    },
+   "advertisements": {
+      "title": "运输公告",
+      "titleSingular": "公告",
+      "subtitle": "您面向货运代理发布的运输公告",
+      "notFound": "未找到公告",
+      "loadFailed": "公告加载失败",
+      "viewToggle": "公告列表视图",
+      "status": {
+         "active": "进行中",
+         "closed": "已关闭"
+      },
+      "fields": {
+         "leadNum": "运输编号",
+         "route": "路线",
+         "firstPointAt": "首个地点开始时间",
+         "expiredAt": "有效期至",
+         "createdAt": "创建时间",
+         "closedAt": "已关闭"
+      },
+      "contacts": {
+         "call": "拨打电话",
+         "email": "发送邮件"
+      },
+      "details": {
+         "title": "公告详情",
+         "subtitle": "公告详细数据",
+         "leadNumber": "运输 #{{num}}",
+         "leadSection": "运输",
+         "transportationPrice": "运输价格",
+         "loadFailed": "无法加载公告"
+      },
+      "create": {
+         "button": "创建公告",
+         "title": "创建公告",
+         "subtitle": "请选择创建公告的方式",
+         "chooseExisting": "选择已有运输",
+         "chooseExistingHint": "将为未指定货运代理的已有运输创建公告",
+         "createNew": "创建新运输并发布公告",
+         "createNewHint": "创建运输时无需选择货运代理，公告将自动创建",
+         "submit": "创建公告",
+         "failed": "公告创建失败"
+      },
+      "pickLead": {
+         "label": "运输",
+         "placeholder": "运输编号或路线",
+         "hint": "仅可选择状态为“新建”且未指定货运代理的运输",
+         "empty": "未找到匹配的运输",
+         "loading": "正在加载运输…",
+         "searchFailed": "运输搜索失败",
+         "selected": "已选择的运输"
+      }
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "仅支持图片（JPG、PNG、WEBP）、PDF、DOC(X) 或 XLS(X) 格式",
@@ -939,6 +991,7 @@
       "title": "建议使用电脑版访问"
    },
    "nav": {
+      "advertisements": "运输公告",
       "complaints": "投诉",
       "dashboard": "首页",
       "factoring": "保理",
@@ -951,6 +1004,7 @@
       "tenders": "竞标",
       "tnved": "海关商品编码（欧亚经济联盟）",
       "tooltips": {
+         "advertisements": "面向货运代理的运输公告：创建公告并查看进行中与已关闭的公告",
          "complaints": "针对订单和保理提交投诉、查看历史记录及管理部门回复",
          "dashboard": "订单、路线和竞标的总体概览",
          "factorings": "保理及财务申请列表",

@@ -5,6 +5,58 @@
       "text": "Access to the workspace is temporarily restricted. You cannot create requests, take part in auctions or perform other actions in the system.",
       "title": "Account blocked"
    },
+   "advertisements": {
+      "title": "Advertisements",
+      "titleSingular": "Advertisement",
+      "subtitle": "Your shipment advertisements for forwarders",
+      "notFound": "No advertisements found",
+      "loadFailed": "Failed to load advertisements",
+      "viewToggle": "Advertisement list view",
+      "status": {
+         "active": "Active",
+         "closed": "Closed"
+      },
+      "fields": {
+         "leadNum": "Shipment number",
+         "route": "Route",
+         "firstPointAt": "First point start",
+         "expiredAt": "Active until",
+         "createdAt": "Created",
+         "closedAt": "Closed"
+      },
+      "contacts": {
+         "call": "Call",
+         "email": "Send email"
+      },
+      "details": {
+         "title": "Advertisement details",
+         "subtitle": "Detailed advertisement data",
+         "leadNumber": "Shipment #{{num}}",
+         "leadSection": "Shipment",
+         "transportationPrice": "Transportation price",
+         "loadFailed": "Failed to load the advertisement"
+      },
+      "create": {
+         "button": "Create advertisement",
+         "title": "New advertisement",
+         "subtitle": "Choose how to create the advertisement",
+         "chooseExisting": "Pick an existing shipment",
+         "chooseExistingHint": "The advertisement will be created for an existing shipment without a forwarder",
+         "createNew": "Create a new shipment with an advertisement",
+         "createNewHint": "Create a shipment without selecting a forwarder — the advertisement is created automatically",
+         "submit": "Create advertisement",
+         "failed": "Failed to create the advertisement"
+      },
+      "pickLead": {
+         "label": "Shipment",
+         "placeholder": "Shipment number or route",
+         "hint": "Only shipments with the \"New\" status and no forwarder are available",
+         "empty": "No matching shipments found",
+         "loading": "Loading shipments…",
+         "searchFailed": "Shipment search failed",
+         "selected": "Selected shipment"
+      }
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "Only images (JPG, PNG, WEBP), PDF, DOC(X) or XLS(X) files are allowed",
@@ -945,6 +997,7 @@
       "title": "We recommend using the desktop version"
    },
    "nav": {
+      "advertisements": "Advertisements",
       "complaints": "Complaints",
       "dashboard": "Dashboard",
       "factoring": "Factoring",
@@ -957,6 +1010,7 @@
       "tenders": "Auctions",
       "tnved": "HS codes (EAEU)",
       "tooltips": {
+         "advertisements": "Shipment advertisements for forwarders: create and browse active and closed ads",
          "complaints": "File complaints about orders and factoring, view history and admin replies",
          "dashboard": "Overview of orders, routes and auctions",
          "factorings": "Factoring and finance requests",

@@ -17,3 +17,5 @@ export const isFactoringEnabled = features.factoring ?? true;
 export const isManufacturersEnabled = features.manufacturer ?? true;
 
 export const isTenderEnabled = features.tender ?? true;
+
+export const isAdvertisementsEnabled = features.advertisement_customer ?? true;

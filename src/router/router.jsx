@@ -10,10 +10,12 @@ import { ForwardersPage } from "../pages/forwarders/ForwardersPage";
 import { ManufacturersPage } from "../pages/manufacturers/ManufacturersPage";
 import { TnvedPage } from "../pages/tnved/TnvedPage";
 import { ComplaintsPage } from "../pages/complaints/ComplaintsPage";
+import { AdvertisementsPage } from "../pages/advertisements/AdvertisementsPage";
 import { SettingsPage } from "../pages/settings/SettingsPage";
 import { ErrorPage } from "../pages/error/ErrorPage";
 import { appBasename } from "../shared/api/api-client";
 import {
+  isAdvertisementsEnabled,
   isFactoringEnabled,
   isManufacturersEnabled,
   isTenderEnabled,
@@ -139,6 +141,18 @@ export const router = createBrowserRouter(
           handle: {
             breadcrumb: "nav.settings",
             title: "nav.settings",
+          },
+        },
+        {
+          path: "customer/advertisements",
+          element: isAdvertisementsEnabled ? (
+            <AdvertisementsPage />
+          ) : (
+            HIDDEN_SECTION_ELEMENT
+          ),
+          handle: {
+            breadcrumb: "nav.advertisements",
+            title: "nav.advertisements",
           },
         },
         {
