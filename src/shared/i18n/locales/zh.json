@@ -231,6 +231,7 @@
          "transportType": "运输方式",
          "type": "类型",
          "vat": "增值税",
+         "vehicleNumber": "车牌号",
          "volume": "体积",
          "volumeM3": "体积（立方米）",
          "weight": "重量",
@@ -921,6 +922,7 @@
       "driverNotSpecified": "未指定司机",
       "driverPhone": "电话：",
       "driverPosition": "司机当前位置",
+      "driverVehicleNumber": "车牌号：",
       "noCoordinates": "暂无坐标",
       "pointsCount": "点数：{{count}}",
       "routeView": {

@@ -234,6 +234,7 @@
          "transportType": "Тип транспорта",
          "type": "Тип",
          "vat": "НДС",
+         "vehicleNumber": "Гос. номер",
          "volume": "Объем",
          "volumeM3": "Объем, м³",
          "weight": "Вес",
@@ -939,6 +940,7 @@
       "driverNotSpecified": "Водитель не указан",
       "driverPhone": "Телефон:",
       "driverPosition": "Текущая позиция водителя",
+      "driverVehicleNumber": "Гос. номер:",
       "noCoordinates": "Нет координат",
       "pointsCount": "Точек: {{count}}",
       "routeView": {

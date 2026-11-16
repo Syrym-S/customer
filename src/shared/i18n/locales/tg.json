@@ -232,6 +232,7 @@
          "transportType": "Намуди нақлиёт",
          "type": "Намуд",
          "vat": "ААИ",
+         "vehicleNumber": "Рақами давлатӣ",
          "volume": "Ҳаҷм",
          "volumeM3": "Ҳаҷм, м³",
          "weight": "Вазн",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "Ронанда зикр нашудааст",
       "driverPhone": "Телефон:",
       "driverPosition": "Ҳолати ҳозираи ронанда",
+      "driverVehicleNumber": "Рақами давлатӣ:",
       "noCoordinates": "Координата нест",
       "pointsCount": "Нуқтаҳо: {{count}}",
       "routeView": {

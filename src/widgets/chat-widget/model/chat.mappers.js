@@ -1,4 +1,5 @@
 import { truncateId } from "../../../shared/helpers/data-grid.helpers";
+import { getDriverVehicleNumber } from "../../../shared/helpers/vehicle-number.helpers";
 import i18n from "../../../shared/i18n";
 import { getParticipantTypeLabel } from "../../customer-tenders/ui/tender-details/components/tender-participants.helpers";
 import { SUPPORT_CHAT_ID } from "./chat.mock";
@@ -240,6 +241,7 @@ export function buildDriverCounterpartFromLead(lead) {
     name: driver.fio,
     role: getChatRoleLabelById(CHAT_ROLE_ID.DRIVER),
     fullName: driver.fio,
+    vehicleNumber: getDriverVehicleNumber(driver, lead) || undefined,
   };
 }
 

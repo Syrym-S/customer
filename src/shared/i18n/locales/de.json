@@ -232,6 +232,7 @@
          "transportType": "Fahrzeugtyp",
          "type": "Typ",
          "vat": "MwSt.",
+         "vehicleNumber": "Kennzeichen",
          "volume": "Volumen",
          "volumeM3": "Volumen, m³",
          "weight": "Gewicht",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "Fahrer nicht angegeben",
       "driverPhone": "Telefon:",
       "driverPosition": "Aktuelle Position des Fahrers",
+      "driverVehicleNumber": "Kennzeichen:",
       "noCoordinates": "Keine Koordinaten",
       "pointsCount": "Punkte: {{count}}",
       "routeView": {

@@ -232,6 +232,7 @@
          "transportType": "ترسیل کی قسم",
          "type": "قسم",
          "vat": "ویٹ",
+         "vehicleNumber": "نمبر پلیٹ",
          "volume": "حجم",
          "volumeM3": "حجم، م³",
          "weight": "وزن",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "ڈرائیور درج نہیں کیا گیا",
       "driverPhone": "فون:",
       "driverPosition": "ڈرائیور کی موجودہ پوزیشن",
+      "driverVehicleNumber": "نمبر پلیٹ:",
       "noCoordinates": "کوئی کوآرڈینیٹس نہیں",
       "pointsCount": "پوائنٹس: {{count}}",
       "routeView": {

@@ -232,6 +232,7 @@
          "transportType": "Tipo de veículo",
          "type": "Tipo",
          "vat": "IVA",
+         "vehicleNumber": "Placa do veículo",
          "volume": "Volume",
          "volumeM3": "Volume, m³",
          "weight": "Peso",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "Motorista não informado",
       "driverPhone": "Telefone:",
       "driverPosition": "Posição atual do motorista",
+      "driverVehicleNumber": "Placa do veículo:",
       "noCoordinates": "Sem coordenadas",
       "pointsCount": "Pontos: {{count}}",
       "routeView": {

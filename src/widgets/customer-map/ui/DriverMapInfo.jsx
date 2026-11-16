@@ -5,6 +5,7 @@ import {
    formatDriverPhone,
    normalizePhoneHref,
 } from '../model/customer-map.helpers';
+import { getDriverVehicleNumber } from '../../../shared/helpers/vehicle-number.helpers';
 
 export function DriverMapInfo({ driver }) {
    const { t } = useTranslation();
@@ -12,6 +13,7 @@ export function DriverMapInfo({ driver }) {
    const driverName = formatDriverName(driver);
    const driverPhone = formatDriverPhone(driver);
    const driverPhoneHref = normalizePhoneHref(driverPhone);
+   const driverVehicleNumber = getDriverVehicleNumber(driver);
 
    return (
       <>
@@ -28,6 +30,13 @@ export function DriverMapInfo({ driver }) {
                )}
             </>
          )}
+
+         {driverVehicleNumber && (
+            <>
+               <br />
+               {t("map.driverVehicleNumber")} {driverVehicleNumber}
+            </>
+         )}
       </>
    );
 }
@@ -42,5 +51,6 @@ DriverMapInfo.propTypes = {
       phone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       tel: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       telephone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      vehicle_number: PropTypes.string,
    }),
 };

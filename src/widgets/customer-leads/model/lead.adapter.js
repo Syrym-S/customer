@@ -338,6 +338,8 @@ export function mapLeadFromApi(apiLead) {
       cargos,
 
       driver: apiLead.driver ?? i18n.t("common.empty.notAssigned"),
+      driver_vehicle_number:
+         apiLead.driver?.vehicle_number ?? apiLead.driver_vehicle_number ?? null,
 
       creator: apiLead.creator ?? null,
       person: apiLead.person ?? null,

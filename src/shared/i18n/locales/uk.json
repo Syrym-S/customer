@@ -234,6 +234,7 @@
          "transportType": "Тип транспорту",
          "type": "Тип",
          "vat": "ПДВ",
+         "vehicleNumber": "Держ. номер",
          "volume": "Об'єм",
          "volumeM3": "Об'єм, м³",
          "weight": "Вага",
@@ -939,6 +940,7 @@
       "driverNotSpecified": "Водія не вказано",
       "driverPhone": "Телефон:",
       "driverPosition": "Поточна позиція водія",
+      "driverVehicleNumber": "Держ. номер:",
       "noCoordinates": "Немає координат",
       "pointsCount": "Точок: {{count}}",
       "routeView": {

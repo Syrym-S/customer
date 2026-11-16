@@ -4,6 +4,7 @@ import {
 } from './lead-kanban.constants';
 import i18n from '../../../../shared/i18n';
 import { formatAmount } from '../../../../shared/helpers/currency-format.helpers';
+import { getDriverVehicleNumber } from '../../../../shared/helpers/vehicle-number.helpers';
 
 export function getLeadStatus(lead) {
    return lead?.status || UNKNOWN_LEAD_STATUS;
@@ -98,7 +99,9 @@ export function getLeadResponsibleLabel(lead) {
       '';
 
    if (driverName) {
-      return driverName;
+      const vehicleNumber = getDriverVehicleNumber(driver, lead);
+
+      return vehicleNumber ? `${driverName} · ${vehicleNumber}` : driverName;
    }
 
    const forwarderName =

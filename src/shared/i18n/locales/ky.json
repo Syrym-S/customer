@@ -232,6 +232,7 @@
          "transportType": "Транспорт түрү",
          "type": "Түрү",
          "vat": "КНС",
+         "vehicleNumber": "Мамлекеттик номер",
          "volume": "Көлөмү",
          "volumeM3": "Көлөмү, м³",
          "weight": "Салмагы",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "Айдоочу көрсөтүлгөн эмес",
       "driverPhone": "Телефон:",
       "driverPosition": "Айдоочунун учурдагы жайгашкан жери",
+      "driverVehicleNumber": "Мамлекеттик номер:",
       "noCoordinates": "Координаттар жок",
       "pointsCount": "Чекиттер: {{count}}",
       "routeView": {

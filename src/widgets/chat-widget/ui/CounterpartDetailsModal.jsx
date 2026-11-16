@@ -49,6 +49,7 @@ function buildRequisiteRows(counterpart) {
     { label: i18n.t("common.fields.bin"), value: counterpart?.bin },
     { label: i18n.t("common.fields.iin"), value: counterpart?.iin },
     { label: i18n.t("common.fields.fullName"), value: counterpart?.fullName },
+    { label: i18n.t("common.fields.vehicleNumber"), value: counterpart?.vehicleNumber },
     { label: i18n.t("common.fields.bik"), value: counterpart?.bik },
     { label: i18n.t("common.fields.settlementAccount"), value: counterpart?.account },
     { label: i18n.t("common.fields.companyAddress"), value: counterpart?.address },

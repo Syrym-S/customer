@@ -232,6 +232,7 @@
          "transportType": "نوع المركبة",
          "type": "النوع",
          "vat": "ضريبة القيمة المضافة",
+         "vehicleNumber": "رقم اللوحة",
          "volume": "الحجم",
          "volumeM3": "الحجم، م³",
          "weight": "الوزن",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "السائق غير محدد",
       "driverPhone": "الهاتف:",
       "driverPosition": "الموقع الحالي للسائق",
+      "driverVehicleNumber": "رقم اللوحة:",
       "noCoordinates": "لا توجد إحداثيات",
       "pointsCount": "النقاط: {{count}}",
       "routeView": {

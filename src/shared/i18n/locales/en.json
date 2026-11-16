@@ -232,6 +232,7 @@
          "transportType": "Vehicle type",
          "type": "Type",
          "vat": "VAT",
+         "vehicleNumber": "Plate number",
          "volume": "Volume",
          "volumeM3": "Volume, m³",
          "weight": "Weight",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "Driver not specified",
       "driverPhone": "Phone:",
       "driverPosition": "Current driver position",
+      "driverVehicleNumber": "Plate number:",
       "noCoordinates": "No coordinates",
       "pointsCount": "Points: {{count}}",
       "routeView": {

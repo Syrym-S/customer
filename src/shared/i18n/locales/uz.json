@@ -232,6 +232,7 @@
          "transportType": "Transport turi",
          "type": "Turi",
          "vat": "QQS",
+         "vehicleNumber": "Davlat raqami",
          "volume": "Hajm",
          "volumeM3": "Hajm, m³",
          "weight": "Og'irlik",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "Haydovchi ko'rsatilmagan",
       "driverPhone": "Telefon:",
       "driverPosition": "Haydovchining joriy joylashuvi",
+      "driverVehicleNumber": "Davlat raqami:",
       "noCoordinates": "Koordinatalar yo'q",
       "pointsCount": "Nuqtalar: {{count}}",
       "routeView": {

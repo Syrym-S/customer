@@ -232,6 +232,7 @@
          "transportType": "ტრანსპორტის ტიპი",
          "type": "ტიპი",
          "vat": "დღგ",
+         "vehicleNumber": "სახელმწიფო ნომერი",
          "volume": "მოცულობა",
          "volumeM3": "მოცულობა, მ³",
          "weight": "წონა",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "მძღოლი არ არის მითითებული",
       "driverPhone": "ტელეფონი:",
       "driverPosition": "მძღოლის მიმდინარე მდებარეობა",
+      "driverVehicleNumber": "სახელმწიფო ნომერი:",
       "noCoordinates": "კოორდინატები არ არის",
       "pointsCount": "წერტილები: {{count}}",
       "routeView": {

@@ -8,9 +8,10 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import { DetailSection } from '../components/DetailSection';
 import { InfoBadge } from '../components/InfoBadge';
 import { normalizePersonValue } from '../../../model/lead-edit-form.helpers';
+import { getDriverVehicleNumber } from '../../../../../shared/helpers/vehicle-number.helpers';
 // import { TaxationRegimeInfo } from '../../../../../shared/kgd-taxation/ui/TaxationRegimeInfo';
 
-function getDriverFields(driver, { hideDirectorFio } = {}) {
+function getDriverFields(driver, lead, { hideDirectorFio } = {}) {
    if (!driver || typeof driver !== 'object') {
       return [];
    }
@@ -18,6 +19,10 @@ function getDriverFields(driver, { hideDirectorFio } = {}) {
    return [
       { label: i18n.t("common.fields.fullName"), value: driver.fio || driver.fullName || driver.name },
       { label: i18n.t("common.fields.phone"), value: driver.phone },
+      {
+         label: i18n.t("common.fields.vehicleNumber"),
+         value: getDriverVehicleNumber(driver, lead),
+      },
       {
          label: i18n.t("common.fields.directorFio"),
          value: hideDirectorFio ? undefined : driver.director_fio,
@@ -30,7 +35,7 @@ export function LeadDriverSection({ lead, hideDirectorFio = false }) {
    const { t } = useTranslation();
 
    const driver = lead.raw?.driver ?? lead.driver;
-   const driverFields = getDriverFields(driver, { hideDirectorFio });
+   const driverFields = getDriverFields(driver, lead, { hideDirectorFio });
    // const driverId = driver && typeof driver === 'object' ? driver.id : null;
 
    return (

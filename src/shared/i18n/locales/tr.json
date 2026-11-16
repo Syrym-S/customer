@@ -232,6 +232,7 @@
          "transportType": "Taşıma türü",
          "type": "Tür",
          "vat": "KDV",
+         "vehicleNumber": "Plaka",
          "volume": "Hacim",
          "volumeM3": "Hacim, m³",
          "weight": "Ağırlık",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "Sürücü belirtilmedi",
       "driverPhone": "Telefon:",
       "driverPosition": "Sürücünün güncel konumu",
+      "driverVehicleNumber": "Plaka:",
       "noCoordinates": "Koordinat yok",
       "pointsCount": "Nokta sayısı: {{count}}",
       "routeView": {

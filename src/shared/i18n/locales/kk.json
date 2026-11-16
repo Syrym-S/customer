@@ -232,6 +232,7 @@
          "transportType": "Көлік түрі",
          "type": "Түрі",
          "vat": "ҚҚС",
+         "vehicleNumber": "Мем. нөмір",
          "volume": "Көлем",
          "volumeM3": "Көлемі, м³",
          "weight": "Салмақ",
@@ -927,6 +928,7 @@
       "driverNotSpecified": "Жүргізуші көрсетілмеген",
       "driverPhone": "Телефон:",
       "driverPosition": "Жүргізушінің ағымдағы орны",
+      "driverVehicleNumber": "Мем. нөмір:",
       "noCoordinates": "Координаттар жоқ",
       "pointsCount": "Нүктелер: {{count}}",
       "routeView": {
