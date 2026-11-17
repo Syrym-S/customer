@@ -28,8 +28,18 @@
          "call": "Anrufen",
          "email": "E-Mail schreiben"
       },
+      "manage": {
+         "close": "Anzeige schließen",
+         "closeConfirm": "Möchten Sie diese Anzeige wirklich schließen? Danach können Spediteure nicht mehr darauf antworten.",
+         "closeFailed": "Anzeige konnte nicht geschlossen werden",
+         "closing": "Wird geschlossen...",
+         "delete": "Anzeige löschen",
+         "deleteConfirm": "Möchten Sie diese Anzeige wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+         "deleteFailed": "Anzeige konnte nicht gelöscht werden"
+      },
       "details": {
          "title": "Anzeigendetails",
+         "myContacts": "Ihre Kontaktdaten",
          "subtitle": "Detaillierte Anzeigendaten",
          "leadNumber": "Transport #{{num}}",
          "leadSection": "Transport",

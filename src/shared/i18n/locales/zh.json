@@ -28,8 +28,18 @@
          "call": "拨打电话",
          "email": "发送邮件"
       },
+      "manage": {
+         "close": "关闭公告",
+         "closeConfirm": "确定要关闭此公告吗？关闭后货运代理将无法再响应。",
+         "closeFailed": "无法关闭公告",
+         "closing": "正在关闭...",
+         "delete": "删除公告",
+         "deleteConfirm": "确定要删除此公告吗？此操作无法撤销。",
+         "deleteFailed": "无法删除公告"
+      },
       "details": {
          "title": "公告详情",
+         "myContacts": "您的联系方式",
          "subtitle": "公告详细数据",
          "leadNumber": "运输 #{{num}}",
          "leadSection": "运输",

@@ -318,7 +318,9 @@ export function Header() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          gap: 2,
           height: "100vh",
+          overflowY: "auto",
         }}
       >
         {showCloseButton && (
@@ -343,6 +345,7 @@ export function Header() {
             gap: 0.5,
             p: 0,
             mt: showCloseButton ? 5 : 0,
+            flexShrink: 0,
           }}
         >
           {menuItems.map((item) => (
@@ -413,6 +416,7 @@ export function Header() {
             background: alpha(theme.palette.divider, 0.4),
             border: `1px solid ${theme.palette.divider}`,
             borderRadius: `${theme.radius.lg}px`,
+            flexShrink: 0,
           })}
         >
           <Typography variant="subtitle2">{t("header.needHelp")}</Typography>

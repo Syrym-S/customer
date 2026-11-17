@@ -33,6 +33,20 @@ export function formatAdvertisementDateTime(value) {
    return time ? `${date}, ${time}` : date;
 }
 
+export function formatAdvertisementDate(value) {
+   return formatAdvertisementDateTime(value).split(',')[0].trim();
+}
+
+export function getCurrentAdvertisementDateTime() {
+   const date = new Date();
+   const pad = (value) => String(value).padStart(2, '0');
+
+   return [
+      [date.getFullYear(), pad(date.getMonth() + 1), pad(date.getDate())].join('-'),
+      [pad(date.getHours()), pad(date.getMinutes()), pad(date.getSeconds())].join(':'),
+   ].join(' ');
+}
+
 export function getAdvertisementLeadNumberLabel(lead) {
    const number = Number(lead?.num);
 

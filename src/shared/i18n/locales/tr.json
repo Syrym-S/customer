@@ -28,8 +28,18 @@
          "call": "Ara",
          "email": "E-posta gönder"
       },
+      "manage": {
+         "close": "İlanı kapat",
+         "closeConfirm": "Bu ilanı kapatmak istediğinizden emin misiniz? Kapatıldıktan sonra nakliyeciler yanıt veremez.",
+         "closeFailed": "İlan kapatılamadı",
+         "closing": "Kapatılıyor...",
+         "delete": "İlanı sil",
+         "deleteConfirm": "Bu ilanı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+         "deleteFailed": "İlan silinemedi"
+      },
       "details": {
          "title": "İlan detayları",
+         "myContacts": "İletişim bilgileriniz",
          "subtitle": "İlanın ayrıntılı bilgileri",
          "leadNumber": "Taşıma #{{num}}",
          "leadSection": "Taşıma",

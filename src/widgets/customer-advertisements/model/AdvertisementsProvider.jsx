@@ -2,7 +2,12 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { fetchAdvertisements } from '../api/advertisements.repository';
+import {
+   closeAdvertisement,
+   deleteAdvertisement,
+   fetchAdvertisement,
+   fetchAdvertisements,
+} from '../api/advertisements.repository';
 import { AdvertisementsContext } from './AdvertisementsContext';
 
 const DEFAULT_PER_PAGE = 10;
@@ -45,6 +50,34 @@ export function AdvertisementsProvider({ children }) {
       [page, perPage, t],
    );
 
+   const closeAdvertisementById = useCallback(
+      async (advertisementId) => {
+         const closed = await closeAdvertisement(advertisementId);
+
+         let refreshed = null;
+
+         try {
+            refreshed = await fetchAdvertisement(advertisementId);
+         } catch {
+            refreshed = null;
+         }
+
+         await loadAdvertisements({ withLoader: false });
+
+         return refreshed?.closedAt ? refreshed : closed || refreshed;
+      },
+      [loadAdvertisements],
+   );
+
+   const deleteAdvertisementById = useCallback(
+      async (advertisementId) => {
+         await deleteAdvertisement(advertisementId);
+
+         await loadAdvertisements({ withLoader: false });
+      },
+      [loadAdvertisements],
+   );
+
    useEffect(() => {
       loadAdvertisements({ withLoader: true });
    }, [loadAdvertisements]);
@@ -62,6 +95,8 @@ export function AdvertisementsProvider({ children }) {
          isLoading,
          error,
          reloadAdvertisements: loadAdvertisements,
+         closeAdvertisement: closeAdvertisementById,
+         deleteAdvertisement: deleteAdvertisementById,
       }),
       [
          advertisements,
@@ -72,6 +107,8 @@ export function AdvertisementsProvider({ children }) {
          isLoading,
          error,
          loadAdvertisements,
+         closeAdvertisementById,
+         deleteAdvertisementById,
       ],
    );
 

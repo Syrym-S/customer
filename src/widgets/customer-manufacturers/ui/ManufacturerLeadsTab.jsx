@@ -15,6 +15,7 @@ import {
    Stack,
    TextField,
    Typography,
+   useMediaQuery,
 } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
@@ -54,6 +55,8 @@ export function ManufacturerLeadsTab({
    onManufacturerFilterChange,
 }) {
    const { t } = useTranslation();
+
+   const isSmallMobile = useMediaQuery('(max-width:375px)');
 
    const [search, setSearch] = useState('');
    const [statusValue, setStatusValue] = useState(ALL_STATUSES_VALUE);
@@ -285,6 +288,9 @@ export function ManufacturerLeadsTab({
                   onChange={(_, nextPage) => setPage(nextPage)}
                   color="primary"
                   shape="rounded"
+                  size={isSmallMobile ? 'small' : 'medium'}
+                  siblingCount={isSmallMobile ? 0 : 1}
+                  boundaryCount={1}
                />
             </Box>
          )}

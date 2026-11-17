@@ -28,8 +28,18 @@
          "call": "Call",
          "email": "Send email"
       },
+      "manage": {
+         "close": "Close advertisement",
+         "closeConfirm": "Are you sure you want to close this advertisement? Forwarders will no longer be able to respond to it.",
+         "closeFailed": "Failed to close the advertisement",
+         "closing": "Closing...",
+         "delete": "Delete advertisement",
+         "deleteConfirm": "Are you sure you want to delete this advertisement? This action cannot be undone.",
+         "deleteFailed": "Failed to delete the advertisement"
+      },
       "details": {
          "title": "Advertisement details",
+         "myContacts": "Your contacts",
          "subtitle": "Detailed advertisement data",
          "leadNumber": "Shipment #{{num}}",
          "leadSection": "Shipment",

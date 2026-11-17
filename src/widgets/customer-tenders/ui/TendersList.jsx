@@ -189,7 +189,7 @@ export function TendersList() {
                {viewMode === TENDERS_VIEW_MODES.TABLE ? (
                   <TendersTable tenders={tenders} isLoading={isLoading} />
                ) : isLoading ? (
-                  <CardsListSkeleton maxWidth={720} padding={2} />
+                  <CardsListSkeleton padding={0} />
                ) : tenders.length === 0 ? (
                   <Box
                      sx={{
@@ -202,19 +202,17 @@ export function TendersList() {
                      </Typography>
                   </Box>
                ) : (
-                  <Box sx={{ p: 2 }}>
-                     <Stack
-                        spacing={2}
-                        sx={{
-                           maxWidth: 720,
-                           mx: 'auto',
-                        }}
-                     >
-                        {tenders.map((tender) => (
-                           <TenderCard key={tender.id} tender={tender} />
-                        ))}
-                     </Stack>
-                  </Box>
+                  <Stack
+                     spacing={2}
+                     sx={{
+                        maxWidth: 760,
+                        mx: 'auto',
+                     }}
+                  >
+                     {tenders.map((tender) => (
+                        <TenderCard key={tender.id} tender={tender} />
+                     ))}
+                  </Stack>
                )}
 
                <TendersPagination

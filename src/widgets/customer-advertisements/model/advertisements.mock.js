@@ -92,6 +92,32 @@ export function addMockAdvertisement(advertisement) {
    return advertisement;
 }
 
+export function closeMockAdvertisement(advertisementId) {
+   const advertisement = mockAdvertisements.find(
+      (item) => item.id === advertisementId,
+   );
+
+   if (!advertisement) {
+      return null;
+   }
+
+   advertisement.closed_at = buildDateTime(0, new Date().getHours());
+
+   return advertisement;
+}
+
+export function removeMockAdvertisement(advertisementId) {
+   const index = mockAdvertisements.findIndex(
+      (item) => item.id === advertisementId,
+   );
+
+   if (index >= 0) {
+      mockAdvertisements.splice(index, 1);
+   }
+
+   return { success: true };
+}
+
 export function addMockAdvertisementLead(lead) {
    mockAdvertisementLeads.unshift(lead);
 

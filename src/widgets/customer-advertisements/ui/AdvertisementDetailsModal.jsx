@@ -32,9 +32,14 @@ import {
    getWaypointTypeChipColor,
    getWaypointTypeLabel,
 } from '../../customer-leads/model/lead-route.helpers';
+import { fetchCustomerProfile } from '../../../features/profile-edit/profile.api';
+
 import { fetchAdvertisement } from '../api/advertisements.repository';
+import { useAdvertisementsContext } from '../model/useAdvertisementsContext';
+import { AdvertisementDetailsActions } from './AdvertisementDetailsActions';
 import {
    formatAdvertisementAmount,
+   formatAdvertisementDate,
    formatAdvertisementDateTime,
    getAdvertisementCargoDimensionsLabel,
    getAdvertisementGracePeriodLabel,
@@ -43,6 +48,7 @@ import {
    getAdvertisementVatLabel,
    getAdvertisementVolumeLabel,
    getAdvertisementWeightLabel,
+   getCurrentAdvertisementDateTime,
    isAdvertisementClosed,
 } from '../model/advertisement.helpers';
 
@@ -70,8 +76,8 @@ function getPointScheduleLabel(pointSchedules, pointIndex) {
       return '';
    }
 
-   const startLabel = formatAdvertisementDateTime(schedule.startAt);
-   const endLabel = formatAdvertisementDateTime(schedule.endAt);
+   const startLabel = formatAdvertisementDate(schedule.startAt);
+   const endLabel = formatAdvertisementDate(schedule.endAt);
 
    if (startLabel && endLabel && startLabel !== endLabel) {
       return `${startLabel} – ${endLabel}`;
@@ -86,6 +92,12 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
    const [details, setDetails] = useState(advertisement);
    const [isLoading, setIsLoading] = useState(false);
    const [error, setError] = useState('');
+   const [profileContacts, setProfileContacts] = useState(null);
+   const [actionError, setActionError] = useState('');
+   const [isActionLoading, setIsActionLoading] = useState(false);
+
+   const { closeAdvertisement, deleteAdvertisement } =
+      useAdvertisementsContext();
 
    const map = useCustomerMap();
 
@@ -125,6 +137,7 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
    useEffect(() => {
       setDetails(advertisement);
       setError('');
+      setActionError('');
    }, [advertisement]);
 
    useEffect(() => {
@@ -164,6 +177,98 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
          isCancelled = true;
       };
    }, [open, advertisementId, t]);
+
+   useEffect(() => {
+      if (!open) {
+         return undefined;
+      }
+
+      let isCancelled = false;
+
+      async function loadProfileContacts() {
+         try {
+            const profile = await fetchCustomerProfile();
+
+            if (isCancelled) {
+               return;
+            }
+
+            setProfileContacts({
+               phone: profile?.personPhone || profile?.phone || '',
+               email: profile?.personEmail || profile?.email || '',
+            });
+         } catch {
+            if (!isCancelled) {
+               setProfileContacts(null);
+            }
+         }
+      }
+
+      loadProfileContacts();
+
+      return () => {
+         isCancelled = true;
+      };
+   }, [open]);
+
+   async function handleCloseAdvertisement() {
+      if (!advertisementId) {
+         return;
+      }
+
+      try {
+         setIsActionLoading(true);
+         setActionError('');
+
+         const closed = await closeAdvertisement(advertisementId);
+
+         setDetails((previousDetails) => {
+            const nextDetails = closed || previousDetails;
+
+            if (!nextDetails) {
+               return previousDetails;
+            }
+
+            return nextDetails.closedAt
+               ? nextDetails
+               : {
+                    ...nextDetails,
+                    closedAt: getCurrentAdvertisementDateTime(),
+                 };
+         });
+      } catch (requestError) {
+         setActionError(
+            requestError.response?.data?.message ||
+               requestError.message ||
+               t('advertisements.manage.closeFailed'),
+         );
+      } finally {
+         setIsActionLoading(false);
+      }
+   }
+
+   async function handleDeleteAdvertisement() {
+      if (!advertisementId) {
+         return;
+      }
+
+      try {
+         setIsActionLoading(true);
+         setActionError('');
+
+         await deleteAdvertisement(advertisementId);
+
+         onClose();
+      } catch (requestError) {
+         setActionError(
+            requestError.response?.data?.message ||
+               requestError.message ||
+               t('advertisements.manage.deleteFailed'),
+         );
+      } finally {
+         setIsActionLoading(false);
+      }
+   }
 
    if (!advertisement) {
       return null;
@@ -211,9 +316,9 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
          lead.typeComposition,
    );
 
-   const hasContactsSection = Boolean(
-      lead.contacts?.phone || lead.contacts?.email,
-   );
+   const contactPhone = lead.contacts?.phone || profileContacts?.phone || '';
+   const contactEmail = lead.contacts?.email || profileContacts?.email || '';
+   const hasContactsSection = Boolean(contactPhone || contactEmail);
 
    return (
       <AppDialog
@@ -226,6 +331,12 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
                sx: {
                   borderRadius: 4,
                   position: 'relative',
+                  m: { xs: 1, sm: 4 },
+                  width: { xs: 'calc(100% - 16px)', sm: 'calc(100% - 64px)' },
+                  maxHeight: {
+                     xs: 'calc(100% - 16px)',
+                     sm: 'calc(100% - 64px)',
+                  },
                },
             },
          }}
@@ -298,6 +409,12 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
             {error && (
                <Alert severity="error" sx={{ mb: 2 }}>
                   {error}
+               </Alert>
+            )}
+
+            {actionError && (
+               <Alert severity="error" sx={{ mb: 2 }}>
+                  {actionError}
                </Alert>
             )}
 
@@ -539,28 +656,37 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
                   {hasContactsSection && (
                      <DetailSection
                         icon={<PersonOutlineRoundedIcon />}
-                        title={t('common.fields.contactPerson')}
+                        title={t('advertisements.details.myContacts')}
                      >
                         <Box sx={detailsGridSx}>
-                           {lead.contacts?.phone && (
-                              <InfoBadge
-                                 label={t('common.fields.phone')}
-                                 value={lead.contacts.phone}
-                              />
-                           )}
+                           <InfoBadge
+                              label={t('common.fields.phone')}
+                              value={
+                                 contactPhone || t('common.empty.notSpecifiedM')
+                              }
+                           />
 
-                           {lead.contacts?.email && (
-                              <InfoBadge
-                                 label={t('common.fields.email')}
-                                 value={lead.contacts.email}
-                              />
-                           )}
+                           <InfoBadge
+                              label={t('common.fields.email')}
+                              value={
+                                 contactEmail || t('common.empty.notSpecifiedN')
+                              }
+                           />
                         </Box>
                      </DetailSection>
                   )}
                </Stack>
             )}
          </DialogContent>
+
+         {!isInitialLoading && (
+            <AdvertisementDetailsActions
+               isClosed={isClosed}
+               isActionLoading={isActionLoading}
+               onCloseAdvertisement={handleCloseAdvertisement}
+               onDeleteAdvertisement={handleDeleteAdvertisement}
+            />
+         )}
       </AppDialog>
    );
 }

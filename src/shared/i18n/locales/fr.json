@@ -28,8 +28,18 @@
          "call": "Appeler",
          "email": "Envoyer un e-mail"
       },
+      "manage": {
+         "close": "Clôturer l'annonce",
+         "closeConfirm": "Voulez-vous vraiment clôturer cette annonce ? Les transitaires ne pourront plus y répondre.",
+         "closeFailed": "Impossible de clôturer l'annonce",
+         "closing": "Clôture...",
+         "delete": "Supprimer l'annonce",
+         "deleteConfirm": "Voulez-vous vraiment supprimer cette annonce ? Cette action est irréversible.",
+         "deleteFailed": "Impossible de supprimer l'annonce"
+      },
       "details": {
          "title": "Détails de l'annonce",
+         "myContacts": "Vos coordonnées",
          "subtitle": "Données détaillées de l'annonce",
          "leadNumber": "Transport #{{num}}",
          "leadSection": "Transport",

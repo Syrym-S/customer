@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
-import TripOriginIcon from '@mui/icons-material/TripOrigin';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import { Box, Stack, Typography } from '@mui/material';
 
 import { StatusDot } from '../../../../shared/ui/StatusDot';
+import { CardRouteLine } from '../../../../shared/ui/CardRouteLine';
 import {
     getDisplayLeadStatusLabel,
     getDisplayLeadStatusStyles,
@@ -54,8 +52,6 @@ LeadMetaItem.propTypes = {
 
 export function ForwarderLeadCard({ lead, onOpen }) {
     const { t } = useTranslation();
-    const theme = useTheme();
-    const isRtl = theme.direction === 'rtl';
 
     const route = getForwarderLeadRoute(lead);
     const dates = getForwarderLeadDates(lead);
@@ -103,59 +99,13 @@ export function ForwarderLeadCard({ lead, onOpen }) {
                     alignItems={{ xs: 'flex-start', sm: 'center' }}
                     justifyContent="space-between"
                 >
-                    <Stack
-                        direction="row"
-                        alignItems="center"
-                        spacing={0.75}
-                        sx={{ minWidth: 0, overflow: 'hidden' }}
-                    >
-                        <TripOriginIcon
-                            sx={{ fontSize: 16, color: 'primary.main', flexShrink: 0 }}
-                        />
-
-                        <Tooltip title={route.fromTitle}>
-                            <Typography
-                                sx={{
-                                    fontSize: 14,
-                                    fontWeight: 600,
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                    minWidth: 0,
-                                }}
-                            >
-                                {route.fromLabel}
-                            </Typography>
-                        </Tooltip>
-
-                        <ArrowRightAltRoundedIcon
-                            sx={{
-                                fontSize: 20,
-                                color: 'text.secondary',
-                                flexShrink: 0,
-                                transform: isRtl ? 'scaleX(-1)' : 'none',
-                            }}
-                        />
-
-                        <LocationOnOutlinedIcon
-                            sx={{ fontSize: 16, color: 'primary.main', flexShrink: 0 }}
-                        />
-
-                        <Tooltip title={route.toTitle}>
-                            <Typography
-                                sx={{
-                                    fontSize: 14,
-                                    fontWeight: 600,
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                    minWidth: 0,
-                                }}
-                            >
-                                {route.toLabel}
-                            </Typography>
-                        </Tooltip>
-                    </Stack>
+                    <CardRouteLine
+                        fromLabel={route.fromLabel}
+                        fromTitle={route.fromTitle}
+                        toLabel={route.toLabel}
+                        toTitle={route.toTitle}
+                        fontWeight={600}
+                    />
 
                     <Stack
                         direction="row"

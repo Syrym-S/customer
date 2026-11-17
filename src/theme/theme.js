@@ -17,12 +17,22 @@ const SHADOW = {
    hover: '0 4px 16px rgba(22,36,62,0.10)',
 };
 
+const SCROLLBAR = {
+   size: 10,
+   radius: RADIUS.sm,
+   minThumb: 40,
+   trackAlpha: 0.4,
+   thumbAlpha: 0.45,
+   thumbHoverAlpha: 0.7,
+};
+
 export function createAppTheme(direction = 'ltr') {
    return createTheme({
    // Custom, non-MUI-standard tokens exposed on the theme for future
    // components to reuse instead of inlining their own radius/shadow values.
    radius: RADIUS,
    customShadows: SHADOW,
+   scrollbar: SCROLLBAR,
 
    direction,
 
@@ -86,6 +96,60 @@ export function createAppTheme(direction = 'ltr') {
    },
 
    components: {
+      MuiCssBaseline: {
+         styleOverrides: (currentTheme) => ({
+            '@media (hover: hover) and (pointer: fine)': {
+               '*::-webkit-scrollbar': {
+                  width: SCROLLBAR.size,
+                  height: SCROLLBAR.size,
+               },
+               '*::-webkit-scrollbar-track': {
+                  backgroundColor: alpha(
+                     currentTheme.palette.divider,
+                     SCROLLBAR.trackAlpha,
+                  ),
+                  borderRadius: SCROLLBAR.radius,
+               },
+               '*::-webkit-scrollbar-thumb': {
+                  backgroundColor: alpha(
+                     currentTheme.palette.text.secondary,
+                     SCROLLBAR.thumbAlpha,
+                  ),
+                  borderRadius: SCROLLBAR.radius,
+                  minHeight: SCROLLBAR.minThumb,
+                  minWidth: SCROLLBAR.minThumb,
+                  border: '2px solid transparent',
+                  backgroundClip: 'padding-box',
+               },
+               '*::-webkit-scrollbar-thumb:hover': {
+                  backgroundColor: alpha(
+                     currentTheme.palette.text.secondary,
+                     SCROLLBAR.thumbHoverAlpha,
+                  ),
+               },
+               '*::-webkit-scrollbar-thumb:active': {
+                  backgroundColor: currentTheme.palette.text.secondary,
+               },
+               '*::-webkit-scrollbar-corner': {
+                  backgroundColor: 'transparent',
+               },
+               '*::-webkit-scrollbar-button': {
+                  display: 'none',
+               },
+               '@supports not selector(::-webkit-scrollbar)': {
+                  '*': {
+                     scrollbarWidth: 'thin',
+                     scrollbarColor:
+                        alpha(
+                           currentTheme.palette.text.secondary,
+                           SCROLLBAR.thumbHoverAlpha,
+                        ) + ' ' +
+                        alpha(currentTheme.palette.divider, SCROLLBAR.trackAlpha),
+                  },
+               },
+            },
+         }),
+      },
       MuiTypography: {
          variants: [
             {

@@ -30,7 +30,24 @@ export function MobileViewportModal() {
    }
 
    return (
-      <AppDialog open={open} onClose={handleClose} maxWidth='xs' fullWidth>
+      <AppDialog
+         open={open}
+         onClose={handleClose}
+         maxWidth='xs'
+         fullWidth
+         slotProps={{
+            paper: {
+               sx: {
+                  m: { xs: 1, sm: 4 },
+                  width: { xs: 'calc(100% - 16px)', sm: 'calc(100% - 64px)' },
+                  maxHeight: {
+                     xs: 'calc(100% - 16px)',
+                     sm: 'calc(100% - 64px)',
+                  },
+               },
+            },
+         }}
+      >
          <IconButton
             onClick={handleClose}
             size='small'

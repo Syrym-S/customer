@@ -429,7 +429,7 @@ export function LeadsList() {
                   <LeadsTable leads={leads} isLoading={isLoading} />
                ) : viewMode === LEADS_VIEW_MODES.CARDS ? (
                   isLoading ? (
-                     <CardsListSkeleton maxWidth={720} padding={2} />
+                     <CardsListSkeleton padding={0} />
                   ) : leads.length === 0 ? (
                      <Box
                         sx={{
@@ -442,19 +442,17 @@ export function LeadsList() {
                         </Typography>
                      </Box>
                   ) : (
-                     <Box sx={{ p: 2 }}>
-                        <Stack
-                           spacing={2}
-                           sx={{
-                              maxWidth: 720,
-                              mx: 'auto',
-                           }}
-                        >
-                           {leads.map((lead) => (
-                              <LeadCard key={lead.id} lead={lead} />
-                           ))}
-                        </Stack>
-                     </Box>
+                     <Stack
+                        spacing={2}
+                        sx={{
+                           maxWidth: 760,
+                           mx: 'auto',
+                        }}
+                     >
+                        {leads.map((lead) => (
+                           <LeadCard key={lead.id} lead={lead} />
+                        ))}
+                     </Stack>
                   )
                ) : isLoading ? (
                   <CardsListSkeleton maxWidth={720} padding={2} />

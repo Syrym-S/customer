@@ -2,8 +2,10 @@ import {
    addMockAdvertisement,
    addMockAdvertisementLead,
    buildMockAdvertisementFromLead,
+   closeMockAdvertisement,
    mockAdvertisementLeads,
    mockAdvertisements,
+   removeMockAdvertisement,
 } from '../model/advertisements.mock';
 
 const MOCK_DELAY_MS = 350;
@@ -77,6 +79,24 @@ export async function searchAdvertisementLeadsMock({ q = '', perPage = 20 } = {}
       .filter((lead) => !advertisedLeadIds.has(lead.id))
       .filter((lead) => matchesQuery(lead, query))
       .slice(0, perPage);
+}
+
+export async function closeAdvertisementMock(advertisementId) {
+   await delay();
+
+   const advertisement = closeMockAdvertisement(advertisementId);
+
+   if (!advertisement) {
+      throw new Error('Advertisement not found');
+   }
+
+   return advertisement;
+}
+
+export async function deleteAdvertisementMock(advertisementId) {
+   await delay();
+
+   return removeMockAdvertisement(advertisementId);
 }
 
 export async function createAdvertisementMock({ leadId, lead }) {

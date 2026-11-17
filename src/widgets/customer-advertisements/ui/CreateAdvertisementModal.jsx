@@ -136,7 +136,24 @@ export function CreateAdvertisementModal({ open, onClose }) {
 
    return (
       <>
-         <AppDialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+         <AppDialog
+            open={open}
+            onClose={handleClose}
+            fullWidth
+            maxWidth="sm"
+            slotProps={{
+               paper: {
+                  sx: {
+                     m: { xs: 1, sm: 4 },
+                     width: { xs: 'calc(100% - 16px)', sm: 'calc(100% - 64px)' },
+                     maxHeight: {
+                        xs: 'calc(100% - 16px)',
+                        sm: 'calc(100% - 64px)',
+                     },
+                  },
+               },
+            }}
+         >
             <DialogTitle sx={{ pt: 3, pr: 7, fontSize: 20, fontWeight: 600 }}>
                {t('advertisements.create.title')}
             </DialogTitle>

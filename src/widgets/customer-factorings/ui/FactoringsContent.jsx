@@ -170,7 +170,7 @@ export function FactoringsContent() {
                             isLoading={isLoading}
                         />
                     ) : isLoading ? (
-                        <CardsListSkeleton />
+                        <CardsListSkeleton padding={0} />
                     ) : (
                         <FactoringCardsList
                             factorings={factorings}

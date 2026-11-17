@@ -126,7 +126,7 @@ export function AdvertisementsList() {
                      onOpen={handleOpenAdvertisement}
                   />
                ) : isLoading ? (
-                  <CardsListSkeleton maxWidth={720} padding={2} />
+                  <CardsListSkeleton padding={0} />
                ) : advertisements.length === 0 ? (
                   <Box sx={{ py: 6, textAlign: 'center' }}>
                      <Typography color="text.secondary">
@@ -134,17 +134,15 @@ export function AdvertisementsList() {
                      </Typography>
                   </Box>
                ) : (
-                  <Box sx={{ p: 2 }}>
-                     <Stack spacing={2} sx={{ maxWidth: 720, mx: 'auto' }}>
-                        {advertisements.map((advertisement) => (
-                           <AdvertisementCard
-                              key={advertisement.id}
-                              advertisement={advertisement}
-                              onOpen={handleOpenAdvertisement}
-                           />
-                        ))}
-                     </Stack>
-                  </Box>
+                  <Stack spacing={2} sx={{ maxWidth: 760, mx: 'auto' }}>
+                     {advertisements.map((advertisement) => (
+                        <AdvertisementCard
+                           key={advertisement.id}
+                           advertisement={advertisement}
+                           onOpen={handleOpenAdvertisement}
+                        />
+                     ))}
+                  </Stack>
                )}
 
                <LeadsPagination

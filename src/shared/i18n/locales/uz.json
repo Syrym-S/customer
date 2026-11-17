@@ -28,8 +28,18 @@
          "call": "Qo'ng'iroq qilish",
          "email": "Pochtaga yozish"
       },
+      "manage": {
+         "close": "E'lonni yopish",
+         "closeConfirm": "Bu e'lonni yopmoqchimisiz? Yopilgandan keyin ekspeditorlar unga javob bera olmaydi.",
+         "closeFailed": "E'lonni yopish imkoni bo'lmadi",
+         "closing": "Yopilmoqda...",
+         "delete": "E'lonni o'chirish",
+         "deleteConfirm": "Bu e'lonni o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.",
+         "deleteFailed": "E'lonni o'chirish imkoni bo'lmadi"
+      },
       "details": {
          "title": "E'lon tafsilotlari",
+         "myContacts": "Sizning kontaktlaringiz",
          "subtitle": "E'lonning batafsil ma'lumotlari",
          "leadNumber": "Tashish #{{num}}",
          "leadSection": "Tashish",

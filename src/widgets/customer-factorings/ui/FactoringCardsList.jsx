@@ -22,29 +22,20 @@ export function FactoringCardsList({ factorings, onOpenDetails }) {
     }
 
     return (
-        <Box
+        <Stack
+            spacing={2}
             sx={{
-                p: {
-                    xs: 2,
-                    sm: 3,
-                },
+                maxWidth: 760,
+                mx: 'auto',
             }}
         >
-            <Stack
-                spacing={2}
-                sx={{
-                    maxWidth: 760,
-                    mx: 'auto',
-                }}
-            >
-                {factorings.map((factoring) => (
-                    <FactoringCard
-                        key={factoring.id ?? factoring.index}
-                        factoring={factoring}
-                        onOpenDetails={onOpenDetails}
-                    />
-                ))}
-            </Stack>
-        </Box>
+            {factorings.map((factoring) => (
+                <FactoringCard
+                    key={factoring.id ?? factoring.index}
+                    factoring={factoring}
+                    onOpenDetails={onOpenDetails}
+                />
+            ))}
+        </Stack>
     );
 }

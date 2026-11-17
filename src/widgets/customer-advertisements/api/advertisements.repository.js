@@ -5,13 +5,17 @@ import {
    mapAdvertisementsResponseFromApi,
 } from '../model/advertisement.adapter';
 import {
+   closeAdvertisementApi,
    createAdvertisementApi,
+   deleteAdvertisementApi,
    fetchAdvertisementApi,
    fetchAdvertisementsApi,
    searchAdvertisementLeadsApi,
 } from './advertisements.api';
 import {
+   closeAdvertisementMock,
    createAdvertisementMock,
+   deleteAdvertisementMock,
    fetchAdvertisementMock,
    fetchAdvertisementsMock,
    searchAdvertisementLeadsMock,
@@ -39,6 +43,20 @@ export async function searchAdvertisementLeads({ q = '', perPage = 20 } = {}) {
       : await searchAdvertisementLeadsApi({ q, perPage });
 
    return data.map(mapAdvertisementLeadFromApi).filter(Boolean);
+}
+
+export async function closeAdvertisement(advertisementId) {
+   const data = isMockApi
+      ? await closeAdvertisementMock(advertisementId)
+      : await closeAdvertisementApi(advertisementId);
+
+   return mapAdvertisementFromApi(data);
+}
+
+export async function deleteAdvertisement(advertisementId) {
+   return isMockApi
+      ? deleteAdvertisementMock(advertisementId)
+      : deleteAdvertisementApi(advertisementId);
 }
 
 export async function createAdvertisement({ leadId, lead }) {

@@ -15,20 +15,27 @@ import {
    formatAdvertisementDateTime,
    getAdvertisementLeadNumberLabel,
    getAdvertisementPriceLabel,
-   getAdvertisementRouteLabel,
 } from '../model/advertisement.helpers';
 
 const SEARCH_DEBOUNCE_MS = 400;
+
+function getRouteLabel(lead) {
+   const from = String(lead?.fromLocation ?? '').trim();
+   const to = String(lead?.toLocation ?? '').trim();
+
+   if (from && to) {
+      return `${from} — ${to}`;
+   }
+
+   return from || to;
+}
 
 function getOptionLabel(option) {
    if (!option) {
       return '';
    }
 
-   const numberLabel = getAdvertisementLeadNumberLabel(option);
-   const routeLabel = getAdvertisementRouteLabel(option);
-
-   return numberLabel ? `${numberLabel} · ${routeLabel}` : routeLabel;
+   return getAdvertisementLeadNumberLabel(option) || getRouteLabel(option);
 }
 
 function LeadPreviewRow({ label, value }) {
@@ -63,6 +70,8 @@ export function AdvertisementLeadPicker({ selectedLead, onSelectLead }) {
    const [isLoading, setIsLoading] = useState(false);
    const [searchError, setSearchError] = useState('');
 
+   const selectedLabel = selectedLead ? getOptionLabel(selectedLead) : '';
+
    useEffect(() => {
       const timeoutId = setTimeout(() => {
          setDebouncedQuery(inputValue.trim());
@@ -72,6 +81,10 @@ export function AdvertisementLeadPicker({ selectedLead, onSelectLead }) {
    }, [inputValue]);
 
    useEffect(() => {
+      if (selectedLabel && debouncedQuery === selectedLabel) {
+         return undefined;
+      }
+
       let isCancelled = false;
 
       async function loadLeads() {
@@ -105,7 +118,7 @@ export function AdvertisementLeadPicker({ selectedLead, onSelectLead }) {
       return () => {
          isCancelled = true;
       };
-   }, [debouncedQuery, t]);
+   }, [debouncedQuery, selectedLabel, t]);
 
    const previewRows = useMemo(() => {
       if (!selectedLead) {
@@ -115,41 +128,37 @@ export function AdvertisementLeadPicker({ selectedLead, onSelectLead }) {
       return [
          {
             label: t('advertisements.fields.leadNum'),
-            value: getAdvertisementLeadNumberLabel(selectedLead) || '—',
+            value: getAdvertisementLeadNumberLabel(selectedLead),
          },
          {
             label: t('advertisements.fields.route'),
-            value: getAdvertisementRouteLabel(selectedLead),
+            value: getRouteLabel(selectedLead),
+         },
+         {
+            label: t('common.fields.cargo'),
+            value: selectedLead.cargo,
          },
          {
             label: t('advertisements.fields.firstPointAt'),
-            value:
-               formatAdvertisementDateTime(selectedLead.firstPointAt) ||
-               t('common.empty.notSpecifiedN'),
+            value: formatAdvertisementDateTime(selectedLead.firstPointAt),
          },
          {
             label: t('common.fields.price'),
-            value:
-               getAdvertisementPriceLabel(selectedLead) ||
-               t('common.empty.notSpecifiedN'),
+            value: getAdvertisementPriceLabel(selectedLead),
          },
-         ...(selectedLead.contacts?.phone
-            ? [
-                 {
-                    label: t('common.fields.phone'),
-                    value: selectedLead.contacts.phone,
-                 },
-              ]
-            : []),
-         ...(selectedLead.contacts?.email
-            ? [
-                 {
-                    label: t('common.fields.email'),
-                    value: selectedLead.contacts.email,
-                 },
-              ]
-            : []),
-      ];
+         {
+            label: t('common.fields.createdAt'),
+            value: formatAdvertisementDateTime(selectedLead.createdAt),
+         },
+         {
+            label: t('common.fields.phone'),
+            value: selectedLead.contacts?.phone,
+         },
+         {
+            label: t('common.fields.email'),
+            value: selectedLead.contacts?.email,
+         },
+      ].filter((row) => Boolean(row.value));
    }, [selectedLead, t]);
 
    return (
@@ -175,6 +184,15 @@ export function AdvertisementLeadPicker({ selectedLead, onSelectLead }) {
             renderOption={(optionProps, option) => {
                const { key, ...listItemProps } = optionProps;
 
+               const routeLabel = getRouteLabel(option);
+               const priceLabel = getAdvertisementPriceLabel(option);
+               const firstPointLabel = formatAdvertisementDateTime(
+                  option.firstPointAt,
+               );
+               const metaLabel = [option.cargo, firstPointLabel]
+                  .filter(Boolean)
+                  .join(' · ');
+
                return (
                   <Box
                      key={key}
@@ -192,22 +210,31 @@ export function AdvertisementLeadPicker({ selectedLead, onSelectLead }) {
                            {getAdvertisementLeadNumberLabel(option) || '—'}
                         </Typography>
 
-                        <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
-                           {getAdvertisementPriceLabel(option)}
-                        </Typography>
+                        {priceLabel && (
+                           <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
+                              {priceLabel}
+                           </Typography>
+                        )}
                      </Stack>
 
-                     <Typography
-                        sx={{ fontSize: 13 }}
-                        color="text.secondary"
-                        noWrap
-                     >
-                        {getAdvertisementRouteLabel(option)}
-                     </Typography>
+                     {routeLabel && (
+                        <Typography
+                           sx={{ fontSize: 13 }}
+                           color="text.secondary"
+                           noWrap
+                        >
+                           {routeLabel}
+                        </Typography>
+                     )}
 
-                     <Typography sx={{ fontSize: 12 }} color="text.secondary">
-                        {formatAdvertisementDateTime(option.firstPointAt)}
-                     </Typography>
+                     {metaLabel && (
+                        <Typography
+                           sx={{ fontSize: 12 }}
+                           color="text.secondary"
+                        >
+                           {metaLabel}
+                        </Typography>
+                     )}
                   </Box>
                );
             }}

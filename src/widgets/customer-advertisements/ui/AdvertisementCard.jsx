@@ -8,14 +8,12 @@ import {
    Typography,
    useTheme,
 } from '@mui/material';
-import TripOriginIcon from '@mui/icons-material/TripOrigin';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
 import ScheduleRoundedIcon from '@mui/icons-material/ScheduleRounded';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import HourglassBottomRoundedIcon from '@mui/icons-material/HourglassBottomRounded';
 
 import { StatusDot } from '../../../shared/ui/StatusDot';
+import { CardRouteLine } from '../../../shared/ui/CardRouteLine';
 import {
    formatAdvertisementDateTime,
    getAdvertisementLeadNumberLabel,
@@ -29,7 +27,6 @@ export function AdvertisementCard({ advertisement, onOpen }) {
    const { t } = useTranslation();
    const theme = useTheme();
 
-   const isRtl = theme.direction === 'rtl';
    const isClosed = isAdvertisementClosed(advertisement);
 
    const lead = advertisement.lead || {};
@@ -133,59 +130,12 @@ export function AdvertisementCard({ advertisement, onOpen }) {
                )}
             </Stack>
 
-            <Stack
-               direction="row"
-               alignItems="center"
-               spacing={0.75}
-               sx={{ minWidth: 0, flexWrap: 'nowrap', overflow: 'hidden' }}
-            >
-               <TripOriginIcon
-                  sx={{ fontSize: 16, color: 'primary.main', flexShrink: 0 }}
-               />
-
-               <Tooltip title={fromTitle}>
-                  <Typography
-                     sx={{
-                        fontSize: 14,
-                        fontWeight: 500,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        minWidth: 0,
-                     }}
-                  >
-                     {fromLabel}
-                  </Typography>
-               </Tooltip>
-
-               <ArrowRightAltRoundedIcon
-                  sx={{
-                     color: 'text.secondary',
-                     fontSize: 20,
-                     flexShrink: 0,
-                     transform: isRtl ? 'scaleX(-1)' : 'none',
-                  }}
-               />
-
-               <LocationOnOutlinedIcon
-                  sx={{ fontSize: 16, color: 'primary.main', flexShrink: 0 }}
-               />
-
-               <Tooltip title={toTitle}>
-                  <Typography
-                     sx={{
-                        fontSize: 14,
-                        fontWeight: 500,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        minWidth: 0,
-                     }}
-                  >
-                     {toLabel}
-                  </Typography>
-               </Tooltip>
-            </Stack>
+            <CardRouteLine
+               fromLabel={fromLabel}
+               fromTitle={fromTitle}
+               toLabel={toLabel}
+               toTitle={toTitle}
+            />
 
             <Stack
                direction="row"

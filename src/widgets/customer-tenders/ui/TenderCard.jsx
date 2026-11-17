@@ -1,10 +1,7 @@
-import { alpha, Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
+import { alpha, Box, Stack, Typography } from '@mui/material';
 import i18n from '../../../shared/i18n';
 import { useTranslation } from "react-i18next";
-import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
-import TripOriginIcon from '@mui/icons-material/TripOrigin';
 import {
    getTimeLeft,
    getPublicationTypeLabel,
@@ -18,6 +15,7 @@ import { normalizeLocationValue } from '../model/tender-edit-form.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
 import { getShortLocationLabel } from '../../../shared/helpers/data-grid.helpers';
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
+import { CardRouteLine } from '../../../shared/ui/CardRouteLine';
 
 function getShortTenderId(id) {
    if (!id) {
@@ -59,9 +57,6 @@ function getParticipantsCountLabel(count) {
 
 export function TenderCard({ tender }) {
    const { t } = useTranslation();
-   const theme = useTheme();
-   const isRtl = theme.direction === 'rtl';
-
    const { openTenderDetails } = useTendersContext();
 
    const isCancelled = tender.status === 'cancelled';
@@ -171,15 +166,31 @@ export function TenderCard({ tender }) {
                <Stack
                   direction="row"
                   spacing={0.75}
-                  alignItems="center"
-                  flexWrap="wrap"
-                  sx={{ mt: 0.5, color: 'text.secondary' }}
+                  useFlexGap
+                  sx={{
+                     mt: 0.5,
+                     color: 'text.secondary',
+                     alignItems: 'center',
+                     flexWrap: 'wrap',
+                     rowGap: 0.75,
+                  }}
                >
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                     variant="body2"
+                     color="text.secondary"
+                     sx={{ flexShrink: 0, whiteSpace: 'nowrap' }}
+                  >
                      {shortTenderIdLabel}
                   </Typography>
 
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                     variant="body2"
+                     color="text.secondary"
+                     sx={{
+                        flexShrink: 0,
+                        display: { xs: 'none', sm: 'block' },
+                     }}
+                  >
                      ·
                   </Typography>
 
@@ -189,11 +200,19 @@ export function TenderCard({ tender }) {
                         (tenderStatusStyles[tender.status] ||
                            tenderStatusStyles.new).color
                      }
+                     sx={{ flexShrink: 0 }}
                   />
 
                   {shouldShowTimeLeft && (
                      <>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography
+                           variant="body2"
+                           color="text.secondary"
+                           sx={{
+                              flexShrink: 0,
+                              display: { xs: 'none', sm: 'block' },
+                           }}
+                        >
                            ·
                         </Typography>
 
@@ -205,70 +224,13 @@ export function TenderCard({ tender }) {
                </Stack>
             </Box>
 
-            <Stack
-               direction="row"
-               alignItems="center"
-               spacing={0.75}
-               sx={{
-                  minWidth: 0,
-                  flexWrap: 'nowrap',
-                  overflow: 'hidden',
-               }}
-            >
-               <TripOriginIcon sx={{ fontSize: 16, color: 'primary.main', flexShrink: 0 }} />
-
-               <Tooltip title={fromFullLabel}>
-                  <Typography
-                     sx={{
-                        fontSize: 14,
-                        fontWeight: 500,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        minWidth: 0,
-                        flexShrink: 1,
-                     }}
-                  >
-                     {fromShortLabel || t("common.empty.notSpecifiedN")}
-                  </Typography>
-               </Tooltip>
-
-               <ArrowRightAltRoundedIcon
-                  sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0, transform: isRtl ? 'scaleX(-1)' : 'none' }}
-               />
-
-               {waypointsCount > 0 && (
-                  <>
-                     <MiniPill
-                        label={`+${t('common.waypointCount', { count: waypointsCount })}`}
-                     />
-
-                     <ArrowRightAltRoundedIcon
-                        sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0, transform: isRtl ? 'scaleX(-1)' : 'none' }}
-                     />
-                  </>
-               )}
-
-               <LocationOnOutlinedIcon
-                  sx={{ fontSize: 16, color: 'primary.main', flexShrink: 0 }}
-               />
-
-               <Tooltip title={toFullLabel}>
-                  <Typography
-                     sx={{
-                        fontSize: 14,
-                        fontWeight: 500,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        minWidth: 0,
-                        flexShrink: 1,
-                     }}
-                  >
-                     {toShortLabel || t("common.empty.notSpecifiedN")}
-                  </Typography>
-               </Tooltip>
-            </Stack>
+            <CardRouteLine
+               fromLabel={fromShortLabel || t("common.empty.notSpecifiedN")}
+               fromTitle={fromFullLabel}
+               toLabel={toShortLabel || t("common.empty.notSpecifiedN")}
+               toTitle={toFullLabel}
+               waypointsCount={waypointsCount}
+            />
 
             {cargoSummaryLabel && (
                <Stack direction="row" alignItems="center" spacing={0.75}>
@@ -282,7 +244,12 @@ export function TenderCard({ tender }) {
                </Stack>
             )}
 
-            <Stack direction="row" spacing={0.75} flexWrap="wrap" useFlexGap>
+            <Stack
+               direction="row"
+               spacing={0.75}
+               useFlexGap
+               sx={{ flexWrap: 'wrap', rowGap: 0.75 }}
+            >
                <MiniPill label={participantsLabel} />
                <MiniPill label={publicationTypeLabel} />
             </Stack>
@@ -383,6 +350,8 @@ function TimeLeftBadge({ value }) {
             display: 'flex',
             alignItems: 'center',
             gap: 0.75,
+            flexShrink: 0,
+            whiteSpace: 'nowrap',
          }}
       >
          <Typography

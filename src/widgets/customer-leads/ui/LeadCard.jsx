@@ -2,10 +2,7 @@ import PropTypes from 'prop-types';
 import i18n from '../../../shared/i18n';
 import { useTranslation } from "react-i18next";
 
-import { alpha, Box, Stack, Tooltip, Typography, useTheme } from '@mui/material';
-import TripOriginIcon from '@mui/icons-material/TripOrigin';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import ArrowRightAltRoundedIcon from '@mui/icons-material/ArrowRightAltRounded';
+import { alpha, Box, Stack, Typography } from '@mui/material';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 
 import { useLeadsContext } from '../model/useLeadsContext';
@@ -21,6 +18,7 @@ import {
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
 import { getShortLocationLabel } from '../../../shared/helpers/data-grid.helpers';
+import { CardRouteLine } from '../../../shared/ui/CardRouteLine';
 
 function getCargoSummaryLabel(cargos) {
    if (!Array.isArray(cargos) || cargos.length === 0) {
@@ -59,9 +57,6 @@ const cardContainerSx = {
 
 export function LeadCard({ lead }) {
    const { t } = useTranslation();
-   const theme = useTheme();
-   const isRtl = theme.direction === 'rtl';
-
    const { setOpenLead } = useLeadsContext();
 
    function handleOpenLead() {
@@ -174,90 +169,13 @@ export function LeadCard({ lead }) {
                </Stack>
             </Box>
 
-            <Stack
-               direction="row"
-               alignItems="center"
-               spacing={0.75}
-               sx={{
-                  minWidth: 0,
-                  flexWrap: 'nowrap',
-                  overflow: 'hidden',
-               }}
-            >
-               <TripOriginIcon sx={{ fontSize: 16, color: 'primary.main', flexShrink: 0 }} />
-
-               <Tooltip title={fromFullLabel}>
-                  <Typography
-                     sx={{
-                        fontSize: 14,
-                        fontWeight: 500,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        minWidth: 0,
-                        flexShrink: 1,
-                     }}
-                  >
-                     {fromShortLabel}
-                  </Typography>
-               </Tooltip>
-
-               <ArrowRightAltRoundedIcon
-                  sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0, transform: isRtl ? 'scaleX(-1)' : 'none' }}
-               />
-
-               {waypointsCount > 0 && (
-                  <>
-                     <Box
-                        sx={(theme) => ({
-                           flexShrink: 0,
-                           display: 'flex',
-                           alignItems: 'center',
-                           px: 0.75,
-                           py: 0.25,
-                           borderRadius: `${theme.radius.sm}px`,
-                           backgroundColor: alpha(theme.palette.primary.main, 0.08),
-                        })}
-                     >
-                        <Typography
-                           variant="caption"
-                           color="text.secondary"
-                           sx={{
-                              fontSize: 11,
-                              lineHeight: 1,
-                              whiteSpace: 'nowrap',
-                           }}
-                        >
-                           +{t('common.waypointCount', { count: waypointsCount })}
-                        </Typography>
-                     </Box>
-
-                     <ArrowRightAltRoundedIcon
-                        sx={{ color: 'text.secondary', fontSize: 20, flexShrink: 0, transform: isRtl ? 'scaleX(-1)' : 'none' }}
-                     />
-                  </>
-               )}
-
-               <LocationOnOutlinedIcon
-                  sx={{ fontSize: 16, color: 'primary.main', flexShrink: 0 }}
-               />
-
-               <Tooltip title={toFullLabel}>
-                  <Typography
-                     sx={{
-                        fontSize: 14,
-                        fontWeight: 500,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        minWidth: 0,
-                        flexShrink: 1,
-                     }}
-                  >
-                     {toShortLabel}
-                  </Typography>
-               </Tooltip>
-            </Stack>
+            <CardRouteLine
+               fromLabel={fromShortLabel}
+               fromTitle={fromFullLabel}
+               toLabel={toShortLabel}
+               toTitle={toFullLabel}
+               waypointsCount={waypointsCount}
+            />
 
             {cargoSummaryLabel && (
                <Stack direction="row" alignItems="center" spacing={0.75}>

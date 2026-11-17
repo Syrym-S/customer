@@ -28,8 +28,18 @@
          "call": "Llamar",
          "email": "Enviar correo"
       },
+      "manage": {
+         "close": "Cerrar anuncio",
+         "closeConfirm": "¿Seguro que quieres cerrar este anuncio? Después los transportistas no podrán responder.",
+         "closeFailed": "No se pudo cerrar el anuncio",
+         "closing": "Cerrando...",
+         "delete": "Eliminar anuncio",
+         "deleteConfirm": "¿Seguro que quieres eliminar este anuncio? Esta acción no se puede deshacer.",
+         "deleteFailed": "No se pudo eliminar el anuncio"
+      },
       "details": {
          "title": "Detalles del anuncio",
+         "myContacts": "Tus contactos",
          "subtitle": "Datos detallados del anuncio",
          "leadNumber": "Transporte #{{num}}",
          "leadSection": "Transporte",

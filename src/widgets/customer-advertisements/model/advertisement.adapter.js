@@ -140,15 +140,46 @@ function mapPointSchedulesFromApi(apiLead) {
       .sort((first, second) => first.pointIndex - second.pointIndex);
 }
 
-function mapContactsFromApi(apiLead) {
-   const contacts = apiLead?.contacts;
+function firstFilledString(values) {
+   for (const value of values) {
+      const text = String(value ?? '').trim();
 
-   if (!contacts) {
-      return null;
+      if (text) {
+         return text;
+      }
    }
 
-   const phone = contacts.phone || contacts.number || '';
-   const email = contacts.email || '';
+   return '';
+}
+
+function mapContactsFromApi(apiLead) {
+   const sources = [
+      apiLead?.contacts,
+      apiLead?.contact,
+      apiLead?.customer,
+      apiLead?.creator,
+      apiLead,
+   ].filter((source) => source && typeof source === 'object');
+
+   const phone = firstFilledString(
+      sources.flatMap((source) => [
+         source.phone,
+         source.number,
+         source.personPhone,
+         source.person_phone,
+         source.contact_phone,
+         source.phone_number,
+      ]),
+   );
+
+   const email = firstFilledString(
+      sources.flatMap((source) => [
+         source.email,
+         source.personEmail,
+         source.person_email,
+         source.contact_email,
+      ]),
+   );
 
    if (!phone && !email) {
       return null;
@@ -162,8 +193,8 @@ export function mapAdvertisementLeadFromApi(apiLead) {
       return null;
    }
 
-   const from = getLocationLabels(apiLead.from_location);
-   const to = getLocationLabels(apiLead.to_location);
+   const from = getLocationLabels(apiLead.from_location ?? apiLead.from);
+   const to = getLocationLabels(apiLead.to_location ?? apiLead.to);
    const cargo = getFirstCargo(apiLead);
 
    return {
