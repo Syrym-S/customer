@@ -14,12 +14,16 @@ export { CONTRACT_SIGN_REDIRECT_MARKER_KEY };
 // the caller can hold off rendering data-fetching children until the first
 // verdict is known — only the very first check needs to gate anything;
 // subsequent polls just update the store non-blockingly.
-export function useContractGate() {
+export function useContractGate({ enabled = true } = {}) {
    const hasValidContract = useContractStore((state) => state.hasValidContract);
    const checkContract = useContractStore((state) => state.checkContract);
    const refreshFeatureFlags = useContractStore((state) => state.refreshFeatureFlags);
 
    useEffect(() => {
+      if (!enabled) {
+         return;
+      }
+
       // A full-tab redirect back from Aitu's sign_url reloads the page, which
       // remounts the whole app — so the unconditional checkContract() call
       // below already performs the "immediate recheck on return" this marker
@@ -31,8 +35,8 @@ export function useContractGate() {
       // Shares this interval rather than running its own — the flag doesn't
       // need finer-grained polling than the contract status does.
       function pollContractGateState() {
-         checkContract();
-         refreshFeatureFlags();
+         checkContract().catch(() => {});
+         refreshFeatureFlags().catch(() => {});
       }
 
       pollContractGateState();
@@ -40,7 +44,7 @@ export function useContractGate() {
       const intervalId = setInterval(pollContractGateState, CONTRACT_POLL_INTERVAL_MS);
 
       return () => clearInterval(intervalId);
-   }, [checkContract, refreshFeatureFlags]);
+   }, [enabled, checkContract, refreshFeatureFlags]);
 
    return hasValidContract;
 }

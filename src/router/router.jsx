@@ -13,6 +13,12 @@ import { ComplaintsPage } from "../pages/complaints/ComplaintsPage";
 import { AdvertisementsPage } from "../pages/advertisements/AdvertisementsPage";
 import { SettingsPage } from "../pages/settings/SettingsPage";
 import { ErrorPage } from "../pages/error/ErrorPage";
+import AuthApp from "../auth/AuthApp";
+import Login from "../auth/pages/Login";
+import Register from "../auth/pages/Register";
+import ForgotPassword from "../auth/pages/password/ForgotPassword";
+import ResetPassword from "../auth/pages/password/ResetPassword";
+import { LoginRedirect } from "../auth/shared/LoginRedirect";
 import { appBasename } from "../shared/api/api-client";
 import {
   isAdvertisementsEnabled,
@@ -169,6 +175,33 @@ export const router = createBrowserRouter(
           handle: {
             title: "nav.complaints",
           },
+        },
+      ],
+    },
+    {
+      path: "auth",
+      element: <AuthApp />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: <LoginRedirect />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "register",
+          element: <Register />,
+        },
+        {
+          path: "forgot-password",
+          element: <ForgotPassword />,
+        },
+        {
+          path: "reset-password",
+          element: <ResetPassword />,
         },
       ],
     },

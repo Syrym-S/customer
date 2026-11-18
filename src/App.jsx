@@ -13,8 +13,20 @@ import { useContractStore } from "./shared/model/contract.store";
 import { useLanguagesStore } from "./shared/model/languages.store";
 import { router } from "./router/router";
 import { RouterProvider } from "react-router-dom";
+import { appBasename } from "./shared/api/api-client";
+
+const AUTH_PATH_PREFIX = "/auth";
+
+function isAuthPathname() {
+  const basename = appBasename === "/" ? "" : appBasename;
+  const pathname = window?.location?.pathname || "/";
+
+  return pathname.slice(basename.length).startsWith(AUTH_PATH_PREFIX);
+}
 
 function App() {
+  const isAuthRoute = isAuthPathname();
+
   const { i18n } = useTranslation();
   const direction = getLanguageDirection(i18n.resolvedLanguage);
 
@@ -33,7 +45,7 @@ function App() {
   // until the first contract check resolves — otherwise those requests fire
   // immediately on mount and race ahead of the mocked check's artificial
   // delay, bypassing the apiClient contract-gate interceptor entirely.
-  const hasValidContract = useContractGate();
+  const hasValidContract = useContractGate({ enabled: !isAuthRoute });
   // Read via the store hook (not a module const) so a later
   // refreshFeatureFlags() poll re-renders this instead of being read once
   // and going stale.
@@ -43,7 +55,7 @@ function App() {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        {isContractGateEnabled && hasValidContract === null ? (
+        {isContractGateEnabled && !isAuthRoute && hasValidContract === null ? (
           <Box
             sx={{
               display: "flex",
@@ -58,8 +70,8 @@ function App() {
           <>
             <RouterProvider router={router} />
             <NotificationsColumn />
-            <MobileViewportModal />
-            <ContractGateModal />
+            {!isAuthRoute && <MobileViewportModal />}
+            {!isAuthRoute && <ContractGateModal />}
           </>
         )}
       </ThemeProvider>
