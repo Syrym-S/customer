@@ -37,6 +37,12 @@
          "deleteConfirm": "Bu e'lonni o'chirmoqchimisiz? Bu amalni qaytarib bo'lmaydi.",
          "deleteFailed": "E'lonni o'chirish imkoni bo'lmadi"
       },
+      "edit": {
+         "leadSection": "E’lon tashuvi",
+         "leadSectionHint": "Boshqa tashuvni tanlang — e’lon unga bog‘lanadi",
+         "blockedClosed": "Yopilgan e’lonni tahrirlash mumkin emas",
+         "updateFailed": "E’lonni o‘zgartirib bo‘lmadi"
+      },
       "details": {
          "title": "E'lon tafsilotlari",
          "myContacts": "Sizning kontaktlaringiz",

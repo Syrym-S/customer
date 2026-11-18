@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+   Box,
    Button,
    DialogActions,
    DialogContent,
@@ -35,7 +36,11 @@ function getConfirmActionConfig() {
 
 export function AdvertisementDetailsActions({
    isClosed = false,
+   isEditing = false,
+   isSaving = false,
+   isSaveDisabled = false,
    isActionLoading = false,
+   onSave,
    onCloseAdvertisement,
    onDeleteAdvertisement,
 }) {
@@ -81,35 +86,57 @@ export function AdvertisementDetailsActions({
                px: 3,
                pb: 2,
                pt: 2,
-               justifyContent: 'flex-start',
+               justifyContent: 'space-between',
                gap: 1,
                flexWrap: 'wrap',
                borderTop: '1px solid',
                borderColor: 'divider',
             }}
          >
-            {!isClosed && (
+            <Box
+               sx={{
+                  display: 'flex',
+                  gap: 1,
+                  flexWrap: 'wrap',
+               }}
+            >
+               {!isEditing && !isClosed && (
+                  <Button
+                     color="warning"
+                     variant="outlined"
+                     startIcon={<BlockOutlinedIcon />}
+                     onClick={(event) => handleOpenConfirm('close', event)}
+                     disabled={isActionLoading}
+                  >
+                     {t('advertisements.manage.close')}
+                  </Button>
+               )}
+
+               {!isEditing && (
+                  <Button
+                     color="error"
+                     variant="outlined"
+                     startIcon={<DeleteOutlinedIcon />}
+                     onClick={(event) => handleOpenConfirm('delete', event)}
+                     disabled={isActionLoading}
+                  >
+                     {t('advertisements.manage.delete')}
+                  </Button>
+               )}
+            </Box>
+
+            {isEditing && (
                <Button
-                  color="warning"
-                  variant="outlined"
-                  startIcon={<BlockOutlinedIcon />}
-                  onClick={(event) => handleOpenConfirm('close', event)}
-                  disabled={isActionLoading}
+                  variant="contained"
+                  onClick={onSave}
+                  disabled={isSaving || isSaveDisabled}
+                  sx={{ ml: 0 }}
                >
-                  {t('advertisements.manage.close')}
+                  {isSaving
+                     ? t('common.actions.saving')
+                     : t('common.actions.save')}
                </Button>
             )}
-
-            <Button
-               color="error"
-               variant="outlined"
-               startIcon={<DeleteOutlinedIcon />}
-               onClick={(event) => handleOpenConfirm('delete', event)}
-               disabled={isActionLoading}
-               sx={{ ml: 0 }}
-            >
-               {t('advertisements.manage.delete')}
-            </Button>
          </DialogActions>
 
          <AppDialog open={Boolean(confirmAction)} onClose={handleCloseConfirm}>
@@ -142,7 +169,11 @@ export function AdvertisementDetailsActions({
 
 AdvertisementDetailsActions.propTypes = {
    isClosed: PropTypes.bool,
+   isEditing: PropTypes.bool,
+   isSaving: PropTypes.bool,
+   isSaveDisabled: PropTypes.bool,
    isActionLoading: PropTypes.bool,
+   onSave: PropTypes.func,
    onCloseAdvertisement: PropTypes.func,
    onDeleteAdvertisement: PropTypes.func,
 };

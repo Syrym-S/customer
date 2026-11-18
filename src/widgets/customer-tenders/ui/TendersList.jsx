@@ -205,7 +205,7 @@ export function TendersList() {
                   <Stack
                      spacing={2}
                      sx={{
-                        maxWidth: 760,
+                        maxWidth: 880,
                         mx: 'auto',
                      }}
                   >

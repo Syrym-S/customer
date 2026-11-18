@@ -37,6 +37,12 @@
          "deleteConfirm": "Möchten Sie diese Anzeige wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
          "deleteFailed": "Anzeige konnte nicht gelöscht werden"
       },
+      "edit": {
+         "leadSection": "Transport der Anzeige",
+         "leadSectionHint": "Wählen Sie einen anderen Transport — die Anzeige wird damit verknüpft",
+         "blockedClosed": "Eine geschlossene Anzeige kann nicht bearbeitet werden",
+         "updateFailed": "Die Anzeige konnte nicht geändert werden"
+      },
       "details": {
          "title": "Anzeigendetails",
          "myContacts": "Ihre Kontaktdaten",

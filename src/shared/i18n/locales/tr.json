@@ -37,6 +37,12 @@
          "deleteConfirm": "Bu ilanı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
          "deleteFailed": "İlan silinemedi"
       },
+      "edit": {
+         "leadSection": "İlanın taşıması",
+         "leadSectionHint": "Başka bir taşıma seçin — ilan ona bağlanacak",
+         "blockedClosed": "Kapatılmış ilan düzenlenemez",
+         "updateFailed": "İlan değiştirilemedi"
+      },
       "details": {
          "title": "İlan detayları",
          "myContacts": "İletişim bilgileriniz",

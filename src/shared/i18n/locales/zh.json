@@ -37,6 +37,12 @@
          "deleteConfirm": "确定要删除此公告吗？此操作无法撤销。",
          "deleteFailed": "无法删除公告"
       },
+      "edit": {
+         "leadSection": "广告关联的运输",
+         "leadSectionHint": "选择其他运输——广告将关联到该运输",
+         "blockedClosed": "已关闭的广告无法编辑",
+         "updateFailed": "无法修改广告"
+      },
       "details": {
          "title": "公告详情",
          "myContacts": "您的联系方式",

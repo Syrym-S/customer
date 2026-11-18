@@ -71,6 +71,17 @@ export async function deleteAdvertisementApi(advertisementId) {
    return response.data;
 }
 
+export async function updateAdvertisementApi(advertisementId, leadId) {
+   const response = await apiClient.post(
+      `${advertisementsEndpoints.myOne}/${advertisementId}/update`,
+      {
+         lead_id: leadId,
+      },
+   );
+
+   return response.data;
+}
+
 export async function createAdvertisementApi(leadId) {
    const response = await apiClient.post(advertisementsEndpoints.create, {
       lead_id: leadId,

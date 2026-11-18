@@ -4,7 +4,6 @@ import { Box, Stack, Typography } from '@mui/material';
 import { StatusDot } from '../../../shared/ui/StatusDot';
 import { formatDate } from '../../customer-factorings/model/factorings.helpers';
 import {
-   getComplaintResponseLabel,
    getComplaintStatusColor,
    getComplaintStatusLabel,
    getComplaintTargetLabel,
@@ -67,15 +66,9 @@ export function ComplaintCard({ complaint, onOpen }) {
                </Typography>
             )}
 
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
-               <Typography fontSize={12} color="text.secondary">
-                  {formatDate(complaint.created_at)}
-               </Typography>
-
-               <Typography fontSize={12} fontWeight={600} color="text.secondary">
-                  {getComplaintResponseLabel(complaint)}
-               </Typography>
-            </Stack>
+            <Typography fontSize={12} color="text.secondary">
+               {formatDate(complaint.created_at)}
+            </Typography>
          </Stack>
       </Box>
    );

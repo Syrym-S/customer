@@ -6,6 +6,7 @@ import {
    mockAdvertisementLeads,
    mockAdvertisements,
    removeMockAdvertisement,
+   updateMockAdvertisementLead,
 } from '../model/advertisements.mock';
 
 const MOCK_DELAY_MS = 350;
@@ -85,6 +86,18 @@ export async function closeAdvertisementMock(advertisementId) {
    await delay();
 
    const advertisement = closeMockAdvertisement(advertisementId);
+
+   if (!advertisement) {
+      throw new Error('Advertisement not found');
+   }
+
+   return advertisement;
+}
+
+export async function updateAdvertisementMock({ advertisementId, leadId }) {
+   await delay();
+
+   const advertisement = updateMockAdvertisementLead(advertisementId, leadId);
 
    if (!advertisement) {
       throw new Error('Advertisement not found');

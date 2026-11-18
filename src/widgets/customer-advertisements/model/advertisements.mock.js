@@ -106,6 +106,28 @@ export function closeMockAdvertisement(advertisementId) {
    return advertisement;
 }
 
+export function updateMockAdvertisementLead(advertisementId, leadId) {
+   const advertisement = mockAdvertisements.find(
+      (item) => item.id === advertisementId,
+   );
+
+   if (!advertisement) {
+      return null;
+   }
+
+   const lead = mockAdvertisementLeads.find((item) => item.id === leadId);
+
+   if (!lead) {
+      return advertisement;
+   }
+
+   advertisement.lead = lead;
+   advertisement.expired_at =
+      lead.point_schedules?.[0]?.start_at || advertisement.expired_at;
+
+   return advertisement;
+}
+
 export function removeMockAdvertisement(advertisementId) {
    const index = mockAdvertisements.findIndex(
       (item) => item.id === advertisementId,

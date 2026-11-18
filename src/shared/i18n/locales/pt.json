@@ -37,6 +37,12 @@
          "deleteConfirm": "Tem certeza de que deseja excluir este anúncio? Esta ação não poderá ser desfeita.",
          "deleteFailed": "Não foi possível excluir o anúncio"
       },
+      "edit": {
+         "leadSection": "Transporte do anúncio",
+         "leadSectionHint": "Escolha outro transporte — o anúncio será vinculado a ele",
+         "blockedClosed": "Um anúncio fechado não pode ser editado",
+         "updateFailed": "Não foi possível alterar o anúncio"
+      },
       "details": {
          "title": "Detalhes do anúncio",
          "myContacts": "Seus contatos",

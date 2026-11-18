@@ -586,7 +586,24 @@ export function CreateTenderModal({ open, onClose }) {
 
   return (
     <>
-      <AppDialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+      <AppDialog
+        open={open}
+        onClose={onClose}
+        fullWidth
+        maxWidth="sm"
+        slotProps={{
+          paper: {
+            sx: {
+              m: { xs: 1, sm: 4 },
+              width: { xs: 'calc(100% - 16px)', sm: 'calc(100% - 64px)' },
+              maxHeight: {
+                xs: 'calc(100% - 16px)',
+                sm: 'calc(100% - 64px)',
+              },
+            },
+          },
+        }}
+      >
         <DialogTitle>{t("tenders.create.title")}</DialogTitle>
 
         <DialogContent>

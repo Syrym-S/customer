@@ -30,7 +30,7 @@ export function AdvertisementsList() {
    const { advertisements, isLoading, error, page, pagesCount, setPage } =
       useAdvertisementsContext();
 
-   const [viewMode, setViewMode] = useState(ADVERTISEMENTS_VIEW_MODES.TABLE);
+   const [viewMode, setViewMode] = useState(ADVERTISEMENTS_VIEW_MODES.CARDS);
    const [openedAdvertisement, setOpenedAdvertisement] = useState(null);
 
    function handleViewModeChange(_, nextViewMode) {
@@ -134,7 +134,7 @@ export function AdvertisementsList() {
                      </Typography>
                   </Box>
                ) : (
-                  <Stack spacing={2} sx={{ maxWidth: 760, mx: 'auto' }}>
+                  <Stack spacing={2} sx={{ maxWidth: 880, mx: 'auto' }}>
                      {advertisements.map((advertisement) => (
                         <AdvertisementCard
                            key={advertisement.id}

@@ -7,6 +7,7 @@ import {
    deleteAdvertisement,
    fetchAdvertisement,
    fetchAdvertisements,
+   updateAdvertisement,
 } from '../api/advertisements.repository';
 import { AdvertisementsContext } from './AdvertisementsContext';
 
@@ -69,6 +70,28 @@ export function AdvertisementsProvider({ children }) {
       [loadAdvertisements],
    );
 
+   const updateAdvertisementLead = useCallback(
+      async (advertisementId, leadId) => {
+         const updated = await updateAdvertisement({
+            advertisementId,
+            leadId,
+         });
+
+         let refreshed = null;
+
+         try {
+            refreshed = await fetchAdvertisement(advertisementId);
+         } catch {
+            refreshed = null;
+         }
+
+         await loadAdvertisements({ withLoader: false });
+
+         return refreshed || updated;
+      },
+      [loadAdvertisements],
+   );
+
    const deleteAdvertisementById = useCallback(
       async (advertisementId) => {
          await deleteAdvertisement(advertisementId);
@@ -97,6 +120,7 @@ export function AdvertisementsProvider({ children }) {
          reloadAdvertisements: loadAdvertisements,
          closeAdvertisement: closeAdvertisementById,
          deleteAdvertisement: deleteAdvertisementById,
+         updateAdvertisementLead,
       }),
       [
          advertisements,
@@ -109,6 +133,7 @@ export function AdvertisementsProvider({ children }) {
          loadAdvertisements,
          closeAdvertisementById,
          deleteAdvertisementById,
+         updateAdvertisementLead,
       ],
    );
 

@@ -91,7 +91,24 @@ export function CreateForwarderInviteModal({
     }
 
     return (
-        <AppDialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <AppDialog
+            open={open}
+            onClose={handleClose}
+            fullWidth
+            maxWidth="sm"
+            slotProps={{
+                paper: {
+                    sx: {
+                        m: { xs: 1, sm: 4 },
+                        width: { xs: 'calc(100% - 16px)', sm: 'calc(100% - 64px)' },
+                        maxHeight: {
+                            xs: 'calc(100% - 16px)',
+                            sm: 'calc(100% - 64px)',
+                        },
+                    },
+                },
+            }}
+        >
             <DialogTitle>
                 {createdInvite
                     ? t("forwarders.invite.created")

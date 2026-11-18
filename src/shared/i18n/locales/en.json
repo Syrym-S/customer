@@ -37,6 +37,12 @@
          "deleteConfirm": "Are you sure you want to delete this advertisement? This action cannot be undone.",
          "deleteFailed": "Failed to delete the advertisement"
       },
+      "edit": {
+         "leadSection": "Advertisement shipment",
+         "leadSectionHint": "Choose another shipment — the advertisement will be linked to it",
+         "blockedClosed": "A closed advertisement cannot be edited",
+         "updateFailed": "Failed to update the advertisement"
+      },
       "details": {
          "title": "Advertisement details",
          "myContacts": "Your contacts",

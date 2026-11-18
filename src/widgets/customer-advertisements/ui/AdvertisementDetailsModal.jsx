@@ -37,6 +37,8 @@ import { fetchCustomerProfile } from '../../../features/profile-edit/profile.api
 import { fetchAdvertisement } from '../api/advertisements.repository';
 import { useAdvertisementsContext } from '../model/useAdvertisementsContext';
 import { AdvertisementDetailsActions } from './AdvertisementDetailsActions';
+import { AdvertisementDetailsEditActions } from './AdvertisementDetailsEditActions';
+import { AdvertisementLeadPicker } from './AdvertisementLeadPicker';
 import {
    formatAdvertisementAmount,
    formatAdvertisementDate,
@@ -95,8 +97,12 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
    const [profileContacts, setProfileContacts] = useState(null);
    const [actionError, setActionError] = useState('');
    const [isActionLoading, setIsActionLoading] = useState(false);
+   const [isEditing, setIsEditing] = useState(false);
+   const [isSavingEdit, setIsSavingEdit] = useState(false);
+   const [editError, setEditError] = useState('');
+   const [selectedLead, setSelectedLead] = useState(null);
 
-   const { closeAdvertisement, deleteAdvertisement } =
+   const { closeAdvertisement, deleteAdvertisement, updateAdvertisementLead } =
       useAdvertisementsContext();
 
    const map = useCustomerMap();
@@ -138,6 +144,10 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
       setDetails(advertisement);
       setError('');
       setActionError('');
+      setEditError('');
+      setIsEditing(false);
+      setIsSavingEdit(false);
+      setSelectedLead(null);
    }, [advertisement]);
 
    useEffect(() => {
@@ -210,6 +220,56 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
          isCancelled = true;
       };
    }, [open]);
+
+   function handleStartEdit() {
+      setSelectedLead(details?.lead || null);
+      setEditError('');
+      setIsEditing(true);
+   }
+
+   function handleCancelEdit() {
+      setSelectedLead(null);
+      setEditError('');
+      setIsEditing(false);
+   }
+
+   async function handleSaveEdit() {
+      if (!advertisementId || !selectedLead?.id) {
+         return;
+      }
+
+      try {
+         setIsSavingEdit(true);
+         setEditError('');
+
+         const updated = await updateAdvertisementLead(
+            advertisementId,
+            selectedLead.id,
+         );
+
+         if (updated) {
+            setDetails(updated);
+         }
+
+         setSelectedLead(null);
+         setIsEditing(false);
+      } catch (requestError) {
+         setEditError(
+            requestError.response?.data?.message ||
+               requestError.message ||
+               t('advertisements.edit.updateFailed'),
+         );
+      } finally {
+         setIsSavingEdit(false);
+      }
+   }
+
+   function handleCloseModal() {
+      setSelectedLead(null);
+      setEditError('');
+      setIsEditing(false);
+      onClose();
+   }
 
    async function handleCloseAdvertisement() {
       if (!advertisementId) {
@@ -320,10 +380,20 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
    const contactEmail = lead.contacts?.email || profileContacts?.email || '';
    const hasContactsSection = Boolean(contactPhone || contactEmail);
 
+   const editActionsNode = (
+      <AdvertisementDetailsEditActions
+         isClosed={isClosed}
+         isEditing={isEditing}
+         isSaving={isSavingEdit}
+         onStartEdit={handleStartEdit}
+         onCancelEdit={handleCancelEdit}
+      />
+   );
+
    return (
       <AppDialog
          open={open}
-         onClose={onClose}
+         onClose={handleCloseModal}
          fullWidth
          maxWidth="md"
          slotProps={{
@@ -341,7 +411,10 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
             },
          }}
       >
-         <DialogCloseButton onClick={onClose} />
+         <DialogCloseButton
+            onClick={handleCloseModal}
+            disabled={isSavingEdit || isActionLoading}
+         />
 
          <DialogTitle sx={{ pl: 3, pr: 7, pt: 3, pb: 1.5 }}>
             <Box
@@ -418,8 +491,34 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
                </Alert>
             )}
 
+            {editError && (
+               <Alert severity="error" sx={{ mb: 2 }}>
+                  {editError}
+               </Alert>
+            )}
+
             {isInitialLoading ? (
                <DetailsSkeleton sections={4} />
+            ) : isEditing ? (
+               <Stack spacing={2}>
+                  {editActionsNode}
+
+                  <DetailSection
+                     icon={<ReceiptLongOutlinedIcon />}
+                     title={t('advertisements.edit.leadSection')}
+                  >
+                     <Stack spacing={2}>
+                        <Typography variant="body2" color="text.secondary">
+                           {t('advertisements.edit.leadSectionHint')}
+                        </Typography>
+
+                        <AdvertisementLeadPicker
+                           selectedLead={selectedLead}
+                           onSelectLead={setSelectedLead}
+                        />
+                     </Stack>
+                  </DetailSection>
+               </Stack>
             ) : (
                <Stack spacing={2}>
                   {routeLead && (
@@ -431,6 +530,8 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
                         isRouteLoading={isMapLoading}
                      />
                   )}
+
+                  {editActionsNode}
 
                   <DetailSection
                      icon={<CampaignOutlinedIcon />}
@@ -682,7 +783,13 @@ export function AdvertisementDetailsModal({ advertisement, open, onClose }) {
          {!isInitialLoading && (
             <AdvertisementDetailsActions
                isClosed={isClosed}
+               isEditing={isEditing}
+               isSaving={isSavingEdit}
+               isSaveDisabled={
+                  !selectedLead?.id || selectedLead.id === details?.lead?.id
+               }
                isActionLoading={isActionLoading}
+               onSave={handleSaveEdit}
                onCloseAdvertisement={handleCloseAdvertisement}
                onDeleteAdvertisement={handleDeleteAdvertisement}
             />

@@ -120,6 +120,18 @@ export function AdvertisementLeadPicker({ selectedLead, onSelectLead }) {
       };
    }, [debouncedQuery, selectedLabel, t]);
 
+   const mergedOptions = useMemo(() => {
+      if (!selectedLead) {
+         return options;
+      }
+
+      const hasSelected = options.some(
+         (option) => option.id === selectedLead.id,
+      );
+
+      return hasSelected ? options : [selectedLead, ...options];
+   }, [options, selectedLead]);
+
    const previewRows = useMemo(() => {
       if (!selectedLead) {
          return [];
@@ -174,7 +186,7 @@ export function AdvertisementLeadPicker({ selectedLead, onSelectLead }) {
 
                setInputValue(newInputValue);
             }}
-            options={options}
+            options={mergedOptions}
             getOptionLabel={getOptionLabel}
             isOptionEqualToValue={(option, value) => option.id === value?.id}
             loading={isLoading}

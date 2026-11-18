@@ -11,6 +11,7 @@ import {
    fetchAdvertisementApi,
    fetchAdvertisementsApi,
    searchAdvertisementLeadsApi,
+   updateAdvertisementApi,
 } from './advertisements.api';
 import {
    closeAdvertisementMock,
@@ -19,6 +20,7 @@ import {
    fetchAdvertisementMock,
    fetchAdvertisementsMock,
    searchAdvertisementLeadsMock,
+   updateAdvertisementMock,
 } from './advertisements.mock-api';
 
 export async function fetchAdvertisements({ page = 1, perPage = 10 } = {}) {
@@ -57,6 +59,14 @@ export async function deleteAdvertisement(advertisementId) {
    return isMockApi
       ? deleteAdvertisementMock(advertisementId)
       : deleteAdvertisementApi(advertisementId);
+}
+
+export async function updateAdvertisement({ advertisementId, leadId }) {
+   const data = isMockApi
+      ? await updateAdvertisementMock({ advertisementId, leadId })
+      : await updateAdvertisementApi(advertisementId, leadId);
+
+   return mapAdvertisementFromApi(data);
 }
 
 export async function createAdvertisement({ leadId, lead }) {

@@ -128,15 +128,17 @@ export function ComplaintsList() {
                   </Typography>
                </Box>
             ) : (
-               <Stack spacing={2} sx={{ maxWidth: 760, mx: 'auto' }}>
-                  {complaints.map((complaint) => (
-                     <ComplaintCard
-                        key={complaint.id}
-                        complaint={complaint}
-                        onOpen={setOpenComplaint}
-                     />
-                  ))}
-               </Stack>
+               <Box>
+                  <Stack spacing={2} sx={{ maxWidth: 880, mx: 'auto' }}>
+                     {complaints.map((complaint) => (
+                        <ComplaintCard
+                           key={complaint.id}
+                           complaint={complaint}
+                           onOpen={setOpenComplaint}
+                        />
+                     ))}
+                  </Stack>
+               </Box>
             )}
          </Stack>
 

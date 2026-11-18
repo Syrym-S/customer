@@ -37,6 +37,12 @@
          "deleteConfirm": "Voulez-vous vraiment supprimer cette annonce ? Cette action est irréversible.",
          "deleteFailed": "Impossible de supprimer l'annonce"
       },
+      "edit": {
+         "leadSection": "Transport de l’annonce",
+         "leadSectionHint": "Choisissez un autre transport — l’annonce y sera rattachée",
+         "blockedClosed": "Une annonce fermée ne peut pas être modifiée",
+         "updateFailed": "Impossible de modifier l’annonce"
+      },
       "details": {
          "title": "Détails de l'annonce",
          "myContacts": "Vos coordonnées",
