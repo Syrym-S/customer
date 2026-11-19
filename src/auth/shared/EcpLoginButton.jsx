@@ -2,6 +2,8 @@ import { useAuthTranslation } from "../i18n/useAuthTranslation";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import { getEcpLoginUrlRequest } from "../api/auth";
+import { isNative } from "../../shared/config/platform";
+import { openExternalLink } from "../../shared/lib/external-link";
 import {
   getEcpRequestErrorMessage,
   isEcpLoginEnabled,
@@ -21,6 +23,12 @@ export function EcpLoginButton({ onError, disabled, sx }) {
 
       if (!url) {
         throw new Error("Missing ECP url");
+      }
+
+      if (isNative) {
+        await openExternalLink(url);
+        setIsRedirecting(false);
+        return;
       }
 
       window.location.href = url;

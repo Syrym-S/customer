@@ -1,3 +1,5 @@
+import { getSupportContactsSnapshot } from "../../shared/model/support-contacts.store";
+
 // TODO: remove the mock once QA no longer needs to force the "not verified" state manually.
 export function isMockUnverifiedRegistration() {
   if (typeof window === "undefined") {
@@ -34,10 +36,11 @@ export function getVerifyRegistered(response) {
 export function getSupportContacts(response) {
   const body = getResponseBody(response);
   const support = body.support || {};
+  const fallback = getSupportContactsSnapshot();
 
   return {
-    phone: support.phone || "",
-    email: support.email || "",
+    phone: support.phone || fallback.phone || "",
+    email: support.email || fallback.email || "",
   };
 }
 
@@ -51,19 +54,14 @@ export function getRegistrationNotVerifiedError(error) {
   }
 
   const support = data?.support || {};
+  const fallback = getSupportContactsSnapshot();
 
   return {
-    phone: support.phone || "",
-    email: support.email || "",
+    phone: support.phone || fallback.phone || "",
+    email: support.email || fallback.email || "",
   };
 }
 
 export function getAppDataSupportContacts() {
-  const support =
-    (typeof window === "undefined" ? null : window?.APP_DATA?.support) || {};
-
-  return {
-    phone: support.phone || "",
-    email: support.email || "",
-  };
+  return getSupportContactsSnapshot();
 }

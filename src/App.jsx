@@ -14,10 +14,18 @@ import { useLanguagesStore } from "./shared/model/languages.store";
 import { router } from "./router/router";
 import { RouterProvider } from "react-router-dom";
 import { appBasename } from "./shared/api/api-client";
+import { isNative } from "./shared/config/platform";
+import { useSessionStore } from "./shared/model/session.store";
 
 const AUTH_PATH_PREFIX = "/auth";
 
 function isAuthPathname() {
+  if (isNative) {
+    return (window?.location?.hash || "")
+      .replace(/^#/, "")
+      .startsWith(AUTH_PATH_PREFIX);
+  }
+
   const basename = appBasename === "/" ? "" : appBasename;
   const pathname = window?.location?.pathname || "/";
 
@@ -25,7 +33,9 @@ function isAuthPathname() {
 }
 
 function App() {
-  const isAuthRoute = isAuthPathname();
+  const sessionToken = useSessionStore((state) => state.token);
+
+  const isAuthRoute = isAuthPathname() || (isNative && !sessionToken);
 
   const { i18n } = useTranslation();
   const direction = getLanguageDirection(i18n.resolvedLanguage);

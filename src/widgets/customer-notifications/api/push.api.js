@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { fetchNotificationWsTokenApi } from './notifications-ws.api';
+import { getPlatform } from '../../../shared/config/platform';
 import { getNotificationRealtimeConfig } from '../lib/notification-realtime-config';
 
 // Сервис уведомлений живёт на своём хосте и не знает про WP-сессию, поэтому
@@ -24,12 +25,16 @@ async function buildRequestConfig() {
    };
 }
 
+function resolveDeviceName() {
+   return getPlatform();
+}
+
 export async function savePushTokenApi(pushToken) {
    const { endpoint, role, headers } = await buildRequestConfig();
 
    const response = await axios.post(
       endpoint,
-      { role, token: pushToken, device: 'web' },
+      { role, token: pushToken, device: resolveDeviceName() },
       { headers },
    );
 

@@ -3,7 +3,7 @@ import { useAuthTranslation } from "../i18n/useAuthTranslation";
 import FormButton from "../shared/FormButton";
 import FormInput from "../shared/FormInput";
 import { Box, Divider, Alert } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../components/AuthLayout";
 import { useState } from "react";
 import { loginRequest } from "../api/auth";
@@ -22,9 +22,14 @@ import {
   getRegistrationNotVerifiedError,
   getAppDataSupportContacts,
 } from "../shared/verify-registered.helpers";
+import { isNative } from "../../shared/config/platform";
+import { useSessionStore } from "../../shared/model/session.store";
+
+const NATIVE_HOME_ROUTE = "/customer";
 
 export default function Login() {
   const { t } = useAuthTranslation();
+  const navigate = useNavigate();
   const [error, setError] = useState(getEcpRedirectErrorMessage);
   const [isNotRegisteredOpen, setIsNotRegisteredOpen] = useState(
     isEcpPendingRegistration,
@@ -57,6 +62,19 @@ export default function Login() {
       if (!getVerifyRegistered(res)) {
         setSupport(getSupportContacts(res));
         setIsNotRegisteredOpen(true);
+        return;
+      }
+
+      if (isNative) {
+        const isSessionSaved = useSessionStore
+          .getState()
+          .setSession(res?.data);
+
+        if (!isSessionSaved) {
+          throw new Error("Сервер не вернул токен авторизации");
+        }
+
+        navigate(NATIVE_HOME_ROUTE, { replace: true });
         return;
       }
 

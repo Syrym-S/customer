@@ -62,7 +62,7 @@ export function ContractGateModal() {
       try {
          const result = await attemptContractSigning();
 
-         if (result.type === 'already-signed') {
+         if (result.type !== 'redirecting') {
             setIsSigning(false);
          }
 

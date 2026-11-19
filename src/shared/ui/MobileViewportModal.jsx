@@ -13,19 +13,20 @@ import {
 } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { AppDialog } from './AppDialog';
+import { isNative } from '../config/platform';
 
 export function MobileViewportModal() {
    const { t } = useTranslation();
 
    const theme = useTheme();
    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-   const [open, setOpen] = useState(isMobile);
+   const [open, setOpen] = useState(isMobile && !isNative);
 
    function handleClose() {
       setOpen(false);
    }
 
-   if (!isMobile) {
+   if (!isMobile || isNative) {
       return null;
    }
 

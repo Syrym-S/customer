@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 
 import { checkContractStatus, initiateContractSigning, fetchFeatureFlags } from '../api/contract.api';
+import { isNative } from '../config/platform';
+import { openExternalLink } from '../lib/external-link';
 
 // Set in sessionStorage right before redirecting the tab to Aitu's sign_url,
 // and checked on next app mount (see useContractGate.js) so a real redirect
@@ -99,6 +101,14 @@ export const useContractStore = create((set, get) => ({
 export async function attemptContractSigning() {
    try {
       const data = await initiateContractSigning();
+
+      if (isNative) {
+         openExternalLink(data.sign_url)
+            .then(() => useContractStore.getState().checkContract())
+            .catch(() => {});
+
+         return { type: 'returned' };
+      }
 
       sessionStorage.setItem(CONTRACT_SIGN_REDIRECT_MARKER_KEY, '1');
       window.location.href = data.sign_url;

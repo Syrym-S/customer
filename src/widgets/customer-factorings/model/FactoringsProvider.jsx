@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from "react-i18next";
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { openExternalLink } from '../../../shared/lib/external-link';
 
 import {
     acceptCustomerFactoring,
@@ -247,7 +248,7 @@ export function FactoringsProvider({ children }) {
                 response?.result?.sign_url;
 
             if (signUrl) {
-                window.open(signUrl, '_blank');
+                openExternalLink(signUrl);
             }
         } catch (error) {
             setSigningError(

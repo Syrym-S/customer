@@ -1,5 +1,6 @@
 import { isStaging } from '../../../shared/api/api-client';
 import { getCurrentUserId } from '../../../shared/helpers/current-user.helpers';
+import { getSessionNotifWsConfig } from '../../../shared/model/session.store';
 
 export const NOTIFICATION_TRANSPORT_DRIVERS = {
     RAW_WS: 'raw-ws',
@@ -23,8 +24,17 @@ export const NOTIFICATION_CHANNEL_ROLE = 'customer';
 
 const BROADCASTING_AUTH_PATH = '/api/broadcasting/auth';
 
+function readRealtimeConfigSource() {
+    return (
+        getSessionNotifWsConfig() ||
+        window.NotifWS_Config ||
+        window.NotificationWS_Config ||
+        null
+    );
+}
+
 export function isNotificationRealtimeConfigPresent() {
-    const config = window.NotifWS_Config || window.NotificationWS_Config;
+    const config = readRealtimeConfigSource();
 
     return Boolean(
         config &&
@@ -34,7 +44,7 @@ export function isNotificationRealtimeConfigPresent() {
 }
 
 export function getNotificationRealtimeConfig() {
-    const config = window.NotifWS_Config || window.NotificationWS_Config || {};
+    const config = readRealtimeConfigSource() || {};
 
     const reverbHost = String(
         config.reverb_host || config.reverbHost || '',

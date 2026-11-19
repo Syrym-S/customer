@@ -86,7 +86,10 @@ export function ComplaintDetailsModal() {
                <ComplaintRequestSection request={openComplaint.request} />
                <ComplaintTargetSection target={openComplaint.target} />
                <ComplaintResponseSection complaint={openComplaint} />
-               <ComplaintFilesSection files={openComplaint.files} />
+               <ComplaintFilesSection
+                  complaintId={openComplaint.id}
+                  files={openComplaint.files}
+               />
             </Stack>
          </DialogContent>
       </AppDialog>

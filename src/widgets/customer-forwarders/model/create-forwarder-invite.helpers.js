@@ -1,4 +1,5 @@
 import i18n from '../../../shared/i18n';
+import { validateNotAfterToday } from '../../../features/profile-edit/profile-form.helpers';
 
 export function createForwarderInviteInitialForm() {
     return {
@@ -8,6 +9,8 @@ export function createForwarderInviteInitialForm() {
         email: '',
         document_number: '',
         issue_country: '',
+        document_issue_date: '',
+        document_issued_by: '',
         company_name: '',
         company_bin: '',
         company_account: '',
@@ -37,6 +40,14 @@ export function validateForwarderInviteForm(form) {
         return i18n.t("validation.emailRequired");
     }
 
+    const issueDateValidation = validateNotAfterToday(
+        normalizeText(form.document_issue_date),
+    );
+
+    if (issueDateValidation !== true) {
+        return issueDateValidation;
+    }
+
     if (!normalizeText(form.company_name)) {
         return i18n.t("validation.companyNameRequired");
     }
@@ -56,6 +67,8 @@ export function mapForwarderInviteFormToApi(form) {
         email: normalizeText(form.email),
         document_number: normalizeText(form.document_number),
         issue_country: normalizeText(form.issue_country),
+        document_issue_date: normalizeText(form.document_issue_date),
+        document_issued_by: normalizeText(form.document_issued_by),
         company_name: normalizeText(form.company_name),
         company_bin: normalizeText(form.company_bin),
         company_account: normalizeText(form.company_account),

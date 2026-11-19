@@ -7,6 +7,10 @@ import {
 } from 'firebase/messaging';
 
 import { appBasename } from '../shared/api/api-client';
+import { getPlatform, isNative } from '../shared/config/platform';
+import { PushNotifications } from '@capacitor/push-notifications';
+
+import { addPluginListener } from '../shared/lib/capacitor-plugin';
 
 // Те же значения, что в public/firebase-messaging-sw.js: воркер не может
 // читать их отсюда, поэтому конфиг продублирован. Менять вместе.
@@ -27,7 +31,94 @@ const VAPID_KEY =
 const SERVICE_WORKER_SCOPE = appBasename === '/' ? '/' : `${appBasename}/`;
 const SERVICE_WORKER_URL = `${SERVICE_WORKER_SCOPE}firebase-messaging-sw.js`;
 
+const NATIVE_TOKEN_TIMEOUT_MS = 15000;
+
+const NOTIFICATION_CHANNEL = {
+   id: 'customer-notifications',
+   name: 'Уведомления',
+   importance: 5,
+   visibility: 1,
+   vibration: true,
+};
+
+async function createNotificationChannel() {
+   if (getPlatform() !== 'android') {
+      return;
+   }
+
+   try {
+      await PushNotifications.createChannel(NOTIFICATION_CHANNEL);
+   } catch {
+      return;
+   }
+}
+
+function normalizeNativePermission(status) {
+   if (status === 'granted' || status === 'denied') {
+      return status;
+   }
+
+   return 'default';
+}
+
+async function getNativePermission() {
+   try {
+      const result = await PushNotifications.checkPermissions();
+
+      return normalizeNativePermission(result?.receive);
+   } catch {
+      return 'denied';
+   }
+}
+
+function registerNativeToken() {
+   return new Promise((resolve) => {
+      let removeRegistration = null;
+      let removeError = null;
+      let timeoutId = null;
+      let isSettled = false;
+
+      function settle(token) {
+         if (isSettled) {
+            return;
+         }
+
+         isSettled = true;
+
+         window.clearTimeout(timeoutId);
+         removeRegistration?.();
+         removeError?.();
+
+         resolve(token);
+      }
+
+      removeRegistration = addPluginListener(
+         PushNotifications,
+         'registration',
+         (event) => {
+            settle(event?.value || null);
+         },
+      );
+
+      removeError = addPluginListener(
+         PushNotifications,
+         'registrationError',
+         () => settle(null),
+      );
+
+      timeoutId = window.setTimeout(() => settle(null), NATIVE_TOKEN_TIMEOUT_MS);
+
+      createNotificationChannel()
+         .then(() => PushNotifications.register())
+         .catch(() => settle(null));
+   });
+}
+
 export async function isWebPushSupported() {
+   if (isNative) {
+      return true;
+   }
+
    return (
       'serviceWorker' in navigator &&
       'Notification' in window &&
@@ -36,7 +127,19 @@ export async function isWebPushSupported() {
 }
 
 export function getWebPushPermission() {
+   if (isNative) {
+      return 'default';
+   }
+
    return 'Notification' in window ? Notification.permission : 'denied';
+}
+
+export async function getPushPermission() {
+   if (isNative) {
+      return getNativePermission();
+   }
+
+   return getWebPushPermission();
 }
 
 // Для галочки в настройках: показывает системный запрос разрешения. Вызывать
@@ -44,6 +147,16 @@ export function getWebPushPermission() {
 export async function requestWebPushToken() {
    if (!(await isWebPushSupported())) {
       return null;
+   }
+
+   if (isNative) {
+      const result = await PushNotifications.requestPermissions();
+
+      if (normalizeNativePermission(result?.receive) !== 'granted') {
+         return null;
+      }
+
+      return registerNativeToken();
    }
 
    const permission = await Notification.requestPermission();
@@ -59,12 +172,16 @@ export async function requestWebPushToken() {
 // Токен может смениться сам (очистка данных сайта, ротация подписки), поэтому
 // его проверяют на каждом запуске и перезаписывают на бэке.
 export async function refreshWebPushToken() {
-   if (getWebPushPermission() !== 'granted') {
+   if ((await getPushPermission()) !== 'granted') {
       return null;
    }
 
    if (!(await isWebPushSupported())) {
       return null;
+   }
+
+   if (isNative) {
+      return registerNativeToken();
    }
 
    return retrieveToken();
@@ -72,6 +189,16 @@ export async function refreshWebPushToken() {
 
 export async function deleteWebPushToken() {
    if (!(await isWebPushSupported())) {
+      return;
+   }
+
+   if (isNative) {
+      try {
+         await PushNotifications.unregister();
+      } catch {
+         return;
+      }
+
       return;
    }
 

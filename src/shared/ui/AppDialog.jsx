@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Dialog } from '@mui/material';
+import { useBackHandler } from '../model/useBackHandler';
 
 // Единая обёртка над MUI Dialog с правилом закрытия модальных окон:
 //
@@ -19,6 +20,10 @@ import { Dialog } from '@mui/material';
 // Проверка target === currentTarget отсекает двойные щелчки внутри самой модалки
 // (они всплывают до container, но с target на вложенном элементе).
 export function AppDialog({ onClose, slotProps, children, ...rest }) {
+   useBackHandler(
+      rest.open && onClose ? () => onClose(undefined, 'backButton') : null,
+   );
+
    function handleClose(event, reason) {
       if (reason === 'backdropClick') {
          return;

@@ -18,6 +18,7 @@ import PropTypes from 'prop-types';
 import { getLeadShareLinkApi } from '../../api/leads.api';
 import { notifyError } from '../../../../shared/model/notifications.store';
 import { AppDialog } from '../../../../shared/ui/AppDialog';
+import { openExternalLink } from '../../../../shared/lib/external-link';
 
 function formatShareExpiryDate(date) {
    if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
@@ -115,7 +116,7 @@ export function LeadShareButton({ leadId }) {
          return;
       }
 
-      window.open(shareLink, '_blank', 'noopener,noreferrer');
+      openExternalLink(shareLink);
    }
 
    return (

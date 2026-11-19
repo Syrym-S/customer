@@ -1,0 +1,16 @@
+{
+   "appId": "kz.logistics360.customer",
+   "appName": "360Logistics",
+   "webDir": "dist-app",
+   "android": {
+      "allowMixedContent": false
+   },
+   "server": {
+      "androidScheme": "https"
+   },
+   "plugins": {
+      "PushNotifications": {
+         "presentationOptions": ["alert", "badge", "sound"]
+      }
+   }
+}

@@ -180,7 +180,8 @@
          "share": "Share",
          "showAll": "Show all (+{{count}})",
          "sign": "Sign",
-         "yes": "Yes"
+         "yes": "Yes",
+         "takePhoto": "Take a photo"
       },
       "cargoCount_one": "{{count}} cargo item",
       "cargoCount_other": "{{count}} cargo items",
@@ -1444,9 +1445,6 @@
          "cancelConfirm": "Are you sure you want to cancel this auction? Once cancelled, it will no longer be available to participants.",
          "cancelFailed": "Failed to cancel the auction",
          "cancelling": "Cancelling...",
-         "delete": "Delete the auction",
-         "deleteConfirm": "Are you sure you want to delete this auction? This action cannot be undone.",
-         "deleteFailed": "Failed to delete the auction",
          "saveFailed": "Failed to save the auction changes",
          "start": "Start the auction",
          "startFailed": "Failed to start the auction"

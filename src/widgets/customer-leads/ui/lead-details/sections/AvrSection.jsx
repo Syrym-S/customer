@@ -24,6 +24,11 @@ import {
    isForwarderAvrSigned,
 } from '../../../model/avr.helpers';
 import { notifyError } from '../../../../../shared/model/notifications.store';
+import { openExternalLink } from '../../../../../shared/lib/external-link';
+import {
+   createFileBlob,
+   saveBlobAsFile,
+} from '../../../../../shared/lib/download-file';
 
 const POLL_INTERVAL_MS = 4000;
 
@@ -41,18 +46,9 @@ function downloadAvrDocument(avrDocument) {
       bytes[index] = binaryString.charCodeAt(index);
    }
 
-   const blob = new Blob([bytes], {
-      type: avrDocument.mime || 'application/pdf',
-   });
-   const objectUrl = URL.createObjectURL(blob);
-   const link = document.createElement('a');
+   const blob = createFileBlob(bytes, avrDocument.mime || 'application/pdf');
 
-   link.href = objectUrl;
-   link.download = avrDocument.name || 'avr.pdf';
-   document.body.appendChild(link);
-   link.click();
-   link.remove();
-   URL.revokeObjectURL(objectUrl);
+   saveBlobAsFile(blob, avrDocument.name || 'avr.pdf');
 }
 
 function ForwarderAvrCard({ signed }) {
@@ -246,7 +242,7 @@ export function AvrSection({ lead }) {
 
          if (session?.sign_url) {
             setSignUrl(session.sign_url);
-            window.open(session.sign_url, '_blank');
+            openExternalLink(session.sign_url);
          }
 
          pollForSignature();
@@ -395,9 +391,13 @@ export function AvrSection({ lead }) {
                            <Typography fontSize={12} color='text.secondary'>
                               {t('common.signing.windowHint')}{' '}
                               <Link
-                                 href={signUrl}
-                                 target='_blank'
-                                 rel='noopener noreferrer'
+                                 component='button'
+                                 type='button'
+                                 onClick={() => openExternalLink(signUrl)}
+                                 sx={{
+                                    cursor: 'pointer',
+                                    verticalAlign: 'baseline',
+                                 }}
                               >
                                  {t("common.signing.thisLink")}
                               </Link>

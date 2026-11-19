@@ -36,6 +36,17 @@ export default [
     },
   },
   {
+    files: [
+      'vite.config.js',
+      'vite.config.public.js',
+      'vite.config.capacitor.js',
+      'deploy.js',
+    ],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+  {
     files: ['public/firebase-messaging-sw.js'],
     languageOptions: {
       globals: {

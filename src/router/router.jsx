@@ -1,4 +1,9 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createHashRouter,
+  Navigate,
+} from "react-router-dom";
+import { isNative } from "../shared/config/platform";
 
 import { AppLayout } from "../widgets/app-layout/AppLayout";
 import { DashboardPage } from "../pages/dashboard/DashboardPage";
@@ -20,19 +25,11 @@ import ForgotPassword from "../auth/pages/password/ForgotPassword";
 import ResetPassword from "../auth/pages/password/ResetPassword";
 import { LoginRedirect } from "../auth/shared/LoginRedirect";
 import { appBasename } from "../shared/api/api-client";
-import {
-  isAdvertisementsEnabled,
-  isFactoringEnabled,
-  isManufacturersEnabled,
-  isTenderEnabled,
-} from "../shared/config/feature-flags";
+import { FeatureRoute } from "./FeatureRoute";
 
-// Раздел, скрытый флагом, остаётся в роутере, но отдаёт редирект на дашборд:
-// прямая ссылка и переход из уведомления не должны открывать выключенный
-// раздел. Редирект с replace, чтобы «назад» не возвращало в ту же ловушку.
-const HIDDEN_SECTION_ELEMENT = <Navigate to="/customer/dashboard" replace />;
+const createAppRouter = isNative ? createHashRouter : createBrowserRouter;
 
-export const router = createBrowserRouter(
+export const router = createAppRouter(
   [
     {
       path: "/",
@@ -79,7 +76,11 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/tenders",
-          element: isTenderEnabled ? <TenderPage /> : HIDDEN_SECTION_ELEMENT,
+          element: (
+            <FeatureRoute flag="tender">
+              <TenderPage />
+            </FeatureRoute>
+          ),
           handle: {
             breadcrumb: "nav.tenders",
             title: "nav.tenders",
@@ -87,14 +88,22 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/tenders/:tenderId",
-          element: isTenderEnabled ? <TenderPage /> : HIDDEN_SECTION_ELEMENT,
+          element: (
+            <FeatureRoute flag="tender">
+              <TenderPage />
+            </FeatureRoute>
+          ),
           handle: {
             title: "nav.tenders",
           },
         },
         {
           path: "customer/factorings",
-          element: isFactoringEnabled ? <FactoringsPage /> : HIDDEN_SECTION_ELEMENT,
+          element: (
+            <FeatureRoute flag="factoring">
+              <FactoringsPage />
+            </FeatureRoute>
+          ),
           handle: {
             breadcrumb: "nav.factorings",
             title: "nav.factorings",
@@ -102,7 +111,11 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/factorings/:factoringId",
-          element: isFactoringEnabled ? <FactoringsPage /> : HIDDEN_SECTION_ELEMENT,
+          element: (
+            <FeatureRoute flag="factoring">
+              <FactoringsPage />
+            </FeatureRoute>
+          ),
           handle: {
             title: "nav.factorings",
           },
@@ -112,7 +125,11 @@ export const router = createBrowserRouter(
           // (e.g. .../customer/factoring/{id}). Canonical route is the plural
           // "factorings" above — keep using that everywhere internally.
           path: "customer/factoring/:factoringId",
-          element: isFactoringEnabled ? <FactoringsPage /> : HIDDEN_SECTION_ELEMENT,
+          element: (
+            <FeatureRoute flag="factoring">
+              <FactoringsPage />
+            </FeatureRoute>
+          ),
           handle: {
             title: "nav.factorings",
           },
@@ -127,7 +144,11 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/manufacturers",
-          element: isManufacturersEnabled ? <ManufacturersPage /> : HIDDEN_SECTION_ELEMENT,
+          element: (
+            <FeatureRoute flag="manufacturer">
+              <ManufacturersPage />
+            </FeatureRoute>
+          ),
           handle: {
             breadcrumb: "nav.manufacturers",
             title: "nav.manufacturers",
@@ -151,10 +172,10 @@ export const router = createBrowserRouter(
         },
         {
           path: "customer/advertisements",
-          element: isAdvertisementsEnabled ? (
-            <AdvertisementsPage />
-          ) : (
-            HIDDEN_SECTION_ELEMENT
+          element: (
+            <FeatureRoute flag="advertisement_customer">
+              <AdvertisementsPage />
+            </FeatureRoute>
           ),
           handle: {
             breadcrumb: "nav.advertisements",

@@ -24,6 +24,8 @@ import { useNavigate } from 'react-router-dom';
 import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
 import { NotificationIcon } from './NotificationIcon';
 import { AppDialog } from '../../../shared/ui/AppDialog';
+import { getAppOrigin } from '../../../shared/lib/app-origin';
+import { openExternalLink } from '../../../shared/lib/external-link';
 
 export function NotificationDetailsModal({
     open,
@@ -45,9 +47,13 @@ export function NotificationDetailsModal({
 
         try {
             const normalizedLink = String(link).replaceAll('\\/', '/');
-            const url = new URL(normalizedLink, window.location.origin);
+            const appOrigin = getAppOrigin();
+            const url = new URL(normalizedLink, appOrigin);
 
-            const appPath = resolveCustomerNotificationAppPath(url.pathname);
+            const appPath =
+                url.origin === appOrigin
+                    ? resolveCustomerNotificationAppPath(url.pathname)
+                    : '';
 
             if (appPath) {
                 onClose?.();
@@ -55,9 +61,9 @@ export function NotificationDetailsModal({
                 return;
             }
 
-            window.open(normalizedLink, '_blank', 'noopener,noreferrer');
+            openExternalLink(normalizedLink);
         } catch {
-            window.open(link, '_blank', 'noopener,noreferrer');
+            openExternalLink(link);
         }
     }
 

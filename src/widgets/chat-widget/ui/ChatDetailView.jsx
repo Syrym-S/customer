@@ -42,6 +42,10 @@ import { notifyError } from "../../../shared/model/notifications.store";
 import { CounterpartDetailsModal } from "./CounterpartDetailsModal";
 import { CounterpartAvatar } from "./CounterpartAvatar";
 import { AppDialog } from "../../../shared/ui/AppDialog";
+import {
+  saveBlobAsFile,
+  saveFileFromUrl,
+} from "../../../shared/lib/download-file";
 
 const LOAD_OLDER_SCROLL_THRESHOLD_PX = 80;
 const MARK_AS_READ_DEBOUNCE_MS = 1200;
@@ -219,15 +223,8 @@ function ServerFileAttachment({ attachment, isMine }) {
 
     try {
       const blob = await fetchChatAttachmentBlobApi(attachment);
-      const objectUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
 
-      link.href = objectUrl;
-      link.download = attachment.fileName || "";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(objectUrl);
+      await saveBlobAsFile(blob, attachment.fileName || "");
     } catch (error) {
       notifyError(
         error.response?.data?.message ||
@@ -866,17 +863,24 @@ export function ChatDetailView({ chat }) {
                           return (
                             <Box
                               key={attachment.id}
-                              component="a"
-                              href={attachment.fileUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              download={attachment.fileName}
+                              component="button"
+                              type="button"
+                              onClick={() =>
+                                saveFileFromUrl(
+                                  attachment.fileUrl,
+                                  attachment.fileName,
+                                )
+                              }
                               sx={{
                                 display: "flex",
                                 alignItems: "center",
                                 gap: 1,
                                 px: 1,
                                 py: 0.75,
+                                border: "none",
+                                cursor: "pointer",
+                                textAlign: "left",
+                                width: "100%",
                                 borderRadius: 1.5,
                                 textDecoration: "none",
                                 color: "inherit",

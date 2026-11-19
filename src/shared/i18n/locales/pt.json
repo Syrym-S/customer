@@ -180,7 +180,8 @@
          "share": "Compartilhar",
          "showAll": "Mostrar todos (+{{count}})",
          "sign": "Assinar",
-         "yes": "Sim"
+         "yes": "Sim",
+         "takePhoto": "Tirar uma foto"
       },
       "cargoCount_one": "{{count}} item de carga",
       "cargoCount_other": "{{count}} itens de carga",
@@ -1435,9 +1436,6 @@
          "cancelConfirm": "Tem certeza de que deseja cancelar este leilão? Após o cancelamento, ele não estará mais disponível para os participantes.",
          "cancelFailed": "Não foi possível cancelar o leilão",
          "cancelling": "Cancelando...",
-         "delete": "Excluir leilão",
-         "deleteConfirm": "Tem certeza de que deseja excluir este leilão? Esta ação não pode ser desfeita.",
-         "deleteFailed": "Não foi possível excluir o leilão",
          "saveFailed": "Não foi possível salvar as alterações do leilão",
          "start": "Iniciar leilão",
          "startFailed": "Não foi possível iniciar o leilão"

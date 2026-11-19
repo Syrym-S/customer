@@ -19,6 +19,8 @@ import {
     useTheme,
 } from '@mui/material';
 import AddPhotoAlternateOutlinedIcon from '@mui/icons-material/AddPhotoAlternateOutlined';
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
+import { isCameraAvailable, takePhotoFile } from '../../../shared/lib/pick-files';
 import RotateRightRoundedIcon from '@mui/icons-material/RotateRightRounded';
 import ZoomInRoundedIcon from '@mui/icons-material/ZoomInRounded';
 import ZoomOutRoundedIcon from '@mui/icons-material/ZoomOutRounded';
@@ -122,6 +124,18 @@ export function AvatarCropModal({ open, onClose, onApply }) {
         inputRef.current?.click();
     }
 
+    async function handleTakePhoto() {
+        try {
+            const file = await takePhotoFile();
+
+            if (file) {
+                await prepareFile(file);
+            }
+        } catch {
+            return;
+        }
+    }
+
     async function handleFileChange(event) {
         const file = event.target.files?.[0];
 
@@ -131,6 +145,10 @@ export function AvatarCropModal({ open, onClose, onApply }) {
             return;
         }
 
+        await prepareFile(file);
+    }
+
+    async function prepareFile(file) {
         resetCropState();
 
         const requestId = prepareRequestRef.current;
@@ -291,6 +309,16 @@ export function AvatarCropModal({ open, onClose, onApply }) {
                                 >
                                     {t('profile.avatar.selectPhoto')}
                                 </Button>
+
+                                {isCameraAvailable() && (
+                                    <Button
+                                        variant='text'
+                                        startIcon={<PhotoCameraOutlinedIcon />}
+                                        onClick={handleTakePhoto}
+                                    >
+                                        {t('common.actions.takePhoto')}
+                                    </Button>
+                                )}
                             </Stack>
                         )}
                     </Box>

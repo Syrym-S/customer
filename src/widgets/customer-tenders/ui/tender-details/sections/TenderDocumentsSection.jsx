@@ -20,6 +20,8 @@ import {
 import { TenderDetailsSection } from './TenderDetailsSection';
 import { tenderDocumentPropType } from '../../../model/tenders.prop-types';
 import { AppDialog } from '../../../../../shared/ui/AppDialog';
+import { openExternalLink } from '../../../../../shared/lib/external-link';
+import { saveFileFromUrl } from '../../../../../shared/lib/download-file';
 
 function isPdfDocument(document) {
    const fileType = document?.fileType || '';
@@ -238,10 +240,7 @@ function TenderDocumentPreviewDialog({ document, onClose }) {
                   <>
                      <Tooltip title={t("common.actions.openInNewTab")}>
                         <IconButton
-                           component='a'
-                           href={document.fileUrl}
-                           target='_blank'
-                           rel='noreferrer'
+                           onClick={() => openExternalLink(document.fileUrl)}
                            aria-label={t("common.actions.openInNewTab")}
                         >
                            <OpenInNewOutlinedIcon />
@@ -250,9 +249,12 @@ function TenderDocumentPreviewDialog({ document, onClose }) {
 
                      <Tooltip title={t("common.actions.download")}>
                         <IconButton
-                           component='a'
-                           href={document.fileUrl}
-                           download={document.fileName || document.name || true}
+                           onClick={() =>
+                              saveFileFromUrl(
+                                 document.fileUrl,
+                                 document.fileName || document.name,
+                              )
+                           }
                            aria-label={t("common.actions.download")}
                         >
                            <DownloadOutlinedIcon />
