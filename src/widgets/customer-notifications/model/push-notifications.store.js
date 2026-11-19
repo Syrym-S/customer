@@ -7,7 +7,7 @@ import {
 } from '../../../features/profile-edit/profile.api';
 import {
    deleteWebPushToken,
-   getWebPushPermission,
+   getPushPermission,
    isWebPushSupported,
    refreshWebPushToken,
    requestWebPushToken,
@@ -30,7 +30,7 @@ export const usePushNotificationsStore = create((set, get) => ({
    async init() {
       const isSupported = await isWebPushSupported();
 
-      set({ isSupported, permission: getWebPushPermission() });
+      set({ isSupported, permission: await getPushPermission() });
 
       if (!isSupported) {
          return;
@@ -62,7 +62,7 @@ export const usePushNotificationsStore = create((set, get) => ({
       try {
          const token = await requestWebPushToken();
 
-         set({ permission: getWebPushPermission() });
+         set({ permission: await getPushPermission() });
 
          if (!token) {
             return false;
@@ -96,7 +96,7 @@ export const usePushNotificationsStore = create((set, get) => ({
    // Перед логаутом: иначе на общем компьютере пуши первого пользователя
    // продолжат приходить, когда за машиной сидит второй.
    async unbindCurrentDevice() {
-      const { token } = get();
+      const token = get().token || (await refreshWebPushToken());
 
       if (!token) {
          return;

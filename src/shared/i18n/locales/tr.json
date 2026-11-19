@@ -180,7 +180,8 @@
          "share": "Paylaş",
          "showAll": "Tümünü göster (+{{count}})",
          "sign": "İmzala",
-         "yes": "Evet"
+         "yes": "Evet",
+         "takePhoto": "Fotoğraf çek"
       },
       "cargoCount_one": "{{count}} yük",
       "cargoCount_other": "{{count}} yük",
@@ -1436,9 +1437,6 @@
          "cancelConfirm": "Bu ihaleyi iptal etmek istediğinizden emin misiniz? İptal edildikten sonra katılımcılar için kullanılamaz hale gelecektir.",
          "cancelFailed": "İhale iptal edilemedi",
          "cancelling": "İptal ediliyor...",
-         "delete": "İhaleyi sil",
-         "deleteConfirm": "Bu ihaleyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
-         "deleteFailed": "İhale silinemedi",
          "saveFailed": "İhale değişiklikleri kaydedilemedi",
          "start": "İhaleyi başlat",
          "startFailed": "İhale başlatılamadı"

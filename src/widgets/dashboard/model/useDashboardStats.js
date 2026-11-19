@@ -4,7 +4,6 @@ import {
    notificationDomainEventNames,
    subscribeToNotificationDomainEvent,
 } from '../../../shared/model/notification-domain-events';
-import { customerStatsConfig } from './stats.config';
 import { isSameStatsPeriod } from './stats.helpers';
 
 const REFETCH_DEBOUNCE_MS = 400;
@@ -25,7 +24,7 @@ const IDLE_REFRESHING_SECTIONS = {
 
 export function useDashboardStats(
    { factoringsPeriod },
-   config = customerStatsConfig,
+   config,
 ) {
    const [data, setData] = useState(null);
    const [isLoading, setIsLoading] = useState(true);

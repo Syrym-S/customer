@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Box, Button, Tooltip } from "@mui/material";
 import PropTypes from "prop-types";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
+import { useSupportContactsStore } from "../model/support-contacts.store";
 
 export function SupportContacts({ layout = "column", onOpenChat }) {
   const { t } = useTranslation();
@@ -26,8 +27,13 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
         },
       };
 
-  const supportEmail = window?.APP_DATA?.support?.email;
-  const supportPhone = window?.APP_DATA?.support?.phone;
+  const supportEmail = useSupportContactsStore((state) => state.email);
+  const supportPhone = useSupportContactsStore((state) => state.phone);
+  const loadContacts = useSupportContactsStore((state) => state.load);
+
+  useEffect(() => {
+    loadContacts();
+  }, [loadContacts]);
 
   const [copied, setCopied] = useState(false);
 

@@ -13,8 +13,8 @@ import {
 import {
    DEFAULT_STATS_PERIOD,
    STATS_PERIODS,
-   customerStatsConfig,
 } from '../model/stats.config';
+import { useCustomerStatsConfig } from '../model/useCustomerStatsConfig';
 import { DashboardStatsGroup } from './DashboardStatsGroup';
 import { DashboardStatsPeriodSelector } from './DashboardStatsPeriodSelector';
 import {
@@ -36,20 +36,23 @@ function getPeriodLabel(value, t) {
    return period ? t(period.labelKey) : '';
 }
 
-export function DashboardStats({ config = customerStatsConfig }) {
+export function DashboardStats({ config }) {
    const { t } = useTranslation();
+
+   const defaultConfig = useCustomerStatsConfig();
+   const resolvedConfig = config ?? defaultConfig;
 
    const [periods, setPeriods] = useState(DEFAULT_PERIODS);
    const [viewMode, setViewMode] = useState(STATS_VIEW_MODE_COUNT);
 
    const { data, isLoading, isRefreshing, refreshingSections, error, retry } =
-      useDashboardStats(periods, config);
+      useDashboardStats(periods, resolvedConfig);
 
    const showGroups = Boolean(data) || isLoading;
 
    // Группа может остаться одна (см. applyFeatureFlags в stats.config.js) —
    // тогда разбиение на две колонки оставило бы половину строки пустой.
-   const hasTwoGroupColumns = config.groups.length > 1;
+   const hasTwoGroupColumns = resolvedConfig.groups.length > 1;
 
    function handlePeriodChange(sectionKey, value) {
       setPeriods((current) => ({ ...current, [sectionKey]: value }));
@@ -124,7 +127,7 @@ export function DashboardStats({ config = customerStatsConfig }) {
                   transition: 'opacity 0.2s ease',
                }}
             >
-               {config.groups.map((group) => (
+               {resolvedConfig.groups.map((group) => (
                   <DashboardStatsGroup
                      key={group.id}
                      group={group}

@@ -95,7 +95,12 @@ function getDateLocale() {
     return DATE_LOCALE_BY_LANGUAGE[language] || DATE_LOCALE_BY_LANGUAGE.ru;
 }
 
-const CUSTOMER_ENTITY_PATH_SEGMENTS = ['leads', 'tenders', 'factorings'];
+const CUSTOMER_ENTITY_PATH_SEGMENTS = [
+    'leads',
+    'tenders',
+    'factorings',
+    'complaints',
+];
 
 const CUSTOMER_PATH_PREFIX = '/customer';
 
@@ -120,7 +125,17 @@ export function resolveCustomerNotificationAppPath(pathname) {
 }
 
 export function isNotificationUnread(notification) {
-    return notification?.is_viewed === false;
+    if (!notification) {
+        return false;
+    }
+
+    const isViewed = notification.is_viewed;
+
+    if (isViewed === undefined || isViewed === null || isViewed === '') {
+        return false;
+    }
+
+    return isViewed === false || Number(isViewed) === 0;
 }
 
 export function formatNotificationDate(value) {

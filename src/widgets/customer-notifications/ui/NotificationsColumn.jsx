@@ -22,6 +22,7 @@ import {
 } from '../model/notifications.helpers';
 import { NotificationItem } from './NotificationItem';
 import { NotificationState } from './NotificationState';
+import { useBackHandler } from '../../../shared/model/useBackHandler';
 
 const PER_PAGE = 10;
 
@@ -109,6 +110,8 @@ export function NotificationsColumn({
             withLoader: true,
         });
     }, [open, page, refreshKey, loadNotifications, t]);
+
+    useBackHandler(open && onClose ? onClose : null);
 
     return (
         <Drawer

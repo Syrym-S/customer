@@ -1,3 +1,5 @@
+import { getFeatureFlags } from "../../shared/model/feature-flags.store";
+
 const ECP_PENDING_CODE = "pending";
 
 const ECP_REDIRECT_MESSAGES = {
@@ -14,11 +16,7 @@ function getEcpRedirectCode() {
 }
 
 export function isEcpLoginEnabled() {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  return window?.APP_DATA?.features?.login_ecp === true;
+  return getFeatureFlags().login_ecp === true;
 }
 
 export function isEcpPendingRegistration() {

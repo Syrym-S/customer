@@ -9,7 +9,6 @@ import i18n from '../../../../shared/i18n';
 import { useTranslation } from "react-i18next";
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import PropTypes from 'prop-types';
 import { tenderPropType } from '../../model/tenders.prop-types';
 import { useState } from 'react';
@@ -24,13 +23,6 @@ function getConfirmActionConfig() {
          loadingText: i18n.t("tenders.manage.cancelling"),
          color: 'warning',
       },
-      delete: {
-         title: i18n.t("tenders.manage.delete"),
-         text: i18n.t("tenders.manage.deleteConfirm"),
-         confirmText: i18n.t("tenders.manage.delete"),
-         loadingText: i18n.t("common.actions.deleting"),
-         color: 'error',
-      },
    };
 }
 
@@ -42,7 +34,6 @@ export function TenderDetailsActions({
    onSave,
    onStartTender,
    onCancelTender,
-   onDeleteTender,
 }) {
    const { t } = useTranslation();
 
@@ -72,10 +63,6 @@ export function TenderDetailsActions({
 
       if (confirmAction === 'cancel') {
          await onCancelTender?.();
-      }
-
-      if (confirmAction === 'delete') {
-         await onDeleteTender?.();
       }
 
       setConfirmAction(null);
@@ -123,18 +110,6 @@ export function TenderDetailsActions({
                      disabled={isActionLoading}
                   >
                      {t("tenders.manage.cancel")}
-                  </Button>
-               )}
-
-               {!isEditing && (
-                  <Button
-                     color='error'
-                     variant='outlined'
-                     startIcon={<DeleteOutlinedIcon />}
-                     onClick={(event) => handleOpenConfirm('delete', event)}
-                     disabled={isActionLoading}
-                  >
-                     {t("tenders.manage.delete")}
                   </Button>
                )}
             </div>
@@ -193,5 +168,4 @@ TenderDetailsActions.propTypes = {
    onSave: PropTypes.func.isRequired,
    onStartTender: PropTypes.func,
    onCancelTender: PropTypes.func,
-   onDeleteTender: PropTypes.func,
 };

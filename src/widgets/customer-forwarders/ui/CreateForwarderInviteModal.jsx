@@ -8,6 +8,7 @@ import {
     DialogContent,
     DialogTitle,
     Divider,
+    MenuItem,
     Stack,
     TextField,
     Typography,
@@ -20,6 +21,8 @@ import {
 } from '../model/create-forwarder-invite.helpers';
 import { formatPhoneInput } from '../../../shared/helpers/phone-format.helpers';
 import { AppDialog } from '../../../shared/ui/AppDialog';
+import { DOCUMENT_ISSUED_BY_OPTIONS } from '../../../features/profile-edit/profile-form.helpers';
+import { getTodayDateInputValue } from '../../../features/create-lead/lib/point-schedule.helpers';
 
 export function CreateForwarderInviteModal({
     open,
@@ -217,6 +220,36 @@ export function CreateForwarderInviteModal({
                                     fullWidth
                                     size="small"
                                 />
+
+                                <TextField
+                                    name="document_issue_date"
+                                    label={t("profile.documents.issuedAt")}
+                                    type="date"
+                                    value={form.document_issue_date}
+                                    onChange={handleFieldChange}
+                                    fullWidth
+                                    size="small"
+                                    slotProps={{
+                                        inputLabel: { shrink: true },
+                                        htmlInput: { max: getTodayDateInputValue() },
+                                    }}
+                                />
+
+                                <TextField
+                                    select
+                                    name="document_issued_by"
+                                    label={t("profile.documents.issuedBy")}
+                                    value={form.document_issued_by}
+                                    onChange={handleFieldChange}
+                                    fullWidth
+                                    size="small"
+                                >
+                                    {DOCUMENT_ISSUED_BY_OPTIONS.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
 
                                 <Divider />
 

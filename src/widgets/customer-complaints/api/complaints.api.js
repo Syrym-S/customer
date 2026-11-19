@@ -1,4 +1,17 @@
 import { apiClient } from '../../../shared/api/api-client';
+import { getFileNameFromHeaders } from '../../../shared/api/content-disposition.helpers';
+
+export async function fetchComplaintFileApi(complaintId, fileIndex, fallbackName = '') {
+   const response = await apiClient.get(
+      `/customer/v1/complaints/${encodeURIComponent(complaintId)}/files/${encodeURIComponent(fileIndex)}`,
+      { responseType: 'blob' },
+   );
+
+   return {
+      blob: response.data,
+      fileName: getFileNameFromHeaders(response.headers, fallbackName),
+   };
+}
 
 export async function fetchComplaints() {
    const response = await apiClient.get('/customer/v1/complaints');

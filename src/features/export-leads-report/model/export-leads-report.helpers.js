@@ -1,3 +1,5 @@
+import { saveBlobAsFile } from '../../../shared/lib/download-file';
+
 const REPORT_TIMEZONE = 'Asia/Almaty';
 
 export function getTodayDateInputValue() {
@@ -35,15 +37,7 @@ export function getExportReportFilename(contentDisposition, dateFrom, dateTo) {
 }
 
 export function downloadBlob(blob, filename) {
-   const objectUrl = URL.createObjectURL(blob);
-   const link = document.createElement('a');
-
-   link.href = objectUrl;
-   link.download = filename;
-   document.body.appendChild(link);
-   link.click();
-   link.remove();
-   URL.revokeObjectURL(objectUrl);
+   return saveBlobAsFile(blob, filename);
 }
 
 export async function parseBlobErrorMessage(error, fallbackMessage) {

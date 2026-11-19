@@ -65,12 +65,6 @@ export async function acceptTenderBet(tenderId, betIndex) {
     return response.data;
 }
 
-export async function deleteCustomerTender(tenderId) {
-    const response = await apiClient.delete(`/customer/v1/tender/${tenderId}`);
-
-    return response.data;
-}
-
 export async function deleteTenderParticipant(tenderId, forwarderId) {
     const response = await apiClient.delete(
         `/customer/v1/tender/${tenderId}/participant/${forwarderId}`,

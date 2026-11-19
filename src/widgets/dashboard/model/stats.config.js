@@ -1,7 +1,3 @@
-import {
-   isFactoringEnabled,
-   isTenderEnabled,
-} from '../../../shared/config/feature-flags';
 import { fetchCustomerStats } from '../api/stats.repository';
 import { mapStatsResponseFromApi } from './stats.adapter';
 
@@ -25,7 +21,7 @@ const TENDER_CARD_IDS = ['tenders-active'];
 // пользователя нет. Группа "за период" состоит из одной факторинговой
 // плитки, поэтому при выключенном флаге отпадает целиком — отсюда
 // отбрасывание пустых групп и пересчёт columns под оставшиеся карточки.
-function applyFeatureFlags(groups) {
+function applyFeatureFlags(groups, { isFactoringEnabled, isTenderEnabled }) {
    if (isFactoringEnabled && isTenderEnabled) {
       return groups;
    }
@@ -50,11 +46,8 @@ function applyFeatureFlags(groups) {
       .filter((group) => group.cards.length > 0);
 }
 
-export const customerStatsConfig = {
-   role: 'customer',
-   fetchStats: fetchCustomerStats,
-   mapResponse: mapStatsResponseFromApi,
-   groups: applyFeatureFlags([
+const CUSTOMER_STATS_GROUPS = [
+
       {
          id: 'period',
          titleKey: 'dashboard.stats.forPeriod',
@@ -98,5 +91,13 @@ export const customerStatsConfig = {
             },
          ],
       },
-   ]),
-};
+];
+
+export function createCustomerStatsConfig(flags) {
+   return {
+      role: 'customer',
+      fetchStats: fetchCustomerStats,
+      mapResponse: mapStatsResponseFromApi,
+      groups: applyFeatureFlags(CUSTOMER_STATS_GROUPS, flags),
+   };
+}

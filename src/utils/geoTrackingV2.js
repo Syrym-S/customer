@@ -2,6 +2,7 @@ import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
 import { fetchLeadGeoWsToken, normalizeGeoPoints } from './geologic';
+import { getSessionGeoWsConfig } from '../shared/model/session.store';
 import { decodeRoutePolyline } from '../widgets/customer-leads/lib/route-polyline.helpers';
 
 window.Pusher = Pusher;
@@ -13,11 +14,11 @@ const REVERB_ENABLED_TRANSPORTS = ['ws', 'wss'];
 // Injected per environment by the backend, like window.APP_DATA, but only
 // after this bundle loads — so read it on use, not at module level.
 function getGeoWsConfig() {
-   const config = window?.GeoWS_Config ?? {};
+   const config = getSessionGeoWsConfig() ?? window?.GeoWS_Config ?? {};
 
    return {
-      appKey: config.key || null,
-      wsHost: config.ws || 'geo.v2.360logistics.kz',
+      appKey: config.key || config.reverb_key || null,
+      wsHost: config.ws || config.reverb_host || 'geo.v2.360logistics.kz',
    };
 }
 

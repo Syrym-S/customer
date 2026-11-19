@@ -24,6 +24,7 @@ import {
 import { paletteKeyToColorPath } from "../../../../../shared/helpers/status-color.helpers";
 import { StatusDot } from "../../../../../shared/ui/StatusDot";
 import { notifyError } from "../../../../../shared/model/notifications.store";
+import { openExternalLink } from "../../../../../shared/lib/external-link";
 import LegalDocumentViewer from "../../file-input/LegalDocumentViewer";
 
 const POLL_INTERVAL_MS = 4000;
@@ -151,7 +152,7 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
 
       if (session?.sign_url) {
         setSignUrl(session.sign_url);
-        window.open(session.sign_url, "_blank");
+        openExternalLink(session.sign_url);
       }
 
       pollForSignature();
@@ -231,7 +232,12 @@ function FactoringLineCard({ factoringId, line, bothPartiesSigned }) {
         {isSigning && signUrl && (
           <Typography fontSize={12} color="text.secondary">
             {t("common.signing.windowHint")}{" "}
-            <Link href={signUrl} target="_blank" rel="noopener noreferrer">
+            <Link
+              component="button"
+              type="button"
+              onClick={() => openExternalLink(signUrl)}
+              sx={{ cursor: "pointer", verticalAlign: "baseline" }}
+            >
               {t("common.signing.thisLink")}
             </Link>
             .

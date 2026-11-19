@@ -8,6 +8,10 @@ import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutl
 
 import { useContractStore, attemptContractSigning } from "../../../shared/model/contract.store";
 import { notifyError } from "../../../shared/model/notifications.store";
+import {
+  createFileBlob,
+  saveBlobAsFile,
+} from "../../../shared/lib/download-file";
 
 function formatDate(value) {
   if (!value) {
@@ -51,18 +55,12 @@ function downloadContractDocument(contractDocument) {
     bytes[index] = binaryString.charCodeAt(index);
   }
 
-  const blob = new Blob([bytes], {
-    type: contractDocument.mime || "application/pdf",
-  });
-  const objectUrl = URL.createObjectURL(blob);
-  const link = document.createElement("a");
+  const blob = createFileBlob(
+    bytes,
+    contractDocument.mime || "application/pdf",
+  );
 
-  link.href = objectUrl;
-  link.download = contractDocument.name || "";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(objectUrl);
+  saveBlobAsFile(blob, contractDocument.name || "");
 }
 
 export function ContractDocumentCard({ documents }) {
@@ -94,7 +92,7 @@ export function ContractDocumentCard({ documents }) {
     try {
       const result = await attemptContractSigning();
 
-      if (result.type === "already-signed") {
+      if (result.type !== "redirecting") {
         setIsSigning(false);
       }
 

@@ -7,13 +7,13 @@ import { DashboardStats } from "./DashboardStats";
 import { DashboardLeadsList } from "./DashboardLeadsList";
 import { DashboardTendersSection } from "./DashboardTendersSection";
 import { DashboardFactoringsSection } from "./DashboardFactoringsSection";
-import {
-  isFactoringEnabled,
-  isTenderEnabled,
-} from "../../../shared/config/feature-flags";
+import { useFeatureFlagsStore } from "../../../shared/model/feature-flags.store";
 
 export function Dashboard() {
   const { leads, isLoading, error } = useLeadsContext();
+
+  const isFactoringEnabled = useFeatureFlagsStore((state) => state.factoring);
+  const isTenderEnabled = useFeatureFlagsStore((state) => state.tender);
 
   const [selectedLeadId, setSelectedLeadId] = useState(null);
   const [hoveredLeadId, setHoveredLeadId] = useState(null);

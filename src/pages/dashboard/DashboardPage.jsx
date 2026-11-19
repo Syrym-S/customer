@@ -9,14 +9,7 @@ import { LeadDetailsModal } from "../../widgets/customer-leads/ui/LeadDetailsMod
 import { TenderDetailsModal } from "../../widgets/customer-tenders/ui/TenderDetailsModal";
 import { Dashboard } from "../../widgets/dashboard/ui/Dashboard";
 import { FactoringsProvider } from "../../widgets/customer-factorings/model/FactoringsProvider";
-import {
-  isFactoringEnabled,
-  isTenderEnabled,
-} from "../../shared/config/feature-flags";
-
-// Провайдер грузит список факторингов на монтировании, а при скрытом разделе
-// этот запрос некому показывать — подменяем его на прозрачную обёртку.
-const FactoringsBoundary = isFactoringEnabled ? FactoringsProvider : Fragment;
+import { useFeatureFlagsStore } from "../../shared/model/feature-flags.store";
 
 // То же и для тендеров: без провайдера блок тендеров на дашборде не
 // рендерится, поэтому и список тендеров грузить незачем. Заглушка здесь не
@@ -30,10 +23,15 @@ TendersPassthrough.propTypes = {
   children: PropTypes.node,
 };
 
-const TendersBoundary = isTenderEnabled ? TendersProvider : TendersPassthrough;
-
-
 export function DashboardPage() {
+  const isFactoringEnabled = useFeatureFlagsStore((state) => state.factoring);
+  const isTenderEnabled = useFeatureFlagsStore((state) => state.tender);
+
+  // Провайдер грузит список факторингов на монтировании, а при скрытом разделе
+  // этот запрос некому показывать — подменяем его на прозрачную обёртку.
+  const FactoringsBoundary = isFactoringEnabled ? FactoringsProvider : Fragment;
+  const TendersBoundary = isTenderEnabled ? TendersProvider : TendersPassthrough;
+
   return (
     <LeadsProvider initialScope={leadsScopes.ACTIVE}>
       <FactoringsBoundary>

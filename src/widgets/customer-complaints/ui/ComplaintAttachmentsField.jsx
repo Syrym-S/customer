@@ -10,6 +10,8 @@ import {
    Typography,
 } from '@mui/material';
 import AttachFileOutlined from '@mui/icons-material/AttachFileOutlined';
+import PhotoCameraOutlined from '@mui/icons-material/PhotoCameraOutlined';
+import { isCameraAvailable, takePhotoFile } from '../../../shared/lib/pick-files';
 import CloseOutlined from '@mui/icons-material/CloseOutlined';
 import ImageOutlined from '@mui/icons-material/ImageOutlined';
 import VideocamOutlined from '@mui/icons-material/VideocamOutlined';
@@ -156,10 +158,7 @@ export function ComplaintAttachmentsField({ attachments, onChange }) {
    const [fieldError, setFieldError] = useState('');
    const inputRef = useRef(null);
 
-   function handleFilesSelected(event) {
-      const selectedFiles = Array.from(event.target.files || []);
-
-      event.target.value = '';
+   function addFiles(selectedFiles) {
 
       if (selectedFiles.length === 0) {
          return;
@@ -195,6 +194,25 @@ export function ComplaintAttachmentsField({ attachments, onChange }) {
       onChange(nextAttachments);
    }
 
+   function handleFilesSelected(event) {
+      const selectedFiles = Array.from(event.target.files || []);
+
+      event.target.value = '';
+      addFiles(selectedFiles);
+   }
+
+   async function handleTakePhoto() {
+      try {
+         const file = await takePhotoFile();
+
+         if (file) {
+            addFiles([file]);
+         }
+      } catch {
+         return;
+      }
+   }
+
    function handleRemove(attachmentId) {
       onChange(attachments.filter((item) => item.id !== attachmentId));
    }
@@ -219,6 +237,21 @@ export function ComplaintAttachmentsField({ attachments, onChange }) {
                   onChange={handleFilesSelected}
                />
             </Button>
+
+            {isCameraAvailable() && (
+               <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ ml: 1 }}
+                  startIcon={<PhotoCameraOutlined />}
+                  onClick={handleTakePhoto}
+                  disabled={
+                     attachments.length >= COMPLAINT_ATTACHMENT_MAX_COUNT
+                  }
+               >
+                  {t("common.actions.takePhoto")}
+               </Button>
+            )}
 
             <Typography
                component="span"

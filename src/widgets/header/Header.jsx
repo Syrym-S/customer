@@ -31,13 +31,10 @@ import { getCompactEmail } from "../../shared/helpers/helpers";
 import { PROFILE_PHOTO_UPDATED_EVENT } from "../customer-profile/model/profile-photo.helpers";
 import { fetchCustomerProfile } from "../../features/profile-edit/profile.api";
 import { isStaging } from "../../shared/api/api-client";
+import { isNative } from "../../shared/config/platform";
+import { useBackHandler } from "../../shared/model/useBackHandler";
 import { CUSTOMER_NAV_WIDTH } from "../../shared/config/constants";
-import {
-  isAdvertisementsEnabled,
-  isFactoringEnabled,
-  isManufacturersEnabled,
-  isTenderEnabled,
-} from "../../shared/config/feature-flags";
+import { useFeatureFlagsStore } from "../../shared/model/feature-flags.store";
 import DashboardOutlined from "@mui/icons-material/DashboardOutlined";
 import PersonAddAltOutlined from "@mui/icons-material/PersonAddAltOutlined";
 import GavelOutlined from "@mui/icons-material/GavelOutlined";
@@ -56,6 +53,16 @@ import { AppDialog } from "../../shared/ui/AppDialog";
 export function Header() {
   const { t } = useTranslation();
   const openSupportChat = useChatStore((state) => state.openSupportChat);
+
+  const isFactoringEnabled = useFeatureFlagsStore((state) => state.factoring);
+  const isManufacturersEnabled = useFeatureFlagsStore(
+    (state) => state.manufacturer,
+  );
+  const isTenderEnabled = useFeatureFlagsStore((state) => state.tender);
+  const isAdvertisementsEnabled = useFeatureFlagsStore(
+    (state) => state.advertisement_customer,
+  );
+
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
@@ -146,6 +153,8 @@ export function Header() {
     setIsLogoutModalOpen(false);
   }
 
+  useBackHandler(isBurgerOpen ? () => setIsBurgerOpen(false) : null);
+
   function handleCloseBurger() {
     blurActiveElement();
     setIsBurgerOpen(false);
@@ -156,14 +165,23 @@ export function Header() {
       setIsLogoutLoading(true);
       setLogoutError(null);
 
-      // Отвязываем пуши этого браузера, пока сессия ещё жива: иначе на общем
-      // компьютере уведомления продолжат приходить следующему пользователю.
-      await usePushNotificationsStore
-        .getState()
-        .unbindCurrentDevice()
-        .catch(() => {});
+      const pushToken = usePushNotificationsStore.getState().token;
 
-      await logoutApi();
+      if (!isNative) {
+        // Отвязываем пуши этого браузера, пока сессия ещё жива: иначе на общем
+        // компьютере уведомления продолжат приходить следующему пользователю.
+        await usePushNotificationsStore
+          .getState()
+          .unbindCurrentDevice()
+          .catch(() => {});
+      }
+
+      await logoutApi(pushToken);
+
+      if (isNative) {
+        navigate("/auth/login", { replace: true });
+        return;
+      }
 
       window.location.replace(
         isStaging ? "/staging/auth/login" : "/auth/login",

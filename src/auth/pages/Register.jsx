@@ -12,7 +12,7 @@ import {
   IconButton,
   MenuItem,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../components/AuthLayout";
 import { DocumentUploadField } from "../shared/DocumentUploadField";
 import { getSelectedFile } from "../shared/document-upload-file.helpers";
@@ -36,6 +36,11 @@ import {
   getTodayDateInputValue,
   validateNotAfterToday,
 } from "../shared/identity-document.helpers";
+import { isNative } from "../../shared/config/platform";
+import { useSessionStore } from "../../shared/model/session.store";
+
+const NATIVE_HOME_ROUTE = "/customer";
+const NATIVE_LOGIN_ROUTE = "/auth/login";
 
 const REGISTRATION_DOCUMENT_NAME = "Документ о регистрации юридического лица";
 
@@ -48,6 +53,7 @@ const isRegistrationDocumentsEnabled =
 
 export default function Register() {
   const { t } = useAuthTranslation();
+  const navigate = useNavigate();
   const { invite } = useRegister();
   const { search } = useLocation();
 
@@ -240,6 +246,18 @@ export default function Register() {
       if (!getVerifyRegistered(res)) {
         setSupport(getSupportContacts(res));
         setIsNotRegisteredOpen(true);
+        return;
+      }
+
+      if (isNative) {
+        const isSessionSaved = useSessionStore
+          .getState()
+          .setSession(res?.data);
+
+        navigate(isSessionSaved ? NATIVE_HOME_ROUTE : NATIVE_LOGIN_ROUTE, {
+          replace: true,
+        });
+
         return;
       }
 

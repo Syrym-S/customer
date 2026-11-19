@@ -180,7 +180,8 @@
          "share": "Teilen",
          "showAll": "Alle anzeigen (+{{count}})",
          "sign": "Unterschreiben",
-         "yes": "Ja"
+         "yes": "Ja",
+         "takePhoto": "Foto aufnehmen"
       },
       "cargoCount_one": "{{count}} Frachtstück",
       "cargoCount_other": "{{count}} Frachtstücke",
@@ -1436,9 +1437,6 @@
          "cancelConfirm": "Sind Sie sicher, dass Sie diese Auktion abbrechen möchten? Nach dem Abbruch ist sie für Teilnehmer nicht mehr verfügbar.",
          "cancelFailed": "Die Auktion konnte nicht abgebrochen werden",
          "cancelling": "Wird abgebrochen...",
-         "delete": "Auktion löschen",
-         "deleteConfirm": "Sind Sie sicher, dass Sie diese Auktion löschen möchten? Diese Aktion kann nicht widerrufen werden.",
-         "deleteFailed": "Die Auktion konnte nicht gelöscht werden",
          "saveFailed": "Die Änderungen der Auktion konnten nicht gespeichert werden",
          "start": "Auktion starten",
          "startFailed": "Die Auktion konnte nicht gestartet werden"

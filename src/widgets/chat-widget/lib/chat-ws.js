@@ -4,8 +4,30 @@ import { fetchLeadChatWsTokenApi } from "../api/chat.api";
 
 window.Pusher = Pusher;
 
-function getChatWsConfig() {
-  return window.ChatWS_Config || null;
+function resolveChatWsConfig(tokenResponse) {
+  const fallback = window.ChatWS_Config || {};
+
+  return {
+    ws: tokenResponse?.ws || fallback.ws || "",
+    key: tokenResponse?.key || fallback.key || "",
+    auth: tokenResponse?.auth || fallback.auth || "",
+  };
+}
+
+function normalizeWsHost(value) {
+  const rawHost = String(value || "").trim();
+
+  if (!rawHost) {
+    return "";
+  }
+
+  const hasProtocol = /^[a-z]+:\/\//i.test(rawHost);
+
+  try {
+    return new URL(hasProtocol ? rawHost : `wss://${rawHost}`).hostname;
+  } catch {
+    return rawHost.replace(/^\/+/, "").split("/")[0];
+  }
 }
 
 const MAX_AUTH_RETRIES = 2;
@@ -54,15 +76,6 @@ export function openLeadChatConnection({
 
   async function start() {
     try {
-      const config = getChatWsConfig();
-
-      if (!config?.ws || !config?.key || !config?.auth) {
-        console.warn(
-          "ChatWS: window.ChatWS_Config is not configured — live chat updates skipped.",
-        );
-        return;
-      }
-
       const tokenResponse = fetchToken
         ? await fetchToken({ signal: abortController.signal })
         : await fetchLeadChatWsTokenApi(leadId, chatType, {
@@ -80,10 +93,19 @@ export function openLeadChatConnection({
         throw new Error("ChatWS token endpoint did not return token/chat_id");
       }
 
+      const config = resolveChatWsConfig(tokenResponse);
+
+      if (!config.ws || !config.key || !config.auth) {
+        console.warn(
+          "ChatWS: no ws/key/auth in the chat token response or window.ChatWS_Config — live chat updates skipped.",
+        );
+        return;
+      }
+
       echo = new Echo({
         broadcaster: "reverb",
         key: config.key,
-        wsHost: new URL(config.ws).hostname,
+        wsHost: normalizeWsHost(config.ws),
         wsPort: 443,
         wssPort: 443,
         forceTLS: true,
