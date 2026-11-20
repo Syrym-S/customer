@@ -26,11 +26,11 @@ import ResetPassword from "../auth/pages/password/ResetPassword";
 import { LoginRedirect } from "../auth/shared/LoginRedirect";
 import { appBasename } from "../shared/api/api-client";
 import { FeatureRoute } from "./FeatureRoute";
+import { registerAppRoutes } from "./route-registry";
 
 const createAppRouter = isNative ? createHashRouter : createBrowserRouter;
 
-export const router = createAppRouter(
-  [
+const appRoutes = [
     {
       path: "/",
       element: <AppLayout />,
@@ -226,8 +226,10 @@ export const router = createAppRouter(
         },
       ],
     },
-  ],
-  {
-    basename: appBasename,
-  },
-);
+];
+
+export const router = createAppRouter(appRoutes, {
+  basename: appBasename,
+});
+
+registerAppRoutes(router.routes);

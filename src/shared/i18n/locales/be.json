@@ -1,0 +1,1540 @@
+{
+   "accountBan": {
+      "contactSupport": "Звязацца з падтрымкай",
+      "logout": "Выйсці з акаўнта",
+      "text": "Доступ да робочай прасторы часова абмежаваны. Вы не можаце ствараць заяўкі, працаваць з аўкцыёнамі і выконваць іншыя дзеянні ў сістэме.",
+      "title": "Акаўнт заблакаваны"
+   },
+   "advertisements": {
+      "title": "Аб'явы",
+      "titleSingular": "Аб'ява",
+      "subtitle": "Вашы аб'явы пра перавозкі для экспедытараў",
+      "notFound": "Аб'явы не знойдзены",
+      "loadFailed": "Не ўдалося загрузіць аб'явы",
+      "viewToggle": "Выгляд спіса аб'яў",
+      "status": {
+         "active": "Актыўна",
+         "closed": "Закрыта"
+      },
+      "fields": {
+         "leadNum": "Нумар перавозкі",
+         "route": "Маршрут",
+         "firstPointAt": "Пачатак першага пункта",
+         "expiredAt": "Актыўна да",
+         "createdAt": "Створана",
+         "closedAt": "Закрыта"
+      },
+      "contacts": {
+         "call": "Патэлефанаваць",
+         "email": "Напісаць на пошту"
+      },
+      "manage": {
+         "close": "Закрыць аб'яву",
+         "closeConfirm": "Вы ўпэўнены, што хочаце закрыць гэтую аб'яву? Пасля закрыцця экспедытары не змогуць на яе адказаць.",
+         "closeFailed": "Не ўдалося закрыць аб'яву",
+         "closing": "Закрыццё...",
+         "delete": "Выдаліць аб'яву",
+         "deleteConfirm": "Вы ўпэўнены, што хочаце выдаліць гэтую аб'яву? Гэтае дзеянне нельга будзе скасаваць.",
+         "deleteFailed": "Не ўдалося выдаліць аб'яву"
+      },
+      "edit": {
+         "leadSection": "Перавозка аб'явы",
+         "leadSectionHint": "Выберыце іншую перавозку — аб'ява будзе прывязана да яе",
+         "blockedClosed": "Закрытую аб'яву нельга змяніць",
+         "updateFailed": "Не ўдалося змяніць аб'яву"
+      },
+      "details": {
+         "title": "Дэталі аб'явы",
+         "myContacts": "Вашы кантакты",
+         "subtitle": "Падрабязныя дадзеныя аб'явы",
+         "leadNumber": "Перавозка #{{num}}",
+         "leadSection": "Перавозка",
+         "transportationPrice": "Цана перавозкі",
+         "loadFailed": "Не ўдалося загрузіць аб'яву"
+      },
+      "create": {
+         "button": "Стварыць аб'яву",
+         "title": "Стварэнне аб'явы",
+         "subtitle": "Выберыце, як стварыць аб'яву",
+         "chooseExisting": "Выбраць існуючую перавозку",
+         "chooseExistingHint": "Аб'ява будзе створана па ўжо створанай перавозцы без экспедытара",
+         "createNew": "Стварыць новую перавозку з аб'явай",
+         "createNewHint": "Стварыце перавозку без выбару экспедытара — аб'ява будзе створана аўтаматычна",
+         "submit": "Стварыць аб'яву",
+         "failed": "Не ўдалося стварыць аб'яву"
+      },
+      "pickLead": {
+         "label": "Перавозка",
+         "placeholder": "Нумар перавозкі або маршрут",
+         "hint": "Даступныя перавозкі ў статусе «Новы» без экспедытара",
+         "empty": "Падыходзячыя перавозкі не знойдзены",
+         "loading": "Загрузка перавозак…",
+         "searchFailed": "Не ўдалося выканаць пошук перавозак",
+         "selected": "Выбраная перавозка"
+      }
+   },
+   "chat": {
+      "attachments": {
+         "allowedTypes": "Дазволены толькі выявы (JPG, PNG, WEBP), PDF, DOC(X) або XLS(X)",
+         "attach": "Прыкласці файл",
+         "closeImage": "Закрыць прагляд выявы",
+         "fileDownloadFailed": "Не ўдалося спампаваць файл «{{name}}»",
+         "fileLoadFailed": "Не ўдалося загрузіць файл «{{name}}»",
+         "imageLoadFailed": "Не ўдалося загрузіць выяву",
+         "label": "Укладанне",
+         "loadFailed": "Не ўдалося загрузіць",
+         "maxCount": "Можна прыкласці не больш за {{count}} файлаў да аднаго паведамлення",
+         "maxSize": "Размер файла не павінен перавышаць {{size}} МБ",
+         "remove": "Прыбраць файл {{name}}",
+         "view": "Прагляд укладання"
+      },
+      "backToList": "Назад да спіса чатаў",
+      "close": "Закрыць чат",
+      "conversationStart": "Пачатак перапіскі",
+      "empty": "Няма актыўных чатаў",
+      "load": {
+         "deliveryFailed": "Не ўдалося загрузіць чат па дастаўцы",
+         "factoringFailed": "Не ўдалося загрузіць чат па фактарынгу",
+         "leadFailed": "Не ўдалося загрузіць чат па замове",
+         "listFailed": "Не ўдалося загрузіць чаты",
+         "moreFailed": "Не ўдалося загрузіць дадатковыя чаты",
+         "participantsFailed": "Не ўдалося загрузіць удзельнікаў чата ({{type}}) {{id}}",
+         "supportFailed": "Не ўдалося загрузіць чат з падтрымкай"
+      },
+      "message": {
+         "cancelEdit": "Скасаваць рэдагаванне",
+         "delete": "Выдаліць паведамленне",
+         "deleteConfirm": "Паведамленне будзе выдалена безвяртальна. Працягнуць?",
+         "deleteFailed": "Не ўдалося выдаліць паведамленне",
+         "deleted": "Паведамленне выдалена",
+         "edit": "Рэдагаваць паведамленне",
+         "editFailed": "Не ўдалося змяніць паведамленне",
+         "placeholder": "Паведамленне...",
+         "read": "Прачытана",
+         "send": "Адправіць паведамленне",
+         "sendFailed": "Не ўдалося адправіць паведамленне"
+      },
+      "open": "Адкрыць чат",
+      "participant": "Удзельнік",
+      "participantLabel": "Удзельнік чата",
+      "refreshList": "Абнавіць спіс чатаў",
+      "requisites": {
+         "title": "Рэквізіты"
+      },
+      "time": {
+         "days": "{{count}} дн",
+         "hours": "{{count}} г",
+         "justNow": "толькі што",
+         "minutes": "{{count}} хв",
+         "yesterday": "учора"
+      },
+      "title": "Чаты",
+      "types": {
+         "delivery": "Дастаўка",
+         "deliveryNumber": "Дастаўка #{{id}}",
+         "factoringNumber": "Фактарынг #{{id}}",
+         "orderNumber": "Замова #{{id}}",
+         "support": "Падтрымка",
+         "supportFull": "Тэхнічная падтрымка"
+      }
+   },
+   "common": {
+      "actions": {
+         "add": "Дадаць",
+         "adding": "Дадаванне...",
+         "addingShort": "Дадаём...",
+         "back": "Назад",
+         "cancel": "Скасаваць",
+         "clear": "Ачысціць",
+         "close": "Закрыць",
+         "confirm": "Пацвердзіць",
+         "continue": "Працягнуць",
+         "copied": "Скапіявана",
+         "copy": "Скапіяваць",
+         "copyNumber": "Скапіяваць нумар",
+         "create": "Стварыць",
+         "creating": "Ствараем...",
+         "creatingProcess": "Стварэнне...",
+         "delete": "Выдаліць",
+         "deleting": "Выдаленне...",
+         "download": "Спампаваць",
+         "edit": "Змяніць",
+         "goTo": "Перайсці",
+         "gotIt": "Зразумела",
+         "hide": "Схаваць",
+         "next": "Далей",
+         "openInNewTab": "Адкрыць у новай укладцы",
+         "preview": "Папярэдні прагляд",
+         "refresh": "Абнавіць",
+         "remove": "Прыбраць",
+         "retry": "Паўтарыць",
+         "retryAttempt": "Паўтарыць спробу",
+         "save": "Захаваць",
+         "saveChanges": "Захаваць змены",
+         "saving": "Захаванне...",
+         "select": "Выбраць",
+         "selected": "Выбрана: {{count}}",
+         "send": "Адправіць",
+         "sending": "Адпраўка...",
+         "sendingShort": "Адпраўляем...",
+         "share": "Падзяліцца",
+         "showAll": "Паказаць усіх (+{{count}})",
+         "sign": "Падпісаць",
+         "yes": "Так",
+         "takePhoto": "Зрабіць фота"
+      },
+      "cargoCount_few": "{{count}} грузы",
+      "cargoCount_many": "{{count}} грузаў",
+      "cargoCount_one": "{{count}} груз",
+      "cargoCount_other": "{{count}} грузаў",
+      "documents": {
+         "add": "Дадаць дакумент",
+         "empty": "Дакументы не дададзены",
+         "fileSelected": "Файл выбраны"
+      },
+      "empty": {
+         "addressNotSpecified": "Адрас не ўказаны",
+         "binNotSpecified": "БІН не ўказаны",
+         "canLeaveBlank": "Можна пакінуць пустым",
+         "cargoNotSpecified": "Груз не ўказаны",
+         "companyNotSpecified": "Кампанія не ўказана",
+         "contactDataNotSpecified": "Кантактныя дадзеныя не ўказаны",
+         "contactsNotSpecified": "Кантакты не ўказаны",
+         "dataNotFilled": "Дадзеныя не запоўнены",
+         "dateNotSpecified": "Дата не ўказана",
+         "descriptionNotSpecified": "Апісанне не ўказана",
+         "fullNameNotSpecified": "ПІБ не ўказана",
+         "invalidData": "Некарэктныя дадзеныя",
+         "invalidDate": "Некарэктная дата",
+         "nameNotSpecified": "Назва не ўказана",
+         "noCompany": "Без кампаніі",
+         "noData": "Няма дадзеных",
+         "noFullName": "Без ПІБ",
+         "noName": "Без імя",
+         "notAdded": "Не дададзены",
+         "notAssigned": "Не прызначаны",
+         "notSelected": "Не выбраны",
+         "notSpecifiedM": "Не ўказаны",
+         "notSpecifiedN": "Не ўказана",
+         "nothingFound": "Нічога не знойдзена",
+         "optional": "Неабавязкова",
+         "priceNotSpecified": "Цана не ўказана",
+         "typeNotSpecified": "Тып не ўказаны",
+         "unknown": "Невядома",
+         "unlimited": "Не абмежавана"
+      },
+      "fields": {
+         "actions": "Дзеянні",
+         "amount": "Сума",
+         "bik": "БІК",
+         "bin": "БІН",
+         "binValue": "БІН: {{bin}}",
+         "bodyType": "Тып саставу",
+         "cargo": "Груз",
+         "cargoCountLabel": "Колькасць грузаў",
+         "cargoName": "Найменне грузу",
+         "cargoPrice": "Цана грузу",
+         "cargoType": "Тып грузу",
+         "cargos": "Грузы",
+         "comment": "Каментар",
+         "company": "Кампанія",
+         "companyAddress": "Адрас кампаніі",
+         "companyBin": "БІН кампаніі",
+         "companyName": "Назва кампаніі",
+         "contactPerson": "Кантактная асоба",
+         "createdAt": "Дата стварэння",
+         "currency": "Валюта",
+         "customer": "Заказчык",
+         "date": "Дата",
+         "dateFrom": "Дата ад",
+         "dateTo": "Дата да",
+         "description": "Апісанне",
+         "destination": "Куды",
+         "dimensions": "Памеры",
+         "direction": "Напрамак",
+         "directorFio": "ПІБ дырэктара ІП",
+         "document": "Дакумент",
+         "documentName": "Назва дакумента",
+         "documentNumber": "Нумар дакумента",
+         "documents": "Дакументы",
+         "driver": "Вадзіцель",
+         "email": "Email",
+         "endDate": "Дата заканчэння",
+         "executionPrice": "Цана выканання",
+         "factor": "Фактар",
+         "file": "Файл",
+         "files": "Файлы",
+         "forwarder": "Экспедытар",
+         "forwarderBin": "БІН экспедытара",
+         "forwarderFullName": "ПІБ экспедытара",
+         "forwarderIin": "ІІН экспедытара",
+         "from": "Ад",
+         "fullName": "ПІБ",
+         "gracePeriod": "Адтэрміноўка плацяжу",
+         "gracePeriodDays": "Адтэрміноўка плацяжу, дзён",
+         "heightCm": "Вышыня, см",
+         "iik": "ІІК",
+         "iin": "ІІН",
+         "international": "Міжнародная перавозка",
+         "issuingCountry": "Краіна выдачы",
+         "legalAddress": "Юрыдычны адрас",
+         "lengthCm": "Даўжыня, см",
+         "loadingType": "Тып пагрузкі",
+         "manufacturer": "Вытворца",
+         "name": "Назва",
+         "number": "Нумар",
+         "origin": "Адкуль",
+         "packagingType": "Выгляд упакоўкі",
+         "participants": "Удзельнікі",
+         "password": "Пароль",
+         "phone": "Тэлефон",
+         "price": "Цана",
+         "quantity": "Колькасць",
+         "route": "Маршрут",
+         "settlementAccount": "Разліковы рахунак",
+         "shipments": "Перавозкі",
+         "startDate": "Дата пачатку",
+         "status": "Статус",
+         "timeLeft": "Засталося",
+         "title": "Найменне",
+         "tnvedCode": "Код ТН ЗЭД",
+         "to": "Да",
+         "transportParams": "Параметры перавозкі",
+         "transportType": "Тып транспарту",
+         "type": "Тып",
+         "vat": "ПДВ",
+         "vehicleNumber": "Дзярж. нумар",
+         "volume": "Аб'ём",
+         "volumeM3": "Аб'ём, м³",
+         "weight": "Вага",
+         "weightKg": "Вага, кг",
+         "widthCm": "Шырына, см",
+         "withVat": "з ПДВ",
+         "withoutVat": "без ПДВ"
+      },
+      "filePreview": {
+         "documentNotFound": "Дакумент не знойдзены",
+         "noFile": "Для гэтага дакумента няма файла для папярэдняга прагляду",
+         "unsupported": "Папярэдні прагляд для гэтага тыпу файла пакуль не падтрымліваецца",
+         "unsupportedType": "Папярэдні прагляд файла тыпу {{mime}} не падтрымліваецца"
+      },
+      "forwarderPicker": {
+         "clickToLoad": "Націсніце, каб загрузіць экспедытараў",
+         "detailsLoadFailed": "Не ўдалося загрузіць дадзеныя экспедытара",
+         "loadFailed": "Не ўдалося загрузіць экспедытараў",
+         "loading": "Загружаем экспедытараў...",
+         "notFound": "Экспедытар не знойдзены",
+         "searchByCompany": "Увядзіце назву кампаніі або БІН",
+         "searchHint": "Увядзіце ПІБ, ІІН, кампанію, БІН або тэлефон"
+      },
+      "loading": {
+         "default": "Загрузка...",
+         "list": "Загружаем спіс...",
+         "map": "Загружаем карту...",
+         "preview": "Загрузка папярэдняга прагляду..."
+      },
+      "search": {
+         "byDirection": "Пошук па напрамку",
+         "byName": "Пошук па назве",
+         "byNumOrName": "Пошук па нумары або назве",
+         "minChars": "Увядзіце мінімум 2 сімвалы"
+      },
+      "severity": {
+         "error": "Памылка",
+         "info": "Паведамленне",
+         "notice": "Апавяшчэнне",
+         "success": "Паспяхова",
+         "warning": "Папярэджанне"
+      },
+      "shipmentCount_few": "{{count}} перавозкі",
+      "shipmentCount_many": "{{count}} перавозак",
+      "shipmentCount_one": "{{count}} перавозка",
+      "shipmentCount_other": "{{count}} перавозак",
+      "signing": {
+         "keepPageOpen": "Не закрывайце старонку — акно падпісання адкрыта ў новай укладцы. Статус абновіцца аўтаматычна.",
+         "opening": "Адкрываем старонку падпісання...",
+         "thisLink": "гэтай ссылцы",
+         "unavailable": "Сэрвіс падпісання недаступны, паспрабуйце пазней",
+         "waiting": "Чакаем падпісання...",
+         "windowHint": "Калі акно для падпісання не адкрылася аўтаматычна, адкрыйце яго па"
+      },
+      "units": {
+         "bytes": "{{value}} Б",
+         "cargoSummary": "{{cargoCount}} · {{weight}} кг",
+         "days": "{{count}} дн.",
+         "dimensionsCm": "{{length}} × {{width}} × {{height}} см",
+         "kg": "{{value}} кг",
+         "kilobytes": "{{value}} КБ",
+         "km": "км",
+         "m3": "{{value}} м³",
+         "megabytes": "{{value}} МБ"
+      },
+      "validation": {
+         "dateOrder": "Дата «ад» не можа быць пазней за дату «да»"
+      },
+      "view": {
+         "cards": "Карткі",
+         "showAsCards": "Паказаць карткамі",
+         "showAsTable": "Паказаць табліцай",
+         "table": "Табліца"
+      },
+      "waypointCount_few": "{{count}} пункты",
+      "waypointCount_many": "{{count}} пунктаў",
+      "waypointCount_one": "{{count}} пункт",
+      "waypointCount_other": "{{count}} пунктаў"
+   },
+   "complaints": {
+      "answer": {
+         "label": "Адказ",
+         "notAdded": "Адказ пакуль не дададзены",
+         "pending": "Адказ ад адміністрацыі пакуль не атрыманы",
+         "rejected": "Скарга адхілена",
+         "title": "Адказ адміністрацыі"
+      },
+      "attachments": {
+         "allowedTypes": "Дазволены толькі выявы, відэа, PDF або DOCX",
+         "attach": "Прыкласці файлы",
+         "limits": "Не больш за {{count}} файлаў, да {{size}} МБ кожны",
+         "maxCount": "Можна прыкласці не больш за {{count}} файлаў",
+         "maxSize": "Размер файла не павінен перавышаць {{size}} МБ",
+         "removeFile": "Выдаліць файл"
+      },
+      "create": {
+         "action": "Падаць скаргу",
+         "describePlaceholder": "Апішыце, што адбылося",
+         "failed": "Не ўдалося адправіць скаргу",
+         "maxLength": "Апісанне не павінна перавышаць {{count}} сімвалаў",
+         "subject": "Сутнасць скаргі",
+         "subjectPlaceholder": "Апішыце сутнасць скаргі",
+         "submit": "Адправіць скаргу"
+      },
+      "emptyLast30Days": "Скаргаў за апошнія 30 дзён не знойдзена",
+      "loadFailed": "Не ўдалося загрузіць скаргі",
+      "notFound": "Скаргі не знойдзены",
+      "subtitle": "Скаргі за апошнія 30 дзён і адказы адміністрацыі",
+      "target": {
+         "empty": "Няма перавозак або фактарынгаў за апошнія 30 дзён",
+         "label": "Адносіцца да",
+         "loadFailed": "Не ўдалося загрузіць спіс",
+         "question": "Да якой перавозкі або фактарынгу адносіцца скарга"
+      },
+      "title": "Скаргі",
+      "titleSingular": "Скарга",
+      "viewToggle": "Пераключэнне адлюстравання скаргаў"
+   },
+   "contractGate": {
+      "fillProfile": "Запоўніце ў профілі дадзеныя",
+      "goToProfile": "Перайсці ў профіль",
+      "noContracts": "У вас няма дагавораў або тэрмін падпісання завершыўся",
+      "signContract": "Падпісаць дагавор"
+   },
+   "createLead": {
+      "cargo": {
+         "description": "Апісанне грузу",
+         "validation": {
+            "cargoPriceNegative": "Цана грузу не можа быць адмоўнай",
+            "gracePeriodRange": "Укажыце ад 1 да 364 дзён",
+            "heightPositive": "Вышыня павінна быць больш за 0",
+            "lengthPositive": "Даўжыня павінна быць больш за 0",
+            "nameRequired": "Укажыце найменне грузу",
+            "priceNegative": "Цана не можа быць адмоўнай",
+            "tnvedRequired": "Укажыце код ТН ЗЭД",
+            "volumePositive": "Аб'ём павінен быць больш за 0",
+            "weightPositive": "Вага павінна быць больш за 0",
+            "widthPositive": "Шырына павінна быць больш за 0"
+         },
+         "withVat": "З ПДВ"
+      },
+      "customer": {
+         "current": "Цяперашні заказчык",
+         "required": "Укажыце заказчыка"
+      },
+      "forwarder": {
+         "hint": "Знайдзіце і выберыце экспедытара, які будзе закраплены за маршрутам",
+         "loadingDetails": "Загружаем дадзеныя экспедытара...",
+         "skippable": "Можна прапусціць гэты крок і стварыць замову без экспедытара"
+      },
+      "result": {
+         "createError": "Памылка стварэння",
+         "createFailed": "Не ўдалося стварыць замову",
+         "created": "Замова створана",
+         "createdSuccess": "Замова паспяхова створана",
+         "createdSuccessWithId": "Замова паспяхова створана: {{id}}",
+         "createdWithDocumentErrors": "Замова створана, але частка дакументаў не загрузілася",
+         "draftSaveFailed": "Не ўдалося захаваць чарнавік",
+         "draftSaved": "Чарнавік захаваны",
+         "saveError": "Памылка захавання",
+         "savedAsDraft": "Замова захавана як чарнавік"
+      },
+      "saveDraft": "Захаваць як чарнавік",
+      "saveDraftShort": "Чарнавік",
+      "skipVideoRecording": "Пропуск відэафіксацыі разгрузкі/пагрузкі",
+      "step": "Крок {{current}} з {{total}}",
+      "steps": {
+         "cargo": "Грузы і аплата",
+         "confirm": "Праверка",
+         "confirmTitle": "Праверце дадзеныя",
+         "customer": "Дадзеныя заказчыка",
+         "documents": "Дакументы",
+         "forwarder": "Выбар экспедытара",
+         "route": "Маршрут"
+      },
+      "submit": "Стварыць замову",
+      "subtitle": "Запоўніце дадзеныя па заяўцы",
+      "title": "Стварэнне замовы"
+   },
+   "dashboard": {
+      "analytics": {
+         "amountAxis": "Сума, {{currency}}",
+         "emergencyCount": "Аварыйных: {{count}}",
+         "emptyPeriod": "Няма дадзеных за выбраны перыяд",
+         "loadFailed": "Не ўдалося загрузіць аналітыку перавозак",
+         "noShipmentsPeriod": "Няма перавозак за выбраны перыяд",
+         "shipmentNumber": "№ перавозкі",
+         "title": "Дынаміка перавозак",
+         "trips": "рэйсаў"
+      },
+      "factorings": {
+         "loading": "Загрузка фактарынгаў...",
+         "number": "Фактарынг #{{id}}",
+         "title": "Спіс фактарынгаў"
+      },
+      "groupBy": {
+         "day": "Па днях",
+         "month": "Па месяцах",
+         "quarter": "Па кварталах",
+         "week": "Па тыднях"
+      },
+      "leads": {
+         "empty": "Актыўных замоў пакуль няма",
+         "loading": "Загрузка замоў...",
+         "mapHint": "Выберыце замову, каб падсвеціць маршрут на карце",
+         "orderNumber": "Замова #{{num}}",
+         "title": "Актыўныя замовы"
+      },
+      "period": {
+         "action": "Выбраць перыяд",
+         "compare": "Параўнаць з папярэднім перыядам",
+         "halfYear": "Паўгода",
+         "month": "Месяц",
+         "quarter": "Квартал",
+         "title": "Выбар перыяду",
+         "week": "Тыдзень",
+         "year": "Год"
+      },
+      "saleCount_few": "{{count}} продажы",
+      "saleCount_many": "{{count}} продажаў",
+      "saleCount_one": "{{count}} продаж",
+      "saleCount_other": "{{count}} продажаў",
+      "stats": {
+         "active": "Актыўныя",
+         "activeFactoringSales": "Актыўныя продажы фактарынгу",
+         "activeShipments": "Актыўныя перавозкі",
+         "activeTenders": "Актыўныя аўкцыёны",
+         "amounts": "Сумы",
+         "factoringSales": "Продажы фактарынгу",
+         "factoringSalesPeriod": "Перыяд продажаў фактарынгу",
+         "forPeriod": "За перыяд",
+         "loadFailed": "Не ўдалося загрузіць статыстыку",
+         "shipmentsPeriod": "Перыяд перавозак",
+         "showAllCurrencies": "Паказаць усе валюты",
+         "title": "Статыстыка",
+         "today": "Сёння",
+         "viewMode": "Рэжым адлюстравання статыстыкі"
+      },
+      "tenderCount_few": "{{count}} аўкцыёны",
+      "tenderCount_many": "{{count}} аўкцыёнаў",
+      "tenderCount_one": "{{count}} аўкцыён",
+      "tenderCount_other": "{{count}} аўкцыёнаў",
+      "tenders": {
+         "bids": "Ставкі: {{count}}",
+         "loading": "Загрузка аўкцыёнаў...",
+         "number": "Аўкцыён #{{id}}",
+         "private": "Прыватныя",
+         "privateEmpty": "Прыватныя аўкцыёны пакуль не знойдзены",
+         "public": "Публічныя",
+         "publicEmpty": "Публічныя аўкцыёны пакуль не знойдзены",
+         "title": "Спіс аўкцыёнаў"
+      },
+      "title": "Галоўная",
+      "totalCargoWeight": "{{value}} кг"
+   },
+   "enums": {
+      "complaintStatus": {
+         "answered": "Адказ атрыманы",
+         "in_progress": "У працы",
+         "pending_answer": "Чакае адказу",
+         "pending_review": "Чакае разгляду",
+         "rejected": "Адхілена",
+         "rejectedN": "Адхілена",
+         "resolved": "Вырашана"
+      },
+      "complaintTarget": {
+         "factoring": "Фактарынг",
+         "shipment": "Перавозка"
+      },
+      "factoringLine": {
+         "closed": "Закрытая лінія",
+         "open": "Адкрытая лінія"
+      },
+      "factoringStatus": {
+         "await_paid": "Чакае аплаты",
+         "cancelled": "Адменены",
+         "finished": "Завершаны",
+         "new": "Новы",
+         "verified_participant": "Часткова пацверджаны"
+      },
+      "leadStatus": {
+         "add_driver": "Вадзіцель дададзены",
+         "cancelled": "Адменены",
+         "draft": "Чарнавік",
+         "emergency_situation": "Аварыйная сітуацыя",
+         "finished": "Завершаны",
+         "finished_emergency_situation": "Завершаны (аварыйная сітуацыя)",
+         "new": "Новы",
+         "sign_avr": "Падпісанне АВР",
+         "start_driver": "Паездка пачата",
+         "start_loading": "Пагрузка",
+         "start_unloading": "Разгрузка",
+         "verification_loading": "Пагрузка пацверджана",
+         "verification_unloading": "Разгрузка пацверджана"
+      },
+      "leadStatusFilter": {
+         "all": "Усе статусы",
+         "cancelled": "Адмененыя",
+         "driverAssigned": "Вадзіцель прызначаны",
+         "driverDeparted": "Вадзіцель выехаў",
+         "finished": "Завершаныя",
+         "inTransit": "У дарозе",
+         "new": "Новыя",
+         "other": "Іншыя"
+      },
+      "manufacturerStatus": {
+         "attached": "Прывязаны",
+         "incomingRequest": "Уваходная заяўка",
+         "notAttached": "Не прывязаны",
+         "requestSent": "Заяўка адправлена"
+      },
+      "participantType": {
+         "forwarder": "Экспедытар"
+      },
+      "publicationType": {
+         "private": "Прыватны",
+         "public": "Публічны"
+      },
+      "signature": {
+         "notSigned": "Не падпісана",
+         "notSignedM": "Не падпісаны",
+         "signed": "Падпісана",
+         "signedM": "Падпісаны"
+      },
+      "tenderStatus": {
+         "active": "Актыўны",
+         "cancelled": "Адменены",
+         "closed": "Закрыты",
+         "finished": "Завершаны",
+         "new": "Новы"
+      },
+      "verification": {
+         "confirmed": "Пацверджана",
+         "notConfirmed": "Не пацверджана"
+      },
+      "verificationCheck": {
+         "notPassed": "Не пройдзена",
+         "passed": "Пройдзена",
+         "passedMark": "✓ Пройдзена"
+      },
+      "waypointType": {
+         "check_passes": "Транзіт",
+         "loading": "Пагрузка",
+         "unloading": "Разгрузка"
+      }
+   },
+   "errorPage": {
+      "title": "Нешта пайшло не так",
+      "unexpectedReload": "Адбылася непрадбачаная памылка. Абнавіце старонку або паспрабуйце пазней."
+   },
+   "errors": {
+      "factoringNotFound": "Фактарынг не знойдзены",
+      "generic": "Нешта пайшло не так",
+      "genericSupport": "Нешта пайшло не так. Звярніцеся ў падтрымку.",
+      "leadNotFound": "Замова не знойдзена",
+      "notFound": "Запрашаемая старонка не знойдзена.",
+      "server": "Адбылася памылка на серверы. Паспрабуйце пазней.",
+      "unexpected": "Адбылася непрадбачаная памылка."
+   },
+   "exportReport": {
+      "action": "Выгрузіць справаздачу",
+      "actionShort": "Справаздача",
+      "dateOrder": "Дата «ад» не можа быць пазней за дату «да»",
+      "failed": "Не ўдалося выгрузіць справаздачу. Паспрабуйце пазней",
+      "hint": "У справаздачу патрапяць толькі завершаныя перавозкі за выбраны перыяд.",
+      "inProgress": "Выгрузка...",
+      "submit": "Выгрузіць"
+   },
+   "factorings": {
+      "cancel": {
+         "action": "Адмяніць фактарынг",
+         "confirm": "Вы ўпэўнены, што хочаце адмяніць гэты фактарынг? Гэтае дзеянне нельга будзе скасаваць.",
+         "failed": "Не ўдалося адмяніць фактарынг",
+         "inProgress": "Адмяняем фактарынг…"
+      },
+      "chat": {
+         "action": "Чат",
+         "leadNotResolved": "Не ўдалося вызначыць замову, звязаную з фактарынгам",
+         "openFailed": "Не ўдалося адкрыць чат па фактарынгу"
+      },
+      "confirmParticipation": {
+         "openFailed": "Не ўдалося адкрыць акно падпісання",
+         "opening": "Адкрываем падпісанне...",
+         "text": "Хочаце пацвердзіць свой удзел у гэтым фактарынгу? Вы будзеце перанакіраваны ў акно падпісання дакументаў.",
+         "title": "Пацвярджэнне ўдзелу"
+      },
+      "confirmations": {
+         "confirmedByCustomer": "Пацверджана заказчыкам",
+         "customer": "Пацвярджэнне заказчыка",
+         "date": "Дата пацвярджэння",
+         "factor": "Пацвярджэнне фактара",
+         "factorStatus": "Фактар: {{status}}",
+         "forwarder": "Пацвярджэнне экспедытара",
+         "forwarderStatus": "Экспедытар: {{status}}",
+         "subtitle": "Статусы пацвярджэння бакоў",
+         "title": "Пацвярджэнні",
+         "you": "Вы",
+         "youStatus": "Вы: {{status}}"
+      },
+      "details": {
+         "cargoSection": "Груз і параметры перавозкі",
+         "createdAt": "Дата стварэння",
+         "loadFailed": "Не ўдалося загрузіць дэталі фактарынгу",
+         "loading": "Загружаем дэталі фактарынгу...",
+         "main": "Асноўная інфармацыя",
+         "mainSubtitle": "Нумар заяўкі, дата стварэння і звязаная замова",
+         "number": "Фактарынг #{{id}}",
+         "title": "Дэталі фактарынгу"
+      },
+      "finance": {
+         "creditAmount": "Крэдытная сума",
+         "debtAmount": "Дэбіторская сума",
+         "debtCurrency": "Валюта дэбіторскай сумы",
+         "factoringCurrency": "Валюта фактарынгу",
+         "factoringRate": "Ставка фактарынгу",
+         "serviceRate": "Сэрвісная ставка",
+         "subtitle": "Сумы, валюта і ставка фактарынгу",
+         "title": "Фінансы"
+      },
+      "line": {
+         "contractNote": "Між экспедытарам і фактарам, ужо падпісаны абодвума бакамі",
+         "contractTitle": "Дагавор фактарынг-лініі",
+         "signStartFailed": "Не ўдалося пачаць падпісанне фактарынг-лініі",
+         "timeout": "Час на падпісанне фактарынг-лініі сышоў, паспрабуйце зноў",
+         "waitForParties": "Падпісанне стане даступным пасля падпісання экспедытарам і фактарам.",
+         "yourSignature": "Фактарынг-лінія (ваш подпіс)"
+      },
+      "loadFailed": "Не ўдалося загрузіць фактарынг-пакупкі",
+      "notFound": "Фактарынг-пакупкі не знойдзены",
+      "participants": {
+         "customerLoadFailed": "Не ўдалося загрузіць дадзеныя заказчыка",
+         "subtitle": "Усе ўдзельнікі па фактарынгу"
+      },
+      "purchasesTitle": "Фактарынг-пакупкі",
+      "requisites": {
+         "loadFailed": "Не ўдалося загрузіць рэквізіты заказчыка",
+         "title": "Рэквізіты бакоў"
+      },
+      "subtitle": "Спіс заявак на фактарынг",
+      "title": "Фактарынгі",
+      "titleSingular": "Фактарынг",
+      "viewToggle": "Пераключэнне адлюстравання фактарынгаў"
+   },
+   "forwarders": {
+      "invite": {
+         "action": "Запрасіць экспедытара",
+         "copyLink": "Скапіяваць ссылку",
+         "create": "Стварыць запрашэнне",
+         "createFailed": "Не ўдалося стварыць запрашэнне",
+         "created": "Запрашэнне створана",
+         "link": "Запрашальная ссылка",
+         "linkCopied": "Ссылка скапіявана",
+         "noActiveLink": "Няма актыўнай ссылкі",
+         "success": "Экспедытар створаны. Адправьце яму ссылку для завершэння запаўнення дадзеных.",
+         "title": "Запрашэнне"
+      },
+      "issuingCountry": "Краіна выдачы дакумента",
+      "leads": {
+         "empty": "У экспедытара пакуль няма замоў",
+         "title": "Замовы экспедытара"
+      },
+      "notFound": "Экспедытары не знойдзены",
+      "registered": "Зарэгістраваны",
+      "representative": "Прадстаўнік",
+      "searchPlaceholder": "Пошук экспедытара",
+      "sections": {
+         "individual": "Фіз. асоба",
+         "legalEntity": "Юр. асоба"
+      },
+      "subtitle": "Поўны спіс усіх экспедытараў",
+      "title": "Экспедытары",
+      "viewToggle": "Пераключэнне адлюстравання экспедытараў"
+   },
+   "header": {
+      "closeMenu": "Закрыць меню",
+      "logout": {
+         "action": "Выйсці",
+         "confirm": "Вы ўпэўнены, што хочаце выйсці?",
+         "failed": "Не ўдалося выйсці з акаўнта",
+         "fromAccount": "Выхад з акаўнта",
+         "inProgress": "Выхад...",
+         "title": "Выхад"
+      },
+      "needHelp": "Патрэбна дапамога?",
+      "settings": "Налады",
+      "supportAvailable": "Наша служба падтрымкі на звязку 24/7",
+      "user": "Карыстальнік",
+      "userProfile": "Профіль карыстальніка {{email}}"
+   },
+   "kgd": {
+      "loadFailed": "Не ўдалося загрузіць дадзеныя па КГД",
+      "taxationMode": "Рэжым падаткаабкладання"
+   },
+   "leads": {
+      "avr": {
+         "checking": "Правераем статус АВР...",
+         "clickToDownload": "Націсніце, каб спампаваць",
+         "customerSignature": "Подпіс заказчыка",
+         "devSimulateForwarder": "[dev] Імітаваць падпісанне экспедытарам",
+         "forwarderSignature": "Подпіс экспедытара",
+         "notReady": "Дакумент АВР пакуль не гатовы, паспрабуйце пазней",
+         "signStartFailed": "Не ўдалося пачаць падпісанне АВР",
+         "statusLoadFailed": "Не ўдалося загрузіць статус АВР",
+         "timeout": "Час на падпісанне АВР сышоў, паспрабуйце зноў",
+         "title": "Акт выкананых работ",
+         "titleShort": "Акт выкананых работ (АВР)",
+         "unavailable": "Дакумент АВР пакуль недаступны, паспрабуйце пазней",
+         "waitForForwarder": "Падпісанне АВР стане даступным пасля падпісання экспедытарам."
+      },
+      "cargo": {
+         "add": "Дадаць груз",
+         "deleteConfirm": "Выдаліць груз #{{index}}?",
+         "deleteFailed": "Не ўдалося выдаліць груз",
+         "itemNumber": "Груз #{{index}}",
+         "priceSetByForwarder": "Цана зададзена экспедытарам",
+         "volumeM3Value": "{{value}} м³"
+      },
+      "chat": {
+         "withDriver": "Чат з вадзіцелем",
+         "withForwarder": "Чат з экспедытарам"
+      },
+      "details": {
+         "driverComment": "Каментар вадзіцеля: {{comment}}",
+         "info": "Інфармацыя пра замову",
+         "loadFailed": "Не ўдалося загрузіць замову",
+         "loading": "Загружаем дэталі замовы...",
+         "noCustomer": "Без заказчыка",
+         "notResolved": "Не ўдалося вызначыць замову",
+         "number": "Замова #{{num}}",
+         "ownerNotSpecified": "Адказны не ўказаны",
+         "refreshFailed": "Не ўдалося атрымаць абноўленыя дадзеныя замовы",
+         "saveFailed": "Не ўдалося захаваць змены",
+         "shipmentNumber": "Перавозкі #{{num}}",
+         "subtitle": "Падрабязныя дадзеныя па заяўцы",
+         "videoDisabled": "Відэафіксацыя адключана"
+      },
+      "documents": {
+         "deleteFailed": "Не ўдалося выдаліць дакумент",
+         "deleteTargetMissing": "Не ўдалося вызначыць файл для выдалення",
+         "loadFailed": "Не ўдалося загрузіць дакументы",
+         "ownFilesOnly": "Можна выдаліць толькі файлы заказчыка",
+         "singleLoadFailed": "Не ўдалося загрузіць дакумент"
+      },
+      "edit": {
+         "blockedEmergency": "Нельга рэдагаваць замову ў аварыйнай сітуацыі",
+         "blockedFinished": "Нельга рэдагаваць завершаную або адмененую замову",
+         "blockedFinishedEmergency": "Нельга рэдагаваць замову, завершаную ў аварыйнай сітуацыі"
+      },
+      "empty": "Няма замоў",
+      "forwarder": {
+         "lockedByTender": "Экспедытар прызначаны па результатах аўкцыёну і не можа быць змінены",
+         "notAssigned": "Экспедытар не прызначаны"
+      },
+      "loadFailed": "Не ўдалося загрузіць замовы",
+      "map": {
+         "driverPosition": "Цяперашняя пазіцыя вадзіцеля",
+         "lastUpdate": "Апошняе абнаўленне: {{time}}",
+         "loadingRoute": "Загружаем маршрут...",
+         "positionFromTrack": "Пазіцыя па дадзеных трэкінгу"
+      },
+      "notFound": "Замовы не знойдзены",
+      "publish": {
+         "action": "Апублікаваць",
+         "failed": "Не ўдалося апублікаваць замову",
+         "fillRouteAndCargo": "Запоўніце маршрут і груз перад публікацыяй",
+         "inProgress": "Публікацыя..."
+      },
+      "scope": {
+         "active": "Актыўныя",
+         "all": "Усе замовы",
+         "toggle": "Пераключэнне між усімі і актыўнымі замовамі"
+      },
+      "share": {
+         "confirm": "Вы ўпэўнены, што хочаце падзяліцца інфармацыяй пра замову з трэцімі асобамі? Інфармацыя будзе даступная па ссылцы любому, у каго яна ёсць.",
+         "creating": "Стварэнне ссылкі...",
+         "failed": "Не ўдалося атрымаць ссылку. Паспрабуйце пазней.",
+         "hint": "Любы, у каго ёсць гэтая ссылка, зможа праглядзець інфармацыю пра замову.",
+         "link": "Ссылка на замову",
+         "title": "Падзяліцца замовай",
+         "validUntil": "Ссылка дзейсная да"
+      },
+      "subtitle": "Спіс заявак на перавозку",
+      "title": "Замовы",
+      "trip": {
+         "avrSignedFinished": "АВР падпісаны, рэйс завершаны",
+         "emergency": "Аварыйная сітуацыя на рэйсе",
+         "finishedEmergency": "Рэйс быў завершаны ў аварыйнай сітуацыі"
+      },
+      "validation": {
+         "gracePeriodRange": "Адтэрміноўка плацяжу павінна быць ад 1 да 364 дзён",
+         "routeDates": "Праверце даты маршруту",
+         "routePoints": "Укажыце пункты адпраўлення і прызначэння маршруту",
+         "tnvedForAllCargo": "Укажыце код ТН ЗЭД для ўсіх грузаў"
+      },
+      "view": {
+         "kanban": "Канбан",
+         "showAsKanban": "Паказаць канбанам"
+      },
+      "viewToggle": "Пераключэнне адлюстравання замоў"
+   },
+   "manufacturers": {
+      "add": {
+         "action": "Дадаць вытворцу",
+         "alreadyAdded": "Ужо дададзены",
+         "failed": "Не ўдалося дадаць вытворцу",
+         "inProgress": "Дадаём...",
+         "searchHint": "Пошук па назве або БІН",
+         "searchPlaceholder": "Увядзіце назву або БІН вытворцы",
+         "success": "Вытворца дададзены"
+      },
+      "bulk": {
+         "result": "{{action}}: {{done}} з {{total}}. {{reason}}"
+      },
+      "card": {
+         "bin": "БІН {{bin}}",
+         "linkedShipments": "Прывязаныя перавозкі",
+         "linkedToCustomer": "Прывязаны да заказчыка",
+         "nameWithBin": "{{name}} — БІН {{bin}}",
+         "noLinkedShipments": "Да вытворцы не прывязана ні адной перавозкі",
+         "notLinkedToCustomer": "Вытворца не прывязаны да заказчыка",
+         "openLinkedShipments": "Адкрыць прывязаныя перавозкі",
+         "shipmentsCount": "Перавозак: {{count}}",
+         "shipmentsLabel": "Перавозак",
+         "title": "Дадзеныя вытворцы"
+      },
+      "filters": {
+         "all": "Усе",
+         "allManufacturers": "Усе вытворцы",
+         "linkColumn": "Прывязка",
+         "manufacturerNotLinked": "Вытворца не прывязаны",
+         "notLinked": "Не прывязаны",
+         "withManufacturer": "З вытворцам",
+         "withoutManufacturer": "Без вытворцы"
+      },
+      "link": {
+         "action": "Прывязаць",
+         "actionWithCount": "Прывязаць ({{count}})",
+         "changeManufacturer": "Змяніць вытворцу",
+         "failed": "Не ўдалося прывязаць вытворцу",
+         "freeShipmentsHint": "Вытворца: {{name}}. Паказаны перавозкі без вытворцы.",
+         "freeShipmentsNotFound": "Свабодныя перавозкі не знойдзены",
+         "inProgress": "Прывязваем...",
+         "manufacturerAction": "Прывязаць вытворцу",
+         "overwriteWarning": "Выбрана {{shipments}}. У перавозкі можа быць толькі адзін вытворца — цяперашняя прывязка будзе перазапісана.",
+         "shipmentsAction": "Прывязаць перавозкі",
+         "success": "Вытворца прывязаны",
+         "title": "Прывязка вытворцы"
+      },
+      "loadFailed": "Не ўдалося загрузіць вытворцаў",
+      "notFound": "Вытворцы не знойдзены",
+      "remove": {
+         "failed": "Не ўдалося выдаліць вытворцу",
+         "success": "Вытворца выдалены са спіса"
+      },
+      "requestCount_few": "{{count}} заяўкі",
+      "requestCount_many": "{{count}} заявак",
+      "requestCount_one": "{{count}} заяўка",
+      "requestCount_other": "{{count}} заявак",
+      "requests": {
+         "alreadySent": "Заяўка ўжо адправлена",
+         "approve": "Ухваліць",
+         "approveFailed": "Не ўдалося ухваліць заяўкі",
+         "approveMany": "Ухваліць заяўкі",
+         "approved": "Заяўкі ўхвалены",
+         "loadFailed": "Не ўдалося загрузіць заяўкі",
+         "reject": "Адхіліць",
+         "rejectFailed": "Не ўдалося адхіліць заяўкі",
+         "rejectMany": "Адхіліць заяўкі",
+         "rejected": "Заяўкі адхілены",
+         "send": "Адправіць заяўку",
+         "sendFailed": "Не ўдалося адправіць заяўку",
+         "sendToManufacturer": "Адправіць заяўку вытворцу",
+         "withdraw": "Адазваць",
+         "withdrawFailed": "Не ўдалося адазваць заяўкі",
+         "withdrawMany": "Адазваць заяўкі",
+         "withdrawn": "Заяўкі адазваны"
+      },
+      "searchFailed": "Не ўдалося выканаць пошук вытворцаў",
+      "shipments": {
+         "loadFailed": "Не ўдалося загрузіць перавозкі",
+         "notFound": "Перавозкі не знойдзены",
+         "searchByNumber": "Пошук па нумары або напрамку",
+         "searchFull": "Пошук па нумары, напрамку або вытворцы",
+         "total": "Усяго перавозак: {{count}}"
+      },
+      "subtitle": "Прывязка вытворцаў да перавозак і спіс сваіх вытворцаў",
+      "tabs": {
+         "linked": "Прывязка з вытворцам",
+         "linking": "Прывязка перавозак"
+      },
+      "title": "Вытворцы",
+      "unlink": {
+         "action": "Адчапіць",
+         "actionWithCount": "Адчапіць ({{count}})",
+         "failed": "Не ўдалося адчапіць вытворцу",
+         "manufacturerAction": "Адчапіць вытворцу",
+         "success": "Вытворца адчэплены"
+      }
+   },
+   "map": {
+      "actualPath": "Фактычны шлях",
+      "actualPathOrder": "Фактычны шлях замовы #",
+      "driverName": "Вадзіцель: {{name}}",
+      "driverNotSpecified": "Вадзіцель не ўказаны",
+      "driverPhone": "Тэлефон:",
+      "driverPosition": "Цяперашняя пазіцыя вадзіцеля",
+      "driverVehicleNumber": "Дзярж. нумар:",
+      "noCoordinates": "Няма каардынат",
+      "pointsCount": "Пунктаў: {{count}}",
+      "routeView": {
+         "label": "Адлюстраванне маршруту",
+         "all": "Усе маршруты",
+         "passed": "Толькі пройдзены шлях",
+         "planned": "Маршрут без пройдзенага"
+      },
+      "routesLoadFailed": "Не ўдалося загрузіць маршруты",
+      "routesPartialFailure": "Не ўдалося загрузіць GeoWS-маршруты для {{failed}} з {{total}} замоў"
+   },
+   "mobileNotice": {
+      "text": "Для больш камфортнай працы з сэрвісам рэкамендуем выкарыстоўваць камп'ютар. Мабільная версія можа адлюстроўвацца некарэктна.",
+      "title": "Рэкамендуем выкарыстоўваць камп'ютарную версію"
+   },
+   "nav": {
+      "advertisements": "Аб'явы",
+      "complaints": "Скаргі",
+      "dashboard": "Галоўная",
+      "factoring": "Фактарынг",
+      "factorings": "Фактарынгі",
+      "forwarders": "Экспедытары",
+      "leads": "Замовы",
+      "manufacturers": "Вытворцы",
+      "profile": "Профіль",
+      "settings": "Налады",
+      "tenders": "Аўкцыёны",
+      "tnved": "ТН ЗЭД (ЕАЭС)",
+      "tooltips": {
+         "advertisements": "Аб'явы пра перавозкі для экспедытараў: стварэнне і спіс актыўных і закрытых аб'яў",
+         "complaints": "Падача скаргаў па замовах і фактарынгах, гісторыя і адказы адміністрацыі",
+         "dashboard": "Агульная зводка па замовах, маршрутах і аўкцыёнах",
+         "factorings": "Спіс фактарынгаў і фінансавых заявак",
+         "forwarders": "Спіс экспедытараў і запрашэнне новых удзельнікаў",
+         "leads": "Спіс заявак на перавозку і кіраванне замовамі",
+         "manufacturers": "Прывязка вытворцаў да перавозак і даведнік вытворцаў",
+         "settings": "Мова інтэрфейсу і іншыя налады акаўнта",
+         "tenders": "Стварэнне і кіраванне аўкцыёнамі па перавозках",
+         "tnved": "Даведнік таварнай наменклатуры знешнеэканамічнай дзейнасці"
+      }
+   },
+   "notifications": {
+      "all": "Усе апавяшчэнні",
+      "empty": "Апавяшчэнняў пакуль няма",
+      "emptyHint": "Тут будуць адлюстроўвацца новыя падзеі",
+      "isNew": "Новае",
+      "loadFailed": "Не ўдалося загрузіць апавяшчэнні",
+      "loading": "Загрузка апавяшчэнняў",
+      "newToast": "Новае апавяшчэнне",
+      "newToastBody": "У вас новае апавяшчэнне",
+      "noDescription": "Няма апісання",
+      "refresh": "Абнавіць апавяшчэнні",
+      "singleLoadFailed": "Не ўдалося загрузіць апавяшчэнне",
+      "subtitle": "Апошнія падзеі па вашых заяўках і аўкцыёнах",
+      "subtitleDot": "Апошнія падзеі па вашых заяўках і аўкцыёнах.",
+      "title": "Апавяшчэнні",
+      "types": {
+         "factor": {
+            "cancelled_by_factor": {
+               "message": "Фактар адмяніў фактарынг",
+               "theme": "Фактарынг адменены"
+            },
+            "cancelled_by_forwarder": {
+               "message": "Экспедытар адмяніў фактарынг",
+               "theme": "Фактарынг адменены"
+            },
+            "created_by_factor": {
+               "message": "Фактар стварыў фактарынг",
+               "theme": "Створаны фактарынг"
+            },
+            "created_by_forwarder": {
+               "message": "Экспедытар стварыў фактарынг",
+               "theme": "Створаны фактарынг"
+            },
+            "finished_by_factor": {
+               "message": "Фактар завершыў фактарынг",
+               "theme": "Фактарынг завершаны"
+            },
+            "paid_by_customer": {
+               "message": "Фактар пацвердзіў аплату ад заказчыка. Здзелка закрыта.",
+               "theme": "Аплата пацверджана"
+            },
+            "signed_by_factor": {
+               "message": "Фактар падпісаў дагавор фактарынгу",
+               "theme": "Дагавор фактарынгу падпісаны"
+            },
+            "signed_by_forwarder": {
+               "message": "Экспедытар падпісаў дагавор фактарынгу",
+               "theme": "Дагавор фактарынгу падпісаны"
+            },
+            "updated_by_factor": {
+               "message": "Фактар абнавіў фактарынг",
+               "theme": "Фактарынг абноўлены"
+            },
+            "verified_by_factor": {
+               "message": "Фактар пацвердзіў фактарынг",
+               "theme": "Фактарынг пацверджаны"
+            },
+            "verified_by_forwarder": {
+               "message": "Экспедытар пацвердзіў фактарынг",
+               "theme": "Фактарынг пацверджаны"
+            }
+         },
+         "lead": {
+            "created_by_forwarder": {
+               "message": "Рэйс быў створаны, і вас прывязалі як заказчыка да рэйса.",
+               "theme": "Рэйс створаны"
+            },
+            "customer_detached": {
+               "message": "Вы былі адвязаны ад рэйса экспедытарам.",
+               "theme": "Вас адвязалі ад рэйса"
+            },
+            "manufacturer": {
+               "approved_by_manufacturer": {
+                  "message": "Вытворца {{name}} ухваліў сувязь",
+                  "theme": "Заяўка ўхвалена"
+               },
+               "cancelled_by_manufacturer": {
+                  "message": "Вытворца {{name}} адазваў заяўку",
+                  "theme": "Заяўка адазвана"
+               },
+               "detached_by_manufacturer": {
+                  "message": "Вытворца {{name}} адвязаўся ад вас",
+                  "theme": "Сувязь выдалена"
+               },
+               "rejected_by_manufacturer": {
+                  "message": "Вытворца {{name}} адхіліў заяўку",
+                  "theme": "Заяўка адхілена"
+               },
+               "request_by_manufacturer": {
+                  "message": "Вытворца {{name}} хоча прывязацца да вас",
+                  "theme": "Новая заяўка на сувязь"
+               }
+            },
+            "point_end_deadline": {
+               "message": "Наступіў планавы час заканчэння работ на пункце маршруту.",
+               "theme": "Наступіў тэрмін пункта маршруту"
+            },
+            "point_start_deadline": {
+               "message": "Наступіў планавы час пачатку работ на пункце маршруту.",
+               "theme": "Наступіў тэрмін пункта маршруту"
+            },
+            "rejected": {
+               "message": "Рэйс быў адменены",
+               "theme": "Рэйс адменены"
+            },
+            "updated_by_forwarder": {
+               "message": "Рэйс быў абноўлены",
+               "theme": "Рэйс абноўлены"
+            }
+         },
+         "shipping": {
+            "delivered": {
+               "message": "Дастаўка пацверджана. Рэйс завершаны.",
+               "theme": "Рэйс завершаны"
+            },
+            "emergency-situation": {
+               "theme": "Аб'яўлены экстраны выпадак."
+            },
+            "finished": {
+               "theme": "Рэйс завершаны"
+            },
+            "finished-emergency-situation": {
+               "message": "Экспедытар завершыў рэйс дачасна.",
+               "theme": "Рэйс завершаны дачасна."
+            },
+            "last_point_passed": {
+               "message": "Вадзіцель прайшоў пункт разгрузкі.",
+               "theme": "Рэйс №{{num}}: Пункт пройдзены"
+            },
+            "loading_started": {
+               "message": "Вадзіцель пачаў паездку.",
+               "theme": "Паездка пачата."
+            },
+            "loading_verified": {
+               "message": "Вадзіцель пацвердзіў пагрузку.",
+               "theme": "Рэйс №{{num}}: Вадзіцель пацвердзіў пагрузку"
+            },
+            "point_passed": {
+               "message": "Вадзіцель прайшоў пункт.",
+               "theme": "Рэйс №{{num}}: Вадзіцель прайшоў пункт"
+            },
+            "unloading_verified": {
+               "message": "Вадзіцель пацвердзіў разгрузку.",
+               "theme": "Рэйс №{{num}}: Вадзіцель пацвердзіў разгрузку"
+            }
+         },
+         "tender": {
+            "bet_cancelled": {
+               "message": "Удзельнік адмяніў сваю ставку на ваш аўкцыён.",
+               "theme": "Ставка адменена"
+            },
+            "bet_placed": {
+               "message": "Удзельнік зрабіў ставку на ваш аўкцыён.",
+               "theme": "Новая ставка на аўкцыён"
+            }
+         }
+      },
+      "viewAll": "Глядзець усе апавяшчэнні"
+   },
+   "profile": {
+      "avatar": {
+         "allowedTypes": "Можна загрузіць толькі PNG або JPEG",
+         "changePhoto": "Выбраць іншае фота",
+         "cropFailed": "Не ўдалося абрэзаць выяву",
+         "cropHint": "Перамясціце выяву і падбярыце масштаб вобласці кадравання",
+         "cropTitle": "Фота профілю",
+         "delete": "Выдаліць фота",
+         "maxFileSize": "Максімальны размер файла — {{size}} МБ",
+         "minCropSize": "Выберыце вобласць кадравання не меншую за {{size}}×{{size}} px",
+         "minSize": "Мінімальны размер фота — 400×400 px",
+         "readFailed": "Не ўдалося прачытаць файл",
+         "requirements": ".png, .jpeg · ад 400×400 px",
+         "rotate": "Павярнуць",
+         "selectPhoto": "Выбраць файл",
+         "sizeCheckFailed": "Не ўдалося праверыць размер выявы",
+         "upload": "Загрузіць фота",
+         "uploadFailed": "Не ўдалося загрузіць фота",
+         "zoom": "Масштаб"
+      },
+      "contract": {
+         "notSigned": "Не падпісаны · націсніце, каб падпісаць",
+         "signStartFailed": "Не ўдалося пачаць падпісанне",
+         "signStartFailedLater": "Не ўдалося пачаць падпісанне, паспрабуйце пазней",
+         "signed": "Падпісаны",
+         "signedUntil": "Падпісаны · Дзейсны да {{date}}",
+         "title": "Дагавор з сэрвісам",
+         "unavailable": "Дакумент дагавора пакуль недаступны, паспрабуйце пазней"
+      },
+      "delete": {
+         "action": "Выдаліць акаўнт",
+         "confirmTitle": "Пацвердзіце выдаленне",
+         "failed": "Не ўдалося выдаліць акаўнт",
+         "failedActiveDeals": "Не ўдалося выдаліць акаўнт: ёсць актыўныя здзелкі",
+         "passwordPrompt": "Для пацвярджэння выдалення акаўнта ўвядзіце свой пароль.",
+         "warning": "Акаўнт будзе дэактываваны. Для аднаўлення звярніцеся ў падтрымку.",
+         "warningFull": "Пасля выдалення акаўнт будзе дэактываваны. Каб аднавіць яго, звярніцеся ў падтрымку."
+      },
+      "documents": {
+         "allowedTypes": "Дазволены толькі PDF, JPG, JPEG або PNG",
+         "current": "Цяперашні дакумент",
+         "employment": "Дакумент пра працаўладкаванне супрацоўніка",
+         "employmentFull": "Дакумент пра працаўладкаванне супрацоўніка з правам подпісу або наказ пра прызначэнне першага кіраўніка",
+         "issuedAt": "Калі выдадзены дакумент",
+         "issuedBy": "Кім выдадзены дакумент",
+         "issuers": {
+            "mia": "МУС РК",
+            "moj": "МЮ РК"
+         },
+         "legalEntity": "Дакумент пра рэгістрацыю юрыдычнай асобы",
+         "maxSize": "Размер файла не павінен перавышаць {{size}} МБ",
+         "newFile": "Новы файл · {{size}}",
+         "notUploaded": "Дакумент пакуль не загружаны",
+         "replace": "Замяніць дакумент",
+         "upload": "Загрузіць дакумент"
+      },
+      "load": {
+         "failed": "Не ўдалося загрузіць профіль"
+      },
+      "password": {
+         "current": "Цяперашні пароль",
+         "enterCurrent": "Увядзіце цяперашні пароль",
+         "enterNew": "Увядзіце новы пароль",
+         "new": "Новы пароль",
+         "repeatNew": "Паўтарыце новы пароль"
+      },
+      "save": {
+         "failed": "Не ўдалося абнавіць профіль",
+         "noChanges": "Няма змен для захавання",
+         "success": "Профіль паспяхова абноўлены"
+      },
+      "sections": {
+         "company": "Кампанія і рэквізіты",
+         "companySubtitle": "Дадзеныя кампаніі і кантактнай асобы",
+         "deleteAccount": "Выдаленне акаўнта",
+         "documents": "Рэгістрацыйныя дакументы",
+         "password": "Змена пароля"
+      },
+      "title": "Профіль"
+   },
+   "route": {
+      "addWaypoint": "+ Прамежкавая",
+      "addressDetecting": "Вызначаем адрас...",
+      "addressNotFound": "Адрас не знойдзены",
+      "addressSearching": "Пошук адраса...",
+      "clear": "Ачысціць маршрут",
+      "coordinates": "Каардынаты: {{lat}}, {{lng}}",
+      "destinationNotSpecified": "Куды не ўказана",
+      "markerA": "А",
+      "markerB": "Б",
+      "onMap": "На карце",
+      "originNotSpecified": "Адкуль не ўказана",
+      "pickOnMap": "Выберыце гэты пункт і клікніце па карце",
+      "point": "Пункт {{index}}",
+      "pointA": "Пункт А",
+      "pointB": "Пункт Б",
+      "pointType": "Тып пункта",
+      "removeWaypoint": "Выдаліць прамежкавы пункт {{index}}",
+      "validation": {
+         "coordinatesPoint": "Укажыце каардынаты для пункта {{index}}: клікніце па карце",
+         "destinationRequired": "Укажыце месца прызначэння",
+         "endBeforeStart": "Дата заканчэння не можа быць раней за дату пачатку гэтага пункта",
+         "endDateDestination": "Укажыце дату заканчэння ў пункце прызначэння",
+         "endDateOrigin": "Укажыце дату заканчэння ў пункце адпраўлення",
+         "endDatePoint": "Укажыце дату заканчэння для пункта {{index}}",
+         "originRequired": "Укажыце месца адпраўлення",
+         "startBeforePrevEnd": "Дата пачатку не можа быць раней за дату заканчэння папярэдняга пункта",
+         "startDateDestination": "Укажыце дату пачатку ў пункце прызначэння",
+         "startDateOrigin": "Укажыце дату пачатку ў пункце адпраўлення",
+         "startDatePoint": "Укажыце дату пачатку для пункта {{index}}"
+      },
+      "waypoint": "Прамежкавы пункт {{index}}",
+      "waypointHash": "Прамежкавы пункт #{{index}}"
+   },
+   "settings": {
+      "language": {
+         "description": "Выберыце мову, на якой будуць адлюстроўвацца інтэрфейс і апавяшчэнні.",
+         "label": "Мова",
+         "saved": "Мова інтэрфейсу змененая",
+         "switcherLabel": "Выбар мовы інтэрфейсу",
+         "title": "Мова інтэрфейсу"
+      },
+      "languages": {
+         "ar": "العربية",
+         "de": "Deutsch",
+         "en": "English",
+         "es": "Español",
+         "fr": "Français",
+         "ka": "ქართული",
+         "kk": "Қазақша",
+         "ky": "Кыргызча",
+         "pt": "Português",
+         "ru": "Русский",
+         "tg": "Тоҳикӣ",
+         "tr": "Türkçe",
+         "uk": "Українська",
+         "ur": "اردو",
+         "uz": "O'zbekcha",
+         "zh": "中文",
+         "be": "Беларуская"
+      },
+      "push": {
+         "blocked": "Апавяшчэнні заблакаваны ў наладах браўзера. Дазвольце іх для гэтага сайта і паспрабуйце зноў.",
+         "description": "Атрымліваць апавяшчэнні ў браўзеры, нават калі ўкладка закрыта.",
+         "disabled": "Push-апавяшчэнні адключаны",
+         "enabled": "Push-апавяшчэнні ўключаны",
+         "failed": "Не ўдалося змяніць наладу push-апавяшчэнняў",
+         "title": "Push-апавяшчэнні",
+         "unsupported": "Браўзер не падтрымлівае push-апавяшчэнні. У Safari на iPhone яны працуюць, толькі калі сайт дададзены на экран «Дадому»."
+      },
+      "title": "Налады"
+   },
+   "sharedLead": {
+      "gone": "Замова выдалена або ссылка на яе адазвана.",
+      "invalidLink": "Ссылка недзейсная або тэрмін яе дзеяння сышоў.",
+      "loading": "Загружаем інфармацыю пра замову...",
+      "notFound": "Запрашаемая старонка не знойдзена. Праверце, што ссылка скапіявана цалкам.",
+      "readOnly": "Гэта старонка прагляду замовы па ссылцы. Рэдагаванне недаступна.",
+      "requestFailed": "Не ўдалося загрузіць інфармацыю пра замову. Паспрабуйце пазней.",
+      "title": "Інфармацыя пра замову"
+   },
+   "support": {
+      "emailBody": "Добры дзень! У мяне ўзнікла пытанне.",
+      "emailSubject": "Зварот у падтрымку",
+      "writeToChat": "Напісаць у чат"
+   },
+   "tenders": {
+      "bids": {
+         "amount": "Сума ставкі",
+         "chooseWinner": "Выбраць пераможцу",
+         "chooseWinnerFailed": "Не ўдалося выбраць пераможцу",
+         "choosing": "Выбар...",
+         "confirmChoice": "Пацвердзіць выбар",
+         "confirmWinner": "Вы ўпэўнены, што хочаце выбраць гэтую ставку пераможнай?",
+         "empty": "Ставкі пакуль не дададзены",
+         "irreversible": "Гэтае дзеянне нельга скасаваць.",
+         "participantUnknown": "Удзельнік не ўказаны",
+         "showAll": "Паказаць усе ставкі (+{{count}})",
+         "statusCancelled": "Адменена",
+         "statusWinning": "Пераможная",
+         "title": "Ставкі"
+      },
+      "countdown": {
+         "daysHours": "{{days}} д {{hours}} г",
+         "hoursMinutes": "{{hours}} г {{minutes}} хв",
+         "minutes": "{{minutes}} хв"
+      },
+      "create": {
+         "action": "Стварыць аўкцыён",
+         "confirm": "Вы ўпэўнены, што хочаце стварыць аўкцыён па гэтай замове?",
+         "failed": "Не ўдалося стварыць аўкцыён",
+         "maxParticipants": "Максімум удзельнікаў",
+         "name": "Назва аўкцыёну",
+         "namePlaceholder": "Напрыклад: Алматы — Астана, тэрмінова",
+         "privateHint": "Выберыце экспедытараў, якія будуць запрошаны ў прыватны аўкцыён",
+         "publicAuction": "Публічны аўкцыён",
+         "startAfterCreate": "Запусціць аўкцыён пасля стварэння",
+         "title": "Стварэнне аўкцыёну"
+      },
+      "dates": {
+         "endAfterNow": "Дата заканчэння павінна быць пазней за цяперашні час",
+         "endInvalid": "Некарэктная дата заканчэння",
+         "endMin30Minutes": "Дата заканчэння павінна быць мінімум праз 30 хвілін пасля даты публікацыі",
+         "endRequired": "Укажыце дату заканчэння",
+         "publicationDate": "Дата публікацыі",
+         "publicationInPast": "Дата публікацыі не можа быць у мінулым",
+         "publicationInvalid": "Некарэктная дата публікацыі",
+         "publicationRequired": "Укажыце дату публікацыі"
+      },
+      "details": {
+         "audience": "Для каго",
+         "audienceForwarders": "Для экспедытараў",
+         "audienceShippers": "Для грузаадпраўшчыкоў",
+         "bidsCountLabel": "Ставак",
+         "cargoWeight": "Вага грузаў",
+         "editBlocked": "Нельга рэдагаваць закрыты або адменены аўкцыён",
+         "info": "Інфармацыя пра аўкцыён",
+         "loadFailed": "Не ўдалося загрузіць дэталі аўкцыёну",
+         "loading": "Загружаем дэталі аўкцыёну...",
+         "maxParticipantsShort": "Макс. удзельнікаў",
+         "orderDocuments": "Дакументы замовы",
+         "participantsCountLabel": "Удзельнікаў",
+         "publicationType": "Тып публікацыі",
+         "totalOrderPrice": "Агульная цана замовы"
+      },
+      "leadPicker": {
+         "cargoLabel": "Груз: {{cargo}}",
+         "cargoWithMore": "{{type}} + яшчэ {{count}}",
+         "destination": "Куды: {{to}}",
+         "forwarder": "Экспедытар: {{name}}",
+         "hint": "Выберыце замову, для якой ствараецца аўкцыён",
+         "notFound": "Замовы не знойдзены",
+         "order": "Замова",
+         "orderNumber": "Замова #{{id}}",
+         "origin": "Адкуль: {{from}}",
+         "priceLabel": "Цана: {{price}}",
+         "searchFailed": "Не ўдалося знайсці замовы",
+         "searching": "Пошук замоў...",
+         "sectionTitle": "Выбар замовы",
+         "select": "Выберыце замову",
+         "selectAction": "Выбраць замову"
+      },
+      "loadFailed": "Не ўдалося загрузіць аўкцыёны",
+      "manage": {
+         "cancel": "Адмяніць аўкцыён",
+         "cancelConfirm": "Вы ўпэўнены, што хочаце адмяніць гэты аўкцыён? Пасля адмены ён стане недаступны для ўдзельнікаў.",
+         "cancelFailed": "Не ўдалося адмяніць аўкцыён",
+         "cancelling": "Адмена...",
+         "saveFailed": "Не ўдалося захаваць змены аўкцыёну",
+         "start": "Запусціць аўкцыён",
+         "startFailed": "Не ўдалося запусціць аўкцыён"
+      },
+      "notFound": "Аўкцыёны не знойдзены",
+      "participantCount_few": "{{count}} удзельнікі",
+      "participantCount_many": "{{count}} удзельнікаў",
+      "participantCount_one": "{{count}} удзельнік",
+      "participantCount_other": "{{count}} удзельнікаў",
+      "participants": {
+         "add": "Дадаць удзельніка",
+         "addFailed": "Не ўдалося дадаць удзельнікаў",
+         "added": "Дададзены: {{date}}",
+         "bin": "БІН: {{bin}}",
+         "empty": "Удзельнікі пакуль не дададзены",
+         "loading": "Загрузка ўдзельнікаў...",
+         "remove": "Выдаліць удзельніка",
+         "removeFailed": "Не ўдалося выдаліць удзельніка",
+         "searching": "Пошук экспедытараў...",
+         "title": "Удзельнікі"
+      },
+      "searchPlaceholder": "Увядзіце горад, груз або напрамак",
+      "stopCount_few": "{{count}} прыпынкі",
+      "stopCount_many": "{{count}} прыпынкаў",
+      "stopCount_one": "{{count}} прыпынак",
+      "stopCount_other": "{{count}} прыпынкаў",
+      "subtitle": "Спіс аўкцыёнаў па заяўках",
+      "title": "Аўкцыёны",
+      "titleSingular": "Аўкцыён",
+      "validation": {
+         "maxParticipantsNegative": "Максімальная колькасць удзельнікаў не можа быць меншая за 0",
+         "privateNeedsForwarder": "Выберыце хаця б аднаго экспедытара для прыватнага аўкцыёну"
+      },
+      "viewToggle": "Пераключэнне адлюстравання аўкцыёнаў"
+   },
+   "tnved": {
+      "code": "Код",
+      "codeNotFound": "Код не знойдзены",
+      "searchPlaceholder": "Пошук па кодзе або найменні",
+      "title": "ТН ЗЭД"
+   },
+   "validation": {
+      "bik": "БІК павінен змяшчаць 8 сімвалаў",
+      "bin": "БІН павінен змяшчаць 12 цыфр",
+      "companyBinRequired": "Укажыце БІН кампаніі",
+      "companyNameRequired": "Укажыце назву кампаніі",
+      "dateNotInFuture": "Дата не можа быць пазней за сённяшні дзень",
+      "dateNotInPast": "Дата не можа быць раней за сённяшні дзень",
+      "documentIssueDateRequired": "Укажыце дату выдачы дакумента",
+      "documentIssuedByRequired": "Укажыце, кім выдадзены дакумент",
+      "email": "Некарэктны email",
+      "emailRequired": "Укажыце email",
+      "iikFormat": "Фармат: KZ + 18 сімвалаў",
+      "iin": "ІІН павінен змяшчаць 12 цыфр",
+      "iinRequired": "Укажыце ІІН",
+      "max100": "Не больш за 100 сімвалаў",
+      "max50": "Не больш за 50 сімвалаў",
+      "min3": "Мінімум 3 сімвалы",
+      "min6": "Мінімум 6 сімвалаў",
+      "passwordsMismatch": "Паролі не супадаюць",
+      "phone": "Некарэктны фармат тэлефона",
+      "phoneRequired": "Укажыце тэлефон",
+      "range2to100": "Ад 2 да 100 сімвалаў",
+      "range2to255": "Ад 2 да 255 сімвалаў",
+      "representativeRequired": "Укажыце ПІБ прадстаўніка"
+   },
+   "verification": {
+      "banner": "Пацвердзіце электронную пошту. Націсніце на апавяшчэнне, каб адправіць ліст паўторна.",
+      "checkFailed": "Не ўдалося праверыць статус email",
+      "checking": "Праверка статусу email…",
+      "cooldown": "Праз {{seconds}} сек",
+      "emailConfirmed": "Email пацверджаны",
+      "emailNotConfirmed": "Email не пацверджаны",
+      "hint": "Мы адправім ліст са ссылкай пацвярджэння на вашу пошту.",
+      "resendAvailable": "Паўторная адпраўка будзе даступная праз {{seconds}} сек.",
+      "sendFailed": "Не ўдалося адправіць ліст пацвярджэння",
+      "sent": "Ліст для пацвярджэння email адправлены. Праверце пошту."
+   }
+}

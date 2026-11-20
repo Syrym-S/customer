@@ -28,6 +28,7 @@ export async function fetchAdvertisementApi(advertisementId) {
 
 export async function searchAdvertisementLeadsApi({
    q = '',
+   num = '',
    page = 1,
    perPage = 20,
 } = {}) {
@@ -37,9 +38,14 @@ export async function searchAdvertisementLeadsApi({
    };
 
    const normalizedQuery = String(q ?? '').trim();
+   const normalizedNum = String(num ?? '').trim();
 
    if (normalizedQuery) {
       params.q = normalizedQuery;
+   }
+
+   if (normalizedNum) {
+      params.num = normalizedNum;
    }
 
    const response = await apiClient.get(advertisementsEndpoints.leadsSearch, {

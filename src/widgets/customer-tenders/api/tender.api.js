@@ -1,5 +1,6 @@
 import { apiClient } from "../../../shared/api/api-client";
 import { mapTenderLeadsSearchFromApi } from "../model/tender.adapter";
+import { parseSearchQuery } from "../../../shared/helpers/search-query.helpers";
 
 export async function fetchCustomerTenders({
     page = 1,
@@ -18,10 +19,14 @@ export async function fetchCustomerTenders({
         params.publication_type = publicationType;
     }
 
-    const normalizedSearch = String(search ?? "").trim();
+    const { num, text } = parseSearchQuery(search);
 
-    if (normalizedSearch) {
-        params.name = normalizedSearch;
+    if (text) {
+        params.name = text;
+    }
+
+    if (num) {
+        params.num = num;
     }
 
     const response = await apiClient.get("/customer/v1/tenders", {

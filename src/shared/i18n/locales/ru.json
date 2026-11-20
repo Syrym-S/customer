@@ -336,6 +336,7 @@
       "search": {
          "byDirection": "Поиск по направлению",
          "byName": "Поиск по названию",
+         "byNumOrName": "Поиск по номеру или названию",
          "minChars": "Введите минимум 2 символа"
       },
       "severity": {
@@ -1335,6 +1336,7 @@
       },
       "languages": {
          "ar": "العربية",
+         "be": "Беларуская",
          "de": "Deutsch",
          "en": "English",
          "es": "Español",

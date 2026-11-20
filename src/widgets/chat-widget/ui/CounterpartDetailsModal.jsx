@@ -20,6 +20,10 @@ import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 import { CounterpartAvatar } from "./CounterpartAvatar";
 // import { TaxationRegimeInfo } from "../../../shared/kgd-taxation/ui/TaxationRegimeInfo";
 import { AppDialog } from "../../../shared/ui/AppDialog";
+import {
+  getEmailHref,
+  handleContactLinkClick,
+} from "../../../shared/lib/contact-links";
 
 // const TAXATION_ROLE_BY_LABEL = {
 //   "Экспедитор": "forwarder",
@@ -157,7 +161,13 @@ export function CounterpartDetailsModal({ open, counterpart, onClose }) {
                   color="primary"
                   variant="contained"
                   component="a"
-                  href={`mailto:${counterpart.email}`}
+                  href={getEmailHref(counterpart.email)}
+                  onClick={(event) =>
+                    handleContactLinkClick(
+                      event,
+                      getEmailHref(counterpart.email),
+                    )
+                  }
                   sx={{
                     boxShadow: 0,
                     fontSize: 12,

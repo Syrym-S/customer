@@ -8,10 +8,18 @@ import {
   Typography,
   Link as MuiLink,
 } from "@mui/material";
+import {
+  getEmailHref,
+  getPhoneHref,
+  handleContactLinkClick,
+} from "../../shared/lib/contact-links";
 
 export function NotRegisteredModal({ open, support }) {
   const { t } = useAuthTranslation();
   const { phone = "", email = "" } = support || {};
+
+  const phoneHref = getPhoneHref(phone);
+  const emailHref = getEmailHref(email);
 
   return (
     <Dialog
@@ -34,18 +42,32 @@ export function NotRegisteredModal({ open, support }) {
           {phone && (
             <Typography variant="body2">
               {t("Телефон:")}{" "}
-              <MuiLink href={`tel:${phone}`}>
-                {phone}
-              </MuiLink>
+              {phoneHref ? (
+                <MuiLink
+                  href={phoneHref}
+                  onClick={(event) => handleContactLinkClick(event, phoneHref)}
+                >
+                  {phone}
+                </MuiLink>
+              ) : (
+                phone
+              )}
             </Typography>
           )}
 
           {email && (
             <Typography variant="body2" sx={{ mt: 0.5 }}>
               {t("Email:")}{" "}
-              <MuiLink href={`mailto:${email}`}>
-                {email}
-              </MuiLink>
+              {emailHref ? (
+                <MuiLink
+                  href={emailHref}
+                  onClick={(event) => handleContactLinkClick(event, emailHref)}
+                >
+                  {email}
+                </MuiLink>
+              ) : (
+                email
+              )}
             </Typography>
           )}
         </Box>

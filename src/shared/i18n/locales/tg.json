@@ -334,6 +334,7 @@
       "search": {
          "byDirection": "Ҷустуҷӯ аз рӯи самт",
          "byName": "Ҷустуҷӯ аз рӯи ном",
+         "byNumOrName": "Ҷустуҷӯ аз рӯи рақам ё ном",
          "minChars": "Ҳадди ақал 2 аломат ворид кунед"
       },
       "severity": {
@@ -1323,6 +1324,7 @@
       },
       "languages": {
          "ar": "العربية",
+         "be": "Беларуская",
          "de": "Deutsch",
          "en": "English",
          "es": "Español",

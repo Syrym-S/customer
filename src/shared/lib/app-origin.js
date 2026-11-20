@@ -1,4 +1,5 @@
 import { getSessionHomeUrl, getSessionRestUrl } from '../model/session.store';
+import { isNative } from '../config/platform';
 
 function toOrigin(value) {
    const raw = String(value || '').trim();
@@ -14,12 +15,20 @@ function toOrigin(value) {
    }
 }
 
+export function getKnownAppOrigins() {
+   const origins = [
+      toOrigin(getSessionHomeUrl()),
+      toOrigin(getSessionRestUrl()),
+      toOrigin(window?.APP_DATA?.rest_url),
+   ];
+
+   if (!isNative) {
+      origins.push(window?.location?.origin || '');
+   }
+
+   return origins.filter((origin, index) => origin && origins.indexOf(origin) === index);
+}
+
 export function getAppOrigin() {
-   return (
-      toOrigin(getSessionHomeUrl()) ||
-      toOrigin(getSessionRestUrl()) ||
-      toOrigin(window?.APP_DATA?.rest_url) ||
-      window?.location?.origin ||
-      ''
-   );
+   return getKnownAppOrigins()[0] || window?.location?.origin || '';
 }

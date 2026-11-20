@@ -15,6 +15,7 @@ import fr from "./locales/fr.json";
 import de from "./locales/de.json";
 import tg from "./locales/tg.json";
 import ur from "./locales/ur.json";
+import be from "./locales/be.json";
 
 const savedLanguage = localStorage.getItem("language");
 const language = savedLanguage === "kz" ? "kk" : savedLanguage;
@@ -38,6 +39,7 @@ i18n.init({
     de: { translation: de },
     tg: { translation: tg },
     ur: { translation: ur },
+    be: { translation: be },
   },
   lng: language || "ru",
   fallbackLng: "ru",

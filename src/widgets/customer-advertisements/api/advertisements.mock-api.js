@@ -25,17 +25,20 @@ function getAdvertisedLeadIds() {
    );
 }
 
+function matchesNum(lead, num) {
+   if (!num) {
+      return true;
+   }
+
+   return String(lead?.num ?? '').includes(num);
+}
+
 function matchesQuery(lead, query) {
    if (!query) {
       return true;
    }
 
-   return [
-      String(lead.num ?? ''),
-      lead.from_location,
-      lead.to_location,
-      lead.cargos?.[0]?.name,
-   ]
+   return [lead?.from_location, lead?.to_location, lead?.cargos?.[0]?.name]
       .filter(Boolean)
       .some((value) => String(value).toLowerCase().includes(query));
 }
@@ -67,17 +70,23 @@ export async function fetchAdvertisementMock(advertisementId) {
    return advertisement;
 }
 
-export async function searchAdvertisementLeadsMock({ q = '', perPage = 20 } = {}) {
+export async function searchAdvertisementLeadsMock({
+   q = '',
+   num = '',
+   perPage = 20,
+} = {}) {
    await delay(250);
 
    const query = String(q ?? '')
       .trim()
       .toLowerCase();
+   const normalizedNum = String(num ?? '').trim();
 
    const advertisedLeadIds = getAdvertisedLeadIds();
 
    return mockAdvertisementLeads
       .filter((lead) => !advertisedLeadIds.has(lead.id))
+      .filter((lead) => matchesNum(lead, normalizedNum))
       .filter((lead) => matchesQuery(lead, query))
       .slice(0, perPage);
 }

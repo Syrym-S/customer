@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
     alpha,
@@ -18,14 +19,18 @@ import {
     getNotificationDescription,
     getNotificationLink,
     getNotificationTitle,
-    resolveCustomerNotificationAppPath,
 } from '../model/notifications.helpers';
 import { useNavigate } from 'react-router-dom';
 import { DialogCloseButton } from '../../../shared/ui/DialogCloseButton';
 import { NotificationIcon } from './NotificationIcon';
 import { AppDialog } from '../../../shared/ui/AppDialog';
-import { getAppOrigin } from '../../../shared/lib/app-origin';
 import { openExternalLink } from '../../../shared/lib/external-link';
+import {
+    NOTIFICATION_LINK_EXTERNAL,
+    NOTIFICATION_LINK_IN_APP,
+    NOTIFICATION_LINK_NONE,
+    resolveNotificationLinkTarget,
+} from '../lib/notification-link';
 
 export function NotificationDetailsModal({
     open,
@@ -38,32 +43,20 @@ export function NotificationDetailsModal({
 
     const navigate = useNavigate();
 
-    function handleOpenNotificationLink() {
-        const link = getNotificationLink(notification);
+    const linkTarget = useMemo(
+        () => resolveNotificationLinkTarget(getNotificationLink(notification)),
+        [notification],
+    );
 
-        if (!link) {
+    function handleOpenNotificationLink() {
+        if (linkTarget.kind === NOTIFICATION_LINK_IN_APP) {
+            onClose?.();
+            navigate(linkTarget.path);
             return;
         }
 
-        try {
-            const normalizedLink = String(link).replaceAll('\\/', '/');
-            const appOrigin = getAppOrigin();
-            const url = new URL(normalizedLink, appOrigin);
-
-            const appPath =
-                url.origin === appOrigin
-                    ? resolveCustomerNotificationAppPath(url.pathname)
-                    : '';
-
-            if (appPath) {
-                onClose?.();
-                navigate(`${appPath}${url.search}${url.hash}`);
-                return;
-            }
-
-            openExternalLink(normalizedLink);
-        } catch {
-            openExternalLink(link);
+        if (linkTarget.kind === NOTIFICATION_LINK_EXTERNAL) {
+            openExternalLink(linkTarget.url);
         }
     }
 
@@ -200,7 +193,7 @@ export function NotificationDetailsModal({
                 {!loading &&
                     !error &&
                     notification &&
-                    getNotificationLink(notification) && (
+                    linkTarget.kind !== NOTIFICATION_LINK_NONE && (
                         <Button
                             variant='contained'
                             disableElevation

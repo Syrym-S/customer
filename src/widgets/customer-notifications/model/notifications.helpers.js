@@ -95,35 +95,6 @@ function getDateLocale() {
     return DATE_LOCALE_BY_LANGUAGE[language] || DATE_LOCALE_BY_LANGUAGE.ru;
 }
 
-const CUSTOMER_ENTITY_PATH_SEGMENTS = [
-    'leads',
-    'tenders',
-    'factorings',
-    'complaints',
-];
-
-const CUSTOMER_PATH_PREFIX = '/customer';
-
-export function resolveCustomerNotificationAppPath(pathname) {
-    const normalizedPathname = String(pathname || '');
-
-    for (const segment of CUSTOMER_ENTITY_PATH_SEGMENTS) {
-        if (
-            normalizedPathname.startsWith(
-                `${CUSTOMER_PATH_PREFIX}/${segment}/`,
-            )
-        ) {
-            return normalizedPathname;
-        }
-
-        if (normalizedPathname.startsWith(`/${segment}/`)) {
-            return `${CUSTOMER_PATH_PREFIX}${normalizedPathname}`;
-        }
-    }
-
-    return '';
-}
-
 export function isNotificationUnread(notification) {
     if (!notification) {
         return false;

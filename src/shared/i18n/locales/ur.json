@@ -334,6 +334,7 @@
       "search": {
          "byDirection": "سمت کے مطابق تلاش کریں",
          "byName": "نام کے مطابق تلاش کریں",
+         "byNumOrName": "نمبر یا نام سے تلاش کریں",
          "minChars": "کم از کم 2 حروف درج کریں"
       },
       "severity": {
@@ -1323,6 +1324,7 @@
       },
       "languages": {
          "ar": "العربية",
+         "be": "Беларуская",
          "de": "Deutsch",
          "en": "English",
          "es": "Español",

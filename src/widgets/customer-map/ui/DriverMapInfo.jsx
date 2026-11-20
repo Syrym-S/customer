@@ -5,6 +5,7 @@ import {
    formatDriverPhone,
    normalizePhoneHref,
 } from '../model/customer-map.helpers';
+import { handleContactLinkClick } from '../../../shared/lib/contact-links';
 import { getDriverVehicleNumber } from '../../../shared/helpers/vehicle-number.helpers';
 
 export function DriverMapInfo({ driver }) {
@@ -24,7 +25,14 @@ export function DriverMapInfo({ driver }) {
                <br />
                {t("map.driverPhone")}{' '}
                {driverPhoneHref ? (
-                  <a href={`tel:${driverPhoneHref}`}>{driverPhone}</a>
+                  <a
+                     href={`tel:${driverPhoneHref}`}
+                     onClick={(event) =>
+                        handleContactLinkClick(event, `tel:${driverPhoneHref}`)
+                     }
+                  >
+                     {driverPhone}
+                  </a>
                ) : (
                   driverPhone
                )}

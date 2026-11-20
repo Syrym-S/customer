@@ -6,6 +6,12 @@ import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import { useSupportContactsStore } from "../model/support-contacts.store";
+import { isNative } from "../config/platform";
+import {
+  getEmailHref,
+  getPhoneHref,
+  handleContactLinkClick,
+} from "../lib/contact-links";
 
 export function SupportContacts({ layout = "column", onOpenChat }) {
   const { t } = useTranslation();
@@ -37,6 +43,13 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
 
   const [copied, setCopied] = useState(false);
 
+  const phoneHref = getPhoneHref(supportPhone);
+
+  const emailHref = getEmailHref(supportEmail, {
+    subject: t("support.emailSubject"),
+    body: t("support.emailBody"),
+  });
+
   const handleCopyPhone = async (event) => {
     event.stopPropagation();
 
@@ -47,6 +60,18 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
     setTimeout(() => {
       setCopied(false);
     }, 1500);
+  };
+
+  const isPhoneCallable = isNative && Boolean(phoneHref);
+
+  const handlePhoneClick = (event) => {
+    if (isPhoneCallable) {
+      handleContactLinkClick(event, phoneHref);
+
+      return;
+    }
+
+    handleCopyPhone(event);
   };
 
   return (
@@ -102,9 +127,8 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
           color="inherit"
           variant="outlined"
           component="a"
-          href={`mailto:${supportEmail}?subject=${encodeURIComponent(
-            t("support.emailSubject"),
-          )}&body=${encodeURIComponent(t("support.emailBody"))}`}
+          href={emailHref}
+          onClick={(event) => handleContactLinkClick(event, emailHref)}
           sx={{
             color: "text.secondary",
             borderColor: "divider",
@@ -139,7 +163,13 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
       </Tooltip>
 
       <Tooltip
-        title={copied ? t("common.actions.copied") : t("common.actions.copyNumber")}
+        title={
+          isPhoneCallable
+            ? supportPhone
+            : copied
+              ? t("common.actions.copied")
+              : t("common.actions.copyNumber")
+        }
         placement="top"
         arrow
         open={copied ? true : undefined}
@@ -147,7 +177,8 @@ export function SupportContacts({ layout = "column", onOpenChat }) {
         <Button
           color="inherit"
           variant="outlined"
-          onClick={handleCopyPhone}
+          {...(isPhoneCallable ? { component: "a", href: phoneHref } : {})}
+          onClick={handlePhoneClick}
           sx={{
             color: "text.secondary",
             borderColor: "divider",
