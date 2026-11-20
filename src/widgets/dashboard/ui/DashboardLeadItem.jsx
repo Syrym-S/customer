@@ -1,4 +1,5 @@
 import { Box, Chip, Divider, Paper, Stack, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 import i18n from "../../../shared/i18n";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -39,14 +40,19 @@ function hasRouteCoordinates(lead) {
   );
 }
 
-export function LeadStatusChip({ lead }) {
+export function LeadStatusChip({ lead, isWaitingForDriver = false }) {
   return (
     <StatusDot
-      label={getDisplayLeadStatusLabel(lead)}
-      color={getDisplayLeadStatusStyles(lead).color}
+      label={getDisplayLeadStatusLabel(lead, { isWaitingForDriver })}
+      color={getDisplayLeadStatusStyles(lead, { isWaitingForDriver }).color}
     />
   );
 }
+
+LeadStatusChip.propTypes = {
+  lead: PropTypes.object.isRequired,
+  isWaitingForDriver: PropTypes.bool,
+};
 
 export function DashboardLeadItem({
   lead,

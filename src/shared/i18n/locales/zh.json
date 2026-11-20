@@ -580,7 +580,8 @@
          "start_loading": "装货中",
          "start_unloading": "卸货中",
          "verification_loading": "装货已确认",
-         "verification_unloading": "卸货已确认"
+         "verification_unloading": "卸货已确认",
+         "waiting_driver": "等待司机"
       },
       "leadStatusFilter": {
          "all": "全部状态",

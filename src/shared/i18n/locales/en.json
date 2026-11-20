@@ -585,7 +585,8 @@
          "start_loading": "Loading",
          "start_unloading": "Unloading",
          "verification_loading": "Loading confirmed",
-         "verification_unloading": "Unloading confirmed"
+         "verification_unloading": "Unloading confirmed",
+         "waiting_driver": "Waiting for the driver"
       },
       "leadStatusFilter": {
          "all": "All statuses",

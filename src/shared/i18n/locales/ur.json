@@ -585,7 +585,8 @@
          "start_loading": "لوڈنگ",
          "start_unloading": "ان لوڈنگ",
          "verification_loading": "لوڈنگ کی تصدیق ہو گئی",
-         "verification_unloading": "ان لوڈنگ کی تصدیق ہو گئی"
+         "verification_unloading": "ان لوڈنگ کی تصدیق ہو گئی",
+         "waiting_driver": "ڈرائیور کا انتظار"
       },
       "leadStatusFilter": {
          "all": "تمام حیثیتیں",

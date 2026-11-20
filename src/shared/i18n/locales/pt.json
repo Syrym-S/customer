@@ -585,7 +585,8 @@
          "start_loading": "Carregamento",
          "start_unloading": "Descarregamento",
          "verification_loading": "Carregamento confirmado",
-         "verification_unloading": "Descarregamento confirmado"
+         "verification_unloading": "Descarregamento confirmado",
+         "waiting_driver": "Aguardando o motorista"
       },
       "leadStatusFilter": {
          "all": "Todos os status",

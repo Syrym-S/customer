@@ -50,8 +50,12 @@ export function LeadDetailsModal() {
    const { route, routePoints, isRouteLoading, resetRoute } =
       useLeadDetailsRoute(leadDetails);
 
-   const { geoPoints, geoCurrentPoint, resetGeoTracking } =
-      useLeadDetailsGeoTracking(openLead?.id, currentLead?.status);
+   const {
+      geoPoints,
+      geoCurrentPoint,
+      isWaitingForDriver,
+      resetGeoTracking,
+   } = useLeadDetailsGeoTracking(openLead?.id, currentLead?.status);
 
    const {
       documents,
@@ -148,7 +152,10 @@ export function LeadDetailsModal() {
          <DialogCloseButton onClick={handleClose} />
 
          {shouldRenderLeadDetails ? (
-            <LeadDetailsHeader lead={currentLead} />
+            <LeadDetailsHeader
+               lead={currentLead}
+               isWaitingForDriver={isWaitingForDriver}
+            />
          ) : (
             <DialogTitle sx={{ pl: 3, pr: 7, pt: 3, pb: 1.5 }}>
                <Typography

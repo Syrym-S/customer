@@ -51,10 +51,8 @@ export function ManufacturerLeadDetailsModal({
    const readOnlyEditForm = useMemo(() => createLeadEditForm(null), []);
 
    const { route, routePoints, isRouteLoading } = useLeadDetailsRoute(leadDetails);
-   const { geoPoints, geoCurrentPoint } = useLeadDetailsGeoTracking(
-      lead?.id,
-      currentLead?.status,
-   );
+   const { geoPoints, geoCurrentPoint, isWaitingForDriver } =
+      useLeadDetailsGeoTracking(lead?.id, currentLead?.status);
    const {
       documents,
       isDocumentUploading,
@@ -94,7 +92,10 @@ export function ManufacturerLeadDetailsModal({
       >
          <DialogCloseButton onClick={onClose} disabled={isSubmitting} />
 
-         <LeadDetailsHeader lead={currentLead} />
+         <LeadDetailsHeader
+            lead={currentLead}
+            isWaitingForDriver={isWaitingForDriver}
+         />
 
          <DialogContent sx={{ px: 3 }}>
             {isLeadDetailsLoading && (

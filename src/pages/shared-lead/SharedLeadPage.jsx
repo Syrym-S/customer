@@ -85,7 +85,8 @@ export function SharedLeadPage() {
    const [loadErrorKey, setLoadErrorKey] = useState('');
 
    const map = useCustomerMap();
-   const { geoPoints, geoCurrentPoint } = useSharedLeadGeoTracking(lead);
+   const { geoPoints, geoCurrentPoint, isWaitingForDriver } =
+      useSharedLeadGeoTracking(lead);
 
    useEffect(() => {
       let isCancelled = false;
@@ -167,7 +168,10 @@ export function SharedLeadPage() {
                </Typography>
             </Box>
 
-            <LeadStatusChip lead={lead} />
+            <LeadStatusChip
+               lead={lead}
+               isWaitingForDriver={isWaitingForDriver}
+            />
          </Box>
 
          <Alert severity="info" sx={{ mb: 2 }}>

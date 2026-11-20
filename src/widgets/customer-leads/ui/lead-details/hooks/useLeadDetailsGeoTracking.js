@@ -9,11 +9,15 @@ import {
    normalizePolylinePoints,
    openLeadGeoTrackingConnection,
 } from '../../../../../utils/geoTrackingV2';
-import { isLeadTrackingActive } from '../../../model/lead.helpers';
+import {
+   isLeadTrackingActive,
+   isWaitingForDriverApplicable,
+} from '../../../model/lead.helpers';
 
 export function useLeadDetailsGeoTracking(leadId, leadStatus) {
    const [geoPoints, setGeoPoints] = useState([]);
    const [geoCurrentPoint, setGeoCurrentPoint] = useState(null);
+   const [isGeoRouteEmpty, setIsGeoRouteEmpty] = useState(false);
 
    const geoConnectionRef = useRef(null);
 
@@ -26,6 +30,7 @@ export function useLeadDetailsGeoTracking(leadId, leadStatus) {
       closeGeoConnection();
       setGeoPoints([]);
       setGeoCurrentPoint(null);
+      setIsGeoRouteEmpty(false);
    }, [closeGeoConnection]);
 
    useEffect(() => {
@@ -44,9 +49,12 @@ export function useLeadDetailsGeoTracking(leadId, leadStatus) {
             const initialPoints = normalizePolylinePoints(routeData?.polyline);
 
             if (!initialPoints.length) {
+               setIsGeoRouteEmpty(true);
+
                return;
             }
 
+            setIsGeoRouteEmpty(false);
             setGeoPoints(initialPoints);
             setGeoCurrentPoint(initialPoints.at(-1) ?? null);
          },
@@ -59,6 +67,8 @@ export function useLeadDetailsGeoTracking(leadId, leadStatus) {
             if (!nextPoint) {
                return;
             }
+
+            setIsGeoRouteEmpty(false);
 
             setGeoPoints((prevPoints) => {
                const nextPoints = mergeGeoPointsById(prevPoints, [nextPoint]);
@@ -94,6 +104,8 @@ export function useLeadDetailsGeoTracking(leadId, leadStatus) {
    return {
       geoPoints,
       geoCurrentPoint,
+      isWaitingForDriver:
+         isGeoRouteEmpty && isWaitingForDriverApplicable(leadStatus),
       resetGeoTracking,
    };
 }

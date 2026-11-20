@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { LeadStatusChip } from "../../../dashboard/ui/DashboardLeadItem";
 import { usePageTitleSegment } from "../../../../shared/lib/usePageTitleSegment";
 
-export function LeadDetailsHeader({ lead }) {
+export function LeadDetailsHeader({ lead, isWaitingForDriver = false }) {
   const { t } = useTranslation();
 
   usePageTitleSegment(
@@ -82,7 +82,10 @@ export function LeadDetailsHeader({ lead }) {
             />
           )}
 
-          <LeadStatusChip lead={lead} />
+          <LeadStatusChip
+            lead={lead}
+            isWaitingForDriver={isWaitingForDriver}
+          />
         </Stack>
       </Box>
     </DialogTitle>
@@ -91,4 +94,5 @@ export function LeadDetailsHeader({ lead }) {
 
 LeadDetailsHeader.propTypes = {
   lead: PropTypes.object.isRequired,
+  isWaitingForDriver: PropTypes.bool,
 };

@@ -585,7 +585,8 @@
          "start_loading": "Yükleme",
          "start_unloading": "Boşaltma",
          "verification_loading": "Yükleme onaylandı",
-         "verification_unloading": "Boşaltma onaylandı"
+         "verification_unloading": "Boşaltma onaylandı",
+         "waiting_driver": "Sürücü bekleniyor"
       },
       "leadStatusFilter": {
          "all": "Tüm durumlar",

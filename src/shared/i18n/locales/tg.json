@@ -585,7 +585,8 @@
          "start_loading": "Боркунӣ",
          "start_unloading": "Борфурорӣ",
          "verification_loading": "Боркунӣ тасдиқ шуд",
-         "verification_unloading": "Борфурорӣ тасдиқ шуд"
+         "verification_unloading": "Борфурорӣ тасдиқ шуд",
+         "waiting_driver": "Дар интизори ронанда"
       },
       "leadStatusFilter": {
          "all": "Ҳама вазъиятҳо",

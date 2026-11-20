@@ -595,7 +595,8 @@
          "start_loading": "Завантаження",
          "start_unloading": "Розвантаження",
          "verification_loading": "Завантаження підтверджено",
-         "verification_unloading": "Розвантаження підтверджено"
+         "verification_unloading": "Розвантаження підтверджено",
+         "waiting_driver": "Очікування водія"
       },
       "leadStatusFilter": {
          "all": "Усі статуси",

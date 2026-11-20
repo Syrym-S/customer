@@ -585,7 +585,8 @@
          "start_loading": "Жүк тиеу",
          "start_unloading": "Жүк түсіру",
          "verification_loading": "Жүк тиеу расталды",
-         "verification_unloading": "Жүк түсіру расталды"
+         "verification_unloading": "Жүк түсіру расталды",
+         "waiting_driver": "Жүргізуші күтілуде"
       },
       "leadStatusFilter": {
          "all": "Барлық мәртебелер",

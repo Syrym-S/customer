@@ -585,7 +585,8 @@
          "start_loading": "დატვირთვა",
          "start_unloading": "გადმოტვირთვა",
          "verification_loading": "დატვირთვა დადასტურებული",
-         "verification_unloading": "გადმოტვირთვა დადასტურებული"
+         "verification_unloading": "გადმოტვირთვა დადასტურებული",
+         "waiting_driver": "ელოდება მძღოლს"
       },
       "leadStatusFilter": {
          "all": "ყველა სტატუსი",

@@ -585,7 +585,8 @@
          "start_loading": "Жүктөө",
          "start_unloading": "Түшүрүү",
          "verification_loading": "Жүктөө ырасталды",
-         "verification_unloading": "Түшүрүү ырасталды"
+         "verification_unloading": "Түшүрүү ырасталды",
+         "waiting_driver": "Айдоочу күтүлүүдө"
       },
       "leadStatusFilter": {
          "all": "Бардык статустар",

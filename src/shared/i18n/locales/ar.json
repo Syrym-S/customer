@@ -585,7 +585,8 @@
          "start_loading": "التحميل",
          "start_unloading": "التفريغ",
          "verification_loading": "تم تأكيد التحميل",
-         "verification_unloading": "تم تأكيد التفريغ"
+         "verification_unloading": "تم تأكيد التفريغ",
+         "waiting_driver": "في انتظار السائق"
       },
       "leadStatusFilter": {
          "all": "جميع الحالات",

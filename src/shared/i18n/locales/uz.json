@@ -585,7 +585,8 @@
          "start_loading": "Yuklash",
          "start_unloading": "Tushirish",
          "verification_loading": "Yuklash tasdiqlandi",
-         "verification_unloading": "Tushirish tasdiqlandi"
+         "verification_unloading": "Tushirish tasdiqlandi",
+         "waiting_driver": "Haydovchi kutilmoqda"
       },
       "leadStatusFilter": {
          "all": "Barcha holatlar",

@@ -595,7 +595,8 @@
          "start_loading": "Погрузка",
          "start_unloading": "Разгрузка",
          "verification_loading": "Погрузка подтверждена",
-         "verification_unloading": "Разгрузка подтверждена"
+         "verification_unloading": "Разгрузка подтверждена",
+         "waiting_driver": "В ожидании водителя"
       },
       "leadStatusFilter": {
          "all": "Все статусы",

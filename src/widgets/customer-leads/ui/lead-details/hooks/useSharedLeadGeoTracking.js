@@ -9,6 +9,7 @@ import {
    normalizePolylinePoints,
    openGeoTrackingConnection,
 } from '../../../../../utils/geoTrackingV2';
+import { isWaitingForDriverApplicable } from '../../../model/lead.helpers';
 
 // Public/unauthenticated counterpart of useLeadDetailsGeoTracking.js — same
 // shape/return value, but driven by the shared-lead response's
@@ -24,6 +25,7 @@ import {
 export function useSharedLeadGeoTracking(lead) {
    const [geoPoints, setGeoPoints] = useState([]);
    const [geoCurrentPoint, setGeoCurrentPoint] = useState(null);
+   const [isGeoRouteEmpty, setIsGeoRouteEmpty] = useState(false);
 
    const geoConnectionRef = useRef(null);
 
@@ -36,6 +38,7 @@ export function useSharedLeadGeoTracking(lead) {
       closeGeoConnection();
       setGeoPoints([]);
       setGeoCurrentPoint(null);
+      setIsGeoRouteEmpty(false);
    }, [closeGeoConnection]);
 
    const leadId = lead?.id;
@@ -68,9 +71,12 @@ export function useSharedLeadGeoTracking(lead) {
             const initialPoints = normalizePolylinePoints(routeData?.polyline);
 
             if (!initialPoints.length) {
+               setIsGeoRouteEmpty(true);
+
                return;
             }
 
+            setIsGeoRouteEmpty(false);
             setGeoPoints(initialPoints);
             setGeoCurrentPoint(initialPoints.at(-1) ?? null);
          },
@@ -83,6 +89,8 @@ export function useSharedLeadGeoTracking(lead) {
             if (!nextPoint) {
                return;
             }
+
+            setIsGeoRouteEmpty(false);
 
             setGeoPoints((prevPoints) => {
                const nextPoints = mergeGeoPointsById(prevPoints, [nextPoint]);
@@ -112,6 +120,8 @@ export function useSharedLeadGeoTracking(lead) {
    return {
       geoPoints,
       geoCurrentPoint,
+      isWaitingForDriver:
+         isGeoRouteEmpty && isWaitingForDriverApplicable(lead?.status),
       resetGeoTracking,
    };
 }

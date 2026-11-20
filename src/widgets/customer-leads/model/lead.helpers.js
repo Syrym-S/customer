@@ -29,6 +29,18 @@ export function isLeadTrackingActive(status) {
    return activeTrackingLeadStatuses.has(status);
 }
 
+const waitingForDriverLeadStatuses = new Set([
+   'start_driver',
+   'start_loading',
+   'verification_loading',
+   'start_unloading',
+   'verification_unloading',
+]);
+
+export function isWaitingForDriverApplicable(status) {
+   return waitingForDriverLeadStatuses.has(status);
+}
+
 export function getLeadId(lead) {
    return lead?.id || lead?._id || lead?.lead_id || lead?.leadId || '';
 }
@@ -156,14 +168,40 @@ const draftStatusStyle = {
    backgroundColor: 'grey.200',
 };
 
-export function getDisplayLeadStatusLabel(lead) {
-   return isDraftLead(lead)
-      ? i18n.t(DRAFT_STATUS_LABEL_KEY)
-      : getLeadStatusLabel(lead?.status);
+export const WAITING_DRIVER_STATUS_LABEL_KEY = 'enums.leadStatus.waiting_driver';
+
+const waitingDriverStatusStyle = {
+   borderColor: 'warning.main',
+   color: 'warning.main',
+   backgroundColor: 'rgba(237, 108, 2, 0.06)',
+};
+
+function isWaitingForDriverStatus(lead, isWaitingForDriver) {
+   return Boolean(isWaitingForDriver) && isWaitingForDriverApplicable(lead?.status);
 }
 
-export function getDisplayLeadStatusStyles(lead) {
-   return isDraftLead(lead) ? draftStatusStyle : getLeadStatusStyles(lead?.status);
+export function getDisplayLeadStatusLabel(lead, { isWaitingForDriver = false } = {}) {
+   if (isDraftLead(lead)) {
+      return i18n.t(DRAFT_STATUS_LABEL_KEY);
+   }
+
+   if (isWaitingForDriverStatus(lead, isWaitingForDriver)) {
+      return i18n.t(WAITING_DRIVER_STATUS_LABEL_KEY);
+   }
+
+   return getLeadStatusLabel(lead?.status);
+}
+
+export function getDisplayLeadStatusStyles(lead, { isWaitingForDriver = false } = {}) {
+   if (isDraftLead(lead)) {
+      return draftStatusStyle;
+   }
+
+   if (isWaitingForDriverStatus(lead, isWaitingForDriver)) {
+      return waitingDriverStatusStyle;
+   }
+
+   return getLeadStatusStyles(lead?.status);
 }
 
 // Resolves the theme-path `color` of a status (e.g. 'success.dark') to a
