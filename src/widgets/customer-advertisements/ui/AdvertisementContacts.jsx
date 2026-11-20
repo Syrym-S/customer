@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
-
-function normalizePhone(phone) {
-   return String(phone ?? '').replace(/[^+\d]/g, '');
-}
+import {
+   getEmailHref,
+   getPhoneHref,
+   handleContactLinkClick,
+} from '../../../shared/lib/contact-links';
 
 export function AdvertisementContacts({ contacts, variant = 'buttons' }) {
    const { t } = useTranslation();
@@ -51,8 +52,10 @@ export function AdvertisementContacts({ contacts, variant = 'buttons' }) {
                size="small"
                variant="outlined"
                startIcon={<CallOutlinedIcon />}
-               href={`tel:${normalizePhone(phone)}`}
-               onClick={(event) => event.stopPropagation()}
+               href={getPhoneHref(phone)}
+               onClick={(event) =>
+                  handleContactLinkClick(event, getPhoneHref(phone))
+               }
             >
                {t('advertisements.contacts.call')}
             </Button>
@@ -63,8 +66,10 @@ export function AdvertisementContacts({ contacts, variant = 'buttons' }) {
                size="small"
                variant="outlined"
                startIcon={<MailOutlineRoundedIcon />}
-               href={`mailto:${email}`}
-               onClick={(event) => event.stopPropagation()}
+               href={getEmailHref(email)}
+               onClick={(event) =>
+                  handleContactLinkClick(event, getEmailHref(email))
+               }
             >
                {t('advertisements.contacts.email')}
             </Button>

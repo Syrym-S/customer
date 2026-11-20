@@ -333,6 +333,7 @@
       "search": {
          "byDirection": "按方向搜索",
          "byName": "按名称搜索",
+         "byNumOrName": "按编号或名称搜索",
          "minChars": "请至少输入 2 个字符"
       },
       "severity": {
@@ -1316,6 +1317,7 @@
       },
       "languages": {
          "ar": "العربية",
+         "be": "Беларуская",
          "de": "Deutsch",
          "en": "English",
          "es": "Español",

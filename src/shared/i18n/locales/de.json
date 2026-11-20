@@ -334,6 +334,7 @@
       "search": {
          "byDirection": "Suche nach Richtung",
          "byName": "Suche nach Bezeichnung",
+         "byNumOrName": "Suche nach Nummer oder Titel",
          "minChars": "Mindestens 2 Zeichen eingeben"
       },
       "severity": {
@@ -1322,6 +1323,7 @@
       },
       "languages": {
          "ar": "العربية",
+         "be": "Беларуская",
          "de": "Deutsch",
          "en": "English",
          "es": "Español",

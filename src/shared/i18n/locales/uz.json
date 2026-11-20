@@ -334,6 +334,7 @@
       "search": {
          "byDirection": "Yo'nalish bo'yicha qidirish",
          "byName": "Nomi bo'yicha qidirish",
+         "byNumOrName": "Raqam yoki nom bo‘yicha qidirish",
          "minChars": "Kamida 2 belgi kiriting"
       },
       "severity": {
@@ -1322,6 +1323,7 @@
       },
       "languages": {
          "ar": "العربية",
+         "be": "Беларуская",
          "de": "Deutsch",
          "en": "English",
          "es": "Español",

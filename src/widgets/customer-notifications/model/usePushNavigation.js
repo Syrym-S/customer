@@ -1,50 +1,23 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { appBasename } from '../../../shared/api/api-client';
 import { isNative } from '../../../shared/config/platform';
 import { PushNotifications } from '@capacitor/push-notifications';
 
 import { addPluginListener } from '../../../shared/lib/capacitor-plugin';
-import { getAppOrigin } from '../../../shared/lib/app-origin';
 import { notifyRealtimeNotification } from '../../../shared/model/notifications.store';
+import {
+   NOTIFICATION_LINK_IN_APP,
+   resolveNotificationLinkTarget,
+} from '../lib/notification-link';
 import { extractNotificationFromPayload } from '../lib/notification-payload';
-import { resolveCustomerNotificationAppPath } from './notifications.helpers';
 
 const PUSH_NAVIGATE_MESSAGE = 'push-navigate';
 
-const CUSTOMER_PATH_PREFIX = '/customer';
-
 function toAppPath(rawUrl) {
-   if (!rawUrl) {
-      return '';
-   }
+   const target = resolveNotificationLinkTarget(rawUrl);
 
-   try {
-      const appOrigin = getAppOrigin();
-      const url = new URL(String(rawUrl).replaceAll('\\/', '/'), appOrigin);
-
-      if (url.origin !== appOrigin) {
-         return '';
-      }
-
-      const basename = appBasename === '/' ? '' : appBasename;
-      const pathname = url.pathname.startsWith(basename)
-         ? url.pathname.slice(basename.length)
-         : url.pathname;
-
-      const appPath =
-         resolveCustomerNotificationAppPath(pathname) ||
-         (pathname.startsWith(CUSTOMER_PATH_PREFIX) ? pathname : '');
-
-      if (!appPath) {
-         return '';
-      }
-
-      return `${appPath}${url.search}${url.hash}`;
-   } catch {
-      return '';
-   }
+   return target.kind === NOTIFICATION_LINK_IN_APP ? target.path : '';
 }
 
 function readPushData(notification) {

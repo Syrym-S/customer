@@ -334,6 +334,7 @@
       "search": {
          "byDirection": "البحث بالاتجاه",
          "byName": "البحث بالاسم",
+         "byNumOrName": "البحث بالرقم أو الاسم",
          "minChars": "أدخل حرفين على الأقل"
       },
       "severity": {
@@ -1322,6 +1323,7 @@
       },
       "languages": {
          "ar": "العربية",
+         "be": "Беларуская",
          "de": "Deutsch",
          "en": "English",
          "es": "Español",

@@ -336,6 +336,7 @@
       "search": {
          "byDirection": "Пошук за напрямком",
          "byName": "Пошук за назвою",
+         "byNumOrName": "Пошук за номером або назвою",
          "minChars": "Введіть мінімум 2 символи"
       },
       "severity": {
@@ -1334,6 +1335,7 @@
       },
       "languages": {
          "ar": "العربية",
+         "be": "Беларуская",
          "de": "Deutsch",
          "en": "English",
          "es": "Español",

@@ -334,6 +334,7 @@
       "search": {
          "byDirection": "Yöne göre ara",
          "byName": "Ada göre ara",
+         "byNumOrName": "Numara veya ada göre ara",
          "minChars": "En az 2 karakter girin"
       },
       "severity": {
@@ -1322,6 +1323,7 @@
       },
       "languages": {
          "ar": "العربية",
+         "be": "Беларуская",
          "de": "Deutsch",
          "en": "English",
          "es": "Español",

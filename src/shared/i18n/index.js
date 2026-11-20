@@ -2,6 +2,7 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 import ar from "./locales/ar.json";
+import be from "./locales/be.json";
 import de from "./locales/de.json";
 import en from "./locales/en.json";
 import es from "./locales/es.json";
@@ -45,6 +46,7 @@ i18n.use(initReactI18next).init({
     zh: { translation: zh },
     ur: { translation: ur },
     uk: { translation: uk },
+    be: { translation: be },
   },
   lng: initialLanguage,
   fallbackLng: DEFAULT_LANGUAGE,

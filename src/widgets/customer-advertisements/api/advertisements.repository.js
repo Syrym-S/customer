@@ -1,4 +1,5 @@
 import { isMockApi } from '../../../shared/config/api.config';
+import { parseSearchQuery } from '../../../shared/helpers/search-query.helpers';
 import {
    mapAdvertisementFromApi,
    mapAdvertisementLeadFromApi,
@@ -39,10 +40,18 @@ export async function fetchAdvertisement(advertisementId) {
    return mapAdvertisementFromApi(data);
 }
 
-export async function searchAdvertisementLeads({ q = '', perPage = 20 } = {}) {
+export async function searchAdvertisementLeads({
+   q = '',
+   page = 1,
+   perPage = 20,
+} = {}) {
+   const { num, text } = parseSearchQuery(q);
+
+   const params = { q: text, num, page, perPage };
+
    const data = isMockApi
-      ? await searchAdvertisementLeadsMock({ q, perPage })
-      : await searchAdvertisementLeadsApi({ q, perPage });
+      ? await searchAdvertisementLeadsMock(params)
+      : await searchAdvertisementLeadsApi(params);
 
    return data.map(mapAdvertisementLeadFromApi).filter(Boolean);
 }

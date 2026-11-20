@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, IconButton, Link, Tooltip } from '@mui/material';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import { getEmailHref, getPhoneHref, handleContactLinkClick } from '../lib/contact-links';
 
 export function CopyableContact({ type, value, placeholder }) {
    const { t } = useTranslation();
@@ -32,10 +33,7 @@ export function CopyableContact({ type, value, placeholder }) {
       return <>{text || placeholder || t('common.empty.notSpecifiedM')}</>;
    }
 
-   const href =
-      type === 'phone'
-         ? `tel:${text.replace(/[^+\d]/g, '')}`
-         : `mailto:${text}`;
+   const href = type === 'phone' ? getPhoneHref(text) : getEmailHref(text);
 
    async function handleCopy(event) {
       event.stopPropagation();
@@ -68,18 +66,31 @@ export function CopyableContact({ type, value, placeholder }) {
             maxWidth: '100%',
          }}
       >
-         <Link
-            href={href}
-            underline="hover"
-            onClick={(event) => event.stopPropagation()}
-            sx={{
-               fontWeight: 500,
-               minWidth: 0,
-               overflowWrap: 'anywhere',
-            }}
-         >
-            {text}
-         </Link>
+         {href ? (
+            <Link
+               href={href}
+               underline="hover"
+               onClick={(event) => handleContactLinkClick(event, href)}
+               sx={{
+                  fontWeight: 500,
+                  minWidth: 0,
+                  overflowWrap: 'anywhere',
+               }}
+            >
+               {text}
+            </Link>
+         ) : (
+            <Box
+               component="span"
+               sx={{
+                  fontWeight: 500,
+                  minWidth: 0,
+                  overflowWrap: 'anywhere',
+               }}
+            >
+               {text}
+            </Box>
+         )}
 
          <Tooltip
             title={isCopied ? t('common.actions.copied') : t('common.actions.copy')}
