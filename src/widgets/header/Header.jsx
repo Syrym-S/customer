@@ -18,7 +18,7 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import logoSrc from "../../../assets/logo.png";
+import logoSrc from "../../assets/logo.png";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";

@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
-import logoSrc from '../../../../assets/logo.png';
+import logoSrc from '../../../assets/logo.png';
 import { SupportContacts } from '../../../shared/ui/SupportContacts';
 import { LanguageSwitcher } from '../../../shared/ui/LanguageSwitcher';
 
