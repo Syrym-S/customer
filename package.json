@@ -14,12 +14,15 @@
       "build:prod": "npm run build --buildtarget=prod",
       "build:capacitor": "vite build --mode production --config vite.config.capacitor.js",
       "build:capacitor:dev": "npm run build:capacitor --buildtarget=dev",
+      "build:capacitor:staging": "vite build --mode staging --config vite.config.capacitor.js",
       "cap:sync": "npm run build:capacitor && npx cap sync android",
       "cap:sync:dev": "npm run build:capacitor:dev && npx cap sync android",
+      "cap:sync:staging": "npm run build:capacitor:staging --buildtarget=dev && npx cap sync android",
       "cap:open": "npx cap open android",
       "cap:run": "npx cap run android"
    },
    "dependencies": {
+      "@aparajita/capacitor-secure-storage": "^8.0.1",
       "@capacitor-community/file-opener": "^8.0.1",
       "@capacitor/app": "^8.1.2",
       "@capacitor/app-launcher": "^8.0.1",
@@ -73,6 +76,8 @@
       "eslint-plugin-react-refresh": "^0.4.16",
       "ftp-deploy": "^2.4.7",
       "globals": "^15.14.0",
+      "javascript-obfuscator": "^5.10.1",
+      "terser": "^5.51.3",
       "vite": "^6.0.5"
    }
 }

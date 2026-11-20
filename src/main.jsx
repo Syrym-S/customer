@@ -5,6 +5,7 @@ import './shared/config/leaflet-icons.js';
 import './shared/i18n';
 import App from './App.jsx';
 import './index.css';
+import { hydrateSession } from './shared/model/session.store';
 
 function mount() {
    createRoot(document.getElementById('root')).render(
@@ -14,8 +15,16 @@ function mount() {
    );
 }
 
-if (document.readyState === 'loading') {
-   document.addEventListener('DOMContentLoaded', mount);
-} else {
+async function bootstrap() {
+   await hydrateSession();
+
+   if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', mount);
+
+      return;
+   }
+
    mount();
 }
+
+void bootstrap();

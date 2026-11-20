@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 
 import {
-   readStoredSession,
+   loadStoredSession,
+   readStoredSessionSync,
    removeStoredSession,
    writeStoredSession,
 } from './session.storage';
@@ -52,7 +53,7 @@ export function normalizeSessionPayload(payload) {
 
 export const useSessionStore = create((set, get) => ({
    ...EMPTY_SESSION,
-   ...(readStoredSession() || {}),
+   ...(readStoredSessionSync() || {}),
    isSessionExpired: false,
 
    setSession(payload) {
@@ -86,6 +87,18 @@ export const useSessionStore = create((set, get) => ({
       set({ isSessionExpired: false });
    },
 }));
+
+export async function hydrateSession() {
+   const session = await loadStoredSession();
+
+   if (!session?.token) {
+      return false;
+   }
+
+   useSessionStore.setState({ ...session, isSessionExpired: false });
+
+   return true;
+}
 
 export function getSessionToken() {
    return useSessionStore.getState().token;
