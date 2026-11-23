@@ -87,8 +87,6 @@ export function TenderBetsSection({
     }
   }
 
-  console.log("bets", bets);
-
   return (
     <>
       <TenderDetailsSection

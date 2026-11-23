@@ -27,8 +27,6 @@ export async function uploadLeadDocument(leadId, { file, name, context }) {
 }
 
 export async function deleteLeadDocument(leadId, path) {
-  console.log("path", path);
-
   const response = await apiClient.delete(
     `/customer/v1/leads/${leadId}/files/delete/`,
     {

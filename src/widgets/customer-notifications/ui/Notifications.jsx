@@ -261,9 +261,7 @@ export function Notifications() {
                 // console.info('NotificationWS opened');
             },
 
-            onClose: (event) => {
-                console.info('NotificationWS closed', event);
-            },
+            onClose: () => {},
 
             onError: (error) => {
                 console.error('NotificationWS error', error);

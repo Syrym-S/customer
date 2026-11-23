@@ -4,9 +4,7 @@ const NO_MARKERS = [];
 const NO_ROUTE_POINTS = [];
 
 export function useCustomerMap() {
-   function handleMarkerClick(marker) {
-      console.log('marker click:', marker);
-   }
+   function handleMarkerClick() {}
 
    return {
       center: DEFAULT_CENTER,

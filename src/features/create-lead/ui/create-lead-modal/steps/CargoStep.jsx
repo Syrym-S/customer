@@ -27,7 +27,6 @@ import {
    fetchCustomerCargoTypesApi,
    searchCustomerCargoTypesApi,
 } from '../../../../../widgets/customer-leads/api/cargo-types.api';
-import { fetchCustomerCurrenciesApi } from '../../../api/currencies.api';
 import { CurrencyAutocomplete } from '../components/CurrencyAutocomplete';
 import { TnvedCodeAutocomplete } from '../../../../../widgets/customer-tnved/ui/TnvedCodeAutocomplete';
 import { computeCargoVolumeM3 } from '../../../../../widgets/customer-leads/model/lead-transportation.helpers';
@@ -63,23 +62,6 @@ export function CargoStep({ control, errors, setValue, getValues }) {
       control,
       name: 'cargos',
    });
-
-   useEffect(() => {
-      async function testCurrenciesRequest() {
-         try {
-            const response = await fetchCustomerCurrenciesApi();
-
-            console.log('test currencies:', response);
-         } catch (error) {
-            console.error(
-               'Не удалось загрузить валюты:',
-               error.response?.data || error,
-            );
-         }
-      }
-
-      testCurrenciesRequest();
-   }, []);
 
    useEffect(() => {
       let isCancelled = false;

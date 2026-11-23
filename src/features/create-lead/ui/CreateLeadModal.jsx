@@ -328,7 +328,6 @@ export function CreateLeadModal({
 
             const documents = mapCreateLeadDocumentsToApiDocuments(data);
             const payload = mapCreateLeadFormToApi(data);
-            console.log('create lead payload:', payload);
             const response = await createLead(payload);
 
             const createdLeadId = getCreatedLeadId(response);
