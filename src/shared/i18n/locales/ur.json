@@ -1046,6 +1046,8 @@
       "isNew": "نیا",
       "loadFailed": "اطلاعات لوڈ نہیں ہو سکیں",
       "loading": "اطلاعات لوڈ ہو رہی ہیں",
+      "markAllRead": "سب کو پڑھا ہوا نشان زد کریں",
+      "markReadFailed": "اطلاعات کو پڑھا ہوا نشان زد نہیں کیا جا سکا",
       "newToast": "نئی اطلاع",
       "newToastBody": "آپ کے پاس ایک نئی اطلاع ہے",
       "noDescription": "کوئی تفصیل نہیں",
@@ -1286,6 +1288,10 @@
       "clear": "راستہ صاف کریں",
       "coordinates": "کوآرڈینیٹس: {{lat}}, {{lng}}",
       "destinationNotSpecified": "منزل درج نہیں کی گئی",
+      "history": {
+         "recent": "حالیہ پتے",
+         "remove": "تاریخ سے ہٹائیں"
+      },
       "markerA": "A",
       "markerB": "B",
       "onMap": "نقشے پر",

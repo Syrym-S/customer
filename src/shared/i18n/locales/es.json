@@ -1046,6 +1046,8 @@
       "isNew": "Nuevo",
       "loadFailed": "No se pudieron cargar las notificaciones",
       "loading": "Cargando notificaciones",
+      "markAllRead": "Marcar todas como leídas",
+      "markReadFailed": "No se pudieron marcar las notificaciones como leídas",
       "newToast": "Nueva notificación",
       "newToastBody": "Tiene una nueva notificación",
       "noDescription": "Sin descripción",
@@ -1286,6 +1288,10 @@
       "clear": "Limpiar ruta",
       "coordinates": "Coordenadas: {{lat}}, {{lng}}",
       "destinationNotSpecified": "Destino no especificado",
+      "history": {
+         "recent": "Direcciones recientes",
+         "remove": "Eliminar del historial"
+      },
       "markerA": "A",
       "markerB": "B",
       "onMap": "En el mapa",

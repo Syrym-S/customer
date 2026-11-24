@@ -1046,6 +1046,8 @@
       "isNew": "جديد",
       "loadFailed": "تعذر تحميل الإشعارات",
       "loading": "جارٍ تحميل الإشعارات",
+      "markAllRead": "تحديد الكل كمقروء",
+      "markReadFailed": "تعذّر تحديد الإشعارات كمقروءة",
       "newToast": "إشعار جديد",
       "newToastBody": "لديك إشعار جديد",
       "noDescription": "لا يوجد وصف",
@@ -1286,6 +1288,10 @@
       "clear": "مسح المسار",
       "coordinates": "الإحداثيات: {{lat}}, {{lng}}",
       "destinationNotSpecified": "الوجهة غير محددة",
+      "history": {
+         "recent": "العناوين الأخيرة",
+         "remove": "إزالة من السجل"
+      },
       "markerA": "أ",
       "markerB": "ب",
       "onMap": "على الخريطة",

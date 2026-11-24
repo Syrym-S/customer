@@ -1046,6 +1046,8 @@
       "isNew": "Yeni",
       "loadFailed": "Bildirimler yüklenemedi",
       "loading": "Bildirimler yükleniyor",
+      "markAllRead": "Tümünü okundu say",
+      "markReadFailed": "Bildirimler okundu olarak işaretlenemedi",
       "newToast": "Yeni bildirim",
       "newToastBody": "Yeni bir bildiriminiz var",
       "noDescription": "Açıklama yok",
@@ -1286,6 +1288,10 @@
       "clear": "Rotayı temizle",
       "coordinates": "Koordinatlar: {{lat}}, {{lng}}",
       "destinationNotSpecified": "Varış yeri belirtilmedi",
+      "history": {
+         "recent": "Son adresler",
+         "remove": "Geçmişten kaldır"
+      },
       "markerA": "A",
       "markerB": "B",
       "onMap": "Haritada",
