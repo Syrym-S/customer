@@ -52,9 +52,7 @@ export function RoutePointAutocomplete({
     const lastSelectedLabelRef = useRef('');
 
     const query = inputValue.trim();
-    const isHistoryVisible =
-        query.length < MIN_SEARCH_LENGTH ||
-        query === lastSelectedLabelRef.current;
+    const isHistoryVisible = query.length < MIN_SEARCH_LENGTH;
     const options = isHistoryVisible ? history : searchOptions;
     const isLoading = isSearchLoading || isPointLoading;
 

@@ -1,4 +1,4 @@
-import { getSessionUserId } from '../../../shared/model/session.store';
+import { getCurrentUserId } from '../../../shared/helpers/current-user.helpers';
 
 const STORAGE_KEY_PREFIX = 'customer_route_history';
 const GUEST_SCOPE = 'guest';
@@ -7,7 +7,7 @@ const POINT_KEYS = ['from', 'to'];
 const COORDINATE_PRECISION = 4;
 
 function getStorageKey() {
-    const userId = getSessionUserId();
+    const userId = getCurrentUserId();
     const scope =
         userId === null || userId === undefined || userId === ''
             ? GUEST_SCOPE
