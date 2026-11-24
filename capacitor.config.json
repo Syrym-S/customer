@@ -1,5 +1,5 @@
 {
-   "appId": "kz.logistics360.customer",
+   "appId": "kz.logistics.customer",
    "appName": "360Logistics",
    "webDir": "dist-app",
    "android": {

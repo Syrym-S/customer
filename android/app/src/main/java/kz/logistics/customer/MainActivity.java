@@ -1,4 +1,4 @@
-package kz.logistics360.customer;
+package kz.logistics.customer;
 
 import com.getcapacitor.BridgeActivity;
 

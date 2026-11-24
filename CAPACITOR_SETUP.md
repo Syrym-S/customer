@@ -97,7 +97,7 @@ Preflight `OPTIONS` отвечает `200` на `auth/v2/auth`, `auth/v2/registe
 
 1. Firebase Console → проект **`logistics-d2ca7`** (тот же, что в
    `src/services/firebase.js`).
-2. Add app → Android, package name **`kz.logistics360.customer`**.
+2. Add app → Android, package name **`kz.logistics.customer`**.
 3. Скачать `google-services.json` и положить в `android/app/`.
 4. `npm run cap:sync`.
 
@@ -129,7 +129,7 @@ Preflight `OPTIONS` отвечает `200` на `auth/v2/auth`, `auth/v2/registe
 ### Deep links
 
 В манифесте объявлены два intent-filter: `https://customer.360logistics.kz/customer/*`
-(с `autoVerify`) и кастомная схема `kz.logistics360.customer://`. Чтобы первый
+(с `autoVerify`) и кастомная схема `kz.logistics.customer://`. Чтобы первый
 заработал, на домене нужен `/.well-known/assetlinks.json` с отпечатком
 подписи — это делается после того, как появится релизный keystore.
 

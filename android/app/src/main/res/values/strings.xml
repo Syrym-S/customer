@@ -2,8 +2,8 @@
 <resources>
     <string name="app_name">360Logistics</string>
     <string name="title_activity_main">360Logistics</string>
-    <string name="package_name">kz.logistics360.customer</string>
-    <string name="custom_url_scheme">kz.logistics360.customer</string>
+    <string name="package_name">kz.logistics.customer</string>
+    <string name="custom_url_scheme">kz.logistics.customer</string>
     <string name="deep_link_host">customer.360logistics.kz</string>
     <string name="default_notification_channel_id">customer-notifications</string>
 </resources>

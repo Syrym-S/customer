@@ -38,6 +38,12 @@ android/local.properties
 android/app/src/main/assets/public
 android/app/src/main/assets/capacitor.config.json
 android/app/src/main/assets/capacitor.plugins.json
-android/app/google-services.json
+# secrets / signing
 *.keystore
 *.jks
+*.p12
+*.pfx
+*.pem
+*.p8
+google-services.json
+GoogleService-Info.plist
