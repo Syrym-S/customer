@@ -22,6 +22,7 @@ import { createLead } from '../api/create-lead.repository';
 import { DocumentsStep } from './create-lead-modal/steps/DocumentsStep';
 import { uploadLeadDocument } from '../../../widgets/customer-leads/api/lead-documents.api';
 import { buildPointScheduleFields } from '../lib/point-schedule.helpers';
+import { pushRouteHistoryFromForm } from '../model/route-history.storage';
 import { AppDialog } from '../../../shared/ui/AppDialog';
 
 const STEP_DEFINITIONS = [
@@ -331,6 +332,8 @@ export function CreateLeadModal({
             const response = await createLead(payload);
 
             const createdLeadId = getCreatedLeadId(response);
+
+            pushRouteHistoryFromForm(data);
 
             let documentsUploadFailed = false;
 

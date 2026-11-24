@@ -1046,6 +1046,8 @@
       "isNew": "Nouveau",
       "loadFailed": "Impossible de charger les notifications",
       "loading": "Chargement des notifications",
+      "markAllRead": "Tout marquer comme lu",
+      "markReadFailed": "Impossible de marquer les notifications comme lues",
       "newToast": "Nouvelle notification",
       "newToastBody": "Vous avez une nouvelle notification",
       "noDescription": "Aucune description",
@@ -1286,6 +1288,10 @@
       "clear": "Effacer l'itinéraire",
       "coordinates": "Coordonnées : {{lat}}, {{lng}}",
       "destinationNotSpecified": "Destination non précisée",
+      "history": {
+         "recent": "Adresses récentes",
+         "remove": "Supprimer de l'historique"
+      },
       "markerA": "A",
       "markerB": "B",
       "onMap": "Sur la carte",

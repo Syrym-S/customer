@@ -1,5 +1,4 @@
 import {
-    Autocomplete,
     Box,
     Button,
     Checkbox,
@@ -22,8 +21,8 @@ import { CustomerMapView } from '../../../../../widgets/customer-map/ui/Customer
 import { useCustomerMap } from '../../../../../widgets/customer-map/model/useCustomerMap';
 import { useRouteMapPicker } from '../../../model/useRouteMapPicker';
 import { StepSection } from '../components/StepSection';
-import { searchGeocode } from '../../../api/geocoding.api';
-import { useEffect, useRef, useState } from 'react';
+import { RoutePointAutocomplete } from '../components/RoutePointAutocomplete';
+import { useEffect } from 'react';
 import { buildRouteFitBoundsKey } from '../../../lib/route-map.helpers';
 import {
     buildPointScheduleFields,
@@ -44,18 +43,6 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
     const { t } = useTranslation();
 
     const map = useCustomerMap();
-    const [fromInputValue, setFromInputValue] = useState('');
-    const [toInputValue, setToInputValue] = useState('');
-
-    const [fromOptions, setFromOptions] = useState([]);
-    const [toOptions, setToOptions] = useState([]);
-
-    const [isFromSearchLoading, setIsFromSearchLoading] = useState(false);
-    const [isToSearchLoading, setIsToSearchLoading] = useState(false);
-
-    const lastSelectedFromLabelRef = useRef('');
-    const lastSelectedToLabelRef = useRef('');
-
     const waypoints = Array.isArray(form.waypoints) ? form.waypoints : [];
     const pointScheduleFields = buildPointScheduleFields(waypoints);
 
@@ -109,76 +96,6 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
         form,
         setValue,
     });
-
-    useEffect(() => {
-        const query = fromInputValue.trim();
-
-        if (query.length < 2 || query === lastSelectedFromLabelRef.current) {
-            setFromOptions([]);
-            return;
-        }
-
-        const controller = new AbortController();
-
-        const timeoutId = setTimeout(async () => {
-            try {
-                setIsFromSearchLoading(true);
-
-                const result = await searchGeocode(query, {
-                    signal: controller.signal,
-                });
-
-                setFromOptions(result);
-            } catch (error) {
-                if (error.name !== 'AbortError') {
-                    console.error(error);
-                    setFromOptions([]);
-                }
-            } finally {
-                setIsFromSearchLoading(false);
-            }
-        }, 300);
-
-        return () => {
-            controller.abort();
-            clearTimeout(timeoutId);
-        };
-    }, [fromInputValue]);
-
-    useEffect(() => {
-        const query = toInputValue.trim();
-
-        if (query.length < 2 || query === lastSelectedToLabelRef.current) {
-            setToOptions([]);
-            return;
-        }
-
-        const controller = new AbortController();
-
-        const timeoutId = setTimeout(async () => {
-            try {
-                setIsToSearchLoading(true);
-
-                const result = await searchGeocode(query, {
-                    signal: controller.signal,
-                });
-
-                setToOptions(result);
-            } catch (error) {
-                if (error.name !== 'AbortError') {
-                    console.error(error);
-                    setToOptions([]);
-                }
-            } finally {
-                setIsToSearchLoading(false);
-            }
-        }, 300);
-
-        return () => {
-            controller.abort();
-            clearTimeout(timeoutId);
-        };
-    }, [toInputValue]);
 
     const fromCountry = form.from_location?.country || '';
     const toCountry = form.to_location?.country || '';
@@ -319,7 +236,8 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                     gap: 2,
                 }}
             >
-                <Controller
+                <RoutePointAutocomplete
+                    point="from"
                     name="fromLocation"
                     control={control}
                     rules={{
@@ -329,103 +247,14 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                             message: t("validation.min3"),
                         },
                     }}
-                    render={({ field }) => (
-                        <Autocomplete
-                            freeSolo
-                            value={field.value || ''}
-                            inputValue={fromInputValue || field.value || ''}
-                            options={fromOptions}
-                            loading={isFromSearchLoading || loadingPoints.from}
-                            filterOptions={(items) => items}
-                            getOptionLabel={(option) => {
-                                if (typeof option === 'string') {
-                                    return option;
-                                }
-
-                                return option?.label || option?.address || '';
-                            }}
-                            isOptionEqualToValue={(option, value) => {
-                                if (typeof value === 'string') {
-                                    return (
-                                        option?.label === value ||
-                                        option?.address === value
-                                    );
-                                }
-
-                                return option?.address === value?.address;
-                            }}
-                            onInputChange={(_, newInputValue, reason) => {
-                                if (reason === 'reset') {
-                                    return;
-                                }
-
-                                setFromInputValue(newInputValue);
-                                field.onChange(newInputValue);
-                                clearFromPoint();
-                            }}
-                            onChange={(_, selectedOption) => {
-                                if (
-                                    !selectedOption ||
-                                    typeof selectedOption === 'string'
-                                ) {
-                                    return;
-                                }
-
-                                setSelectedLocationPoint(
-                                    'from',
-                                    selectedOption,
-                                );
-
-                                const selectedLabel =
-                                    selectedOption.label ||
-                                    selectedOption.address ||
-                                    '';
-
-                                lastSelectedFromLabelRef.current =
-                                    selectedLabel.trim();
-                                setFromInputValue(selectedLabel);
-                                setFromOptions([]);
-                            }}
-                            noOptionsText={
-                                fromInputValue.trim().length < 2
-                                    ? t("common.search.minChars")
-                                    : t("route.addressNotFound")
-                            }
-                            loadingText={t("route.addressSearching")}
-                            renderInput={(params) => {
-                                const inputProps = params.InputProps || {};
-
-                                return (
-                                    <TextField
-                                        {...params}
-                                        label={t("common.fields.origin")}
-                                        fullWidth
-                                        size="small"
-                                        error={Boolean(errors.fromLocation)}
-                                        helperText={
-                                            errors.fromLocation?.message
-                                        }
-                                        InputProps={{
-                                            ...inputProps,
-                                            endAdornment: (
-                                                <>
-                                                    {(isFromSearchLoading ||
-                                                        loadingPoints.from) && (
-                                                        <CircularProgress
-                                                            color="inherit"
-                                                            size={18}
-                                                        />
-                                                    )}
-
-                                                    {inputProps.endAdornment}
-                                                </>
-                                            ),
-                                        }}
-                                    />
-                                );
-                            }}
-                        />
-                    )}
+                    label={t("common.fields.origin")}
+                    error={Boolean(errors.fromLocation)}
+                    helperText={errors.fromLocation?.message}
+                    isPointLoading={loadingPoints.from}
+                    onSelectLocation={(selectedOption) =>
+                        setSelectedLocationPoint('from', selectedOption)
+                    }
+                    onClearPoint={clearFromPoint}
                 />
 
                 <Box
@@ -801,7 +630,8 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                     );
                 })}
 
-                <Controller
+                <RoutePointAutocomplete
+                    point="to"
                     name="toLocation"
                     control={control}
                     rules={{
@@ -811,98 +641,14 @@ export function RouteStep({ control, errors, form, setValue, trigger }) {
                             message: t("validation.min3"),
                         },
                     }}
-                    render={({ field }) => (
-                        <Autocomplete
-                            freeSolo
-                            value={field.value || ''}
-                            inputValue={toInputValue || field.value || ''}
-                            options={toOptions}
-                            loading={isToSearchLoading || loadingPoints.to}
-                            filterOptions={(items) => items}
-                            getOptionLabel={(option) => {
-                                if (typeof option === 'string') {
-                                    return option;
-                                }
-
-                                return option?.label || option?.address || '';
-                            }}
-                            isOptionEqualToValue={(option, value) => {
-                                if (typeof value === 'string') {
-                                    return (
-                                        option?.label === value ||
-                                        option?.address === value
-                                    );
-                                }
-
-                                return option?.address === value?.address;
-                            }}
-                            onInputChange={(_, newInputValue, reason) => {
-                                if (reason === 'reset') {
-                                    return;
-                                }
-
-                                setToInputValue(newInputValue);
-                                field.onChange(newInputValue);
-                                clearToPoint();
-                            }}
-                            onChange={(_, selectedOption) => {
-                                if (
-                                    !selectedOption ||
-                                    typeof selectedOption === 'string'
-                                ) {
-                                    return;
-                                }
-
-                                setSelectedLocationPoint('to', selectedOption);
-
-                                const selectedLabel =
-                                    selectedOption.label ||
-                                    selectedOption.address ||
-                                    '';
-
-                                lastSelectedToLabelRef.current =
-                                    selectedLabel.trim();
-                                setToInputValue(selectedLabel);
-                                setToOptions([]);
-                            }}
-                            noOptionsText={
-                                toInputValue.trim().length < 2
-                                    ? t("common.search.minChars")
-                                    : t("route.addressNotFound")
-                            }
-                            loadingText={t("route.addressSearching")}
-                            renderInput={(params) => {
-                                const inputProps = params.InputProps || {};
-
-                                return (
-                                    <TextField
-                                        {...params}
-                                        label={t("common.fields.destination")}
-                                        fullWidth
-                                        size="small"
-                                        error={Boolean(errors.toLocation)}
-                                        helperText={errors.toLocation?.message}
-                                        InputProps={{
-                                            ...inputProps,
-                                            endAdornment: (
-                                                <>
-                                                    {(isToSearchLoading ||
-                                                        loadingPoints.to) && (
-                                                        <CircularProgress
-                                                            color="inherit"
-                                                            size={18}
-                                                        />
-                                                    )}
-
-                                                    {inputProps.endAdornment}
-                                                </>
-                                            ),
-                                        }}
-                                    />
-                                );
-                            }}
-                        />
-                    )}
+                    label={t("common.fields.destination")}
+                    error={Boolean(errors.toLocation)}
+                    helperText={errors.toLocation?.message}
+                    isPointLoading={loadingPoints.to}
+                    onSelectLocation={(selectedOption) =>
+                        setSelectedLocationPoint('to', selectedOption)
+                    }
+                    onClearPoint={clearToPoint}
                 />
 
                 <Box

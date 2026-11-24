@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logoutApi } from "../../shared/api/auth.api";
+import { clearRouteHistory } from "../../features/create-lead/model/route-history.storage";
 import { usePushNotificationsStore } from "../customer-notifications/model/push-notifications.store";
 import { Notifications } from "../customer-notifications/ui/Notifications";
 import { getCompactEmail } from "../../shared/helpers/helpers";
@@ -162,6 +163,8 @@ export function Header() {
         .getState()
         .unbindCurrentDevice()
         .catch(() => {});
+
+      clearRouteHistory();
 
       await logoutApi();
 

@@ -21,3 +21,9 @@ export async function fetchCustomerNotificationByIdApi(notificationId) {
 
     return response.data;
 }
+
+export async function markAllCustomerNotificationsReadApi() {
+    const response = await apiClient.post('/customer/v1/notifications/read-all');
+
+    return response.data;
+}

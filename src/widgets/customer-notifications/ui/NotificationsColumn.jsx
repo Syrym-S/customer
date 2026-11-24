@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import {
     Alert,
     Box,
+    Button,
+    CircularProgress,
     Drawer,
     IconButton,
     Pagination,
@@ -13,15 +15,21 @@ import {
 } from '@mui/material';
 
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import DoneAllRoundedIcon from '@mui/icons-material/DoneAllRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 
-import { fetchCustomerNotificationsApi } from '../api/notifications.api';
+import {
+    fetchCustomerNotificationsApi,
+    markAllCustomerNotificationsReadApi,
+} from '../api/notifications.api';
 import {
     getNotificationId,
+    isNotificationUnread,
     normalizeNotificationsResponse,
 } from '../model/notifications.helpers';
 import { NotificationItem } from './NotificationItem';
 import { NotificationState } from './NotificationState';
+import { notifyError } from '../../../shared/model/notifications.store';
 
 const PER_PAGE = 10;
 
@@ -29,6 +37,7 @@ export function NotificationsColumn({
     open,
     onClose,
     onOpenNotificationDetails,
+    onAllNotificationsRead,
     refreshKey = 0,
 }) {
     const { t } = useTranslation();
@@ -39,11 +48,14 @@ export function NotificationsColumn({
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isMarkingAllRead, setIsMarkingAllRead] = useState(false);
 
     const pageCount = useMemo(
         () => Math.max(1, Math.ceil(total / PER_PAGE)),
         [total],
     );
+
+    const hasUnreadNotifications = notifications.some(isNotificationUnread);
 
     const loadNotifications = useCallback(
         async ({ withLoader = true, nextPage = page } = {}) => {
@@ -86,6 +98,36 @@ export function NotificationsColumn({
             nextPage,
             withLoader: true,
         });
+    }
+
+    async function handleMarkAllRead() {
+        if (isMarkingAllRead || !hasUnreadNotifications) {
+            return;
+        }
+
+        try {
+            setIsMarkingAllRead(true);
+
+            await markAllCustomerNotificationsReadApi();
+
+            setNotifications((prevNotifications) =>
+                prevNotifications.map((notification) => ({
+                    ...notification,
+                    is_viewed: true,
+                })),
+            );
+
+            onAllNotificationsRead?.();
+        } catch (requestError) {
+            notifyError(
+                requestError.response?.data?.message ||
+                    requestError.response?.data?.error ||
+                    requestError.message ||
+                    t("notifications.markReadFailed"),
+            );
+        } finally {
+            setIsMarkingAllRead(false);
+        }
     }
 
     function handleRefresh() {
@@ -143,6 +185,7 @@ export function NotificationsColumn({
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         gap: 1,
+                        flexWrap: 'wrap',
                     }}
                 >
                     <Typography
@@ -155,7 +198,30 @@ export function NotificationsColumn({
                         {t("notifications.all")}
                     </Typography>
 
-                    <Stack direction='row' spacing={0.5}>
+                    <Stack direction='row' spacing={0.5} alignItems='center'>
+                        <Button
+                            size='small'
+                            color='inherit'
+                            onClick={handleMarkAllRead}
+                            disabled={
+                                isMarkingAllRead || !hasUnreadNotifications
+                            }
+                            startIcon={
+                                isMarkingAllRead ? (
+                                    <CircularProgress size={14} />
+                                ) : (
+                                    <DoneAllRoundedIcon fontSize='small' />
+                                )
+                            }
+                            sx={{
+                                '& .MuiButton-startIcon': {
+                                    marginRight: '1px',
+                                },
+                            }}
+                        >
+                            {t("notifications.markAllRead")}
+                        </Button>
+
                         <IconButton
                             onClick={handleRefresh}
                             disabled={isLoading}
@@ -233,5 +299,6 @@ NotificationsColumn.propTypes = {
     open: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     onOpenNotificationDetails: PropTypes.func.isRequired,
+    onAllNotificationsRead: PropTypes.func,
     refreshKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };

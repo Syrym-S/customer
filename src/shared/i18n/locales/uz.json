@@ -1046,6 +1046,8 @@
       "isNew": "Yangi",
       "loadFailed": "Bildirishnomalarni yuklab bo'lmadi",
       "loading": "Bildirishnomalar yuklanmoqda",
+      "markAllRead": "Barchasini o'qilgan deb belgilash",
+      "markReadFailed": "Bildirishnomalarni o'qilgan deb belgilab bo'lmadi",
       "newToast": "Yangi bildirishnoma",
       "newToastBody": "Sizda yangi bildirishnoma bor",
       "noDescription": "Tavsif yo'q",
@@ -1286,6 +1288,10 @@
       "clear": "Marshrutni tozalash",
       "coordinates": "Koordinatalar: {{lat}}, {{lng}}",
       "destinationNotSpecified": "Qayerga ko'rsatilmagan",
+      "history": {
+         "recent": "Oxirgi manzillar",
+         "remove": "Tarixdan o'chirish"
+      },
       "markerA": "A",
       "markerB": "B",
       "onMap": "Xaritada",
