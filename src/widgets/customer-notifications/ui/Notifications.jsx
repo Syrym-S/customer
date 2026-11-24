@@ -206,6 +206,15 @@ export function Notifications() {
         [markNotificationAsViewed, t],
     );
 
+    function handleAllNotificationsRead() {
+        setNotifications((prevNotifications) =>
+            prevNotifications.map((notification) => ({
+                ...notification,
+                is_viewed: true,
+            })),
+        );
+    }
+
     function handleCloseDetails() {
         if (isDetailsLoading) {
             return;
@@ -494,6 +503,7 @@ export function Notifications() {
                 open={isNotificationsDrawerOpen}
                 onClose={handleCloseNotificationsDrawer}
                 onOpenNotificationDetails={handleOpenNotificationDetails}
+                onAllNotificationsRead={handleAllNotificationsRead}
                 refreshKey={`${notifications.length}-${notificationsRefreshKey}`}
             />
 

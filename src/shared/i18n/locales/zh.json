@@ -1042,6 +1042,8 @@
       "isNew": "新",
       "loadFailed": "通知加载失败",
       "loading": "正在加载通知",
+      "markAllRead": "全部标记为已读",
+      "markReadFailed": "通知标记为已读失败",
       "newToast": "新通知",
       "newToastBody": "您有一条新通知",
       "noDescription": "无描述",
@@ -1282,6 +1284,10 @@
       "clear": "清除路线",
       "coordinates": "坐标：{{lat}}, {{lng}}",
       "destinationNotSpecified": "未填写目的地",
+      "history": {
+         "recent": "最近地址",
+         "remove": "从历史记录中删除"
+      },
       "markerA": "A",
       "markerB": "B",
       "onMap": "地图上标注",

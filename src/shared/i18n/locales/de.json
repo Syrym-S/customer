@@ -1048,6 +1048,8 @@
       "isNew": "Neu",
       "loadFailed": "Die Benachrichtigungen konnten nicht geladen werden",
       "loading": "Benachrichtigungen werden geladen",
+      "markAllRead": "Alle als gelesen markieren",
+      "markReadFailed": "Die Benachrichtigungen konnten nicht als gelesen markiert werden",
       "newToast": "Neue Benachrichtigung",
       "newToastBody": "Sie haben eine neue Benachrichtigung",
       "noDescription": "Keine Beschreibung",
@@ -1288,6 +1290,10 @@
       "clear": "Route löschen",
       "coordinates": "Koordinaten: {{lat}}, {{lng}}",
       "destinationNotSpecified": "Ziel nicht angegeben",
+      "history": {
+         "recent": "Letzte Adressen",
+         "remove": "Aus Verlauf entfernen"
+      },
       "markerA": "A",
       "markerB": "B",
       "onMap": "Auf der Karte",

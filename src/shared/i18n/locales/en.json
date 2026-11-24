@@ -1048,6 +1048,8 @@
       "isNew": "New",
       "loadFailed": "Failed to load notifications",
       "loading": "Loading notifications",
+      "markAllRead": "Mark all as read",
+      "markReadFailed": "Could not mark the notifications as read",
       "newToast": "New notification",
       "newToastBody": "You have a new notification",
       "noDescription": "No description",
@@ -1288,6 +1290,10 @@
       "clear": "Clear route",
       "coordinates": "Coordinates: {{lat}}, {{lng}}",
       "destinationNotSpecified": "Destination not specified",
+      "history": {
+         "recent": "Recent addresses",
+         "remove": "Remove from history"
+      },
       "markerA": "A",
       "markerB": "B",
       "onMap": "On the map",
