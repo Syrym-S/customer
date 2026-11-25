@@ -73,6 +73,11 @@
          "selected": "Seçilen taşıma"
       }
    },
+   "appUpdate": {
+      "available": "Uygulamanın yeni bir sürümü mevcut ({{version}}).",
+      "mandatory": "\n\nDevam etmek için güncelleme zorunludur.",
+      "title": "Güncelleme mevcut"
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "Yalnızca görüntülere (JPG, PNG, WEBP), PDF, DOC(X) veya XLS(X) izin verilir",
@@ -162,6 +167,7 @@
          "goTo": "Git",
          "gotIt": "Anladım",
          "hide": "Gizle",
+         "later": "Daha sonra",
          "next": "İleri",
          "openInNewTab": "Yeni sekmede aç",
          "preview": "Önizleme",
@@ -180,6 +186,7 @@
          "share": "Paylaş",
          "showAll": "Tümünü göster (+{{count}})",
          "sign": "İmzala",
+         "update": "Güncelle",
          "yes": "Evet",
          "takePhoto": "Fotoğraf çek"
       },

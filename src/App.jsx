@@ -8,6 +8,7 @@ import { getLanguageDirection } from "./shared/i18n/language";
 import { NotificationsColumn } from "./shared/ui/NotificationsColumn";
 import { MobileViewportModal } from "./shared/ui/MobileViewportModal";
 import { ContractGateModal } from "./shared/ui/ContractGateModal";
+import { AppUpdateModal } from "./widgets/app-update/ui/AppUpdateModal";
 import { useContractGate } from "./shared/model/useContractGate";
 import { useContractStore } from "./shared/model/contract.store";
 import { useLanguagesStore } from "./shared/model/languages.store";
@@ -65,6 +66,7 @@ function App() {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <AppUpdateModal />
         {isContractGateEnabled && !isAuthRoute && hasValidContract === null ? (
           <Box
             sx={{

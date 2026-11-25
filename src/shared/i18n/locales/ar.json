@@ -73,6 +73,11 @@
          "selected": "النقل المحدد"
       }
    },
+   "appUpdate": {
+      "available": "يتوفر إصدار جديد من التطبيق ({{version}}).",
+      "mandatory": "\n\nالتحديث مطلوب للاستمرار.",
+      "title": "يتوفر تحديث"
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "يُسمح فقط بالصور (JPG، PNG، WEBP) وملفات PDF أو DOC(X) أو XLS(X)",
@@ -162,6 +167,7 @@
          "goTo": "الانتقال",
          "gotIt": "فهمت",
          "hide": "إخفاء",
+         "later": "لاحقًا",
          "next": "التالي",
          "openInNewTab": "فتح في تبويب جديد",
          "preview": "معاينة",
@@ -180,6 +186,7 @@
          "share": "مشاركة",
          "showAll": "إظهار الكل (+{{count}})",
          "sign": "توقيع",
+         "update": "تحديث",
          "yes": "نعم",
          "takePhoto": "التقاط صورة"
       },

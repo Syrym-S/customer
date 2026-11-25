@@ -73,6 +73,11 @@
          "selected": "Selected shipment"
       }
    },
+   "appUpdate": {
+      "available": "A new app version is available ({{version}}).",
+      "mandatory": "\n\nThe update is required to continue.",
+      "title": "Update available"
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "Only images (JPG, PNG, WEBP), PDF, DOC(X) or XLS(X) files are allowed",
@@ -162,6 +167,7 @@
          "goTo": "Go",
          "gotIt": "Got it",
          "hide": "Hide",
+         "later": "Later",
          "next": "Next",
          "openInNewTab": "Open in a new tab",
          "preview": "Preview",
@@ -180,6 +186,7 @@
          "share": "Share",
          "showAll": "Show all (+{{count}})",
          "sign": "Sign",
+         "update": "Update",
          "yes": "Yes",
          "takePhoto": "Take a photo"
       },

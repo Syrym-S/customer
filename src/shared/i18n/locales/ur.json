@@ -73,6 +73,11 @@
          "selected": "منتخب ٹرانسپورٹ"
       }
    },
+   "appUpdate": {
+      "available": "ایپ کا نیا ورژن دستیاب ہے ({{version}})۔",
+      "mandatory": "\n\nجاری رکھنے کے لیے اپڈیٹ ضروری ہے۔",
+      "title": "اپڈیٹ دستیاب ہے"
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "صرف تصاویر (JPG، PNG، WEBP)، PDF، DOC(X) یا XLS(X) کی اجازت ہے",
@@ -162,6 +167,7 @@
          "goTo": "جائیں",
          "gotIt": "سمجھ گیا",
          "hide": "چھپائیں",
+         "later": "بعد میں",
          "next": "آگے",
          "openInNewTab": "نئے ٹیب میں کھولیں",
          "preview": "پیش منظر",
@@ -180,6 +186,7 @@
          "share": "شیئر کریں",
          "showAll": "تمام دکھائیں (+{{count}})",
          "sign": "دستخط کریں",
+         "update": "اپڈیٹ کریں",
          "yes": "جی ہاں",
          "takePhoto": "تصویر لیں"
       },

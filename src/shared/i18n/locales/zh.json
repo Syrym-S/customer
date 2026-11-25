@@ -73,6 +73,11 @@
          "selected": "已选择的运输"
       }
    },
+   "appUpdate": {
+      "available": "有新版本应用可用（{{version}}）。",
+      "mandatory": "\n\n必须更新才能继续使用。",
+      "title": "有可用更新"
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "仅支持图片（JPG、PNG、WEBP）、PDF、DOC(X) 或 XLS(X) 格式",
@@ -162,6 +167,7 @@
          "goTo": "前往",
          "gotIt": "知道了",
          "hide": "隐藏",
+         "later": "稍后",
          "next": "下一步",
          "openInNewTab": "在新标签页中打开",
          "preview": "预览",
@@ -180,6 +186,7 @@
          "share": "分享",
          "showAll": "显示全部（+{{count}}）",
          "sign": "签署",
+         "update": "更新",
          "yes": "是",
          "takePhoto": "拍照"
       },

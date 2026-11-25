@@ -73,6 +73,11 @@
          "selected": "Transport sélectionné"
       }
    },
+   "appUpdate": {
+      "available": "Une nouvelle version de l'application est disponible ({{version}}).",
+      "mandatory": "\n\nLa mise à jour est obligatoire pour continuer.",
+      "title": "Mise à jour disponible"
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "Seules les images (JPG, PNG, WEBP), PDF, DOC(X) ou XLS(X) sont autorisées",
@@ -162,6 +167,7 @@
          "goTo": "Aller à",
          "gotIt": "Compris",
          "hide": "Masquer",
+         "later": "Plus tard",
          "next": "Suivant",
          "openInNewTab": "Ouvrir dans un nouvel onglet",
          "preview": "Aperçu",
@@ -180,6 +186,7 @@
          "share": "Partager",
          "showAll": "Afficher tout (+{{count}})",
          "sign": "Signer",
+         "update": "Mettre à jour",
          "yes": "Oui",
          "takePhoto": "Prendre une photo"
       },

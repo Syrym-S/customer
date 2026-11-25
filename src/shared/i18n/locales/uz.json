@@ -73,6 +73,11 @@
          "selected": "Tanlangan tashish"
       }
    },
+   "appUpdate": {
+      "available": "Ilovaning yangi versiyasi mavjud ({{version}}).",
+      "mandatory": "\n\nDavom etish uchun yangilash talab qilinadi.",
+      "title": "Yangilanish mavjud"
+   },
    "chat": {
       "attachments": {
          "allowedTypes": "Faqat rasmlar (JPG, PNG, WEBP), PDF, DOC(X) yoki XLS(X) fayllariga ruxsat berilgan",
@@ -162,6 +167,7 @@
          "goTo": "O'tish",
          "gotIt": "Tushunarli",
          "hide": "Berkitish",
+         "later": "Keyinroq",
          "next": "Keyingi",
          "openInNewTab": "Yangi oynada ochish",
          "preview": "Oldindan ko'rish",
@@ -180,6 +186,7 @@
          "share": "Ulashish",
          "showAll": "Barchasini ko'rsatish (+{{count}})",
          "sign": "Imzolash",
+         "update": "Yangilash",
          "yes": "Ha",
          "takePhoto": "Surat olish"
       },
