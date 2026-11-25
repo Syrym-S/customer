@@ -46,6 +46,7 @@ import {
   saveBlobAsFile,
   saveFileFromUrl,
 } from "../../../shared/lib/download-file";
+import { isNative } from "../../../shared/config/platform";
 
 const LOAD_OLDER_SCROLL_THRESHOLD_PX = 80;
 const MARK_AS_READ_DEBOUNCE_MS = 1200;
@@ -603,13 +604,21 @@ export function ChatDetailView({ chat }) {
           gap: 1,
           px: 1,
           py: 1,
+          pt: isNative ? "calc(var(--safe-top) + 8px)" : 1,
           borderBottom: "1px solid",
           borderColor: "divider",
           flexShrink: 0,
         }}
       >
-        <IconButton size="small" onClick={backToList} aria-label={t("chat.backToList")}>
-          <ArrowBackRoundedIcon fontSize="small" sx={{ transform: isRtl ? "scaleX(-1)" : "none" }} />
+        <IconButton
+          size={isNative ? "medium" : "small"}
+          onClick={backToList}
+          aria-label={t("chat.backToList")}
+        >
+          <ArrowBackRoundedIcon
+            fontSize={isNative ? "medium" : "small"}
+            sx={{ transform: isRtl ? "scaleX(-1)" : "none" }}
+          />
         </IconButton>
 
         {chat.entityType === "factoring" && chat.counterparts?.length > 1 ? (
@@ -661,10 +670,10 @@ export function ChatDetailView({ chat }) {
             <CounterpartAvatar counterpart={headerCounterpart} size={36} />
 
             <Box sx={{ minWidth: 0 }}>
-              <Typography noWrap sx={{ fontSize: 14, fontWeight: 600 }}>
+              <Typography noWrap sx={{ fontSize: isNative ? 15 : 14, fontWeight: 600 }}>
                 {headerCounterpart.name}
               </Typography>
-              <Typography color="text.secondary" sx={{ fontSize: 11 }}>
+              <Typography color="text.secondary" sx={{ fontSize: isNative ? 12 : 11 }}>
                 {headerCounterpart.role}
               </Typography>
             </Box>
@@ -749,7 +758,7 @@ export function ChatDetailView({ chat }) {
               <Box
                 sx={{
                   position: "relative",
-                  maxWidth: "78%",
+                  maxWidth: isNative ? "82%" : "78%",
                   px: 1.5,
                   py: 1,
                   borderRadius: 2,
@@ -802,7 +811,7 @@ export function ChatDetailView({ chat }) {
                   <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                     <Typography
                       sx={{
-                        fontSize: 13,
+                        fontSize: isNative ? 14 : 13,
                         fontStyle: "italic",
                         color: isMine ? "rgba(255,255,255,0.75)" : "text.disabled",
                       }}
@@ -933,7 +942,10 @@ export function ChatDetailView({ chat }) {
                           sx={{
                             backgroundColor: "background.paper",
                             borderRadius: 1,
-                            "& .MuiInputBase-input": { fontSize: 13, color: "text.primary" },
+                            "& .MuiInputBase-input": {
+                              fontSize: isNative ? 16 : 13,
+                              color: "text.primary",
+                            },
                           }}
                         />
                         <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 0.5 }}>
@@ -965,7 +977,7 @@ export function ChatDetailView({ chat }) {
                       </Box>
                     ) : (
                       message.text && (
-                        <Typography sx={{ fontSize: 13, whiteSpace: "pre-wrap" }}>
+                        <Typography sx={{ fontSize: isNative ? 14 : 13, whiteSpace: "pre-wrap" }}>
                           {message.text}
                         </Typography>
                       )
@@ -1085,19 +1097,20 @@ export function ChatDetailView({ chat }) {
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
+            alignItems: isNative ? "flex-end" : "center",
             gap: 1,
             px: 1.5,
             py: 1.5,
+            pb: isNative ? "calc(12px + var(--safe-bottom))" : 1.5,
           }}
         >
           <IconButton
             component="label"
-            size="small"
+            size={isNative ? "medium" : "small"}
             aria-label={t("chat.attachments.attach")}
-            sx={{ mt: -0.2 }}
+            sx={isNative ? undefined : { mt: -0.2 }}
           >
-            <AttachFileRoundedIcon fontSize="small" />
+            <AttachFileRoundedIcon fontSize={isNative ? "medium" : "small"} />
 
             <input
               ref={fileInputRef}
@@ -1122,12 +1135,15 @@ export function ChatDetailView({ chat }) {
 
           <IconButton
             color="primary"
-            size="small"
+            size={isNative ? "medium" : "small"}
             onClick={handleSend}
             disabled={!canSend}
             aria-label={t("chat.message.send")}
           >
-            <SendRoundedIcon fontSize="small" sx={{ transform: isRtl ? "scaleX(-1)" : "none" }} />
+            <SendRoundedIcon
+              fontSize={isNative ? "medium" : "small"}
+              sx={{ transform: isRtl ? "scaleX(-1)" : "none" }}
+            />
           </IconButton>
         </Box>
       </Box>
