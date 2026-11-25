@@ -7,7 +7,6 @@ import {
   addTenderParticipant,
   cancelCustomerTender,
   createCustomerTender,
-  deleteCustomerTender,
   deleteTenderParticipant,
   fetchCustomerTenderById,
   fetchCustomerTenders,
@@ -198,15 +197,6 @@ export function TendersProvider({
     setDetailsError("");
   }, []);
 
-  const deleteTender = useCallback(
-    async (tenderId) => {
-      await deleteCustomerTender(tenderId);
-      closeTenderDetails();
-      await loadTenders();
-    },
-    [closeTenderDetails, loadTenders],
-  );
-
   const cancelTender = useCallback(
     async (tenderId) => {
       await cancelCustomerTender(tenderId);
@@ -330,7 +320,6 @@ export function TendersProvider({
       updateTender,
 
       reloadTenders: loadTenders,
-      deleteTender,
       cancelTender,
     }),
     [
@@ -351,7 +340,6 @@ export function TendersProvider({
       isDetailsLoading,
       detailsError,
       loadTenders,
-      deleteTender,
       cancelTender,
       createTender,
       addParticipant,

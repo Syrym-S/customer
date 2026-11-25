@@ -1442,9 +1442,6 @@
          "cancelConfirm": "Êtes-vous sûr de vouloir annuler cette enchère ? Après l'annulation, elle ne sera plus accessible aux participants.",
          "cancelFailed": "Impossible d'annuler l'enchère",
          "cancelling": "Annulation en cours...",
-         "delete": "Supprimer l'enchère",
-         "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cette enchère ? Cette action ne pourra pas être annulée.",
-         "deleteFailed": "Impossible de supprimer l'enchère",
          "saveFailed": "Impossible d'enregistrer les modifications de l'enchère",
          "start": "Démarrer l'enchère",
          "startFailed": "Impossible de démarrer l'enchère"

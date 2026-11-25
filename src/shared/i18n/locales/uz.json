@@ -1442,9 +1442,6 @@
          "cancelConfirm": "Bu auktsionni bekor qilishga ishonchingiz komilmi? Bekor qilingandan so'ng u qatnashchilar uchun mavjud bo'lmaydi.",
          "cancelFailed": "Auktsionni bekor qilib bo'lmadi",
          "cancelling": "Bekor qilinmoqda...",
-         "delete": "Auktsionni o'chirish",
-         "deleteConfirm": "Bu auktsionni o'chirishga ishonchingiz komilmi? Bu amalni ortga qaytarib bo'lmaydi.",
-         "deleteFailed": "Auktsionni o'chirib bo'lmadi",
          "saveFailed": "Auktsion o'zgarishlarini saqlab bo'lmadi",
          "start": "Auktsionni boshlash",
          "startFailed": "Auktsionni boshlab bo'lmadi"

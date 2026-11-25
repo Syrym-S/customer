@@ -1436,9 +1436,6 @@
          "cancelConfirm": "确定要取消该竞标吗？取消后，参与方将无法访问该竞标。",
          "cancelFailed": "竞标取消失败",
          "cancelling": "正在取消…",
-         "delete": "删除竞标",
-         "deleteConfirm": "确定要删除该竞标吗？该操作无法撤销。",
-         "deleteFailed": "竞标删除失败",
          "saveFailed": "竞标更改保存失败",
          "start": "启动竞标",
          "startFailed": "竞标启动失败"

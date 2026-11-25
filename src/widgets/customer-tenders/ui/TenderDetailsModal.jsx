@@ -58,7 +58,6 @@ export function TenderDetailsModal() {
         detailsError,
         acceptBet,
         cancelTender,
-        deleteTender,
         removeParticipant,
         startTender,
         updateTender,
@@ -194,27 +193,6 @@ export function TenderDetailsModal() {
         } catch (error) {
             setActionError(
                 error.response?.data?.message || t("tenders.manage.cancelFailed"),
-            );
-        } finally {
-            setIsActionLoading(false);
-        }
-    }
-
-    async function handleDeleteTender() {
-        if (!openTender?.id) {
-            return;
-        }
-
-        try {
-            setIsActionLoading(true);
-            setActionError('');
-
-            await deleteTender(openTender.id);
-        } catch (error) {
-            setActionError(
-                error.response?.data?.message ||
-                    error.message ||
-                    t("tenders.manage.deleteFailed"),
             );
         } finally {
             setIsActionLoading(false);
@@ -531,7 +509,6 @@ export function TenderDetailsModal() {
                     onSave={handleSaveEdit}
                     onStartTender={handleStartTender}
                     onCancelTender={handleCancelTender}
-                    onDeleteTender={handleDeleteTender}
                 />
             )}
         </AppDialog>

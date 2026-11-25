@@ -1442,9 +1442,6 @@
          "cancelConfirm": "¿Está seguro de que desea cancelar esta subasta? Después de la cancelación no estará disponible para los participantes.",
          "cancelFailed": "No se pudo cancelar la subasta",
          "cancelling": "Cancelando...",
-         "delete": "Eliminar subasta",
-         "deleteConfirm": "¿Está seguro de que desea eliminar esta subasta? Esta acción no se podrá deshacer.",
-         "deleteFailed": "No se pudo eliminar la subasta",
          "saveFailed": "No se pudieron guardar los cambios de la subasta",
          "start": "Iniciar subasta",
          "startFailed": "No se pudo iniciar la subasta"
