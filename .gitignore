@@ -45,5 +45,4 @@ android/app/src/main/assets/capacitor.plugins.json
 *.pfx
 *.pem
 *.p8
-google-services.json
 GoogleService-Info.plist

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { App } from '@capacitor/app';
 import { useTranslation } from "react-i18next";
 import {
     alpha,
@@ -37,6 +38,7 @@ import {
 import { NotificationsColumn } from './NotificationsColumn';
 import { NotificationItem } from './NotificationItem';
 import { NotificationState } from './NotificationState';
+import { addPluginListener } from '../../../shared/lib/capacitor-plugin';
 
 export function Notifications() {
     const { t } = useTranslation();
@@ -78,31 +80,34 @@ export function Notifications() {
         setIsNotificationsDrawerOpen(false);
     }
 
-    async function loadNotifications({ withLoader = false } = {}) {
-        try {
-            if (withLoader) {
-                setIsNotificationsLoading(true);
+    const loadNotifications = useCallback(
+        async ({ withLoader = false } = {}) => {
+            try {
+                if (withLoader) {
+                    setIsNotificationsLoading(true);
+                }
+
+                setNotificationsError('');
+
+                const response = await fetchCustomerNotificationsApi();
+                const nextNotifications = normalizeNotificationsResponse(response);
+
+                setNotifications(nextNotifications);
+            } catch (error) {
+                setNotificationsError(
+                    error.response?.data?.message ||
+                        error.response?.data?.error ||
+                        error.message ||
+                        t("notifications.loadFailed"),
+                );
+            } finally {
+                if (withLoader) {
+                    setIsNotificationsLoading(false);
+                }
             }
-
-            setNotificationsError('');
-
-            const response = await fetchCustomerNotificationsApi();
-            const nextNotifications = normalizeNotificationsResponse(response);
-
-            setNotifications(nextNotifications);
-        } catch (error) {
-            setNotificationsError(
-                error.response?.data?.message ||
-                    error.response?.data?.error ||
-                    error.message ||
-                    t("notifications.loadFailed"),
-            );
-        } finally {
-            if (withLoader) {
-                setIsNotificationsLoading(false);
-            }
-        }
-    }
+        },
+        [t],
+    );
 
     function handleOpenMenu(event) {
         const anchorElement = event.currentTarget;
@@ -325,6 +330,23 @@ export function Notifications() {
             }
         };
     }, []);
+
+    useEffect(() => {
+        const removeAppStateListener = addPluginListener(
+            App,
+            'appStateChange',
+            ({ isActive }) => {
+                if (!isActive) {
+                    return;
+                }
+
+                notificationWsConnectionRef.current?.reconnect?.();
+                loadNotifications();
+            },
+        );
+
+        return removeAppStateListener;
+    }, [loadNotifications]);
 
     useEffect(() => {
         function handleOpenRealtimeNotificationToast(event) {

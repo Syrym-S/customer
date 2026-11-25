@@ -33,8 +33,16 @@ const SERVICE_WORKER_URL = `${SERVICE_WORKER_SCOPE}firebase-messaging-sw.js`;
 
 const NATIVE_TOKEN_TIMEOUT_MS = 15000;
 
+// Без android/app/google-services.json FirebaseApp в приложении не поднимается,
+// и PushNotifications.register() роняет процесс нативным исключением. Флаг
+// проставляет vite.config.capacitor.js на момент сборки.
+const isNativePushConfigured =
+   import.meta.env.VITE_PUSH_CONFIGURED !== false;
+
+export const PUSH_CHANNEL_ID = 'customer-notifications';
+
 const NOTIFICATION_CHANNEL = {
-   id: 'customer-notifications',
+   id: PUSH_CHANNEL_ID,
    name: 'Уведомления',
    importance: 5,
    visibility: 1,
@@ -59,6 +67,60 @@ function normalizeNativePermission(status) {
    }
 
    return 'default';
+}
+
+let pendingPermissionRequest = null;
+
+export function isPushPermissionRequestable() {
+   return isNative;
+}
+
+export function requestPushPermission() {
+   if (!pendingPermissionRequest) {
+      pendingPermissionRequest = resolvePushPermissionRequest().finally(() => {
+         pendingPermissionRequest = null;
+      });
+   }
+
+   return pendingPermissionRequest;
+}
+
+async function resolvePushPermissionRequest() {
+   if (!isNative) {
+      if (!('Notification' in window)) {
+         return 'denied';
+      }
+
+      if (Notification.permission !== 'default') {
+         return Notification.permission;
+      }
+
+      return Notification.requestPermission();
+   }
+
+   const current = await getNativeRawPermission();
+
+   if (current !== 'prompt' && current !== 'prompt-with-rationale') {
+      return normalizeNativePermission(current);
+   }
+
+   try {
+      const result = await PushNotifications.requestPermissions();
+
+      return normalizeNativePermission(result?.receive);
+   } catch {
+      return 'denied';
+   }
+}
+
+async function getNativeRawPermission() {
+   try {
+      const result = await PushNotifications.checkPermissions();
+
+      return result?.receive || 'denied';
+   } catch {
+      return 'denied';
+   }
 }
 
 async function getNativePermission() {
@@ -116,7 +178,13 @@ function registerNativeToken() {
 
 export async function isWebPushSupported() {
    if (isNative) {
-      return true;
+      if (!isNativePushConfigured) {
+         console.warn(
+            'Push disabled: android/app/google-services.json was missing at build time',
+         );
+      }
+
+      return isNativePushConfigured;
    }
 
    return (
@@ -149,20 +217,12 @@ export async function requestWebPushToken() {
       return null;
    }
 
-   if (isNative) {
-      const result = await PushNotifications.requestPermissions();
-
-      if (normalizeNativePermission(result?.receive) !== 'granted') {
-         return null;
-      }
-
-      return registerNativeToken();
+   if ((await requestPushPermission()) !== 'granted') {
+      return null;
    }
 
-   const permission = await Notification.requestPermission();
-
-   if (permission !== 'granted') {
-      return null;
+   if (isNative) {
+      return registerNativeToken();
    }
 
    return retrieveToken();

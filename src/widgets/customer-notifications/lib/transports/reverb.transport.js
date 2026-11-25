@@ -320,6 +320,23 @@ export function openReverbNotificationTransport({
     start();
 
     return {
+        reconnect() {
+            if (isClosed) {
+                return;
+            }
+
+            const connectionState = echo?.connector?.pusher?.connection?.state;
+
+            if (connectionState === 'connected' || connectionState === 'connecting') {
+                return;
+            }
+
+            clearReconnectTimer();
+            reconnectAttempt = 0;
+            teardownEcho();
+            start();
+        },
+
         close() {
             if (isClosed) {
                 return;

@@ -308,6 +308,20 @@ export function openRawWsNotificationTransport({
     start();
 
     return {
+        reconnect() {
+            if (isClosed || hasGivenUp) {
+                return;
+            }
+
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                return;
+            }
+
+            clearReconnectTimer();
+            reconnectAttempt = 0;
+            start();
+        },
+
         close() {
             isClosed = true;
             abortController.abort();

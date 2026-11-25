@@ -1,32 +1,75 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { isNative } from '../../../shared/config/platform';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import { PushNotifications } from '@capacitor/push-notifications';
 
+import i18n from '../../../shared/i18n';
+import { getPlatform, isNative } from '../../../shared/config/platform';
 import { addPluginListener } from '../../../shared/lib/capacitor-plugin';
-import { notifyRealtimeNotification } from '../../../shared/model/notifications.store';
+import { publishNotificationDomainEvent } from '../../../shared/model/notification-domain-events';
+import { PUSH_CHANNEL_ID } from '../../../services/firebase';
 import {
-   NOTIFICATION_LINK_IN_APP,
-   resolveNotificationLinkTarget,
-} from '../lib/notification-link';
-import { extractNotificationFromPayload } from '../lib/notification-payload';
+   getNotificationMessageText,
+   getNotificationThemeText,
+} from '../lib/notification-texts';
+import { requestNotificationLinkNavigation } from './notification-navigation';
 
 const PUSH_NAVIGATE_MESSAGE = 'push-navigate';
+const FOREGROUND_NOTIFICATION_SMALL_ICON = 'ic_stat_notification';
 
-function toAppPath(rawUrl) {
-   const target = resolveNotificationLinkTarget(rawUrl);
-
-   return target.kind === NOTIFICATION_LINK_IN_APP ? target.path : '';
-}
+let foregroundNotificationId = 0;
 
 function readPushData(notification) {
    return notification?.data || notification?.notification?.data || {};
 }
 
-export function usePushNavigation() {
-   const navigate = useNavigate();
+function readPushLink(data) {
+   return data.link || data.url || '';
+}
 
+async function showForegroundNotification(event) {
+   if (getPlatform() !== 'android') {
+      return;
+   }
+
+   const data = readPushData(event);
+
+   const title = event?.title || data.title || data.theme || '';
+   const body = event?.body || data.body || data.message || '';
+
+   if (!title && !body) {
+      return;
+   }
+
+   const translatable = {
+      theme: title,
+      message: body,
+      type: data.type || '',
+   };
+
+   foregroundNotificationId += 1;
+
+   try {
+      await LocalNotifications.schedule({
+         notifications: [
+            {
+               id: foregroundNotificationId,
+               title:
+                  getNotificationThemeText(translatable) ||
+                  i18n.t('notifications.newToast'),
+               body: getNotificationMessageText(translatable),
+               channelId: PUSH_CHANNEL_ID,
+               smallIcon: FOREGROUND_NOTIFICATION_SMALL_ICON,
+               extra: { link: readPushLink(data) },
+            },
+         ],
+      });
+   } catch (error) {
+      console.error('Push failed to show foreground notification', error);
+   }
+}
+
+export function usePushNavigation() {
    useEffect(() => {
       if (!isNative) {
          return undefined;
@@ -36,12 +79,9 @@ export function usePushNavigation() {
          PushNotifications,
          'pushNotificationActionPerformed',
          (event) => {
-            const data = readPushData(event?.notification);
-            const appPath = toAppPath(data.link || data.url);
-
-            if (appPath) {
-               navigate(appPath);
-            }
+            requestNotificationLinkNavigation(
+               readPushLink(readPushData(event?.notification)),
+            );
          },
       );
 
@@ -49,25 +89,30 @@ export function usePushNavigation() {
          PushNotifications,
          'pushNotificationReceived',
          (event) => {
-            const payload = {
-               ...readPushData(event),
-               theme: event?.title || readPushData(event).theme,
-               message: event?.body || readPushData(event).message,
-            };
+            publishNotificationDomainEvent({
+               type: readPushData(event).type,
+            });
 
-            const notification = extractNotificationFromPayload(payload);
+            showForegroundNotification(event);
+         },
+      );
 
-            if (notification) {
-               notifyRealtimeNotification(notification);
-            }
+      const removeLocalAction = addPluginListener(
+         LocalNotifications,
+         'localNotificationActionPerformed',
+         (action) => {
+            requestNotificationLinkNavigation(
+               action?.notification?.extra?.link || '',
+            );
          },
       );
 
       return () => {
          removeAction();
          removeReceived();
+         removeLocalAction();
       };
-   }, [navigate]);
+   }, []);
 
    useEffect(() => {
       if (isNative || !('serviceWorker' in navigator)) {
@@ -79,11 +124,7 @@ export function usePushNavigation() {
             return;
          }
 
-         const appPath = toAppPath(event.data.url);
-
-         if (appPath) {
-            navigate(appPath);
-         }
+         requestNotificationLinkNavigation(event.data.url);
       }
 
       navigator.serviceWorker.addEventListener('message', handleMessage);
@@ -91,5 +132,5 @@ export function usePushNavigation() {
       return () => {
          navigator.serviceWorker.removeEventListener('message', handleMessage);
       };
-   }, [navigate]);
+   }, []);
 }

@@ -66,6 +66,10 @@ export function openNotificationsRealtimeConnection(handlers) {
     waitForConfig();
 
     return {
+        reconnect() {
+            connection?.reconnect?.();
+        },
+
         close() {
             isClosed = true;
 

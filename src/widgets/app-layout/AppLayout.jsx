@@ -6,6 +6,7 @@ import { AppBreadcrumbs } from "../../router/AppBreadcrumbs";
 import { DocumentTitleManager } from "../../router/DocumentTitleManager";
 import { ChatWidget } from "../chat-widget/ui/ChatWidget";
 import { usePushNavigation } from "../customer-notifications/model/usePushNavigation";
+import { NotificationNavigationWatcher } from "../customer-notifications/ui/NotificationNavigationWatcher";
 import { usePushNotificationsStore } from "../customer-notifications/model/push-notifications.store";
 import { useSessionGuard } from "../../shared/model/useSessionGuard";
 import { useAndroidBackButton } from "../../shared/model/useAndroidBackButton";
@@ -63,6 +64,8 @@ export function AppLayout() {
 
   return (
     <Box sx={{ minHeight: "100vh" }}>
+      <NotificationNavigationWatcher />
+
       <DocumentTitleManager />
 
       <Header />

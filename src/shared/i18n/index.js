@@ -75,3 +75,7 @@ i18n.on("languageChanged", (language) => {
 });
 
 export default i18n;
+
+export function getCurrentLanguage() {
+  return i18n.resolvedLanguage || i18n.language || DEFAULT_LANGUAGE;
+}

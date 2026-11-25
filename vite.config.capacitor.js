@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -15,6 +17,8 @@ export default defineConfig(({ mode }) => {
 
    const isHardened = mode !== 'staging';
 
+   const isPushConfigured = existsSync('android/app/google-services.json');
+
    return {
       plugins: [
          react(),
@@ -25,6 +29,7 @@ export default defineConfig(({ mode }) => {
       publicDir: false,
       define: {
          'import.meta.env.VITE_API_MODE': JSON.stringify('api'),
+         'import.meta.env.VITE_PUSH_CONFIGURED': JSON.stringify(isPushConfigured),
          'import.meta.env.VITE_API_BASE_URL': JSON.stringify(
             API_BASE_URLS[buildTarget],
          ),
