@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "102491456805",
+    "project_id": "logistics-d2ca7",
+    "storage_bucket": "logistics-d2ca7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102491456805:android:4177f01c8c6a0cf96586cc",
+        "android_client_info": {
+          "package_name": "kz.logistics.customer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASEJ6w83CXMiDkH1JY3AInrdtIR9095jE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102491456805:android:9719b9574e6c4e4c6586cc",
+        "android_client_info": {
+          "package_name": "kz.logistics.driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASEJ6w83CXMiDkH1JY3AInrdtIR9095jE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
