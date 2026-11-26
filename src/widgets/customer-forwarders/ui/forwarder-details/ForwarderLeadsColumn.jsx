@@ -27,23 +27,47 @@ function ForwarderLeadsEmptyState() {
     const { t } = useTranslation();
 
     return (
-        <Stack
-            spacing={1}
-            alignItems="center"
-            justifyContent="center"
+        <Box
             sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1.5,
                 py: 6,
                 px: 2,
+                ml: {
+                    xs: 0,
+                    sm: 4,
+                },
                 textAlign: 'center',
                 color: 'text.secondary',
             }}
         >
-            <InboxOutlinedIcon sx={{ fontSize: 40, color: 'action.disabled' }} />
+            <Box
+                sx={(theme) => ({
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 56,
+                    height: 56,
+                    borderRadius: '50%',
+                    backgroundColor: theme.palette.action.hover,
+                })}
+            >
+                <InboxOutlinedIcon
+                    sx={{
+                        display: 'block',
+                        fontSize: 28,
+                        color: 'text.disabled',
+                    }}
+                />
+            </Box>
 
-            <Typography sx={{ fontSize: 14 }}>
+            <Typography sx={{ fontSize: 14, lineHeight: 1.5 }}>
                 {t('forwarders.leads.empty')}
             </Typography>
-        </Stack>
+        </Box>
     );
 }
 
@@ -110,6 +134,10 @@ export function ForwarderLeadsColumn({
                         display: 'flex',
                         justifyContent: 'center',
                         flexShrink: 0,
+                        ml: {
+                            xs: 0,
+                            sm: 4,
+                        },
                     }}
                 >
                     <Pagination
