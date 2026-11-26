@@ -280,6 +280,7 @@
          "manufacturer": "Hersteller",
          "name": "Bezeichnung",
          "number": "Nummer",
+         "orderNum": "Auftragsnr.",
          "origin": "Von",
          "packagingType": "Verpackungsart",
          "participants": "Teilnehmer",

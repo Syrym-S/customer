@@ -282,6 +282,7 @@
          "manufacturer": "Виробник",
          "name": "Назва",
          "number": "Номер",
+         "orderNum": "№ замовлення",
          "origin": "Звідки",
          "packagingType": "Вид упаковки",
          "participants": "Учасники",

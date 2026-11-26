@@ -280,6 +280,7 @@
          "manufacturer": "Fabricante",
          "name": "Nome",
          "number": "Número",
+         "orderNum": "Nº do pedido",
          "origin": "De",
          "packagingType": "Tipo de embalagem",
          "participants": "Participantes",

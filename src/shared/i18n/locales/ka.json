@@ -280,6 +280,7 @@
          "manufacturer": "დამამზადებელი",
          "name": "დასახელება",
          "number": "ნომერი",
+         "orderNum": "შეკვეთის №",
          "origin": "საიდან",
          "packagingType": "შეფუთვის ტიპი",
          "participants": "მონაწილეები",

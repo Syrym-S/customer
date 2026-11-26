@@ -280,6 +280,7 @@
          "manufacturer": "Üretici",
          "name": "Ad",
          "number": "Numara",
+         "orderNum": "Sipariş No",
          "origin": "Çıkış yeri",
          "packagingType": "Ambalaj türü",
          "participants": "Katılımcılar",

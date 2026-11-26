@@ -280,6 +280,7 @@
          "manufacturer": "الشركة المصنّعة",
          "name": "الاسم",
          "number": "الرقم",
+         "orderNum": "رقم الطلب",
          "origin": "من",
          "packagingType": "نوع التغليف",
          "participants": "المشاركون",

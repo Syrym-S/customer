@@ -29,6 +29,10 @@ export function TenderDetailsHeader({ tender }) {
    const tenderId = tender.id || '—';
    const compactTenderId = getCompactId(tenderId);
    const tenderName = String(tender.name || '').trim();
+   const leadNum = tender.lead?.num ?? null;
+   const orderNumLabel = leadNum
+      ? `${t("common.fields.orderNum")} ${leadNum}`
+      : '';
 
    return (
       <Box
@@ -79,15 +83,34 @@ export function TenderDetailsHeader({ tender }) {
                {tenderName || `#${compactTenderId}`}
             </Typography>
 
-            {tenderName && (
-               <Typography
-                  variant='body2'
-                  color='text.secondary'
-                  title={`#${tenderId}`}
-               >
-                  #{compactTenderId}
-               </Typography>
-            )}
+            <Stack
+               direction='row'
+               spacing={0.75}
+               useFlexGap
+               sx={{ flexWrap: 'wrap', alignItems: 'center', rowGap: 0.25 }}
+            >
+               {tenderName && (
+                  <Typography
+                     variant='body2'
+                     color='text.secondary'
+                     title={`#${tenderId}`}
+                  >
+                     #{compactTenderId}
+                  </Typography>
+               )}
+
+               {tenderName && orderNumLabel && (
+                  <Typography variant='body2' color='text.secondary'>
+                     ·
+                  </Typography>
+               )}
+
+               {orderNumLabel && (
+                  <Typography variant='body2' color='text.secondary'>
+                     {orderNumLabel}
+                  </Typography>
+               )}
+            </Stack>
          </Box>
 
          <Stack

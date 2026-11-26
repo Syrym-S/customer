@@ -9,7 +9,6 @@ import {
    getZebraRowClassName,
    toNumberOrNull,
    toSortString,
-   truncateId,
 } from '../../../shared/helpers/data-grid.helpers';
 import { StatusDot } from '../../../shared/ui/StatusDot';
 import {
@@ -44,6 +43,10 @@ function getMoneyLabel(amount, currency) {
 
 function getLeadValue(tender, field) {
    return tender?.lead?.[field] || tender?.[field] || null;
+}
+
+function getTenderLeadNum(tender) {
+   return tender?.lead?.num ?? tender?.num ?? null;
 }
 
 function getTenderPrice(tender) {
@@ -90,53 +93,45 @@ export function TendersTable({ tenders, isLoading = false }) {
 
    const columns = [
       {
-         field: 'id',
-         headerName: '№',
-         width: 130,
-         renderCell: ({ row }) => (
-            <Tooltip title={row.id}>
-               <Box
-                  onClick={() => openTenderDetails(row)}
-                  sx={{
-                     color: 'primary.main',
-                     cursor: 'pointer',
-                     fontWeight: 600,
-                     textDecoration: 'underline',
-                     textUnderlineOffset: 2,
-                     width: 'fit-content',
-                  }}
-               >
-                  {truncateId(row.id)}
-               </Box>
-            </Tooltip>
-         ),
-      },
-      {
          field: 'name',
          headerName: t("common.fields.name"),
          flex: 1,
-         minWidth: 160,
+         minWidth: 200,
          valueGetter: (_, row) => toSortString(row?.name),
          renderCell: ({ row }) => {
             const name = String(row?.name || '').trim();
-
-            if (!name) {
-               return <Box>-</Box>;
-            }
+            const label = name || t("tenders.titleSingular");
 
             return (
-               <Tooltip title={name}>
+               <Tooltip title={label}>
                   <Box
+                     onClick={() => openTenderDetails(row)}
                      sx={{
+                        color: 'primary.main',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                        textDecoration: 'underline',
+                        textUnderlineOffset: 2,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
                      }}
                   >
-                     {name}
+                     {label}
                   </Box>
                </Tooltip>
             );
+         },
+      },
+      {
+         field: 'leadNum',
+         headerName: t("common.fields.orderNum"),
+         width: 120,
+         valueGetter: (_, row) => toNumberOrNull(getTenderLeadNum(row)),
+         renderCell: ({ row }) => {
+            const leadNum = getTenderLeadNum(row);
+
+            return <Box>{leadNum ?? '-'}</Box>;
          },
       },
       {

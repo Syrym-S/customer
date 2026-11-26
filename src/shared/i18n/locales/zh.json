@@ -279,6 +279,7 @@
          "manufacturer": "生产商",
          "name": "名称",
          "number": "编号",
+         "orderNum": "订单号",
          "origin": "起点",
          "packagingType": "包装类型",
          "participants": "参与方",
