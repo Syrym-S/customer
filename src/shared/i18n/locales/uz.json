@@ -769,6 +769,7 @@
    },
    "header": {
       "closeMenu": "Menyuni yopish",
+      "openMenu": "Menyuni ochish",
       "logout": {
          "action": "Chiqish",
          "confirm": "Chiqishga ishonchingiz komilmi?",

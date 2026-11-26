@@ -769,6 +769,7 @@
    },
    "header": {
       "closeMenu": "Menüyü kapat",
+      "openMenu": "Menüyü aç",
       "logout": {
          "action": "Çıkış yap",
          "confirm": "Çıkış yapmak istediğinizden emin misiniz?",

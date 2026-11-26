@@ -769,6 +769,7 @@
    },
    "header": {
       "closeMenu": "Мәзірді жабу",
+      "openMenu": "Мәзірді ашу",
       "logout": {
          "action": "Шығу",
          "confirm": "Шығуға сенімдісіз бе?",

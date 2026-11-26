@@ -769,6 +769,7 @@
    },
    "header": {
       "closeMenu": "Менюну жабуу",
+      "openMenu": "Менюну ачуу",
       "logout": {
          "action": "Чыгуу",
          "confirm": "Чыгууну каалайсызбы?",

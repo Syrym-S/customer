@@ -769,6 +769,7 @@
    },
    "header": {
       "closeMenu": "Menü schließen",
+      "openMenu": "Menü öffnen",
       "logout": {
          "action": "Abmelden",
          "confirm": "Sind Sie sicher, dass Sie sich abmelden möchten?",
