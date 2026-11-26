@@ -1,4 +1,5 @@
 import {
+   alpha,
    Alert,
    Box,
    Button,
@@ -203,6 +204,8 @@ export function LeadsList() {
                            px: 2,
                            whiteSpace: 'nowrap',
                            textTransform: 'none',
+                           color: (theme) =>
+                              alpha(theme.palette.text.primary, 0.78),
                         },
                      }}
                   >
