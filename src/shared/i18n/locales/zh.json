@@ -773,6 +773,7 @@
    },
    "header": {
       "closeMenu": "关闭菜单",
+      "openMenu": "打开菜单",
       "logout": {
          "action": "退出",
          "confirm": "确定要退出登录吗？",

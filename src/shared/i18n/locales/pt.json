@@ -778,6 +778,7 @@
    },
    "header": {
       "closeMenu": "Fechar menu",
+      "openMenu": "Abrir menu",
       "logout": {
          "action": "Sair",
          "confirm": "Tem certeza de que deseja sair?",

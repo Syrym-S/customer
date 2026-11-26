@@ -51,6 +51,8 @@ import { LanguageSwitcher } from "../../shared/ui/LanguageSwitcher";
 import { useChatStore } from "../chat-widget/model/chat.store";
 import { AppDialog } from "../../shared/ui/AppDialog";
 
+const BURGER_EASING = "cubic-bezier(0.32, 0.72, 0, 1)";
+
 export function Header() {
   const { t } = useTranslation();
   const openSupportChat = useChatStore((state) => state.openSupportChat);
@@ -121,11 +123,11 @@ export function Header() {
     setProfileAnchorEl(null);
   }
 
-  function handleOpenBurger(event) {
+  function handleToggleBurger(event) {
     event.currentTarget.blur();
 
     requestAnimationFrame(() => {
-      setIsBurgerOpen(true);
+      setIsBurgerOpen((isOpen) => !isOpen);
     });
   }
 
@@ -340,7 +342,7 @@ export function Header() {
           flexDirection: "column",
           justifyContent: "space-between",
           gap: 2,
-          height: "100vh",
+          height: "100%",
           overflowY: "auto",
         }}
       >
@@ -493,7 +495,8 @@ export function Header() {
         }}
       >
         <IconButton
-          onClick={handleOpenBurger}
+          onClick={handleToggleBurger}
+          aria-label={isBurgerOpen ? t("header.closeMenu") : t("header.openMenu")}
           sx={{
             display: {
               xs: "inline-flex",
@@ -501,7 +504,42 @@ export function Header() {
             },
           }}
         >
-          <MenuIcon />
+          <Box
+            sx={{
+              position: "relative",
+              width: 24,
+              height: 24,
+
+              "& .MuiSvgIcon-root": {
+                position: "absolute",
+                inset: 0,
+                transition: `opacity 200ms ${BURGER_EASING}, transform 320ms ${BURGER_EASING}`,
+              },
+
+              "@media (prefers-reduced-motion: reduce)": {
+                "& .MuiSvgIcon-root": {
+                  transition: "none",
+                },
+              },
+            }}
+          >
+            <MenuIcon
+              sx={{
+                opacity: isBurgerOpen ? 0 : 1,
+                transform: isBurgerOpen
+                  ? "rotate(-90deg) scale(0.6)"
+                  : "rotate(0deg) scale(1)",
+              }}
+            />
+            <CloseIcon
+              sx={{
+                opacity: isBurgerOpen ? 1 : 0,
+                transform: isBurgerOpen
+                  ? "rotate(0deg) scale(1)"
+                  : "rotate(90deg) scale(0.6)",
+              }}
+            />
+          </Box>
         </IconButton>
 
         <Box
@@ -551,7 +589,7 @@ export function Header() {
             onClick={handleOpenProfileMenu}
             title={userEmail}
             aria-label={t("header.userProfile", { email: userEmail })}
-            sx={{
+            sx={(theme) => ({
               minWidth: 0,
               maxWidth: {
                 xs: 112,
@@ -568,15 +606,14 @@ export function Header() {
               gap: 1,
 
               "@media (max-width: 449px)": {
-                width: 36,
-                height: 36,
-                minWidth: 36,
-                maxWidth: 36,
+                width: 40,
+                height: 40,
+                minWidth: 40,
+                maxWidth: 40,
                 px: 0,
-                border: "none",
-                borderRadius: "50%",
+                borderRadius: `${theme.radius.md}px`,
               },
-            }}
+            })}
           >
             <Avatar
               src={profilePhoto || undefined}
@@ -649,13 +686,21 @@ export function Header() {
           variant="temporary"
           open={isBurgerOpen}
           onClose={handleCloseBurger}
+          disableEnforceFocus
           slotProps={{
+            backdrop: {
+              sx: {
+                top: 64,
+              },
+            },
             paper: {
               sx: {
                 width: {
                   xs: "100%",
                   sm: CUSTOMER_NAV_WIDTH,
                 },
+                top: 64,
+                height: "calc(100dvh - 64px)",
                 borderRadius: 0,
               },
             },
@@ -665,9 +710,10 @@ export function Header() {
               xs: "block",
               sm: "none",
             },
+            zIndex: 1050,
           }}
         >
-          {renderDrawerContent({ showCloseButton: true })}
+          {renderDrawerContent({ showCloseButton: false })}
         </Drawer>
       </>
       <Menu

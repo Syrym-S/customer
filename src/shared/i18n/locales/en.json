@@ -778,6 +778,7 @@
    },
    "header": {
       "closeMenu": "Close menu",
+      "openMenu": "Open menu",
       "logout": {
          "action": "Log out",
          "confirm": "Are you sure you want to log out?",
