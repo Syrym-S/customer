@@ -290,6 +290,7 @@
          "manufacturer": "Производитель",
          "name": "Название",
          "number": "Номер",
+         "orderNum": "№ заказа",
          "origin": "Откуда",
          "packagingType": "Вид упаковки",
          "participants": "Участники",

@@ -288,6 +288,7 @@
          "manufacturer": "Ishlab chiqaruvchi",
          "name": "Nomi",
          "number": "Raqam",
+         "orderNum": "Buyurtma №",
          "origin": "Qayerdan",
          "packagingType": "O'ram turi",
          "participants": "Qatnashchilar",

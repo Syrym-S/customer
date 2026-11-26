@@ -288,6 +288,7 @@
          "manufacturer": "Өндіруші",
          "name": "Атауы",
          "number": "Нөмір",
+         "orderNum": "Тапсырыс №",
          "origin": "Қайдан",
          "packagingType": "Қаптама түрі",
          "participants": "Қатысушылар",

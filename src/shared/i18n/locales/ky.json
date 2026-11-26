@@ -288,6 +288,7 @@
          "manufacturer": "Өндүрүүчү",
          "name": "Аталышы",
          "number": "Номер",
+         "orderNum": "Буйрутма №",
          "origin": "Кайдан",
          "packagingType": "Таңгактоо түрү",
          "participants": "Катышуучулар",

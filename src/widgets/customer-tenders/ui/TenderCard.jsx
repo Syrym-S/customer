@@ -17,20 +17,6 @@ import { getShortLocationLabel } from '../../../shared/helpers/data-grid.helpers
 import { formatAmount } from '../../../shared/helpers/currency-format.helpers';
 import { CardRouteLine } from '../../../shared/ui/CardRouteLine';
 
-function getShortTenderId(id) {
-   if (!id) {
-      return '—';
-   }
-
-   const value = String(id);
-
-   if (value.length <= 12) {
-      return value;
-   }
-
-   return `${value.slice(0, 4)}...${value.slice(-5)}`;
-}
-
 function getCargoSummaryLabel(cargos) {
    if (!Array.isArray(cargos) || cargos.length === 0) {
       return null;
@@ -76,10 +62,11 @@ export function TenderCard({ tender }) {
       getPublicationTypeLabel(tender.publication_type) || tender.publication_type;
 
    const tenderName = String(tender.name || '').trim();
-   const fullTenderIdLabel = tender.id ? `#${tender.id}` : '#—';
-   const shortTenderIdLabel = tender.id
-      ? `#${getShortTenderId(tender.id)}`
-      : '#—';
+   const leadNum = tender.lead?.num ?? null;
+   const orderNumLabel = leadNum
+      ? `${t("common.fields.orderNum")} ${leadNum}`
+      : '';
+   const cardTitle = tenderName || orderNumLabel || t("tenders.titleSingular");
 
    function hasValue(value) {
       return value !== null && value !== undefined && value !== '';
@@ -121,7 +108,7 @@ export function TenderCard({ tender }) {
          <Stack spacing={2}>
             <Box>
                <Typography
-                  title={tenderName || fullTenderIdLabel}
+                  title={cardTitle}
                   sx={{
                      lineHeight: 1.3,
                      fontSize: {
@@ -134,33 +121,7 @@ export function TenderCard({ tender }) {
                      whiteSpace: 'nowrap',
                   }}
                >
-                  {tenderName || (
-                     <>
-                        <Box
-                           component="span"
-                           sx={{
-                              display: {
-                                 xs: 'inline',
-                                 md: 'none',
-                              },
-                           }}
-                        >
-                           {shortTenderIdLabel}
-                        </Box>
-
-                        <Box
-                           component="span"
-                           sx={{
-                              display: {
-                                 xs: 'none',
-                                 md: 'inline',
-                              },
-                           }}
-                        >
-                           {fullTenderIdLabel}
-                        </Box>
-                     </>
-                  )}
+                  {cardTitle}
                </Typography>
 
                <Stack
@@ -175,24 +136,28 @@ export function TenderCard({ tender }) {
                      rowGap: 0.75,
                   }}
                >
-                  <Typography
-                     variant="body2"
-                     color="text.secondary"
-                     sx={{ flexShrink: 0, whiteSpace: 'nowrap' }}
-                  >
-                     {shortTenderIdLabel}
-                  </Typography>
+                  {tenderName && orderNumLabel && (
+                     <>
+                        <Typography
+                           variant="body2"
+                           color="text.secondary"
+                           sx={{ flexShrink: 0, whiteSpace: 'nowrap' }}
+                        >
+                           {orderNumLabel}
+                        </Typography>
 
-                  <Typography
-                     variant="body2"
-                     color="text.secondary"
-                     sx={{
-                        flexShrink: 0,
-                        display: { xs: 'none', sm: 'block' },
-                     }}
-                  >
-                     ·
-                  </Typography>
+                        <Typography
+                           variant="body2"
+                           color="text.secondary"
+                           sx={{
+                              flexShrink: 0,
+                              display: { xs: 'none', sm: 'block' },
+                           }}
+                        >
+                           ·
+                        </Typography>
+                     </>
+                  )}
 
                   <StatusDot
                      label={getTenderStatusLabel(tender.status) || tender.status}

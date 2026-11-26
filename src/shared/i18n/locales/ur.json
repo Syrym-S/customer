@@ -288,6 +288,7 @@
          "manufacturer": "تیار کنندہ",
          "name": "نام",
          "number": "نمبر",
+         "orderNum": "آرڈر نمبر",
          "origin": "آغاز",
          "packagingType": "پیکنگ کی قسم",
          "participants": "شرکاء",
