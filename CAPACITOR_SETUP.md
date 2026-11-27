@@ -29,16 +29,17 @@ Capacitor 8 и восемь плагинов — все подхватывают
 ## 2. Команды
 
 ```
-npm run build:capacitor        # SPA-сборка в dist-app (prod API)
-npm run build:capacitor:dev    # то же, но staging API
-npm run cap:sync               # сборка + cap sync android (prod)
-npm run cap:sync:dev           # сборка + cap sync android (staging)
-npm run cap:open               # открыть проект в Android Studio
-npm run cap:run                # собрать и запустить на устройстве/эмуляторе
+npm run cap:sync               # сборка + cap sync android (prod API)
+npm run cap:sync:dev           # сборка + cap sync android (staging API)
+npm run cap:sync:staging       # то же, но без обфускации (staging API)
 ```
 
-Веб не затронут: `npm run dev`, `build:dev`, `build:prod`, `build:public`,
-`deploy` работают как раньше.
+APK собирается и запускается из Android Studio: в package.json команд для
+этого нет, синк кладёт бандл в `android/app/src/main/assets/public`, дальше
+кнопка Run.
+
+Веб не затронут: `npm run dev`, `build`, `build:public`, `deploy` работают как
+раньше.
 
 ### Чем нативная сборка отличается от веб-сборки
 
@@ -143,8 +144,12 @@ Preflight `OPTIONS` отвечает `200` на `auth/v2/auth`, `auth/v2/registe
 На устройстве или эмуляторе:
 
 ```
-npm run cap:sync:dev && npm run cap:run
+npm run cap:sync:dev
 ```
+
+Дальше Run в Android Studio. Порядок именно такой: `android/app/src/main/assets/public`
+лежит в `.gitignore`, и без синка в APK уедет бандл с прошлой сборки — молча,
+без ошибки сборки.
 
 В браузере нативную ветку можно включить, не собирая приложение — добавить
 перед `<script type="module">` в `index.html`:

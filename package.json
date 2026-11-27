@@ -5,21 +5,14 @@
    "type": "module",
    "scripts": {
       "dev": "vite --mode mock",
-      "dev:api": "vite --mode api",
       "build": "vite build --mode production",
       "build:public": "vite build --mode production --config vite.config.public.js",
-      "preview": "vite preview",
       "deploy": "npm run build && npm run build:public && node deploy.js",
-      "build:dev": "npm run build --buildtarget=dev",
-      "build:prod": "npm run build --buildtarget=prod",
       "build:capacitor": "vite build --mode production --config vite.config.capacitor.js",
-      "build:capacitor:dev": "npm run build:capacitor --buildtarget=dev",
       "build:capacitor:staging": "vite build --mode staging --config vite.config.capacitor.js",
       "cap:sync": "npm run build:capacitor && npx cap sync android",
-      "cap:sync:dev": "npm run build:capacitor:dev && npx cap sync android",
-      "cap:sync:staging": "npm run build:capacitor:staging --buildtarget=dev && npx cap sync android",
-      "cap:open": "npx cap open android",
-      "cap:run": "npx cap run android"
+      "cap:sync:dev": "npm run build:capacitor --buildtarget=dev && npx cap sync android",
+      "cap:sync:staging": "npm run build:capacitor:staging --buildtarget=dev && npx cap sync android"
    },
    "dependencies": {
       "@aparajita/capacitor-secure-storage": "^8.0.1",
